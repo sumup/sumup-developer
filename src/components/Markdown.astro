@@ -1,0 +1,25 @@
+---
+import Markdoc from "@markdoc/markdoc";
+
+interface Props {
+  class?: string;
+  children: any;
+}
+
+const { class: className } = Astro.props;
+const slot = await Astro.slots.render("default");
+const ast = Markdoc.parse(slot);
+const content = Markdoc.transform(ast, {
+  nodes: {
+    document: {
+      ...Markdoc.nodes.document,
+      render: null,
+    },
+  },
+});
+const html = Markdoc.renderers.html(content);
+---
+
+<div class:list={["sl-markdown-content", className]}>
+  <Fragment set:html={html} />
+</div>

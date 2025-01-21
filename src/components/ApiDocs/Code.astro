@@ -1,0 +1,59 @@
+---
+import { Code as DefaultCode } from "@astrojs/starlight/components";
+import type { HTMLAttributes } from "astro/types";
+
+interface Props extends HTMLAttributes<"div"> {
+  code: string;
+  lang: string;
+  name?: string;
+  description?: string;
+}
+
+const { code, lang, name, description, class: cls, ...attrs } = Astro.props;
+const hasHeader = !!Astro.slots.header || !!name;
+---
+
+<div class:list={["codeblock", cls]} {...attrs}>
+  {
+    hasHeader && (
+      <div class="header">
+        <slot name="header">
+          <div class="name">{name}</div>
+        </slot>
+      </div>
+    )
+  }
+  {description && <div class="description">{description}</div>}
+  <DefaultCode lang={lang} code={code} />
+</div>
+
+<style>
+  .codeblock {
+    background: var(--cui-bg-subtle);
+    border-radius: var(--cui-border-radius-mega);
+    overflow: hidden;
+    max-height: calc(80vh);
+    display: flex;
+    flex-direction: column;
+    align-self: start;
+    margin: var(--cui-spacings-giga) 0;
+  }
+  .header {
+    padding: var(--cui-spacings-byte) var(--cui-spacings-kilo);
+    background: var(--cui-bg-highlight);
+  }
+  .name {
+    color: var(--cui-fg-subtle);
+    font-weight: 500;
+  }
+  .description {
+    color: var(--cui-fg-subtle);
+    padding: var(--cui-spacings-byte) var(--cui-spacings-kilo);
+    background: var(--cui-bg-highlight);
+    border-top: var(--cui-border-width-kilo) solid var(--cui-border-normal);
+  }
+  .code {
+    overflow: auto;
+    margin: 0;
+  }
+</style>

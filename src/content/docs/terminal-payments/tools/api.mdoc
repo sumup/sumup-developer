@@ -1,0 +1,20 @@
+---
+title: API Payment Switch
+---
+
+SumUp API Payment Switch is a light integration where your app will open the SumUp app to request and execute a payment. This integration approach is the go-to solution for web аpplications.
+
+## How does it work?
+
+Your app initiates a request to charge a card, opens the SumUp app on the merchant's mobile device, and we handle the rest. Once the payment has been processed the transaction result is communicated back, and the merchant is returned to your app.
+
+The API integration also allows the possibility to pre-fill the checkout amount and card holder information, and to send a receipt via SMS or email. You can use the cash option, which is not available in our SDK version, for better reporting and management of your funds in the SumUp dashboard.
+
+Activate the [mandatory authorization scopes](/online-payments/introduction/authorization/#authorization-scopes) for a smooth performance. They will require obtaining an access token for your client application that will authenticate it with the SumUp REST API and authorize it to access server resources.
+
+## API documentation
+
+You can find additional documentation for the different mobile platforms below:
+
+- Integrate the [iOS API](https://github.com/sumup/sumup-ios-url-scheme)
+- Integrate the [Android API](https://github.com/sumup/sumup-android-api)

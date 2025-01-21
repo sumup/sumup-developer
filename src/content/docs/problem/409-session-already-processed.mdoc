@@ -1,0 +1,18 @@
+---
+title: 409 Conflict - Session Already Processed
+id: session-already-processed
+---
+
+# 409 Conflict - Session Already Processed
+
+Indicates the checkout has already been processed. Check the transaction status by calling our `get transaction` endpoint.
+
+```json
+{
+  "type": "https://developer.sumup.com/docs/problem/session-already-processed/",
+  "title": "Conflict",
+  "status": 409,
+  "detail": "The checkout session ae98b9cc-2287-4621-afa1-d36ae2ea219d is already processed",
+  "instance": "1bfe72b34387"
+}
+```

@@ -1,0 +1,31 @@
+---
+export interface Props {
+  label: string;
+  name: string;
+  options: {
+    label: string;
+    value: string;
+  }[];
+  hideLabel?: boolean;
+}
+const { label, name, options, hideLabel } = Astro.props;
+---
+
+<div>
+  <label for={name} class:list={[{ hide: hideLabel }]}>{label}</label>
+  <select id={name} name={name}>
+    {options.map((o) => <option value={o.value}>{o.label}</option>)}
+  </select>
+</div>
+
+<style lang="scss">
+  label {
+    display: block;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+
+    &.hide {
+      display: none;
+    }
+  }
+</style>

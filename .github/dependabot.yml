@@ -1,0 +1,28 @@
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    open-pull-requests-limit: 5
+    schedule:
+      interval: "daily"
+    groups:
+      sumup:
+        patterns:
+          - "@sumup-oss/*"
+      types:
+        patterns:
+          - "@types/*"
+      astro:
+        patterns:
+          - "astro"
+          - "@astrojs/*"
+      nanostores:
+        patterns:
+          - nanostores*
+          - "@nanostores*"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    open-pull-requests-limit: 3

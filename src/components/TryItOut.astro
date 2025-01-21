@@ -1,0 +1,166 @@
+---
+import { Code, LinkCard } from "@astrojs/starlight/components";
+import Card from "./Card.astro";
+
+const example1 = `
+client := sumup.NewClient().WithAuth(os.Getenv("SUMUP_API_KEY"))
+ctx := context.Background()
+merchantCode := "MERCHANT_CODE"
+
+checkout, err := client.Checkouts.Create(ctx, sumup.CreateCheckoutBody{
+	Amount:            19,
+	CheckoutReference: "CO746453",
+	Currency:          "EUR",
+	MerchantCode:      merchantCode,
+})
+
+// Collect customer's card data
+
+result, err := client.Checkouts.Process(ctx, *checkout.Id, sumup.ProcessCheckoutBody{
+	Card: &sumup.Card{
+		Cvv:         "123",
+		ExpiryMonth: "12",
+		ExpiryYear:  "2023",
+		Name:        "Boaty McBoatface",
+		Number:      "4200000000000042",
+	},
+	PaymentType: sumup.ProcessCheckoutBodyPaymentTypeCard,
+})`;
+
+const example2 = `
+client := sumup.NewClient().WithAuth(os.Getenv("SUMUP_API_KEY"))
+ctx := context.Background()
+merchantCode := "MERCHANT_CODE"
+
+readers, _ := client.Readers.List(ctx, merchantCode)
+
+reader := readers.Items[0]
+resp, err := client.Readers.CreateCheckout(
+	ctx,
+	merchantCode,
+	string(reader.Id),
+	sumup.CreateReaderCheckoutBody{
+		TotalAmount: sumup.CreateReaderCheckoutAmount{
+			Currency:  "EUR",
+			MinorUnit: 100,
+			Value:     500,
+		},
+	},
+)`;
+---
+
+<h2>Try it out</h2>
+
+<div class="container">
+  <input type="radio" id="section1" name="sections" checked />
+  <input type="radio" id="section2" name="sections" />
+  <input type="radio" id="section3" name="sections" />
+  <input type="radio" id="section4" name="sections" />
+  <input type="radio" id="section5" name="sections" />
+
+  <Card>
+    <div class="tryit-sidebar">
+      <label for="section1" id="section1Label">
+        <strong>Checkout</strong>
+      </label>
+      <label for="section2" id="section2Label">
+        <strong>Card reader payment</strong>
+      </label>
+      <label for="section3" id="section3Label">
+        <strong>Fetch HTML</strong>
+      </label>
+      <label for="section4" id="section4Label">
+        <strong>Redirect</strong>
+      </label>
+      <label for="section5" id="section5Label">
+        <strong>Respond with another site</strong>
+      </label>
+    </div>
+  </Card>
+
+  <div class="tryit-code">
+    <div id="section1Content" class="!mt-0 hidden">
+      <Code lang="go" code={example1} />
+    </div>
+    <div id="section2Content" class="!mt-0 hidden">
+      <Code lang="go" code={example2} />
+    </div>
+    <div id="section3Content" class="!mt-0 hidden">
+      <Code lang="go" code={example1} />
+    </div>
+    <div id="section4Content" class="!mt-0 hidden">
+      <Code lang="go" code={example2} />
+    </div>
+    <div id="section5Content" class="!mt-0 hidden">
+      <Code lang="go" code={example1} />
+    </div>
+  </div>
+</div>
+
+<LinkCard title="See our guides" href="/online-payments/guides/" />
+
+<style>
+  .card {
+    --sl-card-border: var(--sl-color-purple);
+    --sl-card-bg: var(--sl-color-purple-low);
+    border: 1px solid var(--sl-color-gray-5);
+    background-color: var(--sl-color-black);
+    padding: 1rem;
+    flex-direction: column;
+  }
+
+  input[type="radio"] {
+    display: none;
+  }
+
+  .container {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: stretch;
+    wdith: 100%;
+    gap: var(--cui-spacings-giga);
+  }
+
+  .tryit-code {
+    flex-grow: 1;
+    margin: 0 !important;
+  }
+
+  .hidden {
+    display: none;
+    margin: 0 !important;
+  }
+
+  #section1:checked ~ .tryit-code #section1Content,
+  #section2:checked ~ .tryit-code #section2Content,
+  #section3:checked ~ .tryit-code #section3Content,
+  #section4:checked ~ .tryit-code #section4Content,
+  #section5:checked ~ .tryit-code #section5Content {
+    display: block;
+  }
+
+  .tryit-sidebar {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .tryit-sidebar label {
+    padding: 0.4rem 0.6rem;
+  }
+
+  .tryit-sidebar label:hover {
+    color: var(--cui-fg-on-strong);
+    background-color: var(--cui-bg-strong);
+  }
+
+  #section1:checked ~ .tryit-sidebar #section1Label,
+  #section2:checked ~ .tryit-sidebar #section2Label,
+  #section3:checked ~ .tryit-sidebar #section3Label,
+  #section4:checked ~ .tryit-sidebar #section4Label,
+  #section5:checked ~ .tryit-sidebar #section5Label {
+    display: none;
+    color: var(--cui-fg-on-strong);
+    background-color: var(--cui-bg-strong);
+  }
+</style>

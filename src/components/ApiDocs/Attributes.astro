@@ -1,0 +1,70 @@
+---
+import { Plus } from "@sumup-oss/icons";
+import type { HTMLAttributes } from "astro/types";
+import type { OpenAPIV3_1 } from "openapi-types";
+import Schema from "./Schema.astro";
+
+type Props = {
+  schema: OpenAPIV3_1.SchemaObject;
+  kind?: string;
+} & HTMLAttributes<"div">;
+
+// const isNonArraySchemaObject = (
+//   object: OpenAPIV3_1.SchemaObject | OpenAPIV3_1.ReferenceObject | undefined
+// ): object is OpenAPIV3_1.NonArraySchemaObject =>
+//   !!object && !("items" in object);
+
+const { schema, kind = "Attributes", ...attrs } = Astro.props;
+---
+
+<div class="wrap" {...attrs}>
+  <div class="button">
+    <Plus size="16" />
+    &nbsp;Show attributes
+  </div>
+  <div class="attributes">
+    <Schema nested={true} {schema} {kind} />
+  </div>
+</div>
+
+<style>
+  .wrap {
+    margin-top: var(--cui-spacings-kilo);
+  }
+  .wrap .attributes {
+    display: none;
+  }
+  .wrap.open > .button {
+    display: none;
+  }
+  .wrap.open > .attributes {
+    display: block;
+  }
+  .attributes {
+    border: var(--cui-border-width-kilo) solid var(--cui-border-subtle);
+    border-radius: var(--cui-border-radius-mega);
+  }
+  .button {
+    border: var(--cui-border-width-kilo) solid var(--cui-border-subtle);
+    display: inline-flex;
+    flex-direction: row;
+    align-items: center;
+    padding: var(--cui-spacings-bit) var(--cui-spacings-byte);
+    border-radius: var(--cui-border-radius-mega);
+    cursor: pointer;
+  }
+  .button:hover {
+    background: var(--cui-bg-normal-hovered);
+    border-color: var(--cui-border-subtle-hovered);
+    color: var(--cui-fg-normal-hovered);
+  }
+</style>
+
+<script>
+  const buttons = document.querySelectorAll(".button");
+  buttons.forEach((button) => {
+    button.addEventListener("click", () => {
+      button.parentElement?.classList.add("open");
+    });
+  });
+</script>

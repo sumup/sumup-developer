@@ -1,0 +1,159 @@
+---
+import type { Props } from "@astrojs/starlight/props";
+import EditLink from "@astrojs/starlight/components/EditLink.astro";
+import LastUpdated from "@astrojs/starlight/components/LastUpdated.astro";
+import Feedback from "@components/Feedback.astro";
+import { Help, History, Webspace } from "@sumup-oss/icons";
+
+const isHomepage = Astro.props.slug === "";
+---
+
+{
+  isHomepage ? (
+    <footer class="container">
+      <div class="row">
+        <a href="https://sumup.com/">SumUp Homepage</a>
+        <a href="https://www.sumup.com/sumup-handbook">Handbook</a>
+        <a href="https://www.sumup.com/affiliate-program">Affiliates</a>
+        <a href="https://www.sumup.com/business-guide">Business Guide</a>
+        <a href="https://www.sumup.com/press">Press</a>
+        <a href="https://sumup.com/careers">Careers</a>
+        <a href="https://help.sumup.com/">Help Center</a>
+      </div>
+      <div class="legal">
+        <div>Copyright © {new Date().getFullYear()} SumUp</div>
+        <div class="row">
+          <a href="https://sumup.com/legal/">Legal Notice</a>
+          <a href="https://sumup.com/privacy/">Privacy Policy</a>
+          <a href="https://sumup.com/terms/">Terms & Conditions</a>
+          <a href="https://sumup.com/cookies/">Cookie Policy</a>
+        </div>
+      </div>
+    </footer>
+  ) : (
+    <>
+      <Feedback />
+      <footer>
+        <div class="meta">
+          <EditLink {...Astro.props} />
+          <LastUpdated {...Astro.props} />
+        </div>
+        <div class="footer-links">
+          <div>
+            <>
+              <Webspace />
+              <span>
+                Go to <a href="https://me.sumup.com">SumUp Dashboard</a>.
+              </span>
+            </>
+          </div>
+          <div>
+            <Help />{" "}
+            <span>
+              Need help? <a href="/help">Contact Support</a>.
+            </span>
+          </div>
+          <div>
+            <>
+              <History />
+              <span>
+                Check out our <a href="/changelog">Changelog</a>.
+              </span>
+            </>
+          </div>
+        </div>
+      </footer>
+    </>
+  )
+}
+
+<style lang="scss">
+  footer {
+    padding: var(--cui-spacings-tera) var(--cui-spacings-mega);
+    border-top: var(--cui-border-width-kilo) solid var(--cui-border-normal);
+  }
+
+  footer {
+    font-size: 0.9rem;
+  }
+
+  .meta {
+    display: flex;
+    gap: 0.75rem 3rem;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    font-size: 0.9rem;
+    color: var(--cui-fg-subtle);
+  }
+
+  .meta > :global(p:only-child) {
+    margin-inline-start: auto;
+  }
+
+  .container {
+    max-width: 960px;
+    margin: 0 auto;
+  }
+
+  @media (min-width: 480px) {
+    .container {
+      flex-direction: row;
+    }
+  }
+
+  .row {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: center;
+    gap: 0 var(--cui-spacings-giga);
+    flex-wrap: wrap;
+  }
+
+  footer a {
+    color: var(--cui-fg-subtle);
+    text-decoration: none;
+
+    &:hover,
+    &:focus {
+      color: var(--cui-fg-subtle-hovered);
+      text-decoration: underline;
+    }
+    &:active {
+      color: var(--cui-fg-subtle-pressed);
+    }
+  }
+
+  .legal {
+    margin-top: var(--cui-spacings-tera);
+    font-size: 0.8rem;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .legal .row {
+    justify-content: center;
+  }
+
+  .footer-links {
+    margin-top: 1.5rem;
+    font-size: 0.9rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+  .footer-links > div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .footer-links :global(svg) {
+    width: 20px;
+    height: 20px;
+  }
+  .footer-links :global(a) {
+    font-size: 0.9rem;
+  }
+</style>
