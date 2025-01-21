@@ -1,0 +1,7 @@
+.card {
+  margin-bottom: var(--cui-spacings-mega);
+}
+
+.stepBody {
+  margin-top: var(--cui-spacings-byte);
+}

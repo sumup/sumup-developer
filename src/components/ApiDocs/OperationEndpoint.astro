@@ -1,0 +1,21 @@
+---
+import type { OperationObject } from "src/types/openapi";
+
+interface Props {
+  operation: OperationObject;
+}
+
+const { operation } = Astro.props;
+---
+
+<div class:list={[operation.method]}>
+  {operation.method}&nbsp;
+  {operation.path}
+</div>
+
+<style lang="scss">
+  div {
+    font-family: var(--cui-font-stack-mono);
+    font-size: 0.9rem;
+  }
+</style>

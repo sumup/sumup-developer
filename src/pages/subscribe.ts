@@ -1,0 +1,66 @@
+export const prerender = false;
+
+import type { APIRoute } from "astro";
+
+const validateEmail = (email: string): boolean => {
+  return !!String(email)
+    .toLowerCase()
+    .match(
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+    );
+};
+
+export const POST: APIRoute = async ({ request, redirect }) => {
+  const data = await request.formData();
+  let email = data.get("email");
+
+  const host = new URL(request.url);
+  const redirectTo = new URL(data.get("redirect_to")?.toString() || "/", host);
+
+  // prevent redirecting to elsewhere than the developer portal
+  if (redirectTo.hostname !== host.hostname) {
+    return redirect("/");
+  }
+
+  if (!email) {
+    redirectTo.searchParams.append("status", "error");
+    return redirect(redirectTo.pathname + redirectTo.search);
+  }
+
+  email = email.toString().toLowerCase();
+
+  if (!validateEmail(email)) {
+    redirectTo.searchParams.append("status", "invalid_email");
+    return redirect(redirectTo.pathname + redirectTo.search);
+  }
+
+  const merchantCode = data.get("merchant_code");
+  try {
+    const response = await fetch(
+      "https://cloud.crm.sumup.com/ae_xi_1_gl-subscribe-changelog-sumup-for-developers",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: import.meta.env.MARKETING_CLOUD_AUTH,
+        },
+        body: JSON.stringify({
+          email,
+          merchantCode,
+          locale: "en-GB",
+        }),
+      },
+    );
+
+    const status = await response.json();
+    if (status !== 200) {
+      throw new Error(`Unexpected response from marking cloud: ${status}`);
+    }
+  } catch (error) {
+    redirectTo.searchParams.append("status", "error");
+    return redirect(redirectTo.pathname + redirectTo.search);
+  }
+
+  redirectTo.searchParams.append("status", "success");
+  return redirect(redirectTo.pathname + redirectTo.search);
+};

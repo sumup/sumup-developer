@@ -1,0 +1,9 @@
+---
+import Default from "@astrojs/starlight/components/Hero.astro";
+import type { Props } from "@astrojs/starlight/props";
+import HomepageHero from "../components/HomepageHero.astro";
+
+const isHomepage = Astro.props.siteTitleHref === "/" && Astro.props.id === "";
+---
+
+{isHomepage ? <HomepageHero {...Astro.props} /> : <Default {...Astro.props} />}

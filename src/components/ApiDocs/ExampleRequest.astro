@@ -1,0 +1,61 @@
+---
+import { doc } from "@lib/openapi";
+// TODO: explore alternatives such as https://github.com/Kong/httpsnippet
+// This packages is no longer maintained.
+import { getEndpointSnippets } from "openapi-snippet";
+import type { OperationObject } from "src/types/openapi";
+import Code from "./Code.astro";
+
+export interface Props {
+  operation: OperationObject;
+}
+
+const { operation } = Astro.props;
+
+const snippets = getEndpointSnippets(
+  doc,
+  operation.path,
+  operation.method,
+  ["shell_curl"],
+  undefined,
+);
+---
+
+<Code lang="sh" code={snippets.snippets[0].content}>
+  <div slot="header">
+    <div class="operation">
+      <span class:list={["method", operation.method]}>{operation.method}</span
+      >&nbsp;
+      <span class="path">
+        {operation.path}
+      </span>
+    </div>
+  </div>
+</Code>
+
+<style lang="scss">
+  .operation {
+    font-family: var(--cui-font-stack-mono);
+
+    .method {
+      text-transform: uppercase;
+
+      &.post {
+        color: var(--cui-fg-success);
+      }
+      &.put {
+        color: var(--cui-fg-promo);
+      }
+      &.get {
+        color: var(--cui-fg-accent);
+      }
+      &.delete {
+        color: var(--cui-fg-danger);
+      }
+    }
+
+    .path {
+      color: var(--cui-fg-subtle);
+    }
+  }
+</style>

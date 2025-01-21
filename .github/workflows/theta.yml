@@ -1,0 +1,20 @@
+name: Environments - Theta
+
+on:
+  schedule:
+    # Every Monday at 6am UTC
+    - cron: "0 6 * * 1"
+  workflow_dispatch:
+
+jobs:
+  sync-theta:
+    name: Sync
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - uses: connor-baer/action-sync-branch@v1.1.0
+        with:
+          branch: theta
+          token: ${{ secrets.GITHUB_TOKEN }}
+          force: true

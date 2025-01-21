@@ -1,0 +1,685 @@
+{
+  "trailingSlash": false,
+  "redirects": [
+    {
+      "source": "/docs/category/introduction-1",
+      "destination": "/terminal-payments/introduction",
+      "permanent": true
+    },
+    {
+      "source": "/docs/terminal-payments/introduction",
+      "destination": "/terminal-payments/introduction",
+      "permanent": true
+    },
+    {
+      "source": "/docs/terminal-payments/introduction/overview",
+      "destination": "/terminal-payments/introduction/overview",
+      "permanent": true
+    },
+    {
+      "source": "/docs/terminal-payments/introduction/getting-started",
+      "destination": "/terminal-payments/introduction/getting-started",
+      "permanent": true
+    },
+    {
+      "source": "/docs/category/tools-1",
+      "destination": "/terminal-payments/tools",
+      "permanent": true
+    },
+    {
+      "source": "/docs/terminal-payments/tools",
+      "destination": "/terminal-payments/tools",
+      "permanent": true
+    },
+    {
+      "source": "/docs/terminal-payments/tools/api",
+      "destination": "/terminal-payments/tools/api",
+      "permanent": true
+    },
+    {
+      "source": "/docs/terminal-payments/tools/sdk",
+      "destination": "/terminal-payments/tools/sdk",
+      "permanent": true
+    },
+    {
+      "source": "/docs/terminal-payments/industry",
+      "destination": "/terminal-payments/industry",
+      "permanent": true
+    },
+    {
+      "source": "/docs/terminal-payments/industry/retail",
+      "destination": "/terminal-payments/industry/retail",
+      "permanent": true
+    },
+    {
+      "source": "/docs/terminal-payments/industry/hospitality",
+      "destination": "/terminal-payments/industry/hospitality",
+      "permanent": true
+    },
+    {
+      "source": "/docs/terminal-payments/industry/transport",
+      "destination": "/terminal-payments/industry/transport",
+      "permanent": true
+    },
+    {
+      "source": "/docs/terminal-payments/industry/bookings",
+      "destination": "/terminal-payments/industry/bookings",
+      "permanent": true
+    },
+    {
+      "source": "/docs/terminal-payments/industry/enterprise",
+      "destination": "/terminal-payments/industry/enterprise",
+      "permanent": true
+    },
+    {
+      "source": "/docs/online-payments/introduction",
+      "destination": "/online-payments/introduction",
+      "permanent": true
+    },
+    {
+      "source": "/docs/getting-started",
+      "destination": "/online-payments/introduction/get-started",
+      "permanent": true
+    },
+    {
+      "source": "/docs/online-payments/introduction/getting-started",
+      "destination": "/online-payments/introduction/get-started",
+      "permanent": true
+    },
+    {
+      "source": "/docs/online-payments/introduction/register-app",
+      "destination": "/online-payments/introduction/register-app",
+      "permanent": true
+    },
+    {
+      "source": "/docs/online-payments/introduction/authorization",
+      "destination": "/online-payments/introduction/authorization",
+      "permanent": true
+    },
+    {
+      "source": "/docs/online-payments/introduction/response-handling",
+      "destination": "/online-payments/introduction/response-handling",
+      "permanent": true
+    },
+    {
+      "source": "/docs/online-payments/introduction/webhooks",
+      "destination": "/online-payments/introduction/webhooks",
+      "permanent": true
+    },
+    {
+      "source": "/docs/category/guides",
+      "destination": "/online-payments/guides",
+      "permanent": true
+    },
+    {
+      "source": "/docs/online-payments/guides/single-payment",
+      "destination": "/online-payments/guides/single-payment",
+      "permanent": true
+    },
+    {
+      "source": "/docs/online-payments/guides/recurring-payments",
+      "destination": "/online-payments/guides/recurring-payments",
+      "permanent": true
+    },
+    {
+      "source": "/docs/online-payments/guides/refund",
+      "destination": "/online-payments/guides/refund",
+      "permanent": true
+    },
+    {
+      "source": "/docs/category/alternative-payment-methods",
+      "destination": "/online-payments/apm",
+      "permanent": true
+    },
+    {
+      "source": "/online-payments/apm/introduction",
+      "destination": "/online-payments/apm",
+      "permanent": true
+    },
+    {
+      "source": "/docs/online-payments/alternative-payment-methods",
+      "destination": "/online-payments/apm",
+      "permanent": true
+    },
+    {
+      "source": "/docs/online-payments/alternative-payment-methods/apm-integration",
+      "destination": "/online-payments/apm/integration-guide",
+      "permanent": true
+    },
+    {
+      "source": "/docs/online-payments/alternative-payment-methods/apple-pay-integration",
+      "destination": "/online-payments/apm/apple-pay",
+      "permanent": true
+    },
+    {
+      "source": "/docs/online-payments/alternative-payment-methods/google-pay-integration",
+      "destination": "/online-payments/apm/google-pay",
+      "permanent": true
+    },
+    {
+      "source": "/docs/category/features",
+      "destination": "/online-payments/features",
+      "permanent": true
+    },
+    {
+      "source": "/docs/online-payments/features/open-banking",
+      "destination": "/online-payments/features/open-banking",
+      "permanent": true
+    },
+    {
+      "source": "/docs/online-payments/features/3ds",
+      "destination": "/online-payments/features/3ds",
+      "permanent": true
+    },
+    {
+      "source": "/docs/category/tools",
+      "destination": "/online-payments/tools",
+      "permanent": true
+    },
+    {
+      "source": "/docs/online-payments/tools/card-widget",
+      "destination": "/online-payments/tools/card-widget",
+      "permanent": true
+    },
+    {
+      "source": "/docs/php-sdk",
+      "destination": "/online-payments/tools/php-sdk",
+      "permanent": true
+    },
+    {
+      "source": "/docs/online-payments/tools/php-sdk",
+      "destination": "/online-payments/tools/php-sdk",
+      "permanent": true
+    },
+    {
+      "source": "/docs/online-payments/tools/swift-checkout",
+      "destination": "/online-payments/tools/swift-checkout",
+      "permanent": true
+    },
+    {
+      "source": "/docs/category/plugins",
+      "destination": "/online-payments/plugins",
+      "permanent": true
+    },
+    {
+      "source": "/docs/online-payments/plugins/woocommerce",
+      "destination": "/online-payments/plugins/woocommerce",
+      "permanent": true
+    },
+    {
+      "source": "/docs/sumup-prestashop-plugin",
+      "destination": "/online-payments/plugins/prestashop",
+      "permanent": true
+    },
+    {
+      "source": "/docs/online-payments/plugins/prestashop",
+      "destination": "/online-payments/plugins/prestashop",
+      "permanent": true
+    },
+    {
+      "source": "/docs/online-payments/plugins/wix",
+      "destination": "/online-payments/plugins/wix",
+      "permanent": true
+    },
+    {
+      "source": "/docs/terminal-overview",
+      "destination": "/terminal-payments/introduction/overview",
+      "permanent": true
+    },
+    {
+      "source": "/docs/terminal-getting-started",
+      "destination": "/terminal-payments/introduction/getting-started",
+      "permanent": true
+    },
+    {
+      "source": "/docs/integration-retail",
+      "destination": "/terminal-payments/industry/retail",
+      "permanent": true
+    },
+    {
+      "source": "/docs/integration-hospitality",
+      "destination": "/terminal-payments/industry/hospitality",
+      "permanent": true
+    },
+    {
+      "source": "/docs/integration-transport",
+      "destination": "/terminal-payments/industry/transport",
+      "permanent": true
+    },
+    {
+      "source": "/docs/integration-bookings",
+      "destination": "/terminal-payments/industry/bookings",
+      "permanent": true
+    },
+    {
+      "source": "/docs/integration-enterprise",
+      "destination": "/terminal-payments/industry/enterprise",
+      "permanent": true
+    },
+    {
+      "source": "/docs/terminal-sdk",
+      "destination": "/terminal-payments/tools/sdk",
+      "permanent": true
+    },
+    {
+      "source": "/docs/terminal-api",
+      "destination": "/terminal-payments/tools/api",
+      "permanent": true
+    },
+    {
+      "source": "/docs/single-payment",
+      "destination": "/online-payments/guides/single-payment",
+      "permanent": true
+    },
+    {
+      "source": "/docs/refund",
+      "destination": "/online-payments/guides/refund",
+      "permanent": true
+    },
+    {
+      "source": "/docs/recurring-payments",
+      "destination": "/online-payments/guides/recurring-payments",
+      "permanent": true
+    },
+    {
+      "source": "/docs/apm",
+      "destination": "/online-payments/apm",
+      "permanent": true
+    },
+    {
+      "source": "/docs/online-payments/apm-integration",
+      "destination": "/online-payments/apm",
+      "permanent": true
+    },
+    {
+      "source": "/docs/online-payments/apple-pay-integration",
+      "destination": "/online-payments/apm/apple-pay",
+      "permanent": true
+    },
+    {
+      "source": "/docs/online-payments/google-pay-integration",
+      "destination": "/online-payments/apm/google-pay",
+      "permanent": true
+    },
+    {
+      "source": "/docs/api/sum-up-rest-api",
+      "destination": "/api",
+      "permanent": true
+    },
+    {
+      "source": "/docs/api/authorization",
+      "destination": "/api/authorization",
+      "permanent": true
+    },
+    {
+      "source": "/docs/api/checkouts",
+      "destination": "/api/checkouts",
+      "permanent": true
+    },
+    {
+      "source": "/docs/api/customers",
+      "destination": "/api/customers",
+      "permanent": true
+    },
+    {
+      "source": "/docs/api/transactions",
+      "destination": "/api/transactions",
+      "permanent": true
+    },
+    {
+      "source": "/docs/api/payouts",
+      "destination": "/api/payouts",
+      "permanent": true
+    },
+    {
+      "source": "/docs/api/receipts",
+      "destination": "/api/receipts",
+      "permanent": true
+    },
+    {
+      "source": "/docs/api/merchant",
+      "destination": "/api/merchant",
+      "permanent": true
+    },
+    {
+      "source": "/docs/api/subaccounts",
+      "destination": "/api/subaccounts",
+      "permanent": true
+    },
+    {
+      "source": "/docs/api/api-keys",
+      "destination": "/api/api-keys",
+      "permanent": true
+    },
+    {
+      "source": "/docs/api/authorize",
+      "destination": "/api/authorization/create-token",
+      "permanent": true
+    },
+    {
+      "source": "/docs/api/create-token",
+      "destination": "/api/authorization/create-token",
+      "permanent": true
+    },
+    {
+      "source": "/docs/api/list-checkouts",
+      "destination": "/api/checkouts/list",
+      "permanent": true
+    },
+    {
+      "source": "/docs/api/create-checkout",
+      "destination": "/api/checkouts/create",
+      "permanent": true
+    },
+    {
+      "source": "docs/api/deactivate-checkout",
+      "destination": "/api/checkouts/deactivate",
+      "permanent": true
+    },
+    {
+      "source": "docs/api/get-checkout",
+      "destination": "/api/checkouts/get",
+      "permanent": true
+    },
+    {
+      "source": "docs/api/process-checkout",
+      "destination": "/api/checkouts/process",
+      "permanent": true
+    },
+    {
+      "source": "/docs/api/create-customer",
+      "destination": "/api/customers/create",
+      "permanent": true
+    },
+    {
+      "source": "/docs/api/get-customer",
+      "destination": "/api/customers/get",
+      "permanent": true
+    },
+    {
+      "source": "/docs/api/update-customer",
+      "destination": "/api/customers/update",
+      "permanent": true
+    },
+    {
+      "source": "/docs/api/list-payment-instruments",
+      "destination": "/api/customers/list-payment-instruments",
+      "permanent": true
+    },
+    {
+      "source": "/docs/api/deactivate-payment-instrument",
+      "destination": "/api/customers/deactivate-payment-instrument",
+      "permanent": true
+    },
+    {
+      "source": "/docs/api/get-account",
+      "destination": "/api/subaccounts",
+      "permanent": true
+    },
+    {
+      "source": "/docs/api/list-sub-accounts",
+      "destination": "/api/subaccounts/list",
+      "permanent": true
+    },
+    {
+      "source": "/docs/api/create-sub-account",
+      "destination": "/api/subaccounts/create-sub-account",
+      "permanent": true
+    },
+    {
+      "source": "/docs/api/deactivate-sub-account",
+      "destination": "/api/subaccounts/deactivate",
+      "permanent": true
+    },
+    {
+      "source": "/docs/api/update-sub-account",
+      "destination": "/api/subaccounts/update",
+      "permanent": true
+    },
+    {
+      "source": "/docs/api/list-payouts",
+      "destination": "/api/payouts/list",
+      "permanent": true
+    },
+    {
+      "source": "/docs/api/list-financial-transactions",
+      "destination": "/api/transactions/list",
+      "permanent": true
+    },
+    {
+      "source": "/docs/api/get-merchant-profile",
+      "destination": "/api/merchant/get",
+      "permanent": true
+    },
+    {
+      "source": "/docs/api/list-bank-accounts",
+      "destination": "/api/merchant/list-bank-accounts",
+      "permanent": true
+    },
+    {
+      "source": "/docs/api/get-doing-business-as",
+      "destination": "/api/merchant/get-doing-business-as",
+      "permanent": true
+    },
+    {
+      "source": "/docs/api/get-settings",
+      "destination": "/api/merchant/get-settings",
+      "permanent": true
+    },
+    {
+      "source": "/docs/api/get-personal-profile",
+      "destination": "/api/merchant/get-personal-profile",
+      "permanent": true
+    },
+    {
+      "source": "/docs/api/refund-transaction",
+      "destination": "/api/transactions/refund",
+      "permanent": true
+    },
+    {
+      "source": "/docs/api/get-transaction",
+      "destination": "/api/transactions/get",
+      "permanent": true
+    },
+    {
+      "source": "/docs/api/list-transactions",
+      "destination": "/api/transactions/list-detailed",
+      "permanent": true
+    },
+    {
+      "source": "/docs/api/list-api-keys",
+      "destination": "/api/api-keys/list-api-keys",
+      "permanent": true
+    },
+    {
+      "source": "/docs/api/create-api-key",
+      "destination": "/api/api-keys/create-api-key",
+      "permanent": true
+    },
+    {
+      "source": "/docs/api/revoke-api-key",
+      "destination": "/api/api-keys/revoke-api-key",
+      "permanent": true
+    },
+    {
+      "source": "/docs/api/get-api-key",
+      "destination": "/api/api-keys/get-api-key",
+      "permanent": true
+    },
+    {
+      "source": "/docs/api/update-api-key",
+      "destination": "/api/api-keys/update-api-key",
+      "permanent": true
+    },
+    {
+      "source": "/docs/api/get-payment-methods",
+      "destination": "/api/checkouts/list-available-payment-methods",
+      "permanent": true
+    },
+    {
+      "source": "/docs/api/get-receipt",
+      "destination": "/api/receipts/get",
+      "permanent": true
+    },
+    {
+      "source": "/docs/api/request-authorization-from-users",
+      "destination": "/api/authorization/authorize",
+      "permanent": true
+    },
+    {
+      "source": "/docs/api/generate-a-token",
+      "destination": "/api/authorization/create-token",
+      "permanent": true
+    },
+    {
+      "source": "/docs/api/create-a-checkout",
+      "destination": "/api/checkouts/create",
+      "permanent": true
+    },
+    {
+      "source": "/docs/api/deactivate-a-checkout",
+      "destination": "/api/deactivate-checkout",
+      "permanent": true
+    },
+    {
+      "source": "/docs/api/retrieve-a-checkout",
+      "destination": "/api/get-checkout",
+      "permanent": true
+    },
+    {
+      "source": "/docs/api/process-a-checkout",
+      "destination": "/api/checkouts/process",
+      "permanent": true
+    },
+    {
+      "source": "/docs/api/create-a-customer",
+      "destination": "/api/customers/create",
+      "permanent": true
+    },
+    {
+      "source": "/docs/api/retrieve-a-customer",
+      "destination": "/api/customers/get",
+      "permanent": true
+    },
+    {
+      "source": "/docs/api/update-a-customer",
+      "destination": "/api/customers/update",
+      "permanent": true
+    },
+    {
+      "source": "/docs/api/create-a-payment-instrument",
+      "destination": "/api/customers/create-payment-instrument",
+      "permanent": true
+    },
+    {
+      "source": "/docs/api/deactivate-a-payment-instrument",
+      "destination": "/api/customers/deactivate-payment-instrument",
+      "permanent": true
+    },
+    {
+      "source": "/docs/api/retrieve-an-account",
+      "destination": "/api/subaccounts",
+      "permanent": true
+    },
+    {
+      "source": "/docs/api/list-subaccounts",
+      "destination": "/api/subaccounts/list",
+      "permanent": true
+    },
+    {
+      "source": "/docs/api/create-a-subaccount",
+      "destination": "/api/subaccounts/create-sub-account",
+      "permanent": true
+    },
+    {
+      "source": "/docs/api/deactivate-a-subaccount",
+      "destination": "/api/subaccounts/deactivate",
+      "permanent": true
+    },
+    {
+      "source": "/docs/api/update-a-subaccount",
+      "destination": "/api/subaccounts/update",
+      "permanent": true
+    },
+    {
+      "source": "/docs/api/retrieve-a-merchant-profile",
+      "destination": "/api/merchant/get-merchant-profile",
+      "permanent": true
+    },
+    {
+      "source": "/docs/api/retrieve-dba",
+      "destination": "/api/merchant/get-doing-business-as",
+      "permanent": true
+    },
+    {
+      "source": "/docs/api/list-settings",
+      "destination": "/api/merchant/get-settings",
+      "permanent": true
+    },
+    {
+      "source": "/docs/api/retrieve-a-personal-profile",
+      "destination": "/api/merchant/get-personal-profile",
+      "permanent": true
+    },
+    {
+      "source": "/docs/api/refund-a-transaction",
+      "destination": "/api/transactions/refund",
+      "permanent": true
+    },
+    {
+      "source": "/docs/api/retrieve-a-transaction",
+      "destination": "/api/transactions/get",
+      "permanent": true
+    },
+    {
+      "source": "/docs/api/get-available-payment-methods",
+      "destination": "/api/checkouts/list-available-payment-methods",
+      "permanent": true
+    },
+    {
+      "source": "/docs/api/retrieve-receipt-details",
+      "destination": "/api/receipts/get",
+      "permanent": true
+    },
+    {
+      "source": "/api/get-doing-business-as",
+      "destination": "/api/merchant/retrieve-dba",
+      "permanent": true
+    },
+    {
+      "source": "/docs/sumup-woocommerce-plugin",
+      "destination": "/online-payments/plugins/woocommerce",
+      "permanent": true
+    },
+    {
+      "source": "/docs/api/transactions",
+      "destination": "/api/transactions",
+      "permanent": true
+    },
+    {
+      "source": "/rest-api",
+      "destination": "/api",
+      "permanent": true
+    },
+    {
+      "source": "/docs/register-app",
+      "destination": "/online-payments/introduction/register-app",
+      "permanent": true
+    },
+    {
+      "source": "/docs/authorization",
+      "destination": "/online-payments/introduction/authorization",
+      "permanent": true
+    },
+    {
+      "source": "/docs/online-payments/features/open-banking",
+      "destination": "/docs/online-payments/open-banking",
+      "permanent": true
+    },
+    {
+      "source": "/docs/online-payments/features/3ds",
+      "destination": "/docs/online-payments/introduction/3ds",
+      "permanent": true
+    }
+  ]
+}

@@ -1,0 +1,77 @@
+---
+import Markdown from "@components/Markdown.astro";
+import { resolveSchema } from "@lib/openapi";
+import { Headline } from "@sumup-oss/circuit-ui";
+import type { OpenAPIV3_1 } from "openapi-types";
+import Example from "./Example.astro";
+import LRGrid from "./LRGrid.astro";
+import Schema from "./Schema.astro";
+
+export interface Props {
+  target?: string;
+  schema: OpenAPIV3_1.SchemaObject;
+}
+
+const { schema: obj } = Astro.props;
+
+const schema = resolveSchema(obj);
+---
+
+<section>
+  <LRGrid class="layout">
+    <div>
+      <Headline as="h3" size="m">
+        {`The ${schema.title || ""} object`}
+      </Headline>
+      {
+        schema.description && (
+          <Markdown class="description">{schema.description}</Markdown>
+        )
+      }
+      <Schema kind="Attributes" schema={schema} />
+    </div>
+    <div class="scheme">
+      {(<Example name={`The ${schema.title || ""} object`} schema={schema} />)}
+    </div>
+  </LRGrid>
+</section>
+
+<style lang="scss">
+  .layout {
+    margin-bottom: 32px;
+    hr:last-of-type {
+      display: none;
+    }
+  }
+  .description {
+    margin: var(--cui-spacings-giga) 0 var(--cui-spacings-tera);
+  }
+  .enum {
+    display: inline-flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  h2 {
+    margin-bottom: var(--cui-spacings-giga);
+  }
+  ul {
+    list-style: none;
+    padding: 0;
+    li {
+      padding: var(--cui-spacings-mega) 0;
+      border-bottom: var(--cui-border-width-kilo) solid var(--cui-border-subtle);
+      &:last-child {
+        border-bottom: none;
+      }
+    }
+  }
+  h5 {
+    margin-top: var(--cui-spacings-mega);
+    padding-bottom: var(--cui-spacings-kilo);
+    border-bottom: var(--cui-border-width-kilo) solid var(--cui-border-subtle);
+    font-size: 1rem;
+  }
+  .example {
+    margin-top: var(--cui-spacings-kilo);
+  }
+</style>

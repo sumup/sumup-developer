@@ -1,0 +1,28 @@
+.headline {
+  margin-bottom: var(--cui-spacings-giga);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cui-spacings-mega);
+}
+
+.credentials {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cui-spacings-mega);
+  margin-top: var(--cui-spacings-giga);
+  margin-bottom: var(--cui-spacings-tera);
+}
+
+.testModeNotification {
+  margin-bottom: var(--cui-spacings-mega);
+}
+
+.spinnerContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}

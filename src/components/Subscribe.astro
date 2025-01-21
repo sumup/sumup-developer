@@ -1,0 +1,140 @@
+---
+import { Button, Input, NotificationInline } from "@sumup-oss/circuit-ui";
+
+const pathName = Astro.url.pathname;
+---
+
+<div class="subscription-form">
+  <div class="success">
+    <NotificationInline
+      variant="success"
+      body="Thank you, we'll let you know when we update our APIs."
+    />
+  </div>
+  <div class="error">
+    <NotificationInline
+      variant="danger"
+      body="There was an issue subscribe to the news, please try again later."
+    />
+  </div>
+  <div class="email-error">
+    <NotificationInline
+      variant="danger"
+      body="This email seems to be invalid, please use a valid email address."
+    />
+  </div>
+  <form method="POST" action="/subscribe">
+    <div class="prompt">Sign up for developer updates:</div>
+    <div class="wrap">
+      <Input
+        label="Email"
+        type="email"
+        name="email"
+        className="email-input"
+        hideLabel={true}
+      />
+      <Button type="submit" variant="primary">Subscribe</Button>
+    </div>
+    <Input
+      label="Redirect to"
+      type="hidden"
+      hideLabel={true}
+      name="redirect_to"
+      value={pathName}
+    />
+    <Input
+      label="Merchant Code"
+      type="hidden"
+      hideLabel={true}
+      name="merchant_code"
+    />
+    <div class="disclaimer">
+      You can unsubscribe at any time. Read our <a
+        href="https://www.sumup.com/privacy/"
+        target="_blank">privacy policy.</a
+      >
+    </div>
+  </form>
+</div>
+
+<script>
+  const url = new URL(window.location.href);
+  const status = url.searchParams.get("status");
+  if (status === "success") {
+    document.querySelector(".subscription-form")?.classList.add("submitted");
+    document.querySelector(".success")?.classList.add("show");
+  } else if (status === "invalid_email") {
+    document.querySelector(".email-error")?.classList.add("show");
+  } else if (status === "error") {
+    document.querySelector(".error")?.classList.add("show");
+  }
+
+  import { $merchant } from "src/store/merchant";
+
+  $merchant.subscribe(({ data: merchant, loading }) => {
+    if (loading) return;
+    document
+      .querySelectorAll<HTMLFormElement>(".subscribe-form form")
+      .forEach((form) => {
+        form.addEventListener("submit", () => {
+          const element = form.querySelector<HTMLInputElement>(
+            "[name='merchant_code']",
+          );
+          const value = merchant?.merchantCode ?? "";
+          if (element) element.value = value;
+          return true;
+        });
+      });
+  });
+</script>
+
+<style lang="scss">
+  .subscription-form {
+    margin-top: var(--cui-spacings-tera);
+
+    :global(.email-input) {
+      min-width: 360px;
+      flex-grow: 1;
+    }
+
+    &.submitted {
+      form {
+        display: none;
+      }
+    }
+  }
+
+  .success,
+  .error,
+  .email-error {
+    display: none;
+    margin-bottom: var(--cui-spacings-mega);
+
+    &.show {
+      display: block;
+    }
+  }
+
+  .confirmation {
+    display: none;
+  }
+
+  .wrap {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: end;
+    align-items: end;
+    gap: var(--cui-spacings-mega);
+  }
+
+  .prompt {
+    font-weight: bold;
+    margin-bottom: var(--cui-spacings-byte);
+  }
+
+  .disclaimer {
+    margin-top: var(--cui-spacings-byte);
+    font-size: 0.9rem;
+  }
+</style>

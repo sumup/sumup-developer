@@ -1,0 +1,41 @@
+---
+import { Body } from "@sumup-oss/circuit-ui";
+import { Icons } from "./Icons";
+
+interface Props {
+  icon?: keyof typeof Icons;
+  title?: string;
+}
+
+const { icon, title, ...props } = Astro.props;
+const Icon = icon && Icons[icon];
+---
+
+<div class="card" {...props}>
+  {
+    title && (
+      <div class="title">
+        {icon && <Icon />}
+        <Body as="span" size="m" weight="semibold">
+          {title}
+        </Body>
+      </div>
+    )
+  }
+  <div class="body"><slot /></div>
+</div>
+
+<style>
+  .card {
+    border: var(--cui-border-width-kilo) solid var(--cui-border-normal);
+    border-radius: var(--cui-border-radius-bit);
+    padding: var(--cui-spacings-giga);
+  }
+
+  .title {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: var(--cui-spacings-byte);
+  }
+</style>

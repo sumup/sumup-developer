@@ -1,0 +1,20 @@
+---
+title: 409 Conflict - Session Can't Be Deactivated
+id: session-cant-be-deactivated
+---
+
+# 409 Conflict - Session Can't Be Deactivated
+
+Indicates checkout session can't be cancelled due to a pending Boleto payment.
+
+```json
+{
+  "type": "https://developer.sumup.com/docs/problem/session-cant-be-deactivated/",
+  "title": "Conflict",
+  "status": 409,
+  "detail": "The checkout can't be cancelled due to a pending Boleto payment",
+  "error_code": "CHECKOUT_CANT_BE_DEACTIVATED",
+  "message": "The checkout can't be cancelled due to a pending Boleto payment",
+  "instance": "8aeafaccae28"
+}
+```

@@ -1,0 +1,12 @@
+[
+  {
+    "id": "sumup/docs",
+    "path": "src/content",
+    "schema": {
+      "path": "markdoc.config.ts",
+      "type": "import",
+      "property": "default",
+      "watch": true
+    }
+  }
+]
