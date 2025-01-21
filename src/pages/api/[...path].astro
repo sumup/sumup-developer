@@ -1,0 +1,138 @@
+---
+import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
+import ApiDocs from "@components/ApiDocs/ApiDocs.astro";
+import type { Props } from "@astrojs/starlight/props";
+import { formatSlug } from "@lib/helpers";
+import { doc, pathsByTag } from "@lib/openapi";
+import type { StarlightUserConfig } from "@astrojs/starlight/types";
+
+export async function getStaticPaths() {
+  return [
+    // root
+    { params: { path: undefined }, props: {} },
+    // tags
+    ...(doc.tags || []).map((tag) => ({
+      params: { path: formatSlug(tag.name) },
+    })),
+    // individual endpoints
+    ...Object.entries(pathsByTag).flatMap(([tag, operations]) =>
+      operations.map((o) => ({
+        params: { path: `${formatSlug(tag)}/${formatSlug(o.slug)}` },
+      })),
+    ),
+  ];
+}
+
+const sidebar: StarlightUserConfig["sidebar"] = [
+  {
+    label: "api",
+    items: [
+      {
+        label: "Overview",
+        link: "/api",
+      },
+      ...Object.entries(pathsByTag).map(([tagName, operations]) => {
+        const tag = doc.tags?.find((t) => formatSlug(t.name) === tagName)!;
+        return {
+          label: tag.name,
+          items: [
+            {
+              label: "Overview",
+              link: `/api/${formatSlug(tag.name)}`,
+              attrs: {
+                "data-scroll-to": `${formatSlug(tag.name)}`,
+              },
+            },
+            ...operations.map((op) => ({
+              label: op.summary!,
+              link: `/api/${formatSlug(tag.name)}/${formatSlug(op.slug)}`,
+              badge: op.deprecated
+                ? {
+                    text: "Deprecated",
+                    variant: "caution",
+                  }
+                : undefined,
+              attrs: {
+                "data-scroll-to": `${formatSlug(tag.name)}-${op.slug}`,
+              },
+            })),
+          ],
+        };
+      }),
+    ],
+  },
+];
+
+Astro.props.sidebar = sidebar;
+
+const frontmatter = {
+  title: "API Reference",
+  description: "SumUp API reference.",
+  tableOfContents: false,
+} as const;
+
+const { path } = Astro.params;
+const [tag, section] = (path || "").split("/");
+---
+
+<StarlightPage frontmatter={frontmatter} {...Astro.props}>
+  <link
+    slot="head"
+    rel="canonical"
+    href={`https://developer.sumup.com/docs/api/${section || tag}`}
+  />
+  {
+    (tag || section) && (
+      <link rel="canonical" href="`https://developer.sumup.com/api" />
+    )
+  }
+  <ApiDocs target={path} />
+</StarlightPage>
+
+<script>
+  // scroll to the current Tag / Operation based on the path
+  const [_slash, _api, tag, section] = window.location.pathname.split("/");
+  if (tag || section) {
+    // scroll to current target
+    let scrollTo = section ? `${tag}-${section}` : tag;
+    const target = document.getElementById(scrollTo);
+    if (target) {
+      target.scrollIntoView();
+    }
+    const opt: HTMLOptionElement | undefined | null = document
+      .getElementById("apiSelectNav")
+      ?.querySelector(`option[value="${scrollTo}"]`);
+    if (opt) {
+      opt.selected = true;
+    }
+  }
+</script>
+
+<script>
+  const links = document.querySelectorAll("[data-scroll-to]");
+  for (const link of links) {
+    link.addEventListener("click", (e) => {
+      const scrollTo = link.getAttribute("data-scroll-to");
+      if (!scrollTo) return;
+      e.preventDefault();
+      document
+        .querySelector('[aria-current="page"]')
+        ?.removeAttribute("aria-current");
+      link.setAttribute("aria-current", "page");
+      const target = document.getElementById(scrollTo);
+      if (target) {
+        target.scrollIntoView();
+        history.pushState({}, "", link.getAttribute("href"));
+        e.preventDefault();
+      }
+    });
+  }
+</script>
+
+<style is:global>
+  /* Use full width */
+  .sl-container {
+    margin-inline: 0 !important;
+    max-width: unset !important;
+  }
+</style>

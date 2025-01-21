@@ -1,0 +1,106 @@
+---
+import Default from "@astrojs/starlight/components/Head.astro";
+import "@sumup-oss/design-tokens/fonts.css";
+import "@sumup-oss/design-tokens/dynamic.css";
+---
+
+<link
+  rel="preload"
+  href="https://static.sumup.com/fonts/Inter/Inter-normal-latin.woff2"
+  as="font"
+  type="font/woff2"
+  crossorigin
+/>
+<link
+  rel="apple-touch-icon"
+  sizes="180x180"
+  href="https://static.sumup.com/favicons/apple-touch-icon.png"
+/>
+<link
+  rel="icon"
+  type="image/png"
+  sizes="32x32"
+  href="https://static.sumup.com/favicons/favicon-32x32.png"
+/>
+<link
+  rel="icon"
+  type="image/png"
+  sizes="16x16"
+  href="https://static.sumup.com/favicons/favicon-16x16.png"
+/>
+<link
+  rel="manifest"
+  href="https://static.sumup.com/favicons/site.webmanifest"
+/>
+<link
+  rel="mask-icon"
+  href="https://static.sumup.com/favicons/safari-pinned-tab.svg"
+  color="#ffffff"
+/>
+<link
+  rel="shortcut icon"
+  href="https://static.sumup.com/favicons/favicon.ico"
+/>
+<link rel="stylesheet" href="/circuit-ui.css" type="text/css" />
+<meta name="msapplication-TileColor" content="#ffffff" /><meta
+  name="msapplication-config"
+  content="https://static.sumup.com/favicons/browserconfig.xml"
+/>
+<meta name="theme-color" content="#ffffff" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Documentation" />
+<meta property="og:description" content="SumUp documentation for developers." />
+<meta name="description" content="SumUp documentation for developers." />
+<meta name="generator" content={Astro.generator} />
+<link rel="sitemap" href="/sitemap-index.xml" />
+<script lang="js">
+  // hack for circuit-ui (`Title` and other components read `process`)
+  if (!globalThis.process) globalThis.process ??= {};
+  if (!globalThis.process.env) globalThis.process.env ??= {};
+</script>
+{/* This code is intentionally inlined to avoid FOUC. */}
+{/* It is wrapped in an IIFE to avoid polluting the global scope. */}
+<script is:inline>
+  (function () {
+    const colorScheme =
+      typeof localStorage !== "undefined" &&
+      localStorage.getItem("color-scheme");
+
+    if (["light", "dark"].includes(colorScheme)) {
+      document.documentElement.dataset.colorScheme = colorScheme;
+    }
+  })();
+</script>
+{
+  import.meta.env.PUBLIC_GA_TAG_ID && (
+    <script
+      is:inline
+      src={`https://www.googletagmanager.com/gtag/js?id=${import.meta.env.PUBLIC_GA_TAG_ID}`}
+    />
+  )
+}
+<script lang="js" data-tag-id={import.meta.env.PUBLIC_GA_TAG_ID}>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag(
+    "config",
+    document.currentScript.attributes.getNamedItem("data-tag-id").value,
+  );
+</script>
+<script defer src="https://static.sumup.com/legacy-browsers/check-support.js"
+></script>
+{
+  import.meta.env.PUBLIC_ONETRUST_ENABLED === "true" && (
+    <script
+      defer
+      charset="UTF-8"
+      src="https://cdn-ukwest.onetrust.com/scripttemplates/otSDKStub.js"
+      data-domain-script={import.meta.env.PUBLIC_ONETRUST_DOMAIN_ID}
+    />
+  )
+}
+
+<Default {...Astro.props}><slot /></Default>

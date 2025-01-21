@@ -1,0 +1,42 @@
+---
+import { type CollectionEntry, getEntry } from "astro:content";
+
+import { Card } from "@sumup-oss/circuit-ui";
+import { ChevronRight } from "@sumup-oss/icons";
+
+type Props = {
+  collection: "online-payments" | "terminal-payments" | "webhook-docs";
+  doc: string;
+};
+
+const { collection, doc } = Astro.props;
+
+const entry:
+  | CollectionEntry<"online-payments" | "terminal-payments" | "webhook-docs">
+  | undefined = await getEntry(collection, doc);
+if (!entry) {
+  return null;
+}
+---
+
+<Card>
+  <h3>
+    <a href={`/${collection}/${doc}`}
+      >{entry.data.title}&nbsp;<ChevronRight size="16" aria-hidden="true" /></a
+    >
+  </h3>
+  {entry.data.description && <p>{entry.data.description}</p>}
+</Card>
+
+<style lang="scss">
+  h3 {
+    margin-bottom: 0;
+  }
+  a {
+    color: var(--cui-fg-accent);
+  }
+
+  p {
+    margin-top: var(--cui-spacings-kilo);
+  }
+</style>

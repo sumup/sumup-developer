@@ -1,0 +1,573 @@
+---
+import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
+import Card from "@components/Card.astro";
+import Brands from "@components/Landing/Brands.astro";
+import TryItOut from "@components/TryItOut.astro";
+import {
+  CardSecurity,
+  FlashOn,
+  InterestOnBalance,
+  NoCosts,
+  SecurePayments,
+  Sparkles,
+} from "@sumup-oss/icons";
+import HeroImg from "../assets/hero-icon.svg";
+
+const frontmatter = {
+  title: "Welcome to SumUp",
+  description:
+    "Welcome to SumUp portal for Developers. We’ve got everything you need to build your own payment acceptance solutions for your business.",
+  template: "splash",
+  hero: {
+    title: "Welcome to SumUp",
+    tagline:
+      "Welcome to SumUp portal for Developers. We’ve got everything you need to build your own payment acceptance solutions for your business.",
+    image: {
+      file: HeroImg,
+    },
+  },
+} as const;
+---
+
+<StarlightPage frontmatter={frontmatter} {...Astro.props}>
+  <main>
+    <section>
+      <div class="card-grid">
+        <Card title="Online Payments" icon="online_payments">
+          <ul>
+            <li>
+              <a href="/online-payments">Overview</a>
+            </li>
+            <li>
+              <a href="/online-payments/guides">Guides</a>
+            </li>
+            <li>
+              <a href="/online-payments/plugins">Plugins</a>
+            </li>
+            <li>
+              <a href="/online-payments/tools">Tools</a>
+            </li>
+          </ul>
+        </Card>
+        <Card title="Terminal Payments" icon="card_in">
+          <ul>
+            <li>
+              <a href="/terminal-payments">Overview</a>
+            </li>
+            <li>
+              <a href="/online-payments/guides">Guides</a>
+            </li>
+            <li>
+              <a href="/terminal-payments/tools">Tools</a>
+            </li>
+          </ul>
+        </Card>
+        <Card title="Tooling" icon="apps">
+          <ul>
+            <li>
+              <a href="/api">API reference</a>
+            </li>
+            <li>
+              <a href="/changelog">Changelog</a>
+            </li>
+            <li>
+              <a href="/online-payments/tools/introduction">Tools</a>
+            </li>
+          </ul>
+        </Card>
+        <Card title="Guides" icon="article">
+          <ul>
+            <li>
+              <a href="/api">API reference</a>
+            </li>
+            <li>
+              <a href="/changelog">Changelog</a>
+            </li>
+            <li>
+              <a href="/online-payments/tools/introduction">Tools</a>
+            </li>
+          </ul>
+        </Card>
+      </div>
+    </section>
+    <section>
+      <TryItOut />
+    </section>
+    <section>
+      <div class="content callout">
+        <div class="image">
+          <img src="/img/payment-link.png" alt="" class="hero-image" />
+        </div>
+        <div class="text">
+          <h2>Get paid flexibly with payment links</h2>
+          <p>
+            You can accept convenient online payments using payment links.
+            Simply share them as you would any other link – and your customers
+            can pay securely in seconds.
+          </p>
+          <ul>
+            <li>
+              <a href="/online-payments/introduction/get-started">
+                Getting started with Online Payments</a
+              >
+            </li>
+            <li>
+              <a href="/online-payments/apm/apple-pay">
+                Apple Pay Integration Guide</a
+              >
+            </li>
+            <li>
+              <a href="/online-payments/apm/google-pay">
+                Google Pay Integration Guide</a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+    <section>
+      <div class="content callout">
+        <div class="image">
+          <img src="/img/ecom-plugins.png" alt="" class="hero-image" />
+        </div>
+        <div class="text">
+          <h2>Add the SumUp plug-in to you ecommerce platform</h2>
+          <p>
+            Accept payments safely on major ecommerce platforms, including
+            WooCommerce, Wix and Prestashop with SumUp plugins.
+          </p>
+          <ul>
+            <li>
+              <a href="/online-payments/plugins/wix">Accept payments with WIX</a
+              >
+            </li>
+            <li>
+              <a href="/online-payments/plugins/woocommerce"
+                >Accept payments with WooCommerce</a
+              >
+            </li>
+            <li>
+              <a href="/online-payments/plugins/prestashop"
+                >Accept payments with PrestaShop</a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+    <section>
+      <div class="content callout">
+        <div class="image">
+          <img src="/img/apis.png" alt="" class="hero-image" />
+        </div>
+        <div class="text">
+          <h2>Simplify your payments with the SumUp API or widget</h2>
+          <p>
+            Create the best experience for your customers by easily integrating
+            SumUp within your website or app via our widget, or use our low-risk
+            and fully compliant API, for a fully customised experience.
+          </p>
+          <ul>
+            <li>
+              <a href="/api"> SumUp API Reference</a>
+            </li>
+            <li>
+              <a href="/online-payments/introduction/get-started">
+                Getting started guide</a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+    <section class="choose-sumup">
+      <div class="content">
+        <h2>Why choose SumUp’s online payment tools?</h2>
+        <div class="callouts">
+          <div>
+            <CardSecurity aria-hidden="true" className="icon" />
+            <h3>Quick and secure transactions</h3>
+            <p>
+              Accept direct payments from major card brands, as well as
+              alternative payment methods.
+            </p>
+          </div>
+          <div>
+            <Sparkles aria-hidden="true" className="icon" />
+            <h3>No lengthy onboarding</h3>
+            <p>
+              Existing SumUp merchants can avoid having to go through additional
+              onboarding and benefit from unified reporting.
+            </p>
+          </div>
+          <div>
+            <FlashOn aria-hidden="true" className="icon" />
+            <h3>Access to your money faster</h3>
+            <p>
+              Receive the money you earn with our products fast. With our
+              standard plan, you’ll get your payouts within 1-3 business days,
+              or get them the next business day with the SumUp One subscription.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="card-reader-payments">
+      <div class="content hero">
+        <div>
+          <img src="/img/card-reader-payments.png" alt="" />
+        </div>
+        <div>
+          <h2>Card reader payments</h2>
+          <p>
+            SumUp simplifies payments. From retail or hospitality, to transport
+            or delivery, we provide you with our SDK and API Switch so that you
+            can accept card payments anytime, anywhere.
+          </p>
+          <a href="/terminal-payments/introduction/overview"> Learn more</a>
+        </div>
+      </div>
+      <div class="content callouts">
+        <div>
+          <h3>Quick integrations</h3>
+          <p>
+            Integrate SumUp's SDK or API in hours. We handle onboarding, risk &
+            fraud, settlement, and support.
+          </p>
+        </div>
+        <div>
+          <h3>EMV hardware</h3>
+          <p>
+            Proprietary hardware supporting contactless, Chip & PIN, magnetic
+            stripe.
+          </p>
+        </div>
+        <div>
+          <h3>Merchant management</h3>
+          <p>
+            Increased merchant visibility via our dashboard to track, monitor,
+            and change fees.
+          </p>
+        </div>
+      </div>
+    </section>
+    <section class="antifraud">
+      <div class="content">
+        <h2>Our anti-fraud protection</h2>
+        <div class="callouts">
+          <div>
+            <SecurePayments aria-hidden="true" className="icon" />
+            <p>
+              We’re committed to protecting you from fraud, chargebacks and
+              headaches
+            </p>
+          </div>
+          <div>
+            <InterestOnBalance aria-hidden="true" className="icon" />
+            <p>
+              We use advanced artificial intelligence to constantly monitor
+              transactions for unusual activity
+            </p>
+          </div>
+          <div>
+            <NoCosts aria-hidden="true" className="icon" />
+            <p>
+              All of our anti-fraud protection is included at no additional cost
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="brands">
+      <Brands />
+    </section>
+    <section>
+      <div class="content links">
+        <div>
+          <h3>Online Payments guides</h3>
+          <ul>
+            <li>
+              <a href="/online-payments/guides/single-payment">
+                Accept a card payment</a
+              >
+            </li>
+            <li>
+              <a href="/online-payments/guides/recurring-payments">
+                Create a recurring payment</a
+              >
+            </li>
+            <li>
+              <a href="/online-payments/guides/refund"> Make a refund</a>
+            </li>
+          </ul>
+        </div>
+        <div>
+          <h3>SumUp plugins</h3>
+          <ul>
+            <li>
+              <a href="/online-payments/plugins/wix">
+                Accept payments with WIX</a
+              >
+            </li>
+            <li>
+              <a href="/online-payments/plugins/woocommerce">
+                Accept payments with WooCommerce</a
+              >
+            </li>
+            <li>
+              <a href="/online-payments/plugins/prestashop">
+                Accept payments with PrestaShop</a
+              >
+            </li>
+          </ul>
+        </div>
+        <div>
+          <h3>Card Reader payments tools</h3>
+          <ul>
+            <li>
+              <a href="/terminal-payments/tools/api"> API Payment Switch</a>
+            </li>
+            <li>
+              <a href="/terminal-payments/tools/sdk"> Native SDK</a>
+            </li>
+          </ul>
+        </div>
+        <div>
+          <h3>Supported industries for Card Reader payments</h3>
+          <ul>
+            <li>
+              <a href="/terminal-payments/industry/bookings"> Bookings</a>
+            </li>
+            <li>
+              <a href="/terminal-payments/industry/enterprise">
+                Enterprise Solutions</a
+              >
+            </li>
+            <li>
+              <a href="/terminal-payments/industry/hospitality"> Hospitality</a>
+            </li>
+            <li>
+              <a href="/terminal-payments/industry/transport">
+                Transport Pickup and Delivery</a
+              >
+            </li>
+          </ul>
+        </div>
+        <div>
+          <h3>Other payment solutions</h3>
+          <ul>
+            <li>
+              <a href="/online-payments/apm"> Alternative Payment Methods</a>
+            </li>
+            <li>
+              <a href="/online-payments/apm/apple-pay">
+                Apple Pay Integration Guide</a
+              >
+            </li>
+            <li>
+              <a href="/online-payments/apm/google-pay">
+                Google Pay Integration Guide</a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+</StarlightPage>
+
+<style lang="scss">
+  ul {
+    list-style-type: none;
+    padding-left: 0;
+    margin-top: var(--cui-spacings-mega);
+
+    li {
+      margin-bottom: 10px;
+    }
+  }
+
+  section {
+    padding: var(--cui-spacings-mega);
+
+    .content {
+      max-width: 960px;
+      margin: var(--cui-spacings-tera) auto;
+    }
+
+    a {
+      color: var(--cui-fg-accent);
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
+    @media screen and (min-width: 941px) {
+      &:nth-child(even) {
+        .image {
+          grid-area: right;
+        }
+
+        .text {
+          grid-area: left;
+        }
+      }
+    }
+  }
+
+  .callout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    max-width: 960px;
+    grid-gap: var(--cui-spacings-tera);
+    grid-template-areas: "left right";
+    margin: var(--cui-spacings-tera);
+    align-items: center;
+
+    .image {
+      grid-area: left;
+    }
+
+    @media screen and (max-width: 1000px) {
+      grid-template-columns: 1fr;
+      grid-template-areas:
+        "left"
+        "right";
+
+      .image {
+        width: 100%;
+
+        img {
+          max-width: 300px;
+          margin: 0 auto;
+          display: block;
+        }
+      }
+    }
+
+    .text {
+      grid-area: right;
+      padding: var(--cui-spacings-mega);
+    }
+  }
+
+  h3 {
+    margin-bottom: var(--cui-spacings-giga);
+  }
+
+  h2 {
+    margin-bottom: var(--cui-spacings-exa);
+  }
+
+  .icon {
+    width: 48px;
+    height: 48px;
+    margin-bottom: var(--cui-spacings-mega);
+  }
+
+  .callouts {
+    margin: var(--cui-spacings-zetta) 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: var(--cui-spacings-giga);
+
+    & > div {
+      margin-bottom: var(--cui-spacings-mega);
+    }
+
+    @media screen and (max-width: 940px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .choose-sumup {
+    text-align: center;
+
+    .callouts {
+      text-align: left;
+      & > div {
+        margin-bottom: var(--cui-spacings-mega);
+      }
+
+      img {
+        max-width: 64px;
+        margin-bottom: var(--cui-spacings-kilo);
+      }
+    }
+  }
+
+  .card-reader-payments {
+    background-color: var(--cui-bg-subtle);
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-gap: var(--cui-spacings-tera);
+      margin: var(--cui-spacings-tera) auto;
+      align-items: center;
+      @media screen and (max-width: 760px) {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    p + a {
+      display: block;
+      margin-top: var(--cui-spacings-kilo);
+    }
+  }
+
+  .antifraud {
+    text-align: center;
+    background: var(--cui-bg-strong);
+    color: var(--cui-fg-on-strong);
+
+    h2 {
+      color: var(--cui-fg-on-strong);
+    }
+
+    img {
+      width: 56px;
+      margin-bottom: var(--cui-spacings-kilo);
+    }
+  }
+
+  .links {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: var(--cui-spacings-giga);
+    ul {
+      li {
+        margin-bottom: var(--cui-spacings-bit);
+      }
+    }
+    & > div {
+      margin-bottom: var(--cui-spacings-giga);
+    }
+    @media screen and (max-width: 940px) {
+      grid-template-columns: 1fr 1fr;
+    }
+    @media screen and (max-width: 600px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .brands {
+    overflow: hidden;
+    padding: var(--cui-spacings-zetta) 0;
+  }
+
+  .card-grid {
+    display: grid;
+    gap: 1rem;
+
+    & > :global(*) {
+      margin-top: 0 !important;
+    }
+
+    @media (min-width: 50rem) {
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+      gap: 1.5rem;
+    }
+  }
+</style>

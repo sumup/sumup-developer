@@ -1,0 +1,15 @@
+.input {
+  cursor: pointer;
+}
+
+.inputCopied {
+  cursor: pointer;
+  border-color: var(--cui-border-success);
+  box-shadow: var(--cui-border-success) 0 0 0 2px;
+}
+
+.inputCopied:focus {
+  cursor: pointer;
+  border-color: var(--cui-border-success);
+  box-shadow: var(--cui-border-success) 0 0 0 2px;
+}

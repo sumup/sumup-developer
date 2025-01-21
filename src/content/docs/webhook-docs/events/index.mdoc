@@ -1,0 +1,37 @@
+---
+title: Webhook Events
+description: Learn about the different types of events that can trigger webhooks and how to handle them in your applications.
+---
+
+Webhooks are triggered by specific events that occur within the SumUp system. These events can be related to various actions, such as a checkout being processed, a refund being issued, or a subscription being created. When an event occurs, the webhook sends a notification to the specified endpoint, allowing the integrator application to take appropriate action.
+
+## Event Structure
+Each event sent to the webhook endpoint has the following structure:
+- **id**: A unique identifier for the event.
+- **event_type**: The type of event that occurred.
+- **payload**: The data associated with the event.
+- **timestamp**: The timestamp when the event occurred.
+
+Example of an event received by the webhook endpoint:
+
+```json
+{
+  "id": "c56dc7d23e1dad876cb1e2954854db9e",
+  "event_type": "checkout.status.updated",
+  "payload": {
+    "checkout_id": "e24bab0f-1464-4ffe-b6a2-dc33eca5e1e9",
+    "reference": "6bda4155-bb08-4e92-8068-8a4c41b47bf0",
+    "status": "FAILED"
+  },
+  "timestamp": "2024-09-12T12:43:24.818+00:00"
+}
+```
+
+## Types Of Events
+
+| Event Types         | Description                  | Status                  |
+|---------------------|------------------------------------------|------|
+| **`checkout.status.updated`** | This event is triggered when a checkout status changed | Available |
+| **`solo.transaction.updated`** | This event is triggered when a solo transaction is updated | in progress |
+
+
