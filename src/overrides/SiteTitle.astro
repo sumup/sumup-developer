@@ -1,0 +1,42 @@
+---
+import type { Props } from "@astrojs/starlight/props";
+const { siteTitle, siteTitleHref } = Astro.props;
+---
+
+<!-- Override that inlines logo as svg to remove flickering when it uses img tag -->
+<a href={siteTitleHref} class="site-title sl-flex">
+  <svg
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    class="logo astro-gora4mgs"
+    ><path
+      d="M22.171.19H1.943C1.029.19.267.952.267 1.867V21.98c0 .914.762 1.676 1.676 1.676H22.17c.915 0 1.677-.762 1.677-1.676V1.867c0-.953-.762-1.677-1.677-1.677ZM15.048 17.83c-2.057 2.057-5.334 2.133-7.505.266l-.038-.038a.356.356 0 0 1 0-.495l7.314-7.276a.4.4 0 0 1 .495 0c1.905 2.21 1.829 5.485-.266 7.543Zm1.523-11.62-7.314 7.277a.4.4 0 0 1-.495 0c-1.905-2.172-1.829-5.448.228-7.505 2.058-2.057 5.334-2.133 7.505-.267 0 0 .038 0 .038.038.19.115.19.343.038.458Z"
+      fill="currentColor"
+      class="logo-symbol"></path></svg
+  >
+  <span translate="no">
+    {siteTitle}
+  </span>
+</a>
+
+<style>
+  .site-title {
+    align-items: center;
+    gap: var(--sl-nav-gap);
+    font-size: var(--sl-text-h4);
+    font-weight: 600;
+    color: var(--sl-color-text-accent);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  img {
+    height: calc(var(--sl-nav-height) - 2 * var(--sl-nav-pad-y));
+    width: auto;
+    max-width: 100%;
+    object-fit: contain;
+    object-position: 0 50%;
+  }
+</style>

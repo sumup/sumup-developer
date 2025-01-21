@@ -1,0 +1,100 @@
+---
+import Markdown from "@components/Markdown.astro";
+import { formatSlug } from "@lib/helpers";
+import { doc, pathsByTag } from "@lib/openapi";
+import { Headline } from "@sumup-oss/circuit-ui";
+import Code from "./Code.astro";
+import LRGrid from "./LRGrid.astro";
+import TagSection from "./TagSection.astro";
+
+export interface Props {
+  target?: string;
+}
+
+const { target } = Astro.props;
+---
+
+<article data-selected-operation={target}>
+  <div class="specs">
+    <section id="introduction" data-pagefind-body={!target}>
+      <LRGrid>
+        <div class="info">
+          <Headline as="h1" size="l">
+            {doc.info.title}
+          </Headline>
+          <Markdown>{doc.info.description}</Markdown>
+        </div>
+        {
+          doc.servers && (
+            <div class="servers">
+              {doc.servers.map((server) => (
+                <Code name={"Server URL"} lang="plaintext" code={server.url} />
+              ))}
+            </div>
+          )
+        }
+      </LRGrid>
+    </section>
+    {
+      Object.entries(pathsByTag).map(([tag, operations]) => (
+        <TagSection
+          tag={
+            // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
+            doc.tags?.find((t) => formatSlug(t.name) === tag)!
+          }
+          operations={operations}
+          target={target}
+        />
+      ))
+    }
+  </div>
+</article>
+
+<style lang="scss">
+  .specs {
+    font-size: 0.9rem;
+    flex-grow: 1;
+  }
+  main {
+    margin: 0 auto;
+
+    @media screen and (max-width: 1200px) {
+    }
+
+    @media screen and (max-width: 940px) {
+      max-width: 100%;
+    }
+
+    @media screen and (max-width: 600px) {
+      max-width: 100%;
+    }
+  }
+
+  :global(section) {
+    border-bottom: var(--cui-border-width-kilo) solid var(--cui-border-subtle);
+    padding: var(--cui-spacings-tera);
+    width: 100%;
+  }
+
+  h1 {
+    margin: var(--cui-spacings-giga) 0;
+  }
+
+  .servers {
+    margin-top: var(--cui-spacings-exa);
+    position: relative;
+  }
+</style>
+
+<script>
+  const main = document.querySelector("main[data-selected-operation]");
+  if (main) {
+    const selectedOperation = main.getAttribute("data-selected-operation");
+    if (selectedOperation) {
+      const target = document.getElementById(selectedOperation);
+      if (target) {
+        target.scrollIntoView();
+      }
+    }
+  }
+</script>

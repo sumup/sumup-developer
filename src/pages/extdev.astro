@@ -1,0 +1,15 @@
+---
+export const prerender = false;
+
+import { ExtDev } from "@components/ExtDev";
+import Narrow from "@layouts/Narrow.astro";
+import { OIDC_COOKIES, getLoginRedirectUrl } from "@lib/auth";
+
+if (!Astro.cookies.has(OIDC_COOKIES.Token)) {
+  return Astro.redirect(getLoginRedirectUrl(Astro.url));
+}
+---
+
+<Narrow title="Test profile">
+  <ExtDev client:load />
+</Narrow>

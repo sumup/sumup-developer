@@ -1,0 +1,90 @@
+---
+import { Code } from "@astrojs/starlight/components";
+import type { HTMLAttributes } from "astro/types";
+
+interface Props extends HTMLAttributes<"div"> {
+  name?: string;
+  options: {
+    label: string;
+    code: string;
+    description?: string;
+    lang: string;
+  }[];
+}
+
+const { options, name, class: cls, ...attrs } = Astro.props;
+const defaultOption = options[0].label;
+---
+
+<div class:list={["codeblock", "codes", cls]} {...attrs}>
+  <div class="header">
+    <div class="name">{name}</div>
+    <select name="codes-options" class="codesSelector">
+      {options.map(({ label }) => <option value={label}>{label}</option>)}
+    </select>
+  </div>
+  {
+    options.map(({ lang, code, label, description }) => (
+      <>
+        <div
+          class:list={["code", label === defaultOption ? "active" : ""]}
+          data-code-option={label}
+        >
+          {description && <div class="description">{description}</div>}
+          <Code lang={lang} code={code} />
+        </div>
+      </>
+    ))
+  }
+</div>
+
+<script>
+  for (const mc of document.querySelectorAll(".codes")) {
+    const blocks = mc.querySelectorAll(".code");
+    mc.querySelector(".codesSelector")?.addEventListener("change", (e) => {
+      const target = e.target as HTMLSelectElement;
+      blocks.forEach((b) => b.classList.remove("active"));
+      mc.querySelector(`[data-code-option="${target.value}"]`)?.classList.add(
+        "active",
+      );
+    });
+  }
+</script>
+
+<style lang="scss">
+  .codeblock {
+    background: var(--cui-bg-subtle);
+    border-radius: var(--cui-border-radius-mega);
+    overflow: hidden;
+    max-height: calc(80vh);
+    display: flex;
+    flex-direction: column;
+    align-self: start;
+    margin: var(--cui-spacings-giga) 0;
+  }
+  .header {
+    padding: var(--cui-spacings-byte) var(--cui-spacings-kilo);
+    background: var(--cui-bg-highlight);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .name {
+    color: var(--cui-fg-subtle);
+    font-weight: 500;
+  }
+  .description {
+    color: var(--cui-fg-subtle);
+    padding: var(--cui-spacings-byte) var(--cui-spacings-kilo);
+    background: var(--cui-bg-highlight);
+    border-top: var(--cui-border-width-kilo) solid var(--cui-border-normal);
+  }
+  .code {
+    overflow: auto;
+    display: none;
+
+    &.active {
+      display: block;
+    }
+  }
+</style>

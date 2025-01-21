@@ -1,0 +1,30 @@
+---
+import type { HTMLAttributes } from "astro/types";
+type Props = HTMLAttributes<"div">;
+const { ...attrs } = Astro.props;
+---
+
+<div {...attrs}>
+  <slot />
+</div>
+
+<style lang="scss">
+  div {
+    width: 100%;
+    display: grid;
+    grid-template-columns: calc(60% - var(--cui-spacings-tera)) calc(40%);
+    grid-gap: var(--cui-spacings-tera);
+
+    @media screen and (max-width: 1200px) {
+      grid-template-columns: 100%;
+    }
+
+    @media screen and (max-width: 940px) {
+      grid-template-columns: calc(60% - var(--cui-spacings-tera)) calc(40%);
+    }
+
+    @media screen and (max-width: 600px) {
+      grid-template-columns: 100%;
+    }
+  }
+</style>

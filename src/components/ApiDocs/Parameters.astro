@@ -1,0 +1,66 @@
+---
+import { resolveSchema } from "@lib/openapi";
+import type { OpenAPIV3_1 } from "openapi-types";
+import InlineCode from "../Highlight/InlineCode.astro";
+import ParameterName from "./ParameterName.astro";
+
+type Props = {
+  parameters: OpenAPIV3_1.ParameterObject[];
+  kind: string;
+};
+
+const { parameters = [], kind } = Astro.props;
+---
+
+<div class="parameters" data-pagefind-ignore>
+  <h3>
+    {kind}
+  </h3>
+  <ul>
+    {
+      parameters.map((p) => {
+        const schema = resolveSchema(p.schema!);
+        return (
+          <li>
+            <ParameterName
+              name={p.name}
+              def={p.schema}
+              required={!!p.required}
+            />
+            {schema.example && (
+              <div>
+                Example: <InlineCode>{schema.example}</InlineCode>
+              </div>
+            )}
+          </li>
+        );
+      })
+    }
+  </ul>
+</div>
+
+<style lang="scss">
+  .parameters {
+    margin-bottom: 64px;
+  }
+  h3 {
+    margin-top: var(--cui-spacings-mega);
+    padding-bottom: var(--cui-spacings-kilo);
+    border-bottom: var(--cui-border-width-kilo) solid var(--cui-border-subtle);
+    font-size: 1rem;
+  }
+  ul {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 32px;
+    width: 100%;
+
+    li {
+      padding: var(--cui-spacings-mega) 0;
+      border-bottom: var(--cui-border-width-kilo) solid var(--cui-border-subtle);
+      &:last-child {
+        border-bottom: none;
+      }
+    }
+  }
+</style>

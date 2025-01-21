@@ -1,0 +1,25 @@
+.container {
+  background-color: #fafbfc;
+  border-radius: 4px;
+}
+
+.inner {
+  max-width: 450px;
+  padding: 20px 10px 40px;
+  margin: 0 auto;
+}
+
+.note {
+  margin-bottom: 20px;
+  font-size: 13px;
+  text-align: center;
+}
+
+.widget {
+  background-color: #fff;
+  border-radius: 4px;
+  box-shadow:
+    rgb(12 15 20 / 2%) 0 0 0 1px,
+    rgb(12 15 20 / 6%) 0 0 1px 0,
+    rgb(12 15 20 / 6%) 0 2px 2px 0;
+}

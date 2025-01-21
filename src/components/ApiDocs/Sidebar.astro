@@ -1,0 +1,96 @@
+---
+import { formatSlug } from "@lib/helpers";
+import { doc, pathsByTag } from "@lib/openapi";
+---
+
+<div class="wrap" data-pagefind-ignore transition:persist>
+  <nav class="api-nav">
+    <div class="section">
+      <a data-scroll-to={"introduction"} href={`/api`}> Introduction</a>
+    </div>
+    {
+      Object.entries(pathsByTag).map(([tagName, operations]) => {
+        const tagSlug = formatSlug(tagName);
+        const tag = doc.tags?.find((t) => formatSlug(t.name) === tagName);
+        if (!tag) return null;
+        return (
+          <div class="section">
+            <a data-scroll-to={tagSlug} href={`/api/${tagSlug}`}>
+              {tag.name}
+            </a>
+            <ul>
+              {operations.map((op) => (
+                <li>
+                  <a
+                    data-scroll-to={`${tagSlug}-${op.slug}`}
+                    href={`/api/${tagSlug}/${op.slug}`}
+                  >
+                    {op.summary}
+                    {op.deprecated && (
+                      <span class="sidebarLabel" data-pagefind-ignore>
+                        Deprecated
+                      </span>
+                    )}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        );
+      })
+    }
+  </nav>
+</div>
+
+<style lang="scss">
+  .wrap {
+    border-right: var(--cui-border-width-kilo) solid var(--cui-border-divider);
+  }
+
+  .api-nav {
+    padding: var(--cui-spacings-mega);
+  }
+
+  .section {
+    margin: var(--cui-spacings-mega) 0;
+
+    &:first-child {
+      margin-top: 0;
+    }
+  }
+
+  a {
+    text-decoration: none;
+    display: inline-block;
+  }
+
+  div > a {
+    color: var(--cui-fg-normal);
+    font-weight: var(--cui-font-weight-bold);
+
+    &:hover {
+      color: var(--cui-fg-normal-hovered);
+    }
+  }
+
+  ul {
+    margin-left: var(--cui-spacings-mega);
+    list-style: none;
+  }
+
+  li {
+    margin: var(--cui-spacings-bit) 0;
+
+    > a {
+      color: var(--cui-fg-subtle);
+
+      &:hover {
+        color: var(--cui-fg-subtle-hovered);
+      }
+    }
+  }
+
+  .sidebarLabel {
+    color: var(--cui-fg-warning);
+  }
+</style>

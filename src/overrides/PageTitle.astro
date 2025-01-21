@@ -1,0 +1,11 @@
+---
+import Default from "@astrojs/starlight/components/PageTitle.astro";
+---
+
+<!-- Hide title for /api -->{
+  !Astro.props.id.startsWith("api") && (
+    <Default {...Astro.props}>
+      <slot />
+    </Default>
+  )
+}

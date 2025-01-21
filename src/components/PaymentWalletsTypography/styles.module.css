@@ -1,0 +1,8 @@
+.headline {
+  margin-top: var(--cui-spacings-bit);
+}
+
+.subHeadline {
+  margin-top: var(--cui-spacings-peta);
+  margin-bottom: var(--cui-spacings-giga);
+}

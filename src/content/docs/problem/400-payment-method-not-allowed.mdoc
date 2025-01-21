@@ -1,0 +1,18 @@
+---
+title: 400 Bad Request - Payment Method Not Allowed
+id: payment-method-not-allowed
+---
+
+# 400 Bad Request - Payment Method Not Allowed
+
+Ensure the payment method for the respective checkout, supports the merchant's country. To check which countries a payment method supports, visit our documentation on [Alternative Payment Methods](/online-payments/apm).
+
+```json
+{
+  "type": "https://developer.sumup.com/docs/problem/payment-method-not-allowed/",
+  "title": "Bad Request",
+  "status": 400,
+  "detail": "The BLIK payment method is not allowed for this checkout session",
+  "instance": "7fe5fcddbf28"
+}
+```

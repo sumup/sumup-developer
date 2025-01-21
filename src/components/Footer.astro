@@ -1,0 +1,66 @@
+---
+import EditLink from "@astrojs/starlight/components/EditLink.astro";
+import LastUpdated from "@astrojs/starlight/components/LastUpdated.astro";
+import Pagination from "@astrojs/starlight/components/Pagination.astro";
+---
+
+<footer class="sl-flex">
+  <div class="meta sl-flex">
+    <EditLink {...Astro.props} />
+    <LastUpdated {...Astro.props} />
+  </div>
+  <Pagination {...Astro.props} />
+</footer>
+
+<style lang="scss">
+  footer {
+    padding: var(--cui-spacings-tera) var(--cui-spacings-mega);
+    border-top: var(--cui-border-width-kilo) solid var(--cui-border-normal);
+  }
+  .container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: var(--cui-spacings-giga);
+    font-size: 0.9rem;
+    max-width: 960px;
+    margin: 0 auto;
+  }
+
+  @media (min-width: 480px) {
+    .container {
+      flex-direction: row;
+    }
+  }
+
+  h2 {
+    font-size: var(--cui-headline-s-font-size);
+    line-height: var(--cui-headline-s-line-height);
+    margin-bottom: var(--cui-spacings-byte);
+  }
+  .columns {
+    display: flex;
+    flex-direction: row;
+    gap: var(--cui-spacings-giga);
+  }
+
+  a {
+    display: block;
+    color: var(--cui-fg-subtle);
+    text-decoration: none;
+
+    &:hover,
+    &:focus {
+      color: var(--cui-fg-subtle-hovered);
+      text-decoration: underline;
+    }
+    &:active {
+      color: var(--cui-fg-subtle-pressed);
+    }
+  }
+  @media (min-width: 480px) {
+    .meta {
+      text-align: right;
+    }
+  }
+</style>

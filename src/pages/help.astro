@@ -1,0 +1,40 @@
+---
+import { getCollection } from "astro:content";
+import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
+
+const frontmatter = {
+  title: "FAQ",
+  description: "Frequently asked questions",
+  template: "splash",
+} as const;
+
+const posts = await getCollection("help");
+---
+
+<StarlightPage frontmatter={frontmatter} }>
+  <div>
+    {
+      posts.map(async (post) => {
+        const { Content } = await post.render();
+        return (
+          <details>
+            <summary>{post.data.title}</summary>
+            <div class="content">
+              <Content />
+            </div>
+          </details>
+        );
+      })
+    }
+    <p data-pagefind-ignore>
+      Didn't find answer to your question? <a href="/contact">Contact us</a>.
+    </p>
+  </div>
+</StarlightPage>
+
+<style lang="scss">
+  p {
+    margin: var(--cui-spacings-exa) 0 var(--cui-spacings-exa);
+    text-align: center;
+  }
+</style>

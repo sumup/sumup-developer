@@ -1,0 +1,19 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cui-spacings-mega);
+}
+
+.actionsContainer {
+  display: flex;
+  gap: var(--cui-spacings-giga);
+  align-items: center;
+  justify-content: flex-end;
+  margin-bottom: var(--cui-spacings-giga);
+}
+
+.statusModal {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cui-spacings-byte);
+}

@@ -1,0 +1,58 @@
+---
+import { resolveReference } from "@lib/openapi";
+import type { OpenAPIV3_1 } from "openapi-types";
+
+type Props = {
+  name: string;
+  required: boolean;
+  def:
+    | OpenAPIV3_1.ReferenceObject
+    | OpenAPIV3_1.ResponseObject
+    | OpenAPIV3_1.SchemaObject
+    | undefined
+    | null;
+};
+let { name, required, def } = Astro.props;
+
+if (def && "$ref" in def) {
+  def = resolveReference(def.$ref);
+}
+if (def && "items" in def && def.items && "$ref" in def.items) {
+  const resolved = resolveReference(def.items.$ref);
+  if (resolved) def.items = resolved;
+}
+---
+
+<div class="parameter">
+  <span class="name">
+    {name}
+  </span>
+  <span class="type">
+    &nbsp;{
+      def &&
+        ("items" in def && def.items
+          ? `[]${("type" in def.items && def.items.type) || "object"}`
+          : "type" in def && def.type)
+    }
+  </span>
+  {required && <span class="required">&nbsp;required</span>}
+</div>
+
+<style lang="scss">
+  .parameter {
+    margin-bottom: var(--cui-spacings-bit);
+  }
+
+  .name {
+    font-family: var(--cui-font-stack-mono);
+    font-weight: bold;
+  }
+
+  .type {
+    color: var(--cui-fg-placeholder);
+  }
+
+  .required {
+    color: var(--cui-fg-warning);
+  }
+</style>

@@ -1,0 +1,45 @@
+{
+  "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
+  "vcs": {
+    "enabled": true,
+    "clientKind": "git",
+    "useIgnoreFile": true
+  },
+  "files": {
+    "ignore": [
+      "node_modules/**",
+      "public/**",
+      "specs/**",
+      "/*.json",
+      ".vercel/**",
+      ".astro/**"
+    ]
+  },
+  "formatter": {
+    "enabled": true,
+    "indentStyle": "space",
+    "ignore": ["package.json", "tsconfig.json", "/*.json"]
+  },
+  "javascript": {
+    "globals": ["JSX", "React"],
+    "formatter": {
+      "quoteProperties": "preserve",
+      "quoteStyle": "double"
+    }
+  },
+  "linter": {
+    "enabled": true
+  },
+  "overrides": [
+    {
+      "include": ["*.spec.*"],
+      "linter": {
+        "rules": {
+          "suspicious": {
+            "noExplicitAny": "off"
+          }
+        }
+      }
+    }
+  ]
+}
