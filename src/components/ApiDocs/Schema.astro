@@ -1,0 +1,242 @@
+---
+import Markdown from "@components/Markdown.astro";
+import { resolveSchema } from "@lib/openapi";
+import { Headline } from "@sumup-oss/circuit-ui";
+import { ChevronDown, Close } from "@sumup-oss/icons";
+import type { OpenAPIV3_1 } from "openapi-types";
+import InlineCode from "../Highlight/InlineCode.astro";
+import Attributes from "./Attributes.astro";
+import ParameterName from "./ParameterName.astro";
+
+const isNonArraySchemaObject = (
+  object: OpenAPIV3_1.SchemaObject | OpenAPIV3_1.ReferenceObject | undefined,
+): object is OpenAPIV3_1.NonArraySchemaObject =>
+  !!object && !("items" in object);
+
+export interface Props {
+  kind: string;
+  schema: OpenAPIV3_1.SchemaObject;
+  nested?: boolean;
+  collapsable?: boolean;
+  collapsed?: boolean;
+}
+
+const { kind, schema: obj, nested, collapsable, collapsed } = Astro.props;
+
+const schema = resolveSchema(obj);
+---
+
+<div
+  class:list={["schema", { nested, collapsable, collapsed }]}
+  data-pagefind-ignore
+>
+  {
+    nested && (
+      <div class="header">
+        <div class="close">
+          <Close size="16" />
+          &nbsp;Close
+        </div>
+        <div>{kind}</div>
+        <div />
+      </div>
+    )
+  }
+  {
+    collapsable && (
+      <div class="header">
+        <div class="icon">
+          <ChevronDown size="16" />
+        </div>
+        <Headline as="h3">{kind}</Headline>
+      </div>
+    )
+  }
+  {!nested && !collapsable && <h3>{kind}</h3>}
+  {
+    schema.type === "array" && "items" in schema && (
+      <div>
+        <ParameterName name={""} def={schema} required={false} />
+        <Attributes schema={schema.items} kind={"Attributes"} />
+      </div>
+    )
+  }
+  <ul class:list={[{ nested }]}>
+    {
+      Object.entries(schema.properties || {}).map(([name, def]) => {
+        const propertySchema = resolveSchema(def);
+        return (
+          <li>
+            <ParameterName
+              name={name}
+              def={propertySchema}
+              required={!!schema.required?.includes(name)}
+            />
+            {"enum" in def && !!propertySchema.enum && (
+              <div class="enum">
+                <span>Options:&nbsp;</span>
+                {propertySchema.enum.map((e) => (
+                  <InlineCode>{e}</InlineCode>
+                ))}
+              </div>
+            )}
+            {propertySchema.description && (
+              <Markdown>{propertySchema.description}</Markdown>
+            )}
+            {"type" in propertySchema && propertySchema.type === "object" && (
+              <Attributes
+                schema={propertySchema}
+                kind={propertySchema.title || "Attributes"}
+              />
+            )}
+            {"type" in def && propertySchema.type === "array" && (
+              <Attributes
+                schema={propertySchema.items}
+                kind={propertySchema.title || "Attributes"}
+              />
+            )}
+            {isNonArraySchemaObject(propertySchema) &&
+              propertySchema.example && (
+                <div class="example">
+                  Example:{" "}
+                  <InlineCode>
+                    {JSON.stringify(propertySchema.example)}
+                  </InlineCode>
+                </div>
+              )}
+          </li>
+        );
+      })
+    }
+  </ul>
+</div>
+
+<style>
+  :global(.schema p) {
+    margin-bottom: var(--cui-spacings-bit);
+  }
+
+  .schema {
+    margin-bottom: var(--cui-spacings-giga);
+  }
+  .schema.nested {
+    margin-bottom: 0;
+  }
+
+  .collapsable > .header {
+    margin-left: calc(-1 * var(--cui-spacings-giga));
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    cursor: pointer;
+  }
+  .collapsable > .header .icon {
+    padding-top: var(--cui-spacings-bit);
+    width: var(--cui-spacings-giga);
+    display: flex;
+    align-items: center;
+    justify-content: baseline;
+  }
+  .collapsable > .header .icon :global(svg) {
+    transition: 0.1s ease-in-out;
+  }
+  .collapsable > .header h3 {
+    width: 100%;
+  }
+  .collapsable.collapsed {
+    margin-bottom: 0;
+  }
+  .collapsable.collapsed ul {
+    display: none;
+  }
+  .collapsable.collapsed h3 {
+    border: none;
+  }
+  .collapsable.collapsed :global(.icon svg) {
+    transform: rotate(-90deg);
+  }
+  .collapsable .icon.open {
+    display: none;
+  }
+  .collapsable > .icon.close {
+    display: block;
+  }
+
+  .nested > .header {
+    border-bottom: var(--cui-border-width-kilo) solid var(--cui-border-subtle);
+    padding: var(--cui-spacings-bit) var(--cui-spacings-byte);
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: var(--cui-spacings-byte);
+    justify-items: center;
+    justify-content: space-between;
+  }
+
+  .nested > .header .close {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-self: start;
+    cursor: pointer;
+    color: var(--cui-fg-subtle);
+  }
+
+  .nested > .header .close:hover {
+    color: var(--cui-fg-subtle-hovered);
+  }
+
+  .enum {
+    margin-bottom: var(--cui-spacings-bit);
+    display: inline-flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .body {
+    margin-bottom: var(--cui-spacings-kilo);
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+  ul.nested {
+    margin: 0 var(--cui-spacings-mega);
+  }
+
+  ul li {
+    width: 100%;
+    padding: var(--cui-spacings-mega) 0;
+    border-bottom: var(--cui-border-width-kilo) solid var(--cui-border-subtle);
+  }
+  ul li:last-child {
+    border-bottom: none;
+  }
+  h3 {
+    margin-top: var(--cui-spacings-mega);
+    padding-bottom: var(--cui-spacings-kilo);
+    border-bottom: var(--cui-border-width-kilo) solid var(--cui-border-subtle);
+    font-size: 1rem;
+  }
+
+  .example {
+    margin-top: var(--cui-spacings-byte);
+  }
+</style>
+
+<script>
+  const buttons = document.querySelectorAll(".nested .close");
+  buttons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const grandParentElement = button.closest(".open");
+      grandParentElement?.classList.remove("open");
+    });
+  });
+
+  const chevrons = document.querySelectorAll(".collapsable .header");
+  chevrons.forEach((chevron) => {
+    chevron.addEventListener("click", () => {
+      chevron.parentElement?.classList.toggle("collapsed");
+    });
+  });
+</script>

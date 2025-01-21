@@ -1,0 +1,76 @@
+---
+// export const prerender = false;
+
+import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
+import ContactForm from "@components/ContactForm";
+// import Narrow from "@layouts/Narrow.astro";
+// import { Headline } from "@sumup-oss/circuit-ui";
+
+const frontmatter = {
+  title: "Contact",
+  description: "Reach out to SumUp's developer experts",
+  template: "splash",
+} as const;
+
+// let status: "success" | "error" | undefined;
+// if (Astro.request.method === "POST") {
+//   try {
+//     const body = await Astro.request.formData();
+//
+//     const payload = {
+//       company: body.get("company"),
+//       tpv: body.get("tpv"),
+//       email: body.get("email"),
+//       country:
+//         body.get("country") === "Other"
+//           ? body.get("country-other")
+//           : body.get("country"),
+//       category: body.get("category"),
+//       onlineIntegration: body.get("onlineIntegration"),
+//       cardReaderIntegration: body.get("cardReaderIntegration"),
+//       detail: body.get("detail"),
+//       terms: Boolean(body.get("terms")),
+//       marketingconsent: Boolean(body.get("marketingconsent")),
+//     };
+//
+//     if (!payload.email || !payload.category || !payload.country) {
+//       status = "error";
+//     } else {
+//       await fetch(import.meta.env.MARKETING_CLOUD_URL, {
+//         method: "POST",
+//         headers: {
+//           "Content-Type": "application/json",
+//           Authorization: import.meta.env.MARKETING_CLOUD_AUTH,
+//         },
+//         body: JSON.stringify(payload),
+//       });
+//
+//       status = "success";
+//     }
+//   } catch (error) {
+//     console.error("[CONTACT] Submit contact form.", error);
+//     status = "error";
+//   }
+// }
+---
+
+<StarlightPage frontmatter={frontmatter} {...Astro.props}>
+  <div class="contact-form">
+    <ContactForm status={undefined /* status */} client:load />
+  </div>
+</StarlightPage>
+
+<style>
+  .headline {
+    text-align: center;
+    margin: 0 auto var(--cui-spacings-giga);
+  }
+
+  div {
+    margin-bottom: var(--cui-spacings-zetta);
+  }
+
+  .contact-form :global(form > *) {
+    margin-bottom: var(--cui-spacings-giga);
+  }
+</style>

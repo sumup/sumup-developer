@@ -1,0 +1,246 @@
+---
+title: Authorization
+description: Learn how to authenticate and authorize when calling the SumUp APIs.
+sidebar:
+  order: 7
+---
+
+SumUp supports two kinds of authorization. One is via [API keys](#api-keys) allowing you to authorize on your behalf and access the SumUp API, as if you were logged in.
+This is the easiest approach and accommodates most use cases.
+
+The other approach is via [OAuth 2.0](#oauth-20), which allows you to authorize as yourself or to request permission from other users to act on their behalf. This is useful for building applications that can be used by many users.
+
+## API keys
+
+SumUp uses API keys to authenticate the API requests. You can create new keys in the [API keys](/api-keys/) account page.
+
+Secret API keys are short static tokens that are passed in the `Authorization` header to authenticate the requests.
+
+```bash
+curl https://api.sumup.com/v0.1/me -H 'Authorization: Bearer sup_sk_XXX'
+```
+
+The tokens have a `sup_sk_` prefix. Your API keys carry many permissions and have access to the whole SumUp API, so make sure to keep them secure.
+
+{% aside type="caution"%}
+
+Do not share your secret API keys in publicly accessible places such as GitHub repositories, client-side code, etc.
+
+{% /aside %}
+
+All requests must be made over [HTTPS](https://en.wikipedia.org/wiki/HTTPS) and must be authenticated.
+
+## OAuth 2.0
+
+[OAuth 2.0](https://oauth.net/2/) is an industry-standard authorization protocol that allows for control over an application’s scope, and authorization flows across multiple devices.
+OAuth 2.0 allows you to access API on behalf of other users after they grant you the permission.
+
+SumUp supports two OAuth 2.0 authorization flows:
+
+- The [authorization code flow](#authorization-code-flow) to request permissions from other users
+- The [client credentials flow](#client-credentials-flow) to authenticate as yourself
+
+As with the API keys, the [access token](https://oauth.net/2/access-tokens/) that you obtain after finishing the OAuth 2.0 flow is passed in the `Authorization` header.
+
+```bash
+curl https://api.sumup.com/v0.1/me -H 'Authorization: Bearer at_classic_XXX'
+```
+
+Most of the popular programming languages have libraries that support OAuth 2.0 protocol. We highly recommend that you use one of the [existing reputable implementations](https://oauth.net/code/).
+
+### Authorization code flow
+
+This flow enables applications to request permission from a SumUp merchant to act on their behalf. The [requested scopes](#authorization-scopes) define what your application is allowed to do.
+
+To initiate the flow, your application redirects a user to the SumUp authorization server with the [request authorization endpoint](/api/authorization/authorize).
+
+```bash
+curl --request GET \
+  --url 'https://api.sumup.com/authorize?response_type=code&client_id=fOcmczrYtYMJ7Li5GjMLLcUeC9dN&redirect_uri=https://sample-app.example.com/callback&scope=payments user.app-settings transactions.history user.profile_readonly&state=2cFCsY36y95lFHk4'
+```
+
+The request will trigger an authorization prompt describing which application is requesting authorization from the user.
+
+{% aside type="caution"%}
+
+If the user denies and clicks the **Cancel** button on the request, the authorization server will not generate an authorization code and will instead return an `error` parameter with an `access_denied` value instead.
+
+{% /aside %}
+
+Once the user accepts your authorization request, the authorization server redirects the user back to your application by using the registered URI you specified in the `redirect_uri` at the initial GET request. The response will return with additional parameters, such as `code` and `state`. The `code` parameter is mandatory for retrieving an access token.
+
+This is an example of the response received after a successful authorization:
+
+```bash
+curl --request GET \
+  --url 'https://sample-app.example.com/callback?code=be366ce9fccd0c337d1da29b31d06dd1135ab95401562883&state=2cFCsY36y95lFHk4'
+```
+
+To retrieve your access token you must next make a request to the [retrieve a token endpoint](/api/authorization/create-token) with a `Content-Type: application/x-www-form-urlencoded` header, like so:
+
+{% tabs %}
+{% tabitem label="cURL"%}
+```bash
+curl -X POST \
+  https://api.sumup.com/token \
+  -H 'Content-Type: application/x-www-form-urlencoded' \
+  -d 'grant_type=authorization_code'\
+  -d 'client_id=fOcmczrYtYMJ7Li5GjMLLcUeC9dN'\
+  -d 'client_secret=717bd571b54297494cd7a79b491e8f2c1da6189c4cc2d3481380e8366eef539c' \
+  -d 'code=be366ce9fccd0c337d1da29b31d06dd1135ab95401562883'
+```
+{% /tabitem %}
+{% tabitem label="PHP"%}
+```php
+$sumup = new \SumUp\SumUp([
+    'app_id'     => 'fOcmczrYtYMJ7Li5GjMLLcUeC9dN',
+    'app_secret' => '717bd571b54297494cd7a79b491e8f2c1da6189c4cc2d3481380e8366eef539c',
+    'grant_type' => 'authorization_code',
+    'code'       => 'be366ce9fccd0c337d1da29b31d06dd1135ab95401562883'
+]);
+$accessToken = $sumup->getAccessToken();
+$value = $accessToken->getValue();
+```
+{% /tabitem %}
+{% /tabs %}
+
+In a response you will receive `access_token`, `refresh_token`, `token_type`, and `expires_in`.
+
+```json
+{
+  "access_token": "565e2d19cef68203170ddadb952141326d14e03f4ccbd46daa079c26c910a864",
+  "refresh_token": "d180031bfe9bac36c336e5746637810272546865e9c9586012f462a56f3fe9af",
+  "token_type": "Bearer",
+  "expires_in": 3600
+}
+```
+
+The `access_token` can be used in the `Authorization` header with `Bearer` scheme to authorize calls to SumUp services.
+You can use the `refresh_token` to get a new `access_token` when it expires without the user’s interaction (see [Refresh token flow](#refresh-token-flow) below).
+
+### Refresh token flow
+
+To refresh the access token send a request to the [retrieve a token endpoint](/api/authorization/create-token) with the refresh token you've received when completing the [Authorization code flow](#authorization-code-flow). Access tokens can expire for many reasons, such as if the user changes their password or revokes the app access.
+
+{% aside type="note"%}
+
+Your request must contain the header `Content-Type: application/x-www-form-urlencoded`.
+
+{% /aside %}
+
+{% tabs %}
+{% tabitem label="cURL"%}
+```bash
+curl -X POST \
+  https://api.sumup.com/token \
+  -H 'Content-Type: application/x-www-form-urlencoded' \
+  -d 'grant_type=refresh_token'\
+  -d 'client_id=fOcmczrYtYMJ7Li5GjMLLcUeC9dN'\
+  -d 'client_secret=717bd571b54297494cd7a79b491e8f2c1da6189c4cc2d3481380e8366eef539c' \
+  -d 'refresh_token=d180031bfe9bac36c336e5746637810272546865e9c9586012f462a56f3fe9af'
+```
+{% /tabitem %}
+{% tabitem label="PHP"%}
+```php
+$sumup = new \SumUp\SumUp([
+    'app_id'        => 'fOcmczrYtYMJ7Li5GjMLLcUeC9dN',
+    'app_secret'    => '717bd571b54297494cd7a79b491e8f2c1da6189c4cc2d3481380e8366eef539c',
+    'refresh_token' => 'd180031bfe9bac36c336e5746637810272546865e9c9586012f462a56f3fe9af'
+]);
+// you need to call the method `refreshToken()` to get a new access token
+$refreshedAccessToken = $sumup->refreshToken();
+$value = $refreshedAccessToken->getValue();
+```
+{% /tabitem %}
+{% /tabs %}
+
+A sample response to the above request would look like this:
+
+```json
+{
+  "access_token": "565e2d19cef68203170ddadb952141326d14e03f4ccbd46daa079c26c910a864",
+  "token_type": "Bearer",
+  "expires_in": 3600,
+  "refresh_token": "d180031bfe9bac36c336e5746637810272546865e9c9586012f462a56f3fe9af"
+}
+```
+
+In a response you will receive new `access_token` that is valid for `expires_in` seconds and a new `refresh_token`. Make sure to store the new `refresh_token` for successive refreshes.
+
+{% aside type="caution"%}
+
+By default, refresh tokens are valid for a period of 6 months. After your `refresh_token` expires, you need to go through all steps in the [Authorization code flow](#authorization-code-flow) again to obtain a valid access token and a new refresh token. A new refresh token will also be issued when a valid refresh token is used within 30 days prior to its expiration. The new refresh token will be valid for another 6 months.
+
+{% /aside %}
+
+### Authorization scopes
+
+Authorization scopes define what an application intends to do on a merchant's behalf. A required set of scopes may be passed as a space-separated list in authorization request. When scopes are omitted, the default are granted. If additional scopes are required, a new `access_token` has to be collected via the [Authorization code flow](#authorization-code-flow).
+
+| Scope name                       | Default | Access Level | Description                                                                                                                                                                                                                                                             |
+| -------------------------------- | ------- | ------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| transactions.history             | yes     | merchant     | Allows you to view the transactions and transaction history for a specific merchant user's account.                                                                                                                                                                     |
+| user.app-settings                | yes     | merchant     | Allows you to view and modify the SumUp mobile application settings for a specific merchant user's account.                                                                                                                                                             |
+| user.profile_readonly            | yes     | merchant     | Allows you to view the profile details for a specific merchant user's account.                                                                                                                                                                                          |
+| user.profile                     | no      | merchant     | Allows you to modify the profile details of a specific merchant user's account.                                                                                                                                                                                         |
+| user.subaccounts                 | no      | merchant     | Allows you to view and modify the profile details of a subaccount created for a specific merchant user's account. Subaccounts are user accounts for employees of a merchant and can be granted different permissions by the holder of the main merchant user's account. |
+| user.payout-settings             | no      | merchant     | Allows you to view and modify the payout settings for a specific merchant user's account.                                                                                                                                                                               |
+| products                         | no      | merchant     | Allows you to view and modify the product store for a specific merchant user's account. This includes the products, shelves, prices, and VAT rates available in the merchant's product store.                                                                           |
+| `restricted` payments            | no      | feature      | Allows you to make payments by creating and processing payment checkouts.                                                                                                                                                                                               |
+| `restricted` payment_instruments | no      | feature      | Allows you to save customers and tokenize their payment cards for a specific merchant user's account.                                                                                                                                                                   |
+
+Restricted scopes must be enabled by SumUp for your application. To do that, [contact us](/contact).
+
+### Client Credentials flow
+
+In the Client credentials flow, your application requests an access token without requesting authorization from a merchant user. As a result, when you use this flow, your application is not authorized to access any data that is associated with a merchant user's account, such as transactions or saved customers and tokenized payment cards. In other words, you can only process payments for merchant accounts with an access token obtained via this grant flow.
+
+To request an access token for this flow you need to make a request to the [retrieve a token endpoint](/api/authorization/create-token).
+
+{% aside type="note"%}
+
+Your request must contain the header `Content-Type: application/x-www-form-urlencoded`.
+
+{% /aside %}
+
+Following is a sample request for obtaining a new access token for the Sample App application with your client credentials. In this sample, the client credentials are passed as request parameters.
+
+{% tabs %}
+{% tabitem label="cURL"%}
+```bash
+curl -X POST \
+  https://api.sumup.com/token \
+  -H 'Content-Type: application/x-www-form-urlencoded' \
+  -d 'grant_type=client_credentials'\
+  -d 'client_id=fOcmczrYtYMJ7Li5GjMLLcUeC9dN'\
+  -d 'client_secret=717bd571b54297494cd7a79b491e8f2c1da6189c4cc2d3481380e8366eef539c'
+```
+{% /tabitem %}
+{% tabitem label="PHP"%}
+```php
+$sumup = new \SumUp\SumUp([
+    'app_id'     => 'fOcmczrYtYMJ7Li5GjMLLcUeC9dN',
+    'app_secret' => '717bd571b54297494cd7a79b491e8f2c1da6189c4cc2d3481380e8366eef539c',
+    'grant_type' => 'client_credentials'
+]);
+$accessToken = $sumup->getAccessToken();
+$value = $accessToken->getValue();
+```
+{% /tabitem %}
+{% /tabs %}
+
+{% aside type="note"%}
+
+In the client credentials flow, the authorization server does not send a refresh token because you can always request a new access token with a single request to it.
+
+{% /aside %}
+
+A sample response to the above request would look like this:
+
+```json
+{
+  "access_token": "ae925074d2b826fbb505c84ebff8e409311a2d8bd211003210926d62a8ff",
+  "token_type": "Bearer",
+  "expires_in": 3600
+}
+```

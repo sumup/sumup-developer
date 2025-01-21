@@ -1,0 +1,215 @@
+---
+import { Badge } from "@astrojs/starlight/components";
+import Markdown from "@components/Markdown.astro";
+import { resolveReference } from "@lib/openapi";
+import { Headline } from "@sumup-oss/circuit-ui";
+import type { HTMLAttributes } from "astro/types";
+import type { OpenAPIV3_1 } from "openapi-types";
+import type { OperationObject } from "src/types/openapi";
+import InlineCode from "../Highlight/InlineCode.astro";
+import Example from "./Example.astro";
+import ExampleRequest from "./ExampleRequest.astro";
+import LRGrid from "./LRGrid.astro";
+import MultiCode from "./MultiCode.astro";
+import Parameters from "./Parameters.astro";
+import Response from "./Response.astro";
+import Schema from "./Schema.astro";
+
+// import { OperationEndpoint } from "./OperationEndpoint";
+
+interface Props extends HTMLAttributes<"section"> {
+  operation: OperationObject;
+}
+
+const { operation, ...props } = Astro.props;
+
+const isParamterObject = (
+  object: OpenAPIV3_1.ParameterObject | OpenAPIV3_1.ReferenceObject,
+): object is OpenAPIV3_1.ParameterObject => "name" in object;
+
+const isRequestBody = (
+  object:
+    | OpenAPIV3_1.RequestBodyObject
+    | OpenAPIV3_1.ReferenceObject
+    | undefined,
+): object is OpenAPIV3_1.RequestBodyObject => !!object && !("$ref" in object);
+
+const findSuccessResponse = (responses?: OpenAPIV3_1.ResponsesObject) => {
+  if (!responses) return undefined;
+  let success =
+    Object.entries(responses).find(([code]) => code.startsWith("2"))?.[1] ??
+    null;
+  if (!success) return undefined;
+  if ("$ref" in success) {
+    success = resolveReference<OpenAPIV3_1.ResponseObject>(success.$ref);
+  }
+  if (!success || !success?.content) return undefined;
+  return success.content["application/json"];
+};
+
+const successResponse = findSuccessResponse(operation.responses);
+
+const pathParams = operation.parameters
+  ?.filter(isParamterObject)
+  .filter((p) => p.in === "path");
+
+const queryParams = operation.parameters
+  ?.filter(isParamterObject)
+  .filter((p) => p.in === "query");
+---
+
+<section id={`${operation.tagSlug}-${operation.slug}`} {...props}>
+  <LRGrid>
+    <div>
+      <div class="info" data-pagefind-meta={`operation:${operation.summary}`}>
+        <a
+          href={`/api/${operation.tagSlug}`}
+          data-scroll-to={operation.tagSlug}
+          class="tag-link"
+          data-pagefind-ignore
+        >
+          {operation.tag}
+        </a>
+        <Headline as="h2" size="m" data-pagefind-meta="title">
+          {operation.summary}
+          {
+            operation.deprecated && (
+              <Badge variant="caution" text="Deprecated" data-pagefind-ignore />
+            )
+          }
+          {
+            operation["x-beta"] && (
+              <Badge variant="tip" text="Beta" data-pagefind-ignore />
+            )
+          }
+        </Headline>
+        {/*<OperationEndpoint operation={operation} />*/}
+        {
+          operation.description && (
+            <div class="description">
+              <Markdown>{operation.description}</Markdown>
+            </div>
+          )
+        }
+        {
+          operation["x-scopes"] && operation["x-scopes"].length > 0 && (
+            <div class="scopes" data-pagefind-ignore>
+              Scopes:
+              {operation["x-scopes"].map((scope) => (
+                <InlineCode>{scope}</InlineCode>
+              ))}
+            </div>
+          )
+        }
+      </div>
+      {
+        pathParams && pathParams.length > 0 && (
+          <Parameters kind="Path Parameters" parameters={pathParams} />
+        )
+      }
+      {
+        queryParams && queryParams.length > 0 && (
+          <Parameters kind="Query Parameters" parameters={queryParams} />
+        )
+      }
+      {
+        isRequestBody(operation.requestBody) &&
+          "application/json" in operation.requestBody.content &&
+          !!operation.requestBody.content["application/json"].schema && (
+            <Schema
+              kind="Body Parameters"
+              schema={operation.requestBody.content["application/json"].schema}
+            />
+          )
+      }
+      {
+        Object.entries(operation.responses || {}).map(([status, response]) => {
+          if (
+            !("content" in response) ||
+            !response.content?.["application/json"]?.schema
+          ) {
+            return null;
+          }
+          return (
+            <Schema
+              kind={`Response ${status}`}
+              schema={response.content["application/json"].schema}
+              collapsable={!status.startsWith("2")}
+              collapsed={!status.startsWith("2")}
+            />
+          );
+        })
+      }
+    </div>
+    <div class="examples">
+      <div class="example-request">
+        <ExampleRequest operation={operation} />
+      </div>
+      {
+        successResponse && (
+          <div class="example-response">
+            {successResponse.example && (
+              <Response name={"Response"} example={successResponse.example} />
+            )}
+            {successResponse.examples && (
+              <MultiCode
+                name={"Response"}
+                options={Object.entries(successResponse.examples).map(
+                  ([key, value]) => ({
+                    label: key,
+                    code: JSON.stringify(
+                      "value" in value ? value.value : "",
+                      null,
+                      2,
+                    ),
+                    lang: "json",
+                    description: value.description,
+                  }),
+                )}
+              />
+            )}
+            {!successResponse.example &&
+              !successResponse.examples &&
+              successResponse.schema && (
+                <Example
+                  name={`${operation.summary} response`}
+                  schema={successResponse.schema}
+                />
+              )}
+          </div>
+        )
+      }
+    </div>
+  </LRGrid>
+</section>
+
+<style>
+  h2 {
+    margin: 0 0 var(--cui-spacings-mega);
+  }
+  h2 > div {
+    margin-left: var(--cui-spacings-kilo);
+  }
+  .info {
+    margin: var(--cui-spacings-giga) 0 var(--cui-spacings-tera);
+  }
+  .description {
+    margin: var(--cui-spacings-giga) 0;
+  }
+  .scopes {
+    font-size: var(--cui-body-m-font-size);
+  }
+  .examples {
+    margin-top: var(--cui-spacings-exa);
+    position: relative;
+  }
+
+  .examples > div {
+    margin-bottom: var(--cui-spacings-mega);
+  }
+  a.tag-link {
+    color: var(--cui-fg-subtle);
+    text-decoration: none;
+    font-size: 0.875rem;
+  }
+</style>
