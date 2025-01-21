@@ -1,0 +1,108 @@
+---
+import { Badge } from "@astrojs/starlight/components";
+import Markdown from "@components/Markdown.astro";
+import { formatSlug } from "@lib/helpers";
+import { Headline } from "@sumup-oss/circuit-ui";
+import type { HTMLAttributes } from "astro/types";
+import type { OperationObject, TagObject } from "src/types/openapi";
+import LRGrid from "./LRGrid.astro";
+import SchemaObject from "./Object.astro";
+import Operation from "./Operation.astro";
+
+interface Props extends HTMLAttributes<"section"> {
+  tag: TagObject;
+  operations: OperationObject[];
+  target?: string;
+}
+
+const {
+  tag: {
+    name,
+    description,
+    "x-beta": beta,
+    "x-core-objects": coreObjects = [],
+  },
+  operations = [],
+  target,
+  ...attrs
+} = Astro.props;
+
+const slug = formatSlug(name);
+const [targetTag, targetOp] = (target || "").split("/");
+const tagIsTarget = !targetOp && targetTag === slug;
+---
+
+<section
+  id={slug}
+  data-pagefind-ignore={targetTag !== slug ? "all" : ""}
+  data-pagefind-meta={`tag:${name}`}
+  {...attrs}
+>
+  <LRGrid class="tag">
+    <div
+      class="tag-info"
+      data-pagefind-body={tagIsTarget}
+      data-pagefind-ignore={!tagIsTarget ? "all" : ""}
+      data-pagefind-tag={name}
+      data-pagefind-kind="tag"
+      data-pagefind-meta="kind[data-pagefind-kind], tag[data-pagefind-tag]"
+    >
+      <Headline as="h2" className="headline">
+        {name}
+        {
+          beta && (
+            <Badge variant="tip" text="Preview feature" data-pagefind-ignore />
+          )
+        }
+      </Headline>
+      <Markdown>{description}</Markdown>
+    </div>
+  </LRGrid>
+</section>
+{
+  coreObjects?.length > 0 && (
+    <div
+      class="objects"
+      data-pagefind-body={tagIsTarget}
+      data-pagefind-ignore={!tagIsTarget ? "all" : ""}
+    >
+      {coreObjects.map((schema) => (
+        <SchemaObject schema={schema} />
+      ))}
+    </div>
+  )
+}
+{
+  operations && (
+    <div
+      class="operations"
+      data-pagefind-body={tagIsTarget}
+      data-pagefind-ignore={!tagIsTarget ? "all" : ""}
+    >
+      {operations.map((operation) => (
+        <Operation
+          operation={operation}
+          data-pagefind-tag={name}
+          data-pagefind-kind="operation"
+          data-pagefind-meta="kind[data-pagefind-kind], tag[data-pagefind-tag]"
+        />
+      ))}
+    </div>
+  )
+}
+
+<style>
+  h1 {
+    margin: var(--cui-spacings-giga) 0;
+  }
+  h1 > div {
+    margin-left: var(--cui-spacings-kilo);
+  }
+
+  .headline {
+    display: flex;
+    align-items: center;
+    gap: var(--cui-spacings-kilo);
+    margin-bottom: var(--cui-spacings-giga);
+  }
+</style>

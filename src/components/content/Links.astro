@@ -1,0 +1,19 @@
+---
+
+---
+
+<div class="links">
+  <slot />
+</div>
+
+<style lang="scss">
+  .links {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: var(--cui-spacings-giga);
+
+    @media screen and (max-width: 1200px) {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

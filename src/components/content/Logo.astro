@@ -1,0 +1,62 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+type Props = {
+  title: string;
+  src: string;
+} & HTMLAttributes<"img">;
+
+const { title, src, class: cls, ...props } = Astro.props;
+---
+
+<div class:list={["logo", cls]}>
+  <span class="sr-only">{title}</span>
+  <img src={src} alt={title} {...props} />
+</div>
+
+<style lang="scss">
+  .logo {
+    shape-rendering: crispEdges;
+    text-rendering: optimizeLegibility;
+    line-height: 0;
+    color: currentColor;
+    opacity: 0.5;
+    transition: opacity var(--ifm-transition-fast)
+      var(--ifm-transition-timing-default);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    html[data-color-scheme="light"] .logo {
+      filter: none;
+    }
+
+    html:not([data-color-scheme="light"]) .logo {
+      filter: invert(100%);
+    }
+  }
+
+  @media (prefers-color-scheme: light) {
+    html[data-color-scheme="dark"] .logo {
+      filter: invert(100%);
+    }
+
+    html:not([data-color-scheme="dark"]) .logo {
+      filter: none;
+    }
+  }
+
+  .logo:hover {
+    opacity: 1;
+  }
+
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+  }
+</style>

@@ -1,0 +1,16 @@
+---
+import { marked } from "marked";
+
+interface Props {
+  class?: string;
+  children: any;
+}
+
+const { class: className } = Astro.props;
+const slot = await Astro.slots.render("default");
+const html = marked.parse(slot);
+---
+
+<div class:list={["sl-markdown-content", className]}>
+  <Fragment set:html={html} />
+</div>

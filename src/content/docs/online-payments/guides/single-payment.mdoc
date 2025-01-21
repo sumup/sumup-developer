@@ -1,0 +1,205 @@
+---
+title: Make a payment with a card entered by a customer
+sidebar:
+  label: Accept a payment
+---
+
+In this guide, you will learn how to make a single payment with a payment card entered by a customer without associating it with a specific customer saved for the merchant user's account. This type of payment is most useful for quick processing of payment checkouts in which you don't store and manage any account data for your customers.
+
+You will go through the following steps:
+
+1.  [Create a checkout](#1-create-a-checkout)
+2.  [Complete a checkout](#2-complete-a-checkout)
+
+When you complete these steps, you will have processed a payment with a payment card entered by a customer.
+
+## Before you begin
+
+Here are the things that you need in order to complete the steps in this guide:
+
+- You have a merchant account with [SumUp](https://me.sumup.com/login) and have already filled in your [account details](https://me.sumup.com/account).
+  - For a **test account** reach out to our support team through this [contact form](/contact).
+- You have [registered your client application](/online-payments/introduction/register-app/) with SumUp.
+- You have a valid access token obtained via one of the supported OAuth2 authorization flow, the [Authorization code flow](/online-payments/introduction/authorization/#authorization-code-flow) or [Client credentials flow](/online-payments/introduction/authorization/#client-credentials-flow).
+
+{% aside type="note"%}
+
+You can create and complete a payment checkout for any valid SumUp merchant user's account. As a result, you _can_ use an access token obtained either via the [Client credentials flow](/online-payments/introduction/authorization/#client-credentials-flow) or via the [Authorization code flow](/online-payments/introduction/authorization/#authorization-code-flow).
+
+{% /aside %}
+
+## Steps
+
+### 1. Create a checkout
+
+To create a new checkout resource, make a POST request to the `https://api.sumup.com/v0.1/checkouts` endpoint.
+
+{% aside type="caution"%}
+
+This request must be made in a server-to-server communication between your server and SumUp API.
+
+{% /aside %}
+
+The request body should be a JSON object with the following minimum details:
+
+{% aside type="note"%}
+
+The table below lists only the required parameters for the request. For a full list of the available parameters, see the [API Reference](/api/checkouts/create).
+
+{% /aside %}
+
+| Attribute name     | Description                                                                                                                                                                                                                                            |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| checkout_reference | A unique string identifying the payment in your system. It must be unique for your application.                                                                                                                                                        |
+| amount             | The amount for which the payment is made.                                                                                                                                                                                                              |
+| currency           | The three-letter [ISO4217](https://en.wikipedia.org/wiki/ISO_4217) code of the currency in which the payment is made. The value must match the currency registered for the merchant user to whom the payment is made (as specified in `pay_to_email`). |
+| pay_to_email       | The email address of the registered merchant user to whom the payment is made.                                                                                                                                                                         |
+
+Following is a sample request for creating a new checkout resource:
+
+{% tabs %}
+{% tabitem label="cURL"%}
+```bash
+curl -X POST \
+  https://api.sumup.com/v0.1/checkouts \
+  -H 'Authorization: Bearer $SUMUP_API_KEY' \
+  -H 'Content-Type: application/json' \
+  -d '{
+        "checkout_reference": "CO746453",
+        "amount": 10,
+        "currency": "EUR",
+        "pay_to_email": "docuser@sumup.com",
+        "description": "Sample one-time payment"
+      }'
+```
+{% /tabitem %}
+{% tabitem label="Go"%}
+```go
+ctx := context.Background()
+client := sumup.NewClient().WithAuth(os.Getenv("SUMUP_API_KEY"))
+
+checkout, err := client.Checkouts.Create(ctx, sumup.CreateCheckoutBody{
+	Amount:            19,
+	CheckoutReference: "CO746453",
+	Currency:          "EUR",
+	MerchantCode:      "MK0001",
+})
+```
+{% /tabitem %}
+{% tabitem label="PHP"%}
+```php
+$checkoutsService = $sumup->getCheckoutService();
+$response = $checkoutsService->create(10, 'EUR', 'CO746453', 'docuser@sumup.com', 'Sample one-time payment');
+$checkoutId = $response->getBody()->id;
+```
+{% /tabitem %}
+{% /tabs %}
+
+The response contains a JSON body with the details of the created checkout resource. What you need to note in the response is the identifier of the resource - you will need it for all operations that you perform with the resource, such as completing it in the next step.
+
+The resource identifier is returned in the `id` attribute, or `f14425c6-8bc1-4d02-957c-47573f762828` in the sample response below. The `status` attribute shows that the payment for this resource is pending and will be processed when you complete the checkout with the payment instrument details.
+
+```json
+{
+  "checkout_reference": "CO746453",
+  "amount": 10,
+  "currency": "EUR",
+  "pay_to_email": "docuser@sumup.com",
+  "description": "Sample one-time payment",
+  "id": "f14425c6-8bc1-4d02-957c-47573f762828",
+  "status": "PENDING",
+  "date": "2018-09-28T13:47:01.832Z",
+  "transactions": []
+}
+```
+
+### 2. Complete a checkout
+
+To complete the checkout and trigger the payment, make a PUT request to the `https://api.sumup.com/v0.1/checkouts/{id}` endpoint, where the value of the `{id}` path parameter is the identifier of the checkout resource.
+
+{% aside type="caution"%}
+
+This request must be made from your client, _not_ from your server.
+
+{% /aside %}
+
+The request body should be a JSON object with the payment type (`card`) and the payment card details. For more information about the request, see the [API Reference](/api/checkouts/process).
+
+Following is a sample request for completing the checkout from [Step 1](#1-create-a-checkout):
+
+{% tabs %}
+{% tabitem label="cURL"%}
+```bash
+curl -X PUT \
+  https://api.sumup.com/v0.1/checkouts/f14425c6-8bc1-4d02-957c-47573f762828 \
+  -H 'Authorization: Bearer $SUMUP_API_KEY' \
+  -H 'Content-Type: application/json' \
+  -d '{
+        "payment_type": "card",
+        "card": {
+          "name": "Boaty McBoatface",
+          "number": "4200000000000042",
+          "expiry_month": "12",
+          "expiry_year": "23",
+          "cvv": "123"
+        }
+      }
+```
+{% /tabitem %}
+{% tabitem label="Go"%}
+```go
+ctx := context.Background()
+client := sumup.NewClient().WithAuth(os.Getenv("SUMUP_API_KEY"))
+
+checkoutSuccess, err := client.Checkouts.Process(ctx, "f14425c6-8bc1-4d02-957c-47573f762828", sumup.ProcessCheckoutBody{
+	Card: &sumup.Card{
+		Cvv:         "123",
+		ExpiryMonth: "12",
+		ExpiryYear:  "23",
+		Name:        "Boaty McBoatface",
+		Number:      "4200000000000042",
+	},
+	PaymentType: sumup.ProcessCheckoutBodyPaymentTypeCard,
+})
+```
+{% /tabitem %}
+{% /tabs %}
+
+The response contains a JSON body with the details of the processed checkout resource in which the attributes related to the payment outcome are populated:
+
+```json
+{
+  "checkout_reference": "CO746453",
+  "amount": 10.0,
+  "currency": "EUR",
+  "pay_to_email": "docuser@sumup.com",
+  "description": "Sample one-time payment",
+  "id": "f14425c6-8bc1-4d02-957c-47573f762828",
+  "status": "PAID",
+  "date": "2018-09-28T13:47:01.832Z",
+  "transaction_code": "TFDCP3FLQ7",
+  "transaction_id": "19aa3cca-89f6-42d2-b462-463b0b53e959",
+  "transactions": [
+    {
+      "id": "19aa3cca-89f6-42d2-b462-463b0b53e959",
+      "transaction_code": "TFDCP3FLQ7",
+      "merchant_code": "ME7RMQN3",
+      "amount": 10.0,
+      "vat_amount": 0.0,
+      "tip_amount": 0.0,
+      "currency": "EUR",
+      "timestamp": "2018-09-28T13:48:28.768Z",
+      "status": "SUCCESSFUL",
+      "payment_type": "ECOM",
+      "entry_mode": "CUSTOMER_ENTRY",
+      "installments_count": 1,
+      "auth_code": "585388",
+      "internal_id": 24118507
+    }
+  ]
+}
+```
+
+## Result
+
+You have made a payment with a payment card entered by a customer without associating it with a specific customer saved for a merchant user's account. If the payment is successful, the funds will be transferred to the merchant user according to the configured account settings.

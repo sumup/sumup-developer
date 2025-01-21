@@ -1,0 +1,33 @@
+---
+import type { HTMLAttributes } from "astro/types";
+type Props = HTMLAttributes<"div">;
+const { class: cls, ...attrs } = Astro.props;
+---
+
+<div class:list={["lr-grid", cls]} {...attrs}>
+  <slot />
+</div>
+
+<style>
+  .lr-grid {
+    width: 100%;
+    display: grid;
+    grid-template-columns: calc(60% - var(--cui-spacings-tera)) calc(40%);
+    grid-gap: var(--cui-spacings-tera);
+  }
+  @media screen and (max-width: 1200px) {
+    .lr-grid {
+      grid-template-columns: 100%;
+    }
+  }
+  @media screen and (max-width: 940px) {
+    .lr-grid {
+      grid-template-columns: calc(60% - var(--cui-spacings-tera)) calc(40%);
+    }
+  }
+  @media screen and (max-width: 600px) {
+    .lr-grid {
+      grid-template-columns: 100%;
+    }
+  }
+</style>

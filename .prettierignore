@@ -1,0 +1,3 @@
+dist
+# css files are linted by biome
+**/*.css

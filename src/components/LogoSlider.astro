@@ -1,0 +1,55 @@
+---
+import Logo from "@components/content/Logo.astro";
+
+interface Props {
+  logos: Array<{ title: string; src: string }>;
+}
+
+const { logos } = Astro.props;
+---
+
+<div class="brandsSlider">
+  <span>
+    {logos.map((logo) => <Logo {...logo} class="brandsLogo" />)}
+  </span>
+  <span aria-hidden="true">
+    {logos.map((logo) => <Logo {...logo} class="brandsLogo" />)}
+  </span>
+</div>
+
+<style lang="scss">
+  @keyframes slide {
+    from {
+      transform: translate3d(0, 0, 0);
+    }
+
+    to {
+      transform: translate3d(-50%, 0, 0);
+    }
+  }
+
+  .brandsSlider {
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    animation: slide 80s linear infinite;
+
+    &:nth-of-type(even) {
+      animation-direction: reverse;
+    }
+  }
+
+  :global(.brandsLogo) {
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: middle;
+    width: 8rem;
+    margin: 0.5rem 1.5rem;
+    opacity: 0.3;
+
+    @media screen and (min-width: 997px) {
+      width: 15vw;
+      margin: 1rem 2.5rem;
+    }
+  }
+</style>

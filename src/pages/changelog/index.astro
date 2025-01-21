@@ -1,0 +1,120 @@
+---
+import { getCollection } from "astro:content";
+import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
+import Subscribe from "@components/Subscribe.astro";
+import { Headline } from "@sumup-oss/circuit-ui";
+
+const collectionDocs = (await getCollection("changelog"))
+  .sort(
+    (a, b) => b.data.publishedDate.valueOf() - a.data.publishedDate.valueOf(),
+  )
+  .map((entry) => ({
+    ...entry,
+  }));
+
+const posts = await Promise.all(
+  collectionDocs.map(async (page) => {
+    const { Content } = await page.render();
+    return { Content, ...page };
+  }),
+);
+
+const frontmatter = {
+  title: "Changelog",
+  description: "Changelog",
+  template: "splash",
+} as const;
+---
+
+<StarlightPage frontmatter={frontmatter} {...Astro.props}>
+  <div class="narrow">
+    <div class="subcription">
+      <Subscribe />
+    </div>
+    <main class="content" data-pagefind-body>
+      {
+        posts.map(async ({ Content, data: { title, tags, publishedDate } }) => {
+          return (
+            <>
+              <div class="time">
+                <time
+                  data-pagefind-meta="datetime"
+                  datetime={publishedDate.toISOString()}
+                >
+                  {publishedDate.toISOString().split("T")[0]}
+                </time>
+              </div>
+              <div class="post">
+                <Headline as="h2" size="m">
+                  {title}
+                </Headline>
+                <div class="details">
+                  {tags && tags.length > 0 && (
+                    <ul class="tags">
+                      {tags.map((tag) => (
+                        <li>
+                          <a href={`#${tag}`}>#{tag}</a>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+                <Content />
+              </div>
+            </>
+          );
+        })
+      }
+    </main>
+  </div>
+</StarlightPage>
+
+<style lang="scss">
+  .content {
+    margin-top: var(--cui-spacings-zetta);
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    row-gap: var(--cui-spacings-zetta);
+    column-gap: var(--cui-spacings-giga);
+  }
+
+  .subcription {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  }
+
+  .time {
+    word-break: keep-all;
+    justify-self: end;
+  }
+
+  .post {
+    padding-bottom: var(--cui-spacings-zetta);
+    border-bottom: 1px solid var(--cui-border-divider);
+
+    :global(article > *:last-child) {
+      margin-bottom: 0;
+    }
+
+    &:last-of-type {
+      border-bottom: none;
+    }
+
+    .details {
+      display: block;
+      margin-bottom: var(--cui-spacings-mega);
+      color: var(--cui-fg-subtle);
+    }
+  }
+
+  .tags {
+    display: inline-flex;
+    flex-direction: row;
+    list-style: none;
+
+    li {
+      margin-right: var(--cui-spacings-byte);
+    }
+  }
+</style>

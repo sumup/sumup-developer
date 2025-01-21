@@ -1,0 +1,12 @@
+.site-title {
+  gap: calc(0.5 * var(--sl-nav-gap));
+  font-size: var(--sl-text-h4);
+}
+
+.site-title span {
+  color: var(--sl-color-white);
+}
+
+.site-title img {
+  height: calc(var(--sl-nav-height) - 3 * var(--sl-nav-pad-y));
+}

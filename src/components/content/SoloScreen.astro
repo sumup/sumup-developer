@@ -1,0 +1,47 @@
+---
+const { src, alt, title } = Astro.props;
+---
+
+<figure>
+  <div class="wrap">
+    <div class="screen">
+      <img src={src} alt={alt} />
+    </div>
+  </div>
+  <figcaption>{title || alt}</figcaption>
+</figure>
+
+<style lang="scss">
+  figure {
+    display: block;
+    text-align: center;
+  }
+
+  .wrap {
+    margin: 0 auto;
+    max-width: 400px;
+    aspect-ratio: 1 / 1;
+  }
+
+  .screen {
+    position: relative;
+    background-image: url("/img/solo.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    aspect-ratio: 1 / 1;
+    padding: 11%;
+  }
+
+  img {
+    width: 100%;
+    border-radius: var(--cui-border-radius-kilo);
+    background-color: white;
+  }
+
+  figcaption {
+    text-decoration: none;
+    font-size: 0.9rem;
+    color: var(--cui-fg-subtle);
+  }
+</style>
