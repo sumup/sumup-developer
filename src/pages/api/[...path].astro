@@ -1,7 +1,7 @@
 ---
 import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
 import ApiDocs from "@components/ApiDocs/ApiDocs.astro";
-import type { Props } from "@astrojs/starlight/props";
+import type { Props, StarlightPageProps } from "@astrojs/starlight/props";
 import { formatSlug } from "@lib/helpers";
 import { doc, pathsByTag } from "@lib/openapi";
 import type { StarlightUserConfig } from "@astrojs/starlight/types";
@@ -34,7 +34,7 @@ const sidebar: StarlightUserConfig["sidebar"] = [
         link: "/api",
       },
       ...Object.entries(pathsByTag).map(([tagName, operations]) => {
-        const tag = doc.tags?.find((t) => formatSlug(t.name) === tagName)!;
+        const tag = doc.tags.find((t) => formatSlug(t.name) === tagName)!;
         return {
           label: tag.name,
           collapsed: !mainResources.includes(tag.name),
@@ -66,13 +66,14 @@ const sidebar: StarlightUserConfig["sidebar"] = [
   },
 ];
 
-Astro.props.sidebar = sidebar;
+// TODO: fix the types
+Astro.props.sidebar = sidebar as unknown as StarlightPageProps["sidebar"];
 
 const frontmatter = {
   title: "API Reference",
   description: "SumUp API reference.",
   tableOfContents: false,
-} as const;
+} as StarlightPageProps["frontmatter"];
 
 const { path } = Astro.params;
 const [tag, section] = (path || "").split("/");
@@ -94,10 +95,11 @@ const [tag, section] = (path || "").split("/");
 
 <script>
   // scroll to the current Tag / Operation based on the path
-  const [_slash, _api, tag, section] = window.location.pathname.split("/");
+  // In order: '', 'api', tag, section
+  const [, , tag, section] = window.location.pathname.split("/");
   if (tag || section) {
     // scroll to current target
-    let scrollTo = section ? `${tag}-${section}` : tag;
+    const scrollTo = section ? `${tag}-${section}` : tag;
     const target = document.getElementById(scrollTo);
     if (target) {
       target.scrollIntoView();

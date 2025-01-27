@@ -82,8 +82,8 @@ import "@sumup-oss/design-tokens/dynamic.css";
 }
 <script data-tag-id={import.meta.env.PUBLIC_GA_TAG_ID} is:inline>
   window.dataLayer = window.dataLayer || [];
-  function gtag() {
-    dataLayer.push(arguments);
+  function gtag(...args) {
+    dataLayer.push(args);
   }
   gtag("js", new Date());
   gtag(

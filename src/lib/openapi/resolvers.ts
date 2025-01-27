@@ -15,7 +15,7 @@ export const resolveParameter = (
 ): OpenAPIV3_1.ParameterObject => {
   if ("$ref" in param) {
     const ref = param.$ref;
-    const [_, _component, name] = ref.split("/");
+    const [, , name] = ref.split("/");
     if (!doc.components?.parameters) {
       throw new Error(
         `Resolve reference "${ref}": 'components' don't have 'parameters'`,
@@ -39,7 +39,7 @@ export const resolveBody = (
   if (!body) return undefined;
   if ("$ref" in body) {
     const ref = body.$ref;
-    const [_, _component, name] = ref.split("/");
+    const [, , name] = ref.split("/");
     if (!doc.components?.requestBodies) {
       throw new Error(
         `Resolve reference "${ref}": 'components' don't have 'requestBodies'`,
@@ -71,7 +71,7 @@ export const resolveReference = <
   const x: Record<
     string,
     Record<string, Record<string, OpenAPIV3_1.SchemaObject>>
-    // biome-ignore lint/suspicious/noExplicitAny: FIXME
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   > = doc as any;
   if (!Object.hasOwn(x, path)) return null;
   if (!Object.hasOwn(x[path], kind)) return null;
@@ -87,7 +87,6 @@ export const resolveSchema = (
     if (!resolved) {
       throw new SchemaError(`Invalid reference ${obj.$ref}`, obj);
     }
-    // biome-ignore lint/style/noParameterAssign: FIXME
     obj = resolved as OpenAPIV3_1.SchemaObject;
   }
 
@@ -115,7 +114,7 @@ export const resolveSchema = (
 export const resolveExample = (
   obj: OpenAPIV3_1.ReferenceObject | OpenAPIV3_1.SchemaObject,
   required = false,
-  // biome-ignore lint/suspicious/noExplicitAny: FIXME
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): any | null => {
   const schema = resolveSchema(obj);
 

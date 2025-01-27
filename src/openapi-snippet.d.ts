@@ -1,5 +1,5 @@
 declare module "openapi-snippet" {
-  import type { OpenAPIV3 } from "openapi-types";
+  import type { Document } from "src/types/openapi";
   export type Target =
     | "c_libcurl"
     | "csharp_restsharp"
@@ -25,7 +25,7 @@ declare module "openapi-snippet" {
     | "shell_wget"
     | "swift_nsurlsession";
   export function getEndpointSnippets(
-    doc: OpenAPIV3.Document,
+    doc: Document,
     path: string,
     method: string,
     targets: string[],

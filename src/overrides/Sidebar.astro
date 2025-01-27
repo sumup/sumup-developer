@@ -3,7 +3,7 @@ import type { Props } from "@astrojs/starlight/props";
 import Default from "@astrojs/starlight/components/Sidebar.astro";
 import { getEntry } from "astro:content";
 import type { Badge } from "@astrojs/starlight/components";
-import type { ComponentProps } from "astro/types";
+import type { ComponentProps, HTMLAttributes } from "astro/types";
 
 interface Link {
   type: "link";
@@ -11,6 +11,7 @@ interface Link {
   href: string;
   isCurrent: boolean;
   badge: ComponentProps<typeof Badge> | undefined;
+  attrs: Omit<HTMLAttributes<"a">, "children">;
   order: number;
 }
 
@@ -20,7 +21,7 @@ type SidebarEntry = Link | Group;
 interface Group {
   type: "group";
   label: string;
-  entries: SidebarEntry[];
+  entries: (Link | Group)[];
   collapsed: boolean;
   badge: ComponentProps<typeof Badge> | undefined;
   order: number;
@@ -63,21 +64,8 @@ async function handleGroup(group: Group): Promise<SidebarEntry> {
 
   const frontmatter = indexPage.data;
 
-  group.label = frontmatter.sidebar.group?.label ?? frontmatter.title;
+  group.label = frontmatter.title;
   group.order = frontmatter.sidebar.order ?? Number.MAX_VALUE;
-  group.badge = frontmatter.sidebar.group?.badge;
-
-  if (frontmatter.hideChildren) {
-    return {
-      type: "link",
-      href: indexLink.href,
-      label: group.label,
-      order: group.order,
-      attrs: {},
-      isCurrent: indexLink.href.slice(1, -1) === Astro.params.slug,
-      badge: undefined,
-    } as Link;
-  }
 
   for (const entry of group.entries.keys()) {
     if (group.entries[entry].type === "group") {
@@ -92,11 +80,6 @@ async function handleGroup(group: Group): Promise<SidebarEntry> {
   const indexIdx = group.entries.findIndex(
     (x) => x.type === "link" && indexLink.href === x.href,
   ) as number;
-
-  if (indexPage.data.sidebar.group?.hideIndex) {
-    group.entries.splice(indexIdx, 1)[0];
-    return group;
-  }
 
   group.entries.unshift(group.entries.splice(indexIdx, 1)[0]);
   group.entries[0].label = indexPage.data.sidebar.label ?? "Overview";
@@ -139,6 +122,6 @@ if (currentSection !== "api") {
 }
 ---
 
-<Default {...Astro.props} sidebar={filtered.entries}>
+<Default {...Astro.props} sidebar={filtered.entries as Props["sidebar"]}>
   <slot />
 </Default>
