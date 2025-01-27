@@ -6,6 +6,8 @@ import { formatSlug } from "@lib/helpers";
 import { doc, pathsByTag } from "@lib/openapi";
 import type { StarlightUserConfig } from "@astrojs/starlight/types";
 
+const mainResources = ["Checkouts", "Customers", "Merchant"];
+
 export async function getStaticPaths() {
   return [
     // root
@@ -35,6 +37,7 @@ const sidebar: StarlightUserConfig["sidebar"] = [
         const tag = doc.tags?.find((t) => formatSlug(t.name) === tagName)!;
         return {
           label: tag.name,
+          collapsed: !mainResources.includes(tag.name),
           items: [
             {
               label: "Overview",

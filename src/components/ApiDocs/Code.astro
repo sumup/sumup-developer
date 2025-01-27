@@ -24,13 +24,12 @@ const hasHeader = !!Astro.slots.header || !!name;
     )
   }
   {description && <div class="description">{description}</div>}
-  <DefaultCode lang={lang} code={code} />
+  <DefaultCode lang={lang} code={code} class="code" />
 </div>
 
 <style>
   .codeblock {
     background: var(--cui-bg-subtle);
-    border-radius: var(--cui-border-radius-mega);
     overflow: hidden;
     max-height: calc(80vh);
     display: flex;
@@ -54,6 +53,9 @@ const hasHeader = !!Astro.slots.header || !!name;
   }
   .code {
     overflow: auto;
-    margin: 0;
+    border: var(--cui-border-width-kilo) solid var(--cui-border-subtle);
+  }
+  .code :global(.frame pre) {
+    border: none;
   }
 </style>
