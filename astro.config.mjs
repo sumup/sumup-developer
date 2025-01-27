@@ -53,7 +53,7 @@ export default defineConfig({
       editLink: {
         baseUrl: "https://github.com/sumup/documentation/edit/main/",
       },
-      customCss: ["./src/base.css", "./src/title.css"],
+      customCss: ["@sumup-oss/circuit-ui/styles.css", "./src/base.css", "./src/title.css"],
       pagination: false,
       lastUpdated: true,
     }),
