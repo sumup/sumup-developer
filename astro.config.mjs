@@ -4,13 +4,16 @@ import starlight from "@astrojs/starlight";
 
 import { defineConfig } from "astro/config";
 
+import vercel from "@astrojs/vercel";
+
 export default defineConfig({
-  output: "static",
+  adapter: vercel(),
   site: "https://developer.sumup.com",
 
   experimental: {
     contentIntellisense: true,
   },
+
 
   integrations: [
     markdoc({ allowHTML: true }),
