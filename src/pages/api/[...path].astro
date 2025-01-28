@@ -114,24 +114,77 @@ const [tag, section] = (path || "").split("/");
 </script>
 
 <script>
-  const links = document.querySelectorAll("[data-scroll-to]");
-  for (const link of links) {
-    link.addEventListener("click", (e) => {
+  document.addEventListener("DOMContentLoaded", () => {
+    const links = document.querySelectorAll("[data-scroll-to]");
+    const sections = Array.from(links).map((link) => {
       const scrollTo = link.getAttribute("data-scroll-to");
-      if (!scrollTo) return;
-      e.preventDefault();
-      document
-        .querySelector('[aria-current="page"]')
-        ?.removeAttribute("aria-current");
-      link.setAttribute("aria-current", "page");
-      const target = document.getElementById(scrollTo);
-      if (target) {
-        target.scrollIntoView();
-        history.pushState({}, "", link.getAttribute("href"));
-        e.preventDefault();
-      }
+      return document.getElementById(scrollTo);
     });
-  }
+
+    for (const link of links) {
+      link.addEventListener("click", (e) => {
+        const scrollTo = link.getAttribute("data-scroll-to");
+        if (!scrollTo) return;
+        e.preventDefault();
+        document
+          .querySelector('[aria-current="page"]')
+          ?.removeAttribute("aria-current");
+        link.setAttribute("aria-current", "page");
+        const target = document.getElementById(scrollTo);
+        if (target) {
+          target.scrollIntoView();
+          history.pushState({}, "", link.getAttribute("href"));
+          e.preventDefault();
+        }
+      });
+    }
+
+    const onScroll = () => {
+      let closestSection = null;
+      let closestDistance = Infinity;
+
+      sections.forEach((section) => {
+        if (section) {
+          const rect = section.getBoundingClientRect();
+          const distanceFromTop = Math.abs(rect.top - 50); // Calculate distance from 50px
+          if (distanceFromTop < closestDistance) {
+            closestDistance = distanceFromTop;
+            closestSection = section;
+          }
+        }
+      });
+
+      if (closestSection) {
+        const link = Array.from(links).find(
+          (link) => link.getAttribute("data-scroll-to") === closestSection.id,
+        );
+
+        if (link) {
+          // Update the aria-current attribute
+          document
+            .querySelector('[aria-current="page"]')
+            ?.removeAttribute("aria-current");
+          link.setAttribute("aria-current", "page");
+
+          // Open the parent <details> if necessary
+          const details = link.closest("details");
+          if (details && !details.hasAttribute("open")) {
+            details.setAttribute("open", "");
+            details.dataset.wasAutoOpened = "true"; // Mark as auto-opened
+          }
+
+          // Close other auto-opened details elements
+          Array.from(document.querySelectorAll("details[data-was-auto-opened]"))
+            .filter((d) => d !== details)
+            .forEach((d) => {
+              d.removeAttribute("open");
+              delete d.dataset.wasAutoOpened;
+            });
+        }
+      }
+    };
+    document.addEventListener("scroll", onScroll, { passive: true });
+  });
 </script>
 
 <style is:global>

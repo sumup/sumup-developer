@@ -37,7 +37,7 @@ const schema = resolveSchema(obj);
           <Close size="16" />
           &nbsp;Close
         </div>
-        <div>{kind}</div>
+        <div>{schema.title || kind}</div>
         <div />
       </div>
     )
@@ -48,11 +48,11 @@ const schema = resolveSchema(obj);
         <div class="icon">
           <ChevronDown size="16" />
         </div>
-        <Headline as="h3">{kind}</Headline>
+        <Headline as="h3">{schema.title || kind}</Headline>
       </div>
     )
   }
-  {!nested && !collapsable && <h3>{kind}</h3>}
+  {!nested && !collapsable && <h3>{schema.title || kind}</h3>}
   {
     schema.type === "array" && "items" in schema && (
       <div>
@@ -124,7 +124,6 @@ const schema = resolveSchema(obj);
   }
 
   .collapsable > .header {
-    margin-left: calc(-1 * var(--cui-spacings-giga));
     display: flex;
     flex-direction: row;
     align-items: center;
