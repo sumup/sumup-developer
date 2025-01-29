@@ -34,19 +34,21 @@ const tagIsTarget = !targetOp && targetTag === slug;
 
 <section
   id={slug}
-  data-pagefind-ignore={targetTag !== slug ? "all" : ""}
-  data-pagefind-meta={`tag:${name}`}
+  {...tagIsTarget
+    ? {
+        "data-pagefind-body": "",
+        "data-pagefind-tag": name,
+        "data-pagefind-kind": "tag",
+        "data-pagefind-meta":
+          "kind[data-pagefind-kind], tag[data-pagefind-tag]",
+      }
+    : {
+        "data-pagefind-ignore": "all",
+      }}
   {...attrs}
 >
   <LRGrid class="tag">
-    <div
-      class="tag-info"
-      data-pagefind-body={tagIsTarget}
-      data-pagefind-ignore={!tagIsTarget ? "all" : ""}
-      data-pagefind-tag={name}
-      data-pagefind-kind="tag"
-      data-pagefind-meta="kind[data-pagefind-kind], tag[data-pagefind-tag]"
-    >
+    <div class="tag-info">
       <Headline as="h2" className="headline">
         {name}
         {
@@ -63,8 +65,17 @@ const tagIsTarget = !targetOp && targetTag === slug;
   coreObjects?.length > 0 && (
     <div
       class="objects"
-      data-pagefind-body={tagIsTarget}
-      data-pagefind-ignore={!tagIsTarget ? "all" : ""}
+      {...(tagIsTarget
+        ? {
+            "data-pagefind-body": "",
+            "data-pagefind-tag": name,
+            "data-pagefind-kind": "object",
+            "data-pagefind-meta":
+              "kind[data-pagefind-kind], tag[data-pagefind-tag]",
+          }
+        : {
+            "data-pagefind-ignore": "all",
+          })}
     >
       {coreObjects.map((schema) => (
         <SchemaObject schema={schema} />
@@ -76,15 +87,26 @@ const tagIsTarget = !targetOp && targetTag === slug;
   operations && (
     <div
       class="operations"
-      data-pagefind-body={tagIsTarget}
-      data-pagefind-ignore={!tagIsTarget ? "all" : ""}
+      {...(tagIsTarget
+        ? {
+            "data-pagefind-ignore": "all",
+          }
+        : {})}
     >
       {operations.map((operation) => (
         <Operation
           operation={operation}
-          data-pagefind-tag={name}
-          data-pagefind-kind="operation"
-          data-pagefind-meta="kind[data-pagefind-kind], tag[data-pagefind-tag]"
+          {...(targetTag === slug && targetOp === operation.slug
+            ? {
+                "data-pagefind-body": "",
+                "data-pagefind-tag": name,
+                "data-pagefind-kind": "operation",
+                "data-pagefind-meta":
+                  "kind[data-pagefind-kind], tag[data-pagefind-tag]",
+              }
+            : {
+                "data-pagefind-ignore": "all",
+              })}
         />
       ))}
     </div>
