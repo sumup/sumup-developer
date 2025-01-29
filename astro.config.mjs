@@ -54,7 +54,7 @@ export default defineConfig({
         baseUrl: "https://github.com/sumup/documentation/edit/main/",
       },
       customCss: [
-        "@sumup-oss/circuit-ui/components.css",
+        "@sumup-oss/circuit-ui/experimental/styles.css",
         "./src/base.css",
         "./src/title.css",
       ],

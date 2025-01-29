@@ -50,7 +50,7 @@
     "@elbwalker/walker.js": "^1.6.5",
     "@markdoc/markdoc": "^0.4.0",
     "@sindresorhus/slugify": "^2.2.1",
-    "@sumup-oss/circuit-ui": "https://pkg.pr.new/sumup-oss/circuit-ui/@sumup-oss/circuit-ui@9aa02b6390b851d8431bce958b8c372d8ec77efe",
+    "@sumup-oss/circuit-ui": "^9.7.0",
     "@sumup-oss/design-tokens": "^8.1.0",
     "@sumup-oss/icons": "^5.2.0",
     "@types/node": "22.10.7",
