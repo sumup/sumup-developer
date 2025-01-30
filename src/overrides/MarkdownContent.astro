@@ -4,11 +4,11 @@ import Default from "@astrojs/starlight/components/MarkdownContent.astro";
 ---
 
 {
-  !Astro.props.id.startsWith("api") ? (
+  Astro.props.custom ? (
+    <slot />
+  ) : (
     <Default {...Astro.props}>
       <slot />
     </Default>
-  ) : (
-    <slot />
   )
 }

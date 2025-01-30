@@ -1,6 +1,6 @@
 ---
 import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
-import type { Props } from "@astrojs/starlight/props";
+import type { Props, StarlightPageProps } from "@astrojs/starlight/props";
 import Card from "@components/Card.astro";
 import Brands from "@components/Landing/Brands.astro";
 import TryItOut from "@components/TryItOut.astro";
@@ -12,25 +12,23 @@ import {
   SecurePayments,
   Sparkles,
 } from "@sumup-oss/icons";
-import HeroImg from "../assets/hero-icon.svg";
 
-const frontmatter = {
-  title: "Welcome to SumUp",
-  description:
-    "Welcome to SumUp portal for Developers. We’ve got everything you need to build your own payment acceptance solutions for your business.",
-  template: "splash",
-  hero: {
+const props = {
+  frontmatter: {
     title: "Welcome to SumUp",
-    tagline:
+    description:
       "Welcome to SumUp portal for Developers. We’ve got everything you need to build your own payment acceptance solutions for your business.",
-    image: {
-      file: HeroImg,
+    template: "splash",
+    hero: {
+      title: "Welcome to SumUp",
+      tagline:
+        "Welcome to SumUp portal for Developers. We’ve got everything you need to build your own payment acceptance solutions for your business.",
     },
   },
-} as const;
+} as StarlightPageProps;
 ---
 
-<StarlightPage frontmatter={frontmatter} {...Astro.props}>
+<StarlightPage {...props}>
   <main>
     <section>
       <div class="card-grid">

@@ -2,19 +2,14 @@
 import { Image } from "astro:assets";
 import type { Props } from "@astrojs/starlight/props";
 import { Display } from "@sumup-oss/circuit-ui";
+import HeroImg from "../assets/hero-icon.svg";
 
 const { data } = Astro.props.entry;
-const { title = data.title, tagline, image } = data.hero || {};
-
-const imageAttrs = {
-  loading: "eager" as const,
-  decoding: "async" as const,
-  alt: image?.alt || "",
-};
+const { title = data.title, tagline } = data.hero || {};
 ---
 
 <div class="hero">
-  {image?.file && <Image src={image.file} {...imageAttrs} />}
+  <Image src={HeroImg} alt={""} />
   <div class="sl-flex stack">
     <Display as="h1" size="l" id={"_top"} data-page-title>{title}</Display>
     {tagline && <div class="tagline" set:html={tagline} />}
