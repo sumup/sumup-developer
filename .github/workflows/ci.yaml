@@ -16,37 +16,8 @@ env:
   NODE_OPTIONS: "--max_old_space_size=4096"
 
 jobs:
-  astrocheck:
-    name: Type-checking (Astro)
-    runs-on: ubuntu-latest
-    env:
-      FORCE_COLOR: true
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version-file: ".nvmrc"
-          cache: npm
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Build
-        # build beforehand so resolution of static assets that are build during the build
-        # process works
-        run: |
-          # Filling in env with placeholders for the build to pass
-          cp .env.test .env
-          npm run build
-
-      - name: Run Check
-        run: npm run check
-
-  quick_checks:
-    name: Quick checks
+  lint:
+    name: Lint
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -64,8 +35,17 @@ jobs:
       - name: Run type checking
         run: npm run tsc
 
-      - name: Run tests
-        run: npm run test
+      - name: Run Check
+        run: npm run check
 
       - name: Run linter
         run: npm run lint
+
+      # Tests do not exist at the moment
+      # - name: Build
+      #   # build beforehand so resolution of static assets that are build during the build
+      #   # process works
+      #   run: |
+      #     # Filling in env with placeholders for the build to pass
+      #     cp .env.test .env
+      #     npm run build
