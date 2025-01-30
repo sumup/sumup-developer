@@ -57,6 +57,7 @@ export const POST: APIRoute = async ({ request, redirect }) => {
       throw new Error(`Unexpected response from marking cloud: ${status}`);
     }
   } catch (error) {
+    console.error((error as Error).toString());
     redirectTo.searchParams.append("status", "error");
     return redirect(redirectTo.pathname + redirectTo.search);
   }
