@@ -3,6 +3,7 @@
   /* Layout sizing */
   --sl-sidebar-width: 17rem;
   --sl-content-width: 60rem;
+  --sl-nav-height: 3.5rem;
 
   /* Typography */
   --sl-text-h1: var(--cui-headline-l-font-size);
@@ -63,4 +64,8 @@
   /* --sl-color-accent-high: hsl(234, 80%, 30%); */
   /* --sl-color-accent: hsl(234, 90%, 60%); */
   /* --sl-color-accent-low: hsl(234, 88%, 90%); */
+}
+
+* {
+  scrollbar-width: thin;
 }

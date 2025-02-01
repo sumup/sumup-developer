@@ -1,6 +1,7 @@
 ---
 import { Code } from "@astrojs/starlight/components";
 import Card from "./Card.astro";
+import { Headline } from "@sumup-oss/circuit-ui";
 
 const example1 = `
 func main() {
@@ -51,7 +52,7 @@ resp, err := client.Readers.CreateCheckout(
 )`;
 ---
 
-<h2>Try it out</h2>
+<Headline as="h2" className="header">Try it out</Headline>
 
 <div class="container">
   <input type="radio" id="section1" name="sections" checked />
@@ -100,6 +101,10 @@ resp, err := client.Readers.CreateCheckout(
 </div>
 
 <style>
+  :global(.header) {
+    margin-bottom: var(--cui-spacings-giga);
+  }
+
   .card {
     --sl-card-border: var(--sl-color-purple);
     --sl-card-bg: var(--sl-color-purple-low);

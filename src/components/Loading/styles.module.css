@@ -1,7 +1,0 @@
-.wrapper {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  margin: var(--cui-spacings-zetta) 0;
-}

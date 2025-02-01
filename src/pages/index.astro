@@ -5,54 +5,54 @@ import Card from "@components/Card.astro";
 import Brands from "@components/Landing/Brands.astro";
 import TryItOut from "@components/TryItOut.astro";
 import { Headline, Body, ButtonGroup } from "@sumup-oss/circuit-ui";
+import SwiftCheckout from "../assets/swift-checkout.svg?raw";
+import ApiCall from "../assets/api-call.svg?raw";
 import {
-  CardSecurity,
-  FlashOn,
   InterestOnBalance,
   NoCosts,
   SecurePayments,
-  Sparkles,
   Key,
 } from "@sumup-oss/icons";
+import CardLink from "@components/CardLink.astro";
+import CardStack from "@components/CardStack.astro";
 
 const props = {
   frontmatter: {
-    title: "SumUp Developer platform",
+    title: "SumUp developer platform",
     description:
       "Welcome to SumUp portal for Developers. We’ve got everything you need to build your own payment acceptance solutions for your business.",
     tableOfContents: false,
     hero: {
       title: "SumUp developer platform",
-      tagline:
-        "Welcome to SumUp portal for Developers. We’ve got everything you need to build your own payment acceptance solutions for your business.",
     },
   },
+  custom: true,
 } as StarlightPageProps;
 ---
 
 <StarlightPage {...props}>
   <main>
     <div class="cta">
-      <div>
-        <Headline as="h2" size="s"><Key /> Get your API key</Headline>
-        <Body>
-          Create a merchant account to access API keys and a suite of developer
-          tools.
-        </Body>
-        <ButtonGroup
-          align="left"
-          actions={{
-            primary: {
-              children: "Sign Up",
-              size: "s",
-            },
-            secondary: {
-              children: "Login",
-              size: "s",
-            },
-          }}
-        />
-      </div>
+      <Headline as="h2" size="s"><Key /> Get your API key</Headline>
+      <Body>
+        Create a merchant account to access API keys and a suite of developer
+        tools.
+      </Body>
+      <ButtonGroup
+        align="left"
+        actions={{
+          primary: {
+            children: "Sign Up",
+            size: "s",
+            href: "https://me.sumup.com/signup?intent=developer",
+          },
+          secondary: {
+            children: "Login",
+            size: "s",
+            href: "https://me.sumup.com/settings-v2/api-keys",
+          },
+        }}
+      />
     </div>
     <section>
       <div class="card-grid">
@@ -98,181 +98,51 @@ const props = {
             </li>
           </ul>
         </Card>
-        <Card title="Guides" icon="article">
-          <ul>
-            <li>
-              <a href="/api">API reference</a>
-            </li>
-            <li>
-              <a href="/changelog">Changelog</a>
-            </li>
-            <li>
-              <a href="/online-payments/tools/introduction">Tools</a>
-            </li>
-          </ul>
-        </Card>
       </div>
     </section>
     <section>
       <TryItOut />
     </section>
     <section>
-      <div class="content callout">
-        <div class="image">
-          <img src="/img/payment-link.png" alt="" class="hero-image" />
-        </div>
-        <div class="text">
-          <h2>Get paid flexibly with payment links</h2>
-          <p>
-            You can accept convenient online payments using payment links.
-            Simply share them as you would any other link – and your customers
-            can pay securely in seconds.
-          </p>
-          <ul>
-            <li>
-              <a href="/online-payments/introduction/get-started">
-                Getting started with Online Payments</a
-              >
-            </li>
-            <li>
-              <a href="/online-payments/apm/apple-pay">
-                Apple Pay Integration Guide</a
-              >
-            </li>
-            <li>
-              <a href="/online-payments/apm/google-pay">
-                Google Pay Integration Guide</a
-              >
-            </li>
-          </ul>
-        </div>
-      </div>
-    </section>
-    <section>
-      <div class="content callout">
-        <div class="image">
-          <img src="/img/ecom-plugins.png" alt="" class="hero-image" />
-        </div>
-        <div class="text">
-          <h2>Add the SumUp plug-in to you ecommerce platform</h2>
-          <p>
-            Accept payments safely on major ecommerce platforms, including
-            WooCommerce, Wix and Prestashop with SumUp plugins.
-          </p>
-          <ul>
-            <li>
-              <a href="/online-payments/plugins/wix">Accept payments with WIX</a
-              >
-            </li>
-            <li>
-              <a href="/online-payments/plugins/woocommerce"
-                >Accept payments with WooCommerce</a
-              >
-            </li>
-            <li>
-              <a href="/online-payments/plugins/prestashop"
-                >Accept payments with PrestaShop</a
-              >
-            </li>
-          </ul>
-        </div>
-      </div>
-    </section>
-    <section>
-      <div class="content callout">
-        <div class="image">
-          <img src="/img/apis.png" alt="" class="hero-image" />
-        </div>
-        <div class="text">
-          <h2>Simplify your payments with the SumUp API or widget</h2>
-          <p>
-            Create the best experience for your customers by easily integrating
-            SumUp within your website or app via our widget, or use our low-risk
-            and fully compliant API, for a fully customised experience.
-          </p>
-          <ul>
-            <li>
-              <a href="/api"> SumUp API Reference</a>
-            </li>
-            <li>
-              <a href="/online-payments/introduction/get-started">
-                Getting started guide</a
-              >
-            </li>
-          </ul>
-        </div>
-      </div>
-    </section>
-    <section class="choose-sumup">
-      <div class="content">
-        <h2>Why choose SumUp’s online payment tools?</h2>
-        <div class="callouts">
-          <div>
-            <CardSecurity aria-hidden="true" className="icon" />
-            <h3>Quick and secure transactions</h3>
-            <p>
-              Accept direct payments from major card brands, as well as
-              alternative payment methods.
-            </p>
-          </div>
-          <div>
-            <Sparkles aria-hidden="true" className="icon" />
-            <h3>No lengthy onboarding</h3>
-            <p>
-              Existing SumUp merchants can avoid having to go through additional
-              onboarding and benefit from unified reporting.
-            </p>
-          </div>
-          <div>
-            <FlashOn aria-hidden="true" className="icon" />
-            <h3>Access to your money faster</h3>
-            <p>
-              Receive the money you earn with our products fast. With our
-              standard plan, you’ll get your payouts within 1-3 business days,
-              or get them the next business day with the SumUp One subscription.
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-    <section class="card-reader-payments">
-      <div class="content hero">
-        <div>
-          <img src="/img/card-reader-payments.png" alt="" />
-        </div>
-        <div>
-          <h2>Card reader payments</h2>
-          <p>
-            SumUp simplifies payments. From retail or hospitality, to transport
-            or delivery, we provide you with our SDK and API Switch so that you
-            can accept card payments anytime, anywhere.
-          </p>
-          <a href="/terminal-payments/introduction/overview"> Learn more</a>
-        </div>
-      </div>
-      <div class="content callouts">
-        <div>
-          <h3>Quick integrations</h3>
-          <p>
-            Integrate SumUp's SDK or API in hours. We handle onboarding, risk &
-            fraud, settlement, and support.
-          </p>
-        </div>
-        <div>
-          <h3>EMV hardware</h3>
-          <p>
-            Proprietary hardware supporting contactless, Chip & PIN, magnetic
-            stripe.
-          </p>
-        </div>
-        <div>
-          <h3>Merchant management</h3>
-          <p>
-            Increased merchant visibility via our dashboard to track, monitor,
-            and change fees.
-          </p>
-        </div>
-      </div>
+      <Headline as="h2" className="header">Start building</Headline>
+      <CardStack>
+        <CardLink
+          href="/online-payments/tools/swift-checkout/"
+          title="Swift checkout"
+          description="Collect payment, address, and contact information with the click of a button."
+          image={SwiftCheckout}
+        />
+        <CardLink
+          href="/terminal-payments/tools/cloud-api/"
+          title="Card reader payments"
+          description="Integrate card payments from any platform using Cloud API."
+          image={ApiCall}
+        />
+        <CardLink
+          href="/online-payments/tools/card-widget/"
+          title="Payment widget"
+          description="Securely collect and process customers payment information."
+          image={SwiftCheckout}
+        />
+        <CardLink
+          href="/online-payments/plugins"
+          title="Plugins"
+          description="Use SumUp plugin for Prestashop, Wix, or WooCommerce."
+          image={ApiCall}
+        />
+        <CardLink
+          href="/online-payments/plugins"
+          title="Mobile app integration"
+          description="Accept card reader payments from your own app using SumUp card readers."
+          image={SwiftCheckout}
+        />
+        <CardLink
+          href="/online-payments/plugins"
+          title="SDKs"
+          description="Use your favorite programming language with one of our SDKs."
+          image={ApiCall}
+        />
+      </CardStack>
     </section>
     <section class="antifraud">
       <div class="content">
@@ -302,6 +172,7 @@ const props = {
       </div>
     </section>
     <section class="brands">
+      <h2>Brands that build with SumUp</h2>
       <Brands />
     </section>
     <section>
@@ -411,11 +282,10 @@ const props = {
   }
 
   section {
-    padding: var(--cui-spacings-mega);
+    margin-top: var(--cui-spacings-exa);
 
-    .content {
-      max-width: 960px;
-      margin: var(--cui-spacings-tera) auto;
+    :global(.header) {
+      margin-bottom: var(--cui-spacings-giga);
     }
 
     a {
@@ -436,42 +306,6 @@ const props = {
           grid-area: left;
         }
       }
-    }
-  }
-
-  .callout {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    max-width: 960px;
-    grid-gap: var(--cui-spacings-tera);
-    grid-template-areas: "left right";
-    margin: var(--cui-spacings-tera);
-    align-items: center;
-
-    .image {
-      grid-area: left;
-    }
-
-    @media screen and (max-width: 1000px) {
-      grid-template-columns: 1fr;
-      grid-template-areas:
-        "left"
-        "right";
-
-      .image {
-        width: 100%;
-
-        img {
-          max-width: 300px;
-          margin: 0 auto;
-          display: block;
-        }
-      }
-    }
-
-    .text {
-      grid-area: right;
-      padding: var(--cui-spacings-mega);
     }
   }
 
@@ -504,50 +338,8 @@ const props = {
     }
   }
 
-  .choose-sumup {
-    text-align: center;
-
-    .callouts {
-      text-align: left;
-      & > div {
-        margin-bottom: var(--cui-spacings-mega);
-      }
-
-      img {
-        max-width: 64px;
-        margin-bottom: var(--cui-spacings-kilo);
-      }
-    }
-  }
-
-  .card-reader-payments {
-    background-color: var(--cui-bg-subtle);
-
-    .hero {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      grid-gap: var(--cui-spacings-tera);
-      margin: var(--cui-spacings-tera) auto;
-      align-items: center;
-      @media screen and (max-width: 760px) {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    p + a {
-      display: block;
-      margin-top: var(--cui-spacings-kilo);
-    }
-  }
-
   .antifraud {
     text-align: center;
-    background: var(--cui-bg-strong);
-    color: var(--cui-fg-on-strong);
-
-    h2 {
-      color: var(--cui-fg-on-strong);
-    }
 
     img {
       width: 56px;
@@ -589,7 +381,7 @@ const props = {
     }
 
     @media (min-width: 50rem) {
-      grid-template-columns: 1fr 1fr 1fr 1fr;
+      grid-template-columns: 1fr 1fr 1fr;
       gap: 1.5rem;
     }
   }
@@ -597,7 +389,11 @@ const props = {
   .cta {
     padding: var(--cui-spacings-giga);
     background-color: var(--cui-bg-subtle);
-    border-radius: var(--cui-border-radius-kilo);
+    border-radius: var(--cui-border-radius-byte);
+  }
+
+  .cta > :global(*:not(:last-child)) {
+    margin-bottom: var(--cui-spacings-kilo);
   }
 
   .cta :global(h2) {

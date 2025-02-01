@@ -1,106 +1,20 @@
 ---
-import { Image } from "astro:assets";
 import type { Props } from "@astrojs/starlight/props";
 import { Display } from "@sumup-oss/circuit-ui";
-import HeroImg from "../assets/hero-icon.svg";
 
-const { data } = Astro.props.entry;
-const { title = data.title, tagline } = data.hero || {};
+const {
+  data: { title },
+} = Astro.props.entry;
 ---
 
 <div class="hero">
-  <Image src={HeroImg} alt={""} />
-  <div class="sl-flex stack">
-    <Display as="h1" size="m" id={"_top"} data-page-title>{title}</Display>
-    {tagline && <div class="tagline" set:html={tagline} />}
-  </div>
+  <Display as="h1" size="s" weight="semibold" id={"_top"} data-page-title
+    >{title}</Display
+  >
 </div>
 
 <style>
   .hero {
-    display: grid;
-    align-items: center;
-    gap: 1rem;
-    padding-bottom: 1rem;
-  }
-
-  .hero > img,
-  .hero > .hero-html {
-    object-fit: contain;
-    width: min(70%, 20rem);
-    height: auto;
-    margin-inline: auto;
-  }
-
-  .stack {
-    flex-direction: column;
-    gap: clamp(1.5rem, calc(1.5rem + 1vw), 2rem);
-    text-align: center;
-  }
-
-  .copy {
-    flex-direction: column;
-    gap: 1rem;
-    align-items: center;
-  }
-
-  a {
-    color: var(--sl-color-white);
-  }
-
-  /* .copy > * {
-		max-width: 50ch;
-	} */
-
-  h1 {
-    font-size: clamp(
-      var(--sl-text-3xl),
-      calc(0.25rem + 5vw),
-      var(--sl-text-6xl)
-    );
-    line-height: var(--sl-line-height-headings);
-    font-weight: 600;
-    color: var(--sl-color-white);
-  }
-
-  .tagline {
-    font-size: clamp(
-      var(--sl-text-base),
-      calc(0.0625rem + 2vw),
-      var(--sl-text-xl)
-    );
-    color: var(--sl-color-gray-2);
-  }
-
-  .actions {
-    gap: 1rem 2rem;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-
-  @media (min-width: 50rem) {
-    .hero {
-      grid-template-columns: 7fr 4fr;
-      gap: 3%;
-      padding-block: 2rem 0;
-    }
-
-    .hero > img,
-    .hero > .hero-html {
-      order: 2;
-      width: min(100%, 25rem);
-    }
-
-    .stack {
-      text-align: start;
-    }
-
-    .copy {
-      align-items: flex-start;
-    }
-
-    .actions {
-      justify-content: flex-start;
-    }
+    margin-top: 2rem;
   }
 </style>

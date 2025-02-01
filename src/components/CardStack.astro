@@ -1,0 +1,33 @@
+---
+
+---
+
+<div class="cards">
+  <slot />
+</div>
+
+<style>
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--cui-spacings-giga);
+    overflow-x: auto;
+    padding-bottom: var(--cui-spacings-mega);
+  }
+
+  @media (max-width: 1280px) {
+    .cards {
+      display: flex;
+      flex-wrap: nowrap;
+      overflow-x: scroll;
+    }
+  }
+
+  .cards > :global(*:nth-child(even)) {
+    background-color: var(--cui-bg-elevated);
+  }
+
+  .cards > :global(*:nth-child(odd)) {
+    background-color: var(--cui-bg-subtle);
+  }
+</style>
