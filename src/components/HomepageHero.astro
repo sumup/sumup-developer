@@ -11,7 +11,7 @@ const { title = data.title, tagline } = data.hero || {};
 <div class="hero">
   <Image src={HeroImg} alt={""} />
   <div class="sl-flex stack">
-    <Display as="h1" size="l" id={"_top"} data-page-title>{title}</Display>
+    <Display as="h1" size="m" id={"_top"} data-page-title>{title}</Display>
     {tagline && <div class="tagline" set:html={tagline} />}
   </div>
 </div>
@@ -82,7 +82,7 @@ const { title = data.title, tagline } = data.hero || {};
     .hero {
       grid-template-columns: 7fr 4fr;
       gap: 3%;
-      padding-block: clamp(2.5rem, calc(1rem + 10vmin), 10rem);
+      padding-block: 2rem 0;
     }
 
     .hero > img,

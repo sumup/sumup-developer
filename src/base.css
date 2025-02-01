@@ -1,5 +1,14 @@
 /* Dark mode colors. */
 :root {
+  /* Layout sizing */
+  --sl-sidebar-width: 17rem;
+  --sl-content-width: 60rem;
+
+  /* Typography */
+  --sl-text-h1: var(--cui-headline-l-font-size);
+  --sl-text-h2: var(--cui-headline-m-font-size);
+  --sl-text-h3: var(--cui-headline-s-font-size);
+
   --sl-color-accent-low: #242424;
   --sl-color-accent: #6a6a6a;
   --sl-color-accent-high: #c8c8c8;

@@ -27,17 +27,9 @@ interface Group {
   order: number;
 }
 
-const { sidebar, slug } = Astro.props;
+const { slug } = Astro.props;
+let sidebar = Astro.props.sidebar as SidebarEntry[];
 const currentSection = slug?.split("/")[0];
-
-// scope sidebar to current section of the website
-const filtered = sidebar?.filter(
-  (x) => x.label.toLowerCase() === currentSection,
-)[0] as Group;
-
-if (!filtered?.entries) {
-  throw new Error(`[Sidebar] Failed to find entries for ${currentSection}`);
-}
 
 function sortGroup(a: SidebarEntry, b: SidebarEntry): number {
   const collator = new Intl.Collator("en");
@@ -106,9 +98,13 @@ async function handleLink(link: Link): Promise<Link> {
 }
 
 // api sidebar is generated in code and doesn't have index pages for all sections
-if (currentSection !== "api") {
-  filtered.entries = await Promise.all(
-    filtered.entries.map((entry) => {
+if (currentSection === "api") {
+  sidebar = (
+    sidebar.find((x) => x.label.toLowerCase() === currentSection)! as Group
+  ).entries;
+} else {
+  sidebar = await Promise.all(
+    sidebar.map((entry) => {
       if (entry.type === "group") {
         return handleGroup(entry);
       }
@@ -116,12 +112,10 @@ if (currentSection !== "api") {
     }),
   );
 
-  filtered.entries = filtered.entries.sort(sortGroup);
-
-  filtered.entries[0].label = "Overview";
+  sidebar = sidebar.sort(sortGroup);
 }
 ---
 
-<Default {...Astro.props} sidebar={filtered.entries as Props["sidebar"]}>
+<Default {...Astro.props} sidebar={sidebar as Props["sidebar"]}>
   <slot />
 </Default>

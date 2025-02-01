@@ -1,31 +1,33 @@
 ---
-import { Code, LinkCard } from "@astrojs/starlight/components";
+import { Code } from "@astrojs/starlight/components";
 import Card from "./Card.astro";
 
 const example1 = `
-client := sumup.NewClient().WithAuth(os.Getenv("SUMUP_API_KEY"))
-ctx := context.Background()
-merchantCode := "MERCHANT_CODE"
+func main() {
+  client := sumup.NewClient().WithAuth(os.Getenv("SUMUP_API_KEY"))
+  ctx := context.Background()
+  merchantCode := "MERCHANT_CODE"
 
-checkout, err := client.Checkouts.Create(ctx, sumup.CreateCheckoutBody{
-	Amount:            19,
-	CheckoutReference: "CO746453",
-	Currency:          "EUR",
-	MerchantCode:      merchantCode,
-})
+  checkout, err := client.Checkouts.Create(ctx, sumup.CreateCheckoutBody{
+  	Amount:            19,
+  	CheckoutReference: "CO746453",
+  	Currency:          "EUR",
+  	MerchantCode:      merchantCode,
+  })
 
-// Collect customer's card data
+  // Collect customer's card data
 
-result, err := client.Checkouts.Process(ctx, *checkout.Id, sumup.ProcessCheckoutBody{
-	Card: &sumup.Card{
-		Cvv:         "123",
-		ExpiryMonth: "12",
-		ExpiryYear:  "2023",
-		Name:        "Boaty McBoatface",
-		Number:      "4200000000000042",
-	},
-	PaymentType: sumup.ProcessCheckoutBodyPaymentTypeCard,
-})`;
+  result, err := client.Checkouts.Process(ctx, *checkout.Id, sumup.ProcessCheckoutBody{
+  	Card: &sumup.Card{
+  		Cvv:         "123",
+  		ExpiryMonth: "12",
+  		ExpiryYear:  "2023",
+  		Name:        "Boaty McBoatface",
+  		Number:      "4200000000000042",
+  	},
+  	PaymentType: sumup.ProcessCheckoutBodyPaymentTypeCard,
+  })
+}`;
 
 const example2 = `
 client := sumup.NewClient().WithAuth(os.Getenv("SUMUP_API_KEY"))
@@ -96,8 +98,6 @@ resp, err := client.Readers.CreateCheckout(
     </div>
   </div>
 </div>
-
-<LinkCard title="See our guides" href="/online-payments/guides/" />
 
 <style>
   .card {

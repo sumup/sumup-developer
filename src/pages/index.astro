@@ -4,6 +4,7 @@ import type { StarlightPageProps } from "@astrojs/starlight/props";
 import Card from "@components/Card.astro";
 import Brands from "@components/Landing/Brands.astro";
 import TryItOut from "@components/TryItOut.astro";
+import { Headline, Body, ButtonGroup } from "@sumup-oss/circuit-ui";
 import {
   CardSecurity,
   FlashOn,
@@ -11,16 +12,17 @@ import {
   NoCosts,
   SecurePayments,
   Sparkles,
+  Key,
 } from "@sumup-oss/icons";
 
 const props = {
   frontmatter: {
-    title: "Welcome to SumUp",
+    title: "SumUp Developer platform",
     description:
       "Welcome to SumUp portal for Developers. We’ve got everything you need to build your own payment acceptance solutions for your business.",
-    template: "splash",
+    tableOfContents: false,
     hero: {
-      title: "Welcome to SumUp",
+      title: "SumUp developer platform",
       tagline:
         "Welcome to SumUp portal for Developers. We’ve got everything you need to build your own payment acceptance solutions for your business.",
     },
@@ -30,6 +32,28 @@ const props = {
 
 <StarlightPage {...props}>
   <main>
+    <div class="cta">
+      <div>
+        <Headline as="h2" size="s"><Key /> Get your API key</Headline>
+        <Body>
+          Create a merchant account to access API keys and a suite of developer
+          tools.
+        </Body>
+        <ButtonGroup
+          align="left"
+          actions={{
+            primary: {
+              children: "Sign Up",
+              size: "s",
+            },
+            secondary: {
+              children: "Login",
+              size: "s",
+            },
+          }}
+        />
+      </div>
+    </div>
     <section>
       <div class="card-grid">
         <Card title="Online Payments" icon="online_payments">
@@ -568,5 +592,18 @@ const props = {
       grid-template-columns: 1fr 1fr 1fr 1fr;
       gap: 1.5rem;
     }
+  }
+
+  .cta {
+    padding: var(--cui-spacings-giga);
+    background-color: var(--cui-bg-subtle);
+    border-radius: var(--cui-border-radius-kilo);
+  }
+
+  .cta :global(h2) {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: var(--cui-spacings-byte);
   }
 </style>

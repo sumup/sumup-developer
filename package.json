@@ -32,7 +32,7 @@
     "tsc": "tsc",
     "prelint": "astro sync",
     "lint": "npx eslint",
-    "format": "prettier -w --cache --plugin prettier-plugin-astro ."
+    "fmt": "prettier -w --cache --plugin prettier-plugin-astro ."
   },
   "devDependencies": {
     "@astrojs/check": "0.9.4",

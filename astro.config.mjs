@@ -30,14 +30,16 @@ export default defineConfig({
           label: "terminal-payments",
           autogenerate: { directory: "terminal-payments" },
         },
-        {
-          label: "webhook-docs",
-          autogenerate: { directory: "webhook-docs" },
-        },
-        {
-          label: "problem",
-          autogenerate: { directory: "problem" },
-        },
+        // NOTE: not rolled out yet
+        // {
+        //   label: "webhook-docs",
+        //   autogenerate: { directory: "webhook-docs" },
+        // },
+        // TODO: convert to similar page to FAQ
+        // {
+        //   label: "problem",
+        //   autogenerate: { directory: "problem" },
+        // },
       ],
       head: [],
       components: {
