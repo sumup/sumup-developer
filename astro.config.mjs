@@ -2,6 +2,7 @@ import markdoc from "@astrojs/markdoc";
 import react from "@astrojs/react";
 import starlight from "@astrojs/starlight";
 import vercel from "@astrojs/vercel";
+import starlightLinksValidator from "starlight-links-validator";
 
 import { defineConfig } from "astro/config";
 
@@ -17,6 +18,7 @@ export default defineConfig({
     markdoc({ allowHTML: true }),
     react(),
     starlight({
+      plugins: [starlightLinksValidator()],
       title: "SumUp Developer",
       favicon: "favicon.png",
       disable404Route: true,

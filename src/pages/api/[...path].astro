@@ -142,7 +142,7 @@ const [tag, section] = (path || "").split("/");
         document.body.toggleAttribute("data-mobile-menu-expanded", false);
         document
           .querySelector("starlight-menu-button")
-          .setAttribute("aria-expanded", "false");
+          ?.setAttribute("aria-expanded", "false");
       });
     }
 

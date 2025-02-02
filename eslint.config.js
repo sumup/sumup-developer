@@ -26,7 +26,7 @@ export default [
     ...pluginReact.configs.flat["jsx-runtime"],
   },
   {
-    ignores: [".astro/", "dist/", ".github/"],
+    ignores: [".astro/", ".vercel/", "dist/", ".github/"],
   },
   {
     rules: {
