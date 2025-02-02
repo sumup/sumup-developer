@@ -8,6 +8,7 @@ export default {
     borderColor: "var(--cui-border-subtle)",
     borderRadius: "var(--cui-border-radius-byte)",
     borderWidth: "var(--cui-border-width-kilo)",
+    codeFontWeight: "var(--cui-font-weight-semibold)",
     codeFontFamily: "var(--cui-font-stack-mono)",
     frames: {
       editorTabBarBorderBottomColor: "var(--cui-border-subtle)",

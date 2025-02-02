@@ -25,15 +25,13 @@ const defaultOption = options[0].label;
   </div>
   {
     options.map(({ lang, code, label, description }) => (
-      <>
-        <div
-          class:list={["code", label === defaultOption ? "active" : ""]}
-          data-code-option={label}
-        >
-          {description && <div class="description">{description}</div>}
-          <Code lang={lang} code={code} />
-        </div>
-      </>
+      <div
+        class:list={["code", label === defaultOption ? "active" : ""]}
+        data-code-option={label}
+      >
+        {description && <div class="description">{description}</div>}
+        <Code lang={lang} code={code} />
+      </div>
     ))
   }
 </div>
@@ -53,36 +51,48 @@ const defaultOption = options[0].label;
 
 <style>
   .codeblock {
-    background: var(--cui-bg-subtle);
+    background: var(--ec-frm-trmTtbBg);
     overflow: hidden;
-    max-height: calc(80vh);
     display: flex;
     flex-direction: column;
     align-self: start;
     margin: var(--cui-spacings-giga) 0;
+    border: var(--ec-brdWd) solid var(--ec-brdCol);
+    border-radius: var(--cui-border-radius-byte);
   }
+
   .header {
-    padding: var(--cui-spacings-byte) var(--cui-spacings-kilo);
-    background: var(--cui-bg-highlight);
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: var(--ec-uiPadBlk) var(--cui-spacings-kilo);
+    color: var(--ec-frm-trmTtbFg);
+    border-bottom: var(--ec-brdWd) solid var(--ec-brdCol);
   }
+
   .name {
     color: var(--cui-fg-subtle);
-    font-weight: var(--cui-font-weight-bold);
   }
+
   .description {
-    color: var(--cui-fg-subtle);
+    color: var(--ec-frm-trmTtbFg);
     padding: var(--cui-spacings-byte) var(--cui-spacings-kilo);
-    background: var(--cui-bg-highlight);
-    border-top: var(--cui-border-width-kilo) solid var(--cui-border-normal);
   }
+
   .code {
+    background: var(--ec-frm-trmBg);
     overflow: auto;
     display: none;
   }
+
   .code.active {
     display: block;
+  }
+
+  .codeblock :global(figure.frame pre) {
+    border: none !important;
+    border-radius: 0;
+    --code-background: var(--ec-frm-trmBg);
+    background: var(--ec-frm-trmBg);
   }
 </style>

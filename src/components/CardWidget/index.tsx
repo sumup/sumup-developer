@@ -27,7 +27,6 @@ function initSumupCardWidget() {
     checkoutId: "demo",
     onResponse(type) {
       if (type === "success") {
-        // eslint-disable-next-line no-alert
         alert("[DEMO] Transaction is successful!");
       }
     },
