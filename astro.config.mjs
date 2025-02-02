@@ -1,10 +1,9 @@
 import markdoc from "@astrojs/markdoc";
 import react from "@astrojs/react";
 import starlight from "@astrojs/starlight";
+import vercel from "@astrojs/vercel";
 
 import { defineConfig } from "astro/config";
-
-import vercel from "@astrojs/vercel";
 
 export default defineConfig({
   adapter: vercel(),
@@ -66,7 +65,6 @@ export default defineConfig({
       lastUpdated: true,
     }),
   ],
-
   server: {
     port: 3000,
   },

@@ -1,6 +1,6 @@
 ---
 import type { OpenAPIV3_1 } from "openapi-types";
-import Code from "./Code.astro";
+import { Code } from "@astrojs/starlight/components";
 
 type Props = {
   name: string;
@@ -11,7 +11,7 @@ const { example, name } = Astro.props;
 ---
 
 <Code
-  name={name}
+  meta={`title="${name}"`}
   lang="json"
   code={JSON.stringify(example.value || "", null, 2)}
 />

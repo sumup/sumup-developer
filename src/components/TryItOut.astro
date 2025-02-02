@@ -1,6 +1,5 @@
 ---
 import { Code } from "@astrojs/starlight/components";
-import Card from "./Card.astro";
 import { Headline } from "@sumup-oss/circuit-ui";
 
 const example1 = `
@@ -31,25 +30,27 @@ func main() {
 }`;
 
 const example2 = `
-client := sumup.NewClient().WithAuth(os.Getenv("SUMUP_API_KEY"))
-ctx := context.Background()
-merchantCode := "MERCHANT_CODE"
+func main() {
+  client := sumup.NewClient().WithAuth(os.Getenv("SUMUP_API_KEY"))
+  ctx := context.Background()
+  merchantCode := "MERCHANT_CODE"
 
-readers, _ := client.Readers.List(ctx, merchantCode)
+  readers, _ := client.Readers.List(ctx, merchantCode)
 
-reader := readers.Items[0]
-resp, err := client.Readers.CreateCheckout(
-	ctx,
-	merchantCode,
-	string(reader.Id),
-	sumup.CreateReaderCheckoutBody{
-		TotalAmount: sumup.CreateReaderCheckoutAmount{
-			Currency:  "EUR",
-			MinorUnit: 100,
-			Value:     500,
-		},
-	},
-)`;
+  reader := readers.Items[0]
+  resp, err := client.Readers.CreateCheckout(
+  	ctx,
+  	merchantCode,
+  	string(reader.Id),
+  	sumup.CreateReaderCheckoutBody{
+  		TotalAmount: sumup.CreateReaderCheckoutAmount{
+  			Currency:  "EUR",
+  			MinorUnit: 100,
+  			Value:     500,
+  		},
+  	},
+  )
+}`;
 ---
 
 <Headline as="h2" className="header">Try it out</Headline>
@@ -61,41 +62,29 @@ resp, err := client.Readers.CreateCheckout(
   <input type="radio" id="section4" name="sections" />
   <input type="radio" id="section5" name="sections" />
 
-  <Card>
-    <div class="tryit-sidebar">
-      <label for="section1" id="section1Label">
-        <strong>Checkout</strong>
-      </label>
-      <label for="section2" id="section2Label">
-        <strong>Card reader payment</strong>
-      </label>
-      <label for="section3" id="section3Label">
-        <strong>Fetch HTML</strong>
-      </label>
-      <label for="section4" id="section4Label">
-        <strong>Redirect</strong>
-      </label>
-      <label for="section5" id="section5Label">
-        <strong>Respond with another site</strong>
-      </label>
-    </div>
-  </Card>
+  <div class="tryit-sidebar">
+    <label for="section1">Checkout</label>
+    <label for="section2">Card reader payment</label>
+    <label for="section3">Fetch HTML</label>
+    <label for="section4">Redirect</label>
+    <label for="section5">Respond with another site</label>
+  </div>
 
   <div class="tryit-code">
-    <div id="section1Content" class="!mt-0 hidden">
-      <Code lang="go" code={example1} />
+    <div class="code-content" id="section1Content">
+      <Code lang="go" code={example1} meta={`"SUMUP_API_KEY"`} class="code" />
     </div>
-    <div id="section2Content" class="!mt-0 hidden">
-      <Code lang="go" code={example2} />
+    <div class="code-content" id="section2Content">
+      <Code lang="go" code={example2} meta={`"SUMUP_API_KEY"`} class="code" />
     </div>
-    <div id="section3Content" class="!mt-0 hidden">
-      <Code lang="go" code={example1} />
+    <div class="code-content" id="section3Content">
+      <Code lang="go" code={example1} meta={`"SUMUP_API_KEY"`} class="code" />
     </div>
-    <div id="section4Content" class="!mt-0 hidden">
-      <Code lang="go" code={example2} />
+    <div class="code-content" id="section4Content">
+      <Code lang="go" code={example2} meta={`"SUMUP_API_KEY"`} class="code" />
     </div>
-    <div id="section5Content" class="!mt-0 hidden">
-      <Code lang="go" code={example1} />
+    <div class="code-content" id="section5Content">
+      <Code lang="go" code={example1} meta={`"SUMUP_API_KEY"`} class="code" />
     </div>
   </div>
 </div>
@@ -105,36 +94,61 @@ resp, err := client.Readers.CreateCheckout(
     margin-bottom: var(--cui-spacings-giga);
   }
 
-  .card {
-    --sl-card-border: var(--sl-color-purple);
-    --sl-card-bg: var(--sl-color-purple-low);
-    border: 1px solid var(--sl-color-gray-5);
-    background-color: var(--sl-color-black);
-    padding: 1rem;
-    flex-direction: column;
-  }
-
-  input[type="radio"] {
-    display: none;
-  }
-
   .container {
-    display: flex;
-    flex-direction: row;
-    align-items: stretch;
-    justify-content: stretch;
-    width: 100%;
+    display: grid;
+    grid-template-columns: 33% 66%;
     gap: var(--cui-spacings-giga);
   }
 
-  .tryit-code {
-    flex-grow: 1;
-    margin: 0 !important;
+  .tryit-sidebar {
+    display: flex;
+    flex-direction: column;
+    border-radius: var(--cui-border-radius-byte);
+    background-color: var(--cui-bg-subtle);
+    padding: var(--cui-spacings-byte);
+    gap: var(--cui-spacings-byte);
   }
 
-  .hidden {
+  input {
     display: none;
-    margin: 0 !important;
+  }
+
+  .tryit-sidebar label {
+    padding: 0.6rem;
+    cursor: pointer;
+    border-radius: var(--cui-border-radius-byte);
+    transition:
+      background 0.3s,
+      color 0.3s;
+  }
+
+  .tryit-sidebar label:hover {
+    background: var(--cui-bg-strong);
+    color: var(--cui-fg-on-strong);
+  }
+
+  #section1:checked ~ .tryit-sidebar label[for="section1"],
+  #section2:checked ~ .tryit-sidebar label[for="section2"],
+  #section3:checked ~ .tryit-sidebar label[for="section3"],
+  #section4:checked ~ .tryit-sidebar label[for="section4"],
+  #section5:checked ~ .tryit-sidebar label[for="section6"] {
+    background: var(--cui-bg-strong);
+    color: var(--cui-fg-on-strong);
+    font-weight: bold;
+  }
+
+  .tryit-code {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .code {
+    height: 480px;
+    overflow: auto;
+  }
+
+  .code-content {
+    display: none;
   }
 
   #section1:checked ~ .tryit-code #section1Content,
@@ -143,29 +157,5 @@ resp, err := client.Readers.CreateCheckout(
   #section4:checked ~ .tryit-code #section4Content,
   #section5:checked ~ .tryit-code #section5Content {
     display: block;
-  }
-
-  .tryit-sidebar {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .tryit-sidebar label {
-    padding: 0.4rem 0.6rem;
-  }
-
-  .tryit-sidebar label:hover {
-    color: var(--cui-fg-on-strong);
-    background-color: var(--cui-bg-strong);
-  }
-
-  #section1:checked ~ .tryit-sidebar #section1Label,
-  #section2:checked ~ .tryit-sidebar #section2Label,
-  #section3:checked ~ .tryit-sidebar #section3Label,
-  #section4:checked ~ .tryit-sidebar #section4Label,
-  #section5:checked ~ .tryit-sidebar #section5Label {
-    display: none;
-    color: var(--cui-fg-on-strong);
-    background-color: var(--cui-bg-strong);
   }
 </style>

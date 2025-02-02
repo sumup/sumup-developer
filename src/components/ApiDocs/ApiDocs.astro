@@ -2,7 +2,7 @@
 import Markdown from "@components/Markdown.astro";
 import { formatSlug } from "@lib/helpers";
 import { doc, pathsByTag } from "@lib/openapi";
-import Code from "./Code.astro";
+import { Code } from "@astrojs/starlight/components";
 import LRGrid from "./LRGrid.astro";
 import TagSection from "./TagSection.astro";
 
@@ -24,7 +24,11 @@ const { target } = Astro.props;
           doc.servers && (
             <div class="servers">
               {doc.servers.map((server) => (
-                <Code name={"Server URL"} lang="plaintext" code={server.url} />
+                <Code
+                  meta={`title="Server URL"`}
+                  lang="bash"
+                  code={server.url}
+                />
               ))}
             </div>
           )

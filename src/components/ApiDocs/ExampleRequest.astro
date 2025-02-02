@@ -4,7 +4,7 @@ import { doc } from "@lib/openapi";
 // This packages is no longer maintained.
 import { getEndpointSnippets } from "openapi-snippet";
 import type { OperationObject } from "src/types/openapi";
-import Code from "./Code.astro";
+import { Code } from "@astrojs/starlight/components";
 
 export interface Props {
   operation: OperationObject;
@@ -21,38 +21,8 @@ const snippets = getEndpointSnippets(
 );
 ---
 
-<Code lang="sh" code={snippets.snippets[0].content}>
-  <div slot="header">
-    <div class="operation">
-      <span class:list={["method", operation.method]}>{operation.method}</span
-      >&nbsp;
-      <span class="path">
-        {operation.path}
-      </span>
-    </div>
-  </div>
-</Code>
-
-<style>
-  .operation {
-    font-family: var(--cui-font-stack-mono);
-  }
-  .operation .path {
-    color: var(--cui-fg-subtle);
-  }
-  .method {
-    text-transform: uppercase;
-  }
-  .method.post {
-    color: var(--cui-fg-success);
-  }
-  .method.put {
-    color: var(--cui-fg-promo);
-  }
-  .method.get {
-    color: var(--cui-fg-accent);
-  }
-  .method.delete {
-    color: var(--cui-fg-danger);
-  }
-</style>
+<Code
+  meta={`frame="terminal" title="${operation.method.toUpperCase()} ${operation.path}"`}
+  lang="sh"
+  code={snippets.snippets[0].content}
+/>

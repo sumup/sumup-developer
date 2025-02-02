@@ -1,5 +1,4 @@
 ---
-import { Body } from "@sumup-oss/circuit-ui";
 import { Icons } from "./Icons";
 
 interface Props {
@@ -16,9 +15,7 @@ const Icon = icon && Icons[icon];
     title && (
       <div class="title">
         {Icon && <Icon />}
-        <Body as="span" size="m" weight="semibold">
-          {title}
-        </Body>
+        {title}
       </div>
     )
   }
@@ -27,15 +24,24 @@ const Icon = icon && Icons[icon];
 
 <style>
   .card {
-    border: var(--cui-border-width-kilo) solid var(--cui-border-normal);
-    border-radius: var(--cui-border-radius-byte);
     padding: var(--cui-spacings-giga);
+    border-radius: var(--cui-border-radius-byte);
+    background-color: var(--cui-bg-subtle);
+    border: var(--cui-border-width-kilo) solid var(--cui-border-subtle);
+  }
+
+  .card:nth-child(even) {
+    background-color: var(--cui-bg-elevated);
+  }
+
+  .card:nth-child(odd) {
+    background-color: var(--cui-bg-subtle);
   }
 
   .title {
+    color: var(--cui-fg-normal);
+    font-weight: var(--cui-font-weight-bold);
     display: flex;
-    flex-direction: row;
-    align-items: center;
     gap: var(--cui-spacings-byte);
   }
 </style>
