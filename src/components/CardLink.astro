@@ -53,11 +53,14 @@ const { href, title, description, image } = Astro.props;
     color: var(--cui-fg-normal);
     font-weight: var(--cui-font-weight-bold);
     display: flex;
+    align-items: center;
     gap: var(--cui-spacings-byte);
   }
 
   .title :global(svg) {
     display: none;
+    width: 14px;
+    height: 14px;
   }
 
   .card:hover :global(svg) {

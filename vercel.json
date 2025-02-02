@@ -681,6 +681,11 @@
       "source": "/docs/online-payments/features/3ds",
       "destination": "/docs/online-payments/introduction/3ds",
       "permanent": true
+    },
+    {
+      "source": "/online-payments/introduction/get-started/",
+      "destination": "/online-payments/introduction/",
+      "permanent": true
     }
   ]
 }

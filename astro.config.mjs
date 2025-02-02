@@ -49,6 +49,7 @@ export default defineConfig({
         Hero: "./src/overrides/Hero.astro",
         MarkdownContent: "./src/overrides/MarkdownContent.astro",
         Sidebar: "./src/overrides/Sidebar.astro",
+        PageTitle: "./src/overrides/PageTitle.astro",
         SiteTitle: "./src/overrides/SiteTitle.astro",
         SocialIcons: "./src/overrides/SocialIcons.astro",
       },

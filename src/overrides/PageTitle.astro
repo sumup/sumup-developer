@@ -1,0 +1,49 @@
+---
+import type { Props } from "@astrojs/starlight/props";
+import Default from "@astrojs/starlight/components/PageTitle.astro";
+import { Breadcrumbs } from "astro-breadcrumbs";
+import "astro-breadcrumbs/breadcrumbs.css";
+import { getEntry } from "astro:content";
+
+const paths = Astro.url.pathname.split("/").filter((crumb: string) => crumb);
+let path = "";
+const crumbs = await Promise.all(
+  paths.map(async (segment) => {
+    const id = `${path ? `${path}/` : path}${segment}`;
+    path = id;
+    const page = await getEntry("docs", id);
+    return page
+      ? {
+          text: page.data?.title,
+          href: `/${id}/`,
+        }
+      : undefined;
+  }),
+);
+---
+
+{
+  !Astro.props.custom && crumbs.every(Boolean) && (
+    <Breadcrumbs crumbs={[{ text: "Home", href: "/" }, ...crumbs]}>
+      <div slot="separator">/</div>
+    </Breadcrumbs>
+  )
+}
+<Default {...Astro.props} />
+
+<style>
+  :global(.c-breadcrumbs) {
+    color: var(--cui-fg-subtle);
+    font-size: 0.9rem;
+  }
+
+  :global(.c-breadcrumbs__link) {
+    font-size: 0.9rem;
+    color: var(--cui-fg-subtle);
+    text-decoration: none;
+  }
+
+  :global(.c-breadcrumbs__link:hover) {
+    text-decoration: underline;
+  }
+</style>
