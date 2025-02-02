@@ -116,6 +116,7 @@ const [tag, section] = (path || "").split("/");
 
   document.addEventListener("DOMContentLoaded", () => {
     const links = document.querySelectorAll("[data-scroll-to]");
+
     const sections = Array.from(links).map((link) => {
       const scrollTo = link.getAttribute("data-scroll-to");
       if (scrollTo) {
@@ -138,6 +139,10 @@ const [tag, section] = (path || "").split("/");
           history.pushState({}, "", link.getAttribute("href"));
           e.preventDefault();
         }
+        document.body.toggleAttribute("data-mobile-menu-expanded", false);
+        document
+          .querySelector("starlight-menu-button")
+          .setAttribute("aria-expanded", "false");
       });
     }
 

@@ -8,10 +8,18 @@ import { Headline, Body, ButtonGroup } from "@sumup-oss/circuit-ui";
 import SwiftCheckout from "../assets/swift-checkout.svg?raw";
 import ApiCall from "../assets/api-call.svg?raw";
 import {
+  AlternativePaymentMethod,
   InterestOnBalance,
+  Refunded,
+  Refresh,
+  ArrowRight,
   NoCosts,
   SecurePayments,
+  CardIn,
   Key,
+  MobilePhone,
+  CardReaderSolo,
+  BrowserSecure,
 } from "@sumup-oss/icons";
 import CardLink from "@components/CardLink.astro";
 import CardStack from "@components/CardStack.astro";
@@ -143,6 +151,95 @@ const props = {
           image={ApiCall}
         />
       </CardStack>
+    </section>
+    <section>
+      <Headline as="h2" className="header">Explore our guides</Headline>
+      <div class="button-links">
+        <a class="button-link" href="/terminal-payments/guides/pairing-solo/">
+          <CardReaderSolo />
+          <div>
+            <div class="button-title">
+              Accept card reader payments<ArrowRight size={"16"} />
+            </div>
+            <div class="button-description">
+              Integrate with SumUp Solo card reader to accept in-person
+              payments.
+            </div>
+          </div>
+        </a>
+        <a
+          class="button-link"
+          href="/online-payments/introduction/authorization/"
+        >
+          <BrowserSecure />
+          <div>
+            <div class="button-title">
+              Authorization<ArrowRight size={"16"} />
+            </div>
+            <div class="button-description">
+              Explore authorization and authentication options for your use
+              case.
+            </div>
+          </div>
+        </a>
+        <a
+          class="button-link"
+          href="/online-payments/guides/recurring-payments/"
+        >
+          <Refresh />
+          <div>
+            <div class="button-title">
+              Recurring payments<ArrowRight size={"16"} />
+            </div>
+            <div class="button-description">
+              Provide smooth user experience for subsequent checkouts.
+            </div>
+          </div>
+        </a>
+        <a class="button-link" href="/online-payments/guides/refund/">
+          <Refunded />
+          <div>
+            <div class="button-title">Refunds<ArrowRight size={"16"} /></div>
+            <div class="button-description">
+              Issue refunds of accepted payments.
+            </div>
+          </div>
+        </a>
+        <a class="button-link" href="/terminal-payments/tools/api/">
+          <MobilePhone />
+          <div>
+            <div class="button-title">
+              Integrate with your own app<ArrowRight size={"16"} />
+            </div>
+            <div class="button-description">
+              Use API payment switch for lightweight integration of payments in
+              your own app.
+            </div>
+          </div>
+        </a>
+        <a class="button-link" href="/online-payments/apm/">
+          <AlternativePaymentMethod />
+          <div>
+            <div class="button-title">
+              Alternative payment options<ArrowRight size={"16"} />
+            </div>
+            <div class="button-description">
+              Allow your customers to pay with Apple or Google pay.
+            </div>
+          </div>
+        </a>
+        <a class="button-link" href="/online-payments/tools/card-widget/">
+          <CardIn />
+          <div>
+            <div class="button-title">
+              Card widget<ArrowRight size={"16"} />
+            </div>
+            <div class="button-description">
+              Collect payment data online securely with card widget.
+            </div>
+          </div>
+        </a>
+      </div>
     </section>
     <section class="antifraud">
       <div class="content">
@@ -338,13 +435,13 @@ const props = {
     }
   }
 
-  .antifraud {
-    text-align: center;
+  .antifraud img {
+    width: 56px;
+    margin-bottom: var(--cui-spacings-kilo);
+  }
 
-    img {
-      width: 56px;
-      margin-bottom: var(--cui-spacings-kilo);
-    }
+  .antifraud .callouts {
+    text-align: center;
   }
 
   .links {
@@ -401,5 +498,63 @@ const props = {
     flex-direction: row;
     align-items: center;
     gap: var(--cui-spacings-byte);
+  }
+
+  .button-links {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--cui-spacings-kilo);
+  }
+
+  @media (max-width: 767px) {
+    .button-links {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .button-link {
+    text-decoration: none;
+    display: grid;
+    grid-template-columns: 24px 1fr;
+    gap: var(--cui-spacings-mega);
+    align-items: center;
+    cursor: pointer;
+    border-radius: var(--cui-border-radius-byte);
+    padding: var(--cui-spacings-kilo);
+    min-height: 5rem;
+  }
+
+  .button-link > :global(svg) {
+    width: 24px;
+    height: 24px;
+  }
+
+  .button-link:hover {
+    text-decoration: none;
+    background-color: var(--cui-bg-normal-hovered);
+  }
+
+  .button-title {
+    color: var(--cui-fg-normal);
+    font-weight: var(--cui-font-weight-bold);
+    display: flex;
+    align-items: center;
+    gap: var(--cui-spacings-byte);
+  }
+
+  .button-title :global(svg) {
+    display: none;
+    width: 12px;
+    height: 12px;
+  }
+
+  .button-link:hover .button-title :global(svg) {
+    display: block;
+  }
+
+  .button-description {
+    color: var(--cui-fg-subtle);
+    font-size: var(--cui-body-s-font-size);
+    line-height: var(--cui-body-s-line-height);
   }
 </style>

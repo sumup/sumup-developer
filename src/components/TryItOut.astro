@@ -114,17 +114,18 @@ func main() {
   }
 
   .tryit-sidebar label {
-    padding: 0.6rem;
     cursor: pointer;
+    padding: var(--cui-spacings-byte);
     border-radius: var(--cui-border-radius-byte);
+    font-weight: var(--cui-font-weight-semibold);
     transition:
       background 0.3s,
       color 0.3s;
   }
 
   .tryit-sidebar label:hover {
-    background: var(--cui-bg-strong);
-    color: var(--cui-fg-on-strong);
+    background: var(--cui-bg-normal-hover);
+    color: var(--cui-fg-normal-hovered);
   }
 
   #section1:checked ~ .tryit-sidebar label[for="section1"],
@@ -134,7 +135,6 @@ func main() {
   #section5:checked ~ .tryit-sidebar label[for="section6"] {
     background: var(--cui-bg-strong);
     color: var(--cui-fg-on-strong);
-    font-weight: bold;
   }
 
   .tryit-code {
