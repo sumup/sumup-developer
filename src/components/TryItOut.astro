@@ -72,19 +72,39 @@ func main() {
 
   <div class="tryit-code">
     <div class="code-content" id="section1Content">
-      <Code lang="go" code={example1} meta={`"SUMUP_API_KEY"`} class="code" />
+      <Code
+        lang="go"
+        code={example1}
+        meta={`"SUMUP_API_KEY" title="main.go"`}
+      />
     </div>
     <div class="code-content" id="section2Content">
-      <Code lang="go" code={example2} meta={`"SUMUP_API_KEY"`} class="code" />
+      <Code
+        lang="go"
+        code={example2}
+        meta={`"SUMUP_API_KEY" title="main.go"`}
+      />
     </div>
     <div class="code-content" id="section3Content">
-      <Code lang="go" code={example1} meta={`"SUMUP_API_KEY"`} class="code" />
+      <Code
+        lang="go"
+        code={example1}
+        meta={`"SUMUP_API_KEY" title="main.go"`}
+      />
     </div>
     <div class="code-content" id="section4Content">
-      <Code lang="go" code={example2} meta={`"SUMUP_API_KEY"`} class="code" />
+      <Code
+        lang="go"
+        code={example2}
+        meta={`"SUMUP_API_KEY" title="main.go"`}
+      />
     </div>
     <div class="code-content" id="section5Content">
-      <Code lang="go" code={example1} meta={`"SUMUP_API_KEY"`} class="code" />
+      <Code
+        lang="go"
+        code={example1}
+        meta={`"SUMUP_API_KEY" title="main.go"`}
+      />
     </div>
   </div>
 </div>
@@ -95,9 +115,17 @@ func main() {
   }
 
   .container {
+    height: 500px;
     display: grid;
-    grid-template-columns: 33% 66%;
+    grid-template-columns: 1fr 2fr;
     gap: var(--cui-spacings-giga);
+  }
+
+  @media screen and (max-width: 1200px) {
+    .container {
+      height: auto;
+      grid-template-columns: 1fr;
+    }
   }
 
   .tryit-sidebar {
@@ -107,6 +135,14 @@ func main() {
     background-color: var(--cui-bg-subtle);
     padding: var(--cui-spacings-byte);
     gap: var(--cui-spacings-byte);
+  }
+
+  @media screen and (max-width: 1200px) {
+    .tryit-sidebar {
+      flex-direction: row;
+      box-sizing: border-box;
+      overflow-x: auto;
+    }
   }
 
   input {
@@ -137,14 +173,10 @@ func main() {
     color: var(--cui-fg-on-strong);
   }
 
-  .tryit-code {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .code {
-    height: 480px;
+  .tryit-code :global(.expressive-code .frame pre) {
+    max-height: 500px;
     overflow: auto;
+    scrollbar-width: thin;
   }
 
   .code-content {
