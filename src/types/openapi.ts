@@ -6,6 +6,7 @@ export type TagObject = OpenAPIV3_1.TagObject & {
   slug: string;
   "x-beta"?: boolean;
   "x-core-objects"?: OpenAPIV3_1.ReferenceObject[];
+  "x-deprecation-notice"?: string;
 };
 
 export type Document = Modify<

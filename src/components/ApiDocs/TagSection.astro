@@ -2,6 +2,7 @@
 import { Badge } from "@astrojs/starlight/components";
 import Markdown from "@components/Markdown.astro";
 import { formatSlug } from "@lib/helpers";
+import { Aside } from "@astrojs/starlight/components";
 import { Headline } from "@sumup-oss/circuit-ui";
 import type { HTMLAttributes } from "astro/types";
 import type { OperationObject, TagObject } from "src/types/openapi";
@@ -21,6 +22,7 @@ const {
     description,
     "x-beta": beta,
     "x-core-objects": coreObjects = [],
+    "x-deprecation-notice": deprecationNotice,
   },
   operations = [],
   target,
@@ -57,6 +59,15 @@ const tagIsTarget = !targetOp && targetTag === slug;
           )
         }
       </Headline>
+      {
+        deprecationNotice && (
+          <div class="notice">
+            <Aside type="caution">
+              <Markdown>{deprecationNotice}</Markdown>
+            </Aside>
+          </div>
+        )
+      }
       <Markdown>{description}</Markdown>
     </div>
   </LRGrid>
@@ -125,6 +136,10 @@ const tagIsTarget = !targetOp && targetTag === slug;
     display: flex;
     align-items: center;
     gap: var(--cui-spacings-kilo);
+    margin-bottom: var(--cui-spacings-giga);
+  }
+
+  .notice {
     margin-bottom: var(--cui-spacings-giga);
   }
 </style>
