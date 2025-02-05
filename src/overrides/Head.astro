@@ -5,54 +5,6 @@ import "@sumup-oss/design-tokens/fonts.css";
 import "@sumup-oss/design-tokens/dynamic.css";
 ---
 
-<link
-  rel="preload"
-  href="https://static.sumup.com/fonts/Inter/Inter-normal-latin.woff2"
-  as="font"
-  type="font/woff2"
-  crossorigin
-/>
-<link
-  rel="apple-touch-icon"
-  sizes="180x180"
-  href="https://static.sumup.com/favicons/apple-touch-icon.png"
-/>
-<link
-  rel="icon"
-  type="image/png"
-  sizes="32x32"
-  href="https://static.sumup.com/favicons/favicon-32x32.png"
-/>
-<link
-  rel="icon"
-  type="image/png"
-  sizes="16x16"
-  href="https://static.sumup.com/favicons/favicon-16x16.png"
-/>
-<link
-  rel="manifest"
-  href="https://static.sumup.com/favicons/site.webmanifest"
-/>
-<link
-  rel="mask-icon"
-  href="https://static.sumup.com/favicons/safari-pinned-tab.svg"
-  color="#ffffff"
-/>
-<link
-  rel="shortcut icon"
-  href="https://static.sumup.com/favicons/favicon.ico"
-/>
-<meta name="msapplication-TileColor" content="#ffffff" /><meta
-  name="msapplication-config"
-  content="https://static.sumup.com/favicons/browserconfig.xml"
-/>
-<meta name="theme-color" content="#ffffff" />
-<meta property="og:type" content="website" />
-<meta property="og:title" content="Documentation" />
-<meta property="og:description" content="SumUp documentation for developers." />
-<meta name="description" content="SumUp documentation for developers." />
-<meta name="generator" content={Astro.generator} />
-<link rel="sitemap" href="/sitemap-index.xml" />
 <script is:inline>
   // hack for circuit-ui (`Title` and other components read `process`)
   if (!globalThis.process) globalThis.process ??= {};
@@ -71,33 +23,5 @@ import "@sumup-oss/design-tokens/dynamic.css";
     }
   })();
 </script>
-{
-  import.meta.env.GA_TAG_ID && (
-    <script
-      is:inline
-      src={`https://www.googletagmanager.com/gtag/js?id=${import.meta.env.GA_TAG_ID}`}
-    />
-  )
-}
-<script is:inline>
-  window.dataLayer = window.dataLayer || [];
-  function gtag() {
-    dataLayer.push(arguments);
-  }
-  gtag("js", new Date());
-  gtag("config", import.meta.env.PUBLIC_GA_TAG_ID);
-</script>
-<script defer src="https://static.sumup.com/legacy-browsers/check-support.js"
-></script>
-{
-  import.meta.env.ONETRUST_ENABLED === "true" && (
-    <script
-      defer
-      charset="UTF-8"
-      src="https://cdn-ukwest.onetrust.com/scripttemplates/otSDKStub.js"
-      data-domain-script={import.meta.env.ONETRUST_DOMAIN_ID}
-    />
-  )
-}
 
 <Default {...Astro.props}><slot /></Default>
