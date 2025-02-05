@@ -57,7 +57,7 @@
     "@types/node": "22.13.0",
     "@types/react": "^18.2.31",
     "@types/react-dom": "^18.2.14",
-    "@typescript-eslint/parser": "8.22.0",
+    "@typescript-eslint/parser": "8.23.0",
     "astro": "5.2.5",
     "astro-breadcrumbs": "3.3.1",
     "eslint": "9.18.0",
