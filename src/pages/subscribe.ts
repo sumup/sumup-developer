@@ -34,8 +34,12 @@ export const POST: APIRoute = async ({ request, redirect }) => {
     return redirect(redirectTo.pathname + redirectTo.search);
   }
 
-  const merchantCode = data.get("merchant_code");
   try {
+    if (!import.meta.env.MARKETING_CLOUD_AUTH) {
+      redirectTo.searchParams.append("status", "success");
+      return redirect(redirectTo.pathname + redirectTo.search);
+    }
+
     const response = await fetch(
       "https://cloud.crm.sumup.com/ae_xi_1_gl-subscribe-changelog-sumup-for-developers",
       {
@@ -46,7 +50,6 @@ export const POST: APIRoute = async ({ request, redirect }) => {
         },
         body: JSON.stringify({
           email,
-          merchantCode,
           locale: "en-GB",
         }),
       },
