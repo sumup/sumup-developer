@@ -1,8 +1,12 @@
 ---
+import type { Props } from "@astrojs/starlight/props";
 import { getCollection } from "astro:content";
+import { Anchor } from "@sumup-oss/circuit-ui";
 import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
+import type { StarlightPageProps } from "@astrojs/starlight/props";
 import Subscribe from "@components/Subscribe.astro";
 import { Headline } from "@sumup-oss/circuit-ui";
+import MarkdownContent from "@astrojs/starlight/components/MarkdownContent.astro";
 
 const collectionDocs = (await getCollection("changelog"))
   .sort(
@@ -19,54 +23,58 @@ const posts = await Promise.all(
   }),
 );
 
-const frontmatter = {
-  title: "Changelog",
-  description: "Changelog",
-  template: "splash",
-} as const;
+const props = {
+  frontmatter: {
+    title: "Changelog",
+    description: "Changelog",
+    template: "splash",
+    tableOfContents: false,
+  },
+  custom: true,
+} as StarlightPageProps;
 ---
 
-<StarlightPage frontmatter={frontmatter} {...Astro.props}>
-  <div class="narrow">
-    <div class="subcription">
-      <Subscribe />
-    </div>
-    <main class="content" data-pagefind-body>
-      {
-        posts.map(async ({ Content, data: { title, tags, publishedDate } }) => {
-          return (
-            <>
-              <div class="time">
-                <time
-                  data-pagefind-meta="datetime"
-                  datetime={publishedDate.toISOString()}
-                >
-                  {publishedDate.toISOString().split("T")[0]}
-                </time>
-              </div>
-              <div class="post">
-                <Headline as="h2" size="m">
-                  {title}
-                </Headline>
-                <div class="details">
-                  {tags && tags.length > 0 && (
-                    <ul class="tags">
-                      {tags.map((tag) => (
-                        <li>
-                          <a href={`#${tag}`}>#{tag}</a>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </div>
-                <Content />
-              </div>
-            </>
-          );
-        })
-      }
-    </main>
+<StarlightPage {...props}>
+  <div class="subcription">
+    <Subscribe />
   </div>
+  <main class="content" data-pagefind-body>
+    {
+      posts.map(async ({ Content, data: { title, tags, publishedDate } }) => {
+        return (
+          <>
+            <div class="time">
+              <time
+                data-pagefind-meta="datetime"
+                datetime={publishedDate.toISOString()}
+              >
+                {publishedDate.toISOString().split("T")[0]}
+              </time>
+            </div>
+            <div class="post">
+              <Headline as="h2" size="m">
+                {title}
+              </Headline>
+              <div class="details">
+                {tags && tags.length > 0 && (
+                  <ul class="tags">
+                    {tags.map((tag) => (
+                      <li>
+                        <Anchor href={`#${tag}`}>#{tag}</Anchor>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+              <MarkdownContent {...Astro.props}>
+                <Content />
+              </MarkdownContent>
+            </div>
+          </>
+        );
+      })
+    }
+  </main>
 </StarlightPage>
 
 <style lang="scss">
@@ -78,6 +86,18 @@ const frontmatter = {
     column-gap: var(--cui-spacings-giga);
   }
 
+  @media screen and (max-width: 940px) {
+    .content {
+      grid-template-columns: 100%;
+      row-gap: var(--cui-spacings-mega);
+    }
+  }
+
+  :global(.expressive-code .frame pre) {
+    overflow: auto;
+    scrollbar-width: thin;
+  }
+
   .subcription {
     display: flex;
     flex-direction: row;
@@ -87,6 +107,12 @@ const frontmatter = {
   .time {
     word-break: keep-all;
     justify-self: end;
+  }
+
+  @media screen and (max-width: 940px) {
+    .time {
+      justify-self: start;
+    }
   }
 
   .post {
@@ -109,6 +135,8 @@ const frontmatter = {
   }
 
   .tags {
+    margin: 0;
+    padding: 0;
     display: inline-flex;
     flex-direction: row;
     list-style: none;

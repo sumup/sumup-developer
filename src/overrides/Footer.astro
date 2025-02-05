@@ -32,7 +32,7 @@ const isHomepage = Astro.props.slug === "";
     </footer>
   ) : (
     <>
-      <Feedback />
+      {!Astro.props.custom && <Feedback />}
       <footer>
         <div class="meta">
           <EditLink {...Astro.props} />
