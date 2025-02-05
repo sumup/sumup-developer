@@ -7007,7 +7007,8 @@
     {
       "description": "Endpoints for managing merchant sub-accounts (operators).\n",
       "name": "Subaccounts",
-      "x-core-objects": [{ "$ref": "#/components/schemas/Operator" }]
+      "x-core-objects": [{ "$ref": "#/components/schemas/Operator" }],
+      "x-deprecation-notice": "This API is deprecated, please use the new [Members](/api/members) API instead."
     },
     {
       "description": "Endpoints to manage account members. Members are users that have membership within merchant accounts.\n",
