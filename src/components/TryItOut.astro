@@ -154,6 +154,8 @@ func main() {
     padding: var(--cui-spacings-byte);
     border-radius: var(--cui-border-radius-byte);
     font-weight: var(--cui-font-weight-semibold);
+    word-break: keep-all;
+    white-space: nowrap;
     transition:
       background 0.3s,
       color 0.3s;
@@ -173,8 +175,8 @@ func main() {
     color: var(--cui-fg-on-strong);
   }
 
-  .tryit-code :global(.expressive-code .frame pre) {
-    max-height: 500px;
+  .tryit-code :global(.expressive-code .frame pre code) {
+    max-height: 460px;
     overflow: auto;
     scrollbar-width: thin;
   }
