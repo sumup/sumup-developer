@@ -47,7 +47,7 @@
     "@astrojs/ts-plugin": "^1.10.4",
     "@astrojs/vercel": "8.0.5",
     "@elbwalker/tagger": "^2.1.1",
-    "@elbwalker/walker.js": "^1.6.5",
+    "@elbwalker/walker.js": "^3.3.0",
     "@expressive-code/plugin-collapsible-sections": "0.40.1",
     "@markdoc/markdoc": "^0.4.0",
     "@sindresorhus/slugify": "^2.2.1",
