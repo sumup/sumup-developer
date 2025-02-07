@@ -1,14 +1,32 @@
 ---
+// Overloaded version of Starlight's SocialIcons that adds
+// additional navigation items to the top navigation bar
+// such that we can structure the portal around main sections.
 import Default from "@astrojs/starlight/components/SocialIcons.astro";
-import type { Props } from "@astrojs/starlight/props";
+import type { Props as DefaultProps } from "@astrojs/starlight/props";
+
+export type Props = DefaultProps & {
+  // Hides social links (such as GitHub icon).
+  hideSocial?: boolean;
+};
+
+const { hideSocial } = Astro.props;
 ---
 
 <div class="nav">
-  <a href="/">Docs</a>
+  <a href="/online-payments">Online Payments</a>
+  <a href="/terminal-payments">Terminal Payments</a>
+  <a href="/tools">Tools</a>
   <a href="/api">API Reference</a>
   <a href="/help">Support</a>
 </div>
-<Default {...Astro.props}><slot /></Default>
+{
+  !hideSocial && (
+    <Default {...Astro.props}>
+      <slot />
+    </Default>
+  )
+}
 
 <style>
   :root {

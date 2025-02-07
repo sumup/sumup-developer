@@ -166,16 +166,14 @@ export default defineConfig({
           label: "terminal-payments",
           autogenerate: { directory: "terminal-payments" },
         },
-        // NOTE: not rolled out yet
-        // {
-        //   label: "webhook-docs",
-        //   autogenerate: { directory: "webhook-docs" },
-        // },
-        // TODO: convert to similar page to FAQ
-        // {
-        //   label: "problem",
-        //   autogenerate: { directory: "problem" },
-        // },
+        {
+          label: "webhooks",
+          autogenerate: { directory: "webhooks" },
+        },
+        {
+          label: "problem",
+          autogenerate: { directory: "problem" },
+        },
       ],
       head: head(),
       components: {
@@ -187,6 +185,8 @@ export default defineConfig({
         PageTitle: "./src/overrides/PageTitle.astro",
         SiteTitle: "./src/overrides/SiteTitle.astro",
         SocialIcons: "./src/overrides/SocialIcons.astro",
+        MobileTableOfContents: "./src/overrides/MobileTableOfContents.astro",
+        MobileMenuFooter: "./src/overrides/MobileMenuFooter.astro",
       },
       social: {
         github: "https://github.com/sumup/documentation",

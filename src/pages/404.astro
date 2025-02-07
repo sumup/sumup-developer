@@ -1,13 +1,24 @@
 ---
-import Narrow from "@layouts/Narrow.astro";
+import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
+import type { StarlightPageProps } from "@astrojs/starlight/props";
+import { Anchor } from "@sumup-oss/circuit-ui";
+
+const props = {
+  frontmatter: {
+    title: "Page not found",
+    tableOfContents: false,
+    template: "splash",
+  },
+  custom: true,
+} as StarlightPageProps;
 ---
 
-<Narrow title="Page Not Found">
+<StarlightPage {...props}>
   <div class="wrap">
     <div class="img">
       <svg
-        width="218"
-        height="154"
+        width="109"
+        height="77"
         viewBox="0 0 109 77"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
@@ -16,17 +27,17 @@ import Narrow from "@layouts/Narrow.astro";
         <path
           d="M19.9404 31.0212C20.4709 29.2771 21.4246 27.6912 22.7165 26.4048C24.0084 25.1185 25.5983 24.1717 27.3448 23.6487C29.0364 23.1598 30.9895 23.0766 32.6029 23.8662C34.0695 24.5849 34.9691 25.9734 34.8567 27.6185C34.7442 29.1561 33.6809 30.4541 32.0748 30.4394C30.3075 30.4394 28.8163 29.0192 28.0121 27.5549C27.1567 25.9434 26.8872 24.085 27.2494 22.2969C27.6479 20.4821 28.5993 18.8355 29.9726 17.5839C31.3478 16.3028 33.0232 15.3882 34.8444 14.9243C36.4871 14.5161 38.3376 14.4867 39.8703 15.2616C40.2421 15.4479 40.5894 15.6795 40.9043 15.951C41.0926 16.1123 40.8677 16.4399 40.677 16.2688C38.0883 14.0345 34.0451 15.1223 31.5004 16.8554C30.0238 17.8323 28.8515 19.2045 28.1172 20.8155C27.445 22.3628 27.2982 24.0878 27.6992 25.7265C28.0952 27.3349 29.1024 28.9312 30.6326 29.6816C31.3659 30.041 32.2337 30.2048 33.0086 29.8821C33.3161 29.744 33.5903 29.5417 33.813 29.2887C34.0356 29.0357 34.2014 28.7379 34.2993 28.4154C34.5277 27.7197 34.5252 26.9687 34.2922 26.2745C34.0591 25.5803 33.6081 24.98 33.0062 24.5629C31.6422 23.6095 29.8284 23.5142 28.2346 23.8296C26.5811 24.1844 25.036 24.9279 23.7271 25.9988C22.4182 27.0696 21.3833 28.4368 20.708 29.9872C20.5462 30.3702 20.4082 30.7629 20.2949 31.163C20.224 31.4075 19.8598 31.2657 19.9282 31.0261L19.9404 31.0212Z"
           fill="black"
-          stroke="black"
+          stroke="currentColor"
           stroke-width="0.273464"></path>
         <path
           d="M91.151 22.9674L91.151 22.9674C92.1017 22.064 93.2211 21.3568 94.4451 20.8861C95.6692 20.4154 96.974 20.1904 98.285 20.2239C99.596 20.2575 100.888 20.5489 102.086 21.0817C103.284 21.6144 104.366 22.378 105.269 23.3288L105.269 23.3288C106.173 24.2795 106.88 25.3988 107.351 26.6229C107.821 27.8469 108.046 29.1517 108.013 30.4627C107.979 31.7738 107.688 33.0653 107.155 34.2637C106.622 35.462 105.859 36.5437 104.908 37.447L104.908 37.447C103.957 38.3503 102.838 39.0576 101.614 39.5283C100.39 39.999 99.0849 40.224 97.7739 40.1905C96.4628 40.1569 95.1713 39.8654 93.9729 39.3327C92.7746 38.8 91.6929 38.0364 90.7896 37.0856L90.7896 37.0856C89.8862 36.1349 89.179 35.0155 88.7083 33.7915C88.2376 32.5674 88.0126 31.2627 88.0461 29.9516C88.0797 28.6406 88.3712 27.3491 88.9039 26.1507C89.4366 24.9523 90.2002 23.8706 91.151 22.9674Z"
           fill="black"
-          stroke="black"
+          stroke="currentColor"
           stroke-width="0.561797"></path>
         <path
           d="M3.39415 40.8121L3.39416 40.8121C4.34488 39.9088 5.46422 39.2016 6.68827 38.7308C7.91233 38.2601 9.21711 38.0351 10.5281 38.0687C11.8391 38.1022 13.1307 38.3937 14.3291 38.9264C15.5274 39.4592 16.6091 40.2227 17.5124 41.1735L17.5124 41.1735C18.4157 42.1243 19.123 43.2436 19.5937 44.4676C20.0644 45.6917 20.2894 46.9965 20.2558 48.3075C20.2223 49.6185 19.9308 50.9101 19.3981 52.1084C18.8654 53.3068 18.1018 54.3885 17.151 55.2918L17.151 55.2918C16.2003 56.1951 15.0809 56.9023 13.8569 57.3731C12.6328 57.8438 11.328 58.0688 10.017 58.0352C8.70601 58.0017 7.41445 57.7102 6.21608 57.1775C5.01772 56.6447 3.93602 55.8812 3.03277 54.9304L3.03275 54.9304C2.12941 53.9796 1.42219 52.8603 0.951467 51.6362C0.480743 50.4122 0.255736 49.1074 0.289296 47.7964C0.322855 46.4854 0.614322 45.1938 1.14705 43.9955C1.67979 42.7971 2.44335 41.7154 3.39415 40.8121Z"
           fill="white"
-          stroke="black"
+          stroke="currentColor"
           stroke-width="0.561797"></path>
         <path
           d="M40.8871 31.3143L31.9937 40.7221C30.5543 42.2448 30.6218 44.6459 32.1444 46.0853L41.5522 54.9787C43.0748 56.4181 45.476 56.3506 46.9154 54.828L55.8088 45.4202C57.2482 43.8975 57.1807 41.4964 55.658 40.057L46.2502 31.1636C44.7276 29.7242 42.3264 29.7917 40.8871 31.3143Z"
@@ -37,7 +48,7 @@ import Narrow from "@layouts/Narrow.astro";
         <path
           d="M76.9493 8.39051L63.0731 35.9922C60.8106 40.4926 62.6248 45.9749 67.1252 48.2374C71.6255 50.4998 77.1078 48.6856 79.3703 44.1853L93.2465 16.5836C95.5089 12.0832 93.6948 6.6009 89.1944 4.33845C84.6941 2.07599 79.2117 3.89016 76.9493 8.39051Z"
           fill="white"
-          stroke="black"
+          stroke="currentColor"
           stroke-width="1.01123"></path>
         <path
           d="M48.8784 11.5534L66.7867 9.99135C67.6447 19.8157 60.2648 28.6061 50.4404 29.4641L48.8784 11.5534Z"
@@ -62,21 +73,25 @@ import Narrow from "@layouts/Narrow.astro";
         </defs>
       </svg>
     </div>
-    <h1>Page not found!</h1>
+    <h1>Page not found</h1>
     <p class="subtitle">
       Sorry, but the page you were looking for couldn't be found.
     </p>
     <p>
-      If you can't find what you're looking for, try our <a href="/"
-        >home page</a
-      >.
+      If you can't find what you're looking for, try our
+      <Anchor href="/">home page</Anchor>.
     </p>
   </div>
-</Narrow>
+</StarlightPage>
 
 <style lang="scss">
   .wrap {
-    margin: var(--cui-spacings-zetta) 0;
+    min-height: 60vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: var(--cui-fg-subtle);
+    text-align: center;
   }
 
   .img {
@@ -89,18 +104,16 @@ import Narrow from "@layouts/Narrow.astro";
   h1 {
     text-align: center;
     margin-bottom: var(--cui-spacings-kilo);
+    font-size: var(--cui-headline-s-font-size);
+    line-height: var(--cui-headline-s-line-height);
+    font-weight: var(--cui-font-weight-bold);
   }
 
   .subtitle {
-    font-size: var(--cui-headline-s-font-size);
-    font-weight: var(--cui-font-weight-bold);
-    line-height: var(--cui-headline-s-line-height);
-    color: var(--cui-fg-normal);
-    text-transform: uppercase;
-    margin-bottom: var(--cui-spacings-giga);
+    margin: var(--cui-spacings-mega) 0;
   }
 
   p {
-    text-align: center;
+    font-size: 0.9rem;
   }
 </style>
