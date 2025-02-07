@@ -53,7 +53,7 @@
     "@sindresorhus/slugify": "^2.2.1",
     "@sumup-oss/circuit-ui": "^9.7.3",
     "@sumup-oss/design-tokens": "^8.2.0",
-    "@sumup-oss/icons": "^5.2.0",
+    "@sumup-oss/icons": "^5.4.0",
     "@types/node": "22.13.1",
     "@types/react": "^18.2.31",
     "@types/react-dom": "^18.2.14",
