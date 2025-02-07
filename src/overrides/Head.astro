@@ -1,8 +1,11 @@
 ---
+// Plugs in client-side router for page transitions.
+// See: https://docs.astro.build/en/guides/view-transitions/
 import type { Props } from "@astrojs/starlight/props";
 import Default from "@astrojs/starlight/components/Head.astro";
 import "@sumup-oss/design-tokens/fonts.css";
 import "@sumup-oss/design-tokens/dynamic.css";
+import { ClientRouter } from "astro:transitions";
 ---
 
 <script is:inline>
@@ -24,4 +27,7 @@ import "@sumup-oss/design-tokens/dynamic.css";
   })();
 </script>
 
-<Default {...Astro.props}><slot /></Default>
+<Default {...Astro.props}>
+  <ClientRouter />
+  <slot />
+</Default>

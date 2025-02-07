@@ -1,0 +1,175 @@
+---
+// Customized version of the SidebarList, the code is still
+// very similar to Startlight's SidebarSublist but we adjust
+// the styles and for certain content don't use expandable
+// sections.
+import type { Props as StarlightProps } from "@astrojs/starlight/props";
+import { Badge, Icon } from "@astrojs/starlight/components";
+import { flattenSidebar } from "node_modules/@astrojs/starlight/utils/navigation";
+
+interface Props {
+  sublist: StarlightProps["sidebar"];
+  expanded?: boolean;
+}
+
+const { sublist, expanded } = Astro.props;
+---
+
+<ul class="sidebar">
+  {
+    sublist.map((entry) => (
+      <li>
+        {entry.type === "link" && (
+          <a
+            href={entry.href}
+            aria-current={entry.isCurrent && "page"}
+            class:list={[entry.attrs.class]}
+            {...entry.attrs}
+          >
+            <span>{entry.label}</span>
+            {entry.badge && (
+              <Badge
+                variant={entry.badge.variant}
+                class={entry.badge.class}
+                text={entry.badge.text}
+              />
+            )}
+          </a>
+        )}
+        {entry.type === "group" && !expanded && (
+          <details
+            open={
+              flattenSidebar(entry.entries).some((i) => i.isCurrent) ||
+              !entry.collapsed
+            }
+          >
+            <summary class="group-header">
+              <div class="group-label">
+                <span>{entry.label}</span>
+                {entry.badge && (
+                  <Badge
+                    variant={entry.badge.variant}
+                    class={entry.badge.class}
+                    text={entry.badge.text}
+                  />
+                )}
+              </div>
+              <Icon name="right-caret" class="caret" size="1.25rem" />
+            </summary>
+            <Astro.self sublist={entry.entries} />
+          </details>
+        )}
+        {entry.type === "group" && expanded && (
+          <>
+            <span class="group-header">
+              <span>{entry.label}</span>
+              {entry.badge && (
+                <Badge
+                  variant={entry.badge.variant}
+                  class={entry.badge.class}
+                  text={entry.badge.text}
+                />
+              )}
+            </span>
+            <Astro.self sublist={entry.entries} />
+          </>
+        )}
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .sidebar {
+    font-size: var(--cui-body-s-font-size);
+    line-height: var(--cui-body-s-line-height);
+  }
+
+  .group-header {
+    font-size: 0.75rem;
+    margin: var(--cui-spacings-bit) 0;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.2em var(--sl-sidebar-item-padding-inline);
+    line-height: 1.4;
+    line-height: var(--cui-body-s-line-height);
+    font-weight: var(--cui-font-weight-semibold);
+  }
+
+  ul {
+    --sl-sidebar-item-padding-inline: 0.5rem;
+    list-style: none;
+    padding: 0;
+  }
+
+  li {
+    overflow-wrap: anywhere;
+    margin-bottom: var(--cui-spacings-bit);
+  }
+
+  .top-level > li + li {
+    margin-top: 0.75rem;
+  }
+
+  details ul,
+  ul li ul {
+    margin-bottom: var(--cui-spacings-mega);
+  }
+
+  summary {
+    cursor: pointer;
+    user-select: none;
+  }
+
+  summary::marker,
+  summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .caret {
+    transition: transform 0.2s ease-in-out;
+    flex-shrink: 0;
+  }
+  :global([dir="rtl"]) .caret {
+    transform: rotateZ(180deg);
+  }
+  [open] > summary .caret {
+    transform: rotateZ(90deg);
+  }
+
+  a {
+    display: block;
+    border-radius: 0.25rem;
+    text-decoration: none;
+    color: var(--cui-fg-subtle);
+    padding: var(--cui-spacings-bit) var(--cui-spacings-byte);
+    line-height: 1.4;
+  }
+
+  a:hover,
+  a:focus {
+    color: var(--cui-fg-on-strong);
+    background-color: var(--cui-bg-strong);
+  }
+
+  [aria-current="page"],
+  [aria-current="page"]:hover,
+  [aria-current="page"]:focus {
+    font-weight: var(--cui-font-weight-semibold);
+    color: var(--cui-fg-on-strong);
+    background-color: var(--cui-bg-strong);
+  }
+
+  a > *:not(:last-child),
+  .group-label > *:not(:last-child) {
+    margin-inline-end: 0.25em;
+  }
+
+  @media (min-width: 50rem) {
+    .top-level > li + li {
+      margin-top: 0.5rem;
+    }
+  }
+</style>

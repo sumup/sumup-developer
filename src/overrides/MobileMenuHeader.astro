@@ -1,0 +1,28 @@
+---
+// A custom item for the mobile navigation that renders
+// the main navigation items that are otherwise in the
+// top navigation.
+// Default Startlight setup doesn't have this because it
+// doesn't assume that the top navigation will be heavily
+// relied on.
+import SocialIcons from "./SocialIcons.astro";
+import type { Props } from "@astrojs/starlight/props";
+---
+
+<div class="mobile-preferences sl-flex">
+  <SocialIcons {...Astro.props} />
+</div>
+
+<style>
+  .mobile-preferences {
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    column-gap: 1rem;
+    padding: 0.5rem 0;
+  }
+
+  .mobile-preferences :global(.nav) {
+    flex-wrap: wrap;
+  }
+</style>

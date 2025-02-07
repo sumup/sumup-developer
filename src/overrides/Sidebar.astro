@@ -1,31 +1,14 @@
 ---
+// Customized sidebar.
+// - Adds custom navigation for mobile menu.
+// - Renders default 'Overview' items for sub-collections.
 import type { Props } from "@astrojs/starlight/props";
-import Default from "@astrojs/starlight/components/Sidebar.astro";
 import { getEntry } from "astro:content";
-import type { Badge } from "@astrojs/starlight/components";
-import type { ComponentProps, HTMLAttributes } from "astro/types";
-
-interface Link {
-  type: "link";
-  label: string;
-  href: string;
-  isCurrent: boolean;
-  badge: ComponentProps<typeof Badge> | undefined;
-  attrs: Omit<HTMLAttributes<"a">, "children">;
-  order: number;
-}
-
-// TODO: use Props['sidebar']
-type SidebarEntry = Link | Group;
-
-interface Group {
-  type: "group";
-  label: string;
-  entries: (Link | Group)[];
-  collapsed: boolean;
-  badge: ComponentProps<typeof Badge> | undefined;
-  order: number;
-}
+import type { SidebarEntry, Group, Link } from "../types/astro";
+import SidebarSublist from "./SidebarSublist.astro";
+import SidebarPersister from "@astrojs/starlight/components/SidebarPersister.astro";
+import MobileMenuFooter from "./MobileMenuFooter.astro";
+import MobileMenuHeader from "./MobileMenuHeader.astro";
 
 const { slug } = Astro.props;
 let sidebar = Astro.props.sidebar as SidebarEntry[];
@@ -98,11 +81,11 @@ async function handleLink(link: Link): Promise<Link> {
 }
 
 // api sidebar is generated in code and doesn't have index pages for all sections
-if (currentSection === "api") {
-  sidebar = (
-    sidebar.find((x) => x.label.toLowerCase() === currentSection)! as Group
-  ).entries;
-} else {
+sidebar = (
+  sidebar.find((x) => x.label.toLowerCase() === currentSection)! as Group
+)?.entries;
+
+if (currentSection !== "api") {
   sidebar = await Promise.all(
     sidebar.map((entry) => {
       if (entry.type === "group") {
@@ -116,6 +99,21 @@ if (currentSection === "api") {
 }
 ---
 
-<Default {...Astro.props} sidebar={sidebar as Props["sidebar"]}>
-  <slot />
-</Default>
+<div class="md:sl-hidden">
+  <MobileMenuHeader {...Astro.props} hideSocial />
+</div>
+
+<SidebarPersister
+  {...Astro.props}
+  sidebar={sidebar as Props["sidebar"]}
+  transition:name="sidebar"
+>
+  <SidebarSublist
+    sublist={sidebar as Props["sidebar"]}
+    expanded={currentSection !== "api"}
+  />
+</SidebarPersister>
+
+<div class="md:sl-hidden">
+  <MobileMenuFooter {...Astro.props} />
+</div>

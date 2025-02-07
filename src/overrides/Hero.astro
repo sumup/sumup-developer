@@ -1,9 +1,20 @@
 ---
-import Default from "@astrojs/starlight/components/Hero.astro";
 import type { Props } from "@astrojs/starlight/props";
-import HomepageHero from "../components/HomepageHero.astro";
+import { Display } from "@sumup-oss/circuit-ui";
 
-const isHomepage = Astro.props.siteTitleHref === "/" && Astro.props.id === "";
+const {
+  data: { title },
+} = Astro.props.entry;
 ---
 
-{isHomepage ? <HomepageHero {...Astro.props} /> : <Default {...Astro.props} />}
+<div class="hero">
+  <Display as="h1" size="s" weight="semibold" id={"_top"} data-page-title>
+    {title}
+  </Display>
+</div>
+
+<style>
+  .hero {
+    margin-top: 2rem;
+  }
+</style>
