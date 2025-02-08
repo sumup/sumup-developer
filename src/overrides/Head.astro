@@ -15,7 +15,7 @@ import { ClientRouter } from "astro:transitions";
     const observer = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {
         const element = mutation.target;
-        element.colorScheme = element.dataset.theme;
+        element.dataset.colorScheme = element.dataset.theme;
       });
     });
     observer.observe(document.documentElement, {
