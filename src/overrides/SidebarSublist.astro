@@ -10,9 +10,10 @@ import { flattenSidebar } from "node_modules/@astrojs/starlight/utils/navigation
 interface Props {
   sublist: StarlightProps["sidebar"];
   expanded?: boolean;
+  nested?: boolean;
 }
 
-const { sublist, expanded } = Astro.props;
+const { sublist, expanded, nested } = Astro.props;
 ---
 
 <ul class="sidebar">
@@ -23,7 +24,7 @@ const { sublist, expanded } = Astro.props;
           <a
             href={entry.href}
             aria-current={entry.isCurrent && "page"}
-            class:list={[entry.attrs.class]}
+            class:list={[entry.attrs.class, !nested && "sidebar-title"]}
             {...entry.attrs}
           >
             <span>{entry.label}</span>
@@ -56,7 +57,7 @@ const { sublist, expanded } = Astro.props;
               </div>
               <Icon name="right-caret" class="caret" size="1.25rem" />
             </summary>
-            <Astro.self sublist={entry.entries} />
+            <Astro.self sublist={entry.entries} nested />
           </details>
         )}
         {entry.type === "group" && expanded && (
@@ -71,7 +72,7 @@ const { sublist, expanded } = Astro.props;
                 />
               )}
             </span>
-            <Astro.self sublist={entry.entries} />
+            <Astro.self sublist={entry.entries} nested />
           </>
         )}
       </li>
@@ -83,6 +84,14 @@ const { sublist, expanded } = Astro.props;
   .sidebar {
     font-size: var(--cui-body-s-font-size);
     line-height: var(--cui-body-s-line-height);
+  }
+
+  .sidebar-title {
+    color: var(--cui-fg-normal);
+    font-weight: var(--cui-font-weight-semibold);
+    font-size: var(--cui-body-m-font-size);
+    line-height: var(--cui-body-m-line-height);
+    margin-bottom: var(--cui-spacings-kilo);
   }
 
   .group-header {
