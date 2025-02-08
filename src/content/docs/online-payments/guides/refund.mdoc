@@ -46,7 +46,7 @@ Following is a sample request for retrieving a checkout:
 ```bash
 curl -X GET \
   https://api.sumup.com/v0.1/checkouts/4ebc2ed7-bb8c-4d4d-a110-08fd31301bf2 \
-  -H 'Authorization: Bearer $SUMUP_API_KEY'
+  -H "Authorization: Bearer $SUMUP_API_KEY"
 ```
 {% /tabitem %}
 {% tabitem label="Go" %}
@@ -102,7 +102,7 @@ Following is a sample request for making a full refund for the transaction with 
 ```bash
 curl -X POST \
   https://api.sumup.com/v0.1/me/refund/19aa3cca-89f6-42d2-b462-463b0b53e959 \
-  -H 'Authorization: Bearer $SUMUP_API_KEY'
+  -H "Authorization: Bearer $SUMUP_API_KEY"
 ```
 {% /tabitem %}
 {% tabitem label="Go"%}
@@ -136,7 +136,7 @@ Following is a sample request for making a partial refund for the amount of 24.4
 ```bash
 curl -X POST \
   https://api.sumup.com/v0.1/me/refund/19aa3cca-89f6-42d2-b462-463b0b53e959 \
-  -H 'Authorization: Bearer $SUMUP_API_KEY'\
+  -H "Authorization: Bearer $SUMUP_API_KEY" \
   -H 'Content-Type: application/json' \
   -d '{"amount": 24.42}'
 ```

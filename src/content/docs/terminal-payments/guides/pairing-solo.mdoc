@@ -51,7 +51,7 @@ For a full list of the available parameters, see the [API Reference](/api/reader
 ```bash
 curl -X POST \
   https://api.sumup.com/v0.1/merchants/{merchant_code}/readers \
-  -H 'Authorization: Bearer $SUMUP_API_KEY' \
+  -H "Authorization: Bearer $SUMUP_API_KEY" \
   -H 'Content-Type: application/json' \
   -d '{
         "pairing_code": "918MPQHZ"
@@ -104,7 +104,7 @@ For a full list of the available parameters, see the [API Reference](/api/reader
 ```bash
 curl -X DELETE \
   https://api.sumup.com/v0.1/merchants/{merchant_code}/readers/{id} \
-  -H 'Authorization: Bearer $SUMUP_API_KEY'
+  -H "Authorization: Bearer $SUMUP_API_KEY"
 ```
 {% /tabitem %}
 {% /tabs %}

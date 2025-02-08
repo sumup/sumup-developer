@@ -17,7 +17,7 @@ SumUp uses API keys to authenticate the API requests. You can create new keys in
 Secret API keys are short static tokens that are passed in the `Authorization` header to authenticate the requests.
 
 ```bash
-curl https://api.sumup.com/v0.1/me -H 'Authorization: Bearer sup_sk_XXX'
+curl https://api.sumup.com/v0.1/me -H "Authorization: Bearer $SUMUP_API_KEY"
 ```
 
 The tokens have a `sup_sk_` prefix. Your API keys carry many permissions and have access to the whole SumUp API, so make sure to keep them secure.
@@ -43,7 +43,7 @@ SumUp supports two OAuth 2.0 authorization flows:
 As with the API keys, the [access token](https://oauth.net/2/access-tokens/) that you obtain after finishing the OAuth 2.0 flow is passed in the `Authorization` header.
 
 ```bash
-curl https://api.sumup.com/v0.1/me -H 'Authorization: Bearer at_classic_XXX'
+curl https://api.sumup.com/v0.1/me -H 'Authorization: Bearer at_classic_...'
 ```
 
 Most of the popular programming languages have libraries that support OAuth 2.0 protocol. We highly recommend that you use one of the [existing reputable implementations](https://oauth.net/code/).

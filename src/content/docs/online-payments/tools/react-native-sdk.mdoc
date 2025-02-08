@@ -27,7 +27,7 @@ Initializing the SDK works by passing it a `checkout_id`. To [create a checkout]
 ```bash
 curl --request POST \
 --url https://api.sumup.com/v0.1/checkouts \
---header 'Authorization: Bearer $SUMUP_API_KEY' \
+--header "Authorization: Bearer $SUMUP_API_KEY" \
 --header 'Content-Type: application/json' \
 --data '{
 "checkout_reference": "44ea5096-b83f-46e1-9323-fe82a8cb7eb5",
@@ -202,27 +202,27 @@ To save a card for future usage, a customer should be created. It can be achieve
 {% tabitem label="cURL"%}
 ```bash
 curl -L -X POST 'https://api.sumup.com/v0.1/customers' \
--H 'Content-Type: application/json' \
--H 'Accept: application/json' \
--H 'Authorization: Bearer $SUMUP_API_KEY' \
---data-raw '{
-"customer_id": "831ff8d4cd5958ab5670",
-"personal_details": {
-"first_name": "John",
-"last_name": "Doe",
-"email": "user@example.com",
-"phone": "+491635559723",
-"birthdate": "1993-12-31",
-"address": {
-"city": "Berlin",
-"country": "DE",
-"line1": "Sample street",
-"line2": "ap. 5",
-"postal_code": "10115",
-"state": "Berlin"
-}
-}
-}'
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json' \
+  -H "Authorization: Bearer $SUMUP_API_KEY" \
+  --data-raw '{
+    "customer_id": "831ff8d4cd5958ab5670",
+    "personal_details": {
+      "first_name": "John",
+      "last_name": "Doe",
+      "email": "user@example.com",
+      "phone": "+491635559723",
+      "birthdate": "1993-12-31",
+      "address": {
+        "city": "Berlin",
+        "country": "DE",
+        "line1": "Sample street",
+        "line2": "ap. 5",
+        "postal_code": "10115",
+        "state": "Berlin"
+      }
+    }
+  }'
 ```
 {% /tabitem %}
 {% /tabs %}

@@ -28,8 +28,8 @@ Here's an example of creating a checkout with Hosted Checkouts enabled:
 
 ```bash
 curl -X POST https://api.sumup.com/v0.1/checkouts \
-    -H 'Content-Type: application/json' \
-    -H 'Authorization: Bearer <AUTH_TOKEN>' \ 
+    -H "Content-Type: application/json" \
+    -H "Authorization: Bearer $SUMUP_API_KEY" \ 
     -d '{
         "amount": 12.00,
         "checkout_reference": "b50pr914-6k0e-3091-a592-890010285b3d", 

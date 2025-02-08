@@ -62,7 +62,7 @@ Following is a sample request for creating a new checkout resource:
 ```bash
 curl -X POST \
   https://api.sumup.com/v0.1/checkouts \
-  -H 'Authorization: Bearer $SUMUP_API_KEY' \
+  -H "Authorization: Bearer $SUMUP_API_KEY" \
   -H 'Content-Type: application/json' \
   -d '{
         "checkout_reference": "CO746453",
@@ -132,7 +132,7 @@ Following is a sample request for completing the checkout from [Step 1](#1-creat
 ```bash
 curl -X PUT \
   https://api.sumup.com/v0.1/checkouts/f14425c6-8bc1-4d02-957c-47573f762828 \
-  -H 'Authorization: Bearer $SUMUP_API_KEY' \
+  -H "Authorization: Bearer $SUMUP_API_KEY" \
   -H 'Content-Type: application/json' \
   -d '{
         "payment_type": "card",
