@@ -5,26 +5,42 @@ import { Breadcrumbs } from "astro-breadcrumbs";
 import "astro-breadcrumbs/breadcrumbs.css";
 import { getEntry } from "astro:content";
 
-const paths = Astro.url.pathname.split("/").filter((crumb: string) => crumb);
-let path = "";
-const crumbs = await Promise.all(
-  paths.map(async (segment) => {
-    const id = `${path ? `${path}/` : path}${segment}`;
-    path = id;
-    const page = await getEntry("docs", id);
-    return page
-      ? {
-          text: page.data?.title,
-          href: `/${id}/`,
-        }
-      : undefined;
-  }),
-);
+type Breadcrumb = {
+  text: string;
+  href: string;
+};
+
+const getBreadcrumbs = async (pathname: string): Promise<Breadcrumb[]> => {
+  const paths = pathname.split("/").filter(Boolean);
+  let path = "";
+
+  const crumbs = await Promise.all(
+    paths.map(async (segment) => {
+      const id = `${path ? `${path}/` : path}${segment}`;
+      path = id;
+      const page = await getEntry("docs", id);
+      return page
+        ? {
+            text: page.data?.title,
+            href: `/${id}/`,
+          }
+        : undefined;
+    }),
+  );
+
+  if (!crumbs.every(Boolean)) {
+    return [];
+  }
+
+  return [{ text: "Home", href: "/" }, ...(crumbs as Breadcrumb[])];
+};
+
+const crumbs = await getBreadcrumbs(Astro.url.pathname);
 ---
 
 {
-  !Astro.props.custom && crumbs.every(Boolean) && (
-    <Breadcrumbs crumbs={[{ text: "Home", href: "/" }, ...crumbs]}>
+  crumbs?.length > 1 && (
+    <Breadcrumbs crumbs={crumbs}>
       <div slot="separator">/</div>
     </Breadcrumbs>
   )

@@ -80,11 +80,11 @@ async function handleLink(link: Link): Promise<Link> {
   return link;
 }
 
-// api sidebar is generated in code and doesn't have index pages for all sections
 sidebar = (
   sidebar.find((x) => x.label.toLowerCase() === currentSection)! as Group
 )?.entries;
 
+// api sidebar is generated in code and doesn't have index pages for all sections
 if (currentSection !== "api") {
   sidebar = await Promise.all(
     sidebar.map((entry) => {

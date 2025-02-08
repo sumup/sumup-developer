@@ -2,7 +2,7 @@
 :root {
   /* Layout sizing */
   --sl-sidebar-width: 17rem;
-  --sl-content-width: 60rem;
+  --sl-content-width: 50rem;
   --sl-nav-height: 3.5rem;
   --sl-mobile-toc-height: 0px;
 

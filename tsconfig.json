@@ -15,7 +15,6 @@
       "@assets/*": ["src/assets/*"],
       "@types/*": ["src/types/*"],
       "@lib/*": ["src/lib/*"],
-      "@layouts/*": ["src/layouts/*"],
       "@services/*": ["src/services/*"],
       "@hooks/*": ["src/hooks/*"],
       "@api/*": ["src/api/*"]
