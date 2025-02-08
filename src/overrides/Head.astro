@@ -1,29 +1,27 @@
 ---
 // Plugs in client-side router for page transitions.
 // See: https://docs.astro.build/en/guides/view-transitions/
-import type { Props } from "@astrojs/starlight/props";
-import Default from "@astrojs/starlight/components/Head.astro";
-import "@sumup-oss/design-tokens/fonts.css";
-import "@sumup-oss/design-tokens/dynamic.css";
-import { ClientRouter } from "astro:transitions";
+import type { Props } from '@astrojs/starlight/props';
+import Default from '@astrojs/starlight/components/Head.astro';
+import '@sumup-oss/design-tokens/fonts.css';
+import '@sumup-oss/design-tokens/dynamic.css';
+import { ClientRouter } from 'astro:transitions';
 ---
 
-<script is:inline>
-  // hack for circuit-ui (`Title` and other components read `process`)
-  if (!globalThis.process) globalThis.process ??= {};
-  if (!globalThis.process.env) globalThis.process.env ??= {};
-</script>
 {/* This code is intentionally inlined to avoid FOUC. */}
 {/* It is wrapped in an IIFE to avoid polluting the global scope. */}
 <script is:inline>
   (function () {
-    const colorScheme =
-      typeof localStorage !== "undefined" &&
-      localStorage.getItem("color-scheme");
-
-    if (["light", "dark"].includes(colorScheme)) {
-      document.documentElement.dataset.colorScheme = colorScheme;
-    }
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        const element = mutation.target;
+        element.colorScheme = element.dataset.theme;
+      });
+    });
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-theme'],
+    });
   })();
 </script>
 
