@@ -1,11 +1,11 @@
 ---
 // Plugs in client-side router for page transitions.
 // See: https://docs.astro.build/en/guides/view-transitions/
-import type { Props } from '@astrojs/starlight/props';
-import Default from '@astrojs/starlight/components/Head.astro';
-import '@sumup-oss/design-tokens/fonts.css';
-import '@sumup-oss/design-tokens/dynamic.css';
-import { ClientRouter } from 'astro:transitions';
+import type { Props } from "@astrojs/starlight/props";
+import Default from "@astrojs/starlight/components/Head.astro";
+import "@sumup-oss/design-tokens/fonts.css";
+import "@sumup-oss/design-tokens/dynamic.css";
+import { ClientRouter } from "astro:transitions";
 ---
 
 {/* This code is intentionally inlined to avoid FOUC. */}
@@ -20,7 +20,7 @@ import { ClientRouter } from 'astro:transitions';
     });
     observer.observe(document.documentElement, {
       attributes: true,
-      attributeFilter: ['data-theme'],
+      attributeFilter: ["data-theme"],
     });
   })();
 </script>
