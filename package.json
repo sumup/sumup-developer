@@ -45,7 +45,7 @@
     "@astrojs/starlight-docsearch": "0.5.0",
     "@astrojs/starlight-markdoc": "^0.2.0",
     "@astrojs/ts-plugin": "^1.10.4",
-    "@astrojs/vercel": "8.0.5",
+    "@astrojs/vercel": "8.0.6",
     "@elbwalker/tagger": "^2.1.1",
     "@elbwalker/walker.js": "^1.6.5",
     "@expressive-code/plugin-collapsible-sections": "0.40.1",
