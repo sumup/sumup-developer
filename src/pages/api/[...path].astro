@@ -7,6 +7,7 @@ import { doc, pathsByTag } from "@lib/openapi";
 import type { StarlightUserConfig } from "@astrojs/starlight/types";
 import type { I18nBadgeConfig } from "node_modules/@astrojs/starlight/schemas/badge";
 
+// list of resources that are expanded by default
 const mainResources = ["Checkouts", "Customers", "Merchant"];
 
 export async function getStaticPaths() {
@@ -17,7 +18,7 @@ export async function getStaticPaths() {
     ...(doc.tags || []).map((tag) => ({
       params: { path: formatSlug(tag.name) },
     })),
-    // individual endpoints
+    // operations
     ...Object.entries(pathsByTag).flatMap(([tag, operations]) =>
       operations.map((o) => ({
         params: { path: `${formatSlug(tag)}/${formatSlug(o.slug)}` },

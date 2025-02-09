@@ -35,6 +35,21 @@ const { target } = Astro.props;
         }
       </LRGrid>
     </section>
+    <LRGrid>
+      <div class="info">
+        <Markdown>{"## Client libraries"}</Markdown>
+      </div>
+      {
+        doc.servers && (
+          <div class="servers">
+            {doc.servers.map((server) => (
+              <Code meta={`title="Server URL"`} lang="bash" code={server.url} />
+            ))}
+          </div>
+        )
+      }
+    </LRGrid>
+    <section></section>
     {
       Object.entries(pathsByTag).map(([tag, operations]) => (
         <TagSection

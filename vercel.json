@@ -8,18 +8,8 @@
       "permanent": true
     },
     {
-      "source": "/docs/terminal-payments/introduction",
-      "destination": "/terminal-payments/introduction",
-      "permanent": true
-    },
-    {
-      "source": "/docs/terminal-payments/introduction/overview",
-      "destination": "/terminal-payments/introduction/overview",
-      "permanent": true
-    },
-    {
-      "source": "/docs/terminal-payments/introduction/getting-started",
-      "destination": "/terminal-payments/introduction/getting-started",
+      "source": "/docs/:path*",
+      "destination": "/:path*",
       "permanent": true
     },
     {
@@ -28,83 +18,13 @@
       "permanent": true
     },
     {
-      "source": "/docs/terminal-payments/tools",
-      "destination": "/terminal-payments/tools",
-      "permanent": true
-    },
-    {
-      "source": "/docs/terminal-payments/tools/api",
-      "destination": "/terminal-payments/tools/api",
-      "permanent": true
-    },
-    {
-      "source": "/docs/terminal-payments/tools/sdk",
-      "destination": "/terminal-payments/tools/sdk",
-      "permanent": true
-    },
-    {
-      "source": "/docs/terminal-payments/industry",
-      "destination": "/terminal-payments/industry",
-      "permanent": true
-    },
-    {
-      "source": "/docs/terminal-payments/industry/retail",
-      "destination": "/terminal-payments/industry/retail",
-      "permanent": true
-    },
-    {
-      "source": "/docs/terminal-payments/industry/hospitality",
-      "destination": "/terminal-payments/industry/hospitality",
-      "permanent": true
-    },
-    {
-      "source": "/docs/terminal-payments/industry/transport",
-      "destination": "/terminal-payments/industry/transport",
-      "permanent": true
-    },
-    {
-      "source": "/docs/terminal-payments/industry/bookings",
-      "destination": "/terminal-payments/industry/bookings",
-      "permanent": true
-    },
-    {
-      "source": "/docs/terminal-payments/industry/enterprise",
-      "destination": "/terminal-payments/industry/enterprise",
-      "permanent": true
-    },
-    {
-      "source": "/docs/online-payments/introduction",
-      "destination": "/online-payments/introduction",
-      "permanent": true
-    },
-    {
       "source": "/docs/getting-started",
-      "destination": "/online-payments/introduction/get-started",
+      "destination": "/online-payments/",
       "permanent": true
     },
     {
       "source": "/docs/online-payments/introduction/getting-started",
-      "destination": "/online-payments/introduction/get-started",
-      "permanent": true
-    },
-    {
-      "source": "/docs/online-payments/introduction/register-app",
-      "destination": "/online-payments/introduction/register-app",
-      "permanent": true
-    },
-    {
-      "source": "/docs/online-payments/introduction/authorization",
-      "destination": "/online-payments/introduction/authorization",
-      "permanent": true
-    },
-    {
-      "source": "/docs/online-payments/introduction/response-handling",
-      "destination": "/online-payments/introduction/response-handling",
-      "permanent": true
-    },
-    {
-      "source": "/docs/online-payments/introduction/webhooks",
-      "destination": "/online-payments/introduction/webhooks",
+      "destination": "/online-payments/",
       "permanent": true
     },
     {
@@ -115,16 +35,6 @@
     {
       "source": "/docs/online-payments/guides/single-payment",
       "destination": "/online-payments/guides/single-payment",
-      "permanent": true
-    },
-    {
-      "source": "/docs/online-payments/guides/recurring-payments",
-      "destination": "/online-payments/guides/recurring-payments",
-      "permanent": true
-    },
-    {
-      "source": "/docs/online-payments/guides/refund",
-      "destination": "/online-payments/guides/refund",
       "permanent": true
     },
     {
@@ -685,6 +595,41 @@
     {
       "source": "/online-payments/introduction/get-started/",
       "destination": "/online-payments/introduction/",
+      "permanent": true
+    },
+    {
+      "source": "/online-payments/introduction/3ds",
+      "destination": "/online-payments/3ds/",
+      "permanent": true
+    },
+    {
+      "source": "/online-payments/introduction/authorization",
+      "destination": "/online-payments/authorization/",
+      "permanent": true
+    },
+    {
+      "source": "/online-payments/introduction/register-app",
+      "destination": "/online-payments/register-app/",
+      "permanent": true
+    },
+    {
+      "source": "/online-payments/introduction/response-handling",
+      "destination": "/online-payments/response-handling/",
+      "permanent": true
+    },
+    {
+      "source": "/online-payments/introduction/webhooks",
+      "destination": "/online-payments/webhooks/",
+      "permanent": true
+    },
+    {
+      "source": "/terminal-payments/introduction/",
+      "destination": "/terminal-payments/",
+      "permanent": true
+    },
+    {
+      "source": "/terminal-payments/introduction/getting-started",
+      "destination": "/terminal-payments/getting-started/",
       "permanent": true
     }
   ]

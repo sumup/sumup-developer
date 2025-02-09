@@ -1,0 +1,91 @@
+---
+import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
+import type { StarlightPageProps } from "@astrojs/starlight/props";
+import { Headline } from "@sumup-oss/circuit-ui";
+import CardLink from "@components/CardLink.astro";
+import CardStack from "@components/CardStack.astro";
+import SwiftCheckout from "../assets/swift-checkout.svg?raw";
+import ApiCall from "../assets/api-call.svg?raw";
+
+const props = {
+  frontmatter: {
+    title: "Terminal payments",
+    description: "TODO",
+    tableOfContents: false,
+  },
+  custom: true,
+} as StarlightPageProps;
+---
+
+<StarlightPage {...props}>
+  <main>
+    <section>
+      <Headline as="h2">Building blocks</Headline>
+      <CardStack>
+        <CardLink
+          href="/terminal-payments/tools/cloud-api/"
+          title="Card reader payments"
+          description="Integrate card payments from any platform using Cloud API."
+          image={ApiCall}
+        />
+        <CardLink
+          href="/online-payments/plugins"
+          title="Mobile app integration"
+          description="Accept card reader payments from your own app using SumUp card readers."
+          image={SwiftCheckout}
+        />
+        <CardLink
+          href="/online-payments/plugins"
+          title="SDKs"
+          description="Use your favorite programming language with one of our SDKs."
+          image={ApiCall}
+        />
+      </CardStack>
+    </section>
+  </main>
+</StarlightPage>
+
+<style>
+  section {
+    margin-bottom: var(--cui-spacings-tera);
+  }
+  section :global(h2) {
+    margin-bottom: var(--cui-spacings-giga) !important;
+  }
+  .sdks {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cui-spacings-kilo);
+  }
+
+  .sdk-link {
+    display: flex;
+    align-items: center;
+    gap: var(--cui-spacings-tera);
+    padding: var(--cui-spacings-giga);
+    border-radius: var(--cui-border-radius-byte);
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+    justify-self: stretch;
+    border: var(--cui-border-width-kilo) solid var(--cui-border-subtle);
+  }
+
+  .sdk-logo {
+    width: 64px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+  }
+
+  .sdk-title {
+    font-size: var(--cui-body-l-font-size);
+    line-height: var(--cui-body-l-line-height);
+    font-weight: var(--cui-font-weight-bold);
+  }
+
+  .sdk-url {
+    margin-top: var(--cui-spacings-bit);
+    color: var(--cui-fg-subtle);
+  }
+</style>

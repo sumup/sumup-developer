@@ -146,6 +146,7 @@ export default defineConfig({
   site: "https://developer.sumup.com",
 
   experimental: {
+    svg: true,
     contentIntellisense: true,
   },
 
@@ -197,7 +198,6 @@ export default defineConfig({
       customCss: [
         "@sumup-oss/circuit-ui/experimental/styles.css",
         "./src/base.css",
-        "./src/title.css",
       ],
       pagination: false,
       lastUpdated: true,

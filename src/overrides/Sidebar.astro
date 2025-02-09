@@ -3,100 +3,24 @@
 // - Adds custom navigation for mobile menu.
 // - Renders default 'Overview' items for sub-collections.
 import type { Props } from "@astrojs/starlight/props";
-import { getEntry } from "astro:content";
-import type { SidebarEntry, Group, Link } from "../types/astro";
+import { getSidebar, lookupProductTitle, type Group } from "@lib/sidebar";
 import SidebarSublist from "./SidebarSublist.astro";
 import SidebarPersister from "@astrojs/starlight/components/SidebarPersister.astro";
 import MobileMenuFooter from "./MobileMenuFooter.astro";
 import MobileMenuHeader from "./MobileMenuHeader.astro";
 
-const { slug } = Astro.props;
-let sidebar = Astro.props.sidebar as SidebarEntry[];
-const currentSection = slug?.split("/")[0];
+const { id } = Astro.props;
+const currentSection = id?.split("/")[0];
 
-function sortGroup(a: SidebarEntry, b: SidebarEntry): number {
-  const collator = new Intl.Collator("en");
+const sidebar =
+  currentSection !== "api"
+    ? (await getSidebar(Astro)).entries
+    : (Astro.props.sidebar[0] as Group).entries;
 
-  if (a.order !== b.order) return a.order - b.order;
-
-  return collator.compare(a.label, b.label);
-}
-
-async function handleGroup(group: Group): Promise<SidebarEntry> {
-  const indexLink = group.entries.find(
-    (x) => x.type === "link" && x.href.endsWith(`/${group.label}/`),
-  ) as Link | undefined;
-
-  if (!indexLink) {
-    throw new Error(`Unable to find index link in group ${group.label}`);
-  }
-
-  const indexPage = await getEntry("docs", indexLink.href.slice(1, -1));
-
-  if (!indexPage) {
-    throw new Error(`Unable to find index page with href ${indexLink}`);
-  }
-
-  const frontmatter = indexPage.data;
-
-  group.label = frontmatter.title;
-  group.order = frontmatter.sidebar.order ?? Number.MAX_VALUE;
-
-  for (const entry of group.entries.keys()) {
-    if (group.entries[entry].type === "group") {
-      group.entries[entry] = await handleGroup(group.entries[entry] as Group);
-    } else {
-      group.entries[entry] = await handleLink(group.entries[entry] as Link);
-    }
-  }
-
-  group.entries = group.entries.sort(sortGroup);
-
-  const indexIdx = group.entries.findIndex(
-    (x) => x.type === "link" && indexLink.href === x.href,
-  ) as number;
-
-  group.entries.unshift(group.entries.splice(indexIdx, 1)[0]);
-  group.entries[0].label = indexPage.data.sidebar.label ?? "Overview";
-
-  return group;
-}
-
-async function handleLink(link: Link): Promise<Link> {
-  const slug = link.href.slice(1, -1);
-  const page = await getEntry("docs", slug);
-
-  if (!page) {
-    throw new Error("Oops");
-  }
-
-  const frontmatter = page.data;
-  link.order = frontmatter.sidebar.order ?? Number.MAX_VALUE;
-
-  if (slug === currentSection) {
-    link.order = 0;
-  }
-
-  return link;
-}
-
-sidebar = (
-  sidebar.find((x) => x.label.toLowerCase() === currentSection)! as Group
-)?.entries;
-
-// api sidebar is generated in code and doesn't have index pages for all sections
-if (currentSection !== "api") {
-  sidebar = await Promise.all(
-    sidebar.map((entry) => {
-      if (entry.type === "group") {
-        return handleGroup(entry);
-      }
-      return handleLink(entry);
-    }),
-  );
-
-  sidebar = sidebar.sort(sortGroup);
-}
+const title =
+  currentSection !== "api"
+    ? await lookupProductTitle(currentSection)
+    : "API Reference";
 ---
 
 <div class="md:sl-hidden">
@@ -111,6 +35,7 @@ if (currentSection !== "api") {
   <SidebarSublist
     sublist={sidebar as Props["sidebar"]}
     expanded={currentSection !== "api"}
+    title={title}
   />
 </SidebarPersister>
 
@@ -119,7 +44,17 @@ if (currentSection !== "api") {
 </div>
 
 <style>
+  :root,
+  :root[data-theme="light"] {
+    --sl-color-bg-sidebar: var(--cui-bg-subtle);
+    --sl-sidebar-width: 17rem;
+  }
+
   :global(sl-sidebar-state-persist) {
     display: block;
+  }
+
+  :global(.sidebar-content) {
+    gap: 0;
   }
 </style>

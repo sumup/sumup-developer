@@ -8,15 +8,25 @@ import { Badge, Icon } from "@astrojs/starlight/components";
 import { flattenSidebar } from "node_modules/@astrojs/starlight/utils/navigation";
 
 interface Props {
+  title?: string;
   sublist: StarlightProps["sidebar"];
   expanded?: boolean;
   nested?: boolean;
 }
 
-const { sublist, expanded, nested } = Astro.props;
+const { sublist, expanded, title } = Astro.props;
 ---
 
 <ul class="sidebar">
+  {
+    title && (
+      <li>
+        <div class:list={["group-header", "title"]}>
+          <span>{title}</span>
+        </div>
+      </li>
+    )
+  }
   {
     sublist.map((entry) => (
       <li>
@@ -24,7 +34,7 @@ const { sublist, expanded, nested } = Astro.props;
           <a
             href={entry.href}
             aria-current={entry.isCurrent && "page"}
-            class:list={[entry.attrs.class, !nested && "sidebar-title"]}
+            class:list={[entry.attrs.class]}
             {...entry.attrs}
           >
             <span>{entry.label}</span>
@@ -57,7 +67,7 @@ const { sublist, expanded, nested } = Astro.props;
               </div>
               <Icon name="right-caret" class="caret" size="1.25rem" />
             </summary>
-            <Astro.self sublist={entry.entries} nested />
+            <Astro.self sublist={entry.entries} />
           </details>
         )}
         {entry.type === "group" && expanded && (
@@ -72,7 +82,7 @@ const { sublist, expanded, nested } = Astro.props;
                 />
               )}
             </span>
-            <Astro.self sublist={entry.entries} nested />
+            <Astro.self sublist={entry.entries} />
           </>
         )}
       </li>
@@ -86,25 +96,17 @@ const { sublist, expanded, nested } = Astro.props;
     line-height: var(--cui-body-s-line-height);
   }
 
-  .sidebar-title {
-    color: var(--cui-fg-normal);
-    font-weight: var(--cui-font-weight-semibold);
-    font-size: var(--cui-body-m-font-size);
-    line-height: var(--cui-body-m-line-height);
-    margin-bottom: var(--cui-spacings-kilo);
-  }
-
   .group-header {
-    font-size: 0.75rem;
-    margin: var(--cui-spacings-bit) 0;
-    text-transform: uppercase;
+    margin: var(--cui-spacings-mega) 0 var(--cui-spacings-bit);
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 0.2em var(--sl-sidebar-item-padding-inline);
-    line-height: 1.4;
-    line-height: var(--cui-body-s-line-height);
-    font-weight: var(--cui-font-weight-semibold);
+    font-weight: var(--cui-font-weight-bold);
+  }
+
+  .title {
+    margin-top: 0;
   }
 
   ul {
@@ -116,10 +118,6 @@ const { sublist, expanded, nested } = Astro.props;
   li {
     overflow-wrap: anywhere;
     margin-bottom: var(--cui-spacings-bit);
-  }
-
-  .top-level > li + li {
-    margin-top: 0.75rem;
   }
 
   details ul,
@@ -150,17 +148,20 @@ const { sublist, expanded, nested } = Astro.props;
 
   a {
     display: block;
-    border-radius: 0.25rem;
     text-decoration: none;
-    color: var(--cui-fg-subtle);
+    border-radius: var(--cui-border-radius-bit);
+    color: var(--cui-fg-normal);
     padding: var(--cui-spacings-bit) var(--cui-spacings-byte);
-    line-height: 1.4;
   }
 
-  a:hover,
+  a:hover {
+    color: var(--cui-fg-normal-hovered);
+    background-color: var(--cui-bg-subtle-hovered);
+  }
+
   a:focus {
-    color: var(--cui-fg-on-strong);
-    background-color: var(--cui-bg-strong);
+    color: var(--cui-fg-normal-pressed);
+    background-color: var(--cui-bg-subtle-pressed);
   }
 
   [aria-current="page"],
@@ -174,11 +175,5 @@ const { sublist, expanded, nested } = Astro.props;
   a > *:not(:last-child),
   .group-label > *:not(:last-child) {
     margin-inline-end: 0.25em;
-  }
-
-  @media (min-width: 50rem) {
-    .top-level > li + li {
-      margin-top: 0.5rem;
-    }
   }
 </style>

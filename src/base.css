@@ -1,21 +1,5 @@
 /* Dark mode colors. */
 :root {
-  /* Layout sizing */
-  --sl-sidebar-width: 17rem;
-  --sl-content-width: 50rem;
-  --sl-nav-height: 3.5rem;
-  --sl-mobile-toc-height: 0px;
-
-  /* Custom colors for page elements */
-  --sl-color-bg-nav: var(--cui-bg-subtle);
-  --sl-color-bg-sidebar: var(--cui-bg-subtle);
-  --sl-color-hairline-shade: var(--cui-border-subtle);
-
-  /* Typography */
-  --sl-text-h1: var(--cui-headline-l-font-size);
-  --sl-text-h2: var(--cui-headline-m-font-size);
-  --sl-text-h3: var(--cui-headline-s-font-size);
-
   --sl-color-accent-low: #242424;
   --sl-color-accent: var(--cui-fg-accent);
   --sl-color-accent-high: #c8c8c8;
@@ -27,23 +11,10 @@
   --sl-color-gray-5: #353841;
   --sl-color-gray-6: #24272f;
   --sl-color-black: #17181c;
-
-  --sl-text-h4: var(--sl-text-base);
-  --sl-text-h5: var(--sl-text-base);
 }
 
 /* Light mode colors. */
 :root[data-theme="light"] {
-  /*
-   * Custom colors for page elements, needs to be present
-   * both here and in dark mode otherwise it doesn't apply.
-   * (I assume Starlight specific thing where they define these
-   * variables in both themes?)
-   */
-  --sl-color-bg-nav: var(--cui-bg-subtle);
-  --sl-color-bg-sidebar: var(--cui-bg-subtle);
-  --sl-color-hairline-shade: var(--cui-border-subtle);
-
   --sl-color-accent-low: #d7d7d7;
   --sl-color-accent: var(--cui-fg-accent);
   --sl-color-accent-high: #323232;
@@ -56,6 +27,24 @@
   --sl-color-gray-6: #eceef2;
   --sl-color-gray-7: #f5f6f8;
   --sl-color-black: #ffffff;
+}
+
+/* Customization of Starlight beyong the theming */
+:root,
+:root[data-theme="light"] {
+  /* Layout sizing */
+  --sl-content-width: 50rem;
+  --sl-mobile-toc-height: 0px;
+
+  /* Custom colors for page elements */
+  --sl-color-hairline-shade: var(--cui-border-subtle);
+
+  /* Typography */
+  --sl-text-h1: var(--cui-headline-l-font-size);
+  --sl-text-h2: var(--cui-headline-m-font-size);
+  --sl-text-h3: var(--cui-headline-s-font-size);
+  --sl-text-h4: var(--sl-text-base);
+  --sl-text-h5: var(--sl-text-base);
 
   --sl-color-blue-high: var(--cui-fg-normal);
   --sl-color-blue: var(--cui-border-strong);

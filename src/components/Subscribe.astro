@@ -1,5 +1,10 @@
 ---
-import { Button, Input, NotificationInline } from "@sumup-oss/circuit-ui";
+import {
+  Button,
+  Input,
+  NotificationInline,
+  Anchor,
+} from "@sumup-oss/circuit-ui";
 
 const pathName = Astro.url.pathname;
 ---
@@ -43,10 +48,10 @@ const pathName = Astro.url.pathname;
       value={pathName}
     />
     <div class="disclaimer">
-      You can unsubscribe at any time. Read our <a
-        href="https://www.sumup.com/privacy/"
-        target="_blank">privacy policy.</a
-      >
+      You can unsubscribe at any time. Read our
+      <Anchor href="https://www.sumup.com/privacy/" target="_blank">
+        privacy policy
+      </Anchor>.
     </div>
   </form>
 </div>
@@ -111,6 +116,12 @@ const pathName = Astro.url.pathname;
 
   .disclaimer {
     margin-top: var(--cui-spacings-byte);
-    font-size: 0.9rem;
+    font-size: var(--cui-body-s-font-size);
+    line-height: var(--cui-body-s-line-height);
+  }
+
+  .disclaimer :global(a) {
+    font-size: var(--cui-body-s-font-size);
+    line-height: var(--cui-body-s-line-height);
   }
 </style>
