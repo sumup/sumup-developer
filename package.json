@@ -65,7 +65,7 @@
     "expressive-code": "0.40.1",
     "husky": "^9.1.7",
     "jsdom": "^25.0.1",
-    "marked": "15.0.6",
+    "marked": "15.0.7",
     "openapi-snippet": "^0.14.0",
     "openapi-types": "^12.1.3",
     "prettier": "^3.4.2",
