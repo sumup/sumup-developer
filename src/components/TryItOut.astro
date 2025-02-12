@@ -1,9 +1,8 @@
 ---
-import { Code } from "@astrojs/starlight/components";
+import Code from "@components/Code.astro";
 import { Headline } from "@sumup-oss/circuit-ui";
 
-const example1 = `
-func main() {
+const example1 = `func main() {
   client := sumup.NewClient().WithAuth(os.Getenv("SUMUP_API_KEY"))
   ctx := context.Background()
   merchantCode := "MERCHANT_CODE"
@@ -29,8 +28,7 @@ func main() {
   })
 }`;
 
-const example2 = `
-func main() {
+const example2 = `func main() {
   client := sumup.NewClient().WithAuth(os.Getenv("SUMUP_API_KEY"))
   ctx := context.Background()
   merchantCode := "MERCHANT_CODE"
@@ -73,35 +71,37 @@ func main() {
   <div class="tryit-code">
     <div class="code-content" id="section1Content">
       <Code
-        lang="go"
+        title="Create a checkout"
+        language="go"
         code={example1}
         meta={`"SUMUP_API_KEY" title="main.go"`}
       />
     </div>
     <div class="code-content" id="section2Content">
       <Code
-        lang="go"
+        title="Initiate card reader payment"
+        language="go"
         code={example2}
         meta={`"SUMUP_API_KEY" title="main.go"`}
       />
     </div>
     <div class="code-content" id="section3Content">
       <Code
-        lang="go"
+        language="go"
         code={example1}
         meta={`"SUMUP_API_KEY" title="main.go"`}
       />
     </div>
     <div class="code-content" id="section4Content">
       <Code
-        lang="go"
+        language="go"
         code={example2}
         meta={`"SUMUP_API_KEY" title="main.go"`}
       />
     </div>
     <div class="code-content" id="section5Content">
       <Code
-        lang="go"
+        language="go"
         code={example1}
         meta={`"SUMUP_API_KEY" title="main.go"`}
       />
@@ -110,12 +110,11 @@ func main() {
 </div>
 
 <style>
-  :global(.header) {
+  .header {
     margin-bottom: var(--cui-spacings-giga);
   }
 
   .container {
-    height: 500px;
     display: grid;
     grid-template-columns: 1fr 2fr;
     gap: var(--cui-spacings-giga);
@@ -175,11 +174,13 @@ func main() {
     color: var(--cui-fg-on-strong);
   }
 
-  .tryit-code :global(.expressive-code .frame pre code) {
-    max-height: 460px;
-    overflow: auto;
-    scrollbar-width: thin;
-    box-sizing: border-box;
+  .tryit-code :global(.expressive-code pre) {
+    max-height: 480px !important;
+    scrollbar-width: thin !important;
+  }
+
+  .tryit-code :global(.codeblock) {
+    width: 100%;
   }
 
   .code-content {
@@ -191,6 +192,6 @@ func main() {
   #section3:checked ~ .tryit-code #section3Content,
   #section4:checked ~ .tryit-code #section4Content,
   #section5:checked ~ .tryit-code #section5Content {
-    display: block;
+    display: flex;
   }
 </style>

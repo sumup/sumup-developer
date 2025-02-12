@@ -5,10 +5,10 @@
 // https://expressive-code.com/guides/developing-plugins/
 // If attempted, inspiration can be taken from:
 // https://github.com/expressive-code/expressive-code/tree/main/packages/@expressive-code/plugin-frames
-import { Code } from "@astrojs/starlight/components";
-import type { HTMLAttributes } from "astro/types";
+import { Code as Default } from "@astrojs/starlight/components";
+import Code from "../Code.astro";
 
-interface Props extends HTMLAttributes<"div"> {
+interface Props {
   name?: string;
   isLanguageSelect?: boolean;
   options: {
@@ -20,51 +20,47 @@ interface Props extends HTMLAttributes<"div"> {
   }[];
 }
 
-const {
-  options,
-  name,
-  isLanguageSelect = false,
-  class: cls,
-  ...attrs
-} = Astro.props;
+const { options, name, isLanguageSelect = false, ...props } = Astro.props;
 const defaultOption = options[0].label;
 ---
 
-<div
-  class:list={["codeblock", isLanguageSelect && "multi-lang", cls]}
-  {...attrs}
->
-  <div class="header">
-    <div class="name">{name}</div>
-    <select
-      name="codes-options"
-      class:list={[isLanguageSelect ? "langSelector" : "codesSelector"]}
-    >
-      {
-        options.map(({ label, value }) => (
-          <option value={value || label.toLowerCase()}>{label}</option>
-        ))
-      }
-    </select>
+<Code class:list={[isLanguageSelect && "multi-lang"]} {...props}>
+  <div slot="title">
+    <slot name="title">
+      <div class="name">{name}</div>
+    </slot>
   </div>
-  {
-    options.map(({ lang, code, label, value, description }) => (
-      <div
-        class:list={["code", label === defaultOption ? "active" : ""]}
-        data-lang={value || label.toLowerCase()}
-      >
-        {description && <div class="description">{description}</div>}
-        <Code lang={lang} code={code} />
-      </div>
-    ))
-  }
-</div>
+  <select
+    slot="extra-options"
+    name="codes-options"
+    class:list={[isLanguageSelect ? "langSelector" : "codesSelector"]}
+  >
+    {
+      options.map(({ label, value }) => (
+        <option value={value || label.toLowerCase()}>{label}</option>
+      ))
+    }
+  </select>
+  <div slot="code">
+    {
+      options.map(({ lang, code, label, value, description }) => (
+        <div
+          class:list={["code", label === defaultOption ? "active" : ""]}
+          data-lang={value || label.toLowerCase()}
+        >
+          {description && <div class="description">{description}</div>}
+          <Default lang={lang} code={code} />
+        </div>
+      ))
+    }
+  </div>
+</Code>
 
 <script>
   import { setCurrentLanguage } from "@lib/code";
 
   document.addEventListener("DOMContentLoaded", () => {
-    document.querySelectorAll(".codeblock .langSelector")?.forEach((s) => {
+    document.querySelectorAll(".langSelector")?.forEach((s) => {
       s.addEventListener("change", (e) => {
         const target = e.target as HTMLSelectElement;
         setCurrentLanguage(target.value);
@@ -85,32 +81,8 @@ const defaultOption = options[0].label;
 </script>
 
 <style>
-  .codeblock {
-    background: var(--ec-frm-trmTtbBg);
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    align-self: start;
-    margin: var(--cui-spacings-giga) 0;
-    border: var(--ec-brdWd) solid var(--ec-brdCol);
-    border-radius: var(--cui-border-radius-byte);
-  }
-
-  .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: var(--ec-uiPadBlk) var(--cui-spacings-kilo);
-    color: var(--ec-frm-trmTtbFg);
-    border-bottom: var(--ec-brdWd) solid var(--ec-brdCol);
-  }
-
-  .name {
-    color: var(--cui-fg-subtle);
-  }
-
   .description {
-    color: var(--ec-frm-trmTtbFg);
+    color: var(--cui-fg-subtle);
     padding: var(--cui-spacings-byte) var(--cui-spacings-kilo);
   }
 

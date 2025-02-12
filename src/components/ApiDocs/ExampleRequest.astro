@@ -4,6 +4,7 @@ import { doc } from "@lib/openapi";
 // This packages is no longer maintained.
 import { getEndpointSnippets } from "openapi-snippet";
 import MultiCode from "./MultiCode.astro";
+import OperationEndpoint from "./OperationEndpoint.astro";
 import type { OperationObject } from "src/types/openapi";
 import { node, go } from "@lib/codesamples";
 
@@ -23,10 +24,9 @@ const snippets = getEndpointSnippets(
 ---
 
 <MultiCode
-  name={`${operation.method} ${operation.path}`}
   options={[
     {
-      label: "CUrl",
+      label: "cURL",
       value: "curl",
       code: snippets.snippets[0].content,
       lang: "bash",
@@ -45,4 +45,6 @@ const snippets = getEndpointSnippets(
     },
   ]}
   isLanguageSelect
-/>
+>
+  <OperationEndpoint operation={operation} slot="title" />
+</MultiCode>

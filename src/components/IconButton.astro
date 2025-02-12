@@ -1,0 +1,41 @@
+---
+
+---
+
+<button>
+  <slot />
+</button>
+
+<style>
+  button {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    line-height: 1;
+    padding: var(--cui-spacings-bit) var(--cui-spacings-byte);
+    border-radius: var(--cui-border-radius-bit);
+    color: var(--cui-fg-subtle);
+    white-space: nowrap;
+    border: 0;
+    margin: 0;
+    background: none;
+    -webkit-appearance: button;
+    -moz-appearance: button;
+    appearance: button;
+    transition: background 0.15s ease;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+  }
+
+  button:hover {
+    color: var(--cui-fg-subtle-hovered);
+    background: var(--cui-bg-subtle-hovered);
+  }
+
+  button :global(svg) {
+    display: block;
+    width: 18px;
+    height: 18px;
+  }
+</style>

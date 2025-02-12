@@ -1,21 +1,39 @@
 ---
+import type { HTMLAttributes } from "astro/types";
 import type { OperationObject } from "src/types/openapi";
 
-interface Props {
+export type Props = HTMLAttributes<"div"> & {
   operation: OperationObject;
-}
+};
 
-const { operation } = Astro.props;
+const { operation, ...props } = Astro.props;
 ---
 
-<div class:list={[operation.method]}>
-  {operation.method}&nbsp;
+<div {...props}>
+  <span class:list={["method", operation.method]}
+    >{operation.method.toUpperCase()}</span
+  >
   {operation.path}
 </div>
 
 <style>
-  div {
-    font-family: var(--cui-font-stack-mono);
-    font-size: 0.9rem;
+  .method.get {
+    color: var(--cui-fg-accent);
+  }
+
+  .method.post {
+    color: var(--cui-fg-success);
+  }
+
+  .method.patch {
+    color: var(--cui-fg-promo);
+  }
+
+  .method.put {
+    color: var(--cui-fg-warning);
+  }
+
+  .method.delete {
+    color: var(--cui-fg-danger);
   }
 </style>

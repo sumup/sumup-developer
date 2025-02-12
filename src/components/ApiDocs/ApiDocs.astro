@@ -2,8 +2,9 @@
 import Markdown from "@components/Markdown.astro";
 import { formatSlug } from "@lib/helpers";
 import { doc, pathsByTag } from "@lib/openapi";
-import { Code } from "@astrojs/starlight/components";
+import { ExternalLink } from "@sumup-oss/icons";
 import LRGrid from "./LRGrid.astro";
+import Code from "@components/Code.astro";
 import TagSection from "./TagSection.astro";
 import Go from "@assets/languages/go.svg";
 import Php from "@assets/languages/php.svg";
@@ -28,57 +29,140 @@ const { target } = Astro.props;
           doc.servers && (
             <div class="servers">
               {doc.servers.map((server) => (
-                <Code
-                  meta={`title="Server URL"`}
-                  lang="bash"
-                  code={server.url}
-                />
+                <Code title="Base URL" language="bash" code={server.url} />
               ))}
             </div>
           )
         }
       </LRGrid>
-    </section>
-    <section>
-      <LRGrid>
-        <div class="info">
-          <Markdown>{"## Client libraries"}</Markdown>
-          <div class="lang-switch">
-            <button class="lang-option" data-lang="node">
-              <Nodejs /> Node.js
-            </button>
-            <button class="lang-option" data-lang="go">
-              <Go /> Go
-            </button>
-            <button class="lang-option" data-lang="php">
-              <Php /> Php
-            </button>
+      <LRGrid class="sdks">
+        <div>
+          <div class="info sl-markdown-content">
+            <h3>SDKs</h3>
+            <p>
+              The SumUp SDKs reduce the amount of work required to use our REST
+              APIs. SumUp maintains SDKs for PHP, Node.js, and Go.
+            </p>
+          </div>
+          <div class="sdk-cards">
+            <a
+              class="sdk-card"
+              href="https://github.com/sumup/sumup-ts"
+              target="_blank"
+            >
+              <div>
+                <div class="title"><Nodejs /> Node.js</div>
+                <div class="detail">https://github.com/sumup/sumup-ts</div>
+              </div>
+              <ExternalLink />
+            </a>
+            <a
+              class="sdk-card"
+              href="https://github.com/sumup/sumup-go"
+              target="_blank"
+            >
+              <div>
+                <div class="title"><Go /> Go</div>
+                <div class="detail">https://github.com/sumup/sumup-go</div>
+              </div>
+              <ExternalLink />
+            </a>
+            <a
+              class="sdk-card"
+              href="https://github.com/sumup/sumup-ecom-php-sdk"
+              target="_blank"
+            >
+              <div>
+                <div class="title"><Php /> Php</div>
+                <div class="detail">
+                  https://github.com/sumup/sumup-ecom-php-sdk
+                </div>
+              </div>
+              <ExternalLink />
+            </a>
           </div>
         </div>
-        <MultiCode
-          name="Install SDK"
-          options={[
-            {
-              label: "Node.js",
-              value: "node",
-              code: "npm install --save @sumup/sdk",
-              lang: "bash",
-            },
-            {
-              label: "Go",
-              value: "go",
-              code: "go get github.com/sumup/sumup-go",
-              lang: "bash",
-            },
-            {
-              label: "Php",
-              value: "php",
-              code: "composer require sumup/sumup-ecom-php-sdk",
-              lang: "bash",
-            },
-          ]}
-          isLanguageSelect
-        />
+        <div>
+          <MultiCode
+            name="Install SDK"
+            options={[
+              {
+                label: "Node.js",
+                value: "node",
+                code: "npm install --save @sumup/sdk",
+                lang: "bash",
+              },
+              {
+                label: "Go",
+                value: "go",
+                code: "go get github.com/sumup/sumup-go",
+                lang: "bash",
+              },
+              {
+                label: "Php",
+                value: "php",
+                code: "composer require sumup/sumup-ecom-php-sdk",
+                lang: "bash",
+              },
+            ]}
+            isLanguageSelect
+          />
+        </div>
+      </LRGrid>
+    </section>
+    <section id="authentication" data-pagefind-body={!target}>
+      <LRGrid>
+        <div class="info sl-markdown-content">
+          <h2>Authentication</h2>
+          <p>
+            The SumUp API uses API keys to authenticate requests. You can view,
+            create, and manage your API keys in the <a
+              href="https://me.sumup.com/settings/api-keys">Dashboard</a
+            >.
+          </p>
+          <p>
+            Test mode secret keys have the prefix sk_test_ and live mode secret
+            keys have the prefix sk_live_. Alternatively, you can use restricted
+            API keys for granular permissions.
+          </p>
+          <p>
+            Keep your API keys secret and safe. Do not share your API keys or
+            expose them in a publicly accessible areas such as client-side code
+            (browser or apps) or in GitHub.
+          </p>
+          <p>
+            All API requests must be made over HTTPS and authenticated. Calls
+            made over plain HTTP or calls without authentication will fail.
+          </p>
+        </div>
+        <div class="servers">
+          <MultiCode
+            name="Authenticate"
+            options={[
+              {
+                label: "Node.js",
+                value: "node",
+                code: `import { SumUp } from '@sumup/sdk';
+
+const sumup = new SumUp({ apiKey: 'sup_sk_MvxmLOl0...' });`,
+                lang: "ts",
+              },
+              {
+                label: "Go",
+                value: "go",
+                code: `client := sumup.NewClient().WithAuth("sup_sk_MvxmLOl0...")`,
+                lang: "go",
+              },
+              {
+                label: "Php",
+                value: "php",
+                code: "composer require sumup/sumup-ecom-php-sdk",
+                lang: "php",
+              },
+            ]}
+            isLanguageSelect
+          />
+        </div>
       </LRGrid>
     </section>
     {
@@ -120,6 +204,30 @@ const { target } = Astro.props;
       }
     }
   });
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          sessionStorage.setItem("lastVisible", entry.target.id);
+        }
+      });
+    },
+    { threshold: 0.5 },
+  );
+
+  document.querySelectorAll("section, .codeblock").forEach((section) => {
+    observer.observe(section);
+  });
+
+  window.addEventListener("load", () => {
+    const lastVisible = sessionStorage.getItem("lastVisible");
+    if (lastVisible) {
+      document
+        .getElementById(lastVisible)!
+        .scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  });
 </script>
 
 <style>
@@ -140,12 +248,6 @@ const { target } = Astro.props;
 
   .servers {
     position: relative;
-  }
-
-  :global(.expressive-code .frame pre) {
-    max-height: min(68vh, 1000px);
-    overflow: auto;
-    scrollbar-width: thin;
   }
 
   .lang-switch {
@@ -175,5 +277,51 @@ const { target } = Astro.props;
   .lang-option:hover {
     background: var(--cui-bg-strong);
     color: var(--cui-fg-on-strong-hovered);
+  }
+
+  .sdks {
+    margin-top: var(--cui-spacings-tera);
+  }
+
+  .sdk-cards {
+    margin-top: var(--cui-spacings-mega);
+    display: flex;
+    flex-direction: column;
+    gap: var(--cui-spacings-byte);
+  }
+
+  .sdk-card {
+    color: var(--cui-fg-subtle);
+    padding: var(--cui-spacings-byte) var(--cui-spacings-kilo);
+    border-radius: var(--cui-border-radius-byte);
+    border: var(--cui-border-width-kilo) solid var(--cui-border-subtle);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .sdk-card:hover {
+    text-decoration: none;
+    background-color: var(--cui-bg-normal-hovered);
+  }
+
+  .sdk-card .title {
+    color: var(--cui-fg-normal);
+    font-size: var(--cui-body-m-font-size);
+    line-height: var(--cui-body-m-line-height);
+    margin-bottom: var(--cui-spacings-bit);
+    font-weight: var(--cui-font-weight-semibold);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: var(--cui-spacings-byte);
+  }
+
+  .sdk-card .detail {
+    font-size: var(--cui-body-s-font-size);
+    line-height: var(--cui-body-s-line-height);
   }
 </style>

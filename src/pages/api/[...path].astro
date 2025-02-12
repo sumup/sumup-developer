@@ -14,6 +14,7 @@ export async function getStaticPaths() {
   return [
     // root
     { params: { path: undefined }, props: {} },
+    { params: { path: "authentication" }, props: {} },
     // tags
     ...(doc.tags || []).map((tag) => ({
       params: { path: formatSlug(tag.name) },
@@ -34,6 +35,16 @@ const sidebar: StarlightUserConfig["sidebar"] = [
       {
         label: "Overview",
         link: "/api",
+        attrs: {
+          "data-scroll-to": "introduction",
+        },
+      },
+      {
+        label: "Authentication",
+        link: "/api/authentication",
+        attrs: {
+          "data-scroll-to": "authentication",
+        },
       },
       ...Object.entries(pathsByTag).map(([tagName, operations]) => {
         const tag = doc.tags.find((t) => formatSlug(t.name) === tagName)!;

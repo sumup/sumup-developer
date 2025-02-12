@@ -1,7 +1,7 @@
 ---
 import { resolveExample } from "@lib/openapi";
 import type { OpenAPIV3_1 } from "openapi-types";
-import { Code } from "@astrojs/starlight/components";
+import Code from "@components/Code.astro";
 
 type Props = { name: string; schema: OpenAPIV3_1.SchemaObject };
 const { name, schema } = Astro.props;
@@ -9,8 +9,4 @@ const { name, schema } = Astro.props;
 const example = resolveExample(schema);
 ---
 
-<Code
-  meta={`frame="terminal" title="${name}"`}
-  lang={"json"}
-  code={JSON.stringify(example, null, 2)}
-/>
+<Code title={name} language="json" code={JSON.stringify(example, null, 2)} />

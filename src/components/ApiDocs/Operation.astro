@@ -9,10 +9,10 @@ import type { OperationObject } from "src/types/openapi";
 import InlineCode from "../Highlight/InlineCode.astro";
 import Example from "./Example.astro";
 import ExampleRequest from "./ExampleRequest.astro";
+import Code from "@components/Code.astro";
 import LRGrid from "./LRGrid.astro";
 import MultiCode from "./MultiCode.astro";
 import Parameters from "./Parameters.astro";
-import Response from "./Response.astro";
 import Schema from "./Schema.astro";
 
 // import { OperationEndpoint } from "./OperationEndpoint";
@@ -126,7 +126,8 @@ const queryParams = operation.parameters
         Object.entries(operation.responses || {}).map(([status, response]) => {
           if (
             !("content" in response) ||
-            !response.content?.["application/json"]?.schema
+            !response.content?.["application/json"]?.schema ||
+            !status.startsWith("2")
           ) {
             return null;
           }
@@ -134,8 +135,6 @@ const queryParams = operation.parameters
             <Schema
               kind={`Response ${status}`}
               schema={response.content["application/json"].schema}
-              collapsable={!status.startsWith("2")}
-              collapsed={!status.startsWith("2")}
             />
           );
         })
@@ -149,7 +148,11 @@ const queryParams = operation.parameters
         successResponse && (
           <div class="example-response">
             {successResponse.example && (
-              <Response name={"Response"} example={successResponse.example} />
+              <Code
+                title="Response"
+                language="json"
+                code={JSON.stringify(successResponse.example, null, 2)}
+              />
             )}
             {successResponse.examples && (
               <MultiCode
@@ -207,11 +210,20 @@ const queryParams = operation.parameters
   .examples > div {
     margin-bottom: var(--cui-spacings-mega);
   }
-  a.tag-link {
+
+  .tag-link {
+    display: block;
     color: var(--cui-fg-subtle);
+    font-size: var(--cui-body-s-font-size);
+    line-height: var(--cui-body-s-line-height);
+    margin-bottom: var(--cui-spacings-byte);
     text-decoration: none;
-    font-size: 0.875rem;
   }
+
+  .tag-link:hover {
+    text-decoration: underline;
+  }
+
   .example-response {
     position: sticky;
     top: calc(var(--sl-nav-height) + var(--cui-spacings-kilo));

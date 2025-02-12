@@ -1,13 +1,15 @@
+import { defineEcConfig } from "astro-expressive-code";
 import { pluginCollapsibleSections } from "@expressive-code/plugin-collapsible-sections";
 
-export default {
+export default defineEcConfig({
   plugins: [pluginCollapsibleSections()],
   themes: ["github-dark-dimmed", "github-light-default"],
   styleOverrides: {
     codeFontSize: "0.8rem",
     borderColor: "var(--cui-border-subtle)",
-    borderRadius: "var(--cui-border-radius-byte)",
-    borderWidth: "var(--cui-border-width-kilo)",
+    codeBackground: "var(--cui-bg-subtle)",
+    borderRadius: "0",
+    borderWidth: "0",
     codeFontFamily: "var(--cui-font-stack-mono)",
     frames: {
       editorTabBarBorderBottomColor: "var(--cui-border-subtle)",
@@ -16,4 +18,4 @@ export default {
     },
   },
   frames: false,
-};
+});

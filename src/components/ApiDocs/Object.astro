@@ -40,41 +40,16 @@ const schema = resolveSchema(obj);
   .layout {
     margin-bottom: 32px;
   }
-  .layout hr:last-of-type {
-    display: none;
-  }
+
   .description {
     margin: var(--cui-spacings-giga) 0 var(--cui-spacings-tera);
   }
-  .enum {
-    display: inline-flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-  }
-  h2 {
-    margin-bottom: var(--cui-spacings-giga);
-  }
-  ul {
-    list-style: none;
-    padding: 0;
-  }
-  ul li {
-    padding: var(--cui-spacings-mega) 0;
-    border-bottom: var(--cui-border-width-kilo) solid var(--cui-border-subtle);
-  }
-  ul li :last-child {
-    border-bottom: none;
-  }
-  h5 {
-    margin-top: var(--cui-spacings-mega);
-    padding-bottom: var(--cui-spacings-kilo);
-    border-bottom: var(--cui-border-width-kilo) solid var(--cui-border-subtle);
-    font-size: 1rem;
-  }
+
   .example {
     margin-top: var(--cui-spacings-kilo);
   }
-  .scheme :global(.expressive-code) {
+
+  .scheme :global(.codeblock) {
     position: sticky;
     top: calc(var(--sl-nav-height) + var(--cui-spacings-kilo));
   }

@@ -1,0 +1,94 @@
+---
+import { Code as Default } from "@astrojs/starlight/components";
+import { Copy } from "@sumup-oss/icons";
+import type { ExpressiveCodeBlockOptions } from "expressive-code";
+import type { HTMLAttributes } from "astro/types";
+import IconButton from "./IconButton.astro";
+
+export type Props = HTMLAttributes<"div"> &
+  Omit<ExpressiveCodeBlockOptions, "code" | "language"> & {
+    title?: string;
+    code?: string;
+    language?: string;
+  };
+
+const {
+  code,
+  language,
+  title,
+  meta = `"$SUMUP_API_KEY" "SUMUP_API_KEY"`,
+  class: cls,
+  ...props
+} = Astro.props;
+---
+
+<div class:list={["codeblock", cls]} {...props}>
+  <div class="header">
+    <slot name="title">
+      {title && <div class="name">{title}</div>}
+    </slot>
+    <div class="options">
+      <slot name="extra-options" />
+      <IconButton>
+        <Copy />
+      </IconButton>
+    </div>
+  </div>
+  <slot name="code">
+    {code && language && <Default lang={language} code={code} meta={meta} />}
+  </slot>
+</div>
+
+<style>
+  :global(.expressive-code pre) {
+    max-height: min(68vh, 1000px) !important;
+    scrollbar-width: thin !important;
+  }
+
+  .codeblock {
+    font-size: 0.8rem;
+    font-family: var(--cui-font-stack-mono);
+    background: var(--cui-bg-subtle);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-self: start;
+    border: var(--cui-border-width-kilo) solid var(--cui-border-subtle);
+    border-radius: var(--cui-border-radius-byte);
+  }
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--cui-spacings-bit) var(--cui-spacings-byte)
+      var(--cui-spacings-bit) var(--cui-spacings-kilo);
+    border-bottom: var(--cui-border-width-kilo) solid var(--cui-border-subtle);
+  }
+
+  .options {
+    display: flex;
+    flex-direction: row;
+    gap: var(--cui-spacings-byte);
+  }
+
+  .description {
+    color: var(--ec-frm-trmTtbFg);
+    padding: var(--cui-spacings-byte) var(--cui-spacings-kilo);
+  }
+
+  .code {
+    background: var(--cui-bg-subtle);
+    overflow: auto;
+    display: none;
+  }
+
+  .code.active {
+    display: block;
+  }
+
+  button {
+    appearance: none;
+    color: var(--cui-fg-subtle);
+  }
+</style>
