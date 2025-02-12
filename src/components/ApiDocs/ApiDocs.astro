@@ -5,6 +5,10 @@ import { doc, pathsByTag } from "@lib/openapi";
 import { Code } from "@astrojs/starlight/components";
 import LRGrid from "./LRGrid.astro";
 import TagSection from "./TagSection.astro";
+import Go from "@assets/languages/go.svg";
+import Php from "@assets/languages/php.svg";
+import Nodejs from "@assets/languages/nodejs.svg";
+import MultiCode from "./MultiCode.astro";
 
 export interface Props {
   target?: string;
@@ -35,21 +39,48 @@ const { target } = Astro.props;
         }
       </LRGrid>
     </section>
-    <LRGrid>
-      <div class="info">
-        <Markdown>{"## Client libraries"}</Markdown>
-      </div>
-      {
-        doc.servers && (
-          <div class="servers">
-            {doc.servers.map((server) => (
-              <Code meta={`title="Server URL"`} lang="bash" code={server.url} />
-            ))}
+    <section>
+      <LRGrid>
+        <div class="info">
+          <Markdown>{"## Client libraries"}</Markdown>
+          <div class="lang-switch">
+            <button class="lang-option" data-lang="node">
+              <Nodejs /> Node.js
+            </button>
+            <button class="lang-option" data-lang="go">
+              <Go /> Go
+            </button>
+            <button class="lang-option" data-lang="php">
+              <Php /> Php
+            </button>
           </div>
-        )
-      }
-    </LRGrid>
-    <section></section>
+        </div>
+        <MultiCode
+          name="Install SDK"
+          options={[
+            {
+              label: "Node.js",
+              value: "node",
+              code: "npm install --save @sumup/sdk",
+              lang: "bash",
+            },
+            {
+              label: "Go",
+              value: "go",
+              code: "go get github.com/sumup/sumup-go",
+              lang: "bash",
+            },
+            {
+              label: "Php",
+              value: "php",
+              code: "composer require sumup/sumup-ecom-php-sdk",
+              lang: "bash",
+            },
+          ]}
+          isLanguageSelect
+        />
+      </LRGrid>
+    </section>
     {
       Object.entries(pathsByTag).map(([tag, operations]) => (
         <TagSection
@@ -64,6 +95,32 @@ const { target } = Astro.props;
     }
   </div>
 </article>
+
+<script>
+  import { setCurrentLanguage } from "@lib/code";
+
+  document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll("button[data-lang]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const lang = (btn as HTMLElement).dataset.lang;
+        if (lang) {
+          setCurrentLanguage(lang);
+        }
+      });
+    });
+
+    const main = document.querySelector("main[data-selected-operation]");
+    if (main) {
+      const selectedOperation = main.getAttribute("data-selected-operation");
+      if (selectedOperation) {
+        const target = document.getElementById(selectedOperation);
+        if (target) {
+          target.scrollIntoView();
+        }
+      }
+    }
+  });
+</script>
 
 <style>
   .specs {
@@ -90,17 +147,33 @@ const { target } = Astro.props;
     overflow: auto;
     scrollbar-width: thin;
   }
-</style>
 
-<script>
-  const main = document.querySelector("main[data-selected-operation]");
-  if (main) {
-    const selectedOperation = main.getAttribute("data-selected-operation");
-    if (selectedOperation) {
-      const target = document.getElementById(selectedOperation);
-      if (target) {
-        target.scrollIntoView();
-      }
-    }
+  .lang-switch {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: var(--cui-spacings-kilo);
   }
-</script>
+
+  .lang-option {
+    display: flex;
+    align-items: center;
+    gap: var(--cui-spacings-byte);
+    padding: var(--cui-spacings-bit) var(--cui-spacings-byte);
+    border: none;
+    border-radius: var(--cui-border-radius-byte);
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+    justify-self: stretch;
+    background-color: var(--cui-bg-subtle);
+    font-size: var(--cui-body-s-font-size);
+    line-height: var(--cui-body-s-line-height);
+    font-weight: var(--cui-font-weight-semibold);
+  }
+
+  .lang-option:hover {
+    background: var(--cui-bg-strong);
+    color: var(--cui-fg-on-strong-hovered);
+  }
+</style>

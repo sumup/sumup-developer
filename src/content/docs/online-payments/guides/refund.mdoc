@@ -41,6 +41,26 @@ To look up the identifier of a transaction for a payment checkout you have alrea
 
 Following is a sample request for retrieving a checkout:
 
+{% multicode %}
+```bash
+curl -X GET \
+  https://api.sumup.com/v0.1/checkouts/4ebc2ed7-bb8c-4d4d-a110-08fd31301bf2 \
+  -H "Authorization: Bearer $SUMUP_API_KEY"
+```
+```go
+ctx := context.Background()
+client := sumup.NewClient().WithAuth(os.Getenv("SUMUP_API_KEY"))
+
+checkout, err := client.Checkouts.Get(ctx, "4ebc2ed7-bb8c-4d4d-a110-08fd31301bf2")
+```
+```php
+$checkoutsService = $sumup->getCheckoutService();
+$response = $checkoutsService->findById('4ebc2ed7-bb8c-4d4d-a110-08fd31301bf2');
+$checkoutReference = $response->getBody()->checkout_reference;
+$checkoutId = $response->getBody()->id;
+```
+{% /multicode %}
+
 {% tabs %}
 {% tabitem label="cURL" %}
 ```bash

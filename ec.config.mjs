@@ -15,7 +15,5 @@ export default {
       shadowColor: "unset",
     },
   },
-  frames: {
-    extractFileNameFromCode: false,
-  },
+  frames: false,
 };

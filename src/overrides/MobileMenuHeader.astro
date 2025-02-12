@@ -25,4 +25,13 @@ import type { Props } from "@astrojs/starlight/props";
   .mobile-preferences :global(.nav) {
     flex-wrap: wrap;
   }
+
+  @media screen and (max-width: 799px) {
+    :global(.nav) {
+      width: 100%;
+      border-bottom: var(--cui-border-width-kilo) solid var(--cui-border-subtle);
+      padding-bottom: var(--cui-spacings-byte);
+      margin-bottom: var(--cui-spacings-byte);
+    }
+  }
 </style>

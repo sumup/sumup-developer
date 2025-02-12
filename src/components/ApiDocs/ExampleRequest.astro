@@ -3,8 +3,9 @@ import { doc } from "@lib/openapi";
 // TODO: explore alternatives such as https://github.com/Kong/httpsnippet
 // This packages is no longer maintained.
 import { getEndpointSnippets } from "openapi-snippet";
+import MultiCode from "./MultiCode.astro";
 import type { OperationObject } from "src/types/openapi";
-import { Code } from "@astrojs/starlight/components";
+import { node, go } from "@lib/codesamples";
 
 export interface Props {
   operation: OperationObject;
@@ -21,8 +22,27 @@ const snippets = getEndpointSnippets(
 );
 ---
 
-<Code
-  meta={`frame="terminal" title="${operation.method.toUpperCase()} ${operation.path}"`}
-  lang="sh"
-  code={snippets.snippets[0].content}
+<MultiCode
+  name={`${operation.method} ${operation.path}`}
+  options={[
+    {
+      label: "CUrl",
+      value: "curl",
+      code: snippets.snippets[0].content,
+      lang: "bash",
+    },
+    {
+      label: "Node.js",
+      value: "node",
+      code: node(operation),
+      lang: "ts",
+    },
+    {
+      label: "Go",
+      value: "go",
+      code: go(operation),
+      lang: "go",
+    },
+  ]}
+  isLanguageSelect
 />

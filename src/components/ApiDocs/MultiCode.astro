@@ -10,30 +10,48 @@ import type { HTMLAttributes } from "astro/types";
 
 interface Props extends HTMLAttributes<"div"> {
   name?: string;
+  isLanguageSelect?: boolean;
   options: {
     label: string;
+    value?: string;
     code: string;
     description?: string;
     lang: string;
   }[];
 }
 
-const { options, name, class: cls, ...attrs } = Astro.props;
+const {
+  options,
+  name,
+  isLanguageSelect = false,
+  class: cls,
+  ...attrs
+} = Astro.props;
 const defaultOption = options[0].label;
 ---
 
-<div class:list={["codeblock", "codes", cls]} {...attrs}>
+<div
+  class:list={["codeblock", isLanguageSelect && "multi-lang", cls]}
+  {...attrs}
+>
   <div class="header">
     <div class="name">{name}</div>
-    <select name="codes-options" class="codesSelector">
-      {options.map(({ label }) => <option value={label}>{label}</option>)}
+    <select
+      name="codes-options"
+      class:list={[isLanguageSelect ? "langSelector" : "codesSelector"]}
+    >
+      {
+        options.map(({ label, value }) => (
+          <option value={value || label.toLowerCase()}>{label}</option>
+        ))
+      }
     </select>
   </div>
   {
-    options.map(({ lang, code, label, description }) => (
+    options.map(({ lang, code, label, value, description }) => (
       <div
         class:list={["code", label === defaultOption ? "active" : ""]}
-        data-code-option={label}
+        data-lang={value || label.toLowerCase()}
       >
         {description && <div class="description">{description}</div>}
         <Code lang={lang} code={code} />
@@ -43,16 +61,27 @@ const defaultOption = options[0].label;
 </div>
 
 <script>
-  for (const mc of document.querySelectorAll(".codes")) {
-    const blocks = mc.querySelectorAll(".code");
-    mc.querySelector(".codesSelector")?.addEventListener("change", (e) => {
-      const target = e.target as HTMLSelectElement;
-      blocks.forEach((b) => b.classList.remove("active"));
-      mc.querySelector(`[data-code-option="${target.value}"]`)?.classList.add(
-        "active",
-      );
+  import { setCurrentLanguage } from "@lib/code";
+
+  document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll(".codeblock .langSelector")?.forEach((s) => {
+      s.addEventListener("change", (e) => {
+        const target = e.target as HTMLSelectElement;
+        setCurrentLanguage(target.value);
+      });
     });
-  }
+
+    for (const mc of document.querySelectorAll(".codeblock")) {
+      const blocks = mc.querySelectorAll(".code");
+      mc.querySelector(".codesSelector")?.addEventListener("change", (e) => {
+        const target = e.target as HTMLSelectElement;
+        blocks.forEach((b) => b.classList.remove("active"));
+        mc.querySelector(`[data-lang="${target.value}"]`)?.classList.add(
+          "active",
+        );
+      });
+    }
+  });
 </script>
 
 <style>
