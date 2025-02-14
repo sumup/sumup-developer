@@ -1,6 +1,6 @@
 ---
 import { Code as Default } from "@astrojs/starlight/components";
-import { Copy } from "@sumup-oss/icons";
+import { Checkmark, Copy } from "@sumup-oss/icons";
 import type { ExpressiveCodeBlockOptions } from "expressive-code";
 import type { HTMLAttributes } from "astro/types";
 import IconButton from "./IconButton.astro";
@@ -10,6 +10,7 @@ export type Props = HTMLAttributes<"div"> &
     title?: string;
     code?: string;
     language?: string;
+    copy?: boolean;
   };
 
 const {
@@ -17,6 +18,7 @@ const {
   language,
   title,
   meta = `"$SUMUP_API_KEY" "SUMUP_API_KEY"`,
+  copy = false,
   class: cls,
   ...props
 } = Astro.props;
@@ -29,9 +31,14 @@ const {
     </slot>
     <div class="options">
       <slot name="extra-options" />
-      <IconButton>
-        <Copy />
-      </IconButton>
+      {
+        copy && (
+          <IconButton class="copy-code-btn">
+            <Copy className="copy" />
+            <Checkmark className="checkmark" />
+          </IconButton>
+        )
+      }
     </div>
   </div>
   <slot name="code">
@@ -39,7 +46,46 @@ const {
   </slot>
 </div>
 
+<script>
+  async function clickHandler(event: Event) {
+    const button = event.currentTarget as HTMLButtonElement;
+    const wrap = button.closest(".codeblock")!;
+    const target = wrap.querySelector(".active.code")! as HTMLElement;
+    const dataset = target.dataset as { code: string; copied: string };
+    const code = dataset.code.replace(/\u007f/g, "\n");
+    try {
+      await navigator.clipboard.writeText(code);
+    } catch (err) {
+      //  TODO
+    }
+
+    button.classList.add("copied");
+    setTimeout(() => {
+      button.classList.remove("copied");
+    }, 2000);
+  }
+
+  function initButtons(container: ParentNode | Document) {
+    container
+      .querySelectorAll?.(".copy-code-btn")
+      .forEach((btn) => btn.addEventListener("click", clickHandler));
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    initButtons(document);
+  });
+
+  // Also re-initialize all buttons after view transitions initiated by popular frameworks
+  document.addEventListener("astro:page-load", () => {
+    initButtons(document);
+  });
+</script>
+
 <style>
+  :global(.expressive-code code) {
+    white-space: pre;
+  }
+
   :global(.expressive-code pre) {
     max-height: min(68vh, 1000px) !important;
     scrollbar-width: thin !important;
@@ -90,5 +136,18 @@ const {
   button {
     appearance: none;
     color: var(--cui-fg-subtle);
+  }
+
+  :global(.copy-code-btn) .copy {
+    display: block;
+  }
+  :global(.copy-code-btn) .checkmark {
+    display: none;
+  }
+  :global(.copy-code-btn.copied) .copy {
+    display: none;
+  }
+  :global(.copy-code-btn.copied) .checkmark {
+    display: block;
   }
 </style>

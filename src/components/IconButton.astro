@@ -1,8 +1,10 @@
 ---
+import type { HTMLAttributes } from "astro/types";
 
+export type Props = HTMLAttributes<"button">;
 ---
 
-<button>
+<button {...Astro.props}>
   <slot />
 </button>
 

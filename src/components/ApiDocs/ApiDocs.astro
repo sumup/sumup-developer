@@ -4,7 +4,7 @@ import { formatSlug } from "@lib/helpers";
 import { doc, pathsByTag } from "@lib/openapi";
 import { ExternalLink } from "@sumup-oss/icons";
 import LRGrid from "./LRGrid.astro";
-import Code from "@components/Code.astro";
+import Codeblock from "@components/Codeblock.astro";
 import TagSection from "./TagSection.astro";
 import Go from "@assets/languages/go.svg";
 import Php from "@assets/languages/php.svg";
@@ -29,7 +29,7 @@ const { target } = Astro.props;
           doc.servers && (
             <div class="servers">
               {doc.servers.map((server) => (
-                <Code title="Base URL" language="bash" code={server.url} />
+                <Codeblock title="Base URL" language="bash" code={server.url} />
               ))}
             </div>
           )

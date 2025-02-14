@@ -1,5 +1,5 @@
 ---
-import Code from "@components/Code.astro";
+import Codeblock from "@components/Codeblock.astro";
 import { Headline } from "@sumup-oss/circuit-ui";
 
 const example1 = `func main() {
@@ -70,7 +70,7 @@ const example2 = `func main() {
 
   <div class="tryit-code">
     <div class="code-content" id="section1Content">
-      <Code
+      <Codeblock
         title="Create a checkout"
         language="go"
         code={example1}
@@ -78,7 +78,7 @@ const example2 = `func main() {
       />
     </div>
     <div class="code-content" id="section2Content">
-      <Code
+      <Codeblock
         title="Initiate card reader payment"
         language="go"
         code={example2}
@@ -86,21 +86,21 @@ const example2 = `func main() {
       />
     </div>
     <div class="code-content" id="section3Content">
-      <Code
+      <Codeblock
         language="go"
         code={example1}
         meta={`"SUMUP_API_KEY" title="main.go"`}
       />
     </div>
     <div class="code-content" id="section4Content">
-      <Code
+      <Codeblock
         language="go"
         code={example2}
         meta={`"SUMUP_API_KEY" title="main.go"`}
       />
     </div>
     <div class="code-content" id="section5Content">
-      <Code
+      <Codeblock
         language="go"
         code={example1}
         meta={`"SUMUP_API_KEY" title="main.go"`}

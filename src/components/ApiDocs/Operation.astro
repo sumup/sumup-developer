@@ -9,7 +9,7 @@ import type { OperationObject } from "src/types/openapi";
 import InlineCode from "../Highlight/InlineCode.astro";
 import Example from "./Example.astro";
 import ExampleRequest from "./ExampleRequest.astro";
-import Code from "@components/Code.astro";
+import Codeblock from "@components/Codeblock.astro";
 import LRGrid from "./LRGrid.astro";
 import MultiCode from "./MultiCode.astro";
 import Parameters from "./Parameters.astro";
@@ -148,7 +148,7 @@ const queryParams = operation.parameters
         successResponse && (
           <div class="example-response">
             {successResponse.example && (
-              <Code
+              <Codeblock
                 title="Response"
                 language="json"
                 code={JSON.stringify(successResponse.example, null, 2)}

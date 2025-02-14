@@ -1,7 +1,7 @@
 import { nodes, component } from "@astrojs/markdoc/config";
 
 export default {
-  render: component("@components/Code.astro"),
+  render: component("@components/Codeblock.astro"),
   attributes: {
     ...nodes.fence.attributes,
     content: { type: String, render: "code", required: true },

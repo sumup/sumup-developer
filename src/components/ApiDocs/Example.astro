@@ -1,7 +1,7 @@
 ---
 import { resolveExample } from "@lib/openapi";
 import type { OpenAPIV3_1 } from "openapi-types";
-import Code from "@components/Code.astro";
+import Code from "@components/Codeblock.astro";
 
 type Props = { name: string; schema: OpenAPIV3_1.SchemaObject };
 const { name, schema } = Astro.props;
