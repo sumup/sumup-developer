@@ -1,0 +1,67 @@
+---
+import MultiCode from "@components/ApiDocs/MultiCode.astro";
+
+const node = `const sumup = require('@sumup/sdk')({
+  apiKey: process.env.SUMUP_API_KEY
+});
+
+const merchantCode = "MERCHANT_CODE";
+
+const readers = sumup.readers.list(merchantCode);
+const reader = readers[0];
+
+sumup.readers.createCheckout(merchantCode, reader.id, {
+		total_amount: {
+			currency:  "EUR",
+			minor_unit: 100,
+			value:     500,
+		},
+});`;
+
+const go = `func main() {
+  client := sumup.NewClient().WithAuth(os.Getenv("SUMUP_API_KEY"))
+  ctx := context.Background()
+  merchantCode := "MERCHANT_CODE"
+
+  readers, _ := client.Readers.List(ctx, merchantCode)
+
+  reader := readers.Items[0]
+  resp, err := client.Readers.CreateCheckout(
+  	ctx,
+  	merchantCode,
+  	string(reader.Id),
+  	sumup.CreateReaderCheckoutBody{
+  		TotalAmount: sumup.CreateReaderCheckoutAmount{
+  			Currency:  "EUR",
+  			MinorUnit: 100,
+  			Value:     500,
+  		},
+  	},
+  )
+}`;
+---
+
+<MultiCode
+  name="Install SDK"
+  options={[
+    {
+      label: "Node.js",
+      value: "node",
+      code: node,
+      lang: "ts",
+    },
+    {
+      label: "Go",
+      value: "go",
+      code: go,
+      lang: "go",
+    },
+    {
+      label: "Php",
+      value: "php",
+      code: "composer require sumup/sumup-ecom-php-sdk",
+      lang: "bash",
+    },
+  ]}
+  isLanguageSelect
+/>

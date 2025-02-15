@@ -1,6 +1,8 @@
 ---
 import Codeblock from "@components/Codeblock.astro";
 import { Headline } from "@sumup-oss/circuit-ui";
+import CreateCheckout from "./CreateCheckout.astro";
+import CardReaderPayment from "./CardReaderPayment.astro";
 
 const example1 = `func main() {
   client := sumup.NewClient().WithAuth(os.Getenv("SUMUP_API_KEY"))
@@ -70,26 +72,17 @@ const example2 = `func main() {
 
   <div class="tryit-code">
     <div class="code-content" id="section1Content">
-      <Codeblock
-        title="Create a checkout"
-        language="go"
-        code={example1}
-        meta={`"SUMUP_API_KEY" title="main.go"`}
-      />
+      <CreateCheckout />
     </div>
     <div class="code-content" id="section2Content">
-      <Codeblock
-        title="Initiate card reader payment"
-        language="go"
-        code={example2}
-        meta={`"SUMUP_API_KEY" title="main.go"`}
-      />
+      <CardReaderPayment />
     </div>
     <div class="code-content" id="section3Content">
       <Codeblock
         language="go"
         code={example1}
         meta={`"SUMUP_API_KEY" title="main.go"`}
+        withCopyButton
       />
     </div>
     <div class="code-content" id="section4Content">
@@ -97,6 +90,7 @@ const example2 = `func main() {
         language="go"
         code={example2}
         meta={`"SUMUP_API_KEY" title="main.go"`}
+        withCopyButton
       />
     </div>
     <div class="code-content" id="section5Content">
@@ -104,6 +98,7 @@ const example2 = `func main() {
         language="go"
         code={example1}
         meta={`"SUMUP_API_KEY" title="main.go"`}
+        withCopyButton
       />
     </div>
   </div>

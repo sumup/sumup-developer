@@ -1,0 +1,82 @@
+---
+import MultiCode from "@components/ApiDocs/MultiCode.astro";
+
+const node = `const sumup = require('@sumup/sdk')({
+  apiKey: process.env.SUMUP_API_KEY
+});
+
+const merchantCode = "MERCHANT_CODE";
+
+const checkout = sumup.checkouts.create({
+	amount:            19,
+	checkout_reference: "CO746453",
+	currency:          "EUR",
+	merchant_code:      merchantCode,
+});
+
+// Collect customer's card data
+
+const result = sumup.checkouts.process(checkout.id, {
+  card: {
+		cvv:         "123",
+		expiry_month: "12",
+		expiry_year:  "2023",
+		name:        "Boaty McBoatface",
+		number:      "4200000000000042",
+  },
+  payment_type: 'card'
+});
+
+console.info({ result });`;
+
+const go = `func main() {
+  client := sumup.NewClient().WithAuth(os.Getenv("SUMUP_API_KEY"))
+  ctx := context.Background()
+  merchantCode := "MERCHANT_CODE"
+
+  checkout, err := client.Checkouts.Create(ctx, sumup.CreateCheckoutBody{
+  	Amount:            19,
+  	CheckoutReference: "CO746453",
+  	Currency:          "EUR",
+  	MerchantCode:      merchantCode,
+  })
+
+  // Collect customer's card data
+
+  result, err := client.Checkouts.Process(ctx, *checkout.Id, sumup.ProcessCheckoutBody{
+  	Card: &sumup.Card{
+  		Cvv:         "123",
+  		ExpiryMonth: "12",
+  		ExpiryYear:  "2023",
+  		Name:        "Boaty McBoatface",
+  		Number:      "4200000000000042",
+  	},
+  	PaymentType: sumup.ProcessCheckoutBodyPaymentTypeCard,
+  })
+}`;
+---
+
+<MultiCode
+  name="Install SDK"
+  options={[
+    {
+      label: "Node.js",
+      value: "node",
+      code: node,
+      lang: "ts",
+    },
+    {
+      label: "Go",
+      value: "go",
+      code: go,
+      lang: "go",
+    },
+    {
+      label: "Php",
+      value: "php",
+      code: "composer require sumup/sumup-ecom-php-sdk",
+      lang: "bash",
+    },
+  ]}
+  isLanguageSelect
+/>

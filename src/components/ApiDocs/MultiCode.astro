@@ -15,8 +15,9 @@ interface Props {
     label: string;
     value?: string;
     code: string;
-    description?: string;
     lang: string;
+    description?: string;
+    meta?: string;
   }[];
 }
 
@@ -24,7 +25,11 @@ const { options, name, isLanguageSelect = false, ...props } = Astro.props;
 const defaultOption = options[0].label;
 ---
 
-<Codeblock class:list={[isLanguageSelect && "multi-lang"]} copy {...props}>
+<Codeblock
+  class:list={[isLanguageSelect && "multi-lang"]}
+  withCopyButton
+  {...props}
+>
   <div slot="title">
     <slot name="title">
       <div class="name">{name}</div>
@@ -43,14 +48,14 @@ const defaultOption = options[0].label;
   </select>
   <div slot="code">
     {
-      options.map(({ lang, code, label, value, description }) => (
+      options.map(({ lang, code, label, value, description, meta }) => (
         <div
           class:list={["code", label === defaultOption ? "active" : ""]}
           data-lang={value || label.toLowerCase()}
           data-code={code.replace(/\n/g, "\u007f")}
         >
           {description && <div class="description">{description}</div>}
-          <Default lang={lang} code={code} />
+          <Default lang={lang} code={code} meta={meta} />
         </div>
       ))
     }

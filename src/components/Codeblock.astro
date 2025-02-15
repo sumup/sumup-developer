@@ -10,7 +10,7 @@ export type Props = HTMLAttributes<"div"> &
     title?: string;
     code?: string;
     language?: string;
-    copy?: boolean;
+    withCopyButton?: boolean;
   };
 
 const {
@@ -18,7 +18,7 @@ const {
   language,
   title,
   meta = `"$SUMUP_API_KEY" "SUMUP_API_KEY"`,
-  copy = false,
+  withCopyButton = false,
   class: cls,
   ...props
 } = Astro.props;
@@ -32,7 +32,7 @@ const {
     <div class="options">
       <slot name="extra-options" />
       {
-        copy && (
+        withCopyButton && (
           <IconButton class="copy-code-btn">
             <Copy className="copy" />
             <Checkmark className="checkmark" />
@@ -42,7 +42,17 @@ const {
     </div>
   </div>
   <slot name="code">
-    {code && language && <Default lang={language} code={code} meta={meta} />}
+    {
+      code && language && (
+        <div
+          class:list={["code", "active"]}
+          data-lang={language}
+          data-code={code.replace(/\n/g, "\u007f")}
+        >
+          <Default lang={language} code={code} meta={meta} />
+        </div>
+      )
+    }
   </slot>
 </div>
 
@@ -56,6 +66,7 @@ const {
     try {
       await navigator.clipboard.writeText(code);
     } catch (err) {
+      console.error((err as Error).toString());
       //  TODO
     }
 
@@ -126,7 +137,6 @@ const {
   .code {
     background: var(--cui-bg-subtle);
     overflow: auto;
-    display: none;
   }
 
   .code.active {
@@ -144,6 +154,7 @@ const {
   :global(.copy-code-btn) .checkmark {
     display: none;
   }
+
   :global(.copy-code-btn.copied) .copy {
     display: none;
   }
