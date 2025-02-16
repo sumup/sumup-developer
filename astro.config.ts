@@ -143,7 +143,7 @@ const head = (): HeadUserConfig => {
 
 export default defineConfig({
   adapter: vercel(),
-  site: "https://developer.sumup.com",
+  site: "https://sumup-developer.sumup-vercel.app",
 
   experimental: {
     svg: true,

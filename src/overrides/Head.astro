@@ -6,6 +6,15 @@ import Default from "@astrojs/starlight/components/Head.astro";
 import "@sumup-oss/design-tokens/fonts.css";
 import "@sumup-oss/design-tokens/dynamic.css";
 import { ClientRouter } from "astro:transitions";
+
+const { entry } = Astro.props;
+Astro.props.entry.data.head.push({
+  tag: "meta",
+  attrs: {
+    property: "og:image",
+    content: `${Astro.site}open-graph/${entry.id}.png`,
+  },
+});
 ---
 
 {/* This code is intentionally inlined to avoid FOUC. */}
@@ -25,7 +34,5 @@ import { ClientRouter } from "astro:transitions";
   })();
 </script>
 
-<Default {...Astro.props}>
-  <ClientRouter />
-  <slot />
-</Default>
+<Default {...Astro.props} />
+<ClientRouter />
