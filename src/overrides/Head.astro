@@ -6,6 +6,8 @@ import Default from "@astrojs/starlight/components/Head.astro";
 import "@sumup-oss/design-tokens/fonts.css";
 import "@sumup-oss/design-tokens/dynamic.css";
 import { ClientRouter } from "astro:transitions";
+
+const { entry } = Astro.props;
 ---
 
 {/* This code is intentionally inlined to avoid FOUC. */}
@@ -24,6 +26,7 @@ import { ClientRouter } from "astro:transitions";
     });
   })();
 </script>
+<meta property="og:image" content={`/open-graph/${entry.id}.png`} />
 
 <Default {...Astro.props}>
   <ClientRouter />
