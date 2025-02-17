@@ -7,7 +7,6 @@ export default defineEcConfig({
   styleOverrides: {
     codeFontSize: "0.8rem",
     borderColor: "var(--cui-border-subtle)",
-    codeBackground: "var(--cui-bg-subtle)",
     borderRadius: "0",
     borderWidth: "0",
     codeFontFamily: "var(--cui-font-stack-mono)",

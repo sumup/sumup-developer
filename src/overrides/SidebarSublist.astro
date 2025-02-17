@@ -8,25 +8,15 @@ import { Badge, Icon } from "@astrojs/starlight/components";
 import { flattenSidebar } from "node_modules/@astrojs/starlight/utils/navigation";
 
 interface Props {
-  title?: string;
   sublist: StarlightProps["sidebar"];
   expanded?: boolean;
   nested?: boolean;
 }
 
-const { sublist, expanded, title } = Astro.props;
+const { sublist, expanded } = Astro.props;
 ---
 
 <ul class="sidebar">
-  {
-    title && (
-      <li>
-        <div class:list={["group-header", "title"]}>
-          <span>{title}</span>
-        </div>
-      </li>
-    )
-  }
   {
     sublist.map((entry) => (
       <li>
@@ -47,15 +37,35 @@ const { sublist, expanded, title } = Astro.props;
             )}
           </a>
         )}
-        {entry.type === "group" && !expanded && (
-          <details
-            open={
-              flattenSidebar(entry.entries).some((i) => i.isCurrent) ||
-              !entry.collapsed
-            }
-          >
-            <summary class="group-header">
-              <div class="group-label">
+        {entry.type === "group" &&
+          !expanded &&
+          entry.label !== "API Reference" && (
+            <details
+              open={
+                flattenSidebar(entry.entries).some((i) => i.isCurrent) ||
+                !entry.collapsed
+              }
+            >
+              <summary class="group-header">
+                <div class="group-label">
+                  <span>{entry.label}</span>
+                  {entry.badge && (
+                    <Badge
+                      variant={entry.badge.variant}
+                      class={entry.badge.class}
+                      text={entry.badge.text}
+                    />
+                  )}
+                </div>
+                <Icon name="right-caret" class="caret" size="1.25rem" />
+              </summary>
+              <Astro.self sublist={entry.entries} expanded={expanded} />
+            </details>
+          )}
+        {entry.type === "group" &&
+          (expanded || entry.label === "API Reference") && (
+            <>
+              <span class="group-header">
                 <span>{entry.label}</span>
                 {entry.badge && (
                   <Badge
@@ -64,27 +74,10 @@ const { sublist, expanded, title } = Astro.props;
                     text={entry.badge.text}
                   />
                 )}
-              </div>
-              <Icon name="right-caret" class="caret" size="1.25rem" />
-            </summary>
-            <Astro.self sublist={entry.entries} />
-          </details>
-        )}
-        {entry.type === "group" && expanded && (
-          <>
-            <span class="group-header">
-              <span>{entry.label}</span>
-              {entry.badge && (
-                <Badge
-                  variant={entry.badge.variant}
-                  class={entry.badge.class}
-                  text={entry.badge.text}
-                />
-              )}
-            </span>
-            <Astro.self sublist={entry.entries} />
-          </>
-        )}
+              </span>
+              <Astro.self sublist={entry.entries} expanded={expanded} />
+            </>
+          )}
       </li>
     ))
   }
@@ -94,10 +87,11 @@ const { sublist, expanded, title } = Astro.props;
   .sidebar {
     font-size: var(--cui-body-s-font-size);
     line-height: var(--cui-body-s-line-height);
+    font-weight: var(--cui-font-weight-semibold);
   }
 
   .group-header {
-    margin: var(--cui-spacings-mega) 0 var(--cui-spacings-bit);
+    margin: var(--cui-spacings-bit) 0;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -118,6 +112,10 @@ const { sublist, expanded, title } = Astro.props;
   li {
     overflow-wrap: anywhere;
     margin-bottom: var(--cui-spacings-bit);
+  }
+
+  ul li:last-of-type {
+    margin-bottom: var(--cui-spacings-mega);
   }
 
   details ul,
@@ -150,24 +148,24 @@ const { sublist, expanded, title } = Astro.props;
     display: block;
     text-decoration: none;
     border-radius: var(--cui-border-radius-bit);
-    color: var(--cui-fg-normal);
+    color: var(--cui-fg-subtle);
     padding: var(--cui-spacings-bit) var(--cui-spacings-byte);
+    transition: color 120ms ease-in-out;
   }
 
   a:hover {
     color: var(--cui-fg-normal-hovered);
-    background-color: var(--cui-bg-subtle-hovered);
+    background-color: var(--cui-bg-normal-hovered);
   }
 
   a:focus {
     color: var(--cui-fg-normal-pressed);
-    background-color: var(--cui-bg-subtle-pressed);
+    background-color: var(--cui-bg-normal-pressed);
   }
 
   [aria-current="page"],
   [aria-current="page"]:hover,
   [aria-current="page"]:focus {
-    font-weight: var(--cui-font-weight-semibold);
     color: var(--cui-fg-on-strong);
     background-color: var(--cui-bg-strong);
   }

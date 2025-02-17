@@ -3,7 +3,7 @@
 // - Adds custom navigation for mobile menu.
 // - Renders default 'Overview' items for sub-collections.
 import type { Props } from "@astrojs/starlight/props";
-import { getSidebar, lookupProductTitle, type Group } from "@lib/sidebar";
+import { getSidebar } from "@lib/sidebar";
 import SidebarSublist from "./SidebarSublist.astro";
 import SidebarPersister from "@astrojs/starlight/components/SidebarPersister.astro";
 import MobileMenuFooter from "./MobileMenuFooter.astro";
@@ -12,15 +12,7 @@ import MobileMenuHeader from "./MobileMenuHeader.astro";
 const { id } = Astro.props;
 const currentSection = id?.split("/")[0];
 
-const sidebar =
-  currentSection !== "api"
-    ? (await getSidebar(Astro)).entries
-    : (Astro.props.sidebar[0] as Group).entries;
-
-const title =
-  currentSection !== "api"
-    ? await lookupProductTitle(currentSection)
-    : "API Reference";
+const sidebar = (await getSidebar(Astro)).entries;
 ---
 
 <div class="md:sl-hidden">
@@ -35,7 +27,6 @@ const title =
   <SidebarSublist
     sublist={sidebar as Props["sidebar"]}
     expanded={currentSection !== "api"}
-    title={title}
   />
 </SidebarPersister>
 
@@ -46,7 +37,7 @@ const title =
 <style>
   :root,
   :root[data-theme="light"] {
-    --sl-color-bg-sidebar: var(--cui-bg-subtle);
+    --sl-color-bg-sidebar: var(--cui-bg-normal);
     --sl-sidebar-width: 17rem;
   }
 

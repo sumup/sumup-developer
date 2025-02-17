@@ -45,11 +45,13 @@ const { hideSocial } = Astro.props;
 
   a {
     padding: var(--cui-spacings-bit) var(--cui-spacings-byte);
-    color: var(--cui-fg-normal);
+    color: var(--cui-fg-subtle);
     text-decoration: none;
+    transition: color 120ms ease-in-out;
   }
 
   a:hover {
+    color: var(--cui-fg-normal);
     text-decoration: underline;
   }
 </style>

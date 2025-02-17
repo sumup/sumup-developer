@@ -76,41 +76,70 @@ async function handleLink(link: Link): Promise<Link> {
   return link;
 }
 
-export async function generateSidebar(group: Group): Promise<Group> {
-  group.entries = await Promise.all(
-    group.entries.map((entry) => {
-      if (entry.type === "group") {
-        return handleGroup(entry);
-      }
-      return handleLink(entry);
-    }),
-  );
+export async function generateSidebar(
+  section: string,
+  group: Group,
+): Promise<Group> {
+  if (section !== "api") {
+    group.entries = await Promise.all(
+      group.entries.map((entry) => {
+        if (entry.type === "group") {
+          return handleGroup(entry);
+        }
+        return handleLink(entry);
+      }),
+    );
 
-  if (group.entries[0].type === "link") {
-    group.entries[0].label = "Overview";
+    if (group.entries[0].type === "link") {
+      group.entries[0].label = "Overview";
+    }
   }
+
+  const topLevel = [];
+  for (const entry of group.entries) {
+    if (entry.type === "link") {
+      topLevel.push(entry);
+    } else {
+      break;
+    }
+  }
+  group.entries.splice(0, topLevel.length);
+
+  const title =
+    section !== "api" ? await getSectionTitle(section) : "API Reference";
+
+  group.entries = [
+    {
+      label: title,
+      entries: topLevel,
+      type: "group",
+      collapsed: false,
+      badge: undefined,
+    },
+    ...group.entries,
+  ];
 
   return group;
 }
 
-export const lookupProductTitle = async (product: string): Promise<string> => {
-  const entry = await getEntry("docs", product);
+export const getSectionTitle = async (section: string): Promise<string> => {
+  const entry = await getEntry("docs", section);
   return entry?.data?.title ?? "Unknown";
 };
 
-export async function getSidebar(context: AstroGlobal<Props>) {
+export async function getSidebar(context: AstroGlobal<Props>): Promise<Group> {
   const pathname = context.url.pathname;
   const segments = pathname.split("/").slice(1, -1);
 
-  const product = segments.at(0);
+  const section = segments.at(0);
 
-  if (!product) {
+  if (!section) {
     throw new Error(`[Sidebar] Splitting ${pathname} resulted in 0 segments`);
   }
 
   const group = context.props.sidebar
-    .filter((entry) => entry.type === "group" && entry.label === product)
+    .filter((entry) => entry.type === "group" && entry.label === section)
     .at(0) as Group;
 
-  return await generateSidebar(group);
+  return await generateSidebar(section, group);
 }

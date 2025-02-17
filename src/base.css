@@ -38,6 +38,7 @@
 
   /* Custom colors for page elements */
   --sl-color-hairline-shade: var(--cui-border-subtle);
+  --sl-color-bg: var(--cui-bg-normal);
 
   /* Typography */
   --sl-text-h1: var(--cui-headline-l-font-size);
