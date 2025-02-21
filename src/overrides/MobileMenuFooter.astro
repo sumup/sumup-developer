@@ -8,13 +8,12 @@
 import ThemeSelect from "@astrojs/starlight/components/ThemeSelect.astro";
 import LanguageSelect from "@astrojs/starlight/components/LanguageSelect.astro";
 import SocialIcons from "@astrojs/starlight/components/SocialIcons.astro";
-import type { Props } from "@astrojs/starlight/props";
 ---
 
 <div class="mobile-preferences sl-flex">
-  <SocialIcons {...Astro.props} />
-  <ThemeSelect {...Astro.props} />
-  <LanguageSelect {...Astro.props} />
+  <SocialIcons />
+  <ThemeSelect />
+  <LanguageSelect />
 </div>
 
 <style>

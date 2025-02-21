@@ -1,5 +1,4 @@
 ---
-import type { Props } from "@astrojs/starlight/props";
 import Default from "@astrojs/starlight/components/PageTitle.astro";
 import { Breadcrumbs } from "astro-breadcrumbs";
 import "astro-breadcrumbs/breadcrumbs.css";
@@ -45,7 +44,7 @@ const crumbs = await getBreadcrumbs(Astro.url.pathname);
     </Breadcrumbs>
   )
 }
-<Default {...Astro.props} />
+<Default />
 
 <style>
   :global(.c-breadcrumbs) {

@@ -3,7 +3,7 @@ import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
 import type { StarlightPageProps } from "@astrojs/starlight/props";
 import Card from "@components/Card.astro";
 import Brands from "@components/Landing/Brands.astro";
-import { TryItOut } from "@components/TryItOut";
+import TryItOut from "@components/TryItOut/TryItOut.astro";
 import { Headline, Body, ButtonGroup } from "@sumup-oss/circuit-ui";
 import SwiftCheckout from "../assets/swift-checkout.svg?raw";
 import ApiCall from "../assets/api-call.svg?raw";
@@ -321,8 +321,8 @@ const props = {
     margin-bottom: var(--cui-spacings-giga);
   }
 
-  h2 {
-    margin-bottom: var(--cui-spacings-exa);
+  section :global(h2) {
+    margin-bottom: var(--cui-spacings-giga) !important;
   }
 
   .icon {

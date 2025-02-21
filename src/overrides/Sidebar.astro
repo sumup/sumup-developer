@@ -2,17 +2,19 @@
 // Customized sidebar.
 // - Adds custom navigation for mobile menu.
 // - Renders default 'Overview' items for sub-collections.
-import type { Props } from "@astrojs/starlight/props";
+import type { StarlightRouteData } from "@astrojs/starlight/route-data";
 import { getSidebar } from "@lib/sidebar";
 import SidebarSublist from "./SidebarSublist.astro";
 import SidebarPersister from "@astrojs/starlight/components/SidebarPersister.astro";
 import MobileMenuFooter from "./MobileMenuFooter.astro";
 import MobileMenuHeader from "./MobileMenuHeader.astro";
+import type { AstroGlobal } from "astro";
 
-const { id } = Astro.props;
+const { id } = Astro.locals.starlightRoute;
 const currentSection = id?.split("/")[0];
 
-const sidebar = (await getSidebar(Astro)).entries;
+const sidebar = (await getSidebar(Astro as AstroGlobal<StarlightRouteData>))
+  .entries;
 ---
 
 <div class="md:sl-hidden">
@@ -21,11 +23,11 @@ const sidebar = (await getSidebar(Astro)).entries;
 
 <SidebarPersister
   {...Astro.props}
-  sidebar={sidebar as Props["sidebar"]}
+  sidebar={sidebar as StarlightRouteData["sidebar"]}
   transition:name="sidebar"
 >
   <SidebarSublist
-    sublist={sidebar as Props["sidebar"]}
+    sublist={sidebar as StarlightRouteData["sidebar"]}
     expanded={currentSection !== "api"}
   />
 </SidebarPersister>

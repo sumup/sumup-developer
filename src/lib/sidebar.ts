@@ -1,12 +1,18 @@
-import type { Props } from "@astrojs/starlight/props";
 import type { AstroGlobal } from "astro";
+import type { StarlightRouteData } from "@astrojs/starlight/route-data";
 
 import { getEntry } from "astro:content";
 
-export type Link = Extract<Props["sidebar"][0], { type: "link" }> & {
+export type Link = Extract<
+  StarlightRouteData["sidebar"][0],
+  { type: "link" }
+> & {
   order?: number;
 };
-export type Group = Extract<Props["sidebar"][0], { type: "group" }> & {
+export type Group = Extract<
+  StarlightRouteData["sidebar"][0],
+  { type: "group" }
+> & {
   order?: number;
 };
 export type SidebarEntry = Link | Group;
@@ -127,17 +133,17 @@ export const getSectionTitle = async (section: string): Promise<string> => {
   return entry?.data?.title ?? "Unknown";
 };
 
-export async function getSidebar(context: AstroGlobal<Props>): Promise<Group> {
+export async function getSidebar(
+  context: AstroGlobal<StarlightRouteData>,
+): Promise<Group> {
   const pathname = context.url.pathname;
-  const segments = pathname.split("/").slice(1, -1);
-
-  const section = segments.at(0);
+  const section = pathname.split("/").at(1);
 
   if (!section) {
     throw new Error(`[Sidebar] Splitting ${pathname} resulted in 0 segments`);
   }
 
-  const group = context.props.sidebar
+  const group = context.locals.starlightRoute.sidebar
     .filter((entry) => entry.type === "group" && entry.label === section)
     .at(0) as Group;
 

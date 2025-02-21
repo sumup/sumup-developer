@@ -1,5 +1,4 @@
 ---
-import type { Props } from "@astrojs/starlight/props";
 import EditLink from "@astrojs/starlight/components/EditLink.astro";
 import LastUpdated from "@astrojs/starlight/components/LastUpdated.astro";
 import Feedback from "@components/Feedback.astro";
@@ -32,7 +31,7 @@ const isHomepage = Astro.props.id === "";
     </footer>
   ) : (
     <>
-      {!Astro.props.custom && <Feedback />}
+      {!Astro.locals.starlightRoute.custom && <Feedback />}
       <footer>
         <div class="meta">
           <EditLink {...Astro.props} />

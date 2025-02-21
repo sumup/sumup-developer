@@ -1,10 +1,9 @@
 ---
-import type { Props } from "@astrojs/starlight/props";
 import { Display } from "@sumup-oss/circuit-ui";
 
 const {
   data: { title },
-} = Astro.props.entry;
+} = Astro.locals.starlightRoute.entry;
 ---
 
 <div class="hero">

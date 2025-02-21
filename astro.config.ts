@@ -187,7 +187,7 @@ export default defineConfig({
         SiteTitle: "./src/overrides/SiteTitle.astro",
         SocialIcons: "./src/overrides/SocialIcons.astro",
         MobileTableOfContents: "./src/overrides/MobileTableOfContents.astro",
-        MobileMenuFooter: "./src/overrides/MobileMenuFooter.astro",
+        PageFrame: "./src/overrides/PageFrame.astro",
       },
       social: {
         github: "https://github.com/sumup/documentation",
