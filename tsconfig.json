@@ -1,9 +1,6 @@
 {
   "extends": "astro/tsconfigs/strict",
-  "include": [
-    ".astro/types.d.ts",
-    "**/*"
-  ],
+  "include": [".astro/types.d.ts", "**/*"],
   "compilerOptions": {
     "plugins": [
       {
@@ -14,31 +11,14 @@
     "target": "ESNext",
     "verbatimModuleSyntax": true,
     "paths": {
-      "@components/*": [
-        "src/components/*"
-      ],
-      "@assets/*": [
-        "src/assets/*"
-      ],
-      "@types/*": [
-        "src/types/*"
-      ],
-      "@lib/*": [
-        "src/lib/*"
-      ],
-      "@services/*": [
-        "src/services/*"
-      ],
-      "@hooks/*": [
-        "src/hooks/*"
-      ],
-      "@api/*": [
-        "src/api/*"
-      ]
+      "@components/*": ["src/components/*"],
+      "@assets/*": ["src/assets/*"],
+      "@types/*": ["src/types/*"],
+      "@lib/*": ["src/lib/*"],
+      "@services/*": ["src/services/*"],
+      "@hooks/*": ["src/hooks/*"],
+      "@api/*": ["src/api/*"]
     }
   },
-  "exclude": [
-    "dist",
-    ".vercel/"
-  ]
+  "exclude": ["dist", ".vercel/"]
 }

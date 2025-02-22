@@ -20,7 +20,11 @@ const changelog = defineCollection({
 
 export const collections = {
   docs: defineCollection({
-    schema: docsSchema(),
+    schema: docsSchema({
+      extend: z.object({
+        icon: z.string().optional(),
+      }),
+    }),
     loader: docsLoader(),
   }),
   help,

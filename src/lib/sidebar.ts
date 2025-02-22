@@ -8,13 +8,18 @@ export type Link = Extract<
   { type: "link" }
 > & {
   order?: number;
+  icon?: string;
 };
+
 export type Group = Extract<
   StarlightRouteData["sidebar"][0],
   { type: "group" }
 > & {
   order?: number;
+  icon?: string;
+  entries: (Link | Group)[];
 };
+
 export type SidebarEntry = Link | Group;
 
 function sortGroup(a: SidebarEntry, b: SidebarEntry): number {
@@ -43,6 +48,7 @@ async function handleGroup(group: Group): Promise<SidebarEntry> {
 
   group.label = frontmatter.title;
   group.order = frontmatter.sidebar.order ?? Number.MAX_VALUE;
+  group.icon = frontmatter.icon;
 
   for (const entry of group.entries.keys()) {
     if (group.entries[entry].type === "group") {
@@ -111,8 +117,16 @@ export async function generateSidebar(
   }
   group.entries.splice(0, topLevel.length);
 
-  const title =
-    section !== "api" ? await getSectionTitle(section) : "API Reference";
+  let title = "Unknown";
+  let icon: string | undefined;
+  if (section !== "api") {
+    const entry = await getEntry("docs", section);
+    title = entry?.data?.title ?? "Unknown";
+    icon = entry?.data?.icon;
+  } else {
+    title = "API Reference";
+    icon = "code";
+  }
 
   group.entries = [
     {
@@ -121,17 +135,13 @@ export async function generateSidebar(
       type: "group",
       collapsed: false,
       badge: undefined,
+      icon: icon,
     },
     ...group.entries,
   ];
 
   return group;
 }
-
-export const getSectionTitle = async (section: string): Promise<string> => {
-  const entry = await getEntry("docs", section);
-  return entry?.data?.title ?? "Unknown";
-};
 
 export async function getSidebar(
   context: AstroGlobal<StarlightRouteData>,

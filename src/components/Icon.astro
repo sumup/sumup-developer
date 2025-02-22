@@ -1,0 +1,12 @@
+---
+import { Icons } from "./Icons";
+
+interface Props {
+  icon?: string;
+}
+
+const { icon } = Astro.props;
+const I = Icons[icon as keyof typeof Icons];
+---
+
+<I />

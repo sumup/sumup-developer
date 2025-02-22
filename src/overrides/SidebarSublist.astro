@@ -3,12 +3,12 @@
 // very similar to Startlight's SidebarSublist but we adjust
 // the styles and for certain content don't use expandable
 // sections.
-import type { StarlightRouteData } from "@astrojs/starlight/route-data";
 import { Badge, Icon } from "@astrojs/starlight/components";
 import type { SidebarEntry, Link } from "@lib/sidebar";
+import CUIIcon from "@components/Icon.astro";
 
 interface Props {
-  sublist: StarlightRouteData["sidebar"];
+  sublist: SidebarEntry[];
   expanded?: boolean;
   nested?: boolean;
 }
@@ -72,6 +72,7 @@ const { sublist, expanded } = Astro.props;
           (expanded || entry.label === "API Reference") && (
             <>
               <span class="group-header">
+                {entry.icon && <CUIIcon icon={entry.icon} />}
                 <span>{entry.label}</span>
                 {entry.badge && (
                   <Badge
@@ -100,9 +101,14 @@ const { sublist, expanded } = Astro.props;
     margin: var(--cui-spacings-bit) 0;
     display: flex;
     align-items: center;
-    justify-content: space-between;
     padding: 0.2em var(--sl-sidebar-item-padding-inline);
     font-weight: var(--cui-font-weight-bold);
+    gap: var(--cui-spacings-byte);
+  }
+
+  .group-header :global(svg) {
+    height: 18px;
+    width: 18px;
   }
 
   .title {
