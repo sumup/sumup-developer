@@ -3,6 +3,55 @@ import type { StarlightRouteData } from "@astrojs/starlight/route-data";
 
 import { getEntry } from "astro:content";
 
+const defaultSidebar: Group = {
+  label: "Index",
+  entries: [
+    {
+      label: "Online Payments",
+      type: "link",
+      href: "/online-payments",
+      icon: "online_payments",
+      isCurrent: false,
+      badge: undefined,
+      attrs: {},
+      isTop: true,
+    },
+    {
+      label: "Terminal Payments",
+      type: "link",
+      href: "/terminal-payments",
+      icon: "card_in",
+      isCurrent: false,
+      badge: undefined,
+      attrs: {},
+      isTop: true,
+    },
+    {
+      label: "API Reference",
+      type: "link",
+      href: "/api",
+      icon: "code",
+      isCurrent: false,
+      badge: undefined,
+      attrs: {},
+      isTop: true,
+    },
+    {
+      label: "Changelog",
+      type: "link",
+      href: "/changelog",
+      icon: "list",
+      isCurrent: false,
+      badge: undefined,
+      attrs: {},
+      isTop: true,
+    },
+  ],
+  type: "group",
+  collapsed: false,
+  badge: undefined,
+};
+
 export type Link = Extract<
   StarlightRouteData["sidebar"][0],
   { type: "link" }
@@ -149,13 +198,13 @@ export async function getSidebar(
   const pathname = context.url.pathname;
   const section = pathname.split("/").at(1);
 
-  if (!section) {
-    throw new Error(`[Sidebar] Splitting ${pathname} resulted in 0 segments`);
-  }
-
   const group = context.locals.starlightRoute.sidebar
     .filter((entry) => entry.type === "group" && entry.label === section)
-    .at(0) as Group;
+    .at(0) as Group | undefined;
+
+  if (!group || !section) {
+    return defaultSidebar;
+  }
 
   return await generateSidebar(section, group);
 }

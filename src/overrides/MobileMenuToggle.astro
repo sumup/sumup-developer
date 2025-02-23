@@ -1,0 +1,73 @@
+---
+import { Hamburger } from "@sumup-oss/circuit-ui";
+---
+
+<starlight-menu-button class="print:hidden md:sl-hidden menu-button">
+  <Hamburger activeLabel="Close" inactiveLabel="Open" client:load />
+</starlight-menu-button>
+
+<script>
+  class StarlightMenuButton extends HTMLElement {
+    btn = this.querySelector("button")!;
+
+    constructor() {
+      super();
+      // Toggle `aria-expanded` state when a user clicks the button.
+      this.btn.addEventListener("click", () => this.toggleExpanded());
+
+      // Close the menu when a user presses the escape key.
+      const parentNav = this.closest("nav");
+      if (parentNav) {
+        parentNav.addEventListener("keyup", (e) => this.closeOnEscape(e));
+      }
+    }
+
+    setExpanded(expanded: boolean) {
+      this.setAttribute("aria-expanded", String(expanded));
+
+      // Hamburger from circuit-ui uses aria-pressed for state differentiation
+      this.setAttribute("aria-pressed", String(expanded));
+
+      document.body.toggleAttribute("data-mobile-menu-expanded", expanded);
+    }
+
+    toggleExpanded() {
+      this.setExpanded(this.getAttribute("aria-expanded") !== "true");
+    }
+
+    closeOnEscape(e: KeyboardEvent) {
+      if (e.code === "Escape") {
+        this.setExpanded(false);
+        this.btn.focus();
+      }
+    }
+  }
+
+  customElements.define("starlight-menu-button", StarlightMenuButton);
+</script>
+
+<style>
+  starlight-menu-button {
+    position: fixed;
+    top: calc((var(--sl-nav-height) - var(--sl-menu-button-size)) / 2);
+    inset-inline-end: var(--sl-nav-pad-x);
+    z-index: var(--sl-z-index-navbar);
+    border: 0;
+  }
+
+  .menu-button :global(button) {
+    padding: var(--cui-spacings-bit);
+  }
+</style>
+
+<style is:global>
+  [data-mobile-menu-expanded] {
+    overflow: hidden;
+  }
+
+  @media (min-width: 50rem) {
+    [data-mobile-menu-expanded] {
+      overflow: auto;
+    }
+  }
+</style>

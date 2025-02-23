@@ -1,17 +1,20 @@
 ---
+import type { StarlightPageProps } from "@astrojs/starlight/props";
 import { getCollection } from "astro:content";
 import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
 
-const frontmatter = {
-  title: "FAQ",
-  description: "Frequently asked questions",
-  template: "splash",
-} as const;
+const props = {
+  frontmatter: {
+    title: "FAQ",
+    description: "Frequently asked questions",
+    template: "splash",
+  },
+} as StarlightPageProps;
 
 const posts = await getCollection("help");
 ---
 
-<StarlightPage frontmatter={frontmatter} {...Astro.props}>
+<StarlightPage {...props}>
   <div>
     {
       posts.map(async (post) => {

@@ -180,6 +180,8 @@ export default defineConfig({
       components: {
         Footer: "./src/overrides/Footer.astro",
         Head: "./src/overrides/Head.astro",
+        MobileMenuToggle: "./src/overrides/MobileMenuToggle.astro",
+        // Header: "./src/overrides/Header.astro",
         Hero: "./src/overrides/Hero.astro",
         MarkdownContent: "./src/overrides/MarkdownContent.astro",
         Sidebar: "./src/overrides/Sidebar.astro",

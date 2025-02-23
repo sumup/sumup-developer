@@ -33,6 +33,7 @@ const { sublist, expanded } = Astro.props;
             class:list={[entry.attrs.class]}
             {...entry.attrs}
           >
+            {entry.icon && <CUIIcon icon={entry.icon} />}
             <span>{entry.label}</span>
             {entry.badge && (
               <Badge
@@ -104,6 +105,7 @@ const { sublist, expanded } = Astro.props;
     padding: 0.2em var(--sl-sidebar-item-padding-inline);
     font-weight: var(--cui-font-weight-bold);
     gap: var(--cui-spacings-byte);
+    color: var(--cui-fg-normal);
   }
 
   .group-header :global(svg) {
