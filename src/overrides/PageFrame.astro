@@ -1,6 +1,6 @@
 ---
 import MobileMenuToggle from "./MobileMenuToggle.astro";
-import { Help } from "@sumup-oss/icons";
+import { Help, Info, History } from "@sumup-oss/icons";
 
 const { hasSidebar } = Astro.locals.starlightRoute;
 ---
@@ -21,6 +21,12 @@ const { hasSidebar } = Astro.locals.starlightRoute;
           <div class="sidebar-footer">
             <a href="/help">
               <Help /> Help
+            </a>
+            <a href="https://status.sumup.com/">
+              <Info /> Status
+            </a>
+            <a href="https://status.sumup.com/">
+              <History /> Changelog
             </a>
           </div>
         </div>
@@ -51,7 +57,8 @@ const { hasSidebar } = Astro.locals.starlightRoute;
 
   :global([data-has-sidebar]) .header {
     padding-inline-end: calc(
-      var(--cui-spacings-byte) + var(--sl-nav-pad-x) + var(--sl-menu-button-size)
+      var(--cui-spacings-byte) + var(--sl-nav-pad-x) +
+        var(--sl-menu-button-size)
     );
   }
 
@@ -118,7 +125,7 @@ const { hasSidebar } = Astro.locals.starlightRoute;
     display: block;
     text-decoration: none;
     border-radius: var(--cui-border-radius-bit);
-    color: var(--cui-fg-subtle);
+    color: var(--cui-fg-normal);
     padding: var(--cui-spacings-bit) var(--cui-spacings-byte);
     transition: color 120ms ease-in-out;
     display: flex;

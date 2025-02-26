@@ -94,7 +94,7 @@ const queryParams = operation.parameters
         {
           operation["x-scopes"] && operation["x-scopes"].length > 0 && (
             <div class="scopes" data-pagefind-ignore>
-              Scopes:
+              Required scopes:
               {operation["x-scopes"].map((scope) => (
                 <InlineCode>{scope}</InlineCode>
               ))}
@@ -190,18 +190,24 @@ const queryParams = operation.parameters
   h2 {
     margin: 0 0 var(--cui-spacings-mega);
   }
+
   h2 > div {
     margin-left: var(--cui-spacings-kilo);
   }
+
   .info {
     margin: var(--cui-spacings-giga) 0 var(--cui-spacings-tera);
   }
+
   .description {
     margin: var(--cui-spacings-giga) 0;
   }
+
   .scopes {
-    font-size: var(--cui-body-m-font-size);
+    font-size: var(--cui-body-s-font-size);
+    line-height: var(--cui-body-s-line-height);
   }
+
   .examples {
     margin-top: var(--cui-spacings-exa);
     position: relative;
