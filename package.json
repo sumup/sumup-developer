@@ -81,6 +81,6 @@
     "starlight-links-validator": "^0.14.3",
     "tsx": "^4.19.3",
     "typescript": "^5.7.3",
-    "typescript-eslint": "8.24.1"
+    "typescript-eslint": "8.25.0"
   }
 }
