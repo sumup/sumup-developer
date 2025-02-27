@@ -16,7 +16,7 @@ const { href, title, description, image } = Astro.props;
     {description}
   </div>
   <div class="image">
-    <Fragment set:html={image} />
+    <img src={image} alt={title}/>
   </div>
 </a>
 
@@ -73,7 +73,8 @@ const { href, title, description, image } = Astro.props;
     line-height: var(--cui-body-s-line-height);
   }
 
-  .image :global(svg) {
+  .image :global(svg),
+  .image :global(img) {
     margin-top: 1.5rem;
     position: absolute;
     height: 134px;

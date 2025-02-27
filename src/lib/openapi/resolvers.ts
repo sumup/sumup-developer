@@ -111,6 +111,13 @@ export const resolveSchema = (
   return obj;
 };
 
+export const isRequestBody = (
+  object:
+    | OpenAPIV3_1.RequestBodyObject
+    | OpenAPIV3_1.ReferenceObject
+    | undefined,
+): object is OpenAPIV3_1.RequestBodyObject => !!object && !("$ref" in object);
+
 export const resolveExample = (
   obj: OpenAPIV3_1.ReferenceObject | OpenAPIV3_1.SchemaObject,
   required = false,

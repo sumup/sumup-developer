@@ -5,8 +5,6 @@ import Card from "@components/Card.astro";
 import Brands from "@components/Landing/Brands.astro";
 import TryItOut from "@components/TryItOut/TryItOut.astro";
 import { Headline, Body, ButtonGroup } from "@sumup-oss/circuit-ui";
-import SwiftCheckout from "../assets/swift-checkout.svg?raw";
-import ApiCall from "../assets/api-call.svg?raw";
 import {
   AlternativePaymentMethod,
   InterestOnBalance,
@@ -119,37 +117,37 @@ const props = {
           href="/online-payments/tools/swift-checkout/"
           title="Swift checkout"
           description="Collect payment, address, and contact information with the click of a button."
-          image={SwiftCheckout}
+          image="/img/swift-checkout.svg"
         />
         <CardLink
           href="/terminal-payments/tools/cloud-api/"
           title="Card reader payments"
           description="Integrate card payments from any platform using Cloud API."
-          image={ApiCall}
+          image="/img/api-call.svg"
         />
         <CardLink
           href="/online-payments/tools/card-widget/"
           title="Payment widget"
           description="Securely collect and process customers payment information."
-          image={SwiftCheckout}
+          image="/img/swift-checkout.svg"
         />
         <CardLink
           href="/online-payments/plugins"
           title="Plugins"
           description="Use SumUp plugin for Prestashop, Wix, or WooCommerce."
-          image={ApiCall}
+          image="/img/api-call.svg"
         />
         <CardLink
           href="/online-payments/plugins"
           title="Mobile app integration"
           description="Accept card reader payments from your own app using SumUp card readers."
-          image={SwiftCheckout}
+          image="/img/swift-checkout.svg"
         />
         <CardLink
           href="/online-payments/plugins"
           title="SDKs"
           description="Use your favorite programming language with one of our SDKs."
-          image={ApiCall}
+          image="/img/api-call.svg"
         />
       </CardStack>
     </section>
