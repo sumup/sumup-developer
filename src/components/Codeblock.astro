@@ -24,23 +24,25 @@ const {
 } = Astro.props;
 ---
 
-<div class:list={["codeblock", cls]} {...props}>
-  <div class="header">
-    <slot name="title">
-      {title && <div class="name">{title}</div>}
-    </slot>
-    <div class="options">
-      <slot name="extra-options" />
-      {
-        withCopyButton && (
-          <IconButton class="copy-code-btn">
-            <Copy className="copy" />
-            <Checkmark className="checkmark" />
-          </IconButton>
-        )
-      }
-    </div>
-  </div>
+<div class:list={["codeblock", "not-content", cls]} {...props}>
+  {
+    (title || Astro.slots.has("title")) && (
+      <div class="header">
+        <slot name="title">
+          <div class="name">{title}</div>
+        </slot>
+        <div class="options">
+          <slot name="extra-options" />
+          {withCopyButton && (
+            <IconButton class="copy-code-btn">
+              <Copy className="copy" />
+              <Checkmark className="checkmark" />
+            </IconButton>
+          )}
+        </div>
+      </div>
+    )
+  }
   <slot name="code">
     {
       code && language && (

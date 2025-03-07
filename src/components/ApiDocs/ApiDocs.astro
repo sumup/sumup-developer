@@ -128,7 +128,7 @@ const { target } = Astro.props;
           <p>
             Keep your API keys secret and safe. Do not share your API keys or
             expose them in a publicly accessible areas such as client-side code
-            (browser or apps) or in GitHub.
+            (browser or apps) or in the GitHub.
           </p>
           <p>
             All API requests must be made over HTTPS and authenticated. Calls
@@ -234,6 +234,13 @@ const sumup = new SumUp({ apiKey: 'sup_sk_MvxmLOl0...' });`,
   .specs {
     font-size: 0.9rem;
     flex-grow: 1;
+  }
+
+  .specs :global(h2) {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: var(--cui-spacings-byte);
   }
 
   :global(section) {

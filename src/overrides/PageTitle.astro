@@ -61,4 +61,8 @@ const crumbs = await getBreadcrumbs(Astro.url.pathname);
   :global(.c-breadcrumbs__link:hover) {
     text-decoration: underline;
   }
+
+  :global(#_top) {
+    margin-top: var(--cui-spacings-kilo);
+  }
 </style>

@@ -118,7 +118,7 @@ export const isRequestBody = (
     | undefined,
 ): object is OpenAPIV3_1.RequestBodyObject => !!object && !("$ref" in object);
 
-export const resolveExample = (
+export const schemaToExample = (
   obj: OpenAPIV3_1.ReferenceObject | OpenAPIV3_1.SchemaObject,
   required = false,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -135,11 +135,11 @@ export const resolveExample = (
       return Object.fromEntries(
         Object.entries(schema.properties || {}).map(([key, val]) => [
           key,
-          resolveExample(val, schema.required?.includes(key)),
+          schemaToExample(val, schema.required?.includes(key)),
         ]),
       );
     case "array":
-      return [resolveExample(schema.items)];
+      return [schemaToExample(schema.items)];
     case "string":
       return required ? "" : null;
     case "number":

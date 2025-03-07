@@ -25,7 +25,7 @@ const { hasSidebar } = Astro.locals.starlightRoute;
             <a href="https://status.sumup.com/">
               <Info /> Status
             </a>
-            <a href="https://status.sumup.com/">
+            <a href="/changelog">
               <History /> Changelog
             </a>
           </div>
@@ -159,5 +159,28 @@ const { hasSidebar } = Astro.locals.starlightRoute;
   .main-frame {
     padding-top: calc(var(--sl-nav-height) + var(--sl-mobile-toc-height));
     padding-inline-start: var(--sl-content-inline-start);
+  }
+
+  /* Table of contents design touch-ups */
+  :global(#starlight__on-this-page) {
+    display: none;
+  }
+
+  :global(starlight-toc > nav > ul) {
+    margin-left: var(--cui-spacings-kilo);
+    border-left: var(--cui-border-width-mega) solid var(--cui-border-subtle);
+  }
+
+  :global(starlight-toc a[aria-current="true"]) {
+    font-weight: var(--cui-font-weight-bold);
+  }
+
+  /* Remove hairline borders */
+  :global(.right-sidebar) {
+    border: none !important;
+  }
+
+  :global(.content-panel) {
+    border: none !important;
   }
 </style>
