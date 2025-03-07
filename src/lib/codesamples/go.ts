@@ -1,27 +1,50 @@
-import { resolveSchema } from "@lib/openapi";
+import { isRequestBody, schemaToExample, resolveSchema } from "@lib/openapi";
 import { Case } from "change-case-all";
 import type { OpenAPIV3_1 } from "openapi-types";
 import type { OperationObject } from "src/types/openapi";
 
-const requestBody = (operation: OperationObject): string => {
-  let requestBody =
-    operation.requestBody?.content?.["application/json"]?.schema;
+const objectToGo = (x: Record<string, unknown>) => {
+  return Object.entries(x)
+    .map(([k, v]) => {
+      return `${Case.pascal(k)}: ${JSON.stringify(v)}`;
+    })
+    .join(",\n");
+};
 
-  if (!requestBody) {
+const requestBody = (operation: OperationObject): string => {
+  if (!isRequestBody(operation.requestBody)) {
     return "";
   }
 
-  if ("$ref" in requestBody) {
-    requestBody = resolveSchema(requestBody);
+  if (!("application/json" in operation.requestBody.content)) {
+    return "";
   }
 
-  if (!requestBody || !requestBody.properties) {
+  const example =
+    operation.requestBody.content["application/json"].example ||
+    Object.values(
+      operation.requestBody.content["application/json"].examples || {},
+    ).at(0)?.value ||
+    schemaToExample(
+      operation.requestBody?.content?.["application/json"]?.schema,
+    );
+
+  if (!example) {
     return "";
   }
 
   const bodyStructName = `${Case.pascal(operation.operationId!)}Request`;
 
-  const bodyFields = Object.entries(requestBody.properties)
+  if (example) {
+    return `${bodyStructName}{
+${objectToGo(example)
+  .split("\n")
+  .map((x) => `\t${x}`)
+  .join("\n")}
+}`;
+  }
+
+  const bodyFields = Object.entries(operation.requestBody.properties)
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     .map(([key, value]: [string, any]) => {
       const field = resolveSchema(value);

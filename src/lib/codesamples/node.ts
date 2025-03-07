@@ -1,4 +1,4 @@
-import { isRequestBody, resolveExample } from "@lib/openapi";
+import { isRequestBody, schemaToExample, resolveSchema } from "@lib/openapi";
 import { Case } from "change-case-all";
 import type { OpenAPIV3_1 } from "openapi-types";
 import type { OperationObject } from "src/types/openapi";
@@ -17,9 +17,20 @@ const bodyExample = (operation: OperationObject): any => {
     return operation.requestBody.content["application/json"].example;
   }
 
-  return resolveExample(
-    operation.requestBody.content["application/json"].schema!,
-  );
+  if (operation.requestBody.content["application/json"].examples) {
+    return Object.values(
+      operation.requestBody.content["application/json"].examples,
+    ).at(0)?.value;
+  }
+
+  let requestBody =
+    operation.requestBody?.content?.["application/json"]?.schema;
+
+  if ("$ref" in requestBody) {
+    requestBody = resolveSchema(requestBody);
+  }
+
+  return schemaToExample(requestBody!);
 };
 
 export const node = (operation: OperationObject): string => {
