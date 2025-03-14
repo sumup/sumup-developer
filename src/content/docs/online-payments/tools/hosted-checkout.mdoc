@@ -18,10 +18,10 @@ The only requirement to access this product is the ability to create online chec
 ## How does it work?
 
 Once you're able to create checkouts, you can opt-in for Hosted Checkout by providing an extra parameter to your POST request payload.
-The parameter name should be `hosted_checkout_settings` and the value should be an object with the following structure: `{ "enabled": true }`.
+The parameter name should be `hosted_checkout` and the value should be an object with the following structure: `{ "enabled": true }`.
 
 The response should then include the following properties, proving that hosted checkouts is available:
-* `hosted_checkout_settings` will be returned as provided in the request
+* `hosted_checkout` will be returned as provided in the request
 * `hosted_checkout_url` will provide the URL of the page handling the payment flow
 
 Here's an example of creating a checkout with Hosted Checkouts enabled:
@@ -36,11 +36,11 @@ curl -X POST https://api.sumup.com/v0.1/checkouts \
         "currency": "EUR",
         "description": "A sample checkout",
         "merchant_code": "MCMMMMMM",
-        "hosted_checkout_settings": { "enabled": true }
+        "hosted_checkout": { "enabled": true }
     }'
 ```
 
-The response body containing the `hosted_checkout_settings` and `hosted_checkout_url` parameters:
+The response body containing the `hosted_checkout` and `hosted_checkout_url` parameters:
 
 ```json
 {
@@ -58,7 +58,7 @@ The response body containing the `hosted_checkout_settings` and `hosted_checkout
     "purpose": "CHECKOUT",
     "status": "PENDING",
     "transactions": [],
-    "hosted_checkout_settings": { "enabled": true },
+    "hosted_checkout": { "enabled": true },
     "hosted_checkout_url": "https://checkout.sumup.com/pay/8f9316a3-cda9-42a9-9771-54d534315676"
 }
 ```
