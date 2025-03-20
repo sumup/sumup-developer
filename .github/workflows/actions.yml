@@ -22,7 +22,7 @@ jobs:
           persist-credentials: false
           sparse-checkout: |
             .github
-      - uses: reviewdog/action-actionlint@6612efe1589ccf23cb1320d11fced44b86fb5ad7
+      - uses: reviewdog/action-actionlint@664c8ef5435569dd2880e62d891ab3ecdf98dc60
         with:
           filter_mode: nofilter
           fail_on_error: true
