@@ -1,5 +1,5 @@
 ---
-import { Badge } from "@astrojs/starlight/components";
+import { Aside, Badge } from "@astrojs/starlight/components";
 import Markdown from "@components/Markdown.astro";
 import { resolveReference } from "@lib/openapi";
 import { Headline } from "@sumup-oss/circuit-ui";
@@ -84,6 +84,15 @@ const queryParams = operation.parameters
           }
         </Headline>
         {/*<OperationEndpoint operation={operation} />*/}
+        {
+          ('x-deprecation-notice' in operation) && (
+            <div class="notice">
+              <Aside type="caution">
+                <Markdown>{operation['x-deprecation-notice']}</Markdown>
+              </Aside>
+            </div>
+          )
+        }
         {
           operation.description && (
             <div class="description">
