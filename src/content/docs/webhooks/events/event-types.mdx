@@ -1,0 +1,54 @@
+---
+title: Webhook Events Types
+description: Learn about the different types of events that can trigger webhooks and how to handle them in your applications.
+---
+
+## `checkout.status.updated`
+
+This event is triggered when a checkout status changes. The checkout status can be one of the following:
+
+- pending
+- paid
+- failed
+  The payload schema for this event is as follows:
+
+```yml
+---
+type: object
+properties:
+  checkout_id:
+    type: string
+    description: The ID of the checkout
+    required: true
+  reference:
+    type: string
+    description: The reference of the checkout
+    required: true
+  status:
+    type: string
+    description: The new status of the checkout
+    required: true
+    enum:
+      - pending
+      - paid
+      - failed
+required:
+  - checkout_id
+  - reference
+  - status
+```
+
+Example of an event received by the webhook endpoint:
+
+```json
+{
+  "id": "c56dc7d23e1dad876cb1e2954854db9e",
+  "event_type": "checkout.status.updated",
+  "payload": {
+    "checkout_id": "e24bab0f-1464-4ffe-b6a2-dc33eca5e1e9",
+    "reference": "6bda4155-bb08-4e92-8068-8a4c41b47bf0",
+    "status": "FAILED"
+  },
+  "timestamp": "2024-09-12T12:43:24.818+00:00"
+}
+```

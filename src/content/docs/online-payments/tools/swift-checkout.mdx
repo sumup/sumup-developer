@@ -1,0 +1,472 @@
+---
+title: Swift Checkout Implementation
+---
+
+import { Aside } from "@astrojs/starlight/components";
+
+The Swift Checkout SDK enables you to offer a complete and fast checkout experience to your end users from any point of your allows you to collect payment, address, and contact information with the click of a button.
+
+### Prerequisites
+
+- Add a payment method to your browser or wallet. For example, you can save a card in Chrome, add a card to your Apple Wallet for Safari and iOS
+
+- Serve your application over HTTPS. This is a requirement both in development and in production environments. One way to get up and running is to use a service like [ngrok](https://ngrok.com/)
+
+Currently available payment methods through Swift Checkout SDK:
+
+<Aside type="caution">
+  For pages that have a strict Content Security Policy (CSP) visit the [Handling
+  CSP](/online-payments/tools/card-widget/#handling-strict-content-security-policies)
+  instructions.
+</Aside>
+
+- [Apple Pay](#apple-pay-setup)
+- [Google Pay](#google-pay-setup)
+
+<Aside type="note">
+  Please note, that Swift Checkout SDK is in Alpha version, expect changes to be
+  communicated in the future. For any feedbacks or questions, you can reach out
+  to us through our [contact form](/contact).
+</Aside>
+
+## SumUp Swift Checkout SDK setup
+
+Include the SDK.js in your page as shown below:
+
+```html
+<script src="https://js.sumup.com/swift-checkout/v1/sdk.js"></script>
+
+<div id="payment-request-button">
+  <!-- Placeholder for the buttons. -->
+</div>
+```
+
+Or with JavaScript:
+
+```javascript
+function injectScript() {
+  return new Promise((resolve) => {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.onload = function () {
+      resolve(window.SumUp);
+    };
+    script.src = "https://js.sumup.com/swift-checkout/v1/sdk.js";
+    document.body.appendChild(script);
+  });
+}
+```
+
+Once the script is loaded, a new SumUp object is injected into the window instance representing SumUp SDK namespace, which contains the SwiftCheckout client.
+
+## Obtaining a public API key
+
+To obtain a public API key navigate to your [Developer Settings Portal](https://developer.sumup.com/auth/login) and select **API keys** from the top right corner menu. Your public merchant key will be automatically generated with a `Private` label and a value such as `sup_pk_0x98lsJhJAs...u5kvg`.
+
+## SumUp Swift Checkout client
+
+```javascript
+const swiftCheckoutClient = new window.SumUp.SwiftCheckout(
+  "sup_pk_0x98lsJhJAs...u5kvg",
+);
+```
+
+The client contains a set of objects to render a payment element UI, request payment authorization and process a payment using SumUp’s API.
+
+### Payment request object
+
+The payment request object requests payment authorizations made with various payment methods. It requires an argument that contains a set of details, information about the requested transaction to be processed, that will be presented to the user to authorize the payment later.
+
+Payment request object arguments consist of:
+
+- `countryCode`: Represents the country or region of the merchant’s principle place of business.
+- `total`: Represents what is about to be paid by the user, E.g. a summary of an order. It requires a `label` and an `amount`. The `amount` value must be provided as a string in major unit and should use a period (`.`) as a decimal separator.\
+  More specifically, the `amount` value should match the following regex: `^[0-9]+(\.[0-9][0-9])?$`
+
+Optional:
+
+- `locale`: Represents the locale the text "Pay with \{\{payment method\}\}" will be displayed with in the buttons.
+
+```js
+const paymentRequest = swiftCheckoutClient.paymentRequest({
+  countryCode: "DE",
+  locale: "de-DE",
+  total: {
+    label: "My goods",
+    amount: { currency: "EUR", value: "65.00" },
+  },
+});
+```
+
+- `shippingOptions`: Represents a collection of shipping methods the end user can select from to receive their purchased goods. The initial `shippingOptions` list can be later modified according to the shipping address the user selects in the payment dialog.
+
+```js
+const paymentRequest = swiftCheckoutClient.paymentRequest({
+  shippingOptions: [
+    {
+      id: "post",
+      label: "postal service",
+      amount: { currency: "EUR", value: "0.00" },
+      description: "free post",
+    },
+  ],
+});
+```
+
+This object is an analogue to the [PaymentRequest - Web APIs](https://developer.mozilla.org/en-US/docs/Web/API/PaymentRequest/PaymentRequest).
+
+The payment request instance contains the logic related to **checking payment method availability and showing** the payment method dialogue once the user interacts with a **payment element**.
+
+### Payment request interface
+
+All methods in the payment request object are asynchronous. Listed below are the payment request methods and their usage:
+
+#### `canMakePayment`
+
+Checks if the given merchant public key has access to at least one payment method and checks the payment method availability in the given environment (browser). Returns a promise that resolves in a `boolean`.
+
+#### `availablePaymentMethods`
+
+Returns the available payment methods for a merchant. Returns a promise that resolves in an `array` of objects representing each available payment method.
+
+#### `show`
+
+Shows the payment authorization dialogue for a given payment method. It requires an object containing a `paymentMethod`, which defines the selected payment method. This method is usually used along with the `PaymentElement`'s `onSubmit` event.
+
+The `show` method resolves with a `AuthorizedPayment`, which contains the `details` shared by the user once they authorize the payment request. The property `details` contains `paymentMethod`, `contactInformation`, `shippingAddress` and may contain `shippingOptions`.
+
+A `PaymentRequestCancelledError` will be thrown when the user rejects or cancels the transaction.
+
+```js
+paymentRequest
+  .show({ paymentMethod: "apple_pay" })
+  .then(processCheckoutAttempt)
+  .then(handleResponse)
+  .catch((error) => {
+    if (
+      error instanceof SumUp.SwiftCheckout.Errors.PaymentRequestCancelledError
+    ) {
+      console.log("Cancelled by the user");
+    } else {
+      throw error;
+    }
+  });
+```
+
+#### `abort`
+
+Terminates a payment request before it is processed. Once a payment request has been terminated using this method, the payment request will not be processed and the payment dialogue will be closed.
+
+```js
+if (someCustomCheck()) {
+  try {
+    await paymentRequest.abort(); // will throw an error.
+    console.log("Payment request aborted due to my custom reason.");
+  } catch (e) {
+    console.error(
+      "Unable to abort, because the user is currently in the process of paying.",
+    );
+  }
+}
+```
+
+<Aside type="note">
+  The `abort` method should only be used if the payment request has not yet been
+  processed. Attempting to cancel a payment request after it has been processed
+  may result in unexpected behaviour.
+</Aside>
+
+#### `onShippingAddressChange`
+
+Allows adding an event handler which will be triggered every time the user changes their shipping address. The handler can optionally provide a return value to change the following in the payment dialog:
+
+- `total`
+- `shippingOptions`
+
+```js
+paymentRequest.onShippingAddressChange(async (newShippingAddress) => {
+  const { total, shippingOptions } =
+    await someAsyncOperation(newShippingAddress);
+
+  return {
+    total,
+    shippingOptions,
+  };
+});
+```
+
+<Aside type="note">
+To protect user privacy, browsers might hide non-essential and sensitive details from the shipping address, and only provide data required for shipping cost estimation.
+The extent of information provided can vary based on the chosen browser and payment method, leading to certain fields being absent. 
+For example, the displayed shipping address might be limited to the city, state, country, and ZIP code.
+
+The full shipping address is disclosed only in the `PaymentResponse` object after the payment is authorized by the account holder.
+
+</Aside>
+
+#### `onShippingOptionsChange`
+
+Allows adding an event handler which will be triggered every time the user changes their shipping option choice. The handler can optionally provide a return value to change the following in the payment dialog:
+
+- `total`
+- `shippingAddress`
+- `shippingOptions`
+
+```js
+paymentRequest.onShippingOptionsChange(async (selectedShippingOption) => {
+  const { newTotal, newShippingAddress, newShippingOptions } = await someAsyncOperation(
+    total
+    shippingOption,
+  );
+
+  return {
+    total,
+    shippingAddress,
+    shippingOptions,
+  };
+});
+```
+
+### Payment element builder
+
+In order to request a payment, you need to create a UI element. The SDK provides a built-in PaymentElement UI builder, which allows you to create and configure the payment buttons.
+
+_Each payment button can be rendered individually as well._
+
+The Swift Elements Builder allows you to attach an `onSubmit` handler, which will be called once the user clicks on one of the buttons rendered by it. The `mount` method accepts a `paymentMethods` array, enabling you to filter the payment methods you want to offer. The arguments passed during `mount`, will render one or more buttons:
+
+```js
+const buttons = swiftCheckoutClient.elements();
+buttons
+  .onSubmit((paymentEvent) => console.log(paymentEvent))
+  .mount({
+    paymentMethods: [
+      { id: "apple_pay" },
+      { id: "google_pay" },
+      // See `paymentRequest.availablePaymentMethods()` for all available payment methods
+    ],
+    container: document.querySelector("#express-checkout-container"),
+  });
+```
+
+<Aside type="note">
+  You can create your own custom buttons, but we recommend using the built-in
+  PaymentElement UI builder.
+</Aside>
+
+#### Rendering buttons for available payment methods
+
+Once the UI and Payment Request are configured, you have to check the availability of Swift payment methods and `mount` them into the page.
+
+The SDK checks several factors to determine if a given payment method is available:
+
+- Is the payment method available for the given merchant?
+- Is the payment method available on the browser?
+- Is the wallet/card ready to accept payment requests?
+
+After checking if making payments is possible, render the payment element into a given placeholder as shown below:
+
+```js
+paymentRequest.canMakePayment().then((isAvailable) => {
+  if (isAvailable) {
+    paymentRequest.availablePaymentMethods().then((paymentMethods) => {
+      buttons.mount({
+        paymentMethods,
+        container: document.querySelector("#express-checkout-container"),
+      });
+    });
+  } else {
+    console.error("No payment method available!");
+  }
+});
+```
+
+### Requesting payment authorization
+
+The authorization dialogue is where the user will review the payment requested, select a payment card and a shipping address. Finally, they can authorize the payment request to be **processed**.
+
+Using the payment element builder, configure it to `show` the payment authorization dialogue from the Payment Request instance upon the `onSubmit` event. Once the user authorizes the payment the `show` method will resolve a `PaymentResponse` containing details about the payment authorization.
+
+```js
+buttons.onSubmit((paymentMethodEvent) => {
+  paymentRequest
+    .show(paymentMethodEvent)
+    .then((paymentResponse) => console.log(paymentResponse));
+});
+```
+
+To understand more about the PaymentResponse objects see Mozilla's official [PaymentResponse - Web APIs](https://developer.mozilla.org/en-US/docs/Web/API/PaymentResponse) documentation.
+
+### Processing an authorized payment request
+
+To process a payment, the SumUp API requires you to create a checkout for a given amount. The checkout creation requires an authenticated request. Thus, we recommend implementing an endpoint on your backend that will authenticate with our API, create a checkout and return a `checkoutId`.
+
+Once you obtain a `checkoutId`, call the `processCheckout` method from the SwiftCheckout client with the `checkoutId` and the `PaymentResponse`, which was received in the previous step, to start the processing the checkout.
+
+```js
+paymentRequest
+  .show(paymentMethodEvent)
+  .then((paymentResponse) => {
+    console.log(paymentResponse.details); // contactInfo, shippingAddress, etc.
+    // here you create your order and a sumup checkout
+    const checkoutId = "c463bf5e-d397-4bca-9d2e-a4e04f668b1c";
+
+    return swiftCheckoutClient.processCheckout(checkoutId, paymentResponse);
+  })
+  .then(console.log)
+  .catch(console.error);
+```
+
+### The complete implementation
+
+```js
+const swiftCheckoutClient = new window.SumUp.SwiftCheckout(
+  "fOcmczrYtYMJ7Li5GjMLLcUeC9dN",
+);
+
+const paymentRequest = swiftCheckoutClient.paymentRequest({
+  total: {
+    label: "One Shoe",
+    amount: {
+      value: "100.0",
+    },
+  },
+  shippingOptions: [
+    {
+      id: "post",
+      label: "postal service",
+      amount: { currency: "EUR", value: "0.00" },
+      description: "free post",
+    },
+  ],
+});
+
+const buttons = swiftCheckoutClient.elements();
+buttons.onSubmit((paymentMethodEvent) => {
+  paymentRequest
+    .show(paymentMethodEvent)
+    .then((paymentResponse) => {
+      console.log(paymentResponse.details);
+
+      // Create your order and a checkout
+      const checkoutId = "c463bf5e-d397-4bca-9d2e-a4e04f668b1c";
+
+      return swiftCheckoutClient.processCheckout(checkoutId, paymentResponse);
+    })
+    .then((result) => {
+      if (result.status === "PAID") {
+        window.location.href = "/thankyou";
+      } else {
+        console.error(
+          "It was not possible to process the checkout",
+          result.message,
+        );
+      }
+    })
+    .catch((error) => {
+      if (
+        error instanceof SumUp.SwiftCheckout.Errors.PaymentRequestCancelledError
+      ) {
+        console.error("Cancelled by the user");
+      } else {
+        throw error;
+      }
+    });
+});
+
+paymentRequest.canMakePayment().then((isAvailable) => {
+  if (isAvailable) {
+    paymentRequest.availablePaymentMethods().then((paymentMethods) => {
+      buttons.mount({
+        paymentMethods,
+        container: document.querySelector("#express-checkout-container"),
+      });
+    });
+  } else {
+    console.error("No payment method is available.");
+  }
+});
+```
+
+## Error handling
+
+The Swift Checkout SDK returns a series of Errors depending on the event that has taken place. You can use the errors to customise the user experience and communicate error causes as you see fit.
+
+- `PaymentRequestCancelledError` is thrown when the end user closes the open payment dialog or presses the button `esc`.
+
+- `PaymentRequestInvalidActionError` is thrown when the end user has submitted the payment dialog and then attempted to cancel the payment. Once the payment form is submitted the payment can no longer be cancelled.
+
+- `PaymentRequestInternalError` is thrown when attempting to handle the payment request in a forbidden manner. Reasons that you may receive include the following codes, available in the `code` field of the Error object:
+  - `SHIPPING_CONTACT_SELECTION`
+  - `SHIPPING_ADDRESS_SELECTION`
+  - `SHIPPING_METHOD_SELECTION`
+  - `INTERNAL_VALIDATION`
+  - `COMPLETE_PAYMENT`
+  - `UNKNOWN`
+
+## Apple Pay Setup
+
+### Prerequisites
+
+- [Verify your domain with Apple Pay](#verify-your-domain-with-apple-pay), both in development and production
+
+- For Apple Pay [additional configurations](#apple-pay-setup) are required, including macOS 10.12.1+ or iOS 10.1+
+
+### Verify your domain with Apple Pay
+
+To use Apple Pay, you need to register with Apple on all of your web domains which will show an Apple Pay button.
+
+Apple’s documentation for Apple Pay on the Web describes their process of “merchant validation”, which SumUp handles for you behind the scenes. You don’t need to create an Apple Merchant ID, CSR and so on, as described in their documentation. Instead, follow the steps in this section:
+
+1. Request the domain association file through our [contact form](https://developer.sumup.com/contact/) and host it at `https://[YOUR_DOMAIN_NAME]/.well-known/apple-developer-merchantid-domain-association`.
+
+2. Once hosted, request assistance from our integration specialists through the form, to register your domain with Apple.
+
+## Google Pay Setup
+
+### Prerequisites
+
+- [Request production access](https://pay.google.com/business/console/) to Google Pay for your domain name
+- Adhere to the [Google Pay requirements](https://developers.google.com/pay/api/web/guides/setup#get-started)
+- Review [Google Pay API terms of service](https://payments.developers.google.com/terms/sellertos)
+
+### Google Pay specific parameters
+
+Google Pay’s base payment request object requires a few unique parameters:
+
+- [`merchantInfo` object](https://developers.google.com/pay/api/web/reference/request-objects#MerchantInfo) with the following keys:
+
+  - `merchantId`- unique identifier provided to you by Google once you [register your domain](https://pay.google.com/business/console/) with them
+  - `merchantName`- your merchant name
+
+  Here’s an example of how the merchantInfo object is included in a Google Pay payment request:
+
+  ```js
+  const paymentRequest = sumUpClient.paymentRequest({
+    methodData: [
+      {
+        supportedMethods: "google_pay",
+        data: {
+          merchantInfo: {
+            merchantId: "123456789123456789",
+            merchantName: "Example Merchant",
+          },
+        },
+      },
+    ],
+  });
+  ```
+
+### Validating your domain with Google Pay
+
+In order to use Google Pay you need to validate your domain with Google. This process requires rendering a non-functional Google Pay button on your website and providing them with screenshots of your checkout flow.
+
+To render a Google Pay button on your shop in demo mode, you need to add the `#sumup:google-pay-demo-mode` hash to the page's URL.
+
+Once the hash has been applied you can proceed with the domain validation steps:
+
+1. Create an account in the [Google Pay console](https://pay.google.com/business/console)
+2. Go to the **Google Pay API** tabitem in your Google Pay console
+3. Navigate to the **Integrate with your website** and click on **+ Add website**
+4. Fill out the form with the requested information (domain name, buyflow screenshots, etc.)
+5. At the top of the page click on **Submit for approval**

@@ -8,12 +8,12 @@ info:
     You can experiment and work on your integration in a sandbox that doesn't affect your regular data and doesn't process real transactions. To create a sandbox merchant account visit the [dashboard](https://me.sumup.com/settings/developer). To use the sandbox when interacting with SumUp APIs [create an API](https://me.sumup.com/settings/api-keys) key and use it for [authentication](https://developer.sumup.com/api/authentication).
   license:
     name: Apache 2.0
-    url: 'https://www.apache.org/licenses/LICENSE-2.0.html'
+    url: "https://www.apache.org/licenses/LICENSE-2.0.html"
 servers:
-  - url: 'https://api.sumup.com'
+  - url: "https://api.sumup.com"
     description: Production server
 paths:
-  '/v0.1/merchants/{merchant_code}/payment-methods':
+  "/v0.1/merchants/{merchant_code}/payment-methods":
     get:
       operationId: GetPaymentMethods
       summary: Get available payment methods
@@ -28,7 +28,7 @@ paths:
             example: M1234
         - name: amount
           in: query
-          description: 'The amount for which the payment methods should be eligible, in major units. Note that currency must also be provided when filtering by amount.'
+          description: "The amount for which the payment methods should be eligible, in major units. Note that currency must also be provided when filtering by amount."
           required: false
           schema:
             type: number
@@ -41,7 +41,7 @@ paths:
             type: string
             example: EUR
       responses:
-        '200':
+        "200":
           description: Available payment methods
           content:
             application/json:
@@ -66,12 +66,12 @@ paths:
                     available_payment_methods:
                       - id: apple_pay
                       - id: blik
-        '400':
+        "400":
           description: Bad Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DetailsError'
+                $ref: "#/components/schemas/DetailsError"
               examples:
                 Invalid_Parameter:
                   description: One or more of the parameters are invalid.
@@ -81,12 +81,12 @@ paths:
                         reference: currency
                     status: 400
                     title: Bad Request
-        '401':
+        "401":
           description: Unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
               examples:
                 Invalid_Token:
                   description: The access token is invalid or has expired.
@@ -124,11 +124,11 @@ paths:
 
         Follow by processing a checkout to charge the provided payment instrument.
       requestBody:
-        description: ''
+        description: ""
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CheckoutCreateRequest'
+              $ref: "#/components/schemas/CheckoutCreateRequest"
             examples:
               Checkout:
                 description: Standard request body for creating a checkout
@@ -140,9 +140,9 @@ paths:
                   description: Purchase
                   id: 2b79757a-de87-4a2e-90e4-b17c947c730d
                   status: PAID
-                  date: '2020-02-29T10:56:56+00:00'
+                  date: "2020-02-29T10:56:56+00:00"
                   merchant_name: John Doe LTD
-                  redirect_url: 'https://sumup.com'
+                  redirect_url: "https://sumup.com"
               Checkout3DS:
                 description: Create a 3DS checkout
                 value:
@@ -151,9 +151,9 @@ paths:
                   currency: EUR
                   merchant_code: MH4H92C7
                   description: Purchase
-                  return_url: 'http://example.com/'
+                  return_url: "http://example.com/"
                   customer_id: 831ff8d4cd5958ab5670
-                  redirect_url: 'https://mysite.com/completed_purchase'
+                  redirect_url: "https://mysite.com/completed_purchase"
               CheckoutAPM:
                 description: Create an Alternative Payment Method checkout
                 value:
@@ -161,14 +161,14 @@ paths:
                   amount: 10.1
                   currency: EUR
                   merchant_code: MH4H92C7
-                  redirect_url: 'https://mysite.com/completed_purchase'
+                  redirect_url: "https://mysite.com/completed_purchase"
       responses:
-        '201':
+        "201":
           description: Created
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Checkout'
+                $ref: "#/components/schemas/Checkout"
               examples:
                 Checkout:
                   description: Standard response body for a successfully created checkout
@@ -179,11 +179,11 @@ paths:
                     merchant_code: MCNPLE22
                     merchant_country: DE
                     description: My Checkout
-                    return_url: 'http://example.com'
+                    return_url: "http://example.com"
                     id: 88fcf8de-304d-4820-8f1c-ec880290eb92
                     status: PENDING
-                    date: '2020-02-29T10:56:56+00:00'
-                    valid_until: '2020-02-29T10:56:56+00:00'
+                    date: "2020-02-29T10:56:56+00:00"
+                    valid_until: "2020-02-29T10:56:56+00:00"
                     customer_id: 831ff8d4cd5958ab5670
                     mandate:
                       type: recurrent
@@ -194,7 +194,7 @@ paths:
                         transaction_code: TEENSK4W2K
                         amount: 10.1
                         currency: EUR
-                        timestamp: '2020-02-29T10:56:56.876Z'
+                        timestamp: "2020-02-29T10:56:56.876Z"
                         status: SUCCESSFUL
                         payment_type: ECOM
                         installments_count: 1
@@ -202,7 +202,7 @@ paths:
                         vat_amount: 6
                         tip_amount: 3
                         entry_mode: CUSTOMER_ENTRY
-                        auth_code: '012345'
+                        auth_code: "012345"
                         internal_id: 0
                 Checkout3DS:
                   description: Response body for a successfully created 3DS checkout
@@ -211,19 +211,19 @@ paths:
                     amount: 10.1
                     currency: EUR
                     description: My Checkout
-                    return_url: 'http://example.com'
+                    return_url: "http://example.com"
                     id: 88fcf8de-304d-4820-8f1c-ec880290eb92
                     status: PENDING
-                    date: '2020-02-29T10:56:56+00:00'
-                    valid_until: '2020-02-29T10:56:56+00:00'
+                    date: "2020-02-29T10:56:56+00:00"
+                    valid_until: "2020-02-29T10:56:56+00:00"
                     customer_id: 831ff8d4cd5958ab5670
-                    redirect_url: 'https://mysite.com/completed_purchase'
+                    redirect_url: "https://mysite.com/completed_purchase"
                     transactions:
                       - id: 410fc44a-5956-44e1-b5cc-19c6f8d727a4
                         transaction_code: TEENSK4W2K
                         amount: 10.1
                         currency: EUR
-                        timestamp: '2020-02-29T10:56:56.876Z'
+                        timestamp: "2020-02-29T10:56:56.876Z"
                         status: SUCCESSFUL
                         payment_type: ECOM
                         installments_count: 1
@@ -231,30 +231,30 @@ paths:
                         vat_amount: 6
                         tip_amount: 3
                         entry_mode: CUSTOMER_ENTRY
-                        auth_code: '012345'
+                        auth_code: "012345"
                         internal_id: 0
                 CheckoutAPM:
-                  description: 'Response body for APMs, including Blik, iDeal, ...'
+                  description: "Response body for APMs, including Blik, iDeal, ..."
                   value:
                     checkout_reference: 8ea25ec3-3293-40e9-a165-6d7f3b3073c5
                     amount: 10.1
                     currency: EUR
                     merchant_code: MCNPLE22
                     description: My Checkout
-                    return_url: 'http://example.com'
+                    return_url: "http://example.com"
                     id: 88fcf8de-304d-4820-8f1c-ec880290eb92
                     status: PENDING
-                    date: '2021-06-29T11:08:36.000+00:00'
+                    date: "2021-06-29T11:08:36.000+00:00"
                     merchant_name: My company
                     merchant_country: DE
-                    redirect_url: 'https://sumup.com'
+                    redirect_url: "https://sumup.com"
                     purpose: CHECKOUT
                     transactions:
                       - id: 410fc44a-5956-44e1-b5cc-19c6f8d727a4
                         transaction_code: TEENSK4W2K
                         amount: 10.1
                         currency: EUR
-                        timestamp: '2020-02-29T10:56:56.876Z'
+                        timestamp: "2020-02-29T10:56:56.876Z"
                         status: SUCCESSFUL
                         payment_type: ECOM
                         installments_count: 1
@@ -262,14 +262,14 @@ paths:
                         vat_amount: 6
                         tip_amount: 3
                         entry_mode: CUSTOMER_ENTRY
-                        auth_code: '012345'
+                        auth_code: "012345"
                         internal_id: 0
-        '400':
+        "400":
           description: Bad Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorExtended'
+                $ref: "#/components/schemas/ErrorExtended"
               examples:
                 Missing_Parameter:
                   description: A required parameter is missing.
@@ -277,12 +277,12 @@ paths:
                     message: Validation error
                     error_code: MISSING
                     param: merchant_code
-        '401':
+        "401":
           description: Unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
               examples:
                 Invalid_Token:
                   description: The access token is invalid or has expired.
@@ -299,25 +299,25 @@ paths:
                   value:
                     message: access token required
                     error_code: NOT_AUTHORIZED
-        '403':
+        "403":
           description: Forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorForbidden'
+                $ref: "#/components/schemas/ErrorForbidden"
               examples:
                 Forbidden:
                   description: You do not have the required permission for making this request.
                   value:
                     error_message: checkout_payments_not_allowed
                     error_code: FORBIDDEN
-                    status_code: '403'
-        '409':
+                    status_code: "403"
+        "409":
           description: Conflict
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
               examples:
                 Existing_Checkout:
                   description: A resource with the specified parameters already exists on the server.
@@ -346,20 +346,20 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/CheckoutSuccess'
-        '401':
+                  $ref: "#/components/schemas/CheckoutSuccess"
+        "401":
           description: Unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
               examples:
                 Invalid_Token:
                   description: The access token is invalid or has expired.
@@ -386,7 +386,7 @@ paths:
         method_name: list
       x-scopes:
         - payments
-  '/v0.1/checkouts/{id}':
+  "/v0.1/checkouts/{id}":
     parameters:
       - name: id
         in: path
@@ -399,18 +399,18 @@ paths:
       summary: Retrieve a checkout
       description: Retrieves an identified checkout resource. Use this request after processing a checkout to confirm its status and inform the end user respectively.
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CheckoutSuccess'
-        '401':
+                $ref: "#/components/schemas/CheckoutSuccess"
+        "401":
           description: Unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
               examples:
                 Invalid_Token:
                   description: The access token is invalid or has expired.
@@ -427,12 +427,12 @@ paths:
                   value:
                     message: access token required
                     error_code: NOT_AUTHORIZED
-        '404':
+        "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
               examples:
                 Not_Found:
                   description: The identified resource is not found on the server.
@@ -461,7 +461,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CheckoutProcessMixin'
+              $ref: "#/components/schemas/CheckoutProcessMixin"
             examples:
               ProcessCard:
                 description: Process a checkout with a card
@@ -470,17 +470,17 @@ paths:
                   installments: 1
                   mandate:
                     type: recurrent
-                    user_agent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.104 Safari/537.36'
+                    user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.104 Safari/537.36"
                     user_ip: 172.217.169.174
                   card:
                     type: VISA
                     name: John Doe
-                    number: '1234567890123456'
-                    expiry_year: '2023'
-                    expiry_month: '01'
-                    cvv: '123'
-                    zip_code: '12345'
-                    last_4_digits: '3456'
+                    number: "1234567890123456"
+                    expiry_year: "2023"
+                    expiry_month: "01"
+                    cvv: "123"
+                    zip_code: "12345"
+                    last_4_digits: "3456"
               ProcessToken:
                 description: Process a checkout with a token
                 value:
@@ -500,7 +500,7 @@ paths:
                     address:
                       country: BR
                       city: São Paulo
-                      line1: 'Rua Gilberto Sabino, 215'
+                      line1: "Rua Gilberto Sabino, 215"
                       state: SP
                       postal_code: 05425-020
               ProcessiDeal:
@@ -524,12 +524,12 @@ paths:
                     address:
                       country: BE
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CheckoutSuccess'
+                $ref: "#/components/schemas/CheckoutSuccess"
               examples:
                 CheckoutSuccessCard:
                   description: Successfully processed checkout with a card
@@ -539,11 +539,11 @@ paths:
                     currency: EUR
                     merchant_code: MH4H92C7
                     description: Purchase
-                    return_url: 'http://example.com'
+                    return_url: "http://example.com"
                     id: 4e425463-3e1b-431d-83fa-1e51c2925e99
                     status: PENDING
-                    date: '2020-02-29T10:56:56+00:00'
-                    valid_until: '2020-02-29T10:56:56+00:00'
+                    date: "2020-02-29T10:56:56+00:00"
+                    valid_until: "2020-02-29T10:56:56+00:00"
                     customer_id: 831ff8d4cd5958ab5670
                     mandate:
                       type: recurrent
@@ -554,7 +554,7 @@ paths:
                         transaction_code: TEENSK4W2K
                         amount: 10.1
                         currency: EUR
-                        timestamp: '2020-02-29T10:56:56.876Z'
+                        timestamp: "2020-02-29T10:56:56.876Z"
                         status: SUCCESSFUL
                         payment_type: ECOM
                         installments_count: 1
@@ -562,7 +562,7 @@ paths:
                         vat_amount: 6
                         tip_amount: 3
                         entry_mode: CUSTOMER_ENTRY
-                        auth_code: '053201'
+                        auth_code: "053201"
                         internal_id: 1763892018
                     transaction_code: TEENSK4W2K
                     transaction_id: 410fc44a-5956-44e1-b5cc-19c6f8d727a4
@@ -576,11 +576,11 @@ paths:
                     description: Purchase with token
                     id: 4e425463-3e1b-431d-83fa-1e51c2925e99
                     status: PENDING
-                    date: '2020-02-29T10:56:56+00:00'
+                    date: "2020-02-29T10:56:56+00:00"
                     transaction_code: TEENSK4W2K
                     transaction_id: 410fc44a-5956-44e1-b5cc-19c6f8d727a4
                     merchant_name: Sample Merchant
-                    redirect_url: 'https://mysite.com/completed_purchase'
+                    redirect_url: "https://mysite.com/completed_purchase"
                     customer_id: 831ff8d4cd5958ab5670
                     payment_instrument:
                       token: e76d7e5c-9375-4fac-a7e7-b19dc5302fbc
@@ -589,7 +589,7 @@ paths:
                         transaction_code: TEENSK4W2K
                         amount: 10.1
                         currency: EUR
-                        timestamp: '2020-02-29T10:56:56.876Z'
+                        timestamp: "2020-02-29T10:56:56.876Z"
                         status: SUCCESSFUL
                         payment_type: ECOM
                         installments_count: 1
@@ -597,7 +597,7 @@ paths:
                         vat_amount: 6
                         tip_amount: 3
                         entry_mode: CUSTOMER_ENTRY
-                        auth_code: '053201'
+                        auth_code: "053201"
                         internal_id: 1763892018
                 CheckoutSuccessBoleto:
                   description: Successfully processed checkout with Boleto
@@ -609,12 +609,12 @@ paths:
                     description: Boleto checkout
                     id: 4e425463-3e1b-431d-83fa-1e51c2925e99
                     status: PENDING
-                    date: '2021-07-06T12:34:02.000+00:00'
+                    date: "2021-07-06T12:34:02.000+00:00"
                     merchant_name: Sample shop
                     boleto:
-                      barcode: '34191090081790614310603072340007886840000000200'
-                      url: 'https://checkouts.sample.com/v0.1/checkouts/2e7a36cc-7897-446b-a966-952ab5f049ea/boleto'
-                    redirect_url: 'https://website.com'
+                      barcode: "34191090081790614310603072340007886840000000200"
+                      url: "https://checkouts.sample.com/v0.1/checkouts/2e7a36cc-7897-446b-a966-952ab5f049ea/boleto"
+                    redirect_url: "https://website.com"
                     purpose: CHECKOUT
                     transactions:
                       - id: debd2986-9852-4e86-8a8e-7ea9c87dd679
@@ -624,7 +624,7 @@ paths:
                         vat_amount: 6
                         tip_amount: 3
                         currency: BRL
-                        timestamp: '2021-07-06T12:34:16.460+00:00'
+                        timestamp: "2021-07-06T12:34:16.460+00:00"
                         status: PENDING
                         payment_type: BOLETO
                         entry_mode: BOLETO
@@ -634,45 +634,45 @@ paths:
                   description: Successfully processed checkout with iDeal
                   value:
                     next_step:
-                      url: 'https://r3.girogate.de/ti/simideal'
+                      url: "https://r3.girogate.de/ti/simideal"
                       method: GET
                       payload:
-                        tx: '961473700'
+                        tx: "961473700"
                         rs: ILnaUeQTKJ184fVrjGILrLjePX9E4rmz
                         cs: c8bc0ea231f8372431ca22d6f8319f8de0263d0b1705759ed27155f245f193c5
-                      full: 'https://r3.girogate.de/ti/simideal?tx=961473700&rs=ILnaUeQTKJ184fVrjGILrLjePX9E4rmz&cs=c8bc0ea231f8372431ca22d6f8319f8de0263d0b1705759ed27155f245f193c5'
+                      full: "https://r3.girogate.de/ti/simideal?tx=961473700&rs=ILnaUeQTKJ184fVrjGILrLjePX9E4rmz&cs=c8bc0ea231f8372431ca22d6f8319f8de0263d0b1705759ed27155f245f193c5"
                       mechanism:
                         - browser
                 CheckoutSuccessBancontact:
                   description: Successfully processed checkout with Bancontact
                   value:
                     next_step:
-                      url: 'https://r3.girogate.de/ti/simbcmc'
+                      url: "https://r3.girogate.de/ti/simbcmc"
                       method: GET
                       payload:
-                        tx: '624788471'
+                        tx: "624788471"
                         rs: 5MioXoKt2Gwj9dLgqAX1bMRBuT5xTSdB
                         cs: 697edacdd9175f3f99542500fa0ff08280b66aaff3c2641a2e212e4b039473cc
-                      full: 'https://r3.girogate.de/ti/simbcmc?tx=624788471&rs=5MioXoKt2Gwj9dLgqAX1bMRBuT5xTSdB&cs=697edacdd9175f3f99542500fa0ff08280b66aaff3c2641a2e212e4b039473cc'
+                      full: "https://r3.girogate.de/ti/simbcmc?tx=624788471&rs=5MioXoKt2Gwj9dLgqAX1bMRBuT5xTSdB&cs=697edacdd9175f3f99542500fa0ff08280b66aaff3c2641a2e212e4b039473cc"
                       mechanism:
                         - browser
-        '202':
+        "202":
           description: Accepted
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CheckoutAccepted'
-        '400':
+                $ref: "#/components/schemas/CheckoutAccepted"
+        "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/ErrorExtended'
+                  - $ref: "#/components/schemas/ErrorExtended"
                   - type: array
                     description: List of error messages.
                     items:
-                      $ref: '#/components/schemas/ErrorExtended'
+                      $ref: "#/components/schemas/ErrorExtended"
               examples:
                 Invalid_Parameter:
                   description: A required parameter has an invalid value.
@@ -692,12 +692,12 @@ paths:
                     - error_code: INVALID
                       message: Validation error
                       param: card.expiry_year
-        '401':
+        "401":
           description: Unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
               examples:
                 Invalid_Token:
                   description: The access token is invalid or has expired.
@@ -714,24 +714,24 @@ paths:
                   value:
                     message: access token required
                     error_code: NOT_AUTHORIZED
-        '404':
+        "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
               examples:
                 Not_Found:
                   description: The identified resource is not found on the server.
                   value:
                     error_code: NOT_FOUND
                     message: Resource not found
-        '409':
+        "409":
           description: Conflict
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
               examples:
                 Checkout_Processed:
                   description: The identified checkout resource is already processed.
@@ -751,7 +751,7 @@ paths:
       summary: Deactivate a checkout
       description: Deactivates an identified checkout resource. If the checkout has already been processed it can not be deactivated.
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -772,18 +772,18 @@ paths:
                     type: number
                     format: float
                   currency:
-                    $ref: '#/components/schemas/Currency'
+                    $ref: "#/components/schemas/Currency"
                   pay_to_email:
                     description: Email address of the registered user (merchant) to whom the payment is made.
                     type: string
                     format: email
                     deprecated: true
-                    x-deprecation-notice: '`pay_to_email` is deprecated, use `merchant_code` instead.'
+                    x-deprecation-notice: "`pay_to_email` is deprecated, use `merchant_code` instead."
                   merchant_code:
                     description: Unique identifying code of the merchant profile.
                     type: string
                   description:
-                    description: 'Short description of the checkout visible in the SumUp dashboard. The description can contribute to reporting, allowing easier identification of a checkout.'
+                    description: "Short description of the checkout visible in the SumUp dashboard. The description can contribute to reporting, allowing easier identification of a checkout."
                     type: string
                   purpose:
                     description: Purpose of the checkout creation initially
@@ -798,16 +798,16 @@ paths:
                       - EXPIRED
                     readOnly: true
                   date:
-                    description: 'Date and time of the creation of the payment checkout. Response format expressed according to [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) code.'
+                    description: "Date and time of the creation of the payment checkout. Response format expressed according to [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) code."
                     type: string
                     format: date-time
-                    example: '2020-02-29T10:56:56+00:00'
+                    example: "2020-02-29T10:56:56+00:00"
                     readOnly: true
                   valid_until:
-                    description: 'Date and time of the checkout expiration before which the client application needs to send a processing request. If no value is present, the checkout does not have an expiration time.'
+                    description: "Date and time of the checkout expiration before which the client application needs to send a processing request. If no value is present, the checkout does not have an expiration time."
                     type: string
                     format: date-time
-                    example: '2020-02-29T10:56:56+00:00'
+                    example: "2020-02-29T10:56:56+00:00"
                     nullable: true
                     readOnly: true
                   merchant_name:
@@ -821,8 +821,8 @@ paths:
                     type: array
                     items:
                       allOf:
-                        - $ref: '#/components/schemas/TransactionMixinBase'
-                        - $ref: '#/components/schemas/TransactionMixinCheckout'
+                        - $ref: "#/components/schemas/TransactionMixinBase"
+                        - $ref: "#/components/schemas/TransactionMixinCheckout"
                     readOnly: true
                     uniqueItems: true
               examples:
@@ -837,16 +837,16 @@ paths:
                     description: Deletion example
                     purpose: CHECKOUT
                     status: EXPIRED
-                    date: '2020-02-29T10:56:56+00:00'
-                    valid_until: '2020-02-29T10:56:56+00:00'
+                    date: "2020-02-29T10:56:56+00:00"
+                    valid_until: "2020-02-29T10:56:56+00:00"
                     merchant_name: Sample Merchant
                     transactions: []
-        '401':
+        "401":
           description: Unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
               examples:
                 Invalid_Token:
                   description: The access token is invalid or has expired.
@@ -863,24 +863,24 @@ paths:
                   value:
                     message: access token required
                     error_code: NOT_AUTHORIZED
-        '404':
+        "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
               examples:
                 Not_Found:
                   description: The identified resource is not found on the server.
                   value:
                     error_code: NOT_FOUND
                     message: Resource not found
-        '409':
+        "409":
           description: Conflict
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
               examples:
                 Checkout_Processed:
                   description: The identified checkout resource is already processed.
@@ -907,20 +907,20 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Customer'
+              $ref: "#/components/schemas/Customer"
       responses:
-        '201':
+        "201":
           description: Created
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Customer'
-        '401':
+                $ref: "#/components/schemas/Customer"
+        "401":
           description: Unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
               examples:
                 Invalid_Token:
                   description: The access token is invalid or has expired.
@@ -937,25 +937,25 @@ paths:
                   value:
                     message: access token required
                     error_code: NOT_AUTHORIZED
-        '403':
+        "403":
           description: Forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorForbidden'
+                $ref: "#/components/schemas/ErrorForbidden"
               examples:
                 Forbidden:
                   description: You do not have required scopes for making this request.
                   value:
                     error_message: request_not_allowed
                     error_code: FORBIDDEN
-                    status_code: '403'
-        '409':
+                    status_code: "403"
+        "409":
           description: Conflict
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
               examples:
                 Existing_Customer:
                   description: A resource with the specified identifier already exists on the server.
@@ -972,7 +972,7 @@ paths:
         method_name: create
       x-scopes:
         - payment_instruments
-  '/v0.1/customers/{customer_id}':
+  "/v0.1/customers/{customer_id}":
     parameters:
       - name: customer_id
         in: path
@@ -983,20 +983,20 @@ paths:
     get:
       operationId: GetCustomer
       summary: Retrieve a customer
-      description: 'Retrieves an identified saved customer resource through the unique `customer_id` parameter, generated upon customer creation.'
+      description: "Retrieves an identified saved customer resource through the unique `customer_id` parameter, generated upon customer creation."
       responses:
-        '200':
+        "200":
           description: Created
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Customer'
-        '401':
+                $ref: "#/components/schemas/Customer"
+        "401":
           description: Unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
               examples:
                 Invalid_Token:
                   description: The access token is invalid or has expired.
@@ -1013,25 +1013,25 @@ paths:
                   value:
                     message: access token required
                     error_code: NOT_AUTHORIZED
-        '403':
+        "403":
           description: Forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorForbidden'
+                $ref: "#/components/schemas/ErrorForbidden"
               examples:
                 Forbidden:
                   description: You do not have required scopes for making this request.
                   value:
                     error_message: request_not_allowed
                     error_code: FORBIDDEN
-                    status_code: '403'
-        '404':
+                    status_code: "403"
+        "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
               examples:
                 Not_Found:
                   description: The identified resource is not found on the server.
@@ -1056,27 +1056,27 @@ paths:
 
         The request only overwrites the parameters included in the request, all other parameters will remain with their initially assigned values.
       requestBody:
-        description: ''
+        description: ""
         content:
           application/json:
             schema:
               type: object
               properties:
                 personal_details:
-                  $ref: '#/components/schemas/PersonalDetails'
+                  $ref: "#/components/schemas/PersonalDetails"
       responses:
-        '200':
+        "200":
           description: Created
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Customer'
-        '401':
+                $ref: "#/components/schemas/Customer"
+        "401":
           description: Unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
               examples:
                 Invalid_Token:
                   description: The access token is invalid or has expired.
@@ -1093,25 +1093,25 @@ paths:
                   value:
                     message: access token required
                     error_code: NOT_AUTHORIZED
-        '403':
+        "403":
           description: Forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorForbidden'
+                $ref: "#/components/schemas/ErrorForbidden"
               examples:
                 Forbidden:
                   description: You do not have required scopes for making this request.
                   value:
                     error_message: request_not_allowed
                     error_code: FORBIDDEN
-                    status_code: '403'
-        '404':
+                    status_code: "403"
+        "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
               examples:
                 Not_Found:
                   description: The identified resource is not found on the server.
@@ -1128,7 +1128,7 @@ paths:
         method_name: update
       x-scopes:
         - payment_instruments
-  '/v0.1/customers/{customer_id}/payment-instruments':
+  "/v0.1/customers/{customer_id}/payment-instruments":
     parameters:
       - name: customer_id
         in: path
@@ -1141,20 +1141,20 @@ paths:
       summary: List payment instruments
       description: Lists all payment instrument resources that are saved for an identified customer.
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/PaymentInstrumentResponse'
-        '401':
+                  $ref: "#/components/schemas/PaymentInstrumentResponse"
+        "401":
           description: Unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
               examples:
                 Invalid_Token:
                   description: The access token is invalid or has expired.
@@ -1171,25 +1171,25 @@ paths:
                   value:
                     message: access token required
                     error_code: NOT_AUTHORIZED
-        '403':
+        "403":
           description: Forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorForbidden'
+                $ref: "#/components/schemas/ErrorForbidden"
               examples:
                 Forbidden:
                   description: You do not have required scopes for making this request.
                   value:
                     error_message: request_not_allowed
                     error_code: FORBIDDEN
-                    status_code: '403'
-        '404':
+                    status_code: "403"
+        "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
               examples:
                 Not_Found:
                   description: The identified resource is not found on the server.
@@ -1206,7 +1206,7 @@ paths:
         method_name: list_payment_instruments
       x-scopes:
         - payment_instruments
-  '/v0.1/customers/{customer_id}/payment-instruments/{token}':
+  "/v0.1/customers/{customer_id}/payment-instruments/{token}":
     parameters:
       - name: customer_id
         in: path
@@ -1225,7 +1225,7 @@ paths:
       summary: Deactivate a payment instrument
       description: Deactivates an identified card payment instrument resource for a customer.
       responses:
-        '204':
+        "204":
           description: No Content
           content:
             application/json:
@@ -1234,12 +1234,12 @@ paths:
               examples:
                 NoBody:
                   value: {}
-        '401':
+        "401":
           description: Unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
               examples:
                 Invalid_Token:
                   description: The access token is invalid or has expired.
@@ -1256,25 +1256,25 @@ paths:
                   value:
                     message: access token required
                     error_code: NOT_AUTHORIZED
-        '403':
+        "403":
           description: Forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorForbidden'
+                $ref: "#/components/schemas/ErrorForbidden"
               examples:
                 Forbidden:
                   description: You do not have required scopes for making this request.
                   value:
                     error_message: request_not_allowed
                     error_code: FORBIDDEN
-                    status_code: '403'
-        '404':
+                    status_code: "403"
+        "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
               examples:
                 Not_Found:
                   description: The identified resource is not found on the server.
@@ -1291,7 +1291,7 @@ paths:
         method_name: deactivate_payment_instrument
       x-scopes:
         - payment_instruments
-  '/v0.1/me/refund/{txn_id}':
+  "/v0.1/me/refund/{txn_id}":
     parameters:
       - name: txn_id
         in: path
@@ -1304,7 +1304,7 @@ paths:
       summary: Refund a transaction
       description: Refunds an identified transaction either in full or partially.
       requestBody:
-        description: ''
+        description: ""
         content:
           application/json:
             schema:
@@ -1312,11 +1312,11 @@ paths:
               type: object
               properties:
                 amount:
-                  description: 'Amount to be refunded. Eligible amount can''t exceed the amount of the transaction and varies based on country and currency. If you do not specify a value, the system performs a full refund of the transaction.'
+                  description: "Amount to be refunded. Eligible amount can't exceed the amount of the transaction and varies based on country and currency. If you do not specify a value, the system performs a full refund of the transaction."
                   type: number
                   format: float
       responses:
-        '204':
+        "204":
           description: No Content
           content:
             application/json:
@@ -1325,24 +1325,24 @@ paths:
               examples:
                 NoBody:
                   value: {}
-        '404':
+        "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
               examples:
                 Not_Found:
                   description: The identified resource is not found on the server.
                   value:
                     error_code: NOT_FOUND
                     message: Resource not found
-        '409':
+        "409":
           description: Conflict
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
               examples:
                 Transaction_Not_Refundable:
                   description: The state of the identified transaction resource does not permit the requested operation.
@@ -1359,7 +1359,7 @@ paths:
         method_name: refund
       x-scopes:
         - payments
-  '/v2.1/merchants/{merchant_code}/transactions':
+  "/v2.1/merchants/{merchant_code}/transactions":
     get:
       operationId: GetTransactionV2.1
       summary: Retrieve a transaction
@@ -1397,18 +1397,18 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TransactionFull'
-        '401':
+                $ref: "#/components/schemas/TransactionFull"
+        "401":
           description: Unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
               examples:
                 Invalid_Token:
                   description: The access token is invalid or has expired.
@@ -1425,12 +1425,12 @@ paths:
                   value:
                     message: access token required
                     error_code: NOT_AUTHORIZED
-        '404':
+        "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
               examples:
                 Not_Found:
                   description: The identified resource is not found on the server.
@@ -1479,18 +1479,18 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TransactionFull'
-        '401':
+                $ref: "#/components/schemas/TransactionFull"
+        "401":
           description: Unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
               examples:
                 Invalid_Token:
                   description: The access token is invalid or has expired.
@@ -1507,12 +1507,12 @@ paths:
                   value:
                     message: access token required
                     error_code: NOT_AUTHORIZED
-        '404':
+        "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
               examples:
                 Not_Found:
                   description: The identified resource is not found on the server.
@@ -1530,7 +1530,7 @@ paths:
         method_name: get_deprecated
       x-scopes:
         - transactions.history
-  '/v2.1/merchants/{merchant_code}/transactions/history':
+  "/v2.1/merchants/{merchant_code}/transactions/history":
     get:
       operationId: ListTransactionsV2.1
       summary: List transactions
@@ -1559,7 +1559,7 @@ paths:
               - descending
         - name: limit
           in: query
-          description: 'Specifies the maximum number of results per page. Value must be a positive integer and if not specified, will return 10 results.'
+          description: "Specifies the maximum number of results per page. Value must be a positive integer and if not specified, will return 10 results."
           schema:
             type: integer
         - name: users
@@ -1615,14 +1615,14 @@ paths:
                 - CHARGE_BACK
         - name: changes_since
           in: query
-          description: 'Filters the results by the latest modification time of resources and returns only transactions that are modified *at or after* the specified timestamp (in [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) format).'
+          description: "Filters the results by the latest modification time of resources and returns only transactions that are modified *at or after* the specified timestamp (in [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) format)."
           required: false
           schema:
             type: string
             format: date-time
         - name: newest_time
           in: query
-          description: 'Filters the results by the creation time of resources and returns only transactions that are created *before* the specified timestamp (in [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) format).'
+          description: "Filters the results by the creation time of resources and returns only transactions that are created *before* the specified timestamp (in [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) format)."
           required: false
           schema:
             type: string
@@ -1635,7 +1635,7 @@ paths:
             type: string
         - name: oldest_time
           in: query
-          description: 'Filters the results by the creation time of resources and returns only transactions that are created *at or after* the specified timestamp (in [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) format).'
+          description: "Filters the results by the creation time of resources and returns only transactions that are created *at or after* the specified timestamp (in [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) format)."
           required: false
           schema:
             type: string
@@ -1647,7 +1647,7 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -1657,17 +1657,17 @@ paths:
                   items:
                     type: array
                     items:
-                      $ref: '#/components/schemas/TransactionHistory'
+                      $ref: "#/components/schemas/TransactionHistory"
                   links:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Link'
-        '401':
+                      $ref: "#/components/schemas/Link"
+        "401":
           description: Unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
               examples:
                 Invalid_Token:
                   description: The access token is invalid or has expired.
@@ -1717,7 +1717,7 @@ paths:
               - descending
         - name: limit
           in: query
-          description: 'Specifies the maximum number of results per page. Value must be a positive integer and if not specified, will return 10 results.'
+          description: "Specifies the maximum number of results per page. Value must be a positive integer and if not specified, will return 10 results."
           schema:
             type: integer
         - name: users
@@ -1773,14 +1773,14 @@ paths:
                 - CHARGE_BACK
         - name: changes_since
           in: query
-          description: 'Filters the results by the latest modification time of resources and returns only transactions that are modified *at or after* the specified timestamp (in [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) format).'
+          description: "Filters the results by the latest modification time of resources and returns only transactions that are modified *at or after* the specified timestamp (in [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) format)."
           required: false
           schema:
             type: string
             format: date-time
         - name: newest_time
           in: query
-          description: 'Filters the results by the creation time of resources and returns only transactions that are created *before* the specified timestamp (in [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) format).'
+          description: "Filters the results by the creation time of resources and returns only transactions that are created *before* the specified timestamp (in [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) format)."
           required: false
           schema:
             type: string
@@ -1793,7 +1793,7 @@ paths:
             type: string
         - name: oldest_time
           in: query
-          description: 'Filters the results by the creation time of resources and returns only transactions that are created *at or after* the specified timestamp (in [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) format).'
+          description: "Filters the results by the creation time of resources and returns only transactions that are created *at or after* the specified timestamp (in [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) format)."
           required: false
           schema:
             type: string
@@ -1805,7 +1805,7 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -1815,17 +1815,17 @@ paths:
                   items:
                     type: array
                     items:
-                      $ref: '#/components/schemas/TransactionHistory'
+                      $ref: "#/components/schemas/TransactionHistory"
                   links:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Link'
-        '401':
+                      $ref: "#/components/schemas/Link"
+        "401":
           description: Unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
               examples:
                 Invalid_Token:
                   description: The access token is invalid or has expired.
@@ -1859,7 +1859,7 @@ paths:
       summary: Retrieve a profile
       description: Returns user profile information.
       parameters:
-        - name: 'include[]'
+        - name: "include[]"
           in: query
           description: A list of additional information you want to receive for the user. By default only personal and merchant profile information will be returned.
           required: false
@@ -1874,18 +1874,18 @@ paths:
                 - app_settings
                 - country_details
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/MerchantAccount'
-        '401':
+                $ref: "#/components/schemas/MerchantAccount"
+        "401":
           description: Unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
               examples:
                 Invalid_Token:
                   description: The access token is invalid or has expired.
@@ -1914,7 +1914,7 @@ paths:
       x-scopes:
         - user.profile
         - user.profile_readonly
-  '/v1.0/merchants/{merchant_code}/payouts':
+  "/v1.0/merchants/{merchant_code}/payouts":
     get:
       operationId: ListPayoutsV1
       summary: List payouts
@@ -1928,14 +1928,14 @@ paths:
             example: MC0X0ABC
         - name: start_date
           in: query
-          description: 'Start date (in [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) format).'
+          description: "Start date (in [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) format)."
           required: true
           schema:
             type: string
             format: date
         - name: end_date
           in: query
-          description: 'End date (in [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) format).'
+          description: "End date (in [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) format)."
           required: true
           schema:
             type: string
@@ -1962,18 +1962,18 @@ paths:
               - desc
               - asc
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/FinancialPayouts'
-        '401':
+                $ref: "#/components/schemas/FinancialPayouts"
+        "401":
           description: Unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
               examples:
                 Invalid_Token:
                   description: The access token is invalid or has expired.
@@ -2010,14 +2010,14 @@ paths:
       parameters:
         - name: start_date
           in: query
-          description: 'Start date (in [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) format).'
+          description: "Start date (in [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) format)."
           required: true
           schema:
             type: string
             format: date
         - name: end_date
           in: query
-          description: 'End date (in [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) format).'
+          description: "End date (in [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) format)."
           required: true
           schema:
             type: string
@@ -2044,18 +2044,18 @@ paths:
               - desc
               - asc
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/FinancialPayouts'
-        '401':
+                $ref: "#/components/schemas/FinancialPayouts"
+        "401":
           description: Unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
               examples:
                 Invalid_Token:
                   description: The access token is invalid or has expired.
@@ -2091,18 +2091,18 @@ paths:
       summary: Retrieve a personal profile
       description: Retrieves personal profile data.
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PersonalProfile'
-        '401':
+                $ref: "#/components/schemas/PersonalProfile"
+        "401":
           description: Unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
               examples:
                 Invalid_Token:
                   description: The access token is invalid or has expired.
@@ -2137,18 +2137,18 @@ paths:
       summary: Retrieve a merchant profile
       description: Retrieves merchant profile data.
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/MerchantProfile'
-        '401':
+                $ref: "#/components/schemas/MerchantProfile"
+        "401":
           description: Unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
               examples:
                 Invalid_Token:
                   description: The access token is invalid or has expired.
@@ -2165,19 +2165,19 @@ paths:
                   value:
                     message: access token required
                     error_code: NOT_AUTHORIZED
-        '403':
+        "403":
           description: Forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorForbidden'
+                $ref: "#/components/schemas/ErrorForbidden"
               examples:
                 Forbidden:
                   description: You do not have required scopes for making this request.
                   value:
                     error_message: request_not_allowed
                     error_code: FORBIDDEN
-                    status_code: '403'
+                    status_code: "403"
       security:
         - apiKey: []
         - oauth2:
@@ -2196,18 +2196,18 @@ paths:
       summary: Retrieve DBA
       description: Retrieves Doing Business As profile.
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DoingBusinessAs'
-        '401':
+                $ref: "#/components/schemas/DoingBusinessAs"
+        "401":
           description: Unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
               examples:
                 Invalid_Token:
                   description: The access token is invalid or has expired.
@@ -2236,7 +2236,7 @@ paths:
       x-scopes:
         - user.profile
         - user.profile_readonly
-  '/v1.1/merchants/{merchant_code}/bank-accounts':
+  "/v1.1/merchants/{merchant_code}/bank-accounts":
     get:
       operationId: ListBankAccountsV11
       summary: List bank accounts
@@ -2255,20 +2255,20 @@ paths:
           schema:
             type: boolean
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/BankAccount'
-        '401':
+                  $ref: "#/components/schemas/BankAccount"
+        "401":
           description: Unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
               examples:
                 Invalid_Token:
                   description: The access token is invalid or has expired.
@@ -2285,19 +2285,19 @@ paths:
                   value:
                     message: access token required
                     error_code: NOT_AUTHORIZED
-        '403':
+        "403":
           description: Forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorForbidden'
+                $ref: "#/components/schemas/ErrorForbidden"
               examples:
                 Forbidden:
                   description: You do not have required scopes for making this request.
                   value:
                     error_message: request_not_allowed
                     error_code: FORBIDDEN
-                    status_code: '403'
+                    status_code: "403"
       security:
         - apiKey: []
         - oauth2:
@@ -2325,20 +2325,20 @@ paths:
           schema:
             type: boolean
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/BankAccount'
-        '401':
+                  $ref: "#/components/schemas/BankAccount"
+        "401":
           description: Unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
               examples:
                 Invalid_Token:
                   description: The access token is invalid or has expired.
@@ -2355,19 +2355,19 @@ paths:
                   value:
                     message: access token required
                     error_code: NOT_AUTHORIZED
-        '403':
+        "403":
           description: Forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorForbidden'
+                $ref: "#/components/schemas/ErrorForbidden"
               examples:
                 Forbidden:
                   description: You do not have required scopes for making this request.
                   value:
                     error_message: request_not_allowed
                     error_code: FORBIDDEN
-                    status_code: '403'
+                    status_code: "403"
       deprecated: true
       security:
         - apiKey: []
@@ -2389,18 +2389,18 @@ paths:
       summary: Get settings
       description: Retrieves merchant settings.
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/MerchantSettings'
-        '401':
+                $ref: "#/components/schemas/MerchantSettings"
+        "401":
           description: Unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
               examples:
                 Invalid_Token:
                   description: The access token is invalid or has expired.
@@ -2417,19 +2417,19 @@ paths:
                   value:
                     message: access token required
                     error_code: NOT_AUTHORIZED
-        '403':
+        "403":
           description: Forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorForbidden'
+                $ref: "#/components/schemas/ErrorForbidden"
               examples:
                 Forbidden:
                   description: You do not have required scopes for making this request.
                   value:
                     error_message: request_not_allowed
                     error_code: FORBIDDEN
-                    status_code: '403'
+                    status_code: "403"
       security:
         - apiKey: []
         - oauth2:
@@ -2440,7 +2440,7 @@ paths:
         method_name: get_settings
       x-scopes:
         - user.payout-settings
-  '/v1.1/receipts/{id}':
+  "/v1.1/receipts/{id}":
     get:
       operationId: GetReceipt
       summary: Retrieve receipt details
@@ -2448,7 +2448,7 @@ paths:
       parameters:
         - name: id
           in: path
-          description: 'SumUp unique transaction ID or transaction code, e.g. TS7HDYLSKD.'
+          description: "SumUp unique transaction ID or transaction code, e.g. TS7HDYLSKD."
           required: true
           schema:
             type: string
@@ -2465,30 +2465,30 @@ paths:
           schema:
             type: integer
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Receipt'
-        '400':
+                $ref: "#/components/schemas/Receipt"
+        "400":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
               examples:
                 Not_Found:
                   description: The identified resource is not found on the server.
                   value:
                     error_code: NOT_FOUND
                     message: Resource not found
-        '401':
+        "401":
           description: Unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
               examples:
                 Invalid_Token:
                   description: The access token is invalid or has expired.
@@ -2513,7 +2513,7 @@ paths:
       x-codegen:
         method_name: get
       x-scopes: []
-  '/v0.1/merchants/{merchant_code}/readers/{id}/checkout':
+  "/v0.1/merchants/{merchant_code}/readers/{id}/checkout":
     post:
       operationId: CreateReaderCheckout
       summary: Create a Reader Checkout
@@ -2549,9 +2549,9 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateReaderCheckout'
+              $ref: "#/components/schemas/CreateReaderCheckout"
       responses:
-        '201':
+        "201":
           description: |
             The Checkout got successfully created for the given reader.
           content:
@@ -2569,7 +2569,7 @@ paths:
                         type: string
                         format: uuid
                         example: 123e4567-e89b-12d3-a456-426614174000
-        '400':
+        "400":
           description: Bad Request
           content:
             application/json:
@@ -2582,7 +2582,7 @@ paths:
                       detail:
                         type: string
                         example: Bad Request
-        '422':
+        "422":
           description: Unprocessable Entity
           content:
             application/json:
@@ -2615,7 +2615,7 @@ paths:
                   errors:
                     type: object
                     additionalProperties: true
-        '500':
+        "500":
           description: Internal Server Error
           content:
             application/json:
@@ -2628,7 +2628,7 @@ paths:
                       detail:
                         type: string
                         example: Internal Server Error
-        '502':
+        "502":
           description: Bad Gateway
           content:
             application/json:
@@ -2641,7 +2641,7 @@ paths:
                       detail:
                         type: string
                         example: Bad Gateway
-        '504':
+        "504":
           description: Gateway Timeout
           content:
             application/json:
@@ -2656,15 +2656,15 @@ paths:
                         example: Gateway Timeout
       callbacks:
         ReaderCheckoutStatusChange:
-          '{$request.body#/return_url}':
+          "{$request.body#/return_url}":
             post:
               requestBody:
                 content:
                   application/json:
                     schema:
-                      $ref: '#/components/schemas/ReaderCheckoutStatusChange'
+                      $ref: "#/components/schemas/ReaderCheckoutStatusChange"
               responses:
-                '200':
+                "200":
                   description: |
                     Your server returns this code if it accepts the callback.
                     If the server returns any other code, the callback will be retried up to 5 times with exponential backoff.
@@ -2680,7 +2680,7 @@ paths:
         - readers_checkout_create
       x-scopes:
         - readers.write
-  '/v0.1/merchants/{merchant_code}/readers/{id}/terminate':
+  "/v0.1/merchants/{merchant_code}/readers/{id}/terminate":
     post:
       operationId: CreateReaderTerminate
       summary: Create a Reader Terminate action
@@ -2718,10 +2718,10 @@ paths:
             maxLength: 30
             minLength: 30
       responses:
-        '202':
+        "202":
           description: |
             The Terminate action was successfully dispatched for the given reader.
-        '422':
+        "422":
           description: Unprocessable Entity
           content:
             application/json:
@@ -2738,7 +2738,7 @@ paths:
                   errors:
                     type: object
                     additionalProperties: true
-        '500':
+        "500":
           description: Internal Server Error
           content:
             application/json:
@@ -2751,7 +2751,7 @@ paths:
                       detail:
                         type: string
                         example: Internal Server Error
-        '502':
+        "502":
           description: Bad Gateway
           content:
             application/json:
@@ -2764,7 +2764,7 @@ paths:
                       detail:
                         type: string
                         example: Bad Gateway
-        '504':
+        "504":
           description: Gateway Timeout
           content:
             application/json:
@@ -2789,7 +2789,7 @@ paths:
         - readers_checkout_create
       x-scopes:
         - readers.write
-  '/v0.1/merchants/{merchant_code}/api-keys':
+  "/v0.1/merchants/{merchant_code}/api-keys":
     get:
       operationId: ListAPIKeys
       summary: List API keys
@@ -2820,12 +2820,12 @@ paths:
             type: string
             example: MC0X0ABC
       responses:
-        '200':
+        "200":
           description: Returns a list of API Key objects.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/APIKeysList'
+                $ref: "#/components/schemas/APIKeysList"
       security:
         - apiKey: []
         - oauth2:
@@ -2865,21 +2865,21 @@ paths:
                   example: New Key Name
                   maxLength: 255
                 scopes:
-                  $ref: '#/components/schemas/OAuth2Scopes'
+                  $ref: "#/components/schemas/OAuth2Scopes"
               required:
                 - name
                 - scopes
       responses:
-        '201':
+        "201":
           description: Returns the API Key object if the creation succeeded.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/APIKey'
+                $ref: "#/components/schemas/APIKey"
       security:
         - apiKey: []
         - oauth2:
-            - 'api_keys:write'
+            - "api_keys:write"
       tags:
         - API Keys
       x-codegen:
@@ -2889,8 +2889,8 @@ paths:
           object_type: merchant
           object_id_param: merchant_code
       x-scopes:
-        - 'api_keys:write'
-  '/v0.1/merchants/{merchant_code}/api-keys/{key_id}':
+        - "api_keys:write"
+  "/v0.1/merchants/{merchant_code}/api-keys/{key_id}":
     get:
       operationId: GetAPIKey
       summary: Retrieve an API Key
@@ -2911,12 +2911,12 @@ paths:
             type: string
             example: sup_pk_1tpmgSzNUHMkxZD1Kz2hdQorZAav6AcZ9
       responses:
-        '200':
+        "200":
           description: Returns the API Key object for a valid identifier.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/APIKey'
+                $ref: "#/components/schemas/APIKey"
       security:
         - apiKey: []
         - oauth2:
@@ -2963,17 +2963,17 @@ paths:
                   example: My API Key
                   maxLength: 255
                 scopes:
-                  $ref: '#/components/schemas/OAuth2Scopes'
+                  $ref: "#/components/schemas/OAuth2Scopes"
               required:
                 - name
                 - scopes
       responses:
-        '204':
+        "204":
           description: Returns an empty response if the update succeeded.
       security:
         - apiKey: []
         - oauth2:
-            - 'api_keys:write'
+            - "api_keys:write"
       tags:
         - API Keys
       x-codegen:
@@ -2983,7 +2983,7 @@ paths:
           object_type: merchant
           object_id_param: merchant_code
       x-scopes:
-        - 'api_keys:write'
+        - "api_keys:write"
     delete:
       operationId: DeleteAPIKey
       summary: Delete an API key
@@ -3004,12 +3004,12 @@ paths:
             type: string
             example: sup_pk_1tpmgSzNUHMkxZD1Kz2hdQorZAav6AcZ9
       responses:
-        '204':
+        "204":
           description: Returns an empty response of the deletion succeeded.
       security:
         - apiKey: []
         - oauth2:
-            - 'api_keys:write'
+            - "api_keys:write"
       tags:
         - API Keys
       x-codegen:
@@ -3019,7 +3019,7 @@ paths:
           object_type: merchant
           object_id_param: merchant_code
       x-scopes:
-        - 'api_keys:write'
+        - "api_keys:write"
   /v0.1/me/accounts:
     get:
       operationId: ListSubAccounts
@@ -3041,21 +3041,21 @@ paths:
           schema:
             type: boolean
       responses:
-        '200':
+        "200":
           description: List of operators.
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Operator'
+                  $ref: "#/components/schemas/Operator"
       deprecated: true
       security:
         - apiKey: []
         - oauth2: []
       tags:
         - Subaccounts
-      x-deprecation-notice: 'Subaccounts API is deprecated, to list users in your merchant account please use [List members](https://developer.sumup.com/api/members/list) instead.'
+      x-deprecation-notice: "Subaccounts API is deprecated, to list users in your merchant account please use [List members](https://developer.sumup.com/api/members/list) instead."
       x-permissions:
         - members_list
       x-scopes: []
@@ -3096,29 +3096,29 @@ paths:
                 - username
                 - password
       responses:
-        '200':
+        "200":
           description: Newly created operator.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Operator'
-        '403':
+                $ref: "#/components/schemas/Operator"
+        "403":
           description: error response for compat API calls
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CompatError'
+                $ref: "#/components/schemas/CompatError"
       deprecated: true
       security:
         - apiKey: []
         - oauth2: []
       tags:
         - Subaccounts
-      x-deprecation-notice: 'Subaccounts API is deprecated, to create an user in your merchant account please use [Create member](https://developer.sumup.com/api/members/create) instead.'
+      x-deprecation-notice: "Subaccounts API is deprecated, to create an user in your merchant account please use [Create member](https://developer.sumup.com/api/members/create) instead."
       x-permissions:
         - members_update
       x-scopes: []
-  '/v0.1/me/accounts/{operator_id}':
+  "/v0.1/me/accounts/{operator_id}":
     get:
       operationId: CompatGetOperator
       summary: Get operator
@@ -3131,19 +3131,19 @@ paths:
             type: integer
             format: int32
       responses:
-        '200':
+        "200":
           description: Operator.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Operator'
+                $ref: "#/components/schemas/Operator"
       deprecated: true
       security:
         - apiKey: []
         - oauth2: []
       tags:
         - Subaccounts
-      x-deprecation-notice: 'Subaccounts API is deprecated, to get an user that''s a member of your merchant account please use [Get member](https://developer.sumup.com/api/members/get) instead.'
+      x-deprecation-notice: "Subaccounts API is deprecated, to get an user that's a member of your merchant account please use [Get member](https://developer.sumup.com/api/members/get) instead."
       x-permissions:
         - members_view
       x-scopes: []
@@ -3190,25 +3190,25 @@ paths:
                     refund_transactions:
                       type: boolean
       responses:
-        '200':
+        "200":
           description: Updated operator.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Operator'
-        '400':
+                $ref: "#/components/schemas/Operator"
+        "400":
           description: Invalid Operators' email or password was already used.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CompatError'
+                $ref: "#/components/schemas/CompatError"
       deprecated: true
       security:
         - apiKey: []
         - oauth2: []
       tags:
         - Subaccounts
-      x-deprecation-notice: 'Subaccounts API is deprecated, to update an user that''s a member of your merchant account please use [Update member](https://developer.sumup.com/api/members/update) instead.'
+      x-deprecation-notice: "Subaccounts API is deprecated, to update an user that's a member of your merchant account please use [Update member](https://developer.sumup.com/api/members/update) instead."
       x-permissions:
         - members_update
       x-scopes: []
@@ -3223,19 +3223,19 @@ paths:
             type: integer
             format: int32
       responses:
-        '200':
+        "200":
           description: Operator successfully disabled.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Operator'
+                $ref: "#/components/schemas/Operator"
       deprecated: true
       security:
         - apiKey: []
         - oauth2: []
       tags:
         - Subaccounts
-      x-deprecation-notice: 'Subaccounts API is deprecated, to remove an user that''s a member of your merchant account please use [Delete member](https://developer.sumup.com/api/members/delete) instead.'
+      x-deprecation-notice: "Subaccounts API is deprecated, to remove an user that's a member of your merchant account please use [Delete member](https://developer.sumup.com/api/members/delete) instead."
       x-permissions:
         - members_delete
       x-scopes: []
@@ -3279,7 +3279,7 @@ paths:
           schema:
             type: boolean
       responses:
-        '200':
+        "200":
           description: Returns a list of Membership objects.
           content:
             application/json:
@@ -3289,7 +3289,7 @@ paths:
                   items:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Membership'
+                      $ref: "#/components/schemas/Membership"
                   total_count:
                     type: integer
                     example: 3
@@ -3304,7 +3304,7 @@ paths:
       x-codegen:
         method_name: list
       x-scopes: []
-  '/v0.1/merchants/{merchant_code}/members':
+  "/v0.1/merchants/{merchant_code}/members":
     get:
       operationId: ListMerchantMembers
       summary: List members
@@ -3344,7 +3344,7 @@ paths:
           in: query
           description: Filter the returned members by the membership status.
           schema:
-            $ref: '#/components/schemas/MembershipStatus'
+            $ref: "#/components/schemas/MembershipStatus"
         - name: roles
           in: query
           description: Filter the returned members by role.
@@ -3365,7 +3365,7 @@ paths:
             type: string
             example: MC0X0ABC
       responses:
-        '200':
+        "200":
           description: Returns a list of Member objects.
           content:
             application/json:
@@ -3375,13 +3375,13 @@ paths:
                   items:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Member'
+                      $ref: "#/components/schemas/Member"
                   total_count:
                     type: integer
                     example: 3
                 required:
                   - items
-        '404':
+        "404":
           description: Merchant not found.
       security:
         - apiKey: []
@@ -3415,7 +3415,7 @@ paths:
               type: object
               properties:
                 is_managed_user:
-                  description: 'True if the user is managed by the merchant. In this case, we''ll created a virtual user with the provided password and nickname.'
+                  description: "True if the user is managed by the merchant. In this case, we'll created a virtual user with the provided password and nickname."
                   type: boolean
                 is_service_account:
                   description: True if the user is a service account. It can later be used to create OAuth2 clients.
@@ -3425,7 +3425,7 @@ paths:
                   type: string
                   format: email
                 password:
-                  description: 'Password of the member to add. Only used if `is_managed_user` is true. In the case of service accounts, the password is not used and can not be defined by the caller.'
+                  description: "Password of the member to add. Only used if `is_managed_user` is true. In the case of service accounts, the password is not used and can not be defined by the caller."
                   type: string
                   format: password
                   minLength: 8
@@ -3434,29 +3434,29 @@ paths:
                   type: string
                   example: Test User
                 roles:
-                  description: 'List of roles to assign to the new member. In the case of service accounts, the roles are predefined.'
+                  description: "List of roles to assign to the new member. In the case of service accounts, the roles are predefined."
                   type: array
                   items:
                     type: string
                 metadata:
-                  $ref: '#/components/schemas/Metadata'
+                  $ref: "#/components/schemas/Metadata"
                 attributes:
-                  $ref: '#/components/schemas/Attributes'
+                  $ref: "#/components/schemas/Attributes"
               required:
                 - email
                 - roles
       responses:
-        '201':
+        "201":
           description: Returns the Member object if the creation succeeded.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Member'
-        '400':
+                $ref: "#/components/schemas/Member"
+        "400":
           description: Invalid request.
-        '404':
+        "404":
           description: Merchant not found.
-        '429':
+        "429":
           description: Too many invitations sent to that user. The limit is 10 requests per 5 minutes and the Retry-After header is set to the number of minutes until the reset of the limit.
       security:
         - apiKey: []
@@ -3470,7 +3470,7 @@ paths:
           object_type: merchant
           object_id_param: merchant_code
       x-scopes: []
-  '/v0.1/merchants/{merchant_code}/members/{member_id}':
+  "/v0.1/merchants/{merchant_code}/members/{member_id}":
     get:
       operationId: GetMerchantMember
       summary: Retrieve a member
@@ -3491,13 +3491,13 @@ paths:
             type: string
             example: mem_WZsm7QTPhVrompscmPhoGTXXcrd58fr9MOhP
       responses:
-        '200':
+        "200":
           description: Returns the Member object for a valid identifier.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Member'
-        '404':
+                $ref: "#/components/schemas/Member"
+        "404":
           description: Merchant or member not found.
       security:
         - apiKey: []
@@ -3542,9 +3542,9 @@ paths:
                   items:
                     type: string
                 metadata:
-                  $ref: '#/components/schemas/Metadata'
+                  $ref: "#/components/schemas/Metadata"
                 attributes:
-                  $ref: '#/components/schemas/Attributes'
+                  $ref: "#/components/schemas/Attributes"
                 user:
                   description: Allows you to update user data of managed users.
                   type: object
@@ -3559,19 +3559,19 @@ paths:
                       format: password
                       minLength: 8
       responses:
-        '200':
+        "200":
           description: Returns the updated Member object if the update succeeded.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Member'
-        '400':
+                $ref: "#/components/schemas/Member"
+        "400":
           description: Cannot set password or nickname for an invited user.
-        '403':
+        "403":
           description: Cannot change password for managed user. Password was already used before.
-        '404':
+        "404":
           description: Merchant or member not found.
-        '409':
+        "409":
           description: Cannot update member as some data conflict with existing members.
       security:
         - apiKey: []
@@ -3605,9 +3605,9 @@ paths:
             type: string
             example: mem_WZsm7QTPhVrompscmPhoGTXXcrd58fr9MOhP
       responses:
-        '200':
+        "200":
           description: Returns an empty response if the deletion succeeded.
-        '404':
+        "404":
           description: Merchant or member not found.
       security:
         - apiKey: []
@@ -3621,7 +3621,7 @@ paths:
           object_type: merchant
           object_id_param: merchant_code
       x-scopes: []
-  '/v0.1/merchants/{merchant_code}/roles':
+  "/v0.1/merchants/{merchant_code}/roles":
     get:
       operationId: ListMerchantRoles
       summary: List roles
@@ -3635,7 +3635,7 @@ paths:
             type: string
             example: MC0X0ABC
       responses:
-        '200':
+        "200":
           description: Returns a list of Role objects.
           content:
             application/json:
@@ -3645,10 +3645,10 @@ paths:
                   items:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Role'
+                      $ref: "#/components/schemas/Role"
                 required:
                   - items
-        '404':
+        "404":
           description: Merchant not found.
       security:
         - apiKey: []
@@ -3698,7 +3698,7 @@ paths:
                     - members_delete
                   maxItems: 100
                 metadata:
-                  $ref: '#/components/schemas/Metadata'
+                  $ref: "#/components/schemas/Metadata"
                 description:
                   description: User-defined description of the role.
                   type: string
@@ -3707,15 +3707,15 @@ paths:
                 - name
                 - permissions
       responses:
-        '201':
+        "201":
           description: Returns the Role object after successful custom role creation.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Role'
-        '400':
+                $ref: "#/components/schemas/Role"
+        "400":
           description: Invalid request.
-        '404':
+        "404":
           description: Merchant not found.
       security:
         - apiKey: []
@@ -3729,7 +3729,7 @@ paths:
           object_type: merchant
           object_id_param: merchant_code
       x-scopes: []
-  '/v0.1/merchants/{merchant_code}/roles/{role_id}':
+  "/v0.1/merchants/{merchant_code}/roles/{role_id}":
     get:
       operationId: GetMerchantRole
       summary: Retrieve a role
@@ -3753,13 +3753,13 @@ paths:
             x-go-type-import:
               path: github.com/sumup/identity/apps/portier-backend/internal/domain/memberships
       responses:
-        '200':
+        "200":
           description: Returns the Role object for a valid identifier.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Role'
-        '404':
+                $ref: "#/components/schemas/Role"
+        "404":
           description: Merchant or role not found.
       security:
         - apiKey: []
@@ -3796,11 +3796,11 @@ paths:
             x-go-type-import:
               path: github.com/sumup/identity/apps/portier-backend/internal/domain/memberships
       responses:
-        '200':
+        "200":
           description: Returns the deleted Role object if the deletion succeeded.
-        '400':
+        "400":
           description: Invalid request.
-        '404':
+        "404":
           description: Merchant not found.
       security:
         - apiKey: []
@@ -3864,15 +3864,15 @@ paths:
                   type: string
                   example: Manges the shop and the employees.
       responses:
-        '200':
+        "200":
           description: Returns the updated Role object if the update succeeded.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Role'
-        '400':
+                $ref: "#/components/schemas/Role"
+        "400":
           description: Invalid request.
-        '404':
+        "404":
           description: Merchant not found.
       security:
         - apiKey: []
@@ -3886,7 +3886,7 @@ paths:
           object_type: merchant
           object_id_param: merchant_code
       x-scopes: []
-  '/v0.1/merchants/{merchant_code}/readers':
+  "/v0.1/merchants/{merchant_code}/readers":
     get:
       operationId: ListReaders
       summary: List Readers
@@ -3900,7 +3900,7 @@ paths:
             type: string
             example: MC0X0ABC
       responses:
-        '200':
+        "200":
           description: Returns a list Reader objects.
           content:
             application/json:
@@ -3910,7 +3910,7 @@ paths:
                   items:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Reader'
+                      $ref: "#/components/schemas/Reader"
                 required:
                   - items
       security:
@@ -3947,20 +3947,20 @@ paths:
               type: object
               properties:
                 pairing_code:
-                  $ref: '#/components/schemas/ReaderPairingCode'
+                  $ref: "#/components/schemas/ReaderPairingCode"
                 name:
-                  $ref: '#/components/schemas/ReaderName'
+                  $ref: "#/components/schemas/ReaderName"
                 meta:
-                  $ref: '#/components/schemas/Meta'
+                  $ref: "#/components/schemas/Meta"
               required:
                 - pairing_code
       responses:
-        '201':
+        "201":
           description: Returns the Reader object if the creation succeeded.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Reader'
+                $ref: "#/components/schemas/Reader"
               examples:
                 created:
                   summary: A reader that waits for the physical device to acknowledge the pairing.
@@ -3971,8 +3971,8 @@ paths:
                     device:
                       identifier: U1DT3NA00-CN
                       model: solo
-                    created_at: '2023-05-09T14:50:20.214Z'
-                    updated_at: '2023-05-09T14:52:58.714Z'
+                    created_at: "2023-05-09T14:50:20.214Z"
+                    updated_at: "2023-05-09T14:52:58.714Z"
           links:
             UpdateReaderByID:
               operationId: UpdateReader
@@ -4000,7 +4000,7 @@ paths:
           object_id_param: merchant_code
       x-scopes:
         - readers.write
-  '/v0.1/merchants/{merchant_code}/readers/{id}':
+  "/v0.1/merchants/{merchant_code}/readers/{id}":
     get:
       operationId: GetReader
       summary: Retrieve a Reader
@@ -4021,10 +4021,10 @@ paths:
             oneOf:
               - format: httpdate
                 type: string
-                example: 'Tue, 03 May 2022 14:46:44 GMT'
+                example: "Tue, 03 May 2022 14:46:44 GMT"
               - format: date-time
                 type: string
-                example: '2023-05-30T10:38:01+00:00'
+                example: "2023-05-30T10:38:01+00:00"
         - name: merchant_code
           in: path
           description: Unique identifier of the merchant account.
@@ -4037,18 +4037,18 @@ paths:
           description: The unique identifier of the reader.
           required: true
           schema:
-            $ref: '#/components/schemas/ReaderID'
+            $ref: "#/components/schemas/ReaderID"
       responses:
-        '200':
+        "200":
           description: |
             Returns a Reader object for a valid identifier.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Reader'
-        '400':
+                $ref: "#/components/schemas/Reader"
+        "400":
           description: Malformed request.
-        '404':
+        "404":
           description: |
             The requested Reader resource does not exists.
       security:
@@ -4082,9 +4082,9 @@ paths:
           description: The unique identifier of the reader.
           required: true
           schema:
-            $ref: '#/components/schemas/ReaderID'
+            $ref: "#/components/schemas/ReaderID"
       responses:
-        '200':
+        "200":
           description: Returns an empty response if the deletion succeeded.
       security:
         - apiKey: []
@@ -4115,7 +4115,7 @@ paths:
           description: The unique identifier of the reader.
           required: true
           schema:
-            $ref: '#/components/schemas/ReaderID'
+            $ref: "#/components/schemas/ReaderID"
       requestBody:
         required: true
         content:
@@ -4124,13 +4124,13 @@ paths:
               type: object
               properties:
                 name:
-                  $ref: '#/components/schemas/ReaderName'
+                  $ref: "#/components/schemas/ReaderName"
                 meta:
-                  $ref: '#/components/schemas/Meta'
+                  $ref: "#/components/schemas/Meta"
       responses:
-        '304':
-          description: 'The update request was successful, but the reader didn''t get updated.'
-        '403':
+        "304":
+          description: "The update request was successful, but the reader didn't get updated."
+        "403":
           description: The reader is not linked to the merchant account.
       security:
         - apiKey: []
@@ -4151,7 +4151,7 @@ components:
     ChangesSinceFilter:
       name: changes_since
       in: query
-      description: 'Filters the results by the latest modification time of resources and returns only transactions that are modified *at or after* the specified timestamp (in [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) format).'
+      description: "Filters the results by the latest modification time of resources and returns only transactions that are modified *at or after* the specified timestamp (in [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) format)."
       required: false
       schema:
         type: string
@@ -4193,7 +4193,7 @@ components:
     LimitFilter:
       name: limit
       in: query
-      description: 'Specifies the maximum number of results per page. Value must be a positive integer and if not specified, will return 10 results.'
+      description: "Specifies the maximum number of results per page. Value must be a positive integer and if not specified, will return 10 results."
       schema:
         type: integer
     NewestRefFilter:
@@ -4206,7 +4206,7 @@ components:
     NewestTimeFilter:
       name: newest_time
       in: query
-      description: 'Filters the results by the creation time of resources and returns only transactions that are created *before* the specified timestamp (in [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) format).'
+      description: "Filters the results by the creation time of resources and returns only transactions that are created *before* the specified timestamp (in [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) format)."
       required: false
       schema:
         type: string
@@ -4336,7 +4336,7 @@ components:
           type: string
           example: Berlin
         country:
-          description: 'Two letter country code formatted according to [ISO3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2).'
+          description: "Two letter country code formatted according to [ISO3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)."
           type: string
           example: DE
         line_1:
@@ -4344,13 +4344,13 @@ components:
           type: string
           example: Sample street
         line_2:
-          description: 'Second line of the address with details of the building, unit, apartment, and floor numbers.'
+          description: "Second line of the address with details of the building, unit, apartment, and floor numbers."
           type: string
           example: ap. 5
         postal_code:
           description: Postal code from the address.
           type: string
-          example: '10115'
+          example: "10115"
         state:
           description: State name or abbreviation from the address.
           type: string
@@ -4396,9 +4396,9 @@ components:
           description: undefined
           type: string
         country_details:
-          $ref: '#/components/schemas/CountryDetails'
+          $ref: "#/components/schemas/CountryDetails"
         timeoffset_details:
-          $ref: '#/components/schemas/TimeoffsetDetails'
+          $ref: "#/components/schemas/TimeoffsetDetails"
         state_id:
           description: undefined
           type: string
@@ -4427,7 +4427,7 @@ components:
             It is a unique identifier for the transaction.
             It can be used later to fetch the transaction details via the [Transactions API](https://developer.sumup.com/api/transactions/get).
           type: string
-          example: '123456'
+          example: "123456"
         tags:
           description: |
             Additional metadata for the transaction.
@@ -4503,19 +4503,19 @@ components:
           type: string
           example: code
         client_id:
-          description: 'The client ID of your application that was generated when you [registered it](https://developer.sumup.com/docs/register-app/).'
+          description: "The client ID of your application that was generated when you [registered it](https://developer.sumup.com/docs/register-app/)."
           type: string
           example: fOcmczrYtYMJ7Li5GjMLLcUeC9dN
         redirect_uri:
-          description: 'The URI to which the merchant user is redirected after authorizing your application to access their user''s profile data and to which the authorization code is sent. The value must match exactly one of the [registered URIs](https://developer.sumup.com/docs/register-app#3-create-oauth-client-credentials) for your application.'
+          description: "The URI to which the merchant user is redirected after authorizing your application to access their user's profile data and to which the authorization code is sent. The value must match exactly one of the [registered URIs](https://developer.sumup.com/docs/register-app#3-create-oauth-client-credentials) for your application."
           type: string
-          example: 'https://sample-app.example.com/callback'
+          example: "https://sample-app.example.com/callback"
         scope:
-          description: 'A space-separated list of scopes for which you request authorization. If you don''t specify any scopes in the request, your application will be granted authorization for the default scopes.'
+          description: "A space-separated list of scopes for which you request authorization. If you don't specify any scopes in the request, your application will be granted authorization for the default scopes."
           type: string
           example: payments
         state:
-          description: 'A unique local state that can be used for correlating requests and responses and for preventing [cross-site request forgery](https://tools.ietf.org/html/rfc6749#section-10.12).'
+          description: "A unique local state that can be used for correlating requests and responses and for preventing [cross-site request forgery](https://tools.ietf.org/html/rfc6749#section-10.12)."
           type: string
           example: 2cFCsY36y95lFHk4
       required:
@@ -4534,11 +4534,11 @@ components:
             - authorization_code
             - refresh_token
         client_id:
-          description: 'The client ID of your application that was generated when you [registered it](https://developer.sumup.com/docs/register-app).'
+          description: "The client ID of your application that was generated when you [registered it](https://developer.sumup.com/docs/register-app)."
           type: string
           example: fOcmczrYtYMJ7Li5GjMLLcUeC9dN
         client_secret:
-          description: 'The client secret of your application that was generated when you [registered it](https://developer.sumup.com/docs/register-app).'
+          description: "The client secret of your application that was generated when you [registered it](https://developer.sumup.com/docs/register-app)."
           type: string
           example: 717bd571b54297494cd7a79b491e8f2c1da6189c4cc2d3481380e8366eef539c
         code:
@@ -4676,12 +4676,12 @@ components:
         number:
           description: Number of the payment card (without spaces).
           type: string
-          example: '1234567890123456'
+          example: "1234567890123456"
           writeOnly: true
         expiry_year:
           description: Year from the expiration time of the payment card. Accepted formats are `YY` and `YYYY`.
           type: string
-          example: '2023'
+          example: "2023"
           maxLength: 4
           minLength: 2
           writeOnly: true
@@ -4689,37 +4689,37 @@ components:
           description: Month from the expiration time of the payment card. Accepted format is `MM`.
           type: string
           enum:
-            - '01'
-            - '02'
-            - '03'
-            - '04'
-            - '05'
-            - '06'
-            - '07'
-            - '08'
-            - '09'
-            - '10'
-            - '11'
-            - '12'
+            - "01"
+            - "02"
+            - "03"
+            - "04"
+            - "05"
+            - "06"
+            - "07"
+            - "08"
+            - "09"
+            - "10"
+            - "11"
+            - "12"
           writeOnly: true
         cvv:
           description: Three or four-digit card verification value (security code) of the payment card.
           type: string
-          example: '123'
+          example: "123"
           maxLength: 4
           minLength: 3
           writeOnly: true
         zip_code:
           description: Required five-digit ZIP code. Applicable only to merchant users in the USA.
           type: string
-          example: '12345'
+          example: "12345"
           maxLength: 5
           minLength: 5
           writeOnly: true
         last_4_digits:
           description: Last 4 digits of the payment card number.
           type: string
-          example: '3456'
+          example: "3456"
           maxLength: 4
           minLength: 4
           readOnly: true
@@ -4757,7 +4757,7 @@ components:
         last_4_digits:
           description: Last 4 digits of the payment card number.
           type: string
-          example: '3456'
+          example: "3456"
           maxLength: 4
           minLength: 4
           readOnly: true
@@ -4794,18 +4794,18 @@ components:
           format: float
           example: 10.1
         currency:
-          $ref: '#/components/schemas/Currency'
+          $ref: "#/components/schemas/Currency"
         pay_to_email:
           description: Email address of the registered user (merchant) to whom the payment is made.
           type: string
           format: email
           deprecated: true
-          x-deprecation-notice: '`pay_to_email` is deprecated, use `merchant_code` instead.'
+          x-deprecation-notice: "`pay_to_email` is deprecated, use `merchant_code` instead."
         merchant_code:
           description: Unique identifying code of the merchant profile.
           type: string
         description:
-          description: 'Short description of the checkout visible in the SumUp dashboard. The description can contribute to reporting, allowing easier identification of a checkout.'
+          description: "Short description of the checkout visible in the SumUp dashboard. The description can contribute to reporting, allowing easier identification of a checkout."
           type: string
         return_url:
           description: URL to which the SumUp platform sends the processing status of the payment checkout.
@@ -4824,29 +4824,29 @@ components:
             - FAILED
             - PAID
         date:
-          description: 'Date and time of the creation of the payment checkout. Response format expressed according to [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) code.'
+          description: "Date and time of the creation of the payment checkout. Response format expressed according to [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) code."
           type: string
           format: date-time
-          example: '2020-02-29T10:56:56+00:00'
+          example: "2020-02-29T10:56:56+00:00"
         valid_until:
-          description: 'Date and time of the checkout expiration before which the client application needs to send a processing request. If no value is present, the checkout does not have an expiration time.'
+          description: "Date and time of the checkout expiration before which the client application needs to send a processing request. If no value is present, the checkout does not have an expiration time."
           type: string
           format: date-time
-          example: '2020-02-29T10:56:56+00:00'
+          example: "2020-02-29T10:56:56+00:00"
           nullable: true
         customer_id:
-          description: 'Unique identification of a customer. If specified, the checkout session and payment instrument are associated with the referenced customer.'
+          description: "Unique identification of a customer. If specified, the checkout session and payment instrument are associated with the referenced customer."
           type: string
           example: 831ff8d4cd5958ab5670
         mandate:
-          $ref: '#/components/schemas/MandateResponse'
+          $ref: "#/components/schemas/MandateResponse"
         transactions:
           description: List of transactions related to the payment.
           type: array
           items:
             allOf:
-              - $ref: '#/components/schemas/TransactionMixinBase'
-              - $ref: '#/components/schemas/TransactionMixinCheckout'
+              - $ref: "#/components/schemas/TransactionMixinBase"
+              - $ref: "#/components/schemas/TransactionMixinCheckout"
           uniqueItems: true
       title: Checkout
     CheckoutCreateRequest:
@@ -4862,7 +4862,7 @@ components:
           type: number
           format: float
         currency:
-          $ref: '#/components/schemas/Currency'
+          $ref: "#/components/schemas/Currency"
         merchant_code:
           description: Unique identifying code of the merchant profile.
           type: string
@@ -4871,16 +4871,16 @@ components:
           type: string
           format: email
           deprecated: true
-          x-deprecation-notice: '`pay_to_email` is deprecated, use `merchant_code` instead.'
+          x-deprecation-notice: "`pay_to_email` is deprecated, use `merchant_code` instead."
         description:
-          description: 'Short description of the checkout visible in the SumUp dashboard. The description can contribute to reporting, allowing easier identification of a checkout.'
+          description: "Short description of the checkout visible in the SumUp dashboard. The description can contribute to reporting, allowing easier identification of a checkout."
           type: string
         return_url:
           description: URL to which the SumUp platform sends the processing status of the payment checkout.
           type: string
           format: uri
         customer_id:
-          description: 'Unique identification of a customer. If specified, the checkout session and payment instrument are associated with the referenced customer.'
+          description: "Unique identification of a customer. If specified, the checkout session and payment instrument are associated with the referenced customer."
           type: string
         purpose:
           description: Purpose of the checkout.
@@ -4902,30 +4902,30 @@ components:
             - PAID
           readOnly: true
         date:
-          description: 'Date and time of the creation of the payment checkout. Response format expressed according to [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) code.'
+          description: "Date and time of the creation of the payment checkout. Response format expressed according to [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) code."
           type: string
           format: date-time
-          example: '2020-02-29T10:56:56+00:00'
+          example: "2020-02-29T10:56:56+00:00"
           readOnly: true
         valid_until:
-          description: 'Date and time of the checkout expiration before which the client application needs to send a processing request. If no value is present, the checkout does not have an expiration time.'
+          description: "Date and time of the checkout expiration before which the client application needs to send a processing request. If no value is present, the checkout does not have an expiration time."
           type: string
           format: date-time
-          example: '2020-02-29T10:56:56+00:00'
+          example: "2020-02-29T10:56:56+00:00"
           nullable: true
         transactions:
           description: List of transactions related to the payment.
           type: array
           items:
             allOf:
-              - $ref: '#/components/schemas/TransactionMixinBase'
-              - $ref: '#/components/schemas/TransactionMixinCheckout'
+              - $ref: "#/components/schemas/TransactionMixinBase"
+              - $ref: "#/components/schemas/TransactionMixinCheckout"
           readOnly: true
           uniqueItems: true
         redirect_url:
-          description: '__Required__ for [APMs](https://developer.sumup.com/online-payments/apm/introduction) and __recommended__ for card payments. Refers to a url where the end user is redirected once the payment processing completes. If not specified, the [Payment Widget](https://developer.sumup.com/online-payments/tools/card-widget) renders [3DS challenge](https://developer.sumup.com/online-payments/features/3ds) within an iframe instead of performing a full-page redirect.'
+          description: "__Required__ for [APMs](https://developer.sumup.com/online-payments/apm/introduction) and __recommended__ for card payments. Refers to a url where the end user is redirected once the payment processing completes. If not specified, the [Payment Widget](https://developer.sumup.com/online-payments/tools/card-widget) renders [3DS challenge](https://developer.sumup.com/online-payments/features/3ds) within an iframe instead of performing a full-page redirect."
           type: string
-          example: 'https://mysite.com/completed_purchase'
+          example: "https://mysite.com/completed_purchase"
       required:
         - checkout_reference
         - amount
@@ -4950,9 +4950,9 @@ components:
           maximum: 12
           minimum: 1
         mandate:
-          $ref: '#/components/schemas/MandatePayload'
+          $ref: "#/components/schemas/MandatePayload"
         card:
-          $ref: '#/components/schemas/Card'
+          $ref: "#/components/schemas/Card"
         token:
           description: __Required when using a tokenized card to process a checkout.__ Unique token identifying the saved payment card for a customer.
           type: string
@@ -4960,12 +4960,12 @@ components:
           description: __Required when `token` is provided.__ Unique ID of the customer.
           type: string
         personal_details:
-          $ref: '#/components/schemas/PersonalDetails'
+          $ref: "#/components/schemas/PersonalDetails"
       required:
         - payment_type
     CheckoutSuccess:
       allOf:
-        - $ref: '#/components/schemas/Checkout'
+        - $ref: "#/components/schemas/Checkout"
         - type: object
           properties:
             transaction_code:
@@ -4985,7 +4985,7 @@ components:
             redirect_url:
               description: Refers to a url where the end user is redirected once the payment processing completes.
               type: string
-              example: 'https://mysite.com/completed_purchase'
+              example: "https://mysite.com/completed_purchase"
             payment_instrument:
               description: Object containing token information for the specified payment instrument
               type: object
@@ -5008,18 +5008,18 @@ components:
           format: float
           example: 10.1
         currency:
-          $ref: '#/components/schemas/Currency'
+          $ref: "#/components/schemas/Currency"
         pay_to_email:
           description: Email address of the registered user (merchant) to whom the payment is made.
           type: string
           format: email
           deprecated: true
-          x-deprecation-notice: '`pay_to_email` is deprecated, use `merchant_code` instead.'
+          x-deprecation-notice: "`pay_to_email` is deprecated, use `merchant_code` instead."
         merchant_code:
           description: Unique identifying code of the merchant profile.
           type: string
         description:
-          description: 'Short description of the checkout visible in the SumUp dashboard. The description can contribute to reporting, allowing easier identification of a checkout.'
+          description: "Short description of the checkout visible in the SumUp dashboard. The description can contribute to reporting, allowing easier identification of a checkout."
           type: string
         id:
           description: Unique ID of the checkout resource.
@@ -5034,10 +5034,10 @@ components:
             - PAID
           readOnly: true
         date:
-          description: 'Date and time of the creation of the payment checkout. Response format expressed according to [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) code.'
+          description: "Date and time of the creation of the payment checkout. Response format expressed according to [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) code."
           type: string
           format: date-time
-          example: '2020-02-29T10:56:56+00:00'
+          example: "2020-02-29T10:56:56+00:00"
           readOnly: true
         transaction_code:
           description: Transaction code of the successful transaction with which the payment for the checkout is completed.
@@ -5056,9 +5056,9 @@ components:
         redirect_url:
           description: Refers to a url where the end user is redirected once the payment processing completes.
           type: string
-          example: 'https://mysite.com/completed_purchase'
+          example: "https://mysite.com/completed_purchase"
         customer_id:
-          description: 'Unique identification of a customer. If specified, the checkout session and payment instrument are associated with the referenced customer.'
+          description: "Unique identification of a customer. If specified, the checkout session and payment instrument are associated with the referenced customer."
           type: string
         payment_instrument:
           description: Object containing token information for the specified payment instrument
@@ -5073,8 +5073,8 @@ components:
           type: array
           items:
             allOf:
-              - $ref: '#/components/schemas/TransactionMixinBase'
-              - $ref: '#/components/schemas/TransactionMixinCheckout'
+              - $ref: "#/components/schemas/TransactionMixinBase"
+              - $ref: "#/components/schemas/TransactionMixinCheckout"
           readOnly: true
           uniqueItems: true
     CheckoutAccepted:
@@ -5088,7 +5088,7 @@ components:
             url:
               description: Where the end user is redirected.
               type: string
-              example: 'https://dummy-3ds-gateway.com/cap?RID=1233&VAA=A'
+              example: "https://dummy-3ds-gateway.com/cap?RID=1233&VAA=A"
             method:
               description: Method used to complete the redirect.
               type: string
@@ -5096,7 +5096,7 @@ components:
             redirect_url:
               description: Refers to a url where the end user is redirected once the payment processing completes.
               type: string
-              example: 'https://mysite.com/completed_purchase'
+              example: "https://mysite.com/completed_purchase"
             mechanism:
               description: Indicates allowed mechanisms for redirecting an end user. If both values are provided to ensure a redirect takes place in either.
               type: array
@@ -5114,7 +5114,7 @@ components:
                 MD:
                   example: b1a536c0-29b9-11eb-adc1-0242ac120002
                 TermUrl:
-                  example: 'https://api.sumup.com/v0.1/checkouts/e552de3b-1777-4c91-bdb8-756967678572/complete_payment'
+                  example: "https://api.sumup.com/v0.1/checkouts/e552de3b-1777-4c91-bdb8-756967678572/complete_payment"
     CreateReaderCheckout:
       description: Reader Checkout
       type: object
@@ -5145,9 +5145,9 @@ components:
             It must be a HTTPS url.
           type: string
           format: uri
-          example: 'https://www.example.com'
+          example: "https://www.example.com"
         total_amount:
-          $ref: '#/components/schemas/CreateReaderCheckoutAmount'
+          $ref: "#/components/schemas/CreateReaderCheckoutAmount"
         tip_rates:
           description: |
             List of tipping rates to be displayed to the cardholder.
@@ -5159,7 +5159,7 @@ components:
             format: float
             multipleOf: 0.01
         affiliate:
-          $ref: '#/components/schemas/Affiliate'
+          $ref: "#/components/schemas/Affiliate"
       required:
         - total_amount
       title: Reader
@@ -5238,7 +5238,7 @@ components:
           description: The timestamp of the event.
           type: string
           format: date-time
-          example: '2021-01-01T00:00:00Z'
+          example: "2021-01-01T00:00:00Z"
       required:
         - id
         - event_type
@@ -5252,7 +5252,7 @@ components:
           type: string
           example: 831ff8d4cd5958ab5670
         personal_details:
-          $ref: '#/components/schemas/PersonalDetails'
+          $ref: "#/components/schemas/PersonalDetails"
       required:
         - customer_id
       title: Customer
@@ -5335,7 +5335,7 @@ components:
           description: Doing business as email
           type: string
         address:
-          $ref: '#/components/schemas/AddressPayload'
+          $ref: "#/components/schemas/AddressPayload"
     Error:
       description: Error message structure.
       type: object
@@ -5348,11 +5348,11 @@ components:
           type: string
     ErrorExtended:
       allOf:
-        - $ref: '#/components/schemas/Error'
+        - $ref: "#/components/schemas/Error"
         - type: object
           properties:
             param:
-              description: 'Parameter name (with relative location) to which the error applies. Parameters from embedded resources are displayed using dot notation. For example, `card.name` refers to the `name` parameter embedded in the `card` object.'
+              description: "Parameter name (with relative location) to which the error applies. Parameters from embedded resources are displayed using dot notation. For example, `card.name` refers to the `name` parameter embedded in the `card` object."
               type: string
     ErrorForbidden:
       description: Error message for forbidden requests.
@@ -5393,17 +5393,17 @@ components:
       type: object
       properties:
         id:
-          $ref: '#/components/schemas/EventID'
+          $ref: "#/components/schemas/EventID"
         transaction_id:
-          $ref: '#/components/schemas/TransactionID'
+          $ref: "#/components/schemas/TransactionID"
         type:
-          $ref: '#/components/schemas/EventType'
+          $ref: "#/components/schemas/EventType"
         status:
-          $ref: '#/components/schemas/EventStatus'
+          $ref: "#/components/schemas/EventStatus"
         amount:
-          $ref: '#/components/schemas/AmountEvent'
+          $ref: "#/components/schemas/AmountEvent"
         timestamp:
-          $ref: '#/components/schemas/TimestampEvent'
+          $ref: "#/components/schemas/TimestampEvent"
         fee_amount:
           description: Amount of the fee related to the event.
           type: number
@@ -5502,7 +5502,7 @@ components:
           type: string
       example:
         type: recurrent
-        user_agent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.104 Safari/537.36'
+        user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.104 Safari/537.36"
         user_ip: 172.217.169.174
       required:
         - type
@@ -5529,15 +5529,15 @@ components:
       type: object
       properties:
         account:
-          $ref: '#/components/schemas/Account'
+          $ref: "#/components/schemas/Account"
         personal_profile:
-          $ref: '#/components/schemas/PersonalProfile'
+          $ref: "#/components/schemas/PersonalProfile"
         merchant_profile:
-          $ref: '#/components/schemas/MerchantProfile'
+          $ref: "#/components/schemas/MerchantProfile"
         app_settings:
-          $ref: '#/components/schemas/AppSettings'
+          $ref: "#/components/schemas/AppSettings"
         permissions:
-          $ref: '#/components/schemas/Permissions'
+          $ref: "#/components/schemas/Permissions"
         is_migrated_payleven_br:
           description: Merchant comes from payleven BR migration
           type: boolean
@@ -5556,7 +5556,7 @@ components:
           description: Website
           type: string
         legal_type:
-          $ref: '#/components/schemas/LegalType'
+          $ref: "#/components/schemas/LegalType"
         merchant_category_code:
           description: Merchant category code
           type: string
@@ -5576,22 +5576,22 @@ components:
           description: Nature and purpose of the business
           type: string
         address:
-          $ref: '#/components/schemas/AddressWithDetails'
+          $ref: "#/components/schemas/AddressWithDetails"
         business_owners:
-          $ref: '#/components/schemas/BusinessOwners'
+          $ref: "#/components/schemas/BusinessOwners"
         doing_business_as:
-          $ref: '#/components/schemas/DoingBusinessAs'
+          $ref: "#/components/schemas/DoingBusinessAs"
         settings:
-          $ref: '#/components/schemas/MerchantSettings'
+          $ref: "#/components/schemas/MerchantSettings"
         vat_rates:
-          $ref: '#/components/schemas/VatRates'
+          $ref: "#/components/schemas/VatRates"
         locale:
           description: Merchant locale &#40;for internal usage only&#41;
           type: string
         bank_accounts:
           type: array
           items:
-            $ref: '#/components/schemas/BankAccount'
+            $ref: "#/components/schemas/BankAccount"
         extdev:
           description: True if the merchant is extdev
           type: boolean
@@ -5599,7 +5599,7 @@ components:
           description: True if the payout zone of this merchant is migrated
           type: boolean
         country:
-          description: 'Merchant country code formatted according to [ISO3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) &#40;for internal usage only&#41;'
+          description: "Merchant country code formatted according to [ISO3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) &#40;for internal usage only&#41;"
           type: string
     MerchantProfilePayload:
       description: Account's merchant profile
@@ -5627,13 +5627,13 @@ components:
           description: Company website
           type: string
         nature_and_purpose:
-          description: 'Nature and purpose of the business. Required for the following merchant category codes: 5999, 7392, 8999, 5694, 5969, 7299, 7399'
+          description: "Nature and purpose of the business. Required for the following merchant category codes: 5999, 7392, 8999, 5694, 5969, 7299, 7399"
           type: string
         mobile_phone:
           description: Mobile number
           type: string
         address:
-          $ref: '#/components/schemas/AddressPayload'
+          $ref: "#/components/schemas/AddressPayload"
         doing_business_as:
           type: object
           properties:
@@ -5653,9 +5653,9 @@ components:
               description: Doing business as email
               type: string
             address:
-              $ref: '#/components/schemas/AddressPayload'
+              $ref: "#/components/schemas/AddressPayload"
         business_owners:
-          $ref: '#/components/schemas/BusinessOwners'
+          $ref: "#/components/schemas/BusinessOwners"
         is_test_account:
           description: Defines if the profile nature is for testing
           type: boolean
@@ -5696,8 +5696,8 @@ components:
           enum:
             - UNAVAILABLE
             - ENFORCED
-            - 'ON'
-            - 'OFF'
+            - "ON"
+            - "OFF"
         stone_merchant_code:
           description: Stone merchant code
           type: string
@@ -5726,10 +5726,10 @@ components:
           enum:
             - SINGLE_PAYMENT
         payout_on_demand:
-          description: 'If true, the merchant will not receive automatic payouts.'
+          description: "If true, the merchant will not receive automatic payouts."
           type: boolean
         payout_on_demand_available:
-          description: 'If true, the merchant will be able to manage  payout_on_demand settings'
+          description: "If true, the merchant will be able to manage  payout_on_demand settings"
           type: string
         expected_max_transaction_amount:
           description: Expected maximum amount of a single purchase
@@ -5749,7 +5749,7 @@ components:
           type: string
           readOnly: true
         active:
-          description: 'Indicates whether the payment instrument is active and can be used for payments. To deactivate it, send a `DELETE` request to the resource endpoint.'
+          description: "Indicates whether the payment instrument is active and can be used for payments. To deactivate it, send a `DELETE` request to the resource endpoint."
           type: boolean
           default: true
           readOnly: true
@@ -5759,7 +5759,7 @@ components:
           enum:
             - card
         card:
-          $ref: '#/components/schemas/Card'
+          $ref: "#/components/schemas/Card"
       required:
         - token
         - active
@@ -5774,7 +5774,7 @@ components:
           type: string
           readOnly: true
         active:
-          description: 'Indicates whether the payment instrument is active and can be used for payments. To deactivate it, send a `DELETE` request to the resource endpoint.'
+          description: "Indicates whether the payment instrument is active and can be used for payments. To deactivate it, send a `DELETE` request to the resource endpoint."
           type: boolean
           default: true
           readOnly: true
@@ -5790,7 +5790,7 @@ components:
             last_4_digits:
               description: Last 4 digits of the payment card number.
               type: string
-              example: '3456'
+              example: "3456"
               maxLength: 4
               minLength: 4
               readOnly: true
@@ -5814,9 +5814,9 @@ components:
                 - UNKNOWN
               readOnly: true
         mandate:
-          $ref: '#/components/schemas/MandateResponse'
+          $ref: "#/components/schemas/MandateResponse"
         created_at:
-          description: 'Creation date of payment instrument. Response format expressed according to [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) code.'
+          description: "Creation date of payment instrument. Response format expressed according to [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) code."
           type: string
           format: date-time
       example:
@@ -5828,9 +5828,9 @@ components:
           status: active
           merchant_code: MDASYTPD
         card:
-          last_4_digits: '0001'
+          last_4_digits: "0001"
           type: VISA
-        created_at: '2021-03-30T10:06:07.000+00:00'
+        created_at: "2021-03-30T10:06:07.000+00:00"
     Permissions:
       description: User permissions
       type: object
@@ -5866,19 +5866,19 @@ components:
         phone:
           description: Phone number of the customer.
           type: string
-          example: '+491635559723'
+          example: "+491635559723"
         birth_date:
           description: Date of birth of the customer.
           type: string
           format: date
-          example: '1993-12-31'
+          example: "1993-12-31"
         tax_id:
           description: An identification number user for tax purposes (e.g. CPF)
           type: string
           example: 423.378.593-47
           maxLength: 255
         address:
-          $ref: '#/components/schemas/Address'
+          $ref: "#/components/schemas/Address"
     PersonalProfile:
       description: Account's personal profile.
       type: object
@@ -5896,7 +5896,7 @@ components:
           description: Mobile phone number
           type: string
         address:
-          $ref: '#/components/schemas/AddressWithDetails'
+          $ref: "#/components/schemas/AddressWithDetails"
         complete:
           type: boolean
     PersonalProfilePayload:
@@ -5917,10 +5917,10 @@ components:
           description: Mobile phone number
           type: string
         national_id:
-          description: 'National identification id. Country specific. Ex CPF &#40;Brazil&#41;, DNI (Spain), PESEL (Poland)'
+          description: "National identification id. Country specific. Ex CPF &#40;Brazil&#41;, DNI (Spain), PESEL (Poland)"
           type: string
         address:
-          $ref: '#/components/schemas/AddressPayload'
+          $ref: "#/components/schemas/AddressPayload"
       required:
         - first_name
         - last_name
@@ -5942,7 +5942,7 @@ components:
           type: number
           format: float
         single_vat_amount:
-          description: 'Amount of the VAT for a single product item (calculated as the product of `price` and `vat_rate`, i.e. `single_vat_amount = price * vat_rate`).'
+          description: "Amount of the VAT for a single product item (calculated as the product of `price` and `vat_rate`, i.e. `single_vat_amount = price * vat_rate`)."
           type: number
           format: float
         price_with_vat:
@@ -5950,27 +5950,27 @@ components:
           type: number
           format: float
         vat_amount:
-          description: 'Total VAT amount for the purchase (calculated as the product of `single_vat_amount` and `quantity`, i.e. `vat_amount = single_vat_amount * quantity`).'
+          description: "Total VAT amount for the purchase (calculated as the product of `single_vat_amount` and `quantity`, i.e. `vat_amount = single_vat_amount * quantity`)."
           type: number
           format: float
         quantity:
           description: Number of product items for the purchase.
           type: number
         total_price:
-          description: 'Total price of the product items without VAT (calculated as the product of `price` and `quantity`, i.e. `total_price = price * quantity`).'
+          description: "Total price of the product items without VAT (calculated as the product of `price` and `quantity`, i.e. `total_price = price * quantity`)."
           type: number
           format: float
         total_with_vat:
-          description: 'Total price of the product items including VAT (calculated as the product of `price_with_vat` and `quantity`, i.e. `total_with_vat = price_with_vat * quantity`).'
+          description: "Total price of the product items including VAT (calculated as the product of `price_with_vat` and `quantity`, i.e. `total_with_vat = price_with_vat * quantity`)."
           type: number
           format: float
     Receipt:
       type: object
       properties:
         transaction_data:
-          $ref: '#/components/schemas/ReceiptTransaction'
+          $ref: "#/components/schemas/ReceiptTransaction"
         merchant_data:
-          $ref: '#/components/schemas/ReceiptMerchantData'
+          $ref: "#/components/schemas/ReceiptMerchantData"
         emv_data:
           type: object
         acquirer_data:
@@ -5989,17 +5989,17 @@ components:
       type: object
       properties:
         id:
-          $ref: '#/components/schemas/EventID'
+          $ref: "#/components/schemas/EventID"
         transaction_id:
-          $ref: '#/components/schemas/TransactionID'
+          $ref: "#/components/schemas/TransactionID"
         type:
-          $ref: '#/components/schemas/EventType'
+          $ref: "#/components/schemas/EventType"
         status:
-          $ref: '#/components/schemas/EventStatus'
+          $ref: "#/components/schemas/EventStatus"
         amount:
-          $ref: '#/components/schemas/AmountEvent'
+          $ref: "#/components/schemas/AmountEvent"
         timestamp:
-          $ref: '#/components/schemas/TimestampEvent'
+          $ref: "#/components/schemas/TimestampEvent"
         receipt_no:
           type: string
     ReceiptCard:
@@ -6079,7 +6079,7 @@ components:
           description: Cardholder verification method.
           type: string
         card:
-          $ref: '#/components/schemas/ReceiptCard'
+          $ref: "#/components/schemas/ReceiptCard"
         installments_count:
           description: Number of installments.
           type: integer
@@ -6132,7 +6132,7 @@ components:
           description: Events
           type: array
           items:
-            $ref: '#/components/schemas/ReceiptEvent'
+            $ref: "#/components/schemas/ReceiptEvent"
         receipt_no:
           description: Receipt number
           type: string
@@ -6154,13 +6154,13 @@ components:
       type: object
       properties:
         id:
-          $ref: '#/components/schemas/EventID'
+          $ref: "#/components/schemas/EventID"
         event_type:
-          $ref: '#/components/schemas/EventType'
+          $ref: "#/components/schemas/EventType"
         status:
-          $ref: '#/components/schemas/EventStatus'
+          $ref: "#/components/schemas/EventStatus"
         amount:
-          $ref: '#/components/schemas/AmountEvent'
+          $ref: "#/components/schemas/AmountEvent"
         due_date:
           description: Date when the transaction event is due to occur.
           type: string
@@ -6170,10 +6170,10 @@ components:
           type: string
           format: date
         installment_number:
-          description: 'Consecutive number of the installment that is paid. Applicable only payout events, i.e. `event_type = PAYOUT`.'
+          description: "Consecutive number of the installment that is paid. Applicable only payout events, i.e. `event_type = PAYOUT`."
           type: integer
         timestamp:
-          $ref: '#/components/schemas/TimestampEvent'
+          $ref: "#/components/schemas/TimestampEvent"
     TransactionMixinBase:
       description: Details of the transaction.
       type: object
@@ -6192,12 +6192,12 @@ components:
           format: float
           example: 10.1
         currency:
-          $ref: '#/components/schemas/Currency'
+          $ref: "#/components/schemas/Currency"
         timestamp:
-          description: 'Date and time of the creation of the transaction. Response format expressed according to [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) code.'
+          description: "Date and time of the creation of the transaction. Response format expressed according to [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) code."
           type: string
           format: date-time
-          example: '2020-02-29T10:56:56.876Z'
+          example: "2020-02-29T10:56:56.876Z"
         status:
           description: Current status of the transaction.
           type: string
@@ -6243,7 +6243,7 @@ components:
         auth_code:
           description: Authorization code for the transaction sent by the payment card issuer or bank. Applicable only to card payments.
           type: string
-          example: '053201'
+          example: "053201"
         internal_id:
           description: Internal unique ID of the transaction on the SumUp platform.
           type: integer
@@ -6269,12 +6269,12 @@ components:
             - ACCELERATED_INSTALLMENT
     TransactionHistory:
       allOf:
-        - $ref: '#/components/schemas/TransactionMixinBase'
-        - $ref: '#/components/schemas/TransactionMixinHistory'
+        - $ref: "#/components/schemas/TransactionMixinBase"
+        - $ref: "#/components/schemas/TransactionMixinHistory"
         - type: object
           properties:
             transaction_id:
-              $ref: '#/components/schemas/TransactionID'
+              $ref: "#/components/schemas/TransactionID"
             client_transaction_id:
               description: Client-specific ID of the transaction.
               type: string
@@ -6309,9 +6309,9 @@ components:
                 - UNKNOWN
     TransactionFull:
       allOf:
-        - $ref: '#/components/schemas/TransactionMixinBase'
-        - $ref: '#/components/schemas/TransactionMixinCheckout'
-        - $ref: '#/components/schemas/TransactionMixinHistory'
+        - $ref: "#/components/schemas/TransactionMixinBase"
+        - $ref: "#/components/schemas/TransactionMixinCheckout"
+        - $ref: "#/components/schemas/TransactionMixinHistory"
         - type: object
           properties:
             username:
@@ -6319,11 +6319,11 @@ components:
               type: string
               format: email
             lat:
-              $ref: '#/components/schemas/Lat'
+              $ref: "#/components/schemas/Lat"
             lon:
-              $ref: '#/components/schemas/Lon'
+              $ref: "#/components/schemas/Lon"
             horizontal_accuracy:
-              $ref: '#/components/schemas/HorizontalAccuracy'
+              $ref: "#/components/schemas/HorizontalAccuracy"
             simple_payment_type:
               description: Simple name of the payment type.
               type: string
@@ -6346,7 +6346,7 @@ components:
                 - offline pin + signature
                 - confirmation code verified
             card:
-              $ref: '#/components/schemas/CardResponse'
+              $ref: "#/components/schemas/CardResponse"
             local_time:
               description: Local date and time of the creation of the transaction.
               type: string
@@ -6362,7 +6362,7 @@ components:
               description: List of products from the merchant's catalogue for which the transaction serves as a payment.
               type: array
               items:
-                $ref: '#/components/schemas/Product'
+                $ref: "#/components/schemas/Product"
             vat_rates:
               description: List of VAT rates applicable to the transaction.
               type: array
@@ -6371,7 +6371,7 @@ components:
               description: List of transaction events related to the transaction.
               type: array
               items:
-                $ref: '#/components/schemas/TransactionEvent'
+                $ref: "#/components/schemas/TransactionEvent"
             simple_status:
               description: Status generated from the processing status and the latest transaction state.
               type: string
@@ -6390,25 +6390,25 @@ components:
               type: array
               items:
                 anyOf:
-                  - $ref: '#/components/schemas/Link'
-                  - $ref: '#/components/schemas/LinkRefund'
+                  - $ref: "#/components/schemas/Link"
+                  - $ref: "#/components/schemas/LinkRefund"
               uniqueItems: true
             events:
               description: List of events related to the transaction.
               type: array
               items:
-                $ref: '#/components/schemas/Event'
+                $ref: "#/components/schemas/Event"
               uniqueItems: true
             location:
               description: Details of the payment location as received from the payment terminal.
               type: object
               properties:
                 lat:
-                  $ref: '#/components/schemas/Lat'
+                  $ref: "#/components/schemas/Lat"
                 lon:
-                  $ref: '#/components/schemas/Lon'
+                  $ref: "#/components/schemas/Lon"
                 horizontal_accuracy:
-                  $ref: '#/components/schemas/HorizontalAccuracy'
+                  $ref: "#/components/schemas/HorizontalAccuracy"
             tax_enabled:
               description: Indicates whether tax deduction is enabled for the transaction.
               type: boolean
@@ -6436,7 +6436,7 @@ components:
       type: number
       format: float
     Currency:
-      description: 'Three-letter [ISO4217](https://en.wikipedia.org/wiki/ISO_4217) code of the currency for the amount. Currently supported currency values are enumerated above.'
+      description: "Three-letter [ISO4217](https://en.wikipedia.org/wiki/ISO_4217) code of the currency for the amount. Currently supported currency values are enumerated above."
       type: string
       example: EUR
       enum:
@@ -6489,7 +6489,7 @@ components:
       minimum: 0
     LinkRefund:
       allOf:
-        - $ref: '#/components/schemas/Link'
+        - $ref: "#/components/schemas/Link"
         - type: object
           properties:
             min_amount:
@@ -6528,7 +6528,7 @@ components:
           type: string
           example: My API Key
         scopes:
-          $ref: '#/components/schemas/OAuth2Scopes'
+          $ref: "#/components/schemas/OAuth2Scopes"
         type:
           type: string
           example: secret
@@ -6547,12 +6547,12 @@ components:
           description: The timestamp of when the API key was created.
           type: string
           format: date-time
-          example: '2023-01-20T15:16:17Z'
+          example: "2023-01-20T15:16:17Z"
         updated_at:
           description: The timestamp of when the API key was last updated.
           type: string
           format: date-time
-          example: '2023-01-20T15:16:17Z'
+          example: "2023-01-20T15:16:17Z"
       required:
         - id
         - name
@@ -6570,7 +6570,7 @@ components:
           description: List of API keys.
           type: array
           items:
-            $ref: '#/components/schemas/APIKey'
+            $ref: "#/components/schemas/APIKey"
         total_count:
           description: Total number of API keys.
           type: integer
@@ -6578,12 +6578,12 @@ components:
         total_count: 2
         items:
           - id: sup_pk_1tpmgizNLHMkx1DdKd2hdzorZAaf6AcZ9
-            name: ''
+            name: ""
             type: public
             preview: Aaf6AcZ9
             scopes: []
-            created_at: '2023-03-24T10:10:10Z'
-            updated_at: '2023-03-24T10:10:10Z'
+            created_at: "2023-03-24T10:10:10Z"
+            updated_at: "2023-03-24T10:10:10Z"
           - id: sup_pk_0D1FIpM6xqueY3L4Y994nseK0xMfOjPAU
             name: Test Key
             type: secret
@@ -6600,8 +6600,8 @@ components:
               - payment_instruments
               - readers.read
               - readers.write
-            created_at: '2023-03-25T09:10:10Z'
-            updated_at: '2023-03-25T09:10:10Z'
+            created_at: "2023-03-25T09:10:10Z"
+            updated_at: "2023-03-25T09:10:10Z"
       required:
         - items
         - total_count
@@ -6675,7 +6675,7 @@ components:
           type: string
           format: date-time
         permissions:
-          $ref: '#/components/schemas/Permissions'
+          $ref: "#/components/schemas/Permissions"
         account_type:
           type: string
           enum:
@@ -6772,7 +6772,7 @@ components:
             - authorization_code
             - password
             - client_credentials
-            - 'urn:ietf:params:oauth:grant-type:token-exchange'
+            - "urn:ietf:params:oauth:grant-type:token-exchange"
             - refresh_token
           nullable: true
           x-oapi-codegen-extra-tags:
@@ -6935,9 +6935,9 @@ components:
           type: object
           properties:
             classic:
-              $ref: '#/components/schemas/ClassicContext'
+              $ref: "#/components/schemas/ClassicContext"
             sig:
-              $ref: '#/components/schemas/SignatureContext'
+              $ref: "#/components/schemas/SignatureContext"
         sub:
           type: string
         aud:
@@ -6983,7 +6983,7 @@ components:
       type: object
       properties:
         otp_channel:
-          $ref: '#/components/schemas/OTPChannel'
+          $ref: "#/components/schemas/OTPChannel"
         otp_recipient:
           description: |
             Masked recipient of the OTP.
@@ -7078,7 +7078,7 @@ components:
           description: The Unix timestamp marking when the user accepted Terms of Service agreement.
           type: string
           format: date-time
-          example: '2023-03-25T09:10:10Z'
+          example: "2023-03-25T09:10:10Z"
         ip_address:
           description: The IP address from which the user accepted Terms of Service agreement.
           type: string
@@ -7086,7 +7086,7 @@ components:
         user_agent:
           description: The user agent of the browser from which the user accepted Terms of Service agreement.
           type: string
-          example: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/113.0'
+          example: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/113.0"
       required:
         - accepted_at
         - ip_address
@@ -7118,19 +7118,19 @@ components:
             Time the End-User was created.
           type: string
           format: date-time
-          example: '2022-05-03T14:46:44.185202Z'
+          example: "2022-05-03T14:46:44.185202Z"
         updated_at:
           description: |
             Time the End-User's information was last updated.
           type: string
           format: date-time
-          example: '2022-05-03T14:46:44.185202Z'
+          example: "2022-05-03T14:46:44.185202Z"
         blocked_at:
           description: |
             Time the End-User was blocked.
           type: string
           format: date-time
-          example: '2022-05-03T14:46:44.185202Z'
+          example: "2022-05-03T14:46:44.185202Z"
         email:
           description: |
             End-User's preferred e-mail address. Its value MUST conform to the RFC 5322 [RFC5322] addr-spec syntax. The RP MUST NOT rely upon this value being unique, for unique identification use ID instead.
@@ -7142,9 +7142,9 @@ components:
           type: boolean
           example: true
         phone_number:
-          description: 'End-User''s preferred telephone number in E.164 [E.164] format. For example, +1 (425) 555-1212 or +56 (2) 687 2400. Can be empty if the user doesn''t have phone number set.'
+          description: "End-User's preferred telephone number in E.164 [E.164] format. For example, +1 (425) 555-1212 or +56 (2) 687 2400. Can be empty if the user doesn't have phone number set."
           type: string
-          example: '+55115525632555'
+          example: "+55115525632555"
         phone_number_verified:
           description: |
             True if the End-User's phone number has been verified; otherwise false. When this Claim Value is true, this means that we took affirmative steps to ensure that this phone number was controlled by the End-User at the time the verification was performed.
@@ -7159,7 +7159,7 @@ components:
           type: string
           example: de-AT
         tos_acceptance:
-          $ref: '#/components/schemas/ToSAcceptance'
+          $ref: "#/components/schemas/ToSAcceptance"
         marketing_consent:
           description: |
             True if the user has given consent to marketing communication.
@@ -7168,25 +7168,25 @@ components:
           example: true
           readOnly: true
         zoneinfo:
-          $ref: '#/components/schemas/Zoneinfo'
+          $ref: "#/components/schemas/Zoneinfo"
         name:
-          description: 'End-User''s full name in displayable form including all name parts, possibly including titles and suffixes, ordered according to the End-User''s locale and preferences.'
+          description: "End-User's full name in displayable form including all name parts, possibly including titles and suffixes, ordered according to the End-User's locale and preferences."
           type: string
           example: Anna Maria Sophie Müller
         nickname:
-          description: 'Casual name of the End-User that may or may not be the same as the given_name. For instance, a nickname value of Mike might be returned alongside a given_name value of Michael.'
+          description: "Casual name of the End-User that may or may not be the same as the given_name. For instance, a nickname value of Mike might be returned alongside a given_name value of Michael."
           type: string
           example: An
         given_name:
-          description: 'Given name(s) or first name(s) of the End-User. Note that in some cultures, people can have multiple given names; all can be present, with the names being separated by space characters.'
+          description: "Given name(s) or first name(s) of the End-User. Note that in some cultures, people can have multiple given names; all can be present, with the names being separated by space characters."
           type: string
           example: Anna
         middle_name:
-          description: 'Middle name(s) of the End-User. Note that in some cultures, people can have multiple middle names; all can be present, with the names being separated by space characters. Also note that in some cultures, middle names are not used.'
+          description: "Middle name(s) of the End-User. Note that in some cultures, people can have multiple middle names; all can be present, with the names being separated by space characters. Also note that in some cultures, middle names are not used."
           type: string
           example: Maria Sophie
         family_name:
-          description: 'Surname(s) or last name(s) of the End-User. Note that in some cultures, people can have multiple family names or no family name; all can be present, with the names being separated by space characters.'
+          description: "Surname(s) or last name(s) of the End-User. Note that in some cultures, people can have multiple family names or no family name; all can be present, with the names being separated by space characters."
           type: string
           example: Müller
         gender:
@@ -7194,11 +7194,11 @@ components:
           type: string
           example: female
         birthdate:
-          description: 'End-User''s birthday, represented as an ISO 8601:2004 [ISO8601‑2004] YYYY-MM-DD format.'
+          description: "End-User's birthday, represented as an ISO 8601:2004 [ISO8601‑2004] YYYY-MM-DD format."
           type: string
           format: date-time
         address:
-          $ref: '#/components/schemas/Address'
+          $ref: "#/components/schemas/Address"
         mfa_on_login_enabled:
           description: |
             True if the End-User's wants to enabled MFA on login, false otherwise.
@@ -7214,13 +7214,13 @@ components:
             Time the End-User's password was last updated.
           type: string
           format: date-time
-          example: '2022-05-03T14:46:44.185202Z'
+          example: "2022-05-03T14:46:44.185202Z"
         picture:
           description: |
             URL of the End-User's profile picture. This URL refers to an image file (for example, a PNG, JPEG, or GIF image file), rather than to a Web page containing an image.
           type: string
           format: uri
-          example: 'https://usercontent.sumup.com/u/44ca0f5b-813b-46e1-aee7-e6242010662e.png'
+          example: "https://usercontent.sumup.com/u/44ca0f5b-813b-46e1-aee7-e6242010662e.png"
         is_virtual:
           description: |
             Indicates whether a user is a managed user. Managed users are team members for which the owner of the merchant has set the password. These users have not gone through an invitation flow and cannot own merchants of their own or be invited to other merchants.
@@ -7284,7 +7284,7 @@ components:
           description: The client application's reported version. Not to confuse with the device operating system version.
           type: string
         name:
-          description: 'A human readable name for the device. In case of mobile phone''s, it may be a name recognizable to the owner of the device.'
+          description: "A human readable name for the device. In case of mobile phone's, it may be a name recognizable to the owner of the device."
           type: string
         push_token:
           description: |
@@ -7311,7 +7311,7 @@ components:
         - disabled
         - unknown
     Membership:
-      description: 'A membership associates a user with a resource, memberships is defined by user, resource, resource type, and associated roles.'
+      description: "A membership associates a user with a resource, memberships is defined by user, resource, resource type, and associated roles."
       type: object
       properties:
         id:
@@ -7353,22 +7353,22 @@ components:
           description: The timestamp of when the membership was created.
           type: string
           format: date-time
-          example: '2023-01-20T15:16:17Z'
+          example: "2023-01-20T15:16:17Z"
         updated_at:
           description: The timestamp of when the membership was last updated.
           type: string
           format: date-time
-          example: '2023-01-20T15:16:17Z'
+          example: "2023-01-20T15:16:17Z"
         invite:
-          $ref: '#/components/schemas/Invite'
+          $ref: "#/components/schemas/Invite"
         status:
-          $ref: '#/components/schemas/MembershipStatus'
+          $ref: "#/components/schemas/MembershipStatus"
         metadata:
-          $ref: '#/components/schemas/Metadata'
+          $ref: "#/components/schemas/Metadata"
         attributes:
-          $ref: '#/components/schemas/Attributes'
+          $ref: "#/components/schemas/Attributes"
         resource:
-          $ref: '#/components/schemas/MembershipResource'
+          $ref: "#/components/schemas/MembershipResource"
       required:
         - id
         - resource_id
@@ -7403,7 +7403,7 @@ components:
           description: Logo fo the resource.
           type: string
           format: uri
-          example: 'https://images.sumup.com/img_2x4y6z8a0b1c2d3e4f5g6h7j8k.png'
+          example: "https://images.sumup.com/img_2x4y6z8a0b1c2d3e4f5g6h7j8k.png"
           maxLength: 256
           x-go-type: apitypes.URI
           x-go-type-import:
@@ -7412,14 +7412,14 @@ components:
           description: The timestamp of when the membership resource was created.
           type: string
           format: date-time
-          example: '2023-01-20T15:16:17Z'
+          example: "2023-01-20T15:16:17Z"
         updated_at:
           description: The timestamp of when the membership resource was last updated.
           type: string
           format: date-time
-          example: '2023-01-20T15:16:17Z'
+          example: "2023-01-20T15:16:17Z"
         attributes:
-          $ref: '#/components/schemas/Attributes'
+          $ref: "#/components/schemas/Attributes"
       required:
         - id
         - type
@@ -7429,7 +7429,7 @@ components:
         - attributes
       title: Resource
     Member:
-      description: 'A member is user within specific resource identified by resource id, resource type, and associated roles.'
+      description: "A member is user within specific resource identified by resource id, resource type, and associated roles."
       type: object
       properties:
         id:
@@ -7461,22 +7461,22 @@ components:
           description: The timestamp of when the member was created.
           type: string
           format: date-time
-          example: '2023-01-20T15:16:17Z'
+          example: "2023-01-20T15:16:17Z"
         updated_at:
           description: The timestamp of when the member was last updated.
           type: string
           format: date-time
-          example: '2023-01-20T15:16:17Z'
+          example: "2023-01-20T15:16:17Z"
         user:
-          $ref: '#/components/schemas/MembershipUser'
+          $ref: "#/components/schemas/MembershipUser"
         invite:
-          $ref: '#/components/schemas/Invite'
+          $ref: "#/components/schemas/Invite"
         status:
-          $ref: '#/components/schemas/MembershipStatus'
+          $ref: "#/components/schemas/MembershipStatus"
         metadata:
-          $ref: '#/components/schemas/Metadata'
+          $ref: "#/components/schemas/Metadata"
         attributes:
-          $ref: '#/components/schemas/Attributes'
+          $ref: "#/components/schemas/Attributes"
       example:
         id: mem_WZsm7QTPhVrompscmPhoGTXXcrd58fr9MOhP
         roles:
@@ -7491,8 +7491,8 @@ components:
           - create_referral
           - developer_settings_edit
           - developer_settings_access
-        created_at: '2023-01-20T15:16:17Z'
-        updated_at: '2023-02-20T15:16:17Z'
+        created_at: "2023-01-20T15:16:17Z"
+        updated_at: "2023-02-20T15:16:17Z"
         user:
           id: 44ca0f5b-813b-46e1-aee7-e6242010662e
           email: example@sumup.com
@@ -7520,7 +7520,7 @@ components:
         expires_at:
           type: string
           format: date-time
-          example: '2023-01-20T15:16:17Z'
+          example: "2023-01-20T15:16:17Z"
       required:
         - email
         - expires_at
@@ -7534,7 +7534,7 @@ components:
           type: string
           example: 44ca0f5b-813b-46e1-aee7-e6242010662e
         email:
-          description: 'End-User''s preferred e-mail address. Its value MUST conform to the RFC 5322 [RFC5322] addr-spec syntax. The RP MUST NOT rely upon this value being unique, for unique identification use ID instead.'
+          description: "End-User's preferred e-mail address. Its value MUST conform to the RFC 5322 [RFC5322] addr-spec syntax. The RP MUST NOT rely upon this value being unique, for unique identification use ID instead."
           type: string
           example: example@sumup.com
         mfa_on_login_enabled:
@@ -7550,7 +7550,7 @@ components:
           type: boolean
           example: false
         disabled_at:
-          description: 'Time when the user has been disabled. Applies only to virtual users (`virtual_user: true`).'
+          description: "Time when the user has been disabled. Applies only to virtual users (`virtual_user: true`)."
           type: string
           format: date-time
         nickname:
@@ -7558,12 +7558,12 @@ components:
           type: string
           example: Test User
         picture:
-          description: 'URL of the End-User''s profile picture. This URL refers to an image file (for example, a PNG, JPEG, or GIF image file), rather than to a Web page containing an image.'
+          description: "URL of the End-User's profile picture. This URL refers to an image file (for example, a PNG, JPEG, or GIF image file), rather than to a Web page containing an image."
           type: string
           format: uri
-          example: 'https://usercontent.sumup.com/44ca0f5b-813b-46e1-aee7-e6242010662e.png'
+          example: "https://usercontent.sumup.com/44ca0f5b-813b-46e1-aee7-e6242010662e.png"
         classic:
-          $ref: '#/components/schemas/MembershipUserClassic'
+          $ref: "#/components/schemas/MembershipUserClassic"
       required:
         - id
         - email
@@ -7616,17 +7616,17 @@ components:
           type: boolean
           example: true
         metadata:
-          $ref: '#/components/schemas/Metadata'
+          $ref: "#/components/schemas/Metadata"
         created_at:
           description: The timestamp of when the role was created.
           type: string
           format: date-time
-          example: '2023-01-20T15:16:17Z'
+          example: "2023-01-20T15:16:17Z"
         updated_at:
           description: The timestamp of when the role was last updated.
           type: string
           format: date-time
-          example: '2023-01-20T15:16:17Z'
+          example: "2023-01-20T15:16:17Z"
       required:
         - id
         - name
@@ -7636,7 +7636,7 @@ components:
         - updated_at
       title: Role
     Metadata:
-      description: 'Set of user-defined key-value pairs attached to the object. Partial updates are not supported. When updating, always submit whole metadata.'
+      description: "Set of user-defined key-value pairs attached to the object. Partial updates are not supported. When updating, always submit whole metadata."
       type: object
       example: {}
       additionalProperties:
@@ -7652,25 +7652,25 @@ components:
       type: object
       properties:
         id:
-          $ref: '#/components/schemas/ReaderID'
+          $ref: "#/components/schemas/ReaderID"
         name:
-          $ref: '#/components/schemas/ReaderName'
+          $ref: "#/components/schemas/ReaderName"
         status:
-          $ref: '#/components/schemas/ReaderStatus'
+          $ref: "#/components/schemas/ReaderStatus"
         device:
-          $ref: '#/components/schemas/ReaderDevice'
+          $ref: "#/components/schemas/ReaderDevice"
         meta:
-          $ref: '#/components/schemas/Meta'
+          $ref: "#/components/schemas/Meta"
         created_at:
           description: The timestamp of when the reader was created.
           type: string
           format: date-time
-          example: '2023-01-18T15:16:17Z'
+          example: "2023-01-18T15:16:17Z"
         updated_at:
           description: The timestamp of when the reader was last updated.
           type: string
           format: date-time
-          example: '2023-01-20T15:16:17Z'
+          example: "2023-01-20T15:16:17Z"
       required:
         - id
         - name
@@ -7692,7 +7692,7 @@ components:
       x-go-type-import:
         path: github.com/sumup/identity/apps/portier-backend/internal/domain/readers
     ReaderName:
-      description: 'Custom human-readable, user-defined name for easier identification of the reader.'
+      description: "Custom human-readable, user-defined name for easier identification of the reader."
       type: string
       example: Frontdesk
       maxLength: 500
@@ -7797,8 +7797,8 @@ components:
         device:
           identifier: U1DT3NA00-CN
           model: solo
-        created_at: '2023-05-09T14:50:20.214Z'
-        updated_at: '2023-05-09T14:52:58.714Z'
+        created_at: "2023-05-09T14:50:20.214Z"
+        updated_at: "2023-05-09T14:52:58.714Z"
   links:
     UpdateReaderByID:
       operationId: UpdateReader
@@ -7817,12 +7817,12 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/BankAccountPayload'
+            $ref: "#/components/schemas/BankAccountPayload"
     CheckoutCreate:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/CheckoutCreateRequest'
+            $ref: "#/components/schemas/CheckoutCreateRequest"
           examples:
             Checkout:
               description: Standard request body for creating a checkout
@@ -7834,9 +7834,9 @@ components:
                 description: Purchase
                 id: 2b79757a-de87-4a2e-90e4-b17c947c730d
                 status: PAID
-                date: '2020-02-29T10:56:56+00:00'
+                date: "2020-02-29T10:56:56+00:00"
                 merchant_name: John Doe LTD
-                redirect_url: 'https://sumup.com'
+                redirect_url: "https://sumup.com"
             Checkout3DS:
               description: Create a 3DS checkout
               value:
@@ -7845,9 +7845,9 @@ components:
                 currency: EUR
                 merchant_code: MH4H92C7
                 description: Purchase
-                return_url: 'http://example.com/'
+                return_url: "http://example.com/"
                 customer_id: 831ff8d4cd5958ab5670
-                redirect_url: 'https://mysite.com/completed_purchase'
+                redirect_url: "https://mysite.com/completed_purchase"
             CheckoutAPM:
               description: Create an Alternative Payment Method checkout
               value:
@@ -7855,13 +7855,13 @@ components:
                 amount: 10.1
                 currency: EUR
                 merchant_code: MH4H92C7
-                redirect_url: 'https://mysite.com/completed_purchase'
+                redirect_url: "https://mysite.com/completed_purchase"
     CheckoutProcess:
       description: Details of the payment instrument for processing the checkout.
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/CheckoutProcessMixin'
+            $ref: "#/components/schemas/CheckoutProcessMixin"
           examples:
             ProcessCard:
               description: Process a checkout with a card
@@ -7870,17 +7870,17 @@ components:
                 installments: 1
                 mandate:
                   type: recurrent
-                  user_agent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.104 Safari/537.36'
+                  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.104 Safari/537.36"
                   user_ip: 172.217.169.174
                 card:
                   type: VISA
                   name: John Doe
-                  number: '1234567890123456'
-                  expiry_year: '2023'
-                  expiry_month: '01'
-                  cvv: '123'
-                  zip_code: '12345'
-                  last_4_digits: '3456'
+                  number: "1234567890123456"
+                  expiry_year: "2023"
+                  expiry_month: "01"
+                  cvv: "123"
+                  zip_code: "12345"
+                  last_4_digits: "3456"
             ProcessToken:
               description: Process a checkout with a token
               value:
@@ -7900,7 +7900,7 @@ components:
                   address:
                     country: BR
                     city: São Paulo
-                    line1: 'Rua Gilberto Sabino, 215'
+                    line1: "Rua Gilberto Sabino, 215"
                     state: SP
                     postal_code: 05425-020
             ProcessiDeal:
@@ -7928,7 +7928,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/Customer'
+            $ref: "#/components/schemas/Customer"
     CustomerUpdate:
       content:
         application/json:
@@ -7936,32 +7936,32 @@ components:
             type: object
             properties:
               personal_details:
-                $ref: '#/components/schemas/PersonalDetails'
+                $ref: "#/components/schemas/PersonalDetails"
     DoingBusinessAs:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/DoingBusinessAsPayload'
+            $ref: "#/components/schemas/DoingBusinessAsPayload"
     MerchantProfile:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/MerchantProfilePayload'
+            $ref: "#/components/schemas/MerchantProfilePayload"
     MerchantSettings:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/MerchantSettingsPayload'
+            $ref: "#/components/schemas/MerchantSettingsPayload"
     PaymentInstrument:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/PaymentInstrumentCard'
+            $ref: "#/components/schemas/PaymentInstrumentCard"
     PersonalProfile:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/PersonalProfilePayload'
+            $ref: "#/components/schemas/PersonalProfilePayload"
     Refund:
       content:
         application/json:
@@ -7970,7 +7970,7 @@ components:
             type: object
             properties:
               amount:
-                description: 'Amount to be refunded. Eligible amount can''t exceed the amount of the transaction and varies based on country and currency. If you do not specify a value, the system performs a full refund of the transaction.'
+                description: "Amount to be refunded. Eligible amount can't exceed the amount of the transaction and varies based on country and currency. If you do not specify a value, the system performs a full refund of the transaction."
                 type: number
                 format: float
   responses:
@@ -7981,13 +7981,13 @@ components:
           schema:
             type: array
             items:
-              $ref: '#/components/schemas/BankAccount'
+              $ref: "#/components/schemas/BankAccount"
     Checkout:
       description: Created
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/Checkout'
+            $ref: "#/components/schemas/Checkout"
           examples:
             Checkout:
               description: Standard response body for a successfully created checkout
@@ -7998,11 +7998,11 @@ components:
                 merchant_code: MCNPLE22
                 merchant_country: DE
                 description: My Checkout
-                return_url: 'http://example.com'
+                return_url: "http://example.com"
                 id: 88fcf8de-304d-4820-8f1c-ec880290eb92
                 status: PENDING
-                date: '2020-02-29T10:56:56+00:00'
-                valid_until: '2020-02-29T10:56:56+00:00'
+                date: "2020-02-29T10:56:56+00:00"
+                valid_until: "2020-02-29T10:56:56+00:00"
                 customer_id: 831ff8d4cd5958ab5670
                 mandate:
                   type: recurrent
@@ -8013,7 +8013,7 @@ components:
                     transaction_code: TEENSK4W2K
                     amount: 10.1
                     currency: EUR
-                    timestamp: '2020-02-29T10:56:56.876Z'
+                    timestamp: "2020-02-29T10:56:56.876Z"
                     status: SUCCESSFUL
                     payment_type: ECOM
                     installments_count: 1
@@ -8021,7 +8021,7 @@ components:
                     vat_amount: 6
                     tip_amount: 3
                     entry_mode: CUSTOMER_ENTRY
-                    auth_code: '012345'
+                    auth_code: "012345"
                     internal_id: 0
             Checkout3DS:
               description: Response body for a successfully created 3DS checkout
@@ -8030,19 +8030,19 @@ components:
                 amount: 10.1
                 currency: EUR
                 description: My Checkout
-                return_url: 'http://example.com'
+                return_url: "http://example.com"
                 id: 88fcf8de-304d-4820-8f1c-ec880290eb92
                 status: PENDING
-                date: '2020-02-29T10:56:56+00:00'
-                valid_until: '2020-02-29T10:56:56+00:00'
+                date: "2020-02-29T10:56:56+00:00"
+                valid_until: "2020-02-29T10:56:56+00:00"
                 customer_id: 831ff8d4cd5958ab5670
-                redirect_url: 'https://mysite.com/completed_purchase'
+                redirect_url: "https://mysite.com/completed_purchase"
                 transactions:
                   - id: 410fc44a-5956-44e1-b5cc-19c6f8d727a4
                     transaction_code: TEENSK4W2K
                     amount: 10.1
                     currency: EUR
-                    timestamp: '2020-02-29T10:56:56.876Z'
+                    timestamp: "2020-02-29T10:56:56.876Z"
                     status: SUCCESSFUL
                     payment_type: ECOM
                     installments_count: 1
@@ -8050,30 +8050,30 @@ components:
                     vat_amount: 6
                     tip_amount: 3
                     entry_mode: CUSTOMER_ENTRY
-                    auth_code: '012345'
+                    auth_code: "012345"
                     internal_id: 0
             CheckoutAPM:
-              description: 'Response body for APMs, including Blik, iDeal, ...'
+              description: "Response body for APMs, including Blik, iDeal, ..."
               value:
                 checkout_reference: 8ea25ec3-3293-40e9-a165-6d7f3b3073c5
                 amount: 10.1
                 currency: EUR
                 merchant_code: MCNPLE22
                 description: My Checkout
-                return_url: 'http://example.com'
+                return_url: "http://example.com"
                 id: 88fcf8de-304d-4820-8f1c-ec880290eb92
                 status: PENDING
-                date: '2021-06-29T11:08:36.000+00:00'
+                date: "2021-06-29T11:08:36.000+00:00"
                 merchant_name: My company
                 merchant_country: DE
-                redirect_url: 'https://sumup.com'
+                redirect_url: "https://sumup.com"
                 purpose: CHECKOUT
                 transactions:
                   - id: 410fc44a-5956-44e1-b5cc-19c6f8d727a4
                     transaction_code: TEENSK4W2K
                     amount: 10.1
                     currency: EUR
-                    timestamp: '2020-02-29T10:56:56.876Z'
+                    timestamp: "2020-02-29T10:56:56.876Z"
                     status: SUCCESSFUL
                     payment_type: ECOM
                     installments_count: 1
@@ -8081,7 +8081,7 @@ components:
                     vat_amount: 6
                     tip_amount: 3
                     entry_mode: CUSTOMER_ENTRY
-                    auth_code: '012345'
+                    auth_code: "012345"
                     internal_id: 0
     CheckoutList:
       description: OK
@@ -8090,19 +8090,19 @@ components:
           schema:
             type: array
             items:
-              $ref: '#/components/schemas/CheckoutSuccess'
+              $ref: "#/components/schemas/CheckoutSuccess"
     CheckoutRetrieve:
       description: OK
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/CheckoutSuccess'
+            $ref: "#/components/schemas/CheckoutSuccess"
     CheckoutProcess:
       description: OK
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/CheckoutSuccess'
+            $ref: "#/components/schemas/CheckoutSuccess"
           examples:
             CheckoutSuccessCard:
               description: Successfully processed checkout with a card
@@ -8112,11 +8112,11 @@ components:
                 currency: EUR
                 merchant_code: MH4H92C7
                 description: Purchase
-                return_url: 'http://example.com'
+                return_url: "http://example.com"
                 id: 4e425463-3e1b-431d-83fa-1e51c2925e99
                 status: PENDING
-                date: '2020-02-29T10:56:56+00:00'
-                valid_until: '2020-02-29T10:56:56+00:00'
+                date: "2020-02-29T10:56:56+00:00"
+                valid_until: "2020-02-29T10:56:56+00:00"
                 customer_id: 831ff8d4cd5958ab5670
                 mandate:
                   type: recurrent
@@ -8127,7 +8127,7 @@ components:
                     transaction_code: TEENSK4W2K
                     amount: 10.1
                     currency: EUR
-                    timestamp: '2020-02-29T10:56:56.876Z'
+                    timestamp: "2020-02-29T10:56:56.876Z"
                     status: SUCCESSFUL
                     payment_type: ECOM
                     installments_count: 1
@@ -8135,7 +8135,7 @@ components:
                     vat_amount: 6
                     tip_amount: 3
                     entry_mode: CUSTOMER_ENTRY
-                    auth_code: '053201'
+                    auth_code: "053201"
                     internal_id: 1763892018
                 transaction_code: TEENSK4W2K
                 transaction_id: 410fc44a-5956-44e1-b5cc-19c6f8d727a4
@@ -8149,11 +8149,11 @@ components:
                 description: Purchase with token
                 id: 4e425463-3e1b-431d-83fa-1e51c2925e99
                 status: PENDING
-                date: '2020-02-29T10:56:56+00:00'
+                date: "2020-02-29T10:56:56+00:00"
                 transaction_code: TEENSK4W2K
                 transaction_id: 410fc44a-5956-44e1-b5cc-19c6f8d727a4
                 merchant_name: Sample Merchant
-                redirect_url: 'https://mysite.com/completed_purchase'
+                redirect_url: "https://mysite.com/completed_purchase"
                 customer_id: 831ff8d4cd5958ab5670
                 payment_instrument:
                   token: e76d7e5c-9375-4fac-a7e7-b19dc5302fbc
@@ -8162,7 +8162,7 @@ components:
                     transaction_code: TEENSK4W2K
                     amount: 10.1
                     currency: EUR
-                    timestamp: '2020-02-29T10:56:56.876Z'
+                    timestamp: "2020-02-29T10:56:56.876Z"
                     status: SUCCESSFUL
                     payment_type: ECOM
                     installments_count: 1
@@ -8170,7 +8170,7 @@ components:
                     vat_amount: 6
                     tip_amount: 3
                     entry_mode: CUSTOMER_ENTRY
-                    auth_code: '053201'
+                    auth_code: "053201"
                     internal_id: 1763892018
             CheckoutSuccessBoleto:
               description: Successfully processed checkout with Boleto
@@ -8182,12 +8182,12 @@ components:
                 description: Boleto checkout
                 id: 4e425463-3e1b-431d-83fa-1e51c2925e99
                 status: PENDING
-                date: '2021-07-06T12:34:02.000+00:00'
+                date: "2021-07-06T12:34:02.000+00:00"
                 merchant_name: Sample shop
                 boleto:
-                  barcode: '34191090081790614310603072340007886840000000200'
-                  url: 'https://checkouts.sample.com/v0.1/checkouts/2e7a36cc-7897-446b-a966-952ab5f049ea/boleto'
-                redirect_url: 'https://website.com'
+                  barcode: "34191090081790614310603072340007886840000000200"
+                  url: "https://checkouts.sample.com/v0.1/checkouts/2e7a36cc-7897-446b-a966-952ab5f049ea/boleto"
+                redirect_url: "https://website.com"
                 purpose: CHECKOUT
                 transactions:
                   - id: debd2986-9852-4e86-8a8e-7ea9c87dd679
@@ -8197,7 +8197,7 @@ components:
                     vat_amount: 6
                     tip_amount: 3
                     currency: BRL
-                    timestamp: '2021-07-06T12:34:16.460+00:00'
+                    timestamp: "2021-07-06T12:34:16.460+00:00"
                     status: PENDING
                     payment_type: BOLETO
                     entry_mode: BOLETO
@@ -8207,26 +8207,26 @@ components:
               description: Successfully processed checkout with iDeal
               value:
                 next_step:
-                  url: 'https://r3.girogate.de/ti/simideal'
+                  url: "https://r3.girogate.de/ti/simideal"
                   method: GET
                   payload:
-                    tx: '961473700'
+                    tx: "961473700"
                     rs: ILnaUeQTKJ184fVrjGILrLjePX9E4rmz
                     cs: c8bc0ea231f8372431ca22d6f8319f8de0263d0b1705759ed27155f245f193c5
-                  full: 'https://r3.girogate.de/ti/simideal?tx=961473700&rs=ILnaUeQTKJ184fVrjGILrLjePX9E4rmz&cs=c8bc0ea231f8372431ca22d6f8319f8de0263d0b1705759ed27155f245f193c5'
+                  full: "https://r3.girogate.de/ti/simideal?tx=961473700&rs=ILnaUeQTKJ184fVrjGILrLjePX9E4rmz&cs=c8bc0ea231f8372431ca22d6f8319f8de0263d0b1705759ed27155f245f193c5"
                   mechanism:
                     - browser
             CheckoutSuccessBancontact:
               description: Successfully processed checkout with Bancontact
               value:
                 next_step:
-                  url: 'https://r3.girogate.de/ti/simbcmc'
+                  url: "https://r3.girogate.de/ti/simbcmc"
                   method: GET
                   payload:
-                    tx: '624788471'
+                    tx: "624788471"
                     rs: 5MioXoKt2Gwj9dLgqAX1bMRBuT5xTSdB
                     cs: 697edacdd9175f3f99542500fa0ff08280b66aaff3c2641a2e212e4b039473cc
-                  full: 'https://r3.girogate.de/ti/simbcmc?tx=624788471&rs=5MioXoKt2Gwj9dLgqAX1bMRBuT5xTSdB&cs=697edacdd9175f3f99542500fa0ff08280b66aaff3c2641a2e212e4b039473cc'
+                  full: "https://r3.girogate.de/ti/simbcmc?tx=624788471&rs=5MioXoKt2Gwj9dLgqAX1bMRBuT5xTSdB&cs=697edacdd9175f3f99542500fa0ff08280b66aaff3c2641a2e212e4b039473cc"
                   mechanism:
                     - browser
     CheckoutProcessAccepted:
@@ -8234,19 +8234,19 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/CheckoutAccepted'
+            $ref: "#/components/schemas/CheckoutAccepted"
     Customer:
       description: Created
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/Customer'
+            $ref: "#/components/schemas/Customer"
     CustomerCreate:
       description: Created
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/Customer'
+            $ref: "#/components/schemas/Customer"
     PaymentInstrumentList:
       description: OK
       content:
@@ -8254,31 +8254,31 @@ components:
           schema:
             type: array
             items:
-              $ref: '#/components/schemas/PaymentInstrumentResponse'
+              $ref: "#/components/schemas/PaymentInstrumentResponse"
     PaymentInstrument:
       description: OK
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/PaymentInstrumentCard'
+            $ref: "#/components/schemas/PaymentInstrumentCard"
     PaymentInstrumentCreate:
       description: Created
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/PaymentInstrumentResponse'
+            $ref: "#/components/schemas/PaymentInstrumentResponse"
     PersonalProfile:
       description: OK
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/PersonalProfile'
+            $ref: "#/components/schemas/PersonalProfile"
     Transaction:
       description: OK
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/TransactionFull'
+            $ref: "#/components/schemas/TransactionFull"
     NoBodyResponse:
       description: No Content
       content:
@@ -8302,7 +8302,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/Error'
+            $ref: "#/components/schemas/Error"
           examples:
             Invalid_Token:
               description: The access token is invalid or has expired.
@@ -8324,20 +8324,20 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ErrorForbidden'
+            $ref: "#/components/schemas/ErrorForbidden"
           examples:
             Forbidden:
               description: You do not have required scopes for making this request.
               value:
                 error_message: request_not_allowed
                 error_code: FORBIDDEN
-                status_code: '403'
+                status_code: "403"
     ErrorNotFound:
       description: Not Found
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/Error'
+            $ref: "#/components/schemas/Error"
           examples:
             Not_Found:
               description: The identified resource is not found on the server.
@@ -8349,7 +8349,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/Error'
+            $ref: "#/components/schemas/Error"
           examples:
             Checkout_Processed:
               description: The identified checkout resource is already processed.
@@ -8361,7 +8361,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/CompatError'
+            $ref: "#/components/schemas/CompatError"
     ListMemberships:
       description: Returns a list of Membership objects.
       content:
@@ -8372,7 +8372,7 @@ components:
               items:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Membership'
+                  $ref: "#/components/schemas/Membership"
               total_count:
                 type: integer
                 example: 3
@@ -8389,7 +8389,7 @@ components:
               items:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Member'
+                  $ref: "#/components/schemas/Member"
               total_count:
                 type: integer
                 example: 3
@@ -8405,7 +8405,7 @@ components:
               items:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Role'
+                  $ref: "#/components/schemas/Role"
             required:
               - items
   securitySchemes:
@@ -8424,9 +8424,9 @@ components:
         To maintain security of our users, we highly recommend that you use one of the [recommended OAuth 2.0 libraries](https://oauth.net/code/) for authentication.
       flows:
         authorizationCode:
-          authorizationUrl: 'https://api.sumup.com/authorize'
-          tokenUrl: 'https://api.sumup.com/token'
-          refreshUrl: 'https://api.sumup.com/token'
+          authorizationUrl: "https://api.sumup.com/authorize"
+          tokenUrl: "https://api.sumup.com/token"
+          refreshUrl: "https://api.sumup.com/token"
           scopes:
             payments: Make payments by creating and processing checkouts.
             transactions.history: View transactions and transaction history.
@@ -8437,7 +8437,7 @@ components:
             user.payout-settings: View and manage your payout settings.
             user.subaccounts: View and manage the user profile details of your employees.
         clientCredentials:
-          tokenUrl: 'https://api.sumup.com/token'
+          tokenUrl: "https://api.sumup.com/token"
           scopes:
             payments: Make payments by creating and processing checkouts.
             transactions.history: View transactions and transaction history.
@@ -8456,7 +8456,7 @@ tags:
       The Checkout model allows creating, listing, retrieving, processing and deactivating checkouts.
       A payment is completed by creating a checkout and then processing the checkout.
     x-core-objects:
-      - $ref: '#/components/schemas/Checkout'
+      - $ref: "#/components/schemas/Checkout"
   - name: Customers
     description: |
       Allow your regular customers to save their information with the Customers model.
@@ -8464,7 +8464,7 @@ tags:
 
       Depending on the needs you can allow, creating, listing or deactivating payment instruments & creating, retrieving and updating customers.
     x-core-objects:
-      - $ref: '#/components/schemas/Customer'
+      - $ref: "#/components/schemas/Customer"
   - name: Transactions
     description: |
       Retrieve details for a specific transaction by it’s `id`
@@ -8474,47 +8474,47 @@ tags:
       The Payouts model will allow you to track funds you’ve received from SumUp.
       You can receive a detailed payouts list with information like dates, fees, references and statuses, using the `List payouts` endpoint.
     x-core-objects:
-      - $ref: '#/components/schemas/FinancialPayouts'
+      - $ref: "#/components/schemas/FinancialPayouts"
   - name: Receipts
     description: The Receipts model obtains receipt-like details for specific transactions.
     x-core-objects:
-      - $ref: '#/components/schemas/Receipt'
+      - $ref: "#/components/schemas/Receipt"
   - name: Merchant
     description: Manage merchant profile.
     x-core-objects:
-      - $ref: '#/components/schemas/MerchantAccount'
+      - $ref: "#/components/schemas/MerchantAccount"
   - name: API Keys
     description: |-
       API Keys allow your application to gain programmatic access to SumUp.
       API Keys allow application to do authorized requests within the SumUp ecosystem. API Keys are scopes to single account and thus can't be used for endpoints where user presence is needed (for such endpoints it is necessary to use OAuth2).
     externalDocs:
       description: Authentication guide
-      url: 'https://developer.sumup.com/api/authentication'
+      url: "https://developer.sumup.com/api/authentication"
     x-core-objects:
-      - $ref: '#/components/schemas/APIKey'
+      - $ref: "#/components/schemas/APIKey"
   - name: Subaccounts
     description: Endpoints for managing merchant sub-accounts (operators).
-    x-deprecation-notice: 'Subaccounts API is deprecated, please use [Members](https://developer.sumup.com/api/members) API instead to manage your account members.'
+    x-deprecation-notice: "Subaccounts API is deprecated, please use [Members](https://developer.sumup.com/api/members) API instead to manage your account members."
     x-core-objects:
-      - $ref: '#/components/schemas/Operator'
+      - $ref: "#/components/schemas/Operator"
   - name: Members
     description: Endpoints to manage account members. Members are users that have membership within merchant accounts.
     x-core-objects:
-      - $ref: '#/components/schemas/Member'
+      - $ref: "#/components/schemas/Member"
     x-beta: true
   - name: Memberships
     description: Endpoints to manage user's memberships. Memberships are used to connect the user to merchant accounts and to grant them access to the merchant's resources via roles.
     x-core-objects:
-      - $ref: '#/components/schemas/Membership'
+      - $ref: "#/components/schemas/Membership"
     x-beta: true
   - name: Roles
-    description: 'Endpoints to manage custom roles. Custom roles allow you to tailor roles from individual permissions to match your needs. Once created, you can assign your custom roles to your merchant account members using the memberships.'
+    description: "Endpoints to manage custom roles. Custom roles allow you to tailor roles from individual permissions to match your needs. Once created, you can assign your custom roles to your merchant account members using the memberships."
     x-core-objects:
-      - $ref: '#/components/schemas/Role'
+      - $ref: "#/components/schemas/Role"
     x-beta: true
   - name: Readers
     description: |
       A reader represents a device that accepts payments. You can use the SumUp Solo to accept in-person payments.
     x-core-objects:
-      - $ref: '#/components/schemas/Reader'
+      - $ref: "#/components/schemas/Reader"
     x-beta: true

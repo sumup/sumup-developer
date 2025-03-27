@@ -32,22 +32,19 @@
     "tsc": "tsc",
     "prelint": "astro sync",
     "lint": "npx eslint",
-    "fmt": "prettier -w --cache --plugin prettier-plugin-astro ."
+    "lint:fix": "prettier -w --cache --plugin prettier-plugin-astro ."
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.4",
     "@astrojs/language-server": "^2.15.4",
-    "@astrojs/markdoc": "^0.12.9",
     "@astrojs/react": "^4.2.0",
     "@astrojs/rss": "^4.0.11",
     "@astrojs/sitemap": "^3.2.1",
     "@astrojs/starlight": "^0.32.1",
     "@astrojs/starlight-docsearch": "^0.6.0",
-    "@astrojs/starlight-markdoc": "^0.2.0",
     "@astrojs/ts-plugin": "^1.10.4",
     "@astrojs/vercel": "^8.0.7",
     "@expressive-code/plugin-collapsible-sections": "^0.40.2",
-    "@markdoc/markdoc": "^0.5.1",
     "@sindresorhus/slugify": "^2.2.1",
     "@sumup-oss/circuit-ui": "^9.7.5",
     "@sumup-oss/design-tokens": "^8.2.0",
@@ -79,6 +76,7 @@
     "sass": "^1.86.0",
     "starlight-image-zoom": "^0.11.1",
     "starlight-links-validator": "^0.14.3",
+    "starlight-llms-txt": "0.5.0",
     "tsx": "^4.19.3",
     "typescript": "^5.7.3",
     "typescript-eslint": "8.25.0"

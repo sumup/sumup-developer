@@ -1,0 +1,200 @@
+---
+title: Make a refund
+sidebar:
+  label: Refunds
+---
+
+import { Aside, Tabs, TabItem } from "@astrojs/starlight/components";
+import MultiCode from "@components/content/Multicode.astro";
+
+In this guide, you will learn how to refund a transaction for a payment you have already processed. You will go through the following steps:
+
+1.  [Look up a transaction ID (Optional)](#1-look-up-a-transaction-id)
+2.  [Refund a transaction](#2-refund-a-transaction) by using one of the available options:
+    - [Option A: Make a full refund](#option-a-make-a-full-refund)
+    - [Option B: Make a partial refund](#option-b-make-a-partial-refund)
+
+When you complete these steps, the payment you have previously processed through SumUp will be refunded either partially or in full.
+
+## Before you begin
+
+Here are the things that you need in order to complete the steps in this guide:
+
+- You have a merchant account with [SumUp](https://me.sumup.com/login) and have already filled in your [account details](https://me.sumup.com/account).
+  - For a **test account** reach out to our support team through this [contact form](/contact).
+- You have [registered your client application](/online-payments/introduction/register-app/) with SumUp.
+- You have a valid access token obtained via the [Authorization code flow](/online-payments/authorization/#authorization-code-flow).
+- You have processed successfully a payment checkout and you need to refund the transaction.
+
+<Aside type="note">
+
+Transactions are associated with active merchant user accounts. As a result, you _cannot_ use an access token obtained via the [Client credentials flow](/online-payments/authorization/#client-credentials-flow) to complete the steps in this guide.
+
+</Aside>
+
+## Steps
+
+### 1. Look up a transaction ID
+
+<Aside type="note">
+  If you already have the ID of the transaction you want to refund, you can skip
+  this step and continue with [Step 2](#2-refund-a-transaction).
+</Aside>
+
+To look up the identifier of a transaction for a payment checkout you have already completed, make a GET request to the `https://api.sumup.com/v0.1/checkouts/{id}` endpoint, where the value of the `{id}` path parameter is the identifier of the checkout resource.
+
+Following is a sample request for retrieving a checkout:
+
+<MultiCode>
+```bash
+curl -X GET \
+  https://api.sumup.com/v0.1/checkouts/4ebc2ed7-bb8c-4d4d-a110-08fd31301bf2 \
+  -H "Authorization: Bearer $SUMUP_API_KEY"
+```
+```go
+ctx := context.Background()
+client := sumup.NewClient().WithAuth(os.Getenv("SUMUP_API_KEY"))
+
+checkout, err := client.Checkouts.Get(ctx, "4ebc2ed7-bb8c-4d4d-a110-08fd31301bf2")
+
+````
+```php
+$checkoutsService = $sumup->getCheckoutService();
+$response = $checkoutsService->findById('4ebc2ed7-bb8c-4d4d-a110-08fd31301bf2');
+$checkoutReference = $response->getBody()->checkout_reference;
+$checkoutId = $response->getBody()->id;
+````
+
+</MultiCode >
+
+<Tabs>
+<TabItem label="cURL" >
+```bash
+curl -X GET \
+  https://api.sumup.com/v0.1/checkouts/4ebc2ed7-bb8c-4d4d-a110-08fd31301bf2 \
+  -H "Authorization: Bearer $SUMUP_API_KEY"
+```
+</TabItem >
+<TabItem label="Go">
+```go
+ctx := context.Background()
+client := sumup.NewClient().WithAuth(os.Getenv("SUMUP_API_KEY"))
+
+checkout, err := client.Checkouts.Get(ctx, "4ebc2ed7-bb8c-4d4d-a110-08fd31301bf2")
+
+````
+</TabItem >
+<TabItem label="PHP" >
+```php
+$checkoutsService = $sumup->getCheckoutService();
+$response = $checkoutsService->findById('4ebc2ed7-bb8c-4d4d-a110-08fd31301bf2');
+$checkoutReference = $response->getBody()->checkout_reference;
+$checkoutId = $response->getBody()->id;
+````
+
+</TabItem >
+</Tabs >
+
+The response contains a JSON body with the full details of the processed checkout resource. You can find the transaction ID in the `id` attribute of the respective transaction resource (`664200af-2b62-4142-9c73-a2a505310d78` in the sample response below).
+
+```json
+{
+  "checkout_reference": "CO287866",
+  ...
+  "id": "4ebc2ed7-bb8c-4d4d-a110-08fd31301bf2",
+  ...
+  "transactions": [
+    {
+      "id": "664200af-2b62-4142-9c73-a2a505310d78",
+      ...
+    }
+  ]
+}
+```
+
+### 2. Refund a transaction
+
+You can use one the two available options for refunding a processed transaction:
+
+- [Option A: Make a full refund](#option-a-make-a-full-refund)
+- [Option B: Make a partial refund](#option-b-make-a-partial-refund)
+
+#### Option A: Make a full refund
+
+To make a full refund for a processed transaction, make a POST request with an empty request body to the `https://api.sumup.com/v0.1/me/refund/{txn_id}` endpoint, where the value of the `{txn_id}` path parameter is the identifier of the transaction resource.
+
+Following is a sample request for making a full refund for the transaction with identifier `664200af-2b62-4142-9c73-a2a505310d78`:
+
+<Tabs>
+<TabItem label="cURL" >
+```bash
+curl -X POST \
+  https://api.sumup.com/v0.1/me/refund/19aa3cca-89f6-42d2-b462-463b0b53e959 \
+  -H "Authorization: Bearer $SUMUP_API_KEY"
+```
+</TabItem >
+<TabItem label="Go" >
+```go
+ctx := context.Background()
+client := sumup.NewClient().WithAuth(os.Getenv("SUMUP_API_KEY"))
+
+\_, err := client.Transactions.Refund(ctx, "19aa3cca-89f6-42d2-b462-463b0b53e959", sumup.RefundTransactionBody{})
+
+````
+</TabItem >
+<TabItem label="PHP" >
+```php
+$transactionsService = $sumup->getTransactionService();
+$response = $transactionsService->refund('19aa3cca-89f6-42d2-b462-463b0b53e959');
+````
+
+</TabItem >
+</Tabs >
+
+The response returns a 204 HTTP status code and contains no body.
+
+#### Option B: Make a partial refund
+
+To make a partial refund for a processed transaction, make a POST request to the `https://api.sumup.com/v0.1/me/refund/{txn_id}` endpoint, where the value of the `{txn_id}` path parameter is the identifier of the transaction resource.
+
+Unlike the option for a full refund, the request body for partial refunds should be a JSON object with the amount you want to refund for the transaction.
+
+Following is a sample request for making a partial refund for the amount of 24.42 EUR:
+
+<Tabs>
+<TabItem label="cURL" >
+```bash
+curl -X POST \
+  https://api.sumup.com/v0.1/me/refund/19aa3cca-89f6-42d2-b462-463b0b53e959 \
+  -H "Authorization: Bearer $SUMUP_API_KEY" \
+  -H 'Content-Type: application/json' \
+  -d '{"amount": 24.42}'
+```
+</TabItem >
+<TabItem label="Go" >
+```go
+ctx := context.Background()
+client := sumup.NewClient().WithAuth(os.Getenv("SUMUP_API_KEY"))
+
+amount := 12.24
+client.Transactions.Refund(ctx, "sa", sumup.RefundTransactionBody{
+Amount: &amount,
+})
+
+````
+</TabItem >
+<TabItem label="PHP" >
+```php
+$transactionsService = $sumup->getCheckoutService();
+$response = $transactionsService->refund('19aa3cca-89f6-42d2-b462-463b0b53e959', 24.42);
+````
+
+</TabItem >
+</Tabs >
+
+The response returns a 204 HTTP status code and contains no body.
+
+## Result
+
+You have successfully refunded a transaction (either partially or in full) for a payment you previously processed. The refunded amount will be credited to the same payment method the customer had used to pay with in the original transaction.
+The processing fees associated with the original transaction are not returned.

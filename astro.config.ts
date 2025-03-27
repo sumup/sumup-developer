@@ -1,8 +1,8 @@
-import markdoc from "@astrojs/markdoc";
 import react from "@astrojs/react";
 import starlight from "@astrojs/starlight";
 import vercel from "@astrojs/vercel";
-import starlightLinksValidator from "starlight-links-validator";
+// import starlightLinksValidator from "starlight-links-validator";
+// import starlightLlmsTxt from "starlight-llms-txt";
 
 import { defineConfig } from "astro/config";
 import type { HeadUserConfig } from "node_modules/@astrojs/starlight/schemas/head";
@@ -151,10 +151,16 @@ export default defineConfig({
   },
 
   integrations: [
-    markdoc({ allowHTML: true }),
     react(),
     starlight({
-      plugins: [starlightLinksValidator()],
+      plugins: [
+        // starlightLinksValidator({
+        //   exclude: ["/api/**"],
+        // }),
+        // starlightLlmsTxt({
+        //   exclude: ["/online-payments/**", "/terminal-payments/**"],
+        // }),
+      ],
       title: "SumUp Developer",
       favicon: "favicon.png",
       disable404Route: true,

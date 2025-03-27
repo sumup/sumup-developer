@@ -1,0 +1,109 @@
+---
+title: 3-D Secure flow
+sidebar:
+  order: 8
+---
+
+import { Aside } from "@astrojs/starlight/components";
+
+<Aside type="caution">
+  Affects all electronic payments accepted by merchants operating within the
+  European Union.
+</Aside>
+
+SumUp is supporting 3-D Secure payments for an additional layer of security when it comes to online transactions.
+
+EMVCo has developed 3D Secure 2, a new authentication protocol for payment card transactions, to meet the requirements of Strong Customer Authentication (SCA). This protocol will reduce fraud with its additional security layers, such as biometrics.
+
+<Aside type="note">
+
+The final deadline for implementing the SCA requirements was 31 December 2020.
+
+</Aside>
+
+[SCA (Strong Customer Authentication)](https://en.wikipedia.org/wiki/Strong_customer_authentication#cite_note-2) is an obligatory security measure that relies on two-factor authentication to verify the identity of the consumer in a payment transaction. As a result, these factors are strictly consumer-based. SCA can combine two of the following three factors, which must be strictly independent of each other:
+
+- Something the customer knows (e.g. Password, PIN)
+- Something the customer has (e.g. Phone, Token generator)
+- Something the customer is (e.g. Fingerprint, Face ID)
+
+Each of these elements must be independent from each other, to ensure the security of others is not compromised in the event of a security breach.
+
+## How it works
+
+For the flow to be followed, both the merchant profile and the customer credit card issuer must support 3-D Secure.
+
+The flow includes an additional step during checkout, that is shown depending on the card scheme and issuing bank.
+
+![Challenge screen](/img/guides/challenge_screen.png)
+
+## Integration for Single Payments
+
+To begin supporting the 3-D Secure flow, add the `redirect_url` parameter to your [create a checkout](/api/checkouts/create) request scheme. The parameter refers to a URL where the end user is redirected once the payment processing completes.
+
+Proceed with [processing the checkout](/api/checkouts/process) which will return a response object (`next_step`) containing necessary details for the following **required** step for processing the payment.
+
+Use the `next_step` content to redirect an end user to a challenge screen. The `next_step` object contains:
+
+| Parameter      | Value                                                                         |
+| -------------- | ----------------------------------------------------------------------------- |
+| `method`       | `POST`                                                                        |
+| `url`          | `https://issuing-bank.com/acs?reqid=B69D8F090C031E959A3BB2C4D7DFE7F8F7C09B28` |
+| `redirect_url` | `https://mysite.com/completed_purchase`                                       |
+| `mechanism`    | `iframe` or `browser`                                                         |
+| `payload`      | `object`                                                                      |
+
+<Aside type="caution">
+
+The **payload** object may contain zero or more key-value pairs, defining the payload request to be made. All provided parameters must be passed when redirecting an end-user.
+
+</Aside>
+
+As an example, the `payload` object may look like this:
+
+```js
+{
+  "arbitrary_param_name_1": "arbitrary_param_value_1",
+  "arbitrary_param_name_2": "arbitrary_param_value_2",
+  "arbitrary_param_name_3": "arbitrary_param_value_3",
+  "arbitrary_param_name_4": "arbitrary_param_value_4"
+}
+```
+
+One approach for accomplishing the end user redirection is through a form:
+
+```html
+<form
+  name="autoSubmitForm"
+  action="https://issuing-bank.com/acs?reqid=B69D8F090C031E959A3BB2C4D7DFE7F8F7C09B28"
+  method="POST"
+>
+  <input
+    type="hidden"
+    name="arbitrary_param_name_1"
+    value="arbitrary_param_value_1"
+  />
+  <input
+    type="hidden"
+    name="arbitrary_param_name_2"
+    value="arbitrary_param_value_2"
+  />
+  <input
+    type="hidden"
+    name="arbitrary_param_name_3"
+    value="arbitrary_param_value_3"
+  />
+  <input
+    type="hidden"
+    name="arbitrary_param_name_4"
+    value="arbitrary_param_value_4"
+  />
+</form>
+<script type="text/javascript">
+  document.autoSubmitForm.submit();
+</script>
+```
+
+Once the form is submitted, the end user will be redirected to their issuer’s bank authentication screen, where the end-user must provide an additional authentication (e.g. a challenge token, SMS or other data). After submitting, SumUp completes the payment and the end user is redirected to the `redirect_url` appointed at the checkout creation, through a `GET` request with the corresponding `checkout_id` query parameter.
+
+To confirm a checkout's status, make a `GET` request to the [retrieve a checkout](/api/checkouts/get) endpoint.

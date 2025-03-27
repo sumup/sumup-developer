@@ -7,7 +7,7 @@
 [![License](https://img.shields.io/github/license/sumup/sumup-developer)](./LICENSE)
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v2.1%20adopted-ff69b4.svg)](https://github.com/sumup/sumup-developer/tree/main/CODE_OF_CONDUCT.md)
 
-The SumUp's Developer Portal provides documentation for public APIs and integrations that let external developers build payment-accepting solutions for businesses. The website is built using [Astro](https://astro.build/) and [Markdoc](https://markdoc.dev/).
+The SumUp's Developer Portal provides documentation for public APIs and integrations that let external developers build payment-accepting solutions for businesses. The website is built using [Astro](https://astro.build/) and [Starlight](https://starlight.astro.build/).
 
 </div>
 

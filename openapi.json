@@ -65,9 +65,7 @@
                       "type": "array",
                       "items": {
                         "type": "object",
-                        "required": [
-                          "id"
-                        ],
+                        "required": ["id"],
                         "properties": {
                           "id": {
                             "description": "The ID of the payment method.",
@@ -161,20 +159,14 @@
             "apiKey": []
           },
           {
-            "oauth2": [
-              "payments"
-            ]
+            "oauth2": ["payments"]
           }
         ],
-        "tags": [
-          "Checkouts"
-        ],
+        "tags": ["Checkouts"],
         "x-codegen": {
           "method_name": "list_available_payment_methods"
         },
-        "x-scopes": [
-          "payments"
-        ]
+        "x-scopes": ["payments"]
       }
     },
     "/v0.1/checkouts": {
@@ -453,20 +445,14 @@
             "apiKey": []
           },
           {
-            "oauth2": [
-              "payments"
-            ]
+            "oauth2": ["payments"]
           }
         ],
-        "tags": [
-          "Checkouts"
-        ],
+        "tags": ["Checkouts"],
         "x-codegen": {
           "method_name": "create"
         },
-        "x-scopes": [
-          "payments"
-        ]
+        "x-scopes": ["payments"]
       },
       "get": {
         "operationId": "ListCheckouts",
@@ -536,20 +522,14 @@
             "apiKey": []
           },
           {
-            "oauth2": [
-              "payments"
-            ]
+            "oauth2": ["payments"]
           }
         ],
-        "tags": [
-          "Checkouts"
-        ],
+        "tags": ["Checkouts"],
         "x-codegen": {
           "method_name": "list"
         },
-        "x-scopes": [
-          "payments"
-        ]
+        "x-scopes": ["payments"]
       }
     },
     "/v0.1/checkouts/{id}": {
@@ -637,20 +617,14 @@
             "apiKey": []
           },
           {
-            "oauth2": [
-              "payments"
-            ]
+            "oauth2": ["payments"]
           }
         ],
-        "tags": [
-          "Checkouts"
-        ],
+        "tags": ["Checkouts"],
         "x-codegen": {
           "method_name": "get"
         },
-        "x-scopes": [
-          "payments"
-        ]
+        "x-scopes": ["payments"]
       },
       "put": {
         "operationId": "ProcessCheckout",
@@ -884,9 +858,7 @@
                           "cs": "c8bc0ea231f8372431ca22d6f8319f8de0263d0b1705759ed27155f245f193c5"
                         },
                         "full": "https://r3.girogate.de/ti/simideal?tx=961473700&rs=ILnaUeQTKJ184fVrjGILrLjePX9E4rmz&cs=c8bc0ea231f8372431ca22d6f8319f8de0263d0b1705759ed27155f245f193c5",
-                        "mechanism": [
-                          "browser"
-                        ]
+                        "mechanism": ["browser"]
                       }
                     }
                   },
@@ -902,9 +874,7 @@
                           "cs": "697edacdd9175f3f99542500fa0ff08280b66aaff3c2641a2e212e4b039473cc"
                         },
                         "full": "https://r3.girogate.de/ti/simbcmc?tx=624788471&rs=5MioXoKt2Gwj9dLgqAX1bMRBuT5xTSdB&cs=697edacdd9175f3f99542500fa0ff08280b66aaff3c2641a2e212e4b039473cc",
-                        "mechanism": [
-                          "browser"
-                        ]
+                        "mechanism": ["browser"]
                       }
                     }
                   }
@@ -1053,9 +1023,7 @@
             "oauth2": []
           }
         ],
-        "tags": [
-          "Checkouts"
-        ],
+        "tags": ["Checkouts"],
         "x-codegen": {
           "method_name": "process"
         },
@@ -1110,17 +1078,12 @@
                     "purpose": {
                       "description": "Purpose of the checkout creation initially",
                       "type": "string",
-                      "enum": [
-                        "SETUP_RECURRING_PAYMENT",
-                        "CHECKOUT"
-                      ]
+                      "enum": ["SETUP_RECURRING_PAYMENT", "CHECKOUT"]
                     },
                     "status": {
                       "description": "Current status of the checkout.",
                       "type": "string",
-                      "enum": [
-                        "EXPIRED"
-                      ],
+                      "enum": ["EXPIRED"],
                       "readOnly": true
                     },
                     "date": {
@@ -1263,20 +1226,14 @@
             "apiKey": []
           },
           {
-            "oauth2": [
-              "payments"
-            ]
+            "oauth2": ["payments"]
           }
         ],
-        "tags": [
-          "Checkouts"
-        ],
+        "tags": ["Checkouts"],
         "x-codegen": {
           "method_name": "deactivate"
         },
-        "x-scopes": [
-          "payments"
-        ]
+        "x-scopes": ["payments"]
       }
     },
     "/v0.1/customers": {
@@ -1383,20 +1340,14 @@
             "apiKey": []
           },
           {
-            "oauth2": [
-              "payment_instruments"
-            ]
+            "oauth2": ["payment_instruments"]
           }
         ],
-        "tags": [
-          "Customers"
-        ],
+        "tags": ["Customers"],
         "x-codegen": {
           "method_name": "create"
         },
-        "x-scopes": [
-          "payment_instruments"
-        ]
+        "x-scopes": ["payment_instruments"]
       }
     },
     "/v0.1/customers/{customer_id}": {
@@ -1504,20 +1455,14 @@
             "apiKey": []
           },
           {
-            "oauth2": [
-              "payment_instruments"
-            ]
+            "oauth2": ["payment_instruments"]
           }
         ],
-        "tags": [
-          "Customers"
-        ],
+        "tags": ["Customers"],
         "x-codegen": {
           "method_name": "get"
         },
-        "x-scopes": [
-          "payment_instruments"
-        ]
+        "x-scopes": ["payment_instruments"]
       },
       "put": {
         "operationId": "UpdateCustomer",
@@ -1627,20 +1572,14 @@
             "apiKey": []
           },
           {
-            "oauth2": [
-              "payment_instruments"
-            ]
+            "oauth2": ["payment_instruments"]
           }
         ],
-        "tags": [
-          "Customers"
-        ],
+        "tags": ["Customers"],
         "x-codegen": {
           "method_name": "update"
         },
-        "x-scopes": [
-          "payment_instruments"
-        ]
+        "x-scopes": ["payment_instruments"]
       }
     },
     "/v0.1/customers/{customer_id}/payment-instruments": {
@@ -1751,20 +1690,14 @@
             "apiKey": []
           },
           {
-            "oauth2": [
-              "payment_instruments"
-            ]
+            "oauth2": ["payment_instruments"]
           }
         ],
-        "tags": [
-          "Customers"
-        ],
+        "tags": ["Customers"],
         "x-codegen": {
           "method_name": "list_payment_instruments"
         },
-        "x-scopes": [
-          "payment_instruments"
-        ]
+        "x-scopes": ["payment_instruments"]
       }
     },
     "/v0.1/customers/{customer_id}/payment-instruments/{token}": {
@@ -1886,20 +1819,14 @@
             "apiKey": []
           },
           {
-            "oauth2": [
-              "payment_instruments"
-            ]
+            "oauth2": ["payment_instruments"]
           }
         ],
-        "tags": [
-          "Customers"
-        ],
+        "tags": ["Customers"],
         "x-codegen": {
           "method_name": "deactivate_payment_instrument"
         },
-        "x-scopes": [
-          "payment_instruments"
-        ]
+        "x-scopes": ["payment_instruments"]
       }
     },
     "/v0.1/me/refund/{txn_id}": {
@@ -1996,20 +1923,14 @@
             "apiKey": []
           },
           {
-            "oauth2": [
-              "payments"
-            ]
+            "oauth2": ["payments"]
           }
         ],
-        "tags": [
-          "Transactions"
-        ],
+        "tags": ["Transactions"],
         "x-codegen": {
           "method_name": "refund"
         },
-        "x-scopes": [
-          "payments"
-        ]
+        "x-scopes": ["payments"]
       }
     },
     "/v2.1/merchants/{merchant_code}/transactions": {
@@ -2124,20 +2045,14 @@
             "apiKey": []
           },
           {
-            "oauth2": [
-              "transactions.history"
-            ]
+            "oauth2": ["transactions.history"]
           }
         ],
-        "tags": [
-          "Transactions"
-        ],
+        "tags": ["Transactions"],
         "x-codegen": {
           "method_name": "get"
         },
-        "x-scopes": [
-          "transactions.history"
-        ]
+        "x-scopes": ["transactions.history"]
       }
     },
     "/v0.1/me/transactions": {
@@ -2244,20 +2159,14 @@
             "apiKey": []
           },
           {
-            "oauth2": [
-              "transactions.history"
-            ]
+            "oauth2": ["transactions.history"]
           }
         ],
-        "tags": [
-          "Transactions"
-        ],
+        "tags": ["Transactions"],
         "x-codegen": {
           "method_name": "get_deprecated"
         },
-        "x-scopes": [
-          "transactions.history"
-        ]
+        "x-scopes": ["transactions.history"]
       }
     },
     "/v2.1/merchants/{merchant_code}/transactions/history": {
@@ -2291,10 +2200,7 @@
             "schema": {
               "type": "string",
               "default": "ascending",
-              "enum": [
-                "ascending",
-                "descending"
-              ]
+              "enum": ["ascending", "descending"]
             }
           },
           {
@@ -2367,11 +2273,7 @@
               "type": "array",
               "items": {
                 "type": "string",
-                "enum": [
-                  "PAYMENT",
-                  "REFUND",
-                  "CHARGE_BACK"
-                ]
+                "enum": ["PAYMENT", "REFUND", "CHARGE_BACK"]
               }
             }
           },
@@ -2488,20 +2390,14 @@
             "apiKey": []
           },
           {
-            "oauth2": [
-              "transactions.history"
-            ]
+            "oauth2": ["transactions.history"]
           }
         ],
-        "tags": [
-          "Transactions"
-        ],
+        "tags": ["Transactions"],
         "x-codegen": {
           "method_name": "list"
         },
-        "x-scopes": [
-          "transactions.history"
-        ]
+        "x-scopes": ["transactions.history"]
       }
     },
     "/v0.1/me/transactions/history": {
@@ -2526,10 +2422,7 @@
             "schema": {
               "type": "string",
               "default": "ascending",
-              "enum": [
-                "ascending",
-                "descending"
-              ]
+              "enum": ["ascending", "descending"]
             }
           },
           {
@@ -2602,11 +2495,7 @@
               "type": "array",
               "items": {
                 "type": "string",
-                "enum": [
-                  "PAYMENT",
-                  "REFUND",
-                  "CHARGE_BACK"
-                ]
+                "enum": ["PAYMENT", "REFUND", "CHARGE_BACK"]
               }
             }
           },
@@ -2724,20 +2613,14 @@
             "apiKey": []
           },
           {
-            "oauth2": [
-              "transactions.history"
-            ]
+            "oauth2": ["transactions.history"]
           }
         ],
-        "tags": [
-          "Transactions"
-        ],
+        "tags": ["Transactions"],
         "x-codegen": {
           "method_name": "list_deprecated"
         },
-        "x-scopes": [
-          "transactions.history"
-        ]
+        "x-scopes": ["transactions.history"]
       }
     },
     "/v0.1/me": {
@@ -2816,22 +2699,14 @@
             "apiKey": []
           },
           {
-            "oauth2": [
-              "user.profile",
-              "user.profile_readonly"
-            ]
+            "oauth2": ["user.profile", "user.profile_readonly"]
           }
         ],
-        "tags": [
-          "Merchant"
-        ],
+        "tags": ["Merchant"],
         "x-codegen": {
           "method_name": "get"
         },
-        "x-scopes": [
-          "user.profile",
-          "user.profile_readonly"
-        ]
+        "x-scopes": ["user.profile", "user.profile_readonly"]
       }
     },
     "/v1.0/merchants/{merchant_code}/payouts": {
@@ -2875,10 +2750,7 @@
             "required": false,
             "schema": {
               "type": "string",
-              "enum": [
-                "json",
-                "csv"
-              ]
+              "enum": ["json", "csv"]
             }
           },
           {
@@ -2895,10 +2767,7 @@
             "required": false,
             "schema": {
               "type": "string",
-              "enum": [
-                "desc",
-                "asc"
-              ]
+              "enum": ["desc", "asc"]
             }
           }
         ],
@@ -2952,22 +2821,14 @@
             "apiKey": []
           },
           {
-            "oauth2": [
-              "user.profile",
-              "user.profile_readonly"
-            ]
+            "oauth2": ["user.profile", "user.profile_readonly"]
           }
         ],
-        "tags": [
-          "Payouts"
-        ],
+        "tags": ["Payouts"],
         "x-codegen": {
           "method_name": "list"
         },
-        "x-scopes": [
-          "user.profile",
-          "user.profile_readonly"
-        ]
+        "x-scopes": ["user.profile", "user.profile_readonly"]
       }
     },
     "/v0.1/me/financials/payouts": {
@@ -3002,10 +2863,7 @@
             "required": false,
             "schema": {
               "type": "string",
-              "enum": [
-                "json",
-                "csv"
-              ]
+              "enum": ["json", "csv"]
             }
           },
           {
@@ -3022,10 +2880,7 @@
             "required": false,
             "schema": {
               "type": "string",
-              "enum": [
-                "desc",
-                "asc"
-              ]
+              "enum": ["desc", "asc"]
             }
           }
         ],
@@ -3080,22 +2935,14 @@
             "apiKey": []
           },
           {
-            "oauth2": [
-              "user.profile",
-              "user.profile_readonly"
-            ]
+            "oauth2": ["user.profile", "user.profile_readonly"]
           }
         ],
-        "tags": [
-          "Payouts"
-        ],
+        "tags": ["Payouts"],
         "x-codegen": {
           "method_name": "list_deprecated"
         },
-        "x-scopes": [
-          "user.profile",
-          "user.profile_readonly"
-        ]
+        "x-scopes": ["user.profile", "user.profile_readonly"]
       }
     },
     "/v0.1/me/personal-profile": {
@@ -3153,22 +3000,14 @@
             "apiKey": []
           },
           {
-            "oauth2": [
-              "user.profile",
-              "user.profile_readonly"
-            ]
+            "oauth2": ["user.profile", "user.profile_readonly"]
           }
         ],
-        "tags": [
-          "Merchant"
-        ],
+        "tags": ["Merchant"],
         "x-codegen": {
           "method_name": "get_personal_profile"
         },
-        "x-scopes": [
-          "user.profile",
-          "user.profile_readonly"
-        ]
+        "x-scopes": ["user.profile", "user.profile_readonly"]
       }
     },
     "/v0.1/me/merchant-profile": {
@@ -3246,22 +3085,14 @@
             "apiKey": []
           },
           {
-            "oauth2": [
-              "user.profile",
-              "user.profile_readonly"
-            ]
+            "oauth2": ["user.profile", "user.profile_readonly"]
           }
         ],
-        "tags": [
-          "Merchant"
-        ],
+        "tags": ["Merchant"],
         "x-codegen": {
           "method_name": "get_merchant_profile"
         },
-        "x-scopes": [
-          "user.profile",
-          "user.profile_readonly"
-        ]
+        "x-scopes": ["user.profile", "user.profile_readonly"]
       }
     },
     "/v0.1/me/merchant-profile/doing-business-as": {
@@ -3319,22 +3150,14 @@
             "apiKey": []
           },
           {
-            "oauth2": [
-              "user.profile",
-              "user.profile_readonly"
-            ]
+            "oauth2": ["user.profile", "user.profile_readonly"]
           }
         ],
-        "tags": [
-          "Merchant"
-        ],
+        "tags": ["Merchant"],
         "x-codegen": {
           "method_name": "get_doing_business_as"
         },
-        "x-scopes": [
-          "user.profile",
-          "user.profile_readonly"
-        ]
+        "x-scopes": ["user.profile", "user.profile_readonly"]
       }
     },
     "/v1.1/merchants/{merchant_code}/bank-accounts": {
@@ -3442,9 +3265,7 @@
             ]
           }
         ],
-        "tags": [
-          "Merchant"
-        ],
+        "tags": ["Merchant"],
         "x-codegen": {
           "method_name": "list_bank_accounts"
         },
@@ -3552,9 +3373,7 @@
             ]
           }
         ],
-        "tags": [
-          "Merchant"
-        ],
+        "tags": ["Merchant"],
         "x-codegen": {
           "method_name": "list_bank_accounts_deprecated"
         },
@@ -3640,20 +3459,14 @@
             "apiKey": []
           },
           {
-            "oauth2": [
-              "user.payout-settings"
-            ]
+            "oauth2": ["user.payout-settings"]
           }
         ],
-        "tags": [
-          "Merchant"
-        ],
+        "tags": ["Merchant"],
         "x-codegen": {
           "method_name": "get_settings"
         },
-        "x-scopes": [
-          "user.payout-settings"
-        ]
+        "x-scopes": ["user.payout-settings"]
       }
     },
     "/v1.1/receipts/{id}": {
@@ -3762,9 +3575,7 @@
             "oauth2": []
           }
         ],
-        "tags": [
-          "Receipts"
-        ],
+        "tags": ["Receipts"],
         "x-codegen": {
           "method_name": "get"
         },
@@ -3883,12 +3694,8 @@
                           "is too low",
                           "this merchant can only accept 'EUR'"
                         ],
-                        "installments": [
-                          "not allowed"
-                        ],
-                        "card_type": [
-                          "is invalid"
-                        ]
+                        "installments": ["not allowed"],
+                        "card_type": ["is invalid"]
                       }
                     }
                   }
@@ -3996,23 +3803,15 @@
             "apiKey": []
           },
           {
-            "oauth2": [
-              "readers.write"
-            ]
+            "oauth2": ["readers.write"]
           }
         ],
-        "tags": [
-          "Readers"
-        ],
+        "tags": ["Readers"],
         "x-codegen": {
           "method_name": "create_checkout"
         },
-        "x-permissions": [
-          "readers_checkout_create"
-        ],
-        "x-scopes": [
-          "readers.write"
-        ]
+        "x-permissions": ["readers_checkout_create"],
+        "x-scopes": ["readers.write"]
       }
     },
     "/v0.1/merchants/{merchant_code}/readers/{id}/terminate": {
@@ -4143,23 +3942,15 @@
             "apiKey": []
           },
           {
-            "oauth2": [
-              "readers.write"
-            ]
+            "oauth2": ["readers.write"]
           }
         ],
-        "tags": [
-          "Readers"
-        ],
+        "tags": ["Readers"],
         "x-codegen": {
           "method_name": "terminate_checkout"
         },
-        "x-permissions": [
-          "readers_checkout_create"
-        ],
-        "x-scopes": [
-          "readers.write"
-        ]
+        "x-permissions": ["readers_checkout_create"],
+        "x-scopes": ["readers.write"]
       }
     },
     "/v0.1/merchants/{merchant_code}/api-keys": {
@@ -4219,14 +4010,10 @@
             "apiKey": []
           },
           {
-            "oauth2": [
-              "api_keys"
-            ]
+            "oauth2": ["api_keys"]
           }
         ],
-        "tags": [
-          "API Keys"
-        ],
+        "tags": ["API Keys"],
         "x-codegen": {
           "method_name": "list"
         },
@@ -4237,9 +4024,7 @@
             "object_id_param": "merchant_code"
           }
         ],
-        "x-scopes": [
-          "api_keys"
-        ]
+        "x-scopes": ["api_keys"]
       },
       "post": {
         "operationId": "CreateAPIKey",
@@ -4274,10 +4059,7 @@
                     "$ref": "#/components/schemas/OAuth2Scopes"
                   }
                 },
-                "required": [
-                  "name",
-                  "scopes"
-                ]
+                "required": ["name", "scopes"]
               }
             }
           }
@@ -4299,14 +4081,10 @@
             "apiKey": []
           },
           {
-            "oauth2": [
-              "api_keys:write"
-            ]
+            "oauth2": ["api_keys:write"]
           }
         ],
-        "tags": [
-          "API Keys"
-        ],
+        "tags": ["API Keys"],
         "x-codegen": {
           "method_name": "create"
         },
@@ -4317,9 +4095,7 @@
             "object_id_param": "merchant_code"
           }
         ],
-        "x-scopes": [
-          "api_keys:write"
-        ]
+        "x-scopes": ["api_keys:write"]
       }
     },
     "/v0.1/merchants/{merchant_code}/api-keys/{key_id}": {
@@ -4366,14 +4142,10 @@
             "apiKey": []
           },
           {
-            "oauth2": [
-              "api_keys"
-            ]
+            "oauth2": ["api_keys"]
           }
         ],
-        "tags": [
-          "API Keys"
-        ],
+        "tags": ["API Keys"],
         "x-codegen": {
           "method_name": "get"
         },
@@ -4384,9 +4156,7 @@
             "object_id_param": "merchant_code"
           }
         ],
-        "x-scopes": [
-          "api_keys"
-        ]
+        "x-scopes": ["api_keys"]
       },
       "put": {
         "operationId": "UpdateAPIKey",
@@ -4431,10 +4201,7 @@
                     "$ref": "#/components/schemas/OAuth2Scopes"
                   }
                 },
-                "required": [
-                  "name",
-                  "scopes"
-                ]
+                "required": ["name", "scopes"]
               }
             }
           }
@@ -4449,14 +4216,10 @@
             "apiKey": []
           },
           {
-            "oauth2": [
-              "api_keys:write"
-            ]
+            "oauth2": ["api_keys:write"]
           }
         ],
-        "tags": [
-          "API Keys"
-        ],
+        "tags": ["API Keys"],
         "x-codegen": {
           "method_name": "update"
         },
@@ -4467,9 +4230,7 @@
             "object_id_param": "merchant_code"
           }
         ],
-        "x-scopes": [
-          "api_keys:write"
-        ]
+        "x-scopes": ["api_keys:write"]
       },
       "delete": {
         "operationId": "DeleteAPIKey",
@@ -4507,14 +4268,10 @@
             "apiKey": []
           },
           {
-            "oauth2": [
-              "api_keys:write"
-            ]
+            "oauth2": ["api_keys:write"]
           }
         ],
-        "tags": [
-          "API Keys"
-        ],
+        "tags": ["API Keys"],
         "x-codegen": {
           "method_name": "delete"
         },
@@ -4525,9 +4282,7 @@
             "object_id_param": "merchant_code"
           }
         ],
-        "x-scopes": [
-          "api_keys:write"
-        ]
+        "x-scopes": ["api_keys:write"]
       }
     },
     "/v0.1/me/accounts": {
@@ -4577,13 +4332,9 @@
             "oauth2": []
           }
         ],
-        "tags": [
-          "Subaccounts"
-        ],
+        "tags": ["Subaccounts"],
         "x-deprecation-notice": "Subaccounts API is deprecated, to list users in your merchant account please use [List members](https://developer.sumup.com/api/members/list) instead.",
-        "x-permissions": [
-          "members_list"
-        ],
+        "x-permissions": ["members_list"],
         "x-scopes": []
       },
       "post": {
@@ -4629,10 +4380,7 @@
                     }
                   }
                 },
-                "required": [
-                  "username",
-                  "password"
-                ]
+                "required": ["username", "password"]
               }
             }
           }
@@ -4668,13 +4416,9 @@
             "oauth2": []
           }
         ],
-        "tags": [
-          "Subaccounts"
-        ],
+        "tags": ["Subaccounts"],
         "x-deprecation-notice": "Subaccounts API is deprecated, to create an user in your merchant account please use [Create member](https://developer.sumup.com/api/members/create) instead.",
-        "x-permissions": [
-          "members_update"
-        ],
+        "x-permissions": ["members_update"],
         "x-scopes": []
       }
     },
@@ -4715,13 +4459,9 @@
             "oauth2": []
           }
         ],
-        "tags": [
-          "Subaccounts"
-        ],
+        "tags": ["Subaccounts"],
         "x-deprecation-notice": "Subaccounts API is deprecated, to get an user that's a member of your merchant account please use [Get member](https://developer.sumup.com/api/members/get) instead.",
-        "x-permissions": [
-          "members_view"
-        ],
+        "x-permissions": ["members_view"],
         "x-scopes": []
       },
       "put": {
@@ -4816,13 +4556,9 @@
             "oauth2": []
           }
         ],
-        "tags": [
-          "Subaccounts"
-        ],
+        "tags": ["Subaccounts"],
         "x-deprecation-notice": "Subaccounts API is deprecated, to update an user that's a member of your merchant account please use [Update member](https://developer.sumup.com/api/members/update) instead.",
-        "x-permissions": [
-          "members_update"
-        ],
+        "x-permissions": ["members_update"],
         "x-scopes": []
       },
       "delete": {
@@ -4860,13 +4596,9 @@
             "oauth2": []
           }
         ],
-        "tags": [
-          "Subaccounts"
-        ],
+        "tags": ["Subaccounts"],
         "x-deprecation-notice": "Subaccounts API is deprecated, to remove an user that's a member of your merchant account please use [Delete member](https://developer.sumup.com/api/members/delete) instead.",
-        "x-permissions": [
-          "members_delete"
-        ],
+        "x-permissions": ["members_delete"],
         "x-scopes": []
       }
     },
@@ -4906,9 +4638,7 @@
             "schema": {
               "description": "The kind of the membership resource.\nPossible values are:\n* `merchant` - merchant account(s)",
               "type": "string",
-              "enum": [
-                "merchant"
-              ]
+              "enum": ["merchant"]
             }
           },
           {
@@ -4939,10 +4669,7 @@
                       "example": 3
                     }
                   },
-                  "required": [
-                    "total_count",
-                    "items"
-                  ]
+                  "required": ["total_count", "items"]
                 }
               }
             }
@@ -4956,9 +4683,7 @@
             "oauth2": []
           }
         ],
-        "tags": [
-          "Memberships"
-        ],
+        "tags": ["Memberships"],
         "x-codegen": {
           "method_name": "list"
         },
@@ -5030,10 +4755,7 @@
               "items": {
                 "type": "string"
               },
-              "example": [
-                "role_employee",
-                "role_accountant"
-              ]
+              "example": ["role_employee", "role_accountant"]
             },
             "explode": true,
             "style": "form"
@@ -5068,9 +4790,7 @@
                       "example": 3
                     }
                   },
-                  "required": [
-                    "items"
-                  ]
+                  "required": ["items"]
                 }
               }
             }
@@ -5087,9 +4807,7 @@
             "oauth2": []
           }
         ],
-        "tags": [
-          "Members"
-        ],
+        "tags": ["Members"],
         "x-codegen": {
           "method_name": "list"
         },
@@ -5163,10 +4881,7 @@
                     "$ref": "#/components/schemas/Attributes"
                   }
                 },
-                "required": [
-                  "email",
-                  "roles"
-                ]
+                "required": ["email", "roles"]
               }
             }
           }
@@ -5200,9 +4915,7 @@
             "oauth2": []
           }
         ],
-        "tags": [
-          "Members"
-        ],
+        "tags": ["Members"],
         "x-codegen": {
           "method_name": "create"
         },
@@ -5266,9 +4979,7 @@
             "oauth2": []
           }
         ],
-        "tags": [
-          "Members"
-        ],
+        "tags": ["Members"],
         "x-codegen": {
           "method_name": "get"
         },
@@ -5380,9 +5091,7 @@
             "oauth2": []
           }
         ],
-        "tags": [
-          "Members"
-        ],
+        "tags": ["Members"],
         "x-codegen": {
           "method_name": "update"
         },
@@ -5437,9 +5146,7 @@
             "oauth2": []
           }
         ],
-        "tags": [
-          "Members"
-        ],
+        "tags": ["Members"],
         "x-codegen": {
           "method_name": "delete"
         },
@@ -5485,9 +5192,7 @@
                       }
                     }
                   },
-                  "required": [
-                    "items"
-                  ]
+                  "required": ["items"]
                 }
               }
             }
@@ -5504,9 +5209,7 @@
             "oauth2": []
           }
         ],
-        "tags": [
-          "Roles"
-        ],
+        "tags": ["Roles"],
         "x-codegen": {
           "method_name": "list"
         },
@@ -5571,10 +5274,7 @@
                     "example": "Manges the shop and the employees."
                   }
                 },
-                "required": [
-                  "name",
-                  "permissions"
-                ]
+                "required": ["name", "permissions"]
               }
             }
           }
@@ -5605,9 +5305,7 @@
             "oauth2": []
           }
         ],
-        "tags": [
-          "Roles"
-        ],
+        "tags": ["Roles"],
         "x-codegen": {
           "method_name": "create"
         },
@@ -5675,9 +5373,7 @@
             "oauth2": []
           }
         ],
-        "tags": [
-          "Roles"
-        ],
+        "tags": ["Roles"],
         "x-codegen": {
           "method_name": "get"
         },
@@ -5739,9 +5435,7 @@
             "oauth2": []
           }
         ],
-        "tags": [
-          "Roles"
-        ],
+        "tags": ["Roles"],
         "x-codegen": {
           "method_name": "delete"
         },
@@ -5847,9 +5541,7 @@
             "oauth2": []
           }
         ],
-        "tags": [
-          "Roles"
-        ],
+        "tags": ["Roles"],
         "x-codegen": {
           "method_name": "update"
         },
@@ -5895,9 +5587,7 @@
                       }
                     }
                   },
-                  "required": [
-                    "items"
-                  ]
+                  "required": ["items"]
                 }
               }
             }
@@ -5908,14 +5598,10 @@
             "apiKey": []
           },
           {
-            "oauth2": [
-              "readers.read"
-            ]
+            "oauth2": ["readers.read"]
           }
         ],
-        "tags": [
-          "Readers"
-        ],
+        "tags": ["Readers"],
         "x-codegen": {
           "method_name": "list"
         },
@@ -5926,9 +5612,7 @@
             "object_id_param": "merchant_code"
           }
         ],
-        "x-scopes": [
-          "readers.read"
-        ]
+        "x-scopes": ["readers.read"]
       },
       "post": {
         "operationId": "CreateReader",
@@ -5963,9 +5647,7 @@
                     "$ref": "#/components/schemas/Meta"
                   }
                 },
-                "required": [
-                  "pairing_code"
-                ]
+                "required": ["pairing_code"]
               }
             }
           }
@@ -6019,14 +5701,10 @@
             "apiKey": []
           },
           {
-            "oauth2": [
-              "readers.write"
-            ]
+            "oauth2": ["readers.write"]
           }
         ],
-        "tags": [
-          "Readers"
-        ],
+        "tags": ["Readers"],
         "x-codegen": {
           "method_name": "create"
         },
@@ -6037,9 +5715,7 @@
             "object_id_param": "merchant_code"
           }
         ],
-        "x-scopes": [
-          "readers.write"
-        ]
+        "x-scopes": ["readers.write"]
       }
     },
     "/v0.1/merchants/{merchant_code}/readers/{id}": {
@@ -6112,14 +5788,10 @@
             "apiKey": []
           },
           {
-            "oauth2": [
-              "readers.read"
-            ]
+            "oauth2": ["readers.read"]
           }
         ],
-        "tags": [
-          "Readers"
-        ],
+        "tags": ["Readers"],
         "x-codegen": {
           "method_name": "get"
         },
@@ -6130,9 +5802,7 @@
             "object_id_param": "merchant_code"
           }
         ],
-        "x-scopes": [
-          "readers.read"
-        ]
+        "x-scopes": ["readers.read"]
       },
       "delete": {
         "operationId": "DeleteReader",
@@ -6169,14 +5839,10 @@
             "apiKey": []
           },
           {
-            "oauth2": [
-              "readers.write"
-            ]
+            "oauth2": ["readers.write"]
           }
         ],
-        "tags": [
-          "Readers"
-        ],
+        "tags": ["Readers"],
         "x-permissions": [
           {
             "relation": "readers_delete",
@@ -6184,9 +5850,7 @@
             "object_id_param": "merchant_code"
           }
         ],
-        "x-scopes": [
-          "readers.write"
-        ]
+        "x-scopes": ["readers.write"]
       },
       "patch": {
         "operationId": "UpdateReader",
@@ -6244,14 +5908,10 @@
             "apiKey": []
           },
           {
-            "oauth2": [
-              "readers.write"
-            ]
+            "oauth2": ["readers.write"]
           }
         ],
-        "tags": [
-          "Readers"
-        ],
+        "tags": ["Readers"],
         "x-codegen": {
           "method_name": "update"
         },
@@ -6262,9 +5922,7 @@
             "object_id_param": "merchant_code"
           }
         ],
-        "x-scopes": [
-          "readers.write"
-        ]
+        "x-scopes": ["readers.write"]
       }
     }
   },
@@ -6350,10 +6008,7 @@
         "schema": {
           "type": "string",
           "default": "ascending",
-          "enum": [
-            "ascending",
-            "descending"
-          ]
+          "enum": ["ascending", "descending"]
         }
       },
       "PaymentTypesFilter": {
@@ -6453,11 +6108,7 @@
           "type": "array",
           "items": {
             "type": "string",
-            "enum": [
-              "PAYMENT",
-              "REFUND",
-              "CHARGE_BACK"
-            ]
+            "enum": ["PAYMENT", "REFUND", "CHARGE_BACK"]
           }
         }
       },
@@ -6487,10 +6138,7 @@
           "type": {
             "description": "The role of the user.",
             "type": "string",
-            "enum": [
-              "normal",
-              "operator"
-            ]
+            "enum": ["normal", "operator"]
           }
         }
       },
@@ -6621,11 +6269,7 @@
             "additionalProperties": true
           }
         },
-        "required": [
-          "app_id",
-          "key",
-          "foreign_transaction_id"
-        ]
+        "required": ["app_id", "key", "foreign_transaction_id"]
       },
       "AppSettings": {
         "description": "Mobile app settings",
@@ -6731,11 +6375,7 @@
             "example": "2cFCsY36y95lFHk4"
           }
         },
-        "required": [
-          "response_type",
-          "client_id",
-          "redirect_uri"
-        ]
+        "required": ["response_type", "client_id", "redirect_uri"]
       },
       "AuthToken": {
         "description": "Authorization token flow",
@@ -6745,10 +6385,7 @@
             "description": "The grant type used for obtaining an access token.",
             "type": "string",
             "example": "refresh_token",
-            "enum": [
-              "authorization_code",
-              "refresh_token"
-            ]
+            "enum": ["authorization_code", "refresh_token"]
           },
           "client_id": {
             "description": "The client ID of your application that was generated when you [registered it](https://developer.sumup.com/docs/register-app).",
@@ -6771,12 +6408,7 @@
             "example": "d180031bfe9bac36c336e5746637810272546865e9c9586012f462a56f3fe9af"
           }
         },
-        "required": [
-          "grant_type",
-          "client_id",
-          "client_secret",
-          "code"
-        ]
+        "required": ["grant_type", "client_id", "client_secret", "code"]
       },
       "BankAccount": {
         "type": "object",
@@ -6856,10 +6488,7 @@
           "account_type": {
             "description": "Type of the account.",
             "type": "string",
-            "enum": [
-              "CURRENT",
-              "SAVINGS"
-            ]
+            "enum": ["CURRENT", "SAVINGS"]
           },
           "account_holder_name": {
             "description": "Account holder name",
@@ -6876,24 +6505,15 @@
           "status": {
             "description": "Determines the bank account status.",
             "type": "string",
-            "enum": [
-              "OPEN"
-            ]
+            "enum": ["OPEN"]
           },
           "account_category": {
             "description": "Determines if this bank account is business or personal.",
             "type": "string",
-            "enum": [
-              "PERSONAL",
-              "BUSINESS"
-            ]
+            "enum": ["PERSONAL", "BUSINESS"]
           }
         },
-        "required": [
-          "account_holder_name",
-          "iban",
-          "swift"
-        ]
+        "required": ["account_holder_name", "iban", "swift"]
       },
       "BusinessOwners": {
         "description": "Business owners information.",
@@ -7109,11 +6729,7 @@
           "status": {
             "description": "Current status of the checkout.",
             "type": "string",
-            "enum": [
-              "PENDING",
-              "FAILED",
-              "PAID"
-            ]
+            "enum": ["PENDING", "FAILED", "PAID"]
           },
           "date": {
             "description": "Date and time of the creation of the payment checkout. Response format expressed according to [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) code.",
@@ -7199,10 +6815,7 @@
             "description": "Purpose of the checkout.",
             "type": "string",
             "default": "CHECKOUT",
-            "enum": [
-              "CHECKOUT",
-              "SETUP_RECURRING_PAYMENT"
-            ]
+            "enum": ["CHECKOUT", "SETUP_RECURRING_PAYMENT"]
           },
           "id": {
             "description": "Unique ID of the checkout resource.",
@@ -7212,11 +6825,7 @@
           "status": {
             "description": "Current status of the checkout.",
             "type": "string",
-            "enum": [
-              "PENDING",
-              "FAILED",
-              "PAID"
-            ],
+            "enum": ["PENDING", "FAILED", "PAID"],
             "readOnly": true
           },
           "date": {
@@ -7269,13 +6878,7 @@
           "payment_type": {
             "description": "Describes the payment method used to attempt processing",
             "type": "string",
-            "enum": [
-              "card",
-              "boleto",
-              "ideal",
-              "blik",
-              "bancontact"
-            ]
+            "enum": ["card", "boleto", "ideal", "blik", "bancontact"]
           },
           "installments": {
             "description": "Number of installments for deferred payments. Available only to merchant users in Brazil.",
@@ -7301,9 +6904,7 @@
             "$ref": "#/components/schemas/PersonalDetails"
           }
         },
-        "required": [
-          "payment_type"
-        ]
+        "required": ["payment_type"]
       },
       "CheckoutSuccess": {
         "allOf": [
@@ -7391,11 +6992,7 @@
           "status": {
             "description": "Current status of the checkout.",
             "type": "string",
-            "enum": [
-              "PENDING",
-              "FAILED",
-              "PAID"
-            ],
+            "enum": ["PENDING", "FAILED", "PAID"],
             "readOnly": true
           },
           "date": {
@@ -7488,10 +7085,7 @@
                 "type": "array",
                 "items": {
                   "type": "string",
-                  "enum": [
-                    "iframe",
-                    "browser"
-                  ]
+                  "enum": ["iframe", "browser"]
                 }
               },
               "payload": {
@@ -7525,10 +7119,7 @@
             "description": "The card type of the card used for the transaction.\nIs is required only for some countries (e.g: Brazil).\n",
             "type": "string",
             "example": "credit",
-            "enum": [
-              "credit",
-              "debit"
-            ]
+            "enum": ["credit", "debit"]
           },
           "installments": {
             "description": "Number of installments for the transaction.\nIt may vary according to the merchant country.\nFor example, in Brazil, the maximum number of installments is 12.\n",
@@ -7557,9 +7148,7 @@
             "$ref": "#/components/schemas/Affiliate"
           }
         },
-        "required": [
-          "total_amount"
-        ],
+        "required": ["total_amount"],
         "title": "Reader"
       },
       "CreateReaderCheckoutAmount": {
@@ -7582,11 +7171,7 @@
             "example": 2
           }
         },
-        "required": [
-          "value",
-          "currency",
-          "minor_unit"
-        ]
+        "required": ["value", "currency", "minor_unit"]
       },
       "ReaderCheckoutStatusChange": {
         "description": "The callback payload containing the status change of the Reader Checkout.\n",
@@ -7622,10 +7207,7 @@
                 "description": "The status of the transaction.",
                 "type": "string",
                 "example": "successful",
-                "enum": [
-                  "successful",
-                  "failed"
-                ]
+                "enum": ["successful", "failed"]
               },
               "transaction_id": {
                 "description": "The unique transaction id.",
@@ -7635,11 +7217,7 @@
                 "deprecated": true
               }
             },
-            "required": [
-              "client_transaction_id",
-              "merchant_code",
-              "status"
-            ]
+            "required": ["client_transaction_id", "merchant_code", "status"]
           },
           "timestamp": {
             "description": "The timestamp of the event.",
@@ -7648,12 +7226,7 @@
             "example": "2021-01-01T00:00:00Z"
           }
         },
-        "required": [
-          "id",
-          "event_type",
-          "payload",
-          "timestamp"
-        ]
+        "required": ["id", "event_type", "payload", "timestamp"]
       },
       "Customer": {
         "type": "object",
@@ -7667,9 +7240,7 @@
             "$ref": "#/components/schemas/PersonalDetails"
           }
         },
-        "required": [
-          "customer_id"
-        ],
+        "required": ["customer_id"],
         "title": "Customer"
       },
       "CountryDetails": {
@@ -7932,10 +7503,7 @@
             },
             "status": {
               "type": "string",
-              "enum": [
-                "SUCCESSFUL",
-                "FAILED"
-              ]
+              "enum": ["SUCCESSFUL", "FAILED"]
             },
             "transaction_code": {
               "type": "string"
@@ -8002,9 +7570,7 @@
           "type": {
             "description": "Indicates the mandate type",
             "type": "string",
-            "enum": [
-              "recurrent"
-            ]
+            "enum": ["recurrent"]
           },
           "user_agent": {
             "description": "Operating system and web client used by the end-user",
@@ -8020,10 +7586,7 @@
           "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.104 Safari/537.36",
           "user_ip": "172.217.169.174"
         },
-        "required": [
-          "type",
-          "user_agent"
-        ]
+        "required": ["type", "user_agent"]
       },
       "MandateResponse": {
         "description": "Created mandate",
@@ -8278,12 +7841,7 @@
           "moto_payment": {
             "description": "Whether merchant can make MOTO payments",
             "type": "string",
-            "enum": [
-              "UNAVAILABLE",
-              "ENFORCED",
-              "ON",
-              "OFF"
-            ]
+            "enum": ["UNAVAILABLE", "ENFORCED", "ON", "OFF"]
           },
           "stone_merchant_code": {
             "description": "Stone merchant code",
@@ -8309,18 +7867,12 @@
           "payout_period": {
             "description": "Payout period.",
             "type": "string",
-            "enum": [
-              "daily",
-              "weekly",
-              "monthly"
-            ]
+            "enum": ["daily", "weekly", "monthly"]
           },
           "payout_type": {
             "description": "Payout type.",
             "type": "string",
-            "enum": [
-              "SINGLE_PAYMENT"
-            ]
+            "enum": ["SINGLE_PAYMENT"]
           },
           "payout_on_demand": {
             "description": "If true, the merchant will not receive automatic payouts.",
@@ -8362,20 +7914,13 @@
           "type": {
             "description": "Type of the payment instrument.",
             "type": "string",
-            "enum": [
-              "card"
-            ]
+            "enum": ["card"]
           },
           "card": {
             "$ref": "#/components/schemas/Card"
           }
         },
-        "required": [
-          "token",
-          "active",
-          "type",
-          "card"
-        ]
+        "required": ["token", "active", "type", "card"]
       },
       "PaymentInstrumentResponse": {
         "description": "Payment Instrument Response",
@@ -8395,9 +7940,7 @@
           "type": {
             "description": "Type of the payment instrument.",
             "type": "string",
-            "enum": [
-              "card"
-            ]
+            "enum": ["card"]
           },
           "card": {
             "description": "Details of the payment card.",
@@ -8579,12 +8122,7 @@
             "$ref": "#/components/schemas/AddressPayload"
           }
         },
-        "required": [
-          "first_name",
-          "last_name",
-          "date_of_birth",
-          "address"
-        ]
+        "required": ["first_name", "last_name", "date_of_birth", "address"]
       },
       "Product": {
         "description": "Details of the product for which the payment is made.",
@@ -8965,21 +8503,12 @@
           "status": {
             "description": "Current status of the transaction.",
             "type": "string",
-            "enum": [
-              "SUCCESSFUL",
-              "CANCELLED",
-              "FAILED",
-              "PENDING"
-            ]
+            "enum": ["SUCCESSFUL", "CANCELLED", "FAILED", "PENDING"]
           },
           "payment_type": {
             "description": "Payment type used for the transaction.",
             "type": "string",
-            "enum": [
-              "ECOM",
-              "RECURRING",
-              "BOLETO"
-            ]
+            "enum": ["ECOM", "RECURRING", "BOLETO"]
           },
           "installments_count": {
             "description": "Current number of the installment for deferred payments.",
@@ -9011,10 +8540,7 @@
           "entry_mode": {
             "description": "Entry mode of the payment details.",
             "type": "string",
-            "enum": [
-              "CUSTOMER_ENTRY",
-              "BOLETO"
-            ]
+            "enum": ["CUSTOMER_ENTRY", "BOLETO"]
           },
           "auth_code": {
             "description": "Authorization code for the transaction sent by the payment card issuer or bank. Applicable only to card payments.",
@@ -9080,11 +8606,7 @@
               "type": {
                 "description": "Type of the transaction for the registered user specified in the `user` property.",
                 "type": "string",
-                "enum": [
-                  "PAYMENT",
-                  "REFUND",
-                  "CHARGE_BACK"
-                ]
+                "enum": ["PAYMENT", "REFUND", "CHARGE_BACK"]
               },
               "card_type": {
                 "description": "Issuing card network of the payment card used for the transaction.",
@@ -9174,11 +8696,7 @@
               "payout_type": {
                 "description": "Payout type for the transaction.",
                 "type": "string",
-                "enum": [
-                  "BANK_ACCOUNT",
-                  "BALANCE",
-                  "PREPAID_CARD"
-                ]
+                "enum": ["BANK_ACCOUNT", "BALANCE", "PREPAID_CARD"]
               },
               "products": {
                 "description": "List of products from the merchant's catalogue for which the transaction serves as a payment.",
@@ -9316,12 +8834,7 @@
       "EventType": {
         "description": "Type of the transaction event.",
         "type": "string",
-        "enum": [
-          "PAYOUT",
-          "CHARGE_BACK",
-          "REFUND",
-          "PAYOUT_DEDUCTION"
-        ]
+        "enum": ["PAYOUT", "CHARGE_BACK", "REFUND", "PAYOUT_DEDUCTION"]
       },
       "EventStatus": {
         "description": "Status of the transaction event.",
@@ -9410,10 +8923,7 @@
           "type": {
             "type": "string",
             "example": "secret",
-            "enum": [
-              "public",
-              "secret"
-            ]
+            "enum": ["public", "secret"]
           },
           "plaintext": {
             "description": "The plaintext value of the API key. This field is returned only in the response to API key creation and is never again available in the plaintext form.",
@@ -9500,10 +9010,7 @@
             }
           ]
         },
-        "required": [
-          "items",
-          "total_count"
-        ]
+        "required": ["items", "total_count"]
       },
       "OAuth2Scopes": {
         "type": "array",
@@ -9545,9 +9052,7 @@
           }
         },
         "additionalProperties": false,
-        "required": [
-          "hint"
-        ]
+        "required": ["hint"]
       },
       "SignupContext": {
         "type": "object",
@@ -9597,10 +9102,7 @@
           },
           "account_type": {
             "type": "string",
-            "enum": [
-              "operator",
-              "normal"
-            ]
+            "enum": ["operator", "normal"]
           }
         },
         "required": [
@@ -9626,10 +9128,7 @@
             "example": "Resource not found."
           }
         },
-        "required": [
-          "error_code",
-          "message"
-        ]
+        "required": ["error_code", "message"]
       },
       "LegacyOTP": {
         "type": "object",
@@ -9638,9 +9137,7 @@
             "type": "string"
           }
         },
-        "required": [
-          "otpToken"
-        ]
+        "required": ["otpToken"]
       },
       "CompatIntrospectionError": {
         "description": "An error response from an token introspection endpoint",
@@ -9659,9 +9156,7 @@
           "error_code": "NOT_AUTHORIZED",
           "error_message": "invalid access token"
         },
-        "required": [
-          "error_code"
-        ]
+        "required": ["error_code"]
       },
       "CompatSessionInfo": {
         "description": "Object containing information about a access token session.\n\nThe properties `user_id` and `merchant_id` will be set only if the token is issued for an SumUp internal OAuth 2.0 client.\n",
@@ -9703,12 +9198,7 @@
           "scope": "email profile",
           "client_id": "cc_classic_ICt5WKz28oDNgvHch6oSKAMJaIZUN"
         },
-        "required": [
-          "access_token",
-          "legacy_token",
-          "scope",
-          "client_id"
-        ]
+        "required": ["access_token", "legacy_token", "scope", "client_id"]
       },
       "CompatTokenRequest": {
         "type": "object",
@@ -9835,12 +9325,7 @@
             "type": "boolean"
           }
         },
-        "required": [
-          "access_token",
-          "token_type",
-          "expires_in",
-          "scope"
-        ]
+        "required": ["access_token", "token_type", "expires_in", "scope"]
       },
       "TokenError": {
         "type": "object",
@@ -9856,10 +9341,7 @@
             "example": "missing client credentials"
           }
         },
-        "required": [
-          "error",
-          "error_description"
-        ]
+        "required": ["error", "error_description"]
       },
       "ValidatedToken": {
         "type": "object",
@@ -9873,10 +9355,7 @@
             "type": "string"
           }
         },
-        "required": [
-          "name",
-          "value"
-        ]
+        "required": ["name", "value"]
       },
       "ClassicContext": {
         "description": "Ext authz agent classic context",
@@ -9909,16 +9388,9 @@
             "type": "array",
             "items": {
               "type": "string",
-              "enum": [
-                "otp",
-                "swk",
-                "sms",
-                "email"
-              ]
+              "enum": ["otp", "swk", "sms", "email"]
             },
-            "example": [
-              "otp"
-            ]
+            "example": ["otp"]
           }
         }
       },
@@ -9956,10 +9428,7 @@
             }
           }
         },
-        "required": [
-          "client_id",
-          "scp"
-        ]
+        "required": ["client_id", "scp"]
       },
       "UserInfo": {
         "description": "Basic account info from an user",
@@ -9999,10 +9468,7 @@
             "x-go-type": "json.RawMessage"
           }
         },
-        "required": [
-          "action_id",
-          "params"
-        ]
+        "required": ["action_id", "params"]
       },
       "OTP": {
         "type": "object",
@@ -10016,19 +9482,13 @@
             "example": "+420*******898"
           }
         },
-        "required": [
-          "otp_channel",
-          "otp_recipient"
-        ]
+        "required": ["otp_channel", "otp_recipient"]
       },
       "OTPChannel": {
         "description": "The Out-of-Band channel for OTP delivery.",
         "type": "string",
         "default": "sms",
-        "enum": [
-          "sms",
-          "whatsapp"
-        ]
+        "enum": ["sms", "whatsapp"]
       },
       "DeviceRequest": {
         "type": "object",
@@ -10064,9 +9524,7 @@
             "maxLength": 256
           }
         },
-        "required": [
-          "name"
-        ]
+        "required": ["name"]
       },
       "SignupVerificationStatus": {
         "type": "object",
@@ -10080,17 +9538,10 @@
             "description": "The state of the signup verification.\nPossible values are:\n* `pending` - the signup is pending confirmation\n* `verified` - the signup has been verified as can be claimed\n* `claimed` - the signup has been claimed\n",
             "type": "string",
             "example": "pending",
-            "enum": [
-              "pending",
-              "verified",
-              "claimed"
-            ]
+            "enum": ["pending", "verified", "claimed"]
           }
         },
-        "required": [
-          "verified",
-          "status"
-        ]
+        "required": ["verified", "status"]
       },
       "ValidationError": {
         "type": "object",
@@ -10108,11 +9559,7 @@
             "example": "group"
           }
         },
-        "required": [
-          "error_code",
-          "message",
-          "param"
-        ]
+        "required": ["error_code", "message", "param"]
       },
       "ToSAcceptance": {
         "description": "Details on the acceptance of the SumUp Terms of Service Agreement",
@@ -10135,11 +9582,7 @@
             "example": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/113.0"
           }
         },
-        "required": [
-          "accepted_at",
-          "ip_address",
-          "user_agent"
-        ]
+        "required": ["accepted_at", "ip_address", "user_agent"]
       },
       "Zoneinfo": {
         "description": "String from zoneinfo time zone database representing the user's time zone.",
@@ -10308,11 +9751,7 @@
             "description": "User's preference for the color scheme.\n",
             "type": "string",
             "example": "system",
-            "enum": [
-              "light",
-              "dark",
-              "system"
-            ]
+            "enum": ["light", "dark", "system"]
           }
         },
         "required": [
@@ -10371,22 +9810,13 @@
             "format": "date-time"
           }
         },
-        "required": [
-          "id",
-          "name"
-        ],
+        "required": ["id", "name"],
         "title": "Device"
       },
       "MembershipStatus": {
         "description": "The status of the membership.",
         "type": "string",
-        "enum": [
-          "accepted",
-          "pending",
-          "expired",
-          "disabled",
-          "unknown"
-        ]
+        "enum": ["accepted", "pending", "expired", "disabled", "unknown"]
       },
       "Membership": {
         "description": "A membership associates a user with a resource, memberships is defined by user, resource, resource type, and associated roles.",
@@ -10406,9 +9836,7 @@
             "description": "Type of the resource the membership is in.",
             "type": "string",
             "example": "merchant",
-            "enum": [
-              "merchant"
-            ]
+            "enum": ["merchant"]
           },
           "roles": {
             "description": "User's roles.",
@@ -10416,9 +9844,7 @@
             "items": {
               "type": "string"
             },
-            "example": [
-              "role_admin"
-            ]
+            "example": ["role_admin"]
           },
           "permissions": {
             "description": "User's permissions.",
@@ -10490,9 +9916,7 @@
           "type": {
             "type": "string",
             "example": "merchant",
-            "enum": [
-              "merchant"
-            ],
+            "enum": ["merchant"],
             "additionalProperties": {
               "type": "string"
             }
@@ -10554,9 +9978,7 @@
             "items": {
               "type": "string"
             },
-            "example": [
-              "role_admin"
-            ]
+            "example": ["role_admin"]
           },
           "permissions": {
             "description": "User's permissions.",
@@ -10605,10 +10027,7 @@
         },
         "example": {
           "id": "mem_WZsm7QTPhVrompscmPhoGTXXcrd58fr9MOhP",
-          "roles": [
-            "role_admin",
-            "role_owner"
-          ],
+          "roles": ["role_admin", "role_owner"],
           "permissions": [
             "members_read",
             "members_write",
@@ -10656,10 +10075,7 @@
             "example": "2023-01-20T15:16:17Z"
           }
         },
-        "required": [
-          "email",
-          "expires_at"
-        ],
+        "required": ["email", "expires_at"],
         "title": "Invite"
       },
       "MembershipUser": {
@@ -10729,9 +10145,7 @@
           }
         },
         "deprecated": true,
-        "required": [
-          "user_id"
-        ]
+        "required": ["user_id"]
       },
       "Role": {
         "description": "A custom role that can be used to assign set of permissions to members.",
@@ -10881,12 +10295,7 @@
         "description": "The status of the reader object gives information about the current state of the reader.\n\nPossible values:\n\n- `unknown` - The reader status is unknown.\n- `processing` - The reader is created and waits for the physical device to confirm the pairing.\n- `paired` - The reader is paired with a merchant account and can be used with SumUp APIs.\n- `expired` - The pairing is expired and no longer usable with the account. The resource needs to get recreated",
         "type": "string",
         "example": "paired",
-        "enum": [
-          "unknown",
-          "processing",
-          "paired",
-          "expired"
-        ]
+        "enum": ["unknown", "processing", "paired", "expired"]
       },
       "ReaderDevice": {
         "description": "Information about the underlying physical device.\n",
@@ -10901,16 +10310,10 @@
             "description": "Identifier of the model of the device.",
             "type": "string",
             "example": "solo",
-            "enum": [
-              "solo",
-              "virtual-solo"
-            ]
+            "enum": ["solo", "virtual-solo"]
           }
         },
-        "required": [
-          "identifier",
-          "model"
-        ]
+        "required": ["identifier", "model"]
       },
       "ReaderPairingCode": {
         "description": "The pairing code is a 8 or 9 character alphanumeric string that is displayed on a SumUp Device after initiating the pairing. It is used to link the physical device to the created pairing.",
@@ -10977,12 +10380,7 @@
             "type": "string"
           }
         },
-        "required": [
-          "address_line1",
-          "city",
-          "country",
-          "post_code"
-        ]
+        "required": ["address_line1", "city", "country", "post_code"]
       }
     },
     "examples": {
@@ -11549,9 +10947,7 @@
                       "cs": "c8bc0ea231f8372431ca22d6f8319f8de0263d0b1705759ed27155f245f193c5"
                     },
                     "full": "https://r3.girogate.de/ti/simideal?tx=961473700&rs=ILnaUeQTKJ184fVrjGILrLjePX9E4rmz&cs=c8bc0ea231f8372431ca22d6f8319f8de0263d0b1705759ed27155f245f193c5",
-                    "mechanism": [
-                      "browser"
-                    ]
+                    "mechanism": ["browser"]
                   }
                 }
               },
@@ -11567,9 +10963,7 @@
                       "cs": "697edacdd9175f3f99542500fa0ff08280b66aaff3c2641a2e212e4b039473cc"
                     },
                     "full": "https://r3.girogate.de/ti/simbcmc?tx=624788471&rs=5MioXoKt2Gwj9dLgqAX1bMRBuT5xTSdB&cs=697edacdd9175f3f99542500fa0ff08280b66aaff3c2641a2e212e4b039473cc",
-                    "mechanism": [
-                      "browser"
-                    ]
+                    "mechanism": ["browser"]
                   }
                 }
               }
@@ -11809,10 +11203,7 @@
                   "example": 3
                 }
               },
-              "required": [
-                "total_count",
-                "items"
-              ]
+              "required": ["total_count", "items"]
             }
           }
         }
@@ -11835,9 +11226,7 @@
                   "example": 3
                 }
               },
-              "required": [
-                "items"
-              ]
+              "required": ["items"]
             }
           }
         }
@@ -11856,9 +11245,7 @@
                   }
                 }
               },
-              "required": [
-                "items"
-              ]
+              "required": ["items"]
             }
           }
         }

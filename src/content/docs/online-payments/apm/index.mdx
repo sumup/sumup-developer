@@ -1,0 +1,64 @@
+---
+title: Alternative Payment Methods
+sidebar:
+  order: 10
+icon: alternative_payment_method
+---
+
+import { Aside } from "@astrojs/starlight/components";
+
+Alternative Payment Methods (APMs) are forms of payments that are different from standard card schemes. They offer familiar and frictionless payment experiences to your customers, while making you stand out from your competitors offering only traditional payment experiences.
+
+APMs have completely transformed how we once made online payments. For example, in the Netherlands more than half of the consumers use iDeal to pay online merchandise.
+
+The types of APMs are prepaid cards, mobile payments, e-wallets, and "buy now, pay later" installment-based approaches.
+
+## Supported Alternative Payment Methods
+
+The APMs you can offer depend on the country your business is registered and operating in. Here's a list of the currently available APMs at SumUp:
+
+| APM        | Country                                                                                                                                                                                                                                                                                                |     |
+| ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --- |
+| Apple Pay  | Austria, Belgium, Brazil, Bulgaria, Croatia, Cyprus, Czech Republic, Denmark, Estonia, Finland, France, Germany, Greece, Hungary, Ireland, Italy, Latvia, Lithuania, Luxembourg, Malta, Netherlands, Norway, Poland, Portugal, Romania, Slovenia, Slovakia, Spain, Sweden, Switzerland, United Kingdom |
+| Bancontact | Belgium                                                                                                                                                                                                                                                                                                |
+| Blik       | Poland                                                                                                                                                                                                                                                                                                 |
+| Boleto     | Brazil                                                                                                                                                                                                                                                                                                 |
+| EPS        | Austria                                                                                                                                                                                                                                                                                                |
+| Google Pay | Austria, Belgium, Brazil, Bulgaria, Croatia, Cyprus, Czech Republic, Denmark, Estonia, Finland, France, Germany, Greece, Hungary, Ireland, Italy, Latvia, Lithuania, Luxembourg, Malta, Netherlands, Norway, Poland, Portugal, Romania, Slovenia, Slovakia, Spain, Sweden, Switzerland, United Kingdom |
+| iDeal      | Netherlands                                                                                                                                                                                                                                                                                            |
+| MyBank     | Greece, Italy, Spain                                                                                                                                                                                                                                                                                   |
+| PIX        | Brazil                                                                                                                                                                                                                                                                                                 |
+| Przelewy24 | Poland                                                                                                                                                                                                                                                                                                 |
+| Satispay   | Italy                                                                                                                                                                                                                                                                                                  |
+
+## Enabling Alternative Payment Methods
+
+As a **sole trader** APMs are automatically enabled in your profile after completing the regular registration steps and performing a test transaction with one of our remote payment products, such as [Payment Links](https://sumup.co.uk/payment-links/), [Invoices](https://sumup.co.uk/invoices) and [Online Store](https://sumup.co.uk/online-store/).
+
+As with any other legal type, you must request the activation from our support team or via our [contact form here](/contact), providing us with your merchant ID (MXXXXX). Our team will onboard your profile and grant you access to the APMs applicable to your business location. Once your request is processed, APMs will instantly become available to you within [Payment Links](https://sumup.co.uk/payment-links/), [Invoices](https://sumup.co.uk/invoices) and [Online Store](https://sumup.co.uk/online-store/).
+
+<Aside type="note">
+  At this time APMs are not available in our SumUp plugins.
+</Aside>
+
+## Integration
+
+You can offer APMs through a number of approaches:
+
+- Through the [SumUp Payment Widget](/online-payments/tools/card-widget). To make APM payments successful, you must always set a `redirect_url` upon [checkout creation](/api/checkouts/create). Beyond that step, the SumUp Payment Widget will handle the rest.
+  <Aside type="note">
+    Please note that Google Pay [Terms of
+    Service](https://payments.developers.google.com/terms/sellertos) are applied
+    to all Google Pay transactions via SumUp Payment Widget
+  </Aside>
+- [API Integrations](/online-payments/apm/integration-guide/)
+- Through the [Swift Checkout SDK](/online-payments/tools/swift-checkout/)
+- Direct Integration:
+  - [Apple Pay](/online-payments/apm/apple-pay)
+  - [Google Pay](/online-payments/apm/google-pay)
+
+<Aside type="caution">
+  [Apple Pay](/online-payments/apm/apple-pay) and [Google
+  Pay](/online-payments/apm/google-pay) direct integrations require domain
+  verification in order to be implemented successfully.
+</Aside>
