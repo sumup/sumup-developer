@@ -48,12 +48,12 @@ The table below lists only the required parameters for the request. For a full l
 
 {% /aside %}
 
-| Attribute name     | Description                                                                                                                                                                                                                                            |
-| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| checkout_reference | A unique string identifying the payment in your system. It must be unique for your application.                                                                                                                                                        |
-| amount             | The amount for which the payment is made.                                                                                                                                                                                                              |
-| currency           | The three-letter [ISO4217](https://en.wikipedia.org/wiki/ISO_4217) code of the currency in which the payment is made. The value must match the currency registered for the merchant user to whom the payment is made (as specified in `pay_to_email`). |
-| pay_to_email       | The email address of the registered merchant user to whom the payment is made.                                                                                                                                                                         |
+| Attribute name     | Description                                                                                                                                                                                                          |
+| ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| checkout_reference | A unique string identifying the payment in your system. It must be unique for your application.                                                                                                                      |
+| amount             | The amount for which the payment is made.                                                                                                                                                                            |
+| currency           | The three-letter [ISO4217](https://en.wikipedia.org/wiki/ISO_4217) code of the currency in which the payment is made. The value must match the currency registered for the specified merchant (see `merchant_code`). |
+| merchant_code      | The code of the registered SumUp merchant the payment is made.                                                                                                                                                       |
 
 Following is a sample request for creating a new checkout resource:
 
@@ -68,7 +68,7 @@ curl -X POST \
         "checkout_reference": "CO746453",
         "amount": 10,
         "currency": "EUR",
-        "pay_to_email": "docuser@sumup.com",
+        "merchant_code": "ME7RMQN3",
         "description": "Sample one-time payment"
       }'
 ```
@@ -104,7 +104,7 @@ The resource identifier is returned in the `id` attribute, or `f14425c6-8bc1-4d0
   "checkout_reference": "CO746453",
   "amount": 10,
   "currency": "EUR",
-  "pay_to_email": "docuser@sumup.com",
+  "merchant_code": "ME7RMQN3",
   "description": "Sample one-time payment",
   "id": "f14425c6-8bc1-4d02-957c-47573f762828",
   "status": "PENDING",
@@ -172,7 +172,7 @@ The response contains a JSON body with the details of the processed checkout res
   "checkout_reference": "CO746453",
   "amount": 10.0,
   "currency": "EUR",
-  "pay_to_email": "docuser@sumup.com",
+  "merchant_code": "ME7RMQN3",
   "description": "Sample one-time payment",
   "id": "f14425c6-8bc1-4d02-957c-47573f762828",
   "status": "PAID",
