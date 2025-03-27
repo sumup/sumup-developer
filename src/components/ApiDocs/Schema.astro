@@ -1,4 +1,5 @@
 ---
+import { Aside } from "@astrojs/starlight/components";
 import Markdown from "@components/Markdown.astro";
 import { resolveSchema } from "@lib/openapi";
 import { Headline } from "@sumup-oss/circuit-ui";
@@ -80,6 +81,15 @@ const schema = resolveSchema(obj);
                 ))}
               </div>
             )}
+            {
+              ('x-deprecation-notice' in propertySchema) && (
+                <div class="notice">
+                  <Aside type="caution">
+                    <Markdown>{propertySchema['x-deprecation-notice']}</Markdown>
+                  </Aside>
+                </div>
+              )
+            }
             {propertySchema.description && (
               <Markdown>{propertySchema.description}</Markdown>
             )}
@@ -121,6 +131,10 @@ const schema = resolveSchema(obj);
   }
   .schema.nested {
     margin-bottom: 0;
+  }
+
+  .notice {
+    margin: var(--cui-spacings-mega) 0;
   }
 
   .collapsable > .header {
