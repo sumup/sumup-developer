@@ -35,7 +35,7 @@ curl -X POST https://api.sumup.com/v0.1/checkouts \
         "checkout_reference": "b50pr914-6k0e-3091-a592-890010285b3d", 
         "currency": "EUR",
         "description": "A sample checkout",
-        "merchant_code": "MCMMMMMM",
+        "merchant_code": "MCXXXXXX",
         "hosted_checkout": { "enabled": true }
     }'
 ```
@@ -54,7 +54,6 @@ The response body containing the `hosted_checkout` and `hosted_checkout_url` par
     "merchant_code": "MCXXXXXX",
     "merchant_country": "DE",
     "merchant_name": "Sample Shop",
-    "pay_to_email": "sumup_merchant@sample-shop.com",
     "purpose": "CHECKOUT",
     "status": "PENDING",
     "transactions": [],
