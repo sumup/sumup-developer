@@ -85,10 +85,10 @@ const queryParams = operation.parameters
         </Headline>
         {/*<OperationEndpoint operation={operation} />*/}
         {
-          ('x-deprecation-notice' in operation) && (
+          "x-deprecation-notice" in operation && (
             <div class="notice">
               <Aside type="caution">
-                <Markdown>{operation['x-deprecation-notice']}</Markdown>
+                <Markdown>{operation["x-deprecation-notice"]}</Markdown>
               </Aside>
             </div>
           )

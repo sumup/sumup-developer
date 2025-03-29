@@ -1,6 +1,6 @@
 ---
-import { ArrowRight } from "@sumup-oss/icons";
 import Icon from "./Icon.astro";
+import ArrowRight from "@sumup-oss/icons/arrow_right_16.svg";
 
 type Props = {
   icon: string;
@@ -16,7 +16,7 @@ const { icon, href, title, description } = Astro.props;
   <Icon icon={icon} />
   <div>
     <div class="button-title">
-      {title}<ArrowRight size={"16"} />
+      {title}<ArrowRight />
     </div>
     <div class="button-description">
       {description}

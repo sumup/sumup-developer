@@ -7,6 +7,10 @@ interface Props {
 
 const { icon } = Astro.props;
 const I = Icons[icon as keyof typeof Icons];
+
+if (!I) {
+  throw new Error(`Invalid icon ${icon}!`);
+}
 ---
 
 <I />

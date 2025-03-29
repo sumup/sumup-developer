@@ -3,6 +3,7 @@ import react from "@astrojs/react";
 import starlight from "@astrojs/starlight";
 import vercel from "@astrojs/vercel";
 import starlightLinksValidator from "starlight-links-validator";
+import starlightLlmsTxt from "starlight-llms-txt";
 
 import { defineConfig } from "astro/config";
 import type { HeadUserConfig } from "node_modules/@astrojs/starlight/schemas/head";
@@ -154,7 +155,7 @@ export default defineConfig({
     markdoc({ allowHTML: true }),
     react(),
     starlight({
-      plugins: [starlightLinksValidator()],
+      plugins: [starlightLinksValidator(), starlightLlmsTxt()],
       title: "SumUp Developer",
       favicon: "favicon.png",
       disable404Route: true,

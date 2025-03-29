@@ -3,3 +3,5 @@ dist/
 .astro/
 # css files are linted by biome
 **/*.css
+openapi.yaml
+openapi.json

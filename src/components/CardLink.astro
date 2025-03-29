@@ -1,5 +1,5 @@
 ---
-import { ArrowRight } from "@sumup-oss/icons";
+import ArrowRight from "@sumup-oss/icons/arrow_right_16.svg";
 
 type Props = {
   href: string;
@@ -11,7 +11,7 @@ const { href, title, description, image } = Astro.props;
 ---
 
 <a href={href} class="card">
-  <div class="title">{title}<ArrowRight size={"16"} /></div>
+  <div class="title">{title}<ArrowRight /></div>
   <div class="body">
     {description}
   </div>

@@ -2,7 +2,7 @@
 import EditLink from "@astrojs/starlight/components/EditLink.astro";
 import LastUpdated from "@astrojs/starlight/components/LastUpdated.astro";
 import Feedback from "@components/Feedback.astro";
-import { Help, History, Webspace } from "@sumup-oss/icons";
+import { Help, History, Webspace, Sparkles } from "@sumup-oss/icons";
 
 const isHomepage = Astro.props.id === "";
 ---
@@ -39,26 +39,28 @@ const isHomepage = Astro.props.id === "";
         </div>
         <div class="footer-links">
           <div>
-            <>
-              <Webspace />
-              <span>
-                Go to <a href="https://me.sumup.com">SumUp Dashboard</a>.
-              </span>
-            </>
+            <Webspace />
+            <span>
+              Go to <a href="https://me.sumup.com">SumUp Dashboard</a>.
+            </span>
           </div>
           <div>
-            <Help />{" "}
+            <Help />
             <span>
               Need help? <a href="/help">Contact Support</a>.
             </span>
           </div>
           <div>
-            <>
-              <History />
-              <span>
-                Check out our <a href="/changelog">Changelog</a>.
-              </span>
-            </>
+            <History />
+            <span>
+              Check out our <a href="/changelog">Changelog</a>.
+            </span>
+          </div>
+          <div>
+            <Sparkles />
+            <span>
+              LLM? <a href="/llms.txt">Checkout llms.txt</a>.
+            </span>
           </div>
         </div>
       </footer>
