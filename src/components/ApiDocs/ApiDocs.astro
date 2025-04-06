@@ -4,12 +4,17 @@ import { formatSlug } from "@lib/helpers";
 import { doc, pathsByTag } from "@lib/openapi";
 import { ExternalLink } from "@sumup-oss/icons";
 import LRGrid from "./LRGrid.astro";
-import Codeblock from "@components/Codeblock.astro";
+import {
+  CodeBlock,
+  MultiCode,
+  CodeLangSelector,
+  CopyButton,
+  CodeBlockHeader,
+} from "@components/Code";
 import TagSection from "./TagSection.astro";
 import Go from "@assets/languages/go.svg";
 import Php from "@assets/languages/php.svg";
 import Nodejs from "@assets/languages/nodejs.svg";
-import MultiCode from "./MultiCode.astro";
 
 export interface Props {
   target?: string;
@@ -29,7 +34,7 @@ const { target } = Astro.props;
           doc.servers && (
             <div class="servers">
               {doc.servers.map((server) => (
-                <Codeblock title="Base URL" language="bash" code={server.url} />
+                <CodeBlock title="Base URL" language="bash" code={server.url} />
               ))}
             </div>
           )
@@ -84,7 +89,6 @@ const { target } = Astro.props;
         </div>
         <div>
           <MultiCode
-            name="Install SDK"
             options={[
               {
                 label: "Node.js",
@@ -106,7 +110,29 @@ const { target } = Astro.props;
               },
             ]}
             isLanguageSelect
-          />
+          >
+            <CodeBlockHeader slot="header">
+              <div slot="left">Install SDK</div>
+              <CodeLangSelector
+                slot="right"
+                options={[
+                  {
+                    label: "Node.js",
+                    value: "node",
+                  },
+                  {
+                    label: "Go",
+                    value: "go",
+                  },
+                  {
+                    label: "Php",
+                    value: "php",
+                  },
+                ]}
+              />
+              <CopyButton slot="right" />
+            </CodeBlockHeader>
+          </MultiCode>
         </div>
       </LRGrid>
     </section>
@@ -137,7 +163,6 @@ const { target } = Astro.props;
         </div>
         <div class="servers">
           <MultiCode
-            name="Authenticate"
             options={[
               {
                 label: "Node.js",
@@ -161,7 +186,29 @@ const sumup = new SumUp({ apiKey: 'sup_sk_MvxmLOl0...' });`,
               },
             ]}
             isLanguageSelect
-          />
+          >
+            <CodeBlockHeader slot="header">
+              <div slot="left">Authenticate</div>
+              <CodeLangSelector
+                slot="right"
+                options={[
+                  {
+                    label: "Node.js",
+                    value: "node",
+                  },
+                  {
+                    label: "Go",
+                    value: "go",
+                  },
+                  {
+                    label: "Php",
+                    value: "php",
+                  },
+                ]}
+              />
+              <CopyButton slot="right" />
+            </CodeBlockHeader>
+          </MultiCode>
         </div>
       </LRGrid>
     </section>
@@ -183,7 +230,7 @@ const sumup = new SumUp({ apiKey: 'sup_sk_MvxmLOl0...' });`,
 <script>
   import { setCurrentLanguage } from "@lib/code";
 
-  document.addEventListener("DOMContentLoaded", () => {
+  const scrollToCurrent = () => {
     document.querySelectorAll("button[data-lang]").forEach((btn) => {
       btn.addEventListener("click", () => {
         const lang = (btn as HTMLElement).dataset.lang;
@@ -203,7 +250,10 @@ const sumup = new SumUp({ apiKey: 'sup_sk_MvxmLOl0...' });`,
         }
       }
     }
-  });
+  };
+
+  document.addEventListener("astro:page-load", scrollToCurrent);
+  document.addEventListener("DOMContentLoaded", scrollToCurrent);
 
   const observer = new IntersectionObserver(
     (entries) => {

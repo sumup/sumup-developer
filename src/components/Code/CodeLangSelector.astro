@@ -1,0 +1,66 @@
+---
+interface Props {
+  options: {
+    label: string;
+    value?: string;
+  }[];
+}
+
+const { options } = Astro.props;
+
+if (options.length < 1) {
+  throw new Error("Code selector requires at least one option");
+}
+---
+
+<select class="langSelector">
+  {
+    options.map(({ label, value }) => (
+      <option value={value || label.toLowerCase()}>{label}</option>
+    ))
+  }
+</select>
+
+<script>
+  import { setCurrentLanguage } from "@lib/code";
+
+  const initSelector = () => {
+    document.querySelectorAll(".langSelector")?.forEach((s) => {
+      s.addEventListener("change", (e) => {
+        const target = e.target as HTMLSelectElement;
+        setCurrentLanguage(target.value);
+      });
+    });
+
+    for (const mc of document.querySelectorAll(".codeblock")) {
+      const blocks = mc.querySelectorAll(".code");
+      mc.querySelector(".codesSelector")?.addEventListener("change", (e) => {
+        const target = e.target as HTMLSelectElement;
+        blocks.forEach((b) => b.classList.remove("active"));
+        mc.querySelector(`[data-lang="${target.value}"]`)?.classList.add(
+          "active",
+        );
+      });
+    }
+  };
+
+  document.addEventListener("astro:page-load", initSelector);
+  document.addEventListener("DOMContentLoaded", initSelector);
+</script>
+
+<style>
+  .langSelector {
+    appearance: none;
+    border: none;
+    box-shadow: none;
+    background-color: transparent;
+    cursor: pointer;
+    padding: var(--cui-spacings-bit) var(--cui-spacings-byte);
+    border-radius: var(--cui-border-radius-bit);
+    line-height: 1.15;
+  }
+
+  .langSelector:hover {
+    background-color: var(--cui-bg-subtle-hovered);
+  }
+</style>

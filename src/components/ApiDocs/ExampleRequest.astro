@@ -3,7 +3,12 @@ import { doc } from "@lib/openapi";
 // TODO: explore alternatives such as https://github.com/Kong/httpsnippet
 // This packages is no longer maintained.
 import { getEndpointSnippets } from "openapi-snippet";
-import MultiCode from "./MultiCode.astro";
+import {
+  MultiCode,
+  CodeBlockHeader,
+  CopyButton,
+  CodeLangSelector,
+} from "@components/Code";
 import OperationEndpoint from "./OperationEndpoint.astro";
 import type { OperationObject } from "src/types/openapi";
 import { node, go } from "@lib/codesamples";
@@ -46,5 +51,25 @@ const snippets = getEndpointSnippets(
   ]}
   isLanguageSelect
 >
-  <OperationEndpoint operation={operation} slot="title" />
+  <CodeBlockHeader slot="header">
+    <OperationEndpoint operation={operation} slot="left" />
+    <CodeLangSelector
+      slot="right"
+      options={[
+        {
+          label: "cURL",
+          value: "curl",
+        },
+        {
+          label: "Node.js",
+          value: "node",
+        },
+        {
+          label: "Go",
+          value: "go",
+        },
+      ]}
+    />
+    <CopyButton slot="right" />
+  </CodeBlockHeader>
 </MultiCode>

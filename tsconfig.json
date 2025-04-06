@@ -8,8 +8,6 @@
       }
     ],
     "baseUrl": ".",
-    "target": "ESNext",
-    "verbatimModuleSyntax": true,
     "paths": {
       "@components/*": ["src/components/*"],
       "@assets/*": ["src/assets/*"],

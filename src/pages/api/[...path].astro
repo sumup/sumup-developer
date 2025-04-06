@@ -126,7 +126,7 @@ const [tag, section] = (path || "").split("/");
     }
   }
 
-  document.addEventListener("DOMContentLoaded", () => {
+  const initClientSideNavigation = () => {
     const links = document.querySelectorAll("[data-scroll-to]");
 
     const sections = Array.from(links).map((link) => {
@@ -207,7 +207,10 @@ const [tag, section] = (path || "").split("/");
       }
     };
     document.addEventListener("scroll", onScroll, { passive: true });
-  });
+  };
+
+  document.addEventListener("astro:page-load", initClientSideNavigation);
+  document.addEventListener("DOMContentLoaded", initClientSideNavigation);
 </script>
 
 <style is:global>

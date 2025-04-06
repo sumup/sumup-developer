@@ -1,0 +1,145 @@
+---
+import ArrowRight from "@sumup-oss/icons/arrow_right_16.svg";
+import {
+  MultiCode,
+  CodeLangSelector,
+  CopyButton,
+  CodeBlockHeader,
+} from "@components/Code";
+---
+
+<div class="wrap">
+  <a class="card" href="/quick-start">
+    <div class="title">Developer quickstart guide<ArrowRight /></div>
+    <div class="body">
+      Make your first API request in minutes. Learn the basics of the SumUp
+      platform.
+    </div>
+  </a>
+  <MultiCode
+    class="transparent"
+    options={[
+      {
+        label: "Node.js",
+        value: "node",
+        code: `import SumUp from "@sumup/sdk";
+
+const client = new SumUp({
+  apiKey: 'sup_sk_MvxmLOl0...',
+});
+
+const merchant = await client.merchant.get();
+console.info(merchant);`,
+        lang: "ts",
+      },
+      {
+        label: "Go",
+        value: "go",
+        code: `client := sumup.NewClient().WithAuth(os.Getenv("SUMUP_API_KEY"))
+
+checkout, err := client.Checkouts.Create(context.Background(), sumup.CreateCheckoutBody{
+  Amount:            19,
+  CheckoutReference: "ORDER-123",
+  Currency:          "EUR",
+  MerchantCode:      "MERCHANT_CODE",
+})`,
+        lang: "go",
+      },
+      {
+        label: "Php",
+        value: "php",
+        code: "composer require sumup/sumup-ecom-php-sdk",
+        lang: "bash",
+      },
+    ]}
+    isLanguageSelect
+  >
+    <CodeBlockHeader slot="header">
+      <CodeLangSelector
+        options={[
+          {
+            label: "Node.js",
+            value: "node",
+          },
+          {
+            label: "Go",
+            value: "go",
+          },
+          {
+            label: "Php",
+            value: "php",
+          },
+        ]}
+      />
+      <CopyButton />
+    </CodeBlockHeader>
+  </MultiCode>
+</div>
+
+<style>
+  .wrap {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    padding: var(--cui-spacings-tera);
+    gap: var(--cui-spacings-tera);
+    background-color: var(--cui-bg-subtle);
+    border-radius: var(--cui-border-radius-byte);
+  }
+
+  @media screen and (max-width: 940px) {
+    .wrap {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .card {
+    display: flex;
+    flex-direction: column;
+    padding: var(--cui-spacings-giga);
+    justify-content: center;
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+    justify-self: stretch;
+  }
+
+  @media screen and (max-width: 940px) {
+    .card {
+      padding: 0;
+    }
+  }
+
+  .title {
+    color: var(--cui-fg-normal);
+    font-weight: var(--cui-font-weight-bold);
+    display: flex;
+    align-items: center;
+    gap: var(--cui-spacings-byte);
+    margin-bottom: var(--cui-spacings-kilo);
+  }
+
+  .title :global(svg) {
+    display: none;
+    width: 14px;
+    height: 14px;
+  }
+
+  .card:hover :global(svg) {
+    display: block;
+  }
+
+  .body {
+    margin-top: var(--cui-spacings-bit);
+    font-size: var(--cui-body-s-font-size);
+    line-height: var(--cui-body-s-line-height);
+  }
+
+  .header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--cui-spacings-bit) var(--cui-spacings-byte);
+  }
+</style>

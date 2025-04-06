@@ -3,14 +3,9 @@ import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
 import type { StarlightPageProps } from "@astrojs/starlight/props";
 import Card from "@components/Card.astro";
 import Brands from "@components/Landing/Brands.astro";
-import TryItOut from "@components/TryItOut/TryItOut.astro";
-import { Headline, Body, ButtonGroup } from "@sumup-oss/circuit-ui";
-import {
-  InterestOnBalance,
-  NoCosts,
-  SecurePayments,
-  Key,
-} from "@sumup-oss/icons";
+import QuickStartCTA from "@components/Landing/QuickStartCTA.astro";
+import { Headline } from "@sumup-oss/circuit-ui";
+import { InterestOnBalance, NoCosts, SecurePayments } from "@sumup-oss/icons";
 import CardLink from "@components/CardLink.astro";
 import CardStack from "@components/CardStack.astro";
 import ButtonLink from "@components/ButtonLink.astro";
@@ -32,28 +27,7 @@ const props = {
 
 <StarlightPage {...props}>
   <main>
-    <div class="cta">
-      <Headline as="h2" size="s"><Key /> Get your API key</Headline>
-      <Body>
-        Create a merchant account to access API keys and a suite of developer
-        tools.
-      </Body>
-      <ButtonGroup
-        align="left"
-        actions={{
-          primary: {
-            children: "Sign Up",
-            size: "s",
-            href: "https://me.sumup.com/signup?intent=developer",
-          },
-          secondary: {
-            children: "Login",
-            size: "s",
-            href: "https://me.sumup.com/settings-v2/api-keys",
-          },
-        }}
-      />
-    </div>
+    <QuickStartCTA />
     <section>
       <div class="card-grid">
         <Card title="Online Payments" icon="online_payments">
@@ -99,9 +73,6 @@ const props = {
           </ul>
         </Card>
       </div>
-    </section>
-    <section>
-      <TryItOut />
     </section>
     <section>
       <Headline as="h2" className="header">Building blocks</Headline>
@@ -341,23 +312,6 @@ const props = {
       grid-template-columns: 1fr 1fr 1fr;
       gap: 1.5rem;
     }
-  }
-
-  .cta {
-    padding: var(--cui-spacings-giga);
-    background-color: var(--cui-bg-subtle);
-    border-radius: var(--cui-border-radius-byte);
-  }
-
-  .cta > :global(*:not(:last-child)) {
-    margin-bottom: var(--cui-spacings-kilo);
-  }
-
-  .cta :global(h2) {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: var(--cui-spacings-byte);
   }
 
   .button-links {

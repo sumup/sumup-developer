@@ -1,0 +1,68 @@
+---
+import Copy from "@sumup-oss/icons/copy_24.svg";
+import Checkmark from "@sumup-oss/icons/checkmark_24.svg";
+import IconButton from "../IconButton.astro";
+
+export interface Props {
+  float?: boolean;
+}
+
+const { float = false } = Astro.props;
+---
+
+<IconButton class:list={["copy-code-btn", float && "float"]}>
+  <Copy class="copy" />
+  <Checkmark class="checkmark" />
+</IconButton>
+
+<script>
+  async function clickHandler(event: Event) {
+    const button = event.currentTarget as HTMLButtonElement;
+    const wrap = button.closest(".codeblock")!;
+    const target = wrap.querySelector(".active.code")! as HTMLElement;
+    const dataset = target.dataset as { code: string; copied: string };
+    const code = dataset.code.replace(/\u007f/g, "\n");
+    try {
+      await navigator.clipboard.writeText(code);
+    } catch (err) {
+      console.error((err as Error).toString());
+      //  TODO
+    }
+
+    button.classList.add("copied");
+    setTimeout(() => {
+      button.classList.remove("copied");
+    }, 2000);
+  }
+
+  const initButtons = () => {
+    document
+      .querySelectorAll?.(".copy-code-btn")
+      .forEach((btn) => btn.addEventListener("click", clickHandler));
+  };
+
+  document.addEventListener("astro:page-load", initButtons);
+  document.addEventListener("DOMContentLoaded", initButtons);
+</script>
+
+<style>
+  .copy-code-btn.float {
+    position: absolute;
+    top: var(--cui-spacings-byte);
+    right: var(--cui-spacings-byte);
+  }
+
+  :global(.copy-code-btn) .copy {
+    display: block;
+  }
+  :global(.copy-code-btn) .checkmark {
+    display: none;
+  }
+
+  :global(.copy-code-btn.copied) .copy {
+    display: none;
+  }
+  :global(.copy-code-btn.copied) .checkmark {
+    display: block;
+  }
+</style>

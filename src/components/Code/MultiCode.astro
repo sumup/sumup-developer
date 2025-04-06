@@ -6,9 +6,11 @@
 // If attempted, inspiration can be taken from:
 // https://github.com/expressive-code/expressive-code/tree/main/packages/@expressive-code/plugin-frames
 import { Code as Default } from "@astrojs/starlight/components";
-import Codeblock from "@components/Codeblock.astro";
+import CodeBlock from "./CodeBlock.astro";
+import CodeLangSelector from "./CodeLangSelector.astro";
 
 interface Props {
+  class?: string;
   name?: string;
   isLanguageSelect?: boolean;
   options: {
@@ -16,51 +18,48 @@ interface Props {
     value?: string;
     code: string;
     lang: string;
-    description?: string;
     meta?: string;
   }[];
 }
 
-const { options, name, isLanguageSelect = false, ...props } = Astro.props;
+const {
+  options,
+  name,
+  isLanguageSelect = false,
+  class: cn,
+  ...props
+} = Astro.props;
+
 const defaultOption = options[0].label;
 ---
 
-<Codeblock
-  class:list={[isLanguageSelect && "multi-lang"]}
+<CodeBlock
+  class:list={[isLanguageSelect && "multi-lang", cn]}
   withCopyButton
   {...props}
 >
-  <div slot="title">
-    <slot name="title">
-      <div class="name">{name}</div>
-    </slot>
-  </div>
-  <select
-    slot="extra-options"
-    name="codes-options"
-    class:list={[isLanguageSelect ? "langSelector" : "codesSelector"]}
-  >
-    {
-      options.map(({ label, value }) => (
-        <option value={value || label.toLowerCase()}>{label}</option>
-      ))
-    }
-  </select>
+  <slot name="header" slot="header">
+    <div slot="title">
+      <slot name="title">
+        <div class="name">{name}</div>
+      </slot>
+    </div>
+    <CodeLangSelector slot="extra-options" options={options} />
+  </slot>
   <div slot="code">
     {
-      options.map(({ lang, code, label, value, description, meta }) => (
+      options.map(({ lang, code, label, value, meta }) => (
         <div
           class:list={["code", label === defaultOption ? "active" : ""]}
           data-lang={value || label.toLowerCase()}
           data-code={code.replace(/\n/g, "\u007f")}
         >
-          {description && <div class="description">{description}</div>}
           <Default lang={lang} code={code} meta={meta} />
         </div>
       ))
     }
   </div>
-</Codeblock>
+</CodeBlock>
 
 <script>
   import { setCurrentLanguage } from "@lib/code";

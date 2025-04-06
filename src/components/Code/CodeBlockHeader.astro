@@ -1,0 +1,48 @@
+---
+
+---
+
+<div class="header">
+  <slot>
+    <div class="split">
+      <div class="segment left">
+        <slot name="left" />
+      </div>
+      <div class="segment">
+        <slot name="right" />
+      </div>
+    </div>
+  </slot>
+</div>
+
+<style>
+  .header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--cui-spacings-bit) var(--cui-spacings-byte)
+      var(--cui-spacings-bit) var(--cui-spacings-kilo);
+    border-bottom: var(--cui-border-width-kilo) solid var(--cui-border-subtle);
+  }
+
+  .split {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--cui-spacings-mega);
+  }
+
+  .segment {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .left {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+</style>

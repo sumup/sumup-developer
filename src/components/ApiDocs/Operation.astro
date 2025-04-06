@@ -9,9 +9,13 @@ import type { OperationObject } from "src/types/openapi";
 import InlineCode from "../Highlight/InlineCode.astro";
 import Example from "./Example.astro";
 import ExampleRequest from "./ExampleRequest.astro";
-import Codeblock from "@components/Codeblock.astro";
+import {
+  CodeBlock,
+  MultiCode,
+  CodeBlockHeader,
+  CopyButton,
+} from "@components/Code";
 import LRGrid from "./LRGrid.astro";
-import MultiCode from "./MultiCode.astro";
 import Parameters from "./Parameters.astro";
 import Schema from "./Schema.astro";
 
@@ -157,7 +161,7 @@ const queryParams = operation.parameters
         successResponse && (
           <div class="example-response">
             {successResponse.example && (
-              <Codeblock
+              <CodeBlock
                 title="Response"
                 language="json"
                 code={JSON.stringify(successResponse.example, null, 2)}
@@ -165,7 +169,6 @@ const queryParams = operation.parameters
             )}
             {successResponse.examples && (
               <MultiCode
-                name={"Response"}
                 options={Object.entries(successResponse.examples).map(
                   ([key, value]) => ({
                     label: key,
@@ -175,10 +178,14 @@ const queryParams = operation.parameters
                       2,
                     ),
                     lang: "json",
-                    description: value.description,
                   }),
                 )}
-              />
+              >
+                <CodeBlockHeader slot="header">
+                  <div slot="left">Response</div>
+                  <CopyButton slot="right" />
+                </CodeBlockHeader>
+              </MultiCode>
             )}
             {!successResponse.example &&
               !successResponse.examples &&

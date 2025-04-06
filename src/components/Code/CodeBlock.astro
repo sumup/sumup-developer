@@ -1,9 +1,8 @@
 ---
 import { Code as Default } from "@astrojs/starlight/components";
-import { Checkmark, Copy } from "@sumup-oss/icons";
 import type { ExpressiveCodeBlockOptions } from "expressive-code";
 import type { HTMLAttributes } from "astro/types";
-import IconButton from "./IconButton.astro";
+import CopyButton from "./CopyButton.astro";
 
 export type Props = HTMLAttributes<"div"> &
   Omit<ExpressiveCodeBlockOptions, "code" | "language"> & {
@@ -18,31 +17,25 @@ const {
   language,
   title,
   meta = `"$SUMUP_API_KEY" "SUMUP_API_KEY"`,
-  withCopyButton = false,
   class: cls,
   ...props
 } = Astro.props;
 ---
 
 <div class:list={["codeblock", "not-content", cls]} {...props}>
-  {
-    (title || Astro.slots.has("title")) && (
-      <div class="header">
-        <slot name="title">
+  <slot name="header">
+    {
+      title && (
+        <div class="header">
           <div class="name">{title}</div>
-        </slot>
-        <div class="options">
-          <slot name="extra-options" />
-          {withCopyButton && (
-            <IconButton class="copy-code-btn">
-              <Copy className="copy" />
-              <Checkmark className="checkmark" />
-            </IconButton>
-          )}
+          <div class="options">
+            <slot name="extra-options" />
+            <CopyButton />
+          </div>
         </div>
-      </div>
-    )
-  }
+      )
+    }
+  </slot>
   <slot name="code">
     {
       code && language && (
@@ -56,43 +49,8 @@ const {
       )
     }
   </slot>
+  {!Astro.slots.has("header") && !title && <CopyButton float />}
 </div>
-
-<script>
-  async function clickHandler(event: Event) {
-    const button = event.currentTarget as HTMLButtonElement;
-    const wrap = button.closest(".codeblock")!;
-    const target = wrap.querySelector(".active.code")! as HTMLElement;
-    const dataset = target.dataset as { code: string; copied: string };
-    const code = dataset.code.replace(/\u007f/g, "\n");
-    try {
-      await navigator.clipboard.writeText(code);
-    } catch (err) {
-      console.error((err as Error).toString());
-      //  TODO
-    }
-
-    button.classList.add("copied");
-    setTimeout(() => {
-      button.classList.remove("copied");
-    }, 2000);
-  }
-
-  function initButtons(container: ParentNode | Document) {
-    container
-      .querySelectorAll?.(".copy-code-btn")
-      .forEach((btn) => btn.addEventListener("click", clickHandler));
-  }
-
-  document.addEventListener("DOMContentLoaded", () => {
-    initButtons(document);
-  });
-
-  // Also re-initialize all buttons after view transitions initiated by popular frameworks
-  document.addEventListener("astro:page-load", () => {
-    initButtons(document);
-  });
-</script>
 
 <style>
   :global(.expressive-code code) {
@@ -105,6 +63,7 @@ const {
   }
 
   .codeblock {
+    position: relative;
     font-size: 0.8rem;
     font-family: var(--cui-font-stack-mono);
     overflow: hidden;
@@ -113,6 +72,7 @@ const {
     align-self: start;
     border: var(--cui-border-width-kilo) solid var(--cui-border-subtle);
     border-radius: var(--cui-border-radius-byte);
+    background-color: var(--cui-bg-subtle);
   }
 
   .header {

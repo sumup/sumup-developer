@@ -23,9 +23,12 @@ export const setCurrentLanguage = (lang: string) => {
   updateCodeblocks(lang);
 };
 
-document.addEventListener("DOMContentLoaded", () => {
+const initCodeblocks = () => {
   const lang = currentLanguage();
   if (lang) {
     updateCodeblocks(lang);
   }
-});
+};
+
+document.addEventListener("astro:page-load", initCodeblocks);
+document.addEventListener("DOMContentLoaded", initCodeblocks);
