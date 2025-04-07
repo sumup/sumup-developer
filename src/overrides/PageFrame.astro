@@ -1,6 +1,6 @@
 ---
 import MobileMenuToggle from "./MobileMenuToggle.astro";
-import { Help, Info, History } from "@sumup-oss/icons";
+import { Help, Info } from "@sumup-oss/icons";
 
 const { hasSidebar } = Astro.locals.starlightRoute;
 ---
@@ -14,8 +14,8 @@ const { hasSidebar } = Astro.locals.starlightRoute;
         aria-label={Astro.locals.t("sidebarNav.accessibleLabel")}
       >
         <MobileMenuToggle />
-        <div id="starlight__sidebar" class="sidebar-pane">
-          <div class="sidebar-content sl-flex">
+        <div class="sidebar-pane">
+          <div class="sidebar-content sl-flex" id="starlight__sidebar">
             <slot name="sidebar" />
           </div>
           <div class="sidebar-footer">
@@ -24,9 +24,6 @@ const { hasSidebar } = Astro.locals.starlightRoute;
             </a>
             <a href="https://status.sumup.com/">
               <Info /> Status
-            </a>
-            <a href="/changelog">
-              <History /> Changelog
             </a>
           </div>
         </div>

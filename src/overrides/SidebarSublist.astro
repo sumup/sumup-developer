@@ -4,14 +4,25 @@
 // the styles and for certain content don't use expandable
 // sections.
 import { Badge, Icon } from "@astrojs/starlight/components";
-import type { SidebarEntry, Link } from "@lib/sidebar";
-import CUIIcon from "@components/Icon.astro";
+import type { SidebarEntry, Link } from "../types/sidebar";
+import SidebarRestorePoint from "./SidebarRestorePoint.astro";
 
 interface Props {
   sublist: SidebarEntry[];
   expanded?: boolean;
-  nested?: boolean;
+  depth?: number;
 }
+
+const applyLabelOverride = (label: string): string => {
+  switch (label) {
+    case "apm":
+      return "Alternative Payment Methods";
+    case "guides":
+      return "Guides";
+    default:
+      return label;
+  }
+};
 
 const flattenSidebar = (sidebar: SidebarEntry[]): Link[] => {
   return sidebar.flatMap((entry) =>
@@ -19,10 +30,14 @@ const flattenSidebar = (sidebar: SidebarEntry[]): Link[] => {
   );
 };
 
-const { sublist, expanded } = Astro.props;
+const isExpandable = (entry: SidebarEntry): boolean => {
+  return (!expanded || depth >= 1) && entry.label !== "SumUp API";
+};
+
+const { sublist, expanded, depth = 0 } = Astro.props;
 ---
 
-<ul class="sidebar">
+<ul class:list={["sidebar", depth > 1 && "nested"]}>
   {
     sublist.map((entry) => (
       <li>
@@ -33,7 +48,6 @@ const { sublist, expanded } = Astro.props;
             class:list={[entry.attrs.class]}
             {...entry.attrs}
           >
-            {entry.icon && <CUIIcon icon={entry.icon} />}
             <span>{entry.label}</span>
             {entry.badge && (
               <Badge
@@ -44,37 +58,17 @@ const { sublist, expanded } = Astro.props;
             )}
           </a>
         )}
-        {entry.type === "group" &&
-          !expanded &&
-          entry.label !== "API Reference" && (
-            <details
-              open={
-                flattenSidebar(entry.entries).some((i) => i.isCurrent) ||
-                !entry.collapsed
-              }
-            >
-              <summary class="group-header">
-                <div class="group-label">
-                  <span>{entry.label}</span>
-                  {entry.badge && (
-                    <Badge
-                      variant={entry.badge.variant}
-                      class={entry.badge.class}
-                      text={entry.badge.text}
-                    />
-                  )}
-                </div>
-                <Icon name="right-caret" class="caret" size="1.25rem" />
-              </summary>
-              <Astro.self sublist={entry.entries} expanded={expanded} />
-            </details>
-          )}
-        {entry.type === "group" &&
-          (expanded || entry.label === "API Reference") && (
-            <>
-              <span class="group-header">
-                {entry.icon && <CUIIcon icon={entry.icon} />}
-                <span>{entry.label}</span>
+        {entry.type === "group" && isExpandable(entry) && (
+          <details
+            open={
+              flattenSidebar(entry.entries).some((i) => i.isCurrent) ||
+              !entry.collapsed
+            }
+          >
+            <SidebarRestorePoint />
+            <summary class:list={["entry", depth < 1 && "group-header"]}>
+              <div class="group-label">
+                <span>{applyLabelOverride(entry.label)}</span>
                 {entry.badge && (
                   <Badge
                     variant={entry.badge.variant}
@@ -82,10 +76,35 @@ const { sublist, expanded } = Astro.props;
                     text={entry.badge.text}
                   />
                 )}
-              </span>
-              <Astro.self sublist={entry.entries} expanded={expanded} />
-            </>
-          )}
+              </div>
+              <Icon name="right-caret" class="caret" size="1.25rem" />
+            </summary>
+            <Astro.self
+              sublist={entry.entries}
+              expanded={expanded}
+              depth={depth + 1}
+            />
+          </details>
+        )}
+        {entry.type === "group" && !isExpandable(entry) && (
+          <>
+            <span class:list={["entry", "group-header"]}>
+              <span>{entry.label}</span>
+              {entry.badge && (
+                <Badge
+                  variant={entry.badge.variant}
+                  class={entry.badge.class}
+                  text={entry.badge.text}
+                />
+              )}
+            </span>
+            <Astro.self
+              sublist={entry.entries}
+              expanded={expanded}
+              depth={depth + 1}
+            />
+          </>
+        )}
       </li>
     ))
   }
@@ -97,14 +116,17 @@ const { sublist, expanded } = Astro.props;
     line-height: var(--cui-body-s-line-height);
   }
 
-  .group-header {
-    font-weight: var(--cui-font-weight-semibold);
+  .entry {
     margin: var(--cui-spacings-bit) 0;
     display: flex;
     align-items: center;
     padding: 0.2em var(--sl-sidebar-item-padding-inline);
-    font-weight: var(--cui-font-weight-bold);
     gap: var(--cui-spacings-byte);
+  }
+
+  .group-header {
+    font-weight: var(--cui-font-weight-semibold);
+    font-weight: var(--cui-font-weight-bold);
     color: var(--cui-fg-normal);
   }
 
@@ -121,6 +143,10 @@ const { sublist, expanded } = Astro.props;
     --sl-sidebar-item-padding-inline: 0.5rem;
     list-style: none;
     padding: 0;
+  }
+
+  ul.nested {
+    padding-left: var(--cui-spacings-kilo);
   }
 
   li {

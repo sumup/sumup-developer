@@ -246,6 +246,9 @@ const sumup = new SumUp({ apiKey: 'sup_sk_MvxmLOl0...' });`,
       if (selectedOperation) {
         const target = document.getElementById(selectedOperation);
         if (target) {
+          console.info({
+            target,
+          });
           target.scrollIntoView();
         }
       }
@@ -255,29 +258,25 @@ const sumup = new SumUp({ apiKey: 'sup_sk_MvxmLOl0...' });`,
   document.addEventListener("astro:page-load", scrollToCurrent);
   document.addEventListener("DOMContentLoaded", scrollToCurrent);
 
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          sessionStorage.setItem("lastVisible", entry.target.id);
-        }
-      });
-    },
-    { threshold: 0.5 },
-  );
+  const persistSidebar = () => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            sessionStorage.setItem("lastVisible", entry.target.id);
+          }
+        });
+      },
+      { threshold: 0.5 },
+    );
 
-  document.querySelectorAll("section, .codeblock").forEach((section) => {
-    observer.observe(section);
-  });
+    document.querySelectorAll("section").forEach((section) => {
+      observer.observe(section);
+    });
+  };
 
-  window.addEventListener("load", () => {
-    const lastVisible = sessionStorage.getItem("lastVisible");
-    if (lastVisible) {
-      document
-        .getElementById(lastVisible)!
-        .scrollIntoView({ behavior: "smooth", block: "center" });
-    }
-  });
+  document.addEventListener("astro:page-load", persistSidebar);
+  document.addEventListener("DOMContentLoaded", persistSidebar);
 </script>
 
 <style>

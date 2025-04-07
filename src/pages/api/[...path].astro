@@ -30,7 +30,7 @@ export async function getStaticPaths() {
 
 const sidebar: StarlightUserConfig["sidebar"] = [
   {
-    label: "api",
+    label: "SumUp API",
     items: [
       {
         label: "Overview",
@@ -116,6 +116,9 @@ const [tag, section] = (path || "").split("/");
     const scrollTo = section ? `${tag}-${section}` : tag;
     const target = document.getElementById(scrollTo);
     if (target) {
+      console.info({
+        target,
+      });
       target.scrollIntoView();
     }
     const opt: HTMLOptionElement | undefined | null = document
@@ -147,6 +150,9 @@ const [tag, section] = (path || "").split("/");
         link.setAttribute("aria-current", "page");
         const target = document.getElementById(scrollTo);
         if (target) {
+          console.info({
+            target,
+          });
           target.scrollIntoView();
           history.pushState({}, "", link.getAttribute("href"));
           e.preventDefault();

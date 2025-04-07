@@ -8,6 +8,7 @@
       }
     ],
     "baseUrl": ".",
+    "verbatimModuleSyntax": true,
     "paths": {
       "@components/*": ["src/components/*"],
       "@assets/*": ["src/assets/*"],

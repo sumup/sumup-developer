@@ -1,10 +1,7 @@
 ---
-// Plugs in client-side router for page transitions.
-// See: https://docs.astro.build/en/guides/view-transitions/
 import Default from "@astrojs/starlight/components/Head.astro";
 import "@sumup-oss/design-tokens/fonts.css";
 import "@sumup-oss/design-tokens/dynamic.css";
-import { ClientRouter } from "astro:transitions";
 
 const { entry } = Astro.locals.starlightRoute;
 Astro.locals.starlightRoute.entry.data.head.push({
@@ -35,4 +32,3 @@ Astro.locals.starlightRoute.entry.data.head.push({
 </script>
 
 <Default {...Astro.props} />
-<ClientRouter />

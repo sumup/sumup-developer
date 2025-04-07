@@ -161,20 +161,37 @@ export default defineConfig({
       disable404Route: true,
       sidebar: [
         {
-          label: "online-payments",
-          autogenerate: { directory: "online-payments" },
+          label: "Get started",
+          items: [
+            {
+              label: "Overview",
+              link: "/",
+            },
+            {
+              label: "Quickstart",
+              link: "/quickstart",
+            },
+          ],
         },
         {
-          label: "terminal-payments",
-          autogenerate: { directory: "terminal-payments" },
+          label: "Online payments",
+          autogenerate: { directory: "online-payments", collapsed: true },
         },
         {
-          label: "webhooks",
-          autogenerate: { directory: "webhooks" },
+          label: "In-person payments",
+          autogenerate: { directory: "terminal-payments", collapsed: true },
         },
         {
-          label: "problem",
-          autogenerate: { directory: "problem" },
+          label: "SDKs",
+          autogenerate: { directory: "tools" },
+        },
+        {
+          label: "Plugins",
+          autogenerate: { directory: "plugins" },
+        },
+        {
+          label: "Open Banking",
+          link: "/open-banking",
         },
       ],
       head: head(),
@@ -182,11 +199,9 @@ export default defineConfig({
         Footer: "./src/overrides/Footer.astro",
         Head: "./src/overrides/Head.astro",
         MobileMenuToggle: "./src/overrides/MobileMenuToggle.astro",
-        // Header: "./src/overrides/Header.astro",
         Hero: "./src/overrides/Hero.astro",
         MarkdownContent: "./src/overrides/MarkdownContent.astro",
         Sidebar: "./src/overrides/Sidebar.astro",
-        PageTitle: "./src/overrides/PageTitle.astro",
         SiteTitle: "./src/overrides/SiteTitle.astro",
         SocialIcons: "./src/overrides/SocialIcons.astro",
         MobileTableOfContents: "./src/overrides/MobileTableOfContents.astro",
