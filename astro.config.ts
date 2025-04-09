@@ -182,8 +182,8 @@ export default defineConfig({
           autogenerate: { directory: "terminal-payments", collapsed: true },
         },
         {
-          label: "SDKs",
-          autogenerate: { directory: "tools" },
+          label: "Developer tools",
+          autogenerate: { directory: "tools", collapsed: true },
         },
         {
           label: "Plugins",
@@ -206,6 +206,7 @@ export default defineConfig({
         SocialIcons: "./src/overrides/SocialIcons.astro",
         MobileTableOfContents: "./src/overrides/MobileTableOfContents.astro",
         PageFrame: "./src/overrides/PageFrame.astro",
+        PageTitle: "./src/overrides/PageTitle.astro",
       },
       social: {
         github: "https://github.com/sumup/documentation",
