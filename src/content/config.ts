@@ -25,13 +25,6 @@ const problem = defineCollection({
   }),
 });
 
-const webhooks = defineCollection({
-  type: "content",
-  schema: z.object({
-    title: z.string(),
-  }),
-});
-
 export const collections = {
   docs: defineCollection({
     schema: docsSchema({
@@ -44,5 +37,4 @@ export const collections = {
   help,
   changelog,
   problem,
-  webhooks,
 };

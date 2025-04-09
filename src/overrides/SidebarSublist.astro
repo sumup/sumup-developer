@@ -4,7 +4,7 @@
 // the styles and for certain content don't use expandable
 // sections.
 import { Badge, Icon } from "@astrojs/starlight/components";
-import type { SidebarEntry, Link } from "../types/sidebar";
+import type { SidebarEntry, Link, Group } from "../types/sidebar";
 import SidebarRestorePoint from "./SidebarRestorePoint.astro";
 
 interface Props {
@@ -23,6 +23,8 @@ const applyLabelOverride = (label: string): string => {
       return "SDKs";
     case "agent-toolkit":
       return "Agent Toolkit";
+    case "api":
+      return "API";
     default:
       return label;
   }
@@ -40,7 +42,7 @@ const isExpandable = (entry: SidebarEntry): boolean => {
   return (!expanded || depth >= 1) && entry.label !== "SumUp API";
 };
 
-const isOpen = (entry: SidebarEntry): boolean => {
+const isOpen = (entry: Group): boolean => {
   return (
     flattenSidebar(entry.entries).some((i) => i.isCurrent) || !entry.collapsed
   );

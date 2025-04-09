@@ -2,5 +2,89 @@
 title: Use SumUp in your agentic workflows
 sidebar:
   label: Overview
-  order: 100
+  order: 50
 ---
+
+Use SumUp to run your agent business and enhance your agents’ functionality. By enabling access to financial services and tools, you allow your agents to help you earn and spend funds, expanding their capabilities.
+
+## OpenAI
+
+Example usage of the [SumUp Agent Toolkit](https://github.com/sumup/sumup-agent-toolkit) with the [OpenAI](https://github.com/openai/openai-node).
+
+```ts
+import { SumUpAgentToolkit } from "@sumup/agent-toolkit/openai";
+import OpenAI from "openai";
+import type { ChatCompletionMessageParam } from "openai/resources";
+
+require("dotenv").config();
+
+const openai = new OpenAI();
+
+const sumupAgentToolkit = new SumUpAgentToolkit({
+  apiKey: process.env.SUMUP_API_KEY!,
+});
+
+(async (): Promise<void> => {
+  let messages: ChatCompletionMessageParam[] = [
+    {
+      role: "user",
+      content: "Tell me about my last 10 transactions please.",
+    },
+  ];
+
+  while (true) {
+    // eslint-disable-next-line no-await-in-loop
+    const completion = await openai.chat.completions.create({
+      model: "gpt-4o",
+      messages,
+      tools: sumupAgentToolkit.getTools(),
+    });
+
+    const message = completion.choices[0].message;
+
+    messages.push(message);
+
+    if (message.tool_calls) {
+      // eslint-disable-next-line no-await-in-loop
+      const toolMessages = await Promise.all(
+        message.tool_calls.map((tc) => sumupAgentToolkit.handleToolCall(tc)),
+      );
+      messages = [...messages, ...toolMessages];
+    } else {
+      console.log(completion.choices[0].message);
+      break;
+    }
+  }
+})();
+```
+
+## AI SDK
+
+Example usage of the [SumUp Agent Toolkit](https://github.com/sumup/sumup-agent-toolkit) with the [AI SDK](https://sdk.vercel.ai/).
+
+```ts
+import { openai } from "@ai-sdk/openai";
+import { SumUpAgentToolkit } from "@sumup/agent-toolkit/ai";
+import { generateText } from "ai";
+
+require("dotenv").config();
+
+const sumupAgentToolkit = new SumUpAgentToolkit({
+  apiKey: process.env.SUMUP_API_KEY!,
+});
+
+const model = openai("gpt-4o");
+
+(async () => {
+  const result = await generateText({
+    model: model,
+    tools: {
+      ...sumupAgentToolkit.getTools(),
+    },
+    maxSteps: 5,
+    prompt: "Tell me about my last 5 transactions and their status.",
+  });
+
+  console.log(result);
+})();
+```
