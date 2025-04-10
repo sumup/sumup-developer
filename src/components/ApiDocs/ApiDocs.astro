@@ -103,6 +103,12 @@ const { target } = Astro.props;
                 lang: "bash",
               },
               {
+                label: "Python",
+                value: "python",
+                code: "pip install python",
+                lang: "bash",
+              },
+              {
                 label: "Php",
                 value: "php",
                 code: "composer require sumup/sumup-ecom-php-sdk",
@@ -123,6 +129,10 @@ const { target } = Astro.props;
                   {
                     label: "Go",
                     value: "go",
+                  },
+                  {
+                    label: "Python",
+                    value: "python",
                   },
                   {
                     label: "Php",
@@ -179,6 +189,14 @@ const sumup = new SumUp({ apiKey: 'sup_sk_MvxmLOl0...' });`,
                 lang: "go",
               },
               {
+                label: "Python",
+                value: "python",
+                code: `from sumup import Sumup
+
+client := sumup.NewClient().WithAuth("sup_sk_MvxmLOl0...")`,
+                lang: "python",
+              },
+              {
                 label: "Php",
                 value: "php",
                 code: "composer require sumup/sumup-ecom-php-sdk",
@@ -199,6 +217,10 @@ const sumup = new SumUp({ apiKey: 'sup_sk_MvxmLOl0...' });`,
                   {
                     label: "Go",
                     value: "go",
+                  },
+                  {
+                    label: "Python",
+                    value: "python",
                   },
                   {
                     label: "Php",

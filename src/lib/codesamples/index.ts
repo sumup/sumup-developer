@@ -1,4 +1,5 @@
 import { node } from "./node";
 import { go } from "./go";
+import { python } from "./python";
 
-export { node, go };
+export { node, go, python };

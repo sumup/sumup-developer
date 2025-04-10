@@ -11,7 +11,7 @@ import {
 } from "@components/Code";
 import OperationEndpoint from "./OperationEndpoint.astro";
 import type { OperationObject } from "src/types/openapi";
-import { node, go } from "@lib/codesamples";
+import { node, go, python } from "@lib/codesamples";
 
 export interface Props {
   operation: OperationObject;
@@ -43,6 +43,12 @@ const snippets = getEndpointSnippets(
       lang: "ts",
     },
     {
+      label: "Python",
+      value: "python",
+      code: python(operation),
+      lang: "python",
+    },
+    {
       label: "Go",
       value: "go",
       code: go(operation),
@@ -63,6 +69,10 @@ const snippets = getEndpointSnippets(
         {
           label: "Node.js",
           value: "node",
+        },
+        {
+          label: "Python",
+          value: "python",
         },
         {
           label: "Go",

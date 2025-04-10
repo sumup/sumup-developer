@@ -9,9 +9,7 @@ const pages = Object.fromEntries(
 
 export const { getStaticPaths, GET } = OGImageRoute({
   param: "route",
-
   pages,
-
   getImageOptions: (path, page) => ({
     title: page.title,
     description: page.description,
