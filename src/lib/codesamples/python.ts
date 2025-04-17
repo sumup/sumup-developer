@@ -29,7 +29,7 @@ export const python = (operation: OperationObject): string => {
   );
   const example = bodyExample(operation);
   const body = example
-    ? JSON.stringify(example, null, 2).replace(/"([^"]+)":/g, "$1:")
+    ? JSON.stringify(example, null, 2).replace(/"([^"]+)": /g, "$1=")
     : "";
 
   // Extract required parameters
