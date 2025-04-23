@@ -2,6 +2,7 @@
 import { Code as Default } from "@astrojs/starlight/components";
 import type { ExpressiveCodeBlockOptions } from "expressive-code";
 import type { HTMLAttributes } from "astro/types";
+import Mermaid from "@components/content/Mermaid.astro";
 import CopyButton from "./CopyButton.astro";
 
 export type Props = HTMLAttributes<"div"> &
@@ -22,35 +23,37 @@ const {
 } = Astro.props;
 ---
 
-<div class:list={["codeblock", "not-content", cls]} {...props}>
-  <slot name="header">
-    {
-      title && (
-        <div class="header">
-          <div class="name">{title}</div>
-          <div class="options">
-            <slot name="extra-options" />
-            <CopyButton />
+{
+  language === "mermaid" ? (
+    <Mermaid>{code}</Mermaid>
+  ) : (
+    <div class:list={["codeblock", "not-content", cls]} {...props}>
+      <slot name="header">
+        {title && (
+          <div class="header">
+            <div class="name">{title}</div>
+            <div class="options">
+              <slot name="extra-options" />
+              <CopyButton />
+            </div>
           </div>
-        </div>
-      )
-    }
-  </slot>
-  <slot name="code">
-    {
-      code && language && (
-        <div
-          class:list={["code", "active"]}
-          data-lang={language}
-          data-code={code.replace(/\n/g, "\u007f")}
-        >
-          <Default lang={language} code={code} meta={meta} />
-        </div>
-      )
-    }
-  </slot>
-  {!Astro.slots.has("header") && !title && <CopyButton float />}
-</div>
+        )}
+      </slot>
+      <slot name="code">
+        {code && language && (
+          <div
+            class:list={["code", "active"]}
+            data-lang={language}
+            data-code={code.replace(/\n/g, "\u007f")}
+          >
+            <Default lang={language} code={code} meta={meta} />
+          </div>
+        )}
+      </slot>
+      {!Astro.slots.has("header") && !title && <CopyButton float />}
+    </div>
+  )
+}
 
 <style>
   :global(.expressive-code code) {
