@@ -115,7 +115,6 @@ const head = (): HeadUserConfig => {
         src: "https://cdn-ukwest.onetrust.com/scripttemplates/otSDKStub.js",
         "data-domain-script": import.meta.env.PUBLIC_ONETRUST_DOMAIN_ID,
       },
-      content: "",
     });
   }
 
@@ -125,11 +124,9 @@ const head = (): HeadUserConfig => {
       attrs: {
         src: `https://www.googletagmanager.com/gtag/js?id=${import.meta.env.PUBLIC_GA_TAG_ID}`,
       },
-      content: "",
     });
     head.push({
       tag: "script",
-      attrs: {},
       content: `
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
@@ -147,7 +144,6 @@ export default defineConfig({
   site: "https://sumup-developer.sumup-vercel.app",
 
   experimental: {
-    svg: true,
     contentIntellisense: true,
   },
 
@@ -208,9 +204,13 @@ export default defineConfig({
         PageFrame: "./src/overrides/PageFrame.astro",
         PageTitle: "./src/overrides/PageTitle.astro",
       },
-      social: {
-        github: "https://github.com/sumup/documentation",
-      },
+      social: [
+        {
+          icon: "github",
+          label: "GitHub",
+          href: "https://github.com/sumup/documentation",
+        },
+      ],
       editLink: {
         baseUrl: "https://github.com/sumup/documentation/edit/main/",
       },
