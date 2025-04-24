@@ -48,7 +48,7 @@
     "@expressive-code/plugin-line-numbers": "0.40.2",
     "@markdoc/markdoc": "^0.5.1",
     "@sindresorhus/slugify": "^2.2.1",
-    "@sumup-oss/circuit-ui": "^9.11.0",
+    "@sumup-oss/circuit-ui": "^9.11.2",
     "@sumup-oss/design-tokens": "^8.2.0",
     "@sumup-oss/icons": "^5.8.0",
     "@types/node": "^22.14.1",
