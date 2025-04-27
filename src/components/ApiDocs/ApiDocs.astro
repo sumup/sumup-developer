@@ -14,6 +14,7 @@ import {
 import TagSection from "./TagSection.astro";
 import Go from "@assets/languages/go.svg";
 import Php from "@assets/languages/php.svg";
+import Python from "@assets/languages/python.svg";
 import Nodejs from "@assets/languages/nodejs.svg";
 
 export interface Props {
@@ -69,6 +70,19 @@ const { target } = Astro.props;
               <div>
                 <div class="title"><Go /> Go</div>
                 <div class="detail">https://github.com/sumup/sumup-go</div>
+              </div>
+              <ExternalLink />
+            </a>
+            <a
+              class="sdk-card"
+              href="https://github.com/sumup/sumup=py"
+              target="_blank"
+            >
+              <div>
+                <div class="title"><Python /> Python</div>
+                <div class="detail">
+                  https://github.com/sumup/sumup-py
+                </div>
               </div>
               <ExternalLink />
             </a>
@@ -185,7 +199,16 @@ const sumup = new SumUp({ apiKey: 'sup_sk_MvxmLOl0...' });`,
               {
                 label: "Go",
                 value: "go",
-                code: `client := sumup.NewClient().WithAuth("sup_sk_MvxmLOl0...")`,
+                code: `package main
+
+import (
+  sumup "github.com/sumup/sumup-go"
+)
+
+func main() {
+  client := sumup.NewClient().WithAuth("sup_sk_MvxmLOl0...")  
+}
+`,
                 lang: "go",
               },
               {
@@ -193,7 +216,7 @@ const sumup = new SumUp({ apiKey: 'sup_sk_MvxmLOl0...' });`,
                 value: "python",
                 code: `from sumup import Sumup
 
-client := sumup.NewClient().WithAuth("sup_sk_MvxmLOl0...")`,
+client = SumUp(api_key="sup_sk_MvxmLOl0...")`,
                 lang: "python",
               },
               {

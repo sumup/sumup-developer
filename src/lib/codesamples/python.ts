@@ -46,11 +46,11 @@ export const python = (operation: OperationObject): string => {
     ? `${paramsString}${body ? ", " : ""}`
     : "";
 
-  const njs = `from sumup import SumUp';
+  const njs = `from sumup import Sumup
 
-client = SumUp(api_key="sup_sk_MvxmLOl0...");
+client = SumUp(api_key="sup_sk_MvxmLOl0...")
 
-res = sumup.${resource}.${method}(${paramsSection}${body});`;
+res = sumup.${resource}.${method}(${paramsSection}${body})`;
 
   return njs;
 };
