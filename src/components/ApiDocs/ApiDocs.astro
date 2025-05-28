@@ -3,6 +3,7 @@ import Markdown from "@components/Markdown.astro";
 import { formatSlug } from "@lib/helpers";
 import { doc, pathsByTag } from "@lib/openapi";
 import { ExternalLink } from "@sumup-oss/icons";
+import { Anchor, Card, Body } from "@sumup-oss/circuit-ui";
 import LRGrid from "./LRGrid.astro";
 import {
   CodeBlock,
@@ -47,7 +48,7 @@ const { target } = Astro.props;
             <h3>SDKs</h3>
             <p>
               The SumUp SDKs reduce the amount of work required to use our REST
-              APIs. SumUp maintains SDKs for PHP, Node.js, and Go.
+              APIs. SumUp maintains SDKs for PHP, Node.js, Python, and Go.
             </p>
           </div>
           <div class="sdk-cards">
@@ -157,6 +158,11 @@ const { target } = Astro.props;
               <CopyButton slot="right" />
             </CodeBlockHeader>
           </MultiCode>
+          <Card style={{ marginTop: 'var(--cui-spacings-mega)' }}>
+            <Body size="s">
+              You can also explore out APIs in Postman using <Anchor href="https://www.postman.com/sumupengineering/sumup-developers/overview" target="_blank" size="s">SumUp Developers</Anchor> public collection.
+            </Body>
+          </Card>
         </div>
       </LRGrid>
     </section>
