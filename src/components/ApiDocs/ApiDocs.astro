@@ -5,6 +5,7 @@ import { doc, pathsByTag } from "@lib/openapi";
 import { ExternalLink } from "@sumup-oss/icons";
 import { Anchor, Card, Body } from "@sumup-oss/circuit-ui";
 import LRGrid from "./LRGrid.astro";
+import SDKList from "./SDKList";
 import {
   CodeBlock,
   MultiCode,
@@ -16,7 +17,7 @@ import TagSection from "./TagSection.astro";
 import Go from "@assets/languages/go.svg";
 import Php from "@assets/languages/php.svg";
 import Python from "@assets/languages/python.svg";
-import Nodejs from "@assets/languages/nodejs.svg";
+import Nodejs from "@components/icons/Nodejs";
 
 export interface Props {
   target?: string;
@@ -51,56 +52,7 @@ const { target } = Astro.props;
               APIs. SumUp maintains SDKs for PHP, Node.js, Python, and Go.
             </p>
           </div>
-          <div class="sdk-cards">
-            <a
-              class="sdk-card"
-              href="https://github.com/sumup/sumup-ts"
-              target="_blank"
-            >
-              <div>
-                <div class="title"><Nodejs /> Node.js</div>
-                <div class="detail">https://github.com/sumup/sumup-ts</div>
-              </div>
-              <ExternalLink />
-            </a>
-            <a
-              class="sdk-card"
-              href="https://github.com/sumup/sumup-go"
-              target="_blank"
-            >
-              <div>
-                <div class="title"><Go /> Go</div>
-                <div class="detail">https://github.com/sumup/sumup-go</div>
-              </div>
-              <ExternalLink />
-            </a>
-            <a
-              class="sdk-card"
-              href="https://github.com/sumup/sumup=py"
-              target="_blank"
-            >
-              <div>
-                <div class="title"><Python /> Python</div>
-                <div class="detail">
-                  https://github.com/sumup/sumup-py
-                </div>
-              </div>
-              <ExternalLink />
-            </a>
-            <a
-              class="sdk-card"
-              href="https://github.com/sumup/sumup-ecom-php-sdk"
-              target="_blank"
-            >
-              <div>
-                <div class="title"><Php /> Php</div>
-                <div class="detail">
-                  https://github.com/sumup/sumup-ecom-php-sdk
-                </div>
-              </div>
-              <ExternalLink />
-            </a>
-          </div>
+          <SDKList />
         </div>
         <div>
           <MultiCode
@@ -158,9 +110,13 @@ const { target } = Astro.props;
               <CopyButton slot="right" />
             </CodeBlockHeader>
           </MultiCode>
-          <Card style={{ marginTop: 'var(--cui-spacings-mega)' }}>
+          <Card style={{ marginTop: "var(--cui-spacings-mega)" }}>
             <Body size="s">
-              You can also explore out APIs in Postman using <Anchor href="https://www.postman.com/sumupengineering/sumup-developers/overview" target="_blank" size="s">SumUp Developers</Anchor> public collection.
+              You can also explore out APIs in Postman using <Anchor
+                href="https://www.postman.com/sumupengineering/sumup-developers/overview"
+                target="_blank"
+                size="s">SumUp Developers</Anchor
+              > public collection.
             </Body>
           </Card>
         </div>
@@ -384,51 +340,5 @@ client = SumUp(api_key="sup_sk_MvxmLOl0...")`,
   .lang-option:hover {
     background: var(--cui-bg-strong);
     color: var(--cui-fg-on-strong-hovered);
-  }
-
-  .sdks {
-    margin-top: var(--cui-spacings-tera);
-  }
-
-  .sdk-cards {
-    margin-top: var(--cui-spacings-mega);
-    display: flex;
-    flex-direction: column;
-    gap: var(--cui-spacings-byte);
-  }
-
-  .sdk-card {
-    color: var(--cui-fg-subtle);
-    padding: var(--cui-spacings-byte) var(--cui-spacings-kilo);
-    border-radius: var(--cui-border-radius-byte);
-    border: var(--cui-border-width-kilo) solid var(--cui-border-subtle);
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    text-decoration: none;
-    cursor: pointer;
-  }
-
-  .sdk-card:hover {
-    text-decoration: none;
-    background-color: var(--cui-bg-normal-hovered);
-  }
-
-  .sdk-card .title {
-    color: var(--cui-fg-normal);
-    font-size: var(--cui-body-m-font-size);
-    line-height: var(--cui-body-m-line-height);
-    margin-bottom: var(--cui-spacings-bit);
-    font-weight: var(--cui-font-weight-semibold);
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: var(--cui-spacings-byte);
-  }
-
-  .sdk-card .detail {
-    font-size: var(--cui-body-s-font-size);
-    line-height: var(--cui-body-s-line-height);
   }
 </style>
