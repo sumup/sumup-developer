@@ -66,7 +66,7 @@ SumUp conforms to the [OAuth 2.0 protocol](https://oauth.net/2/), exposing the f
 [OAuth 2.0](https://oauth.net/2/) is an industry-standard authorization protocol that allows for control over an application’s scope, and authorization flows across multiple devices.
 OAuth 2.0 allows the app to request API access on behalf of other users after they grant you the permission.
 
-SumUp supports two OAuth 2.0 authorization flows:
+SumUp supports two standard OAuth 2.0 authorization flows:
 
 - The [authorization code flow](#authorization-code-flow) to request permissions from other users.
 - The [client credentials flow](#client-credentials-flow) to authenticate as yourself.
@@ -120,9 +120,9 @@ The app can use the `refresh_token` to get a new `access_token` when it expires 
 
 ### Refresh token flow
 
-To refresh the access token send a request to the [retrieve a token endpoint](/api/authorization/create-token) with the refresh token you've received when completing the [Authorization code flow](#authorization-code-flow). Access tokens can expire for many reasons, such as if the user changes their password or revokes the app access.
+To refresh the access token, send a request to the `https://api.sumup.com/token` endpoint with the refresh token you've received when completing the [Authorization code flow](#authorization-code-flow), as the OAuth 2.0 protocol dictates. Access tokens can expire for many reasons, such as if the user changes their password or revokes the app access.
 
-In a response you will receive new `access_token` that is valid for `expires_in` seconds and a new `refresh_token`. Make sure to store the new `refresh_token` for successive refreshes.
+In the response, the app receives a new `access_token` that is valid for `expires_in` seconds and a new `refresh_token`. Make sure to store the new `refresh_token` for successive refreshes.
 
 {% aside type="caution"%}
 
@@ -132,7 +132,7 @@ By default, refresh tokens are valid for a period of 6 months. After your `refre
 
 ### Authorization scopes
 
-Authorization scopes define what an application intends to do on a merchant's behalf. A required set of scopes may be passed as a space-separated list in authorization request. When scopes are omitted, the default are granted. If additional scopes are required, a new `access_token` has to be collected via the [Authorization code flow](#authorization-code-flow).
+Authorization scopes define what an application is allowed to do on a merchant's behalf. A required set of scopes may be passed as a space-separated list in the authorization request. When scopes are omitted, the default are granted. If additional scopes are required, a new `access_token` has to be collected via the [Authorization code flow](#authorization-code-flow).
 
 | Scope name                       | Default | Access Level | Description                                                                                                                                                                                                                                                             |
 | -------------------------------- | ------- | ------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -152,4 +152,4 @@ Restricted scopes must be enabled by SumUp for your application. To do that,[con
 
 In the Client credentials flow, your application requests an access token without requesting authorization from a merchant user. As a result, when you use this flow, your application is not authorized to access any data that is associated with a merchant user's account, such as transactions or saved customers and tokenized payment cards. In other words, you can only process payments for merchant accounts with an access token obtained via this grant flow.
 
-To request an access token for this flow you need to make a request to the [retrieve a token endpoint](/api/authorization/create-token).
+To request an access token, the app needs to make a request to the `https://api.sumup.com/token` endpoint as defined in the OAuth 2.0 protocol.
