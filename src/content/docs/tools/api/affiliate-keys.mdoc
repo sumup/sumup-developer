@@ -1,0 +1,66 @@
+---
+title: Affiliate Keys
+description: Learn about Affiliate Keys role in SumUp
+sidebar:
+  order: 22
+---
+
+## About Affiliate Keys
+
+SumUp uses Affiliate Keys to identify critical metrics such as Total Payment Value coming through a Partner's integration. The key associates all merchant account users of the Affiliate Key with the partner,
+allowing SumUp to enforce agreed terms such as fast onboarding, revenue share, and transaction
+fees. For that reason, **Affiliate Keys are mandatory for certain integrations**, such as:
+
+* [Mobile SDKs](/tools/sdks/)
+* [API Payment Switch](/tools/payment-switch/)
+* [Solo API (Cloud API)](/tools/sdks/cloud-api/)
+
+Affiliate keys are NOT part of any authorization mechanism as such. They are used by SumUp in card-present integrations to attribute the payments to a specific integration.
+
+See [Authorization Guide](/tools/api/authorization/) for details on authorization.
+
+## Create Affiliate Key
+
+1. Log in to [https://me.sumup.com](https://me.sumup.com).
+2. Expand your profile and open **Settings**.
+3. Go to **For Developers** > **Toolkit**.
+4. Select **Affiliate Keys**.
+   
+   If you didn't create a key before, this page is empty, and shows the **Application identifier** field.
+   If you did, your existing Affiliate Key can be found here.
+
+5. Enter the **Application identifier** - this is the App ID/Bundle ID as defined in your development project (such as `com.example.app`).
+6. Select **Add**. The key is generated automatically and the App ID is assigned to it. You can add more App IDs to the key if you need to integrate more apps, but **the key itself is immutable**.
+
+## Example Usage
+
+Solo Terminal API uses the Affiliate Key in the [Reader Checkout Request](https://developer.sumup.com/api/readers/create-checkout). This request contains a separate section of
+Affiliates that contains two fields:
+
+* `app_id`: This is the application ID that has been discussed in the earlier section.
+* `key`: This is the Affiliate key unique to each account and mandatory to be used by every merchant
+in their checkout requests.
+
+```json
+{
+"affiliate": {
+"app_id": "your_application_id"
+"key": "your_affiliate_key"
+,
+},
+"checkout": {
+"amount": 10.00,
+"currency": "EUR"
+,
+"description": "Test Transaction"
+}
+}
+```
+
+## What's Next?
+
+Having created your key, you need to add it to the app you're integrating with SumUp. Onboarding guides for specific integrations should tell you how and where to use the key. Check the following resources:
+
+* iOS SDK Integration Guide
+* Android Integration Guide
+* 
