@@ -1,10 +1,10 @@
 ---
-title: Register application
+title: Register OAuth 2.0 Application
 sidebar:
   order: 4
 ---
 
-In order to integrate an external application with SumUp's ecosystem, you have to register an OAuth application and generate the client credentials which are used to make OAuth-authenticated requests on behalf of your application. You can see more on [OAuth2 authorization flows](/online-payments/introduction/authorization/), which explain how to request an _access token_ that is used to obtain permission to protected resources within SumUp's API.
+In order to integrate an external application with SumUp's ecosystem, you have to register an OAuth application and generate the client credentials which are used to make OAuth-authenticated requests on behalf of your application. You can see more on [OAuth2 authorization flows](/tools/api/authorization/), which explain how to request an _access token_ that is used to obtain permission to protected resources within SumUp's API.
 
 In this guide, you will learn how to register a client application and obtain OAuth client credentials for it. You will go through the following steps:
 
@@ -21,7 +21,7 @@ Here are the things that you need in order to complete the steps in this guide:
   - For a **test account** reach out to our support team through this [contact form](/contact).
 - You have the following information available:
   - Your application name.
-  - One or more redirection URIs for registering with SumUp. We will use a registered URI to redirect users to your application after authentication and to send you the authorization codes for obtaining access tokens via the [OAuth2 Authorization Code Flow](/online-payments/introduction/authorization/#authorization-code-flow).
+  - One or more redirection URIs for registering with SumUp. We will use a registered URI to redirect users to your application after authentication and to send you the authorization codes for obtaining access tokens via the [OAuth2 Authorization Code Flow](/tools/api/authorization/#authorization-code-flow).
 
 ### 1. Log in to your account
 
@@ -38,11 +38,26 @@ Click on **Create application** at the bottom right of the page to define your a
 Describe your application and provide its homepage. Click **Register application** to complete.
 
 It's possible to edit the registered application details by clicking on it. The editing page allows to update the initial data and include **optional information** such as a "Logo", "Terms & Conditions" and "Privacy policy" urls.
+
 Additionally, it's possible to specify the scope of access to your own merchant information. Each scope includes a short description of what it would give access to if selected.
+
+{% aside type="caution"%}
+
+For security reasons, SumUp manually verifies the following scope grants:
+
+* `payments` - required to process payments.
+* `payment_instruments` - required to store customer data and tokenize cards.
+
+[Contact us](/contact) to request those scopes to be granted to your app.
+
+SumUp does not recommend direct OAuth 2.0 integration and does not expose detailed authorization endpoint documentation for that reason.
+Please use a library that handles OAuth 2.0 protocol. We highly recommend that you use one of the [existing reputable implementations](https://openid.net/developers/certified-openid-connect-implementations/).
+
+{% /aside %}
 
 {% image alt="Edit OAuth App screen" src="/img/guides/edit-oauth-apps.png" width="80%" /%}
 
-The information provided in this section is showed to users when requesting access to their SumUp account data. To read more about how this information is presented see our [OAuth2 Authorization Code Flow](/online-payments/introduction/authorization/#2-the-authorization-server-prompts-the-user-to-authorize-the-access-request).
+The information provided in this section is showed to users when requesting access to their SumUp account data. To read more about how this information is presented see our [OAuth2 Authorization Code Flow](/tools/api/authorization/).
 
 ### 3. Generate the client credentials
 
@@ -103,4 +118,5 @@ Make sure to store your client secret keys securely and never reveal them public
 
 You have registered at least one client application and have generated and downloaded your OAuth client credentials for it.
 
-You can now use one of the [OAuth2 authorization flows](/online-payments/introduction/authorization/#authorization-flows) to obtain an access token and start making payments with either a [payment card entered by a customer](/online-payments/guides/single-payment/) or with a token for a [recurring payment](https://developer.sumup.com/online-payments/guides/recurring-payments).
+You can now use one of the [OAuth2 authorization flows](/tools/api/authorization/#authorization-flows) to obtain an access token and start making payments with either a [payment card entered by a customer](/online-payments/guides/single-payment/) or with a token for a [recurring payment](https://developer.sumup.com/online-payments/guides/recurring-payments).
+
