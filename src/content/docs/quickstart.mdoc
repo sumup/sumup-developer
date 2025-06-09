@@ -29,7 +29,7 @@ The API receives requests and communicates responses mostly in [JSON](http://www
 
 ## Receiving payments
 
-In order to receive payments, you need to [create a checkout](/online-payments/guides/single-payment/#1-create-a-checkout). Whether you would like to receive payments as a merchant directly, or initiate payments on a merchant's behalf depends on the type of [authorization](/online-payments/introduction/authorization/) provided.\
+In order to receive payments, you need to [create a checkout](/online-payments/guides/single-payment/#1-create-a-checkout). Whether you would like to receive payments as a merchant directly, or initiate payments on a merchant's behalf depends on the type of [authorization](/tools/api/authorization/) provided.\
 Checkouts are created in a server-to-server communication. This ensures that you can keep your access token and client credentials secret and guarantees that sensitive checkout details, e.g. amount or recepient, cannot be changed.
 
 [Completing checkouts](/online-payments/guides/single-payment/#2-complete-a-checkout) could be done via your web browser or mobile application, which guarantees you do not need to worry about sensitive data, like card data, ever hitting your servers and thus avoiding the need to be PCI DSS compliant.
