@@ -42,16 +42,16 @@ The iOS SDK includes a [Sample App](https://github.com/sumup/sumup-ios-sdk/tree/
 
 iOS SDK uses the Affiliate Key from your merchant account to authenticate your app.
 
-1. Open SumUp [Affiliate Key page](https://developer.sumup.com/affiliate-keys).
+1. Log in to SumUp with your merchant account and open the [Affiliate Key page](https://developer.sumup.com/affiliate-keys). 
 2. Create an Affiliate Key if you don't have one yet.
-3. Add your app's _Bundle ID_ in the SumUp portal's _Application ID_ field. This way, your app will be able to call SumUp APIs.
+3. Add your app's _Bundle ID_ in the SumUp portal's _Application ID_ field. This way, your app will be able to call SumUp APIs, which require the Affiliate Key.
 
-### Add Property List Keys
+### Add Property List Keys to Project
 
 The SumUp iOS SDK requires access to the user's location and Bluetooth peripherals. If your app has not asked for the user's permission, the SumUp iOS SDK will ask at the time of the first login or checkout attempt.
 Please add the following keys to your `info.plist` file and set some values:
 
-```markdown
+```txt
 NSLocationWhenInUseUsageDescription
 NSBluetoothAlwaysUsageDescription
 NSBluetoothPeripheralUsageDescription (unless your deployment target is at least iOS 13)
@@ -62,7 +62,7 @@ Check the [Sample App property list](https://github.com/sumup/sumup-ios-sdk/tree
 > Note:
 > - You can provide localization by providing a localized
 [InfoPlist.strings](https://github.com/sumup/sumup-ios-sdk/tree/master/SampleApp/SumUpSDKSampleApp/en.lproj/InfoPlist.strings) file.
-> ```markdown
+> ```txt
 > /* Localized versions of Info.plist keys */
 > 
 > "NSLocationWhenInUseUsageDescription" = "To provide a secure payment service, we need to know your location.\nWithout location information, you cannot accept payments using this app.";
@@ -76,22 +76,27 @@ Check the [Sample App property list](https://github.com/sumup/sumup-ios-sdk/tree
 [Bluetooth peripheral usage](https://developer.apple.com/library/ios/documentation/General/Reference/InfoPlistKeyReference/Articles/CocoaKeys.html#//apple_ref/doc/uid/TP40009251-SW20).
 
 
-## Best Practices for Tap-to-Pay
+### Best Practices for Tap-to-Pay
 
 Please consider the following when building Tap-to-Pay solutions, as Apple reviews them with high scrutiny:
 
 * Follow the [Human Interface Guidelines](https://developer.apple.com/design/human-interface-guidelines/tap-to-pay-on-iphone) to save time when Apple reviews your app. 
 * Also consider [Apple’s marketing guidelines](https://developer.apple.com/tap-to-pay/marketing-guidelines/) and use standard assets where possible.
 
-## Out of Scope
+## Fast-track Implementation
 
-The following functions are handled by the [SumUp APIs](http://docs.sumup.com/rest-api/):
-* [Refunds](https://docs.sumup.com/rest-api/#tag/Refunds)
-* [Transaction history](https://docs.sumup.com/rest-api/#tag/Transactions)
-* [Receipts](https://docs.sumup.com/rest-api/#tag/Receipts)
-* [Account management](https://docs.sumup.com/rest-api/#tag/Account-Details)
+If you want to dive straight into implementation, carry out the following steps:
 
-## Installing and Setting Up iOS SDK
+1. [Install the SDK](#installing-and-setting-up-ios-sdk).
+2. [Import the SDK into your project file](#importing-the-sdk).
+3. [Initialize the SDK with an Affiliate Key](#initialization).
+4. [Log the user in](#logging-the-user-in).
+5. [Prepare user's device for checkout](#prepare-for-checkout).
+6. [Allow the user to select a card reader](#present-checkout-preferences).
+7. Finally, [implement the full checkout](#implement-full-checkout).
+
+
+## Integrating iOS SDK
 
 ### Adding SDK Framework to Project
 
@@ -104,7 +109,7 @@ Please follow the relevant instructions below to prepare your project:
 
 {% tabitem label="Swift Package Manager" %}
 
-```Markdown
+```txt
 The latest Swift Package Manager version added support to [distribute binary frameworks as Swift Packages](https://developer.apple.com/documentation/swift_packages/distributing_binary_frameworks_as_swift_packages). 
 
 If you're using Xcode 12.3 or later, this should work out of the box.
@@ -124,7 +129,7 @@ To learn more about adding Swift Package dependencies, please refer to the [offi
 {% /tabitem %}
 
 {% tabitem label="Use XCFramework directly" %}
-```markdown
+```txt
 
 1. Drag and drop the `SumUpSDK.xcframework` to your Xcode project's "Frameworks,
 Libraries, and Embedded Content" on the project General Settings tab.
@@ -143,7 +148,7 @@ end
 {% /tabitem %}
 
 {% tabitem label="Carthage" %}
-```markdown
+```txt
 Distributing XCFrameworks with the latest Carthage version (0.35.0) is not yet available.
 There is an open issue ([#2799](https://github.com/Carthage/Carthage/issues/2799)) to solve this.
 Once that issue is fixed, we expect Carthage to work again.
@@ -164,23 +169,7 @@ To learn more about setting up your project for Carthage, please refer to the [o
 {% /tabitem %}
 {% /tabs %}
 
-## Using iOS SDK
-
-### SDK Structure
-
-The SDK uses Objective C header files, but Xcode can also display its public types as Swift. The table below outlines the interfaces in the SDK and their purpose. 
-
-| Header (Swift alias) | Purpose |
-| --- | --- |
-| SMPSumUpSDK.h (SumUpSDK) | Includes methods and properties for handling authentication, initial SDK setup, presenting checkout view, and testing your integration |
-| SMPCheckoutRequest.h (CheckoutRequest) | Includes methods and properties handling checkout requests, such as amounts, currencies, and payment methods |
-| SMPCheckoutResult.h (CheckoutResult) | Handles checkout result structure, including status and transaction code |
-| SMPCurrencyCodes.h | Defines available currency codes |
-| SMPMerchant.h (Merchant) | Describes a Merchant, including Merchant Code (identifier) and currency used by merchant |
-| SMPSkipScreenOptions.h (SkipScreenOptions) | Describes options allowing to skip transaction confirmation screen |
-| SumUpSDK.h | Declares project version  |
-
-### Importing the SDK
+### Importing SDK
 
 To import the SDK in Objective-C source files, you can use `#import <SumUpSDK/SumUpSDK.h>`. If module
 support is enabled in your project, you can use `@import SumUpSDK;` instead.
@@ -903,7 +892,7 @@ You have an option to add the `paymentMethod` to checkout request, or skip it an
 
 {% /tabs %}
 
-#### Implementation
+#### Implement Full Checkout
 
 In this step, we implement the checkout.
 
@@ -1339,6 +1328,20 @@ In your debug setup you can call `+[SMPSumUpSDK testSDKIntegration]` or `SumUpSD
 It will run various checks and print its findings to the console.
 Please do not call it in your Release build.
 
+## SDK Structure
+
+The SDK uses Objective C header files, but XCode can also display its public types as Swift. The table below outlines the interfaces in the SDK and their purpose. 
+
+| Header (Swift alias) | Purpose |
+| --- | --- |
+| SMPSumUpSDK.h (SumUpSDK) | Includes methods and properties for handling authentication, initial SDK setup, presenting checkout view, and testing your integration. Bundles all other headers and serves as the main SDK interface. |
+| SMPCheckoutRequest.h (CheckoutRequest) | Includes methods and properties handling checkout requests, such as amounts, currencies, and payment methods |
+| SMPCheckoutResult.h (CheckoutResult) | Handles checkout result structure, including status and transaction code |
+| SMPCurrencyCodes.h | Defines available currency codes |
+| SMPMerchant.h (Merchant) | Describes a Merchant, including Merchant Code (identifier) and currency used by merchant |
+| SMPSkipScreenOptions.h (SkipScreenOptions) | Describes options allowing to skip transaction confirmation screen |
+| SumUpSDK.h | Declares project version  |
+
 ## Sample App
 
 SumUp provides a sample app which implements main SDK components in a sample App Delegate and View Controller. Check the examples below for highlights provided in both Swift and Objective C.
@@ -1349,7 +1352,20 @@ SumUp provides a sample app which implements main SDK components in a sample App
 
 * In Tap-to-Pay solutions, if entitlements are not correctly set up in your app, `presentTapToPayActivation` may show an error Alert with `Failed to show Terms of Service`.
 * Businesses using SumUp sub-accounts must first activate the feature on their main account before using it on devices logged in with sub-accounts, otherwise an error message will appear during activation for the sub-account user.
+* Bluetooth permissions will be requested even if the merchant does not plan to use any of the SumUp Bluetooth  card readers. This will be fixed in an upcoming release 6.1.
 * Distributing XCFrameworks with the latest Carthage version (0.35.0) is not yet available. There is an open issue ([#2799](https://github.com/Carthage/Carthage/issues/2799)) to solve this.
+
+## Community
+
+Got questions or found a bug? Get in contact with our integration team by sending an email to integration@sumup.com.
+
+## Out of Scope
+
+The following functions are handled by the [SumUp APIs](http://docs.sumup.com/rest-api/):
+* [Refunds](https://docs.sumup.com/rest-api/#tag/Refunds)
+* [Transaction history](https://docs.sumup.com/rest-api/#tag/Transactions)
+* [Receipts](https://docs.sumup.com/rest-api/#tag/Receipts)
+* [Account management](https://docs.sumup.com/rest-api/#tag/Account-Details)
 
 ## What's Next?
 
@@ -1357,8 +1373,3 @@ Check other resources we have, such as:
 
 * [SumUp Android SDK](https://github.com/sumup/sumup-android-sdk)
 * Our [Postman REST API collection](https://github.com/sumup/sumup-postman)
-
-## Community
-
-Got questions or found a bug? Get in contact with our integration team by sending an email to integration@sumup.com.
-
