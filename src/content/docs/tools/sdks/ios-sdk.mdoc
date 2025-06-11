@@ -75,17 +75,11 @@ Check the [Sample App property list](https://github.com/sumup/sumup-ios-sdk/tree
 [location usage on iOS 8 and later](https://developer.apple.com/library/ios/documentation/General/Reference/InfoPlistKeyReference/Articles/CocoaKeys.html#//apple_ref/doc/uid/TP40009251-SW26),
 [Bluetooth peripheral usage](https://developer.apple.com/library/ios/documentation/General/Reference/InfoPlistKeyReference/Articles/CocoaKeys.html#//apple_ref/doc/uid/TP40009251-SW20).
 
-
-### Best Practices for Tap-to-Pay
-
-Please consider the following when building Tap-to-Pay solutions, as Apple reviews them with high scrutiny:
-
-* Follow the [Human Interface Guidelines](https://developer.apple.com/design/human-interface-guidelines/tap-to-pay-on-iphone) to save time when Apple reviews your app. 
-* Also consider [Apple’s marketing guidelines](https://developer.apple.com/tap-to-pay/marketing-guidelines/) and use standard assets where possible.
-
 ## Fast-track Implementation
 
 If you want to dive straight into implementation, carry out the following steps:
+
+### Card Reader Flow
 
 1. [Install the SDK](#installing-and-setting-up-ios-sdk).
 2. [Import the SDK into your project file](#importing-the-sdk).
@@ -95,6 +89,18 @@ If you want to dive straight into implementation, carry out the following steps:
 6. [Allow the user to select a card reader](#present-checkout-preferences).
 7. Finally, [implement the full checkout](#implement-full-checkout).
 
+### Tap-to-Pay Flow
+
+Please consider the following when building Tap-to-Pay solutions, as Apple reviews them with high scrutiny:
+
+* Follow the [Human Interface Guidelines](https://developer.apple.com/design/human-interface-guidelines/tap-to-pay-on-iphone) to save time when Apple reviews your app. 
+* Also consider [Apple’s marketing guidelines](https://developer.apple.com/tap-to-pay/marketing-guidelines/) and use standard assets where possible.
+
+1. [Install the SDK](#installing-and-setting-up-ios-sdk).
+2. [Import the SDK into your project file](#importing-the-sdk).
+3. [Initialize the SDK with an Affiliate Key](#initialization).
+4. [Log the user in](#logging-the-user-in).
+5. Follow steps under [Implementing Tap-to-Pay](#implementing-tap-to-pay).
 
 ## Integrating iOS SDK
 
@@ -238,6 +244,8 @@ SumUp iOS SDK supports either a modally presented login from a view controller (
 
 Before calling any additional feature of the SumUp iOS SDK, you are required to set up the SDK with your Affiliate Key. Call on the main thread. You may wish to defer calling `setupWithAPIKey:` until after app launch, as it requests the user's location permission.
 
+{% image alt="Login screen" src="/img/guides/use_location.png" width="40%" /%}
+
 {% tabs %}
 
 {% tabitem label="Swift" %}
@@ -263,7 +271,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
          *   https://github.com/sumup/sumup-ios-sdk/blob/master/README.md#privacy-info-plist-keys
          *
          *   Ensure to add the Bundle Identifier of your iOS app to your 
-         *   API Key's Application identifiers in the SumUp developer portal.
+         *   Affiliate Key's Application identifiers in the SumUp developer portal.
          */
         SumUpSDK.setup(withAPIKey: "sup_afk_abcqwerty")
         return true
@@ -308,6 +316,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 #### Logging the user in
 
 Following app authentication, a registered SumUp merchant account needs to be logged in. Present a login screen from your UIViewController:
+
+{% image alt="Login screen" src="/img/guides/login.png" width="40%" /%}
 
 {% tabs %}
 
@@ -515,6 +525,10 @@ extension ViewController: UITextFieldDelegate {
 
 Provides the user a way to search for nearby Bluetooth card readers and select one to be used. The selected card reader will be saved to `UserDefaults` and used for subsequent checkouts. Using this screen is optional. If a checkout is started but no card reader has been saved, the checkout itself will automatically present the screen to search for and select a card reader, and this will be saved for next time.
 
+{% image alt="Search Bluetooth" src="/img/guides/find_bluetooth.png" width="40%" /%}
+
+{% image alt="Terminal selection" src="/img/guides/Multiple_terminals.png" width="40%" /%}
+
 {% tabs %}
 
 {% tabitem label="Swift" %}
@@ -571,6 +585,8 @@ Provides the user a way to search for nearby Bluetooth card readers and select o
 #### Present Checkout View
 
 Prepare a checkout request that encapsulates the information regarding the transaction.
+
+{% image alt="Checkout screen" src="/img/guides/checkout.png" width="40%" /%}
 
 {% tabs %}
 
