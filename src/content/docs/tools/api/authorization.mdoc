@@ -57,7 +57,8 @@ Affiliate Keys are not part of authorization mechanisms as such, but they are re
 
 ## Integration via OAuth 2.0
 
-SumUp conforms to the [OAuth 2.0 protocol](https://oauth.net/2/), exposing the following endpoints as defined by the industry:
+OAuth 2.0 is the recommended approach for building advanced integrations, where multiple different merchants or their employees want to use SumUp.
+SumUp conforms to the [OAuth 2.0 protocol](https://oauth.net/2/), providing an authorization server and exposing the following endpoints as defined by the industry:
 
 - `https://api.sumup.com/authorize`
 - `https://api.sumup.com/token`
@@ -87,9 +88,9 @@ Please use a library that handles OAuth 2.0 protocol. We highly recommend that y
 
 ### Authorization Code Flow
 
-This flow enables applications to request permission from a SumUp merchant to act on their behalf. The [requested scopes](#authorization-scopes) define what your application is allowed to do.
+This flow works [as specified by RFC 6749 Authorization Code Grant](https://datatracker.ietf.org/doc/html/rfc6749#section-4.1), enabling applications to request permission from a SumUp merchant to act on their behalf. The [requested scopes](#authorization-scopes) define what your application is allowed to do.
 
-1. To initiate the flow, your application redirects a user to the SumUp authorization server with the request authorization endpoint.
+1. To initiate the flow, your application redirects a user to the SumUp authorization server with the `https://api.sumup.com/authorize` endpoint.
 
 2. The request triggers an authorization prompt describing which application is requesting authorization from the user.
 
@@ -100,11 +101,11 @@ This flow enables applications to request permission from a SumUp merchant to ac
   {% /aside %}
 
 3. Once the user accepts your authorization request, the authorization server redirects the user back to your application by using the registered URI you specified in the `redirect_uri` at the initial GET request. 
-  The response will return with additional parameters, such as  `code` and `state`. The `code` parameter is mandatory for retrieving an access token.
+  The response will return the `code` parameter, which is mandatory for retrieving an access token.
 
-4. To retrieve the access token, the app makes a request to the `https://api.sumup.com/token` endpoint with a `Content-Type: application/x-www-form-urlencoded` header, like so:
+4. To retrieve the access token, the app makes a request to the `https://api.sumup.com/token` endpoint with a `Content-Type: application/x-www-form-urlencoded` header.
 
-  In a response, the app receives `access_token`, `refresh_token`, `token_type`, and `expires_in`.
+  The app receives the standard response, containing `access_token`, `refresh_token`, `token_type`, and `expires_in`.
 
   ```json
   {
@@ -132,7 +133,7 @@ By default, refresh tokens are valid for a period of 6 months. After your `refre
 
 ### Authorization Scopes
 
-Authorization scopes define what an application is allowed to do on a merchant's behalf. A required set of scopes may be passed as a space-separated list in the authorization request. When scopes are omitted, the default are granted. If additional scopes are required, a new `access_token` has to be collected via the [Authorization code flow](#authorization-code-flow).
+Authorization scopes define what an application is allowed to do on a merchant's behalf. A required set of scopes may be passed as a space-separated list in the authorization request. When scopes are omitted, the default ones are granted. If additional scopes are required, a new `access_token` has to be collected via the [Authorization code flow](#authorization-code-flow).
 
 | Scope name                       | Default | Access Level | Description                                                                                                                                                                                                                                                             |
 | -------------------------------- | ------- | ------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -150,9 +151,11 @@ Restricted scopes must be enabled by SumUp for your application. To do that, [co
 
 ### Client Credentials Flow
 
-In the Client credentials flow, your application requests an access token without requesting authorization from a merchant user. As a result, when you use this flow, your application is not authorized to access any data that is associated with a merchant user's account, such as transactions or saved customers and tokenized payment cards. In other words, you can only process payments for merchant accounts with an access token obtained via this grant flow.
+This flow works [as specified by RFC 6749 Client Credentials Grant](https://datatracker.ietf.org/doc/html/rfc6749#section-4.4)
 
-To request an access token, the app needs to make a request to the `https://api.sumup.com/token` endpoint as defined in the OAuth 2.0 protocol.
+In the Client Credentials flow, your application requests an access token without requesting authorization from a merchant user. As a result, when you use this flow, your application is not authorized to access any data that is associated with a merchant user's account, such as transactions or saved customers and tokenized payment cards. In other words, you can only process payments for merchant accounts with an access token obtained via this grant flow.
+
+To request an access token, the app needs to make a request to the `https://api.sumup.com/token` endpoint as defined in the OAuth 2.0 Client Credentials protocol. This flow does not grant a Refresh Token.
 
 
 ## What's Next?
