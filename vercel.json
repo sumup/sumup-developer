@@ -604,7 +604,7 @@
     },
     {
       "source": "/online-payments/introduction/authorization",
-      "destination": "/online-payments/authorization/",
+      "destination": "/tools/api/authorization/",
       "permanent": true
     },
     {
