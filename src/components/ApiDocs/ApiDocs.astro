@@ -2,7 +2,6 @@
 import Markdown from "@components/Markdown.astro";
 import { formatSlug } from "@lib/helpers";
 import { doc, pathsByTag } from "@lib/openapi";
-import { ExternalLink } from "@sumup-oss/icons";
 import { Anchor, Card, Body } from "@sumup-oss/circuit-ui";
 import LRGrid from "./LRGrid.astro";
 import SDKList from "./SDKList";
@@ -14,10 +13,6 @@ import {
   CodeBlockHeader,
 } from "@components/Code";
 import TagSection from "./TagSection.astro";
-import Go from "@assets/languages/go.svg";
-import Php from "@assets/languages/php.svg";
-import Python from "@assets/languages/python.svg";
-import Nodejs from "@components/icons/Nodejs";
 
 export interface Props {
   target?: string;
