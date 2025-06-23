@@ -10,21 +10,21 @@ icon: "online_payments"
 {% cardstack %}
 
 {% cardlink
-  href="/online-payments/tools/swift-checkout/"
+  href="/online-payments/swift-checkout/"
   title="Swift checkout"
   description="Collect payment, address, and contact information with the click of a button."
   image="/img/swift-checkout.svg"
 /%}
 
 {% cardlink
-  href="/online-payments/tools/card-widget/"
+  href="/online-payments/card-widget/"
   title="Payment widget"
   description="Securely collect and process customers payment information."
   image="/img/swift-checkout.svg"
 /%}
 
 {% cardlink
-  href="/online-payments/plugins"
+  href="/plugins/"
   title="Plugins"
   description="Use SumUp plugin for Prestashop, Wix, or WooCommerce."
   image="/img/api-call.svg"
@@ -48,14 +48,18 @@ Once you have your test account you can begin making API calls with real data. O
 
 ## SumUp APIs
 
-SumUp provides REST API for most of its services like creating and executing payments, storing cards for future payments, issuing refunds among others. Our API uses [OAuth 2.0](http://tools.ietf.org/html/rfc6749) authorization standards to authenticate applications access to its services. We also support Cross-origin resource sharing (CORS) allowing web browsers securely to consume our API from a different domain origin.
+SumUp provides REST API for most of its services like creating and executing payments, storing cards for future payments, issuing refunds among others. Our API uses either API Keys or [OAuth 2.0](http://tools.ietf.org/html/rfc6749) authorization standards to authenticate applications access to its services. We also support Cross-origin resource sharing (CORS) allowing web browsers securely to consume our API from a different domain origin.
 
 The API receives requests and communicates responses mostly in [JSON](http://www.json.org) format, except for when the request needs to contain form encoded data. Typically, the requests are data objects consisting of name/value pairs sent to the SumUp API URI: **api.sumup.com**
 
+### Authorization
+
+Check the [Authorization Guide](/tools/api/authorization/) for details on authorization.
+
 ## Receiving payments
 
-In order to receive payments, you need to [create a checkout](/online-payments/guides/single-payment/#1-create-a-checkout). Whether you would like to receive payments as a merchant directly, or initiate payments on a merchant's behalf depends on the type of [authorization](/online-payments/introduction/authorization/) provided.\
-Checkouts are created in a server-to-server communication. This ensures that you can keep your access token and client credentials secret and guarantees that sensitive checkout details, e.g. amount or recepient, cannot be changed.
+In order to receive payments, you need to [create a checkout](/online-payments/guides/single-payment/#1-create-a-checkout). Whether you would like to receive payments as a merchant directly, or initiate payments on a merchant's behalf depends on the type of [authorization](/tools/api/authorization/) provided.\
+Checkouts are created in a server-to-server communication. This ensures that you can keep your access token and client credentials secret and guarantees that sensitive checkout details, e.g. amount or recipient, cannot be changed.
 
 [Completing checkouts](/online-payments/guides/single-payment/#2-complete-a-checkout) could be done via your web browser or mobile application, which guarantees you do not need to worry about sensitive data, like card data, ever hitting your servers and thus avoiding the need to be PCI DSS compliant.
 
