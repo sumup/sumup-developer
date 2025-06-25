@@ -21,6 +21,8 @@ See [Authorization Guide](/tools/api/authorization/) for details on authorizatio
 
 ## Create Affiliate Key
 
+{% steps %}
+
 1. Log in to [https://me.sumup.com](https://me.sumup.com).
 2. Expand your profile and open **Settings**.
 3. Go to **For Developers** > **Toolkit**.
@@ -31,6 +33,8 @@ See [Authorization Guide](/tools/api/authorization/) for details on authorizatio
 
 5. Enter the **Application identifier** - this is the App ID/Bundle ID as defined in your development project (such as `com.example.app`).
 6. Select **Add**. The key is generated automatically and the App ID is assigned to it. You can add more App IDs to the key if you need to integrate more apps, but **the key itself is immutable**.
+
+{% /steps %}
 
 ## Example Usage
 
@@ -43,17 +47,15 @@ in their checkout requests.
 
 ```json
 {
-"affiliate": {
-"app_id": "your_application_id"
-"key": "your_affiliate_key"
-,
-},
-"checkout": {
-"amount": 10.00,
-"currency": "EUR"
-,
-"description": "Test Transaction"
-}
+  "affiliate": {
+    "app_id": "your_application_id",
+    "key": "your_affiliate_key"
+  },
+  "checkout": {
+    "amount": 10.0,
+    "currency": "EUR",
+    "description": "Test Transaction"
+  }
 }
 ```
 
