@@ -23,11 +23,22 @@
     }
   }
 
-  .cards > :global(*:nth-child(even)) {
-    background-color: var(--cui-bg-elevated);
-  }
+/* Style child elements (cards) */
+.cards > :global(*) {
+  border: none
+  background-color: var(--cui-bg-subtle);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease;
+  padding: var(--cui-spacings-mega);
+  margin-bottom: var(--cui-spacings-mega);
+}
 
-  .cards > :global(*:nth-child(odd)) {
-    background-color: var(--cui-bg-subtle);
-  }
+.cards > :global(*:hover) {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  transform: translateY(-1px);
+  background-color: var(--cui-bg-elevated);
+}
+
+  
 </style>
+
