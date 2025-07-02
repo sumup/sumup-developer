@@ -1,3 +1,4 @@
+import { loadEnv } from "vite";
 import markdoc from "@astrojs/markdoc";
 import react from "@astrojs/react";
 import starlight from "@astrojs/starlight";
@@ -7,6 +8,12 @@ import starlightLlmsTxt from "starlight-llms-txt";
 
 import { defineConfig } from "astro/config";
 import type { HeadUserConfig } from "node_modules/@astrojs/starlight/schemas/head";
+
+const { PUBLIC_ONETRUST_DOMAIN_ID, PUBLIC_GA_TAG_ID } = loadEnv(
+  process.env.NODE_ENV || "",
+  process.cwd(),
+  "",
+);
 
 const head = (): HeadUserConfig => {
   const head: HeadUserConfig = [
@@ -106,23 +113,23 @@ const head = (): HeadUserConfig => {
     },
   ];
 
-  if (import.meta.env.PUBLIC_ONETRUST_DOMAIN_ID) {
+  if (PUBLIC_ONETRUST_DOMAIN_ID) {
     head.push({
       tag: "script",
       attrs: {
         defer: true,
         charset: "UTF-8",
         src: "https://cdn-ukwest.onetrust.com/scripttemplates/otSDKStub.js",
-        "data-domain-script": import.meta.env.PUBLIC_ONETRUST_DOMAIN_ID,
+        "data-domain-script": PUBLIC_ONETRUST_DOMAIN_ID,
       },
     });
   }
 
-  if (import.meta.env.PUBLIC_GA_TAG_ID) {
+  if (PUBLIC_GA_TAG_ID) {
     head.push({
       tag: "script",
       attrs: {
-        src: `https://www.googletagmanager.com/gtag/js?id=${import.meta.env.PUBLIC_GA_TAG_ID}`,
+        src: `https://www.googletagmanager.com/gtag/js?id=${PUBLIC_GA_TAG_ID}`,
       },
     });
     head.push({
@@ -131,7 +138,7 @@ const head = (): HeadUserConfig => {
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
-        gtag('config', '${import.meta.env.PUBLIC_GA_TAG_ID}');
+        gtag('config', '${PUBLIC_GA_TAG_ID}');
       `,
     });
   }
