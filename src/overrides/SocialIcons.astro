@@ -5,8 +5,9 @@
 ---
 
 <div class="nav">
-  <a href="/api/">API</a>
-  <a href="/changelog/">Changelog</a>
+  <a href="/" class="nav-link">Docs</a>
+  <a href="/api/" class="nav-link">API</a>
+  <a href="/changelog/" class="nav-link">Changelog</a>
 </div>
 
 <style>
@@ -36,4 +37,34 @@
     color: var(--cui-fg-normal);
     text-decoration: underline;
   }
+
+  a.active {
+  color: var(--cui-fg-accent); /* or any highlight color you prefer */
+  text-decoration: underline;
+  font-weight: var(--cui-font-weight-bold);
+  }
+
 </style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const currentPath = window.location.pathname;
+    const navLinks = document.querySelectorAll('.nav-link');
+
+    navLinks.forEach(link => {
+      // Normalize paths by ensuring trailing slash for comparison
+      const linkPath = link.getAttribute('href');
+      if (linkPath === '/') {
+        // Highlight Docs when on root path '/'
+        if (currentPath === '/' || currentPath === '') {
+          link.classList.add('active');
+        }
+      } else {
+        // Highlight API when path starts with '/api/'
+        if (currentPath.startsWith(linkPath)) {
+          link.classList.add('active');
+        }
+      }
+    });
+  });
+</script>
