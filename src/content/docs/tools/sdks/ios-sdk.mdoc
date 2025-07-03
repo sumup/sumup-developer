@@ -1096,6 +1096,36 @@ fileprivate func requestCheckout() {
 {% /tabs %}
 
 
+### Credit/debit selection (processAs property)
+
+Some countries require the customer to select Credit or Debit at the beginning of the checkout.
+This is because a payment card may contain multiple applications linked with different accounts,
+making it necessary for the customer to specify which application should be used to process the transaction.
+
+For countries that do not require credit/debit selection, you can set the `processAs` property
+of `SMPCheckoutRequest` to `SMPProcessAsNotSet`.
+
+{% aside type="caution" %}
+* For countries that require credit/debit selection, using `SMPProcessAsNotSet` will cause the transaction to fail.
+* Not all countries support `ProcessAs`. Setting `ProcessAs` for unsupported countries may cause the transaction to fail. Currently supported countries are: Brazil, Chile and Colombia.
+{% /aside %}
+
+To tell if the current country requires `processAs` to be set to a value other than `SMPProcessAsNotSet`,
+check `SMPSumUpSDK.isProcessAsRequired`.
+
+If needed, your app should set the `processAs` property of `SMPCheckoutRequest` to `SMPProcessAsCredit`
+or `SMPProcessAsDebit` after showing its own UI that prompts the customer to select Credit or Debit.
+
+SDK 6.0 and earlier presented two screens during the checkout that prompted the user to
+select Credit or Debit, and if Credit, to also choose the number of installments.
+This functionality is now deprecated. However, it is still available if you need more time to migrate
+your app to use the above programmatic method. To keep the old behavior, set `processAs` to `SMPProcessAsPromptUser`.
+
+#### Installments
+
+When `SMPProcessAsCredit` is used, you should obtain the number of installments from the customer
+using your own UI. Assign the positive, non-zero value to `numberOfInstallments` on `SMPCheckoutRequest`.
+
 ### Implementing Tap-to-Pay
 
 With Tap to Pay on iPhone merchants can accept contactless card payments on their iPhone without needing a card reader.
