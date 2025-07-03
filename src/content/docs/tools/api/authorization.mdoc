@@ -131,7 +131,7 @@ In the response, the app receives a new `access_token` that is valid for `expire
 
 By default, refresh tokens are valid for a period of 6 months. After your `refresh_token` expires, the app must follow the [Authorization code flow](#authorization-code-flow) again to obtain a valid access token and a new refresh token. A new refresh token will also be issued when a valid refresh token is used within 30 days prior to its expiration. The new refresh token will be valid for another 6 months. The old refresh token remains valid until its expiration date, giving you a grace period to propagate the new token across your integration.
 
-Note that refresh tokens can be invalidated due to factors other than expiration, such as password change, scope changes, etc. Integrators are responsible for handling such cases gracefully.
+Note that refresh tokens can be invalidated due to factors other than expiration, such as password change, scope changes, etc. Failed attempt to refresh a token should be handled gracefully by triggering a new login and obtaining fresh set of access and refresh token.
 
 {% /aside %}
 
