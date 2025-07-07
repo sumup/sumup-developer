@@ -45,7 +45,7 @@
     "@astrojs/ts-plugin": "^1.10.4",
     "@astrojs/vercel": "8.2.1",
     "@expressive-code/plugin-collapsible-sections": "^0.41.2",
-    "@expressive-code/plugin-line-numbers": "0.41.2",
+    "@expressive-code/plugin-line-numbers": "0.41.3",
     "@markdoc/markdoc": "^0.5.1",
     "@sindresorhus/slugify": "^2.2.1",
     "@sumup-oss/circuit-ui": "^10.5.1",
