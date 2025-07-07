@@ -65,7 +65,7 @@ If your app shuts down immediately upon start, try disconnecting your phone and 
 2. Add the dependency to a module `build.gradle`:
 
     ```kotlin 
-    implementation("com.sumup.tap-to-pay:utopia-sdk:0.15.0")
+    implementation("com.sumup.tap-to-pay:utopia-sdk:0.17.0")
     ```  
 
 ### Authentication
@@ -119,7 +119,10 @@ The function can also return `Result.Failure` with one exception from the list o
 #### 2. Start Payment
 
 ```kotlin
-suspend fun startPayment(checkoutData: CheckoutData): Flow<Result<PaymentEvent>>
+suspend fun startPayment(
+    checkoutData: CheckoutData,
+    skipSuccessScreen: Boolean
+): Flow<Result<PaymentEvent>>
 ```
 
 The `startPayment` method initiates the payment process. It returns a `Flow` of `Result` objects that can be either a `Result.Success` with the `PaymentEvent` or a `Result.Failure` with an error message.
@@ -148,6 +151,8 @@ The function can also return `Result.Failure` with one exception from the list o
 
 `checkoutData` - The checkout data object.
 
+`skipSuccessScreen` - A boolean value that controls whether the user is redirected to a built-in success screen after a successful payment.
+
 ```kotlin
 data class CheckoutData(
     val totalAmount: Long,
@@ -157,6 +162,7 @@ data class CheckoutData(
     val customItems: List<CustomItem>?,
     val priceItems: List<PriceItem>?,
     val processCardAs: ProcessCardAs?,
+    val affiliateData: AffiliateModel?
 ) : Serializable
 ```
 
@@ -168,6 +174,7 @@ Where:
 - `customItems` - The list of custom items. Set null if not used.
 - `priceItems` - The list of price items. Set null if not used.
 - `processCardAs` - The type of the card processing. The default value is `null`. The possible values are `ProcessCardAs.Credit(val instalments: Int)` and `ProcessCardAs.Debit`, where `instalments` is the number of instalments. This parameter is optional and only applicable to some markets, such as Brazil, where the card type selection and instalments are supported.
+- `affiliateData` - The affiliate data refers to tracking and attributing transactions to specific affiliates, integrators, or referral sources.
 
 **Note:** The amounts shall be provided in minor unit of the currency according to the list below.    
 Currencies with exponent 2 : `AUD, BGN, BRL, CHF, CLP, COP, CZK, DKK, EUR, GBP, HRK, HUF, NOK, PEN, PLN, RON, SEK, USD`.
@@ -179,13 +186,27 @@ For example, an amount of `$12.34` corresponds to a value of `1234`, `$11.00` co
 For these specific currencies, the amount shall still be multiplied by 100 (exponent 2).
 For example, `Ft100` should be provided as `10000`.
 
+The `AffiliateModel` data type has the following parameters:
+```kotlin
+data class AffiliateModel(
+    val key: String,
+    val foreignTransactionId: String? = null,
+    val tags: Map<String, String>? = null
+) : Serializable
+```
+
+Where:
+- `key` - The primary identifier for the affiliate or integrator partner.
+- `foreignTransactionId` - An optional reference to an external transaction ID (from the integrator's system).
+- `tags` - Flexible key-value pairs for additional metadata about the transaction or affiliate.
+
 
 The required minimum to make the transaction looks like:
 
 ```kotlin
 fun startPayment() {
     tapToPay.startPayment(
-        CheckoutData(
+        checkoutData = CheckoutData(
             totalAmount = 1234, // 12.34 EUR
             clientUniqueTransactionId = "123",
             tipsAmount = null,
@@ -193,7 +214,8 @@ fun startPayment() {
             customItems = null,
             priceItems = null,
             processCardAs = null,
-        )
+        ),
+        skipSuccessScreen = false
     ).collectLatest {
         Log.d("Payment event: $it")
     }
