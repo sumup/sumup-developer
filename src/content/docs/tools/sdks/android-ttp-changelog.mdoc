@@ -1,0 +1,42 @@
+---
+title: Android Tap-to-Pay Changelog
+sidebar:
+  order: 16
+---
+
+## Release 0.17.0 (02.07.2025)
+
+### New Features
+
+- **Faster Transactions** – Reduced latency when initiating transactions, resulting in faster checkout.
+- **Mitigated Threats Filter** – Attestation now excludes resolved threats for smoother processing and less transaction failures.
+- **Affiliate Key Support** – Added support for affiliate key integration.
+- **Success Screen Skip Flag** – New flag to bypass the success screen.
+- **Support for targetSDK 35**
+- **Client-Side Certificate Verification** – Enhanced security with device certificate checks during attestation.
+- **Pre-PIN Attestation** – Attestation is initiated before displaying the PIN screen to enhance security.
+
+### Fixes
+
+- Resolved an issue during TapToPay initialization.
+
+## Release 0.15.2 (11.06.2025)
+
+- Mitigated threats are now filtered out during attestation. If a threat has `"mitigated": true`, it is excluded from the threat list that is used to determine whether the COTS is attested.
+
+## Release 0.15.1 (22.05.2025)
+
+- Fixed the class duplication issue occurring after obfuscation.
+
+## Release 0.15.0 (09.04.2025)
+
+### New Features
+
+- New events of the payment process: card requested, card presented, CVM requested, CVM presented
+- New PaymentException types
+
+### Fixes
+
+- Cleanup PAN data from memory
+- Disable NFC for other apps during the payment process.
+- Handling empty candidates list in payment processing
