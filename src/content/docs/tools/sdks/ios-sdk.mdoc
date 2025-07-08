@@ -128,7 +128,7 @@ Follow this workaround to manage SumUp iOS SDK versions via Swift PM in those ca
 1. Add the package dependency to the repository `https://github.com/sumup/sumup-ios-sdk` (*File > Swift Packages > Add Package Dependency...*) with the version `Up to Next Major: 4.0.0`
 2. Leave the checkbox unchecked for the SumUpSDK at the integration popup (*Add Package to ...:*)
 3. From the Project Navigator, drag and drop the `SumUpSDK/Referenced Binaries/SumUpSDK.xcframework` to your Xcode project's "Frameworks, Libraries, and Embedded Content" on the General settings tab.
-4. Make sure the [required Info.plist keys](#privacy-info-plist-keys) are present.
+4. Make sure the [required Info.plist keys](#add-property-list-keys-to-project) are present.
 {% /steps %}
 
 To learn more about adding Swift Package dependencies, please refer to the [official documentation](https://developer.apple.com/documentation/xcode/adding_package_dependencies_to_your_app).
@@ -140,7 +140,7 @@ To learn more about adding Swift Package dependencies, please refer to the [offi
 {% steps %}
 1. Drag and drop the `SumUpSDK.xcframework` to your Xcode project's "Frameworks,
 Libraries, and Embedded Content" on the project General Settings tab.
-2. Make sure the [required Info.plist keys](#privacy-info-plist-keys) are present.
+2. Make sure the [required Info.plist keys](#add-property-list-keys-to-project) are present.
 {% /steps %}
 
 {% /tabitem %}
@@ -171,7 +171,7 @@ The SumUp iOS SDK can be integrated with Carthage by following the steps below:
 2. Run `carthage update sumup-ios-sdk`
 3. Drag and drop the `Carthage/Build/iOS/SumUpSDK.xcframework` to your Xcode project's "Frameworks,
 Libraries, and Embedded Content" on the General settings tab.
-4. Make sure the [required Info.plist keys](#privacy-info-plist-keys) are present.
+4. Make sure the [required Info.plist keys](#add-property-list-keys-to-project) are present.
 {% /steps %}
 
 To learn more about setting up your project for Carthage, please refer to the [official documentation](https://github.com/Carthage/Carthage#if-youre-building-for-ios-tvos-or-watchos).
@@ -271,8 +271,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
          *   as this will start updating for locations.
          *
          *   Also remember to provide the necessary usage descriptions in your info.plist
-         *   and to properly localize it, see:
-         *   https://github.com/sumup/sumup-ios-sdk/blob/master/README.md#privacy-info-plist-keys
+         *   and to properly localize it, see the
+         *   Add Property List Keys to Project section.
          *
          *   Ensure to add the Bundle Identifier of your iOS app to your 
          *   Affiliate Key's Application identifiers in the SumUp developer portal.
@@ -302,8 +302,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
      *   as this will start updating for locations.
      *
      *   Also remember to provide the necessary usage descriptions in your info.plist
-     *   and to properly localize it, see:
-     *   https://github.com/sumup/sumup-ios-sdk/blob/master/README.md#privacy-info-plist-keys
+     *   and to properly localize it, see the
+     *   Add Property List Keys to Project section.
      *
      *   Ensure to add the Bundle Identifier of your iOS app to your
      *   API Key's Application identifiers in the SumUp developer portal.
@@ -1407,11 +1407,11 @@ Got questions or found a bug? Get in contact with our integration team by sendin
 
 ## Out of Scope
 
-The following functions are handled by the [SumUp APIs](http://docs.sumup.com/rest-api/):
-* [Refunds](https://docs.sumup.com/rest-api/#tag/Refunds)
-* [Transaction history](https://docs.sumup.com/rest-api/#tag/Transactions)
-* [Receipts](https://docs.sumup.com/rest-api/#tag/Receipts)
-* [Account management](https://docs.sumup.com/rest-api/#tag/Account-Details)
+The following functions are handled by the [SumUp APIs](/api/):
+* [Refunds](/api/transactions/refund/)
+* [Transaction history](/api/transactions/list/)
+* [Receipts](/api/receipts/get/)
+* [Account management](/api/merchant/)
 
 ## What's Next?
 
