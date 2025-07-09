@@ -65,7 +65,7 @@
     "expressive-code": "^0.41.2",
     "husky": "^9.1.7",
     "jsdom": "^26.1.0",
-    "marked": "^15.0.8",
+    "marked": "^16.0.0",
     "mermaid": "11.8.0",
     "openapi-snippet": "^0.14.0",
     "openapi-types": "^12.1.3",
