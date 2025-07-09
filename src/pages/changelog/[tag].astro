@@ -8,13 +8,30 @@ import Subscribe from "@components/Subscribe.astro";
 import { Headline } from "@sumup-oss/circuit-ui";
 import MarkdownContent from "@astrojs/starlight/components/MarkdownContent.astro";
 
-const collectionDocs = (await getCollection("changelog"))
+const { tag: currentTag } = Astro.params;
+
+const collectionDocs = (
+  await getCollection("changelog", ({ data: { tags } }) =>
+    tags.map((tag) => slugify(tag)).includes(currentTag),
+  )
+)
   .sort(
     (a, b) => b.data.publishedDate.valueOf() - a.data.publishedDate.valueOf(),
   )
   .map((entry) => ({
     ...entry,
   }));
+
+export async function getStaticPaths() {
+  const posts = (await getCollection("changelog")).flatMap(
+    ({ data }) => data.tags,
+  );
+  const tags = [...new Set(posts)];
+
+  return tags.map((tag) => ({
+    params: { tag: slugify(tag) },
+  }));
+}
 
 const posts = await Promise.all(
   collectionDocs.map(async (page) => {
