@@ -626,12 +626,12 @@
       "source": "/online-payments/tools/hosted-checkout",
       "destination": "/online-payments/hosted-checkout/",
       "permanent": true
-    },    
+    },
     {
       "source": "/online-payments/tools/react-native-sdk",
       "destination": "/tools/sdks/react-native-sdk/",
       "permanent": true
-    },      
+    },
     {
       "source": "/terminal-payments/introduction/",
       "destination": "/terminal-payments/",
