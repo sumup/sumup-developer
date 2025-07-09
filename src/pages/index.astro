@@ -3,11 +3,22 @@ import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
 import type { StarlightPageProps } from "@astrojs/starlight/props";
 import Card from "@components/Card.astro";
 import Brands from "@components/Landing/Brands.astro";
-import { Headline } from "@sumup-oss/circuit-ui";
-import { InterestOnBalance, NoCosts, SecurePayments } from "@sumup-oss/icons";
+import { Headline, ListItem } from "@sumup-oss/circuit-ui";
+import {
+  InterestOnBalance,
+  NoCosts,
+  SecurePayments,
+  CardReaderSolo,
+  OnlinePayments,
+  Code,
+  BrowserSecure,
+  Refresh,
+  Refunded,
+  CardIn,
+  AlternativePaymentMethod,
+} from "@sumup-oss/icons";
 import CardLink from "@components/CardLink.astro";
 import CardStack from "@components/CardStack.astro";
-import ButtonLink from "@components/ButtonLink.astro";
 
 const props = {
   frontmatter: {
@@ -28,53 +39,61 @@ const props = {
     <section>
       <Headline as="h2" className="header">Discover our Solutions</Headline>
       <div class="button-links">
-        <ButtonLink
-          icon="card_reader_solo"
+        <ListItem
           href="/terminal-payments/guides/pairing-solo"
-          title="Accept card reader payments"
-          description="Integrate with SumUp Solo card reader to accept in-person payments."
+          variant="navigation"
+          label="Accept card reader payments"
+          details="Integrate with SumUp Solo card reader to accept in-person payments."
+          leadingComponent={CardReaderSolo}
         />
-        <ButtonLink
-          icon="online_payments"
+        <ListItem
+          variant="navigation"
+          leadingComponent={OnlinePayments}
           href="/online-payments"
-          title="Accept online payments"
-          description="Integrate SumUp in your Online Store."
+          label="Accept online payments"
+          details="Integrate SumUp in your Online Store."
         />
-        <ButtonLink
-          icon="code"
+        <ListItem
+          variant="navigation"
+          leadingComponent={Code}
           href="/tools/sdks"
-          title="Integrations"
-          description="Build integrations for your customers"
+          label="Integrations"
+          details="Build integrations for your customers"
         />
-        <ButtonLink
-          icon="browser_secure"
+        <ListItem
+          variant="navigation"
+          leadingComponent={BrowserSecure}
           href="/tools/api/authorization"
-          title="Authorization"
-          description="Explore authorization and authentication options for your use case."
+          label="Authorization"
+          details="Explore authorization and authentication options for your use case."
         />
-        <ButtonLink
-          icon="refresh"
+        <ListItem
+          variant="navigation"
+          leadingComponent={Refresh}
           href="/online-payments/guides/recurring-payments"
-          title="Recurring payments"
-          description="Provide smooth user experience for recurring payments."
+          label="Recurring payments"
+          details="Provide smooth user experience for recurring payments."
         />
-        <ButtonLink
-          icon="refunded"
+        <ListItem
+          variant="navigation"
+          leadingComponent={Refunded}
           href="/online-payments/guides/refund"
-          title="Refunds"
-          description="Provide smooth user experience for refunds."
+          label="Refunds"
+          details="Provide smooth user experience for refunds."
         />
-        <ButtonLink
-          icon="alternative_payment_method"
+        <ListItem
+          variant="navigation"
+          leadingComponent={AlternativePaymentMethod}
           href="/online-payments/apm"
-          title="Alternative payment options"
-          description="Allow your customers to pay with Apple or Google pay."
+          label="Alternative payment options"
+          details="Allow your customers to pay with Apple or Google pay."
         />
-        <ButtonLink
-          icon="card_in"
+        <ListItem
+          variant="navigation"
+          leadingComponent={CardIn}
           href="/online-payments/card-widget"
-          title="Card widget"
-          description="Collect payment data online securely with card widget."
+          label="Card widget"
+          details="Collect payment data online securely with card widget."
         />
       </div>
     </section>
@@ -323,7 +342,7 @@ const props = {
     gap: var(--cui-spacings-kilo);
   }
 
-  @media (max-width: 767px) {
+  @media (max-width: 1279px) {
     .button-links {
       grid-template-columns: 1fr;
     }
