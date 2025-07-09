@@ -2,12 +2,21 @@
 // Overloaded version of Starlight's SocialIcons that adds
 // additional navigation items to the top navigation bar
 // such that we can structure the portal around main sections.
+const currentPath = Astro.url.pathname;
+const isActive = (href: string) => currentPath.startsWith(href);
 ---
 
 <div class="nav">
-  <a href="/" class="nav-link">Docs</a>
-  <a href="/api/" class="nav-link">API</a>
-  <a href="/changelog/" class="nav-link">Changelog</a>
+  <a
+    href="/"
+    class:list={[!isActive("/api") && !isActive("/changelog") && "active"]}
+  >
+    Docs
+  </a>
+  <a href="/api/" class:list={[isActive("/api") && "active"]}>API</a>
+  <a href="/changelog/" class:list={[isActive("/changelog") && "active"]}>
+    Changelog
+  </a>
 </div>
 
 <style>
@@ -43,7 +52,6 @@
   text-decoration: underline;
   font-weight: var(--cui-font-weight-bold);
   }
-
 </style>
 
 <script>

@@ -55,9 +55,9 @@
         var a = this.get(f);
         if (a) a = a.split(":");
         else if (100 != e)
-          "v" == h && (e = Math.random() >= e / 100 ? 0 : 100),
+          ("v" == h && (e = Math.random() >= e / 100 ? 0 : 100),
             (a = [h, e, 0]),
-            this.set(f, a.join(":"));
+            this.set(f, a.join(":")));
         else return !0;
         var c = a[1];
         if (100 == c) return !0;
