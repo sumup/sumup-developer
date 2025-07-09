@@ -686,8 +686,6 @@
       "source": "/webhooks/create",
       "destination": "/webhooks/",
       "permanent": true
-    },
+    }
   ]
 }
-
-//todo: /settings; /problem;
