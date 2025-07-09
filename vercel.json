@@ -574,12 +574,12 @@
     },
     {
       "source": "/docs/register-app",
-      "destination": "/online-payments/introduction/register-app",
+      "destination": "/online-payments/register-app",
       "permanent": true
     },
     {
       "source": "/docs/authorization",
-      "destination": "/online-payments/introduction/authorization",
+      "destination": "/tools/api/authorization/",
       "permanent": true
     },
     {
@@ -589,12 +589,12 @@
     },
     {
       "source": "/docs/online-payments/features/3ds",
-      "destination": "/docs/online-payments/introduction/3ds",
+      "destination": "/online-payments/3ds",
       "permanent": true
     },
     {
       "source": "/online-payments/introduction/get-started/",
-      "destination": "/online-payments/introduction/",
+      "destination": "/online-payments/",
       "permanent": true
     },
     {
@@ -623,6 +623,16 @@
       "permanent": true
     },
     {
+      "source": "/online-payments/tools/hosted-checkout",
+      "destination": "/online-payments/hosted-checkout/",
+      "permanent": true
+    },
+    {
+      "source": "/online-payments/tools/react-native-sdk",
+      "destination": "/tools/sdks/react-native-sdk/",
+      "permanent": true
+    },
+    {
       "source": "/terminal-payments/introduction/",
       "destination": "/terminal-payments/",
       "permanent": true
@@ -630,6 +640,51 @@
     {
       "source": "/terminal-payments/introduction/getting-started",
       "destination": "/terminal-payments/getting-started/",
+      "permanent": true
+    },
+    {
+      "source": "/terminal-payments/industry",
+      "destination": "/terminal-payments/getting-started/",
+      "permanent": true
+    },
+    {
+      "source": "/terminal-payments/tools/cloud-api",
+      "destination": "/tools/sdks/cloud-api/",
+      "permanent": true
+    },
+    {
+      "source": "/affiliate-keys",
+      "destination": "/tools/api/affiliate-keys/",
+      "permanent": true
+    },
+    {
+      "source": "/api-keys",
+      "destination": "/tools/api/authorization/",
+      "permanent": true
+    },
+    {
+      "source": "/apps",
+      "destination": "/tools/api/authorization/",
+      "permanent": true
+    },
+    {
+      "source": "/extdev",
+      "destination": "/quickstart",
+      "permanent": true
+    },
+    {
+      "source": "/webhook-docs/:path*",
+      "destination": "/webhooks/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/webhook-docs/introduction/:path*",
+      "destination": "/webhooks/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/webhooks/create",
+      "destination": "/webhooks/",
       "permanent": true
     }
   ]

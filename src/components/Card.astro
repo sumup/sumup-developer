@@ -26,16 +26,25 @@ const Icon = icon && Icons[icon];
   .card {
     padding: var(--cui-spacings-giga);
     border-radius: var(--cui-border-radius-byte);
+    border: none
     background-color: var(--cui-bg-subtle);
-    border: var(--cui-border-width-kilo) solid var(--cui-border-subtle);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    transition: all 0.2s ease;
   }
 
+  /* Optional: Alternate background for even/odd if you want, but lighter */
   .card:nth-child(even) {
     background-color: var(--cui-bg-elevated);
   }
-
   .card:nth-child(odd) {
     background-color: var(--cui-bg-subtle);
+  }
+
+  /* Hover effect */
+  .card:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    transform: translateY(-1px);
+    background-color: var(--cui-bg-elevated);
   }
 
   .title {
@@ -45,3 +54,4 @@ const Icon = icon && Icons[icon];
     gap: var(--cui-spacings-byte);
   }
 </style>
+

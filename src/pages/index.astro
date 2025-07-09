@@ -3,7 +3,6 @@ import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
 import type { StarlightPageProps } from "@astrojs/starlight/props";
 import Card from "@components/Card.astro";
 import Brands from "@components/Landing/Brands.astro";
-import QuickStartCTA from "@components/Landing/QuickStartCTA.astro";
 import { Headline } from "@sumup-oss/circuit-ui";
 import { InterestOnBalance, NoCosts, SecurePayments } from "@sumup-oss/icons";
 import CardLink from "@components/CardLink.astro";
@@ -12,9 +11,9 @@ import ButtonLink from "@components/ButtonLink.astro";
 
 const props = {
   frontmatter: {
-    title: "SumUp developer platform",
+    title: "SumUp Developer Portal",
     description:
-      "Welcome to SumUp portal for Developers. We’ve got everything you need to build your own payment acceptance solutions for your business.",
+      "Welcome to SumUp portal for developers. We’ve got everything you need to build your own payment acceptance solutions for your business.",
     tableOfContents: false,
     hero: {
       title: "SumUp developer platform",
@@ -26,7 +25,59 @@ const props = {
 
 <StarlightPage {...props}>
   <main>
-    <QuickStartCTA />
+    <section>
+      <Headline as="h2" className="header">Discover our Solutions</Headline>
+      <div class="button-links">
+        <ButtonLink
+          icon="card_reader_solo"
+          href="/terminal-payments/guides/pairing-solo"
+          title="Accept card reader payments"
+          description="Integrate with SumUp Solo card reader to accept in-person payments."
+        />
+        <ButtonLink
+          icon="online_payments"
+          href="/online-payments"
+          title="Accept online payments"
+          description="Integrate SumUp in your Online Store."
+        />
+        <ButtonLink
+          icon="code"
+          href="/tools/sdks"
+          title="Integrations"
+          description="Build integrations for your customers"
+        />
+        <ButtonLink
+          icon="browser_secure"
+          href="/tools/api/authorization"
+          title="Authorization"
+          description="Explore authorization and authentication options for your use case."
+        />
+        <ButtonLink
+          icon="refresh"
+          href="/online-payments/guides/recurring-payments"
+          title="Recurring payments"
+          description="Provide smooth user experience for recurring payments."
+        />
+        <ButtonLink
+          icon="refunded"
+          href="/online-payments/guides/refund"
+          title="Refunds"
+          description="Provide smooth user experience for refunds."
+        />
+        <ButtonLink
+          icon="alternative_payment_method"
+          href="/online-payments/apm"
+          title="Alternative payment options"
+          description="Allow your customers to pay with Apple or Google pay."
+        />
+        <ButtonLink
+          icon="card_in"
+          href="/online-payments/card-widget"
+          title="Card widget"
+          description="Collect payment data online securely with card widget."
+        />
+      </div>
+    </section>
     <section>
       <div class="card-grid">
         <Card title="Online Payments" icon="online_payments">
@@ -65,9 +116,6 @@ const props = {
             </li>
             <li>
               <a href="/api">API reference</a>
-            </li>
-            <li>
-              <a href="/changelog">Changelog</a>
             </li>
             <li>
               <a href="/tools">Developer Tools</a>
@@ -116,53 +164,6 @@ const props = {
           image="/img/api-call.svg"
         />
       </CardStack>
-    </section>
-    <section>
-      <Headline as="h2" className="header">Explore our guides</Headline>
-      <div class="button-links">
-        <ButtonLink
-          icon="card_reader_solo"
-          href="/terminal-payments/guides/pairing-solo"
-          title="Accept card reader payments"
-          description="Integrate with SumUp Solo card reader to accept in-person payments."
-        />
-        <ButtonLink
-          icon="browser_secure"
-          href="/tools/api/authorization"
-          title="Authorization"
-          description="Explore authorization and authentication options for your use case."
-        />
-        <ButtonLink
-          icon="refresh"
-          href="/online-payments/guides/recurring-payments"
-          title="Recurring payments"
-          description="Provide smooth user experience for subsequent checkouts."
-        />
-        <ButtonLink
-          icon="refunded"
-          href="/online-payments/guides/refund"
-          title="Refunds"
-          description="Provide smooth user experience for subsequent checkouts."
-        />
-        <ButtonLink
-          icon="mobile_phone"
-          href="/online-payments/tools/payment-switch"
-          title="Integrate with your own app"
-          description="Use API payment switch for lightweight integration of payments in your own app."
-        />
-        <ButtonLink
-          icon="alternative_payment_method"
-          href="/online-payments/apm"
-          title="Alternative payment options"
-          description="Allow your customers to pay with Apple or Google pay."
-        />
-        <ButtonLink
-          icon="card_in"
-          href="/online-payments/card-widget"
-          title="Card widget"
-          description="Collect payment data online securely with card widget."
-        />
-      </div>
     </section>
     <section class="antifraud">
       <div class="content">

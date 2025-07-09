@@ -44,9 +44,11 @@ Should you decide to integrate third-parties with the API key, you are responsib
    If you didn't create a key before, this page only shows the SumUp Public Key.
    If you did, your existing API Keys can be found here.
 
+   Do not use the public key in your integration.
+
 5. Select **Create** and give the key a meaningful name. Your key is now created and granted permissions to access SumUp APIs.
 6. When prompted, copy the key (you can also download it). SumUp does not store the key for security reasons.
-   Make sure to handle the key securely in accordance with best industry practices.
+   Integrators are responsible for handling the key securely in accordance with best industry practices.
 
    * Ideally, do not share the key with third parties. If you do, ensure they handle it securely.
    * Do not add the key to source-controlled repository or client-side code.
@@ -57,7 +59,7 @@ Should you decide to integrate third-parties with the API key, you are responsib
 
 ## Affiliate Keys
 
-Affiliate Keys are not part of authorization mechanisms as such, but they are required for certain card-present integrations. For more information, see [Affiliate Keys](/tools/api/affiliate-keys/).
+Affiliate Keys are not part of authorization mechanisms as such, but they are required for card-present integrations. For more information, see [Affiliate Keys](/tools/api/affiliate-keys/).
 
 ## Integration via OAuth 2.0
 
@@ -133,7 +135,9 @@ In the response, the app receives a new `access_token` that is valid for `expire
 
 {% aside type="caution"%}
 
-By default, refresh tokens are valid for a period of 6 months. After your `refresh_token` expires, you need to go through all steps in the [Authorization code flow](#authorization-code-flow) again to obtain a valid access token and a new refresh token. A new refresh token will also be issued when a valid refresh token is used within 30 days prior to its expiration. The new refresh token will be valid for another 6 months.
+By default, refresh tokens are valid for a period of 6 months. After your `refresh_token` expires, the app must follow the [Authorization code flow](#authorization-code-flow) again to obtain a valid access token and a new refresh token. A new refresh token will also be issued when a valid refresh token is used within 30 days prior to its expiration. The new refresh token will be valid for another 6 months. The old refresh token remains valid until its expiration date, giving you a grace period to propagate the new token across your integration.
+
+Note that refresh tokens can be invalidated due to factors other than expiration, such as password change, scope changes, etc. Failed attempt to refresh a token should be handled gracefully by triggering a new login and obtaining fresh set of access and refresh token.
 
 {% /aside %}
 
