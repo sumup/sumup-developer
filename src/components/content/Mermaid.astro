@@ -1,19 +1,24 @@
 ---
-export interface Props {
-  title?: string;
-}
+import mermaid from "mermaid";
 
 const { title = "" } = Astro.props;
+
+mermaid.initialize({
+  startOnLoad: false,
+  theme: "dark",
+});
 ---
 
-<script>
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  import mermaid from "mermaid";
-</script>
-
 <figure>
-  <figcaption>{title}</figcaption>
-  <pre class="mermaid">
-    <slot />
-  </pre>
+  {title && <figcaption>{title}</figcaption>}
+  <pre class="mermaid" id="mermaid-container"><slot /></pre>
 </figure>
+
+<script type="module" client:load>
+  import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+  mermaid.initialize({ startOnLoad: false, theme: "dark" });
+  const container = document.getElementById("mermaid-container");
+  if (container) {
+    mermaid.run({ nodes: [container] });
+  }
+</script>
