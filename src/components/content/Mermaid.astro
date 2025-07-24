@@ -1,12 +1,5 @@
 ---
-import mermaid from "mermaid";
-
 const { title = "" } = Astro.props;
-
-mermaid.initialize({
-  startOnLoad: false,
-  theme: "dark",
-});
 ---
 
 <figure>
@@ -14,9 +7,17 @@ mermaid.initialize({
   <pre class="mermaid" id="mermaid-container"><slot /></pre>
 </figure>
 
-<script type="module" client:load>
+<script type="module" is:inline>
   import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
-  mermaid.initialize({ startOnLoad: false, theme: "dark" });
+  mermaid.initialize({
+    startOnLoad: false,
+    theme: "base",
+    themeVariables: {
+      primaryColor: "#000000",
+      primaryTextColor: "#ffffff",
+      textColor: "#000000",
+    },
+  });
   const container = document.getElementById("mermaid-container");
   if (container) {
     mermaid.run({ nodes: [container] });
