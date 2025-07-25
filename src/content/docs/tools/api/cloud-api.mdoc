@@ -1,12 +1,13 @@
 ---
 title: Taking Solo Payments with Cloud API
 sidebar:
+  label: SOLO API
   order: 23
 ---
 
 ## About Payments with Cloud API
 
-The Cloud API allows you to start a transaction from a Point of Sales (POS) running on any platform (Windows, iOS, Linux, Android, Web-based etc) capable of sending HTTPS requests and complete said transaction via a Solo reader.
+The Cloud API allows you to start a transaction from a Point of Sales (POS) running on any platform (Windows, iOS, Linux, Android, Web-based etc.) capable of sending HTTPS requests and complete said transaction via a Solo reader.
 
 The main advantages of this integration are:
 
@@ -27,7 +28,7 @@ The Cloud API integration supports:
 ## Prerequisites
 
 * Your device must be authorized to use the Cloud API. [Read the authorization guide](/tools/api/authorization/) and implement a method that best fits your use case. The API key should be sufficient if you do not intend to delegate access to third parties.
-* You need to [create an Affiliate Key](/tools/api/affiliate-key/) for your app. SumUp Cloud API requires the Affiliate Key to be present in checkout requests.
+* You need to [create an Affiliate Key](/tools/api/affiliate-keys/) for your app. SumUp Cloud API requires the Affiliate Key to be present in checkout requests.
 
 ## Pairing Solo Reader via Cloud API
 
@@ -97,7 +98,7 @@ Cloud API provides the possibility to manage transactions using the connected re
 
 ### Initiate Transaction
 
-This process is asynchronous and the actual transaction may take some time to be stared on the device.
+This process is asynchronous, and the actual transaction may take some time to be stared on the device.
 
 There are some caveats when using this endpoint:
 
@@ -110,7 +111,7 @@ Read the [Create Checkout API endpoint documentation](/api/readers/create-checko
 ### Terminate Transaction
 
 Stops the current transaction on the target device.
-This process is asynchronous and the actual termination may take some time to be performed on the device.
+This process is asynchronous, and the actual termination may take some time to be performed on the device.
 
 There are some caveats when using this endpoint:
 
@@ -131,7 +132,7 @@ Read the [List API endpoint documentation](/api/readers/list) for details on the
 
 Check the status of a specific reader. 
 
-Check the [Retrieve a Reader endpoint documentation](/api/readers/get) for details on the API request, examples, and parameter descriptions.
+Read the [Retrieve a Reader endpoint documentation](/api/readers/get) for details on the API request, examples, and parameter descriptions.
 
 ### Update Reader
 
