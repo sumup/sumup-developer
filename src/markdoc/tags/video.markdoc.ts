@@ -9,6 +9,11 @@ export default {
       required: true,
       errorLevel: "critical",
     },
+    trackSrc: {
+      type: String,
+      required: true,
+      errorLevel: "critical",
+    },
     controls: {
       type: Boolean,
     },
