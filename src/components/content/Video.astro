@@ -1,0 +1,32 @@
+---
+const {
+  src,
+  trackSrc,
+  controls = true,
+  autoplay = true,
+  loop = true,
+  width,
+  height,
+} = Astro.props;
+---
+
+<div class="container">
+  <video
+    controls={controls}
+    autoplay={autoplay}
+    loop={loop}
+    width={width}
+    height={height}
+  >
+    <source src={src} type="video/mp4" />
+    <track src={trackSrc} kind="captions" srclang="en" default />
+    Your browser does not support videos.
+  </video>
+</div>
+
+<style>
+  .container {
+    display: flex;
+    justify-content: center;
+  }
+</style>
