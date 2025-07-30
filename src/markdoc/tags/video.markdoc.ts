@@ -2,25 +2,27 @@ import { type Render, component } from "@astrojs/markdoc/config";
 import type { Config, Schema } from "@markdoc/markdoc";
 
 export default {
-  render: component("./src/components/content/SoloVideo.astro"),
+  render: component("./src/components/content/Video.astro"),
   attributes: {
     src: {
       type: String,
-      errorLevel: "critical",
       required: true,
+      errorLevel: "critical",
     },
     controls: {
       type: Boolean,
-      errorLevel: "critical",
     },
     autoplay: {
       type: Boolean,
-      errorLevel: "critical",
     },
     loop: {
       type: Boolean,
-      errorLevel: "critical",
-    }
-  ,
+    },
+    width: {
+      type: String,
+    },
+    height: {
+      type: String,
+    },
   },
 } as Schema<Config, Render>;
