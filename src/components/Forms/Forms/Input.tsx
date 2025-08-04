@@ -9,12 +9,12 @@ import {
   type TextAreaProps,
 } from "@sumup-oss/circuit-ui";
 import {
-  type FieldMetaState,
+  type FieldRenderProps,
   type UseFieldConfig,
   useField,
 } from "react-final-form";
 
-function getValidationProps<FieldValue>(meta: FieldMetaState<FieldValue>) {
+function getValidationProps(meta: FieldRenderProps["meta"]) {
   return {
     invalid: meta.touched && meta.invalid,
     validationHint: meta.touched ? (meta.error as string) : undefined,
@@ -22,7 +22,7 @@ function getValidationProps<FieldValue>(meta: FieldMetaState<FieldValue>) {
 }
 
 type FieldProps<ComponentProps extends { value?: unknown }> = ComponentProps &
-  UseFieldConfig<ComponentProps["value"]> & { name: string };
+  UseFieldConfig & { name: string };
 
 export function InputField(props: FieldProps<InputProps>) {
   const field = useField(props.name, props);
