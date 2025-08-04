@@ -1,11 +1,11 @@
 ---
-// Overrides logo as a svg to remove flickering compared to img with src.
-import Logo from "@assets/logo.svg";
+// Custom SiteTitle overrides logo as a svg to remove flickering on load compared to img with src.
+import { SumUpLogomark } from "@sumup-oss/icons";
 const { siteTitle, siteTitleHref } = Astro.locals.starlightRoute;
 ---
 
 <a href={siteTitleHref} class="site-title">
-  <Logo />
+  <SumUpLogomark />
   <span translate="no">
     {siteTitle}
   </span>
