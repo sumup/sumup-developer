@@ -1,7 +1,7 @@
 ---
 title: Taking Solo Payments with Cloud API
 sidebar:
-  label: SOLO API
+  label: Cloud API
   order: 23
 ---
 
@@ -29,6 +29,11 @@ The Cloud API integration supports:
 
 * Your device must be authorized to use the Cloud API. [Read the authorization guide](/tools/api/authorization/) and implement a method that best fits your use case. The API key should be sufficient if you do not intend to delegate access to third parties.
 * You need to [create an Affiliate Key](/tools/api/affiliate-keys/) for your app. SumUp Cloud API requires the Affiliate Key to be present in checkout requests.
+* We strongly recommend keeping the Solo terminal plugged-in when using Cloud API.
+* If you want to use mobile data, make sure that you're not connected to a Wi-Fi network. Disconnect if you are -
+  in case both mobile data and Wi-Fi is available, Solo reader will always use Wi-Fi.
+
+  To disconnect Wi-Fi, go to **Connections** > **Wi-Fi** and disable Wi-Fi using the on-screen slider.
 
 ## Pairing Solo Reader via Cloud API
 
@@ -55,6 +60,15 @@ sequenceDiagram
     A ->> A: Present Checkout to Customer
 ```
 
+### Log Out of Solo
+
+Cloud API pairing process is only available for logged-out users. If you're logged in to your merchant account, do as follows:
+
+1. Open the top-side menu on your Solo.
+2. Select **Settings**. The **Device settings** menu opens.
+3. Go to the **About** section.
+4. Select **Log out**. Solo should now display the login screen.
+
 ### Generate Pairing Code
 
 In order to initiate a payment on the Solo card reader, the device must be enrolled with the
@@ -64,21 +78,20 @@ when the target device successfully completes a pairing request using the Cloud 
 Both your application and the Solo card reader need to be connected to the internet (it doesn't have to be the same network).
 
 {% aside type="note" %}
-The pairing process has an expiration time of 5 minutes, if any issue occurs, the whole
+
+The pairing process has an expiration time of 5 minutes, if any issue occurs, the
 process must be restarted.
 
 {% /aside %}
 
-{% steps %}
-1. Turn on the Solo card reader
-2. Make sure you're not logged in. Log out from your Solo card reader if you are.
+1. Turn on the Solo card reader.
+2. Make sure you're not logged in. [Log out from your Solo card reader](#log-out-of-solo) if you are.
 3. Open the top menu drawer
 4. Go to **Connections** and connect to Wi-Fi (connecting is skipped in the short video below).
 5. Select **API**.
 6. Click **Connect**. The pairing code is generated.
 7. Copy the pairing code displayed on the
 Solo card reader screen. You will need this code to pair your Solo reader with your device.
-{% /steps %}
 
 {% video src="/img/guides/pair_solo.mp4" trackSrc="/img/guides/pair_solo.vtt" width="400px" height="400px" /%}
 
