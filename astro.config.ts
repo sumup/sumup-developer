@@ -1,10 +1,10 @@
-import { loadEnv } from "vite";
+import cloudflare from "@astrojs/cloudflare";
 import markdoc from "@astrojs/markdoc";
 import react from "@astrojs/react";
 import starlight from "@astrojs/starlight";
-import vercel from "@astrojs/vercel";
 import starlightLinksValidator from "starlight-links-validator";
 import starlightLlmsTxt from "starlight-llms-txt";
+import { loadEnv } from "vite";
 
 import { defineConfig } from "astro/config";
 import type { HeadUserConfig } from "node_modules/@astrojs/starlight/schemas/head";
@@ -147,7 +147,7 @@ const head = (): HeadUserConfig => {
 };
 
 export default defineConfig({
-  adapter: vercel(),
+  adapter: cloudflare(),
   site: "https://sumup-developer.sumup-vercel.app",
 
   experimental: {

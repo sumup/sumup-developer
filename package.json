@@ -43,7 +43,7 @@
     "@astrojs/starlight-docsearch": "^0.6.0",
     "@astrojs/starlight-markdoc": "^0.5.0",
     "@astrojs/ts-plugin": "^1.10.4",
-    "@astrojs/vercel": "8.2.6",
+    "@astrojs/cloudflare": "^12.6.3",
     "@expressive-code/plugin-collapsible-sections": "^0.41.3",
     "@expressive-code/plugin-line-numbers": "0.41.3",
     "@markdoc/markdoc": "^0.5.4",
