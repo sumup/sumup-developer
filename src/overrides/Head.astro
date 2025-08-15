@@ -1,17 +1,7 @@
 ---
-import Default from "@astrojs/starlight/components/Head.astro";
-import "@sumup-oss/design-tokens/fonts.css";
-import "@sumup-oss/design-tokens/dynamic.css";
-
-const { entry } = Astro.locals.starlightRoute;
-Astro.locals.starlightRoute.entry.data.head.push({
-  tag: "meta",
-  attrs: {
-    property: "og:image",
-    content: `${Astro.site}open-graph/${entry.id}.png`,
-  },
-  content: "", // just to satisfy the linter
-});
+import Default from '@astrojs/starlight/components/Head.astro';
+import '@sumup-oss/design-tokens/fonts.css';
+import '@sumup-oss/design-tokens/dynamic.css';
 ---
 
 {/* This code is intentionally inlined to avoid FOUC. */}
@@ -26,7 +16,7 @@ Astro.locals.starlightRoute.entry.data.head.push({
     });
     observer.observe(document.documentElement, {
       attributes: true,
-      attributeFilter: ["data-theme"],
+      attributeFilter: ['data-theme'],
     });
   })();
 </script>
