@@ -1,5 +1,5 @@
 dist/
-.vercel/
+.wrangler/
 .astro/
 # css files are linted by biome
 **/*.css

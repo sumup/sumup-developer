@@ -1,9 +1,9 @@
 # build output
 dist/
+.wrangler/
 
 # generated types
 .astro/
-.vercel/
 
 # dependencies
 node_modules/
@@ -23,5 +23,4 @@ pnpm-debug.log*
 .DS_Store
 
 .idea
-.vercel
 .env*.local

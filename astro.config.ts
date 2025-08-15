@@ -148,7 +148,7 @@ const head = (): HeadUserConfig => {
 
 export default defineConfig({
   adapter: cloudflare(),
-  site: "https://sumup-developer.sumup-vercel.app",
+  site: "https://developer.sumup.com",
 
   experimental: {
     contentIntellisense: true,
