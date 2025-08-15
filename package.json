@@ -34,6 +34,7 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.4",
+    "@astrojs/cloudflare": "^12.6.3",
     "@astrojs/language-server": "^2.15.4",
     "@astrojs/markdoc": "^0.15.5",
     "@astrojs/react": "^4.3.0",
@@ -43,7 +44,6 @@
     "@astrojs/starlight-docsearch": "^0.6.0",
     "@astrojs/starlight-markdoc": "^0.5.0",
     "@astrojs/ts-plugin": "^1.10.4",
-    "@astrojs/cloudflare": "^12.6.3",
     "@expressive-code/plugin-collapsible-sections": "^0.41.3",
     "@expressive-code/plugin-line-numbers": "0.41.3",
     "@markdoc/markdoc": "^0.5.4",
@@ -80,6 +80,7 @@
     "starlight-llms-txt": "0.6.0",
     "tsx": "^4.20.4",
     "typescript": "^5.8.3",
-    "typescript-eslint": "8.39.1"
+    "typescript-eslint": "8.39.1",
+    "wrangler": "4.30.0"
   }
 }
