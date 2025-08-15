@@ -1,28 +1,53 @@
-import { OGImageRoute } from "astro-og-canvas";
-import { getCollection } from "astro:content";
+import { type CollectionEntry, getCollection } from "astro:content";
+import { ImageResponse } from "@vercel/og";
 
-const collectionEntries = await getCollection("docs");
+export async function getStaticPaths() {
+  const docsEntries = await getCollection("docs");
 
-const pages = Object.fromEntries(
-  collectionEntries.map(({ id, data }) => [id, data]),
-);
+  return docsEntries.map((entry) => ({
+    params: { route: entry.id },
+    props: entry.data,
+  }));
+}
 
-export const { getStaticPaths, GET } = OGImageRoute({
-  param: "route",
-  pages,
-  getImageOptions: (path, page) => ({
-    title: page.title,
-    description: page.description,
-    logo: {
-      path: "./src/assets/logo_white.png",
-      size: [300],
-    },
-    font: {
-      title: {
-        weight: "Bold",
-        families: ["Inter"],
+interface Props {
+  params: { route: string };
+  props: CollectionEntry<"docs">["data"];
+}
+
+export async function GET({ props }: Props) {
+  const html = {
+    type: "div",
+    key: "container",
+    props: {
+      style: {
+        display: "flex",
       },
+      children: [
+        {
+          type: "h1",
+          key: "title",
+          props: {
+            style: {
+              fontWeight: "bold",
+              fontSize: "48px",
+            },
+            children: props.title,
+          },
+        },
+        {
+          type: "p",
+          key: "description",
+          props: {
+            children: props.description,
+          },
+        },
+      ],
     },
-    fonts: ["https://static.sumup.com/fonts/Inter/Inter-normal-latin.woff2"],
-  }),
-});
+  };
+
+  return new ImageResponse(html, {
+    width: 1200,
+    height: 600,
+  });
+}
