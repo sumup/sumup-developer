@@ -55,7 +55,6 @@
     "@types/react": "^18.2.31",
     "@types/react-dom": "^18.2.14",
     "@typescript-eslint/parser": "^8.39.0",
-    "@vercel/og": "0.8.5",
     "astro": "^5.13.2",
     "change-case-all": "^2.1.0",
     "eslint": "^9.32.0",
@@ -81,6 +80,7 @@
     "tsx": "^4.20.4",
     "typescript": "^5.8.3",
     "typescript-eslint": "8.39.1",
+    "workers-og": "0.0.27",
     "wrangler": "4.30.0"
   }
 }

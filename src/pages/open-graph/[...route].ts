@@ -1,5 +1,5 @@
 import { type CollectionEntry, getCollection } from "astro:content";
-import { ImageResponse } from "@vercel/og";
+import { ImageResponse } from "workers-og";
 
 export async function getStaticPaths() {
   const docsEntries = await getCollection("docs");
