@@ -1,7 +1,7 @@
 ---
-import Default from '@astrojs/starlight/components/Head.astro';
-import '@sumup-oss/design-tokens/fonts.css';
-import '@sumup-oss/design-tokens/dynamic.css';
+import Default from "@astrojs/starlight/components/Head.astro";
+import "@sumup-oss/design-tokens/fonts.css";
+import "@sumup-oss/design-tokens/dynamic.css";
 ---
 
 {/* This code is intentionally inlined to avoid FOUC. */}
@@ -16,7 +16,7 @@ import '@sumup-oss/design-tokens/dynamic.css';
     });
     observer.observe(document.documentElement, {
       attributes: true,
-      attributeFilter: ['data-theme'],
+      attributeFilter: ["data-theme"],
     });
   })();
 </script>

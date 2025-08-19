@@ -7,7 +7,7 @@
 [![License](https://img.shields.io/github/license/sumup/sumup-developer)](./LICENSE)
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v2.1%20adopted-ff69b4.svg)](https://github.com/sumup/sumup-developer/tree/main/CODE_OF_CONDUCT.md)
 
-The SumUp's Developer Portal provides documentation for public APIs and integrations that let external developers build payment-accepting solutions for businesses. The website is built using [Astro](https://astro.build/) and [Markdoc](https://markdoc.dev/).
+The SumUp's Developer Portal provides documentation for integrations, SDKs, and public APIs that let external developers build payment-acceptance solutions. The website is built using [Astro](https://astro.build/) and [Markdoc](https://markdoc.dev/).
 
 </div>
 
@@ -51,20 +51,20 @@ npm i
 
 This command starts a local development server and opens up a browser window. Most changes are reflected live without having to restart the server.
 
-```
-$ npm run dev
+```bash
+npm run dev
 ```
 
 ### Build
 
-```
-$ npm run build
+```bash
+npm run build
 ```
 
 This is a good way to test that everything will succeed when your changes are merged and are going to be deployed.
 
 ## API Specs
 
-The OpenAPI specs used for the [API Reference](https://developer.sumup.com/api) section of the developer portal are managed by [sumup/collector](https://github.com/sumup/collector) and automatically synchronized to this repository. For changes and documentation refer to the [linked repository](https://github.com/sumup/collector).
+The OpenAPI specs used for the [API Reference](https://developer.sumup.com/api) section of the developer portal are managed externally from a different repository and synchronized every time they change. If you spotted a mistake or have a suggestion for an improvement please open an issue here and we will take a look.
 
 [docs-badge]: https://img.shields.io/badge/SumUp-documentation-white.svg?logo=data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgY29sb3I9IndoaXRlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgogICAgPHBhdGggZD0iTTIyLjI5IDBIMS43Qy43NyAwIDAgLjc3IDAgMS43MVYyMi4zYzAgLjkzLjc3IDEuNyAxLjcxIDEuN0gyMi4zYy45NCAwIDEuNzEtLjc3IDEuNzEtMS43MVYxLjdDMjQgLjc3IDIzLjIzIDAgMjIuMjkgMFptLTcuMjIgMTguMDdhNS42MiA1LjYyIDAgMCAxLTcuNjguMjQuMzYuMzYgMCAwIDEtLjAxLS40OWw3LjQ0LTcuNDRhLjM1LjM1IDAgMCAxIC40OSAwIDUuNiA1LjYgMCAwIDEtLjI0IDcuNjlabTEuNTUtMTEuOS03LjQ0IDcuNDVhLjM1LjM1IDAgMCAxLS41IDAgNS42MSA1LjYxIDAgMCAxIDcuOS03Ljk2bC4wMy4wM2MuMTMuMTMuMTQuMzUuMDEuNDlaIiBmaWxsPSJjdXJyZW50Q29sb3IiLz4KPC9zdmc+

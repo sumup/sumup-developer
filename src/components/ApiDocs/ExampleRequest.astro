@@ -1,15 +1,11 @@
 ---
-// import { doc } from "@lib/openapi";
-// TODO: explore alternatives such as https://github.com/Kong/httpsnippet
-// This packages is no longer maintained.
-// import { getEndpointSnippets } from "openapi-snippet";
 import {
   CodeBlockHeader,
   CodeLangSelector,
   CopyButton,
   MultiCode,
 } from "@components/Code";
-import { go, node, python } from "@lib/codesamples";
+import { curl, go, node, python } from "@lib/codesamples";
 import type { OperationObject } from "src/types/openapi";
 import OperationEndpoint from "./OperationEndpoint.astro";
 
@@ -18,14 +14,6 @@ export interface Props {
 }
 
 const { operation } = Astro.props;
-
-// const snippets = getEndpointSnippets(
-//   doc,
-//   operation.path,
-//   operation.method,
-//   ["shell_curl"],
-//   undefined,
-// );
 ---
 
 <MultiCode
@@ -33,7 +21,7 @@ const { operation } = Astro.props;
     {
       label: "cURL",
       value: "curl",
-      code: 'snippets.snippets[0].content',
+      code: curl(operation),
       lang: "bash",
     },
     {
