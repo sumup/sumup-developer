@@ -1,4 +1,6 @@
 ---
+import { ArrowSlanted } from "@sumup-oss/icons";
+
 // Overloaded version of Starlight's SocialIcons that adds
 // additional navigation items to the top navigation bar
 // such that we can structure the portal around main sections.
@@ -9,13 +11,28 @@ const isActive = (href: string) => currentPath.startsWith(href);
 <div class="nav">
   <a
     href="/"
-    class:list={[!isActive("/api") && !isActive("/changelog") && "active"]}
+    class:list={[
+      "link",
+      !isActive("/api") && !isActive("/changelog") && "active",
+    ]}
   >
     Docs
   </a>
-  <a href="/api/" class:list={[isActive("/api") && "active"]}>API</a>
-  <a href="/changelog/" class:list={[isActive("/changelog") && "active"]}>
+  <a href="/api/" class:list={["link", isActive("/api") && "active"]}>API</a>
+  <a
+    href="/changelog/"
+    class:list={["link", isActive("/changelog") && "active"]}
+  >
     Changelog
+  </a>
+  <a
+    href="https://me.sumup.com/settings/developer"
+    target="__blank"
+    externalLabel="Opens in a new tab"
+    class="link"
+    className="link"
+  >
+    Settings <ArrowSlanted width="14" height="14" />
   </a>
 </div>
 
@@ -35,19 +52,22 @@ const isActive = (href: string) => currentPath.startsWith(href);
     font-weight: var(--cui-font-weight-semibold);
   }
 
-  a {
+  .link {
     padding: var(--cui-spacings-bit) var(--cui-spacings-byte);
     color: var(--cui-fg-normal);
     text-decoration: none;
     transition: color 120ms ease-in-out;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--cui-spacings-bit);
   }
 
-  a:hover {
+  .link:hover {
     color: var(--cui-fg-normal);
     text-decoration: underline;
   }
 
-  a.active {
+  .link.active {
     color: var(--cui-fg-accent);
     text-decoration: underline;
     font-weight: var(--cui-font-weight-bold);
