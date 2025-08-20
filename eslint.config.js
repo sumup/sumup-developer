@@ -1,8 +1,8 @@
 import pluginJavaScript from "@eslint/js";
-import pluginTypeScript from "typescript-eslint";
-import pluginReact from "eslint-plugin-react";
 import pluginAstro from "eslint-plugin-astro";
 import pluginReactA11y from "eslint-plugin-jsx-a11y";
+import pluginReact from "eslint-plugin-react";
+import pluginTypeScript from "typescript-eslint";
 
 import globals from "globals";
 
@@ -26,7 +26,7 @@ export default [
     ...pluginReact.configs.flat["jsx-runtime"],
   },
   {
-    ignores: [".astro/", ".vercel/", "dist/", ".github/"],
+    ignores: [".astro/", "dist/", ".wrangler/", ".github/"],
   },
   {
     rules: {

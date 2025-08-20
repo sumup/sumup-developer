@@ -19,5 +19,5 @@
       "@api/*": ["src/api/*"]
     }
   },
-  "exclude": ["dist", ".vercel/"]
+  "exclude": ["dist"]
 }

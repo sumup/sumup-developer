@@ -1,5 +1,6 @@
-import { node } from "./node";
+import { curl } from "./curl";
 import { go } from "./go";
+import { node } from "./node";
 import { python } from "./python";
 
-export { node, go, python };
+export { curl, go, node, python };
