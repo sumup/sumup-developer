@@ -18,17 +18,23 @@ const applyLabelOverride = (label: string): string => {
     case "apm":
       return "Alternative Payment Methods";
     case "guides":
-      return "Guides";
+      return "Custom Integrations";
     case "sdks":
       return "SDKs";
     case "agent-toolkit":
       return "Agent Toolkit";
     case "api":
       return "API";
+    case "authorization":
+      return "Authorization";  
     case "events":
       return "Events";
+    case "checkouts":
+      return "Checkouts";
     case "webhooks":
       return "Webhooks";
+    case "plugins":
+      return "Plugins";
     default:
       return label;
   }

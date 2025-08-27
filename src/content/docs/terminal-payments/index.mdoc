@@ -9,26 +9,63 @@ icon: card_in
 {% cardstack %}
 
 {% cardlink
-  href="/tools/api/cloud-api/"
+  href="/terminal-payments/cloud-api/"
   title="Card reader payments"
   description="Integrate card payments from any platform using Cloud API."
   image="/img/api-call.svg"
 /%}
 
 {% cardlink
-  href="/tools/sdks"
+  href="/terminal-payments/sdks"
   title="SDKs"
   description="Use your favorite programming language with one of our SDKs."
   image="/img/api-call.svg"
 /%}
 
+{% cardlink
+  href="/terminal-payments/payment-switch/"
+  title="API Payment Switch"
+  description="Accept payments easily in your own mobile app."
+  image="/img/swift-checkout.svg"
+/%}
+
+{% cardlink
+  href="/terminal-payments/cloud-api/"
+  title="Card reader payments"
+  description="Integrate card payments from any platform using Cloud API."
+  image="/img/api-call.svg"
+/%}
+
+{% cardlink
+  href="/terminal-payments/sdks/"
+  title="Native SDK"
+  description="Customized card acceptance experience for your own mobile app."
+  image="/img/api-call.svg"
+/%}
+
 {% /cardstack %}
 
-You can accept card payments using SumUp’s platform accompanied by our proprietary Card Terminals available in these [European countries](https://help.sumup.com/hc/en-gb/articles/360018586874-Accepting-card-payments-abroad), Brazil, Chile and the USA. You can offer a complete user journey through the payment flow with our [SDK](/terminal-payments/tools/sdk) or you can approach a lightweight integration with our [API](/terminal-payments/tools/api), using the SumUp app to execute payments.
+You can accept card payments using SumUp’s platform accompanied by our proprietary Card Terminals available in these [European countries](https://help.sumup.com/hc/en-gb/articles/360018586874-Accepting-card-payments-abroad), Brazil, Chile and the USA. You can offer a complete user journey through the payment flow with our [SDK](/terminal-payments/tools/sdk) or you can approach a lightweight integration with our [API](/terminal-payments/payment-switch), using the SumUp app to execute payments.
+
+## Prerequisites
+
+* Before you integrate either the [Native SDK](/terminal-payments/tools/sdk/) or the [Payment API Switch](/terminal-payments/payment-switch), you need to create a SumUp account in the [SumUp Dashboard](https://me.sumup.com). Alternatively, you can request a test account through our [contact form](/contact).
+
+* Once you have an account, you need to [create an Affiliate Key](/tools/authorization/affiliate-keys/) for your app and [provide means of authorization](/tools/authorization/authorization/).
+
+{% aside type="caution"%}
+
+The Affiliate Key and Application ID coming from your app must match those obtained from the [Developers](https://me.sumup.com/developers) page.
+
+{% /aside %}
+
+The Card Terminal(s) allow complete flexibility as they are not assigned to individual accounts. Once connected to a merchant account, the card terminal(s) lock to countries and currencies. This includes test accounts, which are intended for testing integrations and do not process any transactions.
+
+You are now ready to start integrating the SumUp payment capabilities in your app, provided you have also received a SumUp card terminal: SumUp Air, SumUp Air Lite, SumUp Top/PIN+, SumUp 3G, SumUp Total, SumUp Super, SumUp On or SumUp Air Register.
 
 ## Affiliate Keys
 
-All card-present integrations require an Affiliate Key. Read the [Affiliate Keys Guide](/tools/api/affiliate-keys/) for details.
+All card-present integrations require an Affiliate Key. Read the [Affiliate Keys Guide](/tools/authorization/affiliate-keys/) for details.
 
 ## Industry
 
@@ -39,7 +76,7 @@ SumUp merchants operate in various industry segments and we have made sure our c
 - [Transportation and delivery services](/terminal-payments/industry/transport/)
 - [Booking for Health, Beauty and Wellness](/terminal-payments/industry/bookings/)
 
-In order to fulfil other industries' business needs, you are offered a range of integration options through the [Payment SDK](/terminal-payments/tools/sdk) and the [API](/terminal-payments/tools/api) sections, and also a full list of available services through the [API reference](/api) section.
+In order to fulfil other industries' business needs, you are offered a range of integration options through the [Payment SDK](/terminal-payments/tools/sdk) and the [API](/terminal-payments/payment-switch) sections, and also a full list of available services through the [API reference](/api) section.
 
 ## Communication with the terminal
 
