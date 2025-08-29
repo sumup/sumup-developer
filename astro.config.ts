@@ -164,37 +164,25 @@ export default defineConfig({
       disable404Route: true,
       sidebar: [
         {
-          label: "Get started",
+          label: "Get Started",
           items: [
             {
-              label: "Overview",
+              label: "Home",
               link: "/",
-            },
-            {
-              label: "Quickstart",
-              link: "/quickstart",
             },
           ],
         },
         {
-          label: "Online payments",
+          label: "Online Payments",
           autogenerate: { directory: "online-payments", collapsed: true },
         },
         {
-          label: "In-person payments",
+          label: "In-person Payments",
           autogenerate: { directory: "terminal-payments", collapsed: true },
         },
         {
-          label: "Developer tools",
+          label: "Common Topics",
           autogenerate: { directory: "tools", collapsed: true },
-        },
-        {
-          label: "Plugins",
-          autogenerate: { directory: "plugins" },
-        },
-        {
-          label: "Open Banking",
-          link: "/open-banking",
         },
       ],
       head: head(),

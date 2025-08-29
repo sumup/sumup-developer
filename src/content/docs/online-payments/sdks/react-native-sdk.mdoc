@@ -1,7 +1,7 @@
 ---
 title: React Native Payment SDK
 sidebar:
-  order: 12
+  order: 140
 ---
 
 SumUp's React Native Payment SDK provides a payment sheet that is displayed on top of your app. It collects user payment details, confirms a payment, and saves a card for future usage. Moreover, it allows a user to use Apple Pay or Google Pay to process payments.
@@ -15,8 +15,8 @@ SumUp's React Native Payment SDK provides a payment sheet that is displayed on t
 Here are the things that you need in order to complete the steps in this guide:
 - You have a merchant account with [SumUp](https://me.sumup.com/login) and have already filled in your [account details](https://me.sumup.com/account).
   - For a **test account** reach out to our support team through this [contact form](/contact).
-- You have [registered your client application](/online-payments/introduction/register-app/) with SumUp.
-- You have a valid access token obtained via the [Authorization code flow](/tools/api/authorization/#authorization-code-flow).
+- You have [registered your client application](/tools/authorization/register-app/) with SumUp.
+- You have a valid access token obtained via the [Authorization code flow](/tools/authorization/authorization/#authorization-code-flow).
 - The restricted `payment_instruments` scope is enabled for your client application. If it isn't enabled, [contact us](/contact) and request it.
 - Review how to create a single payment [here](https://developer.sumup.com/online-payments/guides/single-payment/#before-you-begin).
 
@@ -156,7 +156,7 @@ export default function MainScreen() {
 ```
 
 **Required** fields for `initPaymentSheet`:
-- `checkoutId` - described in section [Create a checkout](/online-payments/tools/react-native-sdk/#create-a-checkout).
+- `checkoutId` - described in section [Create a checkout](/online-payments/sdks/react-native-sdk/#create-a-checkout).
 
 *Optional*:
 

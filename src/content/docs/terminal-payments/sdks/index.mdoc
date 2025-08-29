@@ -1,5 +1,6 @@
 ---
-title: Native SDK
+title: SDK Overview
+icon: code
 sidebar:
   order: 10
 ---
@@ -12,9 +13,27 @@ The SDK provides all user interface screens to guide merchants and customers thr
 
 In addition to handling the payment and all communication with the terminal, you can update the checkout preferences, like adding a tip, and more.
 
-## SDK documentation
+{% cardstack %}
 
-You can find additional documentation for the different mobile platforms below:
+{% cardlink
+  href="/terminal-payments/sdks/ios-sdk"
+  title="iOS SDK Integration"
+  description="Integrate iOS Apps"
+  image="/img/swift-checkout.svg"
+/%}
 
-- Integrate the [iOS SDK](https://github.com/sumup/sumup-ios-sdk)
-- Integrate the [Android SDK](https://github.com/sumup/sumup-android-sdk)
+{% cardlink
+  href="/terminal-payments/cloud-api/"
+  title="Integrate Card Readers via Cloud API"
+  description="Integrate card payments from any platform using Cloud API."
+  image="/img/api-call.svg"
+/%}
+
+{% cardlink
+  href="/terminal-payments/sdks/android-sdk/"
+  title="Android Integration"
+  description="Integrate Android Apps"
+  image="/img/api-call.svg"
+/%}
+
+{% /cardstack %}

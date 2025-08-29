@@ -10,21 +10,21 @@ icon: "online_payments"
 {% cardstack %}
 
 {% cardlink
-  href="/online-payments/swift-checkout/"
+  href="/online-payments/checkouts/swift-checkout/"
   title="Swift checkout"
   description="Collect payment, address, and contact information with the click of a button."
   image="/img/swift-checkout.svg"
 /%}
 
 {% cardlink
-  href="/online-payments/card-widget/"
+  href="/online-payments/checkouts/card-widget/"
   title="Payment widget"
   description="Securely collect and process customers payment information."
   image="/img/swift-checkout.svg"
 /%}
 
 {% cardlink
-  href="/plugins/"
+  href="/online-payments/plugins/"
   title="Plugins"
   description="Use SumUp plugin for Prestashop, Wix, or WooCommerce."
   image="/img/api-call.svg"
@@ -56,23 +56,23 @@ The API receives requests and communicates responses mostly in [JSON](http://www
 
 ### Authorization
 
-Check the [Authorization Guide](/tools/api/authorization/) for details on authorization.
+Check the [Authorization Guide](/tools/authorization/authorization/) for details on authorization.
 
 ## Receiving payments
 
-In order to receive payments, you need to [create a checkout](/online-payments/guides/single-payment/#1-create-a-checkout). Whether you would like to receive payments as a merchant directly, or initiate payments on a merchant's behalf depends on the type of [authorization](/tools/api/authorization/) provided.\
+In order to receive payments, you need to [create a checkout](/online-payments/guides/single-payment/#1-create-a-checkout). Whether you would like to receive payments as a merchant directly, or initiate payments on a merchant's behalf depends on the type of [authorization](/tools/authorization/authorization/) provided.
 Checkouts are created in a server-to-server communication. This ensures that you can keep your access token and client credentials secret and guarantees that sensitive checkout details, e.g. amount or recipient, cannot be changed.
 
 [Completing checkouts](/online-payments/guides/single-payment/#2-complete-a-checkout) could be done via your web browser or mobile application, which guarantees you do not need to worry about sensitive data, like card data, ever hitting your servers and thus avoiding the need to be PCI DSS compliant.
 
 {% aside type="tip" %}
-A checkout can be completed in a browser only from a domain that is present as an authorized JavaScript origin when [creating your client credentials](/online-payments/introduction/register-app/#3-create-oauth-client-credentials).
+A checkout can be completed in a browser only from a domain that is present as an authorized JavaScript origin when [creating your client credentials](/tools/authorization/register-app/#3-create-oauth-client-credentials).
 {% /aside %}
 
 SumUp provides flexibility to complete a checkout by offering a couple of integration approaches:
 
 - You could build a [custom card form](/online-payments/guides/single-payment/#2-complete-a-checkout) that you must submit to the SumUp servers for processing
-- You could use the [SumUp Card Widget](/online-payments/tools/card-widget/)
+- You could use the [SumUp Card Widget](/online-payments/checkouts/card-widget/)
 - You could process payments with [Alternative Payment Methods](/online-payments/apm), like Boleto, Bancontact & iDeal
 - You could process [recurring payments](https://developer.sumup.com/online-payments/guides/recurring-payments)
 
@@ -80,7 +80,7 @@ Once you complete the checkout, you would have processed a payment successfully 
 
 ## SumUp Card Widget
 
-For a quick and seamless integration, we've developed a sleek payment widget. Incorporating the [SumUp Card Widget](/online-payments/tools/card-widget/) only requires adding a script to your payment page.
+For a quick and seamless integration, we've developed a sleek payment widget. Incorporating the [SumUp Card Widget](/online-payments/checkouts/card-widget/) only requires adding a script to your payment page.
 
 ### WooCommerce Plugin
 

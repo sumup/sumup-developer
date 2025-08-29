@@ -2,6 +2,7 @@
 title: Make a payment with a card entered by a customer
 sidebar:
   label: Accept a payment
+  order: 150
 ---
 
 In this guide, you will learn how to make a single payment with a payment card entered by a customer without associating it with a specific customer saved for the merchant user's account. This type of payment is most useful for quick processing of payment checkouts in which you don't store and manage any account data for your customers.
@@ -19,12 +20,12 @@ Here are the things that you need in order to complete the steps in this guide:
 
 - You have a merchant account with [SumUp](https://me.sumup.com/login) and have already filled in your [account details](https://me.sumup.com/account).
   - For a **test account** reach out to our support team through this [contact form](/contact).
-- You have [registered your client application](/online-payments/introduction/register-app/) with SumUp.
-- You have a valid access token obtained via one of the supported OAuth2 authorization flow, the [Authorization code flow](/tools/api/authorization/#authorization-code-flow) or [Client credentials flow](/tools/api/authorization/#client-credentials-flow).
+- You have [registered your client application](/tools/authorization/register-app/) with SumUp.
+- You have a valid access token obtained via one of the supported OAuth2 authorization flow, the [Authorization code flow](/tools/authorization/authorization/#authorization-code-flow) or [Client credentials flow](/tools/authorization/authorization/#client-credentials-flow).
 
 {% aside type="note"%}
 
-You can create and complete a payment checkout for any valid SumUp merchant user's account. As a result, you _can_ use an access token obtained either via the [Client credentials flow](/tools/api/authorization/#client-credentials-flow) or via the [Authorization code flow](/tools/api/authorization/#authorization-code-flow).
+You can create and complete a payment checkout for any valid SumUp merchant user's account. As a result, you _can_ use an access token obtained either via the [Client credentials flow](/tools/authorization/authorization/#client-credentials-flow) or via the [Authorization code flow](/tools/authorization/authorization/#authorization-code-flow).
 
 {% /aside %}
 
