@@ -34,7 +34,7 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.4",
-    "@astrojs/cloudflare": "^12.6.3",
+    "@astrojs/cloudflare": "^12.6.6",
     "@astrojs/language-server": "^2.15.4",
     "@astrojs/markdoc": "^0.15.5",
     "@astrojs/react": "^4.3.0",
