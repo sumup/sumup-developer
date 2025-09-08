@@ -37,50 +37,48 @@ const props = {
 <StarlightPage {...props}>
   <main>
     <section>
-      <Headline as="h2" className="header">Discover our Solutions</Headline>
+      <section>
+      <Headline as="h2" className="header">Card-present Solutions</Headline>
       <div class="button-links">
         <ListItem
           href="/terminal-payments"
           variant="navigation"
-          label="Accept card reader payments"
+          label="Quickstart"
           details="Integrate with SumUp Solo card reader to accept in-person payments."
           leadingComponent={CardReaderSolo}
-        />
-        <ListItem
-          variant="navigation"
-          leadingComponent={OnlinePayments}
-          href="/online-payments"
-          label="Accept online payments"
-          details="Integrate SumUp in your Online Store."
         />
         <ListItem
           variant="navigation"
           leadingComponent={Code}
           href="/terminal-payments/sdks"
           label="Integrations"
-          details="Build integrations for your customers"
+          details="Build integrations for your customers."
         />
         <ListItem
           variant="navigation"
           leadingComponent={BrowserSecure}
-          href="/tools/authorization/authorization"
-          label="Authorization"
-          details="Explore authorization and authentication options for your use case."
+          href="/terminal-payments/cloud-api"
+          label="Cloud API"
+          details="Integrate card payments from any platform using Cloud API."
         />
+      </div>
+      </section>  
+      <Headline as="h2" className="header">Online Payment Solutions</Headline>
+      <div class="button-links">
         <ListItem
           variant="navigation"
           leadingComponent={Refresh}
-          href="/online-payments/guides/recurring-payments"
-          label="Recurring payments"
-          details="Provide smooth user experience for recurring payments."
+          href="/online-payments/"
+          label="Quickstart"
+          details="Start using Online Payments"
         />
         <ListItem
           variant="navigation"
-          leadingComponent={Refunded}
-          href="/online-payments/guides/refund"
-          label="Refunds"
-          details="Provide smooth user experience for refunds."
-        />
+          leadingComponent={CardIn}
+          href="/online-payments/checkouts/card-widget"
+          label="Card widget"
+          details="Collect payment data online securely with card widget."
+        />        
         <ListItem
           variant="navigation"
           leadingComponent={AlternativePaymentMethod}
@@ -90,10 +88,10 @@ const props = {
         />
         <ListItem
           variant="navigation"
-          leadingComponent={CardIn}
-          href="/online-payments/checkouts/card-widget"
-          label="Card widget"
-          details="Collect payment data online securely with card widget."
+          leadingComponent={Refresh}
+          href="/online-payments/guides/"
+          label="Customization"
+          details="Build a fully customized payment experience"
         />
       </div>
     </section>

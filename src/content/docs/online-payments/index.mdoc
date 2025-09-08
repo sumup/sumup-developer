@@ -1,64 +1,99 @@
 ---
-title: Online Payments
+title: Online Payments Quickstart
 description: Get started with accepting online payments. The guide will take you through creating test profile to processing your first transaction in matter of minutes.
 sidebar:
-  label: Overview
+  label: Quickstart
   order: 1
 icon: "online_payments"
 ---
 
-{% cardstack %}
+Online payments are an integral part of SumUp product portfolio. At SumUp, accepting online payments is possible through a number of different approaches, to cater every merchants' use case. You can either use one of our out-of-the-box integrations, or build a complete and custom payments flow yourself using our APIs. Your app can communicate with SumUp via HTTP requests, all defined in our API Reference. 
 
-{% cardlink
-  href="/online-payments/checkouts/swift-checkout/"
-  title="Swift checkout"
-  description="Collect payment, address, and contact information with the click of a button."
-  image="/img/swift-checkout.svg"
-/%}
-
-{% cardlink
-  href="/online-payments/checkouts/card-widget/"
-  title="Payment widget"
-  description="Securely collect and process customers payment information."
-  image="/img/swift-checkout.svg"
-/%}
-
-{% cardlink
-  href="/online-payments/plugins/"
-  title="Plugins"
-  description="Use SumUp plugin for Prestashop, Wix, or WooCommerce."
-  image="/img/api-call.svg"
-/%}
-
-{% /cardstack %}
-
-At SumUp accepting online payments is possible through a number of different approaches, to cater every merchants' use case. With the SumUp APIs you are able to build a complete and custom payments flow. Your app can communicate with SumUp via HTTP requests, all defined in our API Reference.
+![Image showing integrations in SumUp](/img/guides/integrations.png)
 
 To get started, we will walk you through the options SumUp offers for managing online payments.
 
-{% aside type="note" %}
-Do you have specific questions? Check out our [help page](/help) for the most frequently asked questions or [contact us here](/contact).
-{% /aside %}
-
 ## Getting a test account
 
-To start testing SumUp APIs and tools you need to have a test account. You can create a test account in the Dashboard.
+To start testing SumUp APIs and tools without involving real money, you need to have a test account. You can create a test account from your account in the Dashboard as shown below.
+
+{% steps %}
+
+1. Log in to your SumUp account.
+
+2. Open the drop-down menu between Support and your user panel.
+
+3. Select Test Account. Your merchant account is now switched to test mode.
+
+{% /steps %}
 
 {% image alt="A screenshot of the account selection dropdown in the SumUp dashboard with the test account highlighted with red circle" src="/img/guides/test_acc.png" width="40%" /%}
 
-Once you have your test account you can begin making API calls with real data. Our test accounts **do not** process transactions with real funds.
+Once you have your test account you can begin making API calls with real data. Our test accounts **do not** process transactions with real funds. Test account has a different ID, and shows a clear warning. 
 
-## SumUp APIs
+{% image alt="A screenshot of the dashboard with test account selected" src="/img/guides/test-account-warning.png" width="100%" /%}
+
+When you're done experimenting with the test account, switch back to a regular account for business purposes. 
+
+## Authorization
+
+All Online Payment products consume SumUp APIs, which requires a means of authorization - either an API Key or Access Token. Check the [Authorization Guide](/tools/authorization/authorization/) for details on the available authorization options in SumUp.
+
+## Checkout Products
+
+SumUp provides a range of checkout products for seamless integration with your website. 
+
+### SumUp Card Widget
+
+For a quick and seamless integration, we've developed a sleek payment widget. Incorporating the [SumUp Card Widget](/online-payments/checkouts/card-widget/) only requires adding a single script to your payment page!
+
+#### Alternative Payment Methods
+
+The Card Widget supports [Alternative Payment Methods](/online-payments/apm) (APMs), which enable you to accept payments other than traditional card schemes (Visa or Mastercard). APMs can be accessed through the [SumUp Card Widget](/online-payments/checkouts/card-widget/). Request access by contacting us via our [contact form](/contact).
+
+At SumUp you can make use of the following APMs:
+
+- Apple Pay
+- Bancontact
+- Blik
+- Boleto
+- EPS
+- Google Pay
+- iDeal
+- MyBank
+- PIX
+- Przelewy24
+- Satispay
+
+{% aside type="tip" %}
+The APMs you can offer depend on the location your business is registered and operates in.
+{% /aside %}
+
+### SumUp Hosted Checkout
+
+Hosted Checkout is an integration product that offers a complete checkout flow for payment collection. It aims at being easy to integrate and requires little to no code. The solution offers a summary of the checkout details and provides a complete flow for handling payment collection, covering the possible outcomes of payment attempts all the way to the success page.
+
+See [Hosted Checkout Documentation](/online-payments/checkouts/hosted-checkout/) for more information.
+
+### SumUp Swift Checkout SDK
+
+The Swift Checkout SDK enables you to offer a complete and fast checkout experience to your end users, allowing you to collect payment, address, and contact information with a click of a button.
+
+See [Swift Checkout Documentation](/online-payments/checkouts/swift-checkout/) for more information.
+
+## Plugins
+
+If you're using Prestashop, Wix, or WooCommerce, good news! You can use one of our plugins to seamlessly get paid with SumUp. Please check the [Plugins section](/online-payments/plugins/) for details on each plugin.
+
+## Custom Integrations
+
+### SumUp APIs
 
 SumUp provides REST API for most of its services like creating and executing payments, storing cards for future payments, issuing refunds among others. Our API uses either API Keys or [OAuth 2.0](http://tools.ietf.org/html/rfc6749) authorization standards to authenticate applications access to its services. We also support Cross-origin resource sharing (CORS) allowing web browsers securely to consume our API from a different domain origin.
 
 The API receives requests and communicates responses mostly in [JSON](http://www.json.org) format, except for when the request needs to contain form encoded data. Typically, the requests are data objects consisting of name/value pairs sent to the SumUp API URI: **api.sumup.com**
 
-### Authorization
-
-Check the [Authorization Guide](/tools/authorization/authorization/) for details on authorization.
-
-## Receiving payments
+### Receiving payments
 
 In order to receive payments, you need to [create a checkout](/online-payments/guides/single-payment/#1-create-a-checkout). Whether you would like to receive payments as a merchant directly, or initiate payments on a merchant's behalf depends on the type of [authorization](/tools/authorization/authorization/) provided.
 Checkouts are created in a server-to-server communication. This ensures that you can keep your access token and client credentials secret and guarantees that sensitive checkout details, e.g. amount or recipient, cannot be changed.
@@ -78,32 +113,8 @@ SumUp provides flexibility to complete a checkout by offering a couple of integr
 
 Once you complete the checkout, you would have processed a payment successfully to a merchant’s SumUp account.
 
-## SumUp Card Widget
+## Contact SumUp
 
-For a quick and seamless integration, we've developed a sleek payment widget. Incorporating the [SumUp Card Widget](/online-payments/checkouts/card-widget/) only requires adding a script to your payment page.
-
-### WooCommerce Plugin
-
-You can also integrate the SumUp Card Widget to your WordPress website via our in-house built solution. The [SumUp Payment Gateway for WooCommerce](https://wordpress.org/plugins/sumup-payment-gateway-for-woocommerce/) does not require coding in order to be integrated.
-
-## Alternative Payment Methods
-
-[Alternative Payment Methods](/online-payments/apm) (APMs) enable you to accept payments other than traditional card schemes, like VISA, MASTERCARD, ELO, etc.. APMs can be accessed through the SumUp Card Widget. Request access by contacting us via our [contact form](/contact).
-
-At SumUp you can make use of the following APMs:
-
-- Apple Pay
-- Bancontact
-- Blik
-- Boleto
-- EPS
-- Google Pay
-- iDeal
-- MyBank
-- PIX
-- Przelewy24
-- Satispay
-
-{% aside type="tip" %}
-The APMs you can offer depend on the location your business is registered and operates in.
+{% aside type="note" %}
+Do you have specific questions? Check out our [help page](/help) for the most frequently asked questions or [contact us here](/contact).
 {% /aside %}
