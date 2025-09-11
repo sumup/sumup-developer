@@ -66,7 +66,7 @@ If your app shuts down immediately upon start, try disconnecting your phone and 
 2. Add the dependency to a module `build.gradle`:
 
     ```kotlin 
-    implementation("com.sumup.tap-to-pay:utopia-sdk:0.17.0")
+    implementation("com.sumup.tap-to-pay:utopia-sdk:0.18.0")
     ```  
 
 ### Authentication
@@ -162,6 +162,7 @@ data class CheckoutData(
     val clientUniqueTransactionId: String,
     val customItems: List<CustomItem>?,
     val priceItems: List<PriceItem>?,
+    val products: List<ProductModel>?,
     val processCardAs: ProcessCardAs?,
     val affiliateData: AffiliateModel?
 ) : Serializable
@@ -174,6 +175,7 @@ Where:
 - `clientUniqueTransactionId` - This should be a unique identifier for the transaction. A random UUID is can be used.
 - `customItems` - The list of custom items. Set null if not used.
 - `priceItems` - The list of price items. Set null if not used.
+- `products` - The list of product items. Set null if not used.
 - `processCardAs` - The type of the card processing. The default value is `null`. The possible values are `ProcessCardAs.Credit(val instalments: Int)` and `ProcessCardAs.Debit`, where `instalments` is the number of instalments. This parameter is optional and only applicable to some markets, such as Brazil, where the card type selection and instalments are supported.
 - `affiliateData` - The affiliate data refers to tracking and attributing transactions to specific affiliates, integrators, or referral sources.
 
@@ -295,3 +297,19 @@ The base types are listed below, and each of these is further divided into more 
 |                                 | CheckoutFailed              | 1104           | Checkout process failed.                            |
 | **TapToPayException**           | Unknown                     | 0              | An internal error that cannot be exposed externally |
 
+### Testing the SDK
+
+ Before testing, make sure of the following:
+1. The app is not debuggable. Making the build debuggable will cause the attestation to fail and the payments will not work.
+   ```kotlin
+      buildTypes {
+          release {
+              isDebuggable = false
+          }
+      }
+   ```
+2. You have USB debugging disabled on your device. Even if you install the app through a cable, disable the USB debugging after installation.
+3. You have Developer Mode disabled on your device. Even if you install the app through a cable, disable the Developer Mode after installation.
+
+On some devices (e.g. Samsung), you still have to disable USB debugging before disabling the Developer Mode.
+It is still possible to have a USB debugging enabled and Developer Mode disabled, but it depends on the device manufacturer.
