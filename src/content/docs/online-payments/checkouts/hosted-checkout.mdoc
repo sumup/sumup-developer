@@ -4,77 +4,80 @@ sidebar:
   order: 30
 ---
 
-Hosted Checkout is a new integration product that offers a complete checkout flow for payment collection. It aims at being easy to integrate and requires little to no code. The solution offers a summary of the checkout details and provides a complete flow for handling payment collection, covering the possible outcomes of payment attempts all the way to the success page.
-All [SumUp supported payment methods](/online-payments/apm/introduction) are available in Hosted Checkout, according to availability per merchant.
+## About Hosted Checkout
 
-<image alt="Hosted Checkout Form" src="/img/guides/hosted_checkout_landing_page.png" width="80%" style="display: block; margin-left: auto; margin-right: auto; border: 1px solid var(--cui-border-normal)"/>
+Hosted Checkout is an integration product that offers a complete checkout flow for payment collection. It's called "Hosted Checkout", because SumUp renders and hosts the entire checkout UI, which your customers can access via URL returned by our checkout API. The hosted checkout page aims at being easy to integrate and requires little to no code, offering a summary of the checkout details and provides a complete flow for handling payment collection, covering the possible outcomes of payment attempts all the way to the success page.
+All SumUp payment methods are available in Hosted Checkout, according to availability per merchant.
 
+{% image alt="A screenshot of the Hosted Checkout form showing available payment options, including Google Pay, Apple Pay, and card payment" src="/img/guides/hosted_checkout_landing_page.png" width="80%" /%}
 
 ## Getting started
 
-Hosted Checkouts is available to all SumUp merchants and getting started with it is super easy!
+Hosted Checkouts is available to all SumUp merchants and getting started with it is really easy!
 
-The only requirement to access this product is the ability to create online checkouts ([see more](/api/checkouts/create)).
+The only requirement to access Hosted Checkout is the ability to create online checkouts [using SumUp checkout API](/api/checkouts/create), which returns the hosted checkout URL. SumUp API requires authorization with an API Key or Access Token - see the [Authorization Guide](/tools/authorization/authorization/) for details.
 
+## Accessing Hosted Checkout
 
-## How does it work?
-
-Once you're able to create checkouts, you can opt-in for Hosted Checkout by providing an extra parameter to your POST request payload.
+Once you're able to create checkouts via API calls, you can opt-in for Hosted Checkout by providing an extra parameter to your POST request payload.
 The parameter name should be `hosted_checkout` and the value should be an object with the following structure: `{ "enabled": true }`.
 
-The response should then include the following properties, proving that hosted checkouts is available:
-* `hosted_checkout` will be returned as provided in the request
-* `hosted_checkout_url` will provide the URL of the page handling the payment flow
+The response should then include the Hosted Checkout properties:
 
-Here's an example of creating a checkout with Hosted Checkouts enabled:
+* `hosted_checkout` is returned as provided in the request
+* `hosted_checkout_url` provides the URL of the page handling the payment flow
 
-```bash
-curl -X POST https://api.sumup.com/v0.1/checkouts \
-    -H "Content-Type: application/json" \
-    -H "Authorization: Bearer $SUMUP_API_KEY" \ 
-    -d '{
-        "amount": 12.00,
-        "checkout_reference": "b50pr914-6k0e-3091-a592-890010285b3d", 
+1. Send a request with the `"hosted_checkout": { "enabled": true }` in the body.
+
+    ```bash
+    curl -X POST https://api.sumup.com/v0.1/checkouts \
+        -H "Content-Type: application/json" \
+        -H "Authorization: Bearer $SUMUP_API_KEY" \ 
+        -d '{
+            "amount": 12.00,
+            "checkout_reference": "b50pr914-6k0e-3091-a592-890010285b3d", 
+            "currency": "EUR",
+            "description": "A sample checkout",
+            "merchant_code": "MCXXXXXX",
+            "hosted_checkout": { "enabled": true }
+        }'
+    ```
+
+    The response body contains the `hosted_checkout` and `hosted_checkout_url` parameters:
+
+    ```json
+    {
+        "amount": 12,
+        "checkout_reference": "b50pr914-6k0e-3091-a592-890010285b3d",
+        "checkout_type": "checkout",
         "currency": "EUR",
+        "date":"2000-01-01T12:49:24.899+00:00",
         "description": "A sample checkout",
+        "id": "64553e20-3f0e-49e4-8af3-fd0eca86ce91",
         "merchant_code": "MCXXXXXX",
-        "hosted_checkout": { "enabled": true }
-    }'
-```
+        "merchant_country": "DE",
+        "merchant_name": "Sample Shop",
+        "purpose": "CHECKOUT",
+        "status": "PENDING",
+        "transactions": [],
+        "hosted_checkout": { "enabled": true },
+        "hosted_checkout_url": "https://checkout.sumup.com/pay/8f9316a3-cda9-42a9-9771-54d534315676"
+    }
+    ```
 
-The response body containing the `hosted_checkout` and `hosted_checkout_url` parameters:
+2. Use the payment page provided under `hosted_checkout_url` to complete the flow you're building. See [Configuring Hosted Checkout](#configuring-hosted-checkout) for more information.
 
-```json
-{
-    "amount": 12,
-    "checkout_reference": "b50pr914-6k0e-3091-a592-890010285b3d",
-    "checkout_type": "checkout",
-    "currency": "EUR",
-    "date":"2000-01-01T12:49:24.899+00:00",
-    "description": "A sample checkout",
-    "id": "64553e20-3f0e-49e4-8af3-fd0eca86ce91",
-    "merchant_code": "MCXXXXXX",
-    "merchant_country": "DE",
-    "merchant_name": "Sample Shop",
-    "purpose": "CHECKOUT",
-    "status": "PENDING",
-    "transactions": [],
-    "hosted_checkout": { "enabled": true },
-    "hosted_checkout_url": "https://checkout.sumup.com/pay/8f9316a3-cda9-42a9-9771-54d534315676"
-}
-```
-
-{% aside type="note"%}
-Each Hosted Checkout session lasts for 30 minutes, after which end users will be presented with a not found page upon access attempts.
-{% /aside %}
+    {% aside type="note"%}
+    Each Hosted Checkout session lasts for 30 minutes, after which end users are presented with a "not found" page upon access attempts.
+    {% /aside %}
 
 
-## Configuring Hosted Checkouts
+## Configuring Hosted Checkout
 
-### Redirecting to a different page after successful payment
+### Redirecting users after successful payment
 
-This product is meant to suit a broad range of use cases, from a simple self-contained payment solution, to a checkout step integrated within a longer flow.
-When creating a checkout, it's possible to provide a `redirect_url` parameter to include a redirect link in the success page.
+Hosted Checkout is meant to suit a broad range of use cases, from a simple self-contained payment solution, to a checkout step integrated within a longer flow.
+When creating a checkout, simply provide a `redirect_url` parameter to include a redirect link in the success page, under a "Redirect to merchant website" button.
 
 {% aside type="note" %}
 Differently from what's stated in our [API docs](/api/checkouts/create), the absence of this parameter does not affect the availability of payment methods in Hosted Checkouts.
@@ -83,28 +86,31 @@ Differently from what's stated in our [API docs](/api/checkouts/create), the abs
 
 ## Hosted Checkout status pages
 
-With Hosted Checkout your payment flow is covered from start to finish. All successful payments will be presented with a success page informing them of the completed payment. Hosted Checkout also accommodates other payment outcomes:
+With Hosted Checkout, your payment flow is covered from start to finish. All successful payments are presented with a success page, informing users of the completed payment. Hosted Checkout also accommodates other payment outcomes:
 
 - Successful payments. This page will include the "Back to merchant website" button only if the `redirect_url` was provided at checkout creation.
 
-<image alt="Payment Successful" src="/img/guides/hosted checkout_payment_success.png" width="50%" style="display: block; margin-left:auto; margin-right:auto; margin-bottom: 30px" />
+{% image alt="A screenshot of the Hosted Checkout payment successful confirmation form" src="/img/guides/hosted checkout_payment_success.png" width="50%" /%}
 
 - Failed payments will include express checkout payment methods for a quick retry.
 
-<image alt="Payment Failed" src="/img/guides/hosted checkout_payment_declined.png" width="50%" style="display: block; margin-left:auto; margin-right:auto; margin-bottom: 30px" />
+{% image alt="A screenshot of the Hosted Checkout payment failed form" src="/img/guides/hosted checkout_payment_declined.png" width="50%" /%}
+
 
 - Expired session page will be shown for all unpaid checkouts after session expiration or checkout expiration (currently 30 minutes).
 
-<image alt="Session Timed Out" src="/img/guides/hosted checkout_session_timed_out.png" width="50%" style="display: block; margin-left:auto; margin-right:auto; margin-bottom: 30px" />
+{% image alt="A screenshot of the Hosted Checkout session expiry form" src="/img/guides/hosted checkout_session_timed_out.png" width="50%" /%}
+
 
 - Not found page, for all URLs that do not match any existing session in our system
 
-<image alt="Session Not Found" src="/img/guides/hosted checkout_not_found.png" width="50%" style="display: block; margin-left:auto; margin-right:auto; margin-bottom: 30px" />
+{% image alt="A screenshot of the Hosted Checkout page not found form" src="/img/guides/hosted checkout_not_found.png" width="50%" /%}
+
 
 
 {% aside type="caution" %}
-This product is currently in beta and may be subject to change and we're currently working on many new features soon to be available!
-Keep an eye on this page as we'll continue to add features in the upcoming months.
+Hosted Checkout is currently in beta and may be subject to change. We're currently working on new features, so
+keep an eye on this page as we'll continue to add features in the upcoming months!
 
 Feel free to reach out with feature requests via our [contact form](/contact).
 {% /aside %}

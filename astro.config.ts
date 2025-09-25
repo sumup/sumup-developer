@@ -173,12 +173,12 @@ export default defineConfig({
           ],
         },
         {
-          label: "Online Payments",
-          autogenerate: { directory: "online-payments", collapsed: true },
-        },
-        {
           label: "In-person Payments",
           autogenerate: { directory: "terminal-payments", collapsed: true },
+        },
+        {
+          label: "Online Payments",
+          autogenerate: { directory: "online-payments", collapsed: true },
         },
         {
           label: "Common Topics",

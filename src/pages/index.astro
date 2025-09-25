@@ -1,7 +1,6 @@
 ---
 import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
 import type { StarlightPageProps } from "@astrojs/starlight/props";
-import Card from "@components/Card.astro";
 import Brands from "@components/Landing/Brands.astro";
 import { Headline, ListItem } from "@sumup-oss/circuit-ui";
 import {
@@ -9,16 +8,12 @@ import {
   NoCosts,
   SecurePayments,
   CardReaderSolo,
-  OnlinePayments,
   Code,
   BrowserSecure,
   Refresh,
-  Refunded,
   CardIn,
   AlternativePaymentMethod,
 } from "@sumup-oss/icons";
-import CardLink from "@components/CardLink.astro";
-import CardStack from "@components/CardStack.astro";
 
 const props = {
   frontmatter: {
@@ -37,50 +32,49 @@ const props = {
 <StarlightPage {...props}>
   <main>
     <section>
-      <Headline as="h2" className="header">Discover our Solutions</Headline>
+      <section>
+      <Headline as="h2" className="header">Card-present Solutions</Headline>
       <div class="button-links">
         <ListItem
           href="/terminal-payments"
           variant="navigation"
-          label="Accept card reader payments"
+          label="Quickstart"
           details="Integrate with SumUp Solo card reader to accept in-person payments."
           leadingComponent={CardReaderSolo}
-        />
-        <ListItem
-          variant="navigation"
-          leadingComponent={OnlinePayments}
-          href="/online-payments"
-          label="Accept online payments"
-          details="Integrate SumUp in your Online Store."
         />
         <ListItem
           variant="navigation"
           leadingComponent={Code}
           href="/terminal-payments/sdks"
           label="Integrations"
-          details="Build integrations for your customers"
+          details="Build integrations for your customers."
         />
         <ListItem
           variant="navigation"
           leadingComponent={BrowserSecure}
-          href="/tools/authorization/authorization"
-          label="Authorization"
-          details="Explore authorization and authentication options for your use case."
+          href="/terminal-payments/cloud-api"
+          label="Cloud API"
+          details="Integrate card payments from any platform using Cloud API."
         />
+      </div>
+      </section>
+      <section>  
+      <Headline as="h2" className="header">Online Payment Solutions</Headline>
+      <div class="button-links">
         <ListItem
           variant="navigation"
           leadingComponent={Refresh}
-          href="/online-payments/guides/recurring-payments"
-          label="Recurring payments"
-          details="Provide smooth user experience for recurring payments."
+          href="/online-payments/"
+          label="Quickstart"
+          details="Start using Online Payments"
         />
         <ListItem
           variant="navigation"
-          leadingComponent={Refunded}
-          href="/online-payments/guides/refund"
-          label="Refunds"
-          details="Provide smooth user experience for refunds."
-        />
+          leadingComponent={CardIn}
+          href="/online-payments/checkouts/card-widget"
+          label="Card widget"
+          details="Collect payment data online securely with card widget."
+        />        
         <ListItem
           variant="navigation"
           leadingComponent={AlternativePaymentMethod}
@@ -90,84 +84,43 @@ const props = {
         />
         <ListItem
           variant="navigation"
-          leadingComponent={CardIn}
-          href="/online-payments/checkouts/card-widget"
-          label="Card widget"
-          details="Collect payment data online securely with card widget."
+          leadingComponent={Code}
+          href="/online-payments/sdks"
+          label="Integrations"
+          details="Build integrations for your customers."
+        />        
+        <ListItem
+          variant="navigation"
+          leadingComponent={Refresh}
+          href="/online-payments/guides/"
+          label="Customization"
+          details="Build a fully customized payment experience"
         />
       </div>
-    </section>
-    <section>
-      <div class="card-grid">
-        <Card title="Online Payments" icon="online_payments">
-          <ul>
-            <li>
-              <a href="/online-payments/">Overview</a>
-            </li>
-            <li>
-              <a href="/online-payments/guides/">Guides</a>
-            </li>
-            <li>
-              <a href="/online-payments/plugins/">Plugins</a>
-            </li>
-          </ul>
-        </Card>
-        <Card title="Terminal Payments" icon="card_in">
-          <ul>
-            <li>
-              <a href="/terminal-payments/">Overview</a>
-            </li>
-            <li>
-              <a href="/online-payments/guides/">Guides</a>
-            </li>
-          </ul>
-        </Card>
-        <Card title="Tooling" icon="apps">
-          <ul>
-            <li>
-              <a href="/tools/authorization/authorization">Authorization</a>
-            </li>
-            <li>
-              <a href="/api">API reference</a>
-            </li>
-          </ul>
-        </Card>
+      </section>
+      <section>  
+      <Headline as="h2" className="header">Common Topics</Headline>
+      <div class="button-links">
+        <ListItem
+          variant="navigation"
+          href="/tools/authorization/"
+          label="Authorization"
+          details="Learn how to authorize requests."
+        />
+        <ListItem
+          variant="navigation"
+          href="/tools/llms"
+          label="Building with LLMs"
+          details="Use LLM assistance when building SumUp integrations."
+        />
+        <ListItem
+          variant="navigation"
+          href="/api"
+          label="API Reference"
+          details="Check API documentation."
+        />         
       </div>
-    </section>
-    <section>
-      <Headline as="h2" className="header">Building blocks</Headline>
-      <CardStack>
-        <CardLink
-          href="/online-payments/checkouts/swift-checkout/"
-          title="Swift checkout"
-          description="Collect payment, address, and contact information with the click of a button."
-          image="/img/swift-checkout.svg"
-        />
-        <CardLink
-          href="/terminal-payments/cloud-api/"
-          title="Card reader payments"
-          description="Integrate card payments from any platform using Cloud API."
-          image="/img/api-call.svg"
-        />
-        <CardLink
-          href="/online-payments/checkouts/card-widget/"
-          title="Payment widget"
-          description="Securely collect and process customers payment information."
-          image="/img/swift-checkout.svg"
-        />
-        <CardLink
-          href="/online-payments/plugins/"
-          title="Plugins"
-          description="Use SumUp plugin for Prestashop, Wix, or WooCommerce."
-          image="/img/api-call.svg"
-        />
-        <CardLink
-          href="/terminal-payments/sdks/"
-          title="Mobile app integration"
-          description="Accept card reader payments from your own app using SumUp card readers."
-          image="/img/swift-checkout.svg"
-        />
-      </CardStack>
+      </section>
     </section>
     <section class="antifraud">
       <div class="content">
