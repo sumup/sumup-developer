@@ -1,7 +1,6 @@
 ---
 import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
 import type { StarlightPageProps } from "@astrojs/starlight/props";
-import Card from "@components/Card.astro";
 import Brands from "@components/Landing/Brands.astro";
 import { Headline, ListItem } from "@sumup-oss/circuit-ui";
 import {
@@ -9,16 +8,12 @@ import {
   NoCosts,
   SecurePayments,
   CardReaderSolo,
-  OnlinePayments,
   Code,
   BrowserSecure,
   Refresh,
-  Refunded,
   CardIn,
   AlternativePaymentMethod,
 } from "@sumup-oss/icons";
-import CardLink from "@components/CardLink.astro";
-import CardStack from "@components/CardStack.astro";
 
 const props = {
   frontmatter: {
