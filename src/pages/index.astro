@@ -10,9 +10,14 @@ import {
   CardReaderSolo,
   Code,
   BrowserSecure,
-  Refresh,
+  Customize,
   CardIn,
   AlternativePaymentMethod,
+  Sparkles,
+  File,
+  Apps,
+  Key,
+  Play,
 } from "@sumup-oss/icons";
 
 const props = {
@@ -33,93 +38,96 @@ const props = {
   <main>
     <section>
       <section>
-      <Headline as="h2" className="header">Card-present Solutions</Headline>
-      <div class="button-links">
-        <ListItem
-          href="/terminal-payments"
-          variant="navigation"
-          label="Quickstart"
-          details="Integrate with SumUp Solo card reader to accept in-person payments."
-          leadingComponent={CardReaderSolo}
-        />
-        <ListItem
-          variant="navigation"
-          leadingComponent={Code}
-          href="/terminal-payments/sdks"
-          label="Integrations"
-          details="Build integrations for your customers."
-        />
-        <ListItem
-          variant="navigation"
-          leadingComponent={BrowserSecure}
-          href="/terminal-payments/cloud-api"
-          label="Cloud API"
-          details="Integrate card payments from any platform using Cloud API."
-        />
-      </div>
+        <Headline as="h2" className="header">Card-present Solutions</Headline>
+        <div class="button-links">
+          <ListItem
+            href="/terminal-payments"
+            variant="navigation"
+            label="Quickstart"
+            details="Integrate with SumUp Solo card reader to accept in-person payments."
+            leadingComponent={CardReaderSolo}
+          />
+          <ListItem
+            variant="navigation"
+            leadingComponent={Code}
+            href="/terminal-payments/sdks"
+            label="Integrations"
+            details="Build integrations for your customers."
+          />
+          <ListItem
+            variant="navigation"
+            leadingComponent={BrowserSecure}
+            href="/terminal-payments/cloud-api"
+            label="Cloud API"
+            details="Integrate card payments from any platform using Cloud API."
+          />
+        </div>
       </section>
-      <section>  
-      <Headline as="h2" className="header">Online Payment Solutions</Headline>
-      <div class="button-links">
-        <ListItem
-          variant="navigation"
-          leadingComponent={Refresh}
-          href="/online-payments/"
-          label="Quickstart"
-          details="Start using Online Payments"
-        />
-        <ListItem
-          variant="navigation"
-          leadingComponent={CardIn}
-          href="/online-payments/checkouts/card-widget"
-          label="Card widget"
-          details="Collect payment data online securely with card widget."
-        />        
-        <ListItem
-          variant="navigation"
-          leadingComponent={AlternativePaymentMethod}
-          href="/online-payments/apm"
-          label="Alternative payment options"
-          details="Allow your customers to pay with Apple or Google pay."
-        />
-        <ListItem
-          variant="navigation"
-          leadingComponent={Code}
-          href="/online-payments/sdks"
-          label="Integrations"
-          details="Build integrations for your customers."
-        />        
-        <ListItem
-          variant="navigation"
-          leadingComponent={Refresh}
-          href="/online-payments/guides/"
-          label="Customization"
-          details="Build a fully customized payment experience"
-        />
-      </div>
+      <section>
+        <Headline as="h2" className="header">Online Payment Solutions</Headline>
+        <div class="button-links">
+          <ListItem
+            variant="navigation"
+            leadingComponent={Play}
+            href="/online-payments/"
+            label="Quickstart"
+            details="Start using Online Payments"
+          />
+          <ListItem
+            variant="navigation"
+            leadingComponent={CardIn}
+            href="/online-payments/checkouts/card-widget"
+            label="Card widget"
+            details="Collect payment data online securely with card widget."
+          />
+          <ListItem
+            variant="navigation"
+            leadingComponent={AlternativePaymentMethod}
+            href="/online-payments/apm"
+            label="Alternative payment options"
+            details="Allow your customers to pay with Apple or Google pay."
+          />
+          <ListItem
+            variant="navigation"
+            leadingComponent={Apps}
+            href="/online-payments/sdks"
+            label="Integrations"
+            details="Build integrations for your customers."
+          />
+          <ListItem
+            variant="navigation"
+            leadingComponent={Customize}
+            href="/online-payments/guides/"
+            label="Customization"
+            details="Build a fully customized payment experience"
+          />
+        </div>
       </section>
-      <section>  
-      <Headline as="h2" className="header">Common Topics</Headline>
-      <div class="button-links">
-        <ListItem
-          variant="navigation"
-          href="/tools/authorization/"
-          label="Authorization"
-          details="Learn how to authorize requests."
-        />
-        <ListItem
-          variant="navigation"
-          href="/tools/llms"
-          label="Building with LLMs"
-          details="Use LLM assistance when building SumUp integrations."
-        />
-        <ListItem
-          variant="navigation"
-          href="/api"
-          label="API Reference"
-          details="Check API documentation."
-        />         
-      </div>
+      <section>
+        <Headline as="h2" className="header">Common Topics</Headline>
+        <div class="button-links">
+          <ListItem
+            variant="navigation"
+            href="/tools/authorization/"
+            leadingComponent={Key}
+            label="Authorization"
+            details="Learn how to authorize requests."
+          />
+          <ListItem
+            variant="navigation"
+            href="/tools/llms"
+            leadingComponent={Sparkles}
+            label="Building with LLMs"
+            details="Use LLM assistance when building SumUp integrations."
+          />
+          <ListItem
+            variant="navigation"
+            href="/api"
+            leadingComponent={File}
+            label="API Reference"
+            details="Check API documentation."
+          />
+        </div>
       </section>
     </section>
     <section class="antifraud">
