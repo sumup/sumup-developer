@@ -66,7 +66,7 @@ If your app shuts down immediately upon start, try disconnecting your phone and 
 2. Add the dependency to a module `build.gradle`:
 
     ```kotlin 
-    implementation("com.sumup.tap-to-pay:utopia-sdk:0.18.0")
+    implementation("com.sumup.tap-to-pay:utopia-sdk:1.0.0")
     ```  
 
 ### Authentication
@@ -123,10 +123,10 @@ The function can also return `Result.Failure` with one exception from the list o
 suspend fun startPayment(
     checkoutData: CheckoutData,
     skipSuccessScreen: Boolean
-): Flow<Result<PaymentEvent>>
+): Flow<PaymentEvent>
 ```
 
-The `startPayment` method initiates the payment process. It returns a `Flow` of `Result` objects that can be either a `Result.Success` with the `PaymentEvent` or a `Result.Failure` with an error message.
+The `startPayment` method initiates the payment process. It returns a `Flow` that emits `PaymentEvent` or throws an exception with an error message.
 
 The list of possible events:
 
@@ -138,15 +138,17 @@ The list of possible events:
   ```kotlin
   data class PaymentOutput(
       val txCode: String,
-      val serverTransactionId: String
+      val serverTransactionId: String,
+      val cardType: String? = null,
+      val lastFour: String? = null,
+      val merchantCode: String? = null,
+      val cardScheme: String? = null
   )
   ```
-- `TransactionFailed(val paymentOutput: PaymentOutput?)` - transaction failed. It might happen due to many reasons, like backend error, card reader error, and so on.
+- `TransactionFailed(val paymentOutput: PaymentOutput?, val tapToPayException: TapToPayException?)` - transaction failed. It might happen due to many reasons, like attestation error, backend error, card reader error, and so on. The full list of errors is described in the [Exceptions](#Exceptions) section. `PaymentOutput` param might be null if the transaction failed before reaching the backend.
 - `TransactionCanceled(val paymentOutput: PaymentOutput?)` - transaction was cancelled by the user.
 - `TransactionResultUnknown(val paymentOutput: PaymentOutput?)` - transaction result is unknown. This might happen on remote calls, when there is no response due to timeout.
 - `PaymentFlowClosedSuccessfully(val paymentOutput: PaymentOutput?, val shouldDisplayReceipt: Boolean)` - after a successful transaction, users see the successful screen with two buttons: **Send receipt** and **Done**. Once the user clicks on any button, the screen closes and fires the `PaymentClosed` event.
-
-The function can also return `Result.Failure` with one exception from the list of exceptions mentioned [here](#Exceptions).
 
 ##### Parameters
 
@@ -245,57 +247,63 @@ The base types are listed below, and each of these is further divided into more 
 - `NetworkException` - These exceptions represent network-related and communication errors encountered during SDK operation. They include issues such as interrupted connections, authentication problems, and server/client-side failures.
 - `PaymentException` - These exceptions represent errors related to the payment transaction flow, covering everything from preprocessing to final charge attempts. They include issues such as invalid payment actions, timeouts, incorrect amounts, unsupported card technologies, and unexpected states during card reading.
 - `PaymentPreparationException` - These exceptions relate to the preparation and availability of the payment process. They indicate failures such as the unavailability of the payment function, issues during kernel setup, missing security-related data, and general checkout failures. These errors typically occur before or at the start of a transaction and prevent it from proceeding.
+- `AttestationException` - These exceptions represent errors related to the attestation process, which is crucial for ensuring the security and integrity of the payment environment. They include issues like enabled USB debugging, non secure device or network.
 - `TapToPayException.Unknown` - The Unknown exception represents an internal error that cannot be exposed externally. It acts as a fallback for unexpected or unclassified issues that occur within the SDK, ensuring sensitive or implementation-specific details are not leaked.
 
 #### Error Codes
 
-| **Base Type**                   | **Exception Type**          | **Error Code** | **Description**                                     |
-|---------------------------------|-----------------------------|----------------|-----------------------------------------------------|
-| **CommonException**             | Parsing                     | 101            | Error occurred during parsing.                      |
-|                                 | Environment                 | 102            | Environment-related issue.                          |
-|                                 | NotRegisteredTerminal       | 103            | Terminal is not registered.                         |
-|                                 | AuthTokenProvider           | 105            | Authentication token issue.                         |
-|                                 | Update                      | 106            | Update is required.                                 |
-|                                 | SDKIsAlreadyInitialized     | 107            | SDK is already initialized.                         |
-|                                 | SDKIsNotInitialized         | 108            | SDK is not initialized.                             |
-|                                 | SDKTearDown                 | 109            | SDK teardown process.                               |
-|                                 | TerminalRegistration        | 110            | Terminal registration issue.                        |
-|                                 | MissingResult               | 111            | Missing result error.                               |
-| **NetworkException**            | NetworkConnection           | 201            | General network error.                              |
-|                                 | Authentication              | 202            | Authentication failure.                             |
-|                                 | Server                      | 204            | Server-related issue.                               |
-|                                 | Client                      | 205            | Client-related issue.                               |
-|                                 | NetworkSecurity             | 206            | Secure network (mTLS) issue.                        |
-| **PaymentException**            | InvalidPaymentAction        | 1001           | Invalid payment action.                             |
-|                                 | UncertainTransaction        | 1002           | Transaction status is uncertain.                    |
-|                                 | Timeout                     | 1003           | Payment process timed out.                          |
-|                                 | Preprocessing               | 1005           | Error during preprocessing.                         |
-|                                 | CombinationSelection        | 1006           | Error in combination selection.                     |
-|                                 | Transaction                 | 1007           | Transaction-related issue.                          |
-|                                 | ExtractPAN                  | 1008           | Error extracting PAN.                               |
-|                                 | UnknownCVM                  | 1009           | Unknown Cardholder Verification Method.             |
-|                                 | IncorrectAmount             | 1010           | Incorrect amount specified.                         |
-|                                 | UnsupportedCardTechnology   | 1011           | Unsupported card technology.                        |
-|                                 | UnexpectedCardReadState     | 1012           | Unexpected card read state.                         |
-|                                 | UnexpectedOutcome           | 1013           | Unexpected transaction outcome.                     |
-|                                 | IncorrectFormat             | 1014           | Card read process failed.                           |
-|                                 | ReadEMVTagsException        | 1015           | Error reading EMV tags.                             |
-|                                 | TechnoPollingStopped        | 1016           | Techno polling process stopped.                     |
-|                                 | CancelationFailed           | 1017           | Cancelation process failed.                         |
-|                                 | ChargeFailed                | 1018           | Charge process failed.                              |
-|                                 | UnsupportedOnlinePin        | 1020           | Unsupported online PIN.                             |
-|                                 | UnsupportedSignatureRequest | 1021           | Unsupported signature request.                      |
-|                                 | ErrorAction                 | 1022           | Error in payment action.                            |
-|                                 | TransactionInterrupted      | 1023           | Transaction was interrupted.                        |
-|                                 | CardReadFailed              | 1024           | Card read failed.                                   |
-|                                 | DeclinedOutcome             | 1025           | Card declined.                                      |
-|                                 | EmptyCandidatesList         | 1026           | No candidates available.                            |
-|                                 | UnknownKernel               | 1027           | Unknown kernel error.                               |
-| **PaymentPreparationException** | PaymentAvailability         | 1101           | Payment availability issue.                         |
-|                                 | KernelPreparation           | 1102           | Error during kernel preparation.                    |
-|                                 | EmptyAntireplayData         | 1103           | Antireplay data is empty.                           |
-|                                 | CheckoutFailed              | 1104           | Checkout process failed.                            |
-| **TapToPayException**           | Unknown                     | 0              | An internal error that cannot be exposed externally |
+| **Base Type**                   | **Exception Type**          | **Error Code** | **Description**                                           |
+|---------------------------------|-----------------------------|----------------|-----------------------------------------------------------|
+| **CommonException**             | Parsing                     | 101            | Error occurred during parsing.                            |
+|                                 | Environment                 | 102            | Environment-related issue.                                |
+|                                 | NotRegisteredTerminal       | 103            | Terminal is not registered.                               |
+|                                 | AuthTokenProvider           | 105            | Authentication token issue.                               |
+|                                 | Update                      | 106            | Update is required.                                       |
+|                                 | SDKIsAlreadyInitialized     | 107            | SDK is already initialized.                               |
+|                                 | SDKIsNotInitialized         | 108            | SDK is not initialized.                                   |
+|                                 | SDKTearDown                 | 109            | SDK teardown process.                                     |
+|                                 | TerminalRegistration        | 110            | Terminal registration issue.                              |
+|                                 | MissingResult               | 111            | Missing result error.                                     |
+| **NetworkException**            | NetworkConnection           | 201            | General network error.                                    |
+|                                 | Authentication              | 202            | Authentication failure.                                   |
+|                                 | Server                      | 204            | Server-related issue.                                     |
+|                                 | Client                      | 205            | Client-related issue.                                     |
+|                                 | NetworkSecurity             | 206            | Secure network (mTLS) issue.                              |
+| **PaymentException**            | InvalidPaymentAction        | 1001           | Invalid payment action.                                   |
+|                                 | UncertainTransaction        | 1002           | Transaction status is uncertain.                          |
+|                                 | Timeout                     | 1003           | Payment process timed out.                                |
+|                                 | Preprocessing               | 1005           | Error during preprocessing.                               |
+|                                 | CombinationSelection        | 1006           | Error in combination selection.                           |
+|                                 | Transaction                 | 1007           | Transaction-related issue.                                |
+|                                 | ExtractPAN                  | 1008           | Error extracting PAN.                                     |
+|                                 | UnknownCVM                  | 1009           | Unknown Cardholder Verification Method.                   |
+|                                 | IncorrectAmount             | 1010           | Incorrect amount specified.                               |
+|                                 | UnsupportedCardTechnology   | 1011           | Unsupported card technology.                              |
+|                                 | UnexpectedCardReadState     | 1012           | Unexpected card read state.                               |
+|                                 | UnexpectedOutcome           | 1013           | Unexpected transaction outcome.                           |
+|                                 | IncorrectFormat             | 1014           | Card read process failed.                                 |
+|                                 | ReadEMVTagsException        | 1015           | Error reading EMV tags.                                   |
+|                                 | TechnoPollingStopped        | 1016           | Techno polling process stopped.                           |
+|                                 | CancelationFailed           | 1017           | Cancelation process failed.                               |
+|                                 | ChargeFailed                | 1018           | Charge process failed.                                    |
+|                                 | UnsupportedOnlinePin        | 1020           | Unsupported online PIN.                                   |
+|                                 | UnsupportedSignatureRequest | 1021           | Unsupported signature request.                            |
+|                                 | ErrorAction                 | 1022           | Error in payment action.                                  |
+|                                 | TransactionInterrupted      | 1023           | Transaction was interrupted.                              |
+|                                 | CardReadFailed              | 1024           | Card read failed.                                         |
+|                                 | DeclinedOutcome             | 1025           | Card declined.                                            |
+|                                 | EmptyCandidatesList         | 1026           | No candidates available.                                  |
+|                                 | UnknownKernel               | 1027           | Unknown kernel error.                                     |
+| **PaymentPreparationException** | PaymentAvailability         | 1101           | Payment availability issue.                               |
+|                                 | KernelPreparation           | 1102           | Error during kernel preparation.                          |
+|                                 | EmptyAntireplayData         | 1103           | Antireplay data is empty.                                 |
+|                                 | CheckoutFailed              | 1104           | Checkout process failed.                                  |
+| **AttestationException**        | UsbDebuggingEnabled         | 301            | USB debugging enabled. Disable USB debugging.             |
+|                                 | AppDebuggable               | 302            | App is build as debuggable. Rebuild it as non debuggable. |
+|                                 | AdbSessionActive            | 303            | There is an active ADB session.                           |
+|                                 | DeviceSecurity              | 305            | The device is not secure.                                 |
+|                                 | NetworkSecurity             | 304            | The network is not secure.                                |
+| **TapToPayException**           | Unknown                     | 0              | An internal error that cannot be exposed externally       |
 
 ### Testing the SDK
 
