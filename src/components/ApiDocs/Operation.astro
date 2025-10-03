@@ -74,7 +74,7 @@ const queryParams = operation.parameters
         >
           {operation.tag}
         </a>
-        <Headline as="h2" size="m" data-pagefind-meta="title">
+        <Headline as="h2" size="m" data-pagefind-meta="title" className="headline">
           {operation.summary}
           {
             operation.deprecated && (
@@ -249,5 +249,9 @@ const queryParams = operation.parameters
   .example-response {
     position: sticky;
     top: calc(var(--sl-nav-height) + var(--cui-spacings-kilo));
+  }
+
+  .headline {
+    margin-bottom: var(--cui-spacings-giga);
   }
 </style>

@@ -130,6 +130,10 @@ export const schemaToExample = (
     return schema.example;
   }
 
+  if (schema.examples && schema.examples.length > 0) {
+    return schema.examples[0];
+  }
+
   switch (schema.type) {
     case "object":
       return Object.fromEntries(

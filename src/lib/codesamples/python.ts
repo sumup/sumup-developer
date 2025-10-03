@@ -17,6 +17,10 @@ const bodyExample = (operation: OperationObject): any => {
     return operation.requestBody.content["application/json"].example;
   }
 
+  if (!operation.requestBody.content["application/json"].schema) {
+    return undefined;
+  }
+
   return schemaToExample(
     operation.requestBody.content["application/json"].schema!,
   );
