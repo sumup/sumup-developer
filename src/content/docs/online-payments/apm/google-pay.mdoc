@@ -7,28 +7,19 @@ sidebar:
 
 In this guide you will find the steps for a direct integration of Google Pay. This payment method is also available via the [SumUp Payment Widget](/docs/online-payments/checkouts/card-widget/).
 
-## Before you begin
+## Prerequisites
 
-Here are the things that you need in order to complete the steps in this guide:
-
-- You have a merchant profile with [SumUp](https://me.sumup.com/login) and have already filled in your [profile details](https://me.sumup.com/account)
-- For a test profile reach out to our support team through this [contact form](https://developer.sumup.com/contact/)
+- You have a merchant profile with [SumUp](https://me.sumup.com/login) and have already filled in your [profile details](https://me.sumup.com/account). The dashboard offers the possibility of creating a test account, if you want to test the integration without processing real funds.
 - Review [Google Pay API terms of service](https://payments.developers.google.com/terms/sellertos)
-- Validate your domain with Google [here](https://pay.google.com/business/console/)
+- Validate your domain with Google
 
-## How to validate your domain with Google
+    1. Go to your Dashboard.
+    2. Open **Settings** > **For developers**.
+    3. Complete the setup as explained in the dashboard and add your domain to the form.
 
-In order to use Google Pay you need to validate your domain with Google. This process requires rendering a non-functional Google Pay button on your website and providing them with screenshots of your buyflow.
+    ![Google domain configuration screen](/img/guides/validate_domain_google.png)
 
-To validate your domain with Google, follow these steps:
-
-1. Create an account in the [Google Pay console](https://pay.google.com/business/console)
-2. Go to the **Google Pay API** tabitem in your Google Pay console
-3. Navigate to the **Integrate with your website** and click on **+ Add website**
-4. Fill out the form with the requested information (domain name, buyflow screenshots, etc.)
-5. At the top of the page click on **Submit for approval**
-
-## Steps
+## Integrating Google Pay
 
 Google's [Google Pay for Payments documentation](https://developers.google.com/pay/api/web/guides/tutorial) covers the requirements you're expected to follow in order to successfully offer this payment method. Considering you've adhered to the aforementioned requirements from the tutorial, the following steps will enable you to begin accepting Google Pay payments through SumUp:
 
