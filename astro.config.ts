@@ -5,6 +5,7 @@ import starlight from "@astrojs/starlight";
 import starlightLinksValidator from "starlight-links-validator";
 import mermaid from "astro-mermaid";
 import starlightLlmsTxt from "starlight-llms-txt";
+import starlightContextualMenu from "./plugins/starlight-contextual-menu";
 import { loadEnv } from "vite";
 
 import { defineConfig } from "astro/config";
@@ -173,6 +174,9 @@ export default defineConfig({
           : []),
         starlightLlmsTxt(),
         starlightImageZoom(),
+        starlightContextualMenu({
+          actions: ["copy", "view", "chatgpt", "claude"],
+        }),
       ],
       title: "SumUp Developer",
       favicon: "favicon.png",
