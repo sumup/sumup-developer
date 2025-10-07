@@ -25,13 +25,35 @@ The iOS SDK includes a [Sample App](https://github.com/sumup/sumup-ios-sdk/tree/
 
 ## Prerequisites
 
-* Registered for a merchant account via SumUp's [country websites](https://sumup.com/) (or received a test account).
+* Registered for a merchant account via SumUp's [country websites](https://sumup.com/) (or created a test account).
 * Received SumUp card terminal: Solo Lite, Solo, Air, 3G, PIN+.
 * Requested an Affiliate (Access) Key via [SumUp Dashboard](https://me.sumup.com/developers) for Developers.
 * Deployment Target iOS 14.0 or later.
 * Recommended to use on Xcode 14.3.1 and iOS SDK 16 or later.
 * iPhone or iPad.
 * If your device is managed by an organization, make sure app installation is permitted.
+
+## Getting a test account
+
+To start testing SumUp APIs and tools without involving real money, you need to have a test account. You can create a test account from your account in the Dashboard as shown below.
+
+{% steps %}
+
+1. Log in to your SumUp account.
+
+2. Open the drop-down menu between Support and your user panel.
+
+3. Select Test Account. Your merchant account is now switched to test mode.
+
+{% /steps %}
+
+{% image alt="A screenshot of the account selection dropdown in the SumUp dashboard with the test account highlighted with red circle" src="/img/guides/test_acc.png" width="40%" /%}
+
+Once you have your test account you can begin making API calls with real data. Our test accounts **do not** process transactions with real funds. Test account has a different ID, and shows a clear warning. When you try to process a request with the value of 11 euros, the test account will always fail - this is by design, to enable testing failed transactions.
+
+{% image alt="A screenshot of the dashboard with test account selected" src="/img/guides/test-account-warning.png" width="100%" /%}
+
+When you're done experimenting with the test account, switch back to a regular account for business purposes. 
 
 ### Compatibility
 

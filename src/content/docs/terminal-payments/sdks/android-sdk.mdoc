@@ -16,7 +16,7 @@ SumUp also provides the [Android Tap to Pay SDK](/terminal-payments/sdks/android
 
 ## Prerequisites
 
-*  Registered for a merchant account via SumUp's [country websites](https://sumup.com/) (or received a test account)
+*  Registered for a merchant account via SumUp's [country websites](https://sumup.com/) (or created a test account)
 *  Received SumUp card terminal: Solo, Air, Air Lite or PIN+ Terminal
 *  Generated an [Affiliate Key](/tools/authorization/affiliate-keys)
 *  Downloaded the [Android SDK Repository](https://github.com/sumup/sumup-android-sdk)
@@ -26,6 +26,28 @@ SumUp also provides the [Android Tap to Pay SDK](/terminal-payments/sdks/android
    - AGP 7.3.0 or later
    - Kotlin version 1.7.21 or later
    - Java 11 and later 
+
+## Getting a test account
+
+To start testing SumUp APIs and tools without involving real money, you need to have a test account. You can create a test account from your account in the Dashboard as shown below.
+
+{% steps %}
+
+1. Log in to your SumUp account.
+
+2. Open the drop-down menu between Support and your user panel.
+
+3. Select Test Account. Your merchant account is now switched to test mode.
+
+{% /steps %}
+
+{% image alt="A screenshot of the account selection dropdown in the SumUp dashboard with the test account highlighted with red circle" src="/img/guides/test_acc.png" width="40%" /%}
+
+Once you have your test account you can begin making API calls with real data. Our test accounts **do not** process transactions with real funds. Test account has a different ID, and shows a clear warning. When you try to process a request with the value of 11 euros, the test account will always fail - this is by design, to enable testing failed transactions.
+
+{% image alt="A screenshot of the dashboard with test account selected" src="/img/guides/test-account-warning.png" width="100%" /%}
+
+When you're done experimenting with the test account, switch back to a regular account for business purposes. 
 
 ## Compatibility
 
