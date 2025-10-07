@@ -49,7 +49,7 @@ You can accept card payments using SumUp’s platform accompanied by our proprie
 
 ## Prerequisites
 
-* Before you integrate either the [Native SDK](/terminal-payments/tools/sdk/) or the [Payment API Switch](/terminal-payments/payment-switch), you need to create a SumUp account in the [SumUp Dashboard](https://me.sumup.com). Alternatively, you can request a test account through our [contact form](/contact).
+* Before you integrate either the [Native SDK](/terminal-payments/tools/sdk/) or the [Payment API Switch](/terminal-payments/payment-switch), you need to create a SumUp account in the [SumUp Dashboard](https://me.sumup.com). Alternatively, you can [create a test account](#getting-a-test-account).
 
 * Once you have an account, you need to [create an Affiliate Key](/tools/authorization/affiliate-keys/) for your app and [provide means of authorization](/tools/authorization/authorization/).
 
@@ -62,6 +62,28 @@ The Affiliate Key and Application ID coming from your app must match those obtai
 The Card Terminal(s) allow complete flexibility as they are not assigned to individual accounts. Once connected to a merchant account, the card terminal(s) lock to countries and currencies. This includes test accounts, which are intended for testing integrations and do not process any transactions.
 
 You are now ready to start integrating the SumUp payment capabilities in your app, provided you have also received a SumUp card terminal: SumUp Air, SumUp Air Lite, SumUp Top/PIN+, SumUp 3G, SumUp Total, SumUp Super, SumUp On or SumUp Air Register.
+
+## Getting a test account
+
+To start testing SumUp APIs and tools without involving real money, you need to have a test account. You can create a test account from your account in the Dashboard as shown below.
+
+{% steps %}
+
+1. Log in to your SumUp account.
+
+2. Open the drop-down menu between Support and your user panel.
+
+3. Select Test Account. Your merchant account is now switched to test mode.
+
+{% /steps %}
+
+{% image alt="A screenshot of the account selection dropdown in the SumUp dashboard with the test account highlighted with red circle" src="/img/guides/test_acc.png" width="40%" /%}
+
+Once you have your test account you can begin making API calls with real data. Our test accounts **do not** process transactions with real funds. Test account has a different ID, and shows a clear warning. When you try to process a request with the value of 11 euros, the test account will always fail - this is by design, to enable testing failed transactions.
+
+{% image alt="A screenshot of the dashboard with test account selected" src="/img/guides/test-account-warning.png" width="100%" /%}
+
+When you're done experimenting with the test account, switch back to a regular account for business purposes. 
 
 ## Affiliate Keys
 
