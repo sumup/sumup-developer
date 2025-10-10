@@ -208,71 +208,7 @@ support is enabled in your project, you can use `@import SumUpSDK;` instead.
 
 In Swift, use `import SumUpSDK`. You do not have to add any headers to your bridging header.
 
-### Authentication - Component Definitions
-
-SumUp iOS SDK supports either the OAuth 2.0 Authorization Code Flow login with Access Token or a modally presented login from a View Controller (as you can see implemented in the Sample App). We strongly recommend the OAuth 2.0 approach for new integrations, due to support for MFA, better overall security, and possible deprecation of the View Controller in the future.
-
-{% tabs %}
-
-{% tabitem label="Login Access Token (OAuth 2.0)" %}
-```objc
-/**
- *  Logs in a merchant with an access token acquired via https://developer.sumup.com/docs/authorization/.
- *  You must implement the "Authorization code flow", the "Client credentials flow" is not supported.
- *  Make sure that no user is logged in already when calling this method.
- *
- *  @param aToken a user-scoped access token
- *  @param block  a completion block that will run after login has succeeded/failed
- */
-+ (void)loginWithToken:(NSString *)aToken completion:(nullable SMPCompletionBlock)block;
-```
-{% /tabitem %}
-
-{% tabitem label="Login View Controller" %}
-
-```objc
-/**
- *  Presents the login modally from the given view controller.
- *
- *  The login is automatically dismissed if login was successful or cancelled by the user.
- *  If error is nil and success is NO, the user cancelled the login.
- *  Errors are handled internally and usually do not need any display to the user.
- *  Does nothing if merchant is already logged in (calls completion block with success=NO, error=nil).
- *
- *  @param fromViewController The UIViewController instance from which the login should be presented modally.
- *  @param animated Pass YES to animate the transition.
- *  @param block The completion block is called after each login attempt.
- */
-+ (void)presentLoginFromViewController:(UIViewController *)fromViewController
-                              animated:(BOOL)animated
-                       completionBlock:(nullable SMPCompletionBlock)block;
-```
-
-
-{% /tabitem %}
-
-{% tabitem label="Logout" %}
-```objc
-/**
- *  Performs a logout of the current merchant and resets the remembered password.
- *
- *  @param block The completion block is called once the logout has finished.
- */
-+ (void)logoutWithCompletionBlock:(nullable SMPCompletionBlock)block;
-```
-{% /tabitem %}
-
-{% /tabs %}
-
-### Implementing Authentication with OAuth 2.0
-
-SumUp can issue Access Tokens in accordance with the OAuth 2.0 Authorization Code Flow, which is our recommended authorization approach (Client Credentials Flow is not supported by this SDK). See the [Authorization Documentation](/tools/authorization/authorization#integration-via-oauth-20) for more details.
-
-### Implementing Authentication with View Controller
-
-If you want to use the View Controller embedded in the SDK, this section explains how to do it. Please note that OAuth 2.0 Authorization Code Flow is supported and recommended, and the View Controller may be deprecated in the future.
-
-#### Initialization
+### Initialization
 
 Before calling any additional feature of the SumUp iOS SDK, you are required to set up the SDK with your Affiliate Key. Call on the main thread. You may wish to defer calling `setupWithAPIKey:` until after app launch, as it requests the user's location permission.
 
@@ -344,6 +280,70 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 {% /tabitem %}
 
 {% /tabs %}
+
+### Authentication - Component Definitions
+
+SumUp iOS SDK supports either the OAuth 2.0 Authorization Code Flow login with Access Token or a modally presented login from a View Controller (as you can see implemented in the Sample App). We strongly recommend the OAuth 2.0 approach for new integrations, due to support for MFA, better overall security, and possible deprecation of the View Controller in the future.
+
+{% tabs %}
+
+{% tabitem label="Login Access Token (OAuth 2.0)" %}
+```objc
+/**
+ *  Logs in a merchant with an access token acquired via https://developer.sumup.com/docs/authorization/.
+ *  You must implement the "Authorization code flow", the "Client credentials flow" is not supported.
+ *  Make sure that no user is logged in already when calling this method.
+ *
+ *  @param aToken a user-scoped access token
+ *  @param block  a completion block that will run after login has succeeded/failed
+ */
++ (void)loginWithToken:(NSString *)aToken completion:(nullable SMPCompletionBlock)block;
+```
+{% /tabitem %}
+
+{% tabitem label="Login View Controller" %}
+
+```objc
+/**
+ *  Presents the login modally from the given view controller.
+ *
+ *  The login is automatically dismissed if login was successful or cancelled by the user.
+ *  If error is nil and success is NO, the user cancelled the login.
+ *  Errors are handled internally and usually do not need any display to the user.
+ *  Does nothing if merchant is already logged in (calls completion block with success=NO, error=nil).
+ *
+ *  @param fromViewController The UIViewController instance from which the login should be presented modally.
+ *  @param animated Pass YES to animate the transition.
+ *  @param block The completion block is called after each login attempt.
+ */
++ (void)presentLoginFromViewController:(UIViewController *)fromViewController
+                              animated:(BOOL)animated
+                       completionBlock:(nullable SMPCompletionBlock)block;
+```
+
+
+{% /tabitem %}
+
+{% tabitem label="Logout" %}
+```objc
+/**
+ *  Performs a logout of the current merchant and resets the remembered password.
+ *
+ *  @param block The completion block is called once the logout has finished.
+ */
++ (void)logoutWithCompletionBlock:(nullable SMPCompletionBlock)block;
+```
+{% /tabitem %}
+
+{% /tabs %}
+
+### Implementing Authentication with OAuth 2.0
+
+SumUp can issue Access Tokens in accordance with the OAuth 2.0 Authorization Code Flow, which is our recommended authorization approach (Client Credentials Flow is not supported by this SDK). See the [Authorization Documentation](/tools/authorization/authorization#integration-via-oauth-20) for more details.
+
+### Implementing Authentication with View Controller
+
+If you want to use the View Controller embedded in the SDK, this section explains how to do it. Please note that OAuth 2.0 Authorization Code Flow is supported and recommended, and the View Controller may become deprecated in the future.
 
 #### Logging the user in
 
