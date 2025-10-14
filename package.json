@@ -54,7 +54,7 @@
     "@types/node": "^24.7.2",
     "@types/react": "^18.2.31",
     "@types/react-dom": "^18.2.14",
-    "@typescript-eslint/parser": "^8.46.0",
+    "@typescript-eslint/parser": "^8.46.1",
     "astro": "^5.14.4",
     "change-case-all": "^2.1.0",
     "eslint": "^9.32.0",
