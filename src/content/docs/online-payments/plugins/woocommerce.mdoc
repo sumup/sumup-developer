@@ -16,13 +16,13 @@ Transactions are processed through the SumUp payment platform allowing you to tr
 The SumUp WooCommerce plugin is SCA ready and compliant with PCI standards.
 {% /aside %}
 
-If you're just getting started with SumUp review our [allowed businesses list](https://help.sumup.com/hc/en-gb/articles/115008338707-Restricted-businesses) prior to [signing up](https://me.sumup.com).
+If you're just getting started with SumUp, review our [allowed businesses list](https://help.sumup.com/hc/en-gb/articles/115008338707-Restricted-businesses) prior to [signing up](https://me.sumup.com).
 
 {% button href="https://wordpress.org/plugins/sumup-payment-gateway-for-woocommerce/" %}
   Go to plugin page
 {% /button %}
 
-## Requirements
+## Prerequisites
 
 To get started you will need an active [SumUp account](https://me.sumup.com). As an authorized Payment Institution by the Central Bank of Ireland, SumUp will require certain documents to verify you as the individual and owner of the business you're registering with. Please make sure your business model is supported by SumUp, according to our [allowed businesses article](https://help.sumup.com/en-GB/articles/3G8ZHjdgFZjmKWOmDWS52m).
 
@@ -32,29 +32,29 @@ To get started you will need an active [SumUp account](https://me.sumup.com). As
 
 The automatic installation is the easiest option, as WordPress handles the file transfer and you don't need to leave your web browser.
 
-1. Install the plugin via the **Plugins** section in the WordPress Dashboard
-2. Click on **Add new** and search for **SumUp Payment Gateway for WooCommerce**
-3. Then click on the **Install Now** button
-4. Click **Activate** to active the plugin
+1. Install the plugin via the **Plugins** section in the WordPress Dashboard.
+2. Click on **Add new** and search for **SumUp Payment Gateway for WooCommerce**.
+3. Click on the **Install Now** button.
+4. Click **Activate** to active the plugin.
 
 ### Manual Installation
 
 The manual installation method involves downloading our plugin and uploading it to your web server via your favorite FTP application. The [WordPress codex](https://wordpress.org/support/article/managing-plugins/#manual-upload-via-wordpress-admin) contains instructions on how to do this.
 
-Before setting up the plugin you must create your client credentials. They will be used afterwards to configure the plugins setup.
+Before setting up the plugin, you must create your client credentials. They will be used afterwards to configure the plugins.
 
 ## Integration Options
 
-For plugin versions above `2.5` both a simple and advanced integration flow are available. If you are using a plugin version below `2.5`, follow the steps in our [advanced integration guide](#advanced-integration).
+For plugin versions above `2.5` both a [simple](#simple-integration) and [advanced](#advanced-integration) integration flows are available. If you are using a plugin version below `2.5`, follow the steps in our [advanced integration guide](#advanced-integration).
 
 ### Simple Integration
 
 This integration option is available to plugin versions above `2.5`.
 
-1. Click on the **Connect account** button to initiate the lightweight integration flow. You will be redirected to your Online Payments settings in the SumUp Dashboard
-2. In your SumUp Dashboard, click on **Start setup** to begin the creation of your production API keys
+1. Click on the **Connect account** button to initiate the lightweight integration flow. You will be redirected to your Online Payments settings in the SumUp Dashboard.
+2. In your SumUp Dashboard, click on **Start setup** to begin the creation of your production API keys.
 
-Once the flow is initiated, we will take care of generating live api keys for your SumUp account. When the flow completes successfully, they will become available to your WordPress shop.
+Once the flow is initiated, we will take care of generating live API keys for your SumUp account. When the flow completes successfully, they will become available to your WordPress shop.
 
 You can now begin accepting payments through SumUp on your WordPress shop.
 
@@ -66,9 +66,9 @@ The [Online Payments settings page](https://me.sumup.com/settings/online-payment
 
 ### Advanced Integration
 
-1. Once the plugin is activated, click on **Advanced version** option
-2. [Create your API Key](https://developer.sumup.com/api-keys)
-3. Enter your credentials from your SumUp account (API Key, email and merchant code) and configure any settings as needed
+1. Once the plugin is activated, click on **Advanced version** option.
+2. [Create your API Key](/tools/authorization/authorization/#create-api-key)
+3. Enter your credentials from your SumUp account (API Key, email and merchant code) and configure any settings as needed.
 
 
 ## Additional configuration
@@ -106,7 +106,7 @@ To create client credentials you must have an active [SumUp account](https://me.
 Create your credentials [here](https://developer.sumup.com/apps).
 
 {% aside type="caution" %}
-SumUp endeavours to respond to all [contact queries](/contact) within 24 hours, Monday through Friday.
+SumUp aims to respond to all [contact queries](/contact) within 24 hours, Monday through Friday.
 {% /aside %}
 
 Once you ensure you've met the above requirements, you can proceed with our [Register application guide](/tools/authorization/register-app/) to set up your client credentials. In that page you find information on how to register an app and your client credentials which are necessary for setting up the plugin in your Wordpress account.
