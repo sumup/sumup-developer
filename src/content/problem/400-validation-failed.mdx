@@ -1,0 +1,24 @@
+---
+
+title: 400 Bad Request - Validation Failed
+id: validation-failed
+---
+
+
+# 400 Bad Request - Validation Failed
+
+```json
+{
+    "type": "https://developer.sumup.com/docs/problem/validation-failed/",
+    "title": "Bad Request",
+    "status": 400,
+    "detail": "Validation failed",
+    "instance": "9b8eda265e35"
+    "failed_constraints": [
+        {
+            "reference": "checkoutId",
+            "message": "Invalid checkout ID: 'not_a_valid_id'"
+        }
+    ]
+}
+```

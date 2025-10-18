@@ -1,0 +1,94 @@
+---
+title: Apple Pay Integration Guide
+sidebar:
+  label: Apple Pay
+  order: 90
+---
+
+import { Aside } from "@astrojs/starlight/components";
+
+Offering Apple Pay requires registering with Apple on all web domains that will expose an Apple Pay button (includes TLD and subdomains). This is a requirement for production AND test environments.
+
+## Before you begin
+
+Here are the things that you need in order to complete the steps in this guide:
+
+- You have a merchant profile with [SumUp](https://me.sumup.com/login) and have already filled in your [profile details](https://me.sumup.com/account)
+- For a test profile reach out to our support team through this [contact form](https://developer.sumup.com/contact/)
+
+## Steps
+
+Apple’s documentation for [Apple Pay on the Web](https://developer.apple.com/documentation/apple_pay_on_the_web) describes the specifics required from their side in order to successfully move forward with creating and processing checkouts. To begin your implementation, follow these steps:
+
+1. Host the [domain association file](https://checkout.sumup.link/.well-known/apple-developer-merchantid-domain-association) at `https://[YOUR_DOMAIN_NAME]/.well-known/apple-developer-merchantid-domain-association`. Once hosted, request [our integration specialists](/contact) help finalize your connection to Apple Pay
+2. Before moving on to the next steps, get familiar with [Apple’s requirements](https://developer.apple.com/documentation/apple_pay_on_the_web/applepaypaymentrequest)
+3. [Create a checkout](https://developer.sumup.com/api/checkouts/create#create-a-checkout)
+4. Create an [Apple Payment request](https://developer.apple.com/documentation/apple_pay_on_the_web/applepaypaymentrequest)
+
+```js
+const applePaymentRequest = {
+  currencyCode: "EUR",
+  countryCode: "DE",
+  merchantCapabilities: ["supports3DS"],
+  supportedNetworks: ["masterCard", "visa"],
+  total: {
+    label: "Demo",
+    amount: "0.00",
+    type: "final",
+  },
+};
+```
+
+5. Initiate an [Apple Pay session](https://developer.apple.com/documentation/apple_pay_on_the_web/applepaysession/2320659-applepaysession) and call the [begin method](https://developer.apple.com/documentation/apple_pay_on_the_web/applepaysession/1778001-begin)
+6. Listen for the `onvalidatemerchant` callback and collect the `validateUrl` property. Create the following payload
+
+```json
+{
+  "target": "https://apple-pay-gateway-cert.apple.com/paymentservices/startSession",
+  "context": "your_domain_name"
+}
+```
+
+and initiate a merchant session by calling
+
+```http
+PUT https://api.sumup.com/v0.1/checkouts/${checkoutId}/apple-pay-session
+```
+
+7. The response from the previous step is needed to complete the merchant validation with the [`completeMerchantValidation`](https://developer.apple.com/documentation/apple_pay_on_the_web/applepaysession/1778015-completemerchantvalidation/) method
+
+8. Submitting the payment dialogue triggers the `onpaymentauthorized` callback, this is when you need to [process the checkout](https://developer.sumup.com/api/checkouts/process#process-a-checkout). The process checkout request body needs to include a `payment_type` of `apple_pay` and an `apple_pay` object, containing the response from step 7
+
+```json
+{
+  "payment_type": "apple_pay",
+  "id": "9be2da07-a7bd-4877-bc0a-e16cd909a876",
+  "amount": 12,
+  "currency": "EUR",
+  "apple_pay": {
+    "token": {
+      "paymentData": {
+        "data": "si2xuT2ArQo689SfE-long-token",
+        "signature": "MIAGCSqGSIb3DQEHA-long-signature",
+        "header": {
+          "publicKeyHash": "PWfjDi3TSwgZ20TY/A7f3V6J/1rhHyRDCspbeljM0io=",
+          "ephemeralPublicKey": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEaBtz7UN2MNV0qInJVEEhXy10PU0KfO6KxFjXm93oKWL6lCsxZZGDl/EKioUHVSlKgpsKGin0xvgldfxeJVgy0g==",
+          "transactionId": "62e0568bc9258e9d0e059d745650fc8211d05ef7a7a1589a6411bf9b12cdfd04"
+        },
+        "version": "EC_v1"
+      },
+      "paymentMethod": {
+        "displayName": "MasterCard 8837",
+        "network": "MasterCard",
+        "type": "debit"
+      },
+      "transactionIdentifier": "62E0568BC9258E9D0E059D745650FC8211D05EF7A7A1589A6411BF9B12CDFD04"
+    }
+  }
+}
+```
+
+<Aside type="tip">
+  Handling the responses from the API calls should be according to our public{" "}
+  <a href="https://developer.sumup.com/api">API contract & guidelines</a>
+</Aside>

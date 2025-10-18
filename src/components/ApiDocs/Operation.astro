@@ -74,7 +74,12 @@ const queryParams = operation.parameters
         >
           {operation.tag}
         </a>
-        <Headline as="h2" size="m" data-pagefind-meta="title" className="headline">
+        <Headline
+          as="h2"
+          size="m"
+          data-pagefind-meta="title"
+          className="headline"
+        >
           {operation.summary}
           {
             operation.deprecated && (

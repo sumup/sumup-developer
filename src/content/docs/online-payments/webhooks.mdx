@@ -1,0 +1,50 @@
+---
+
+title: Webhooks
+sidebar:
+  hidden: true
+  order: 6
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+
+Webhooks are a convenient approach to notify an application about relevant events that have taken place within another application.
+
+The event is similar to one in real-life, where you’re awaiting your favourite item to restock in a shop and ask a representative to notify you once it’s back. In this scenario, SumUp plays the role of the shop, the representative is the [SumUp APIs](/api) and the update seeker is your application.
+
+## Events
+
+At this time our system only allows you to get notified about a status change for a checkout. To subscribe to an event, specify a `return_url` parameter upon [checkout creation](/api/checkouts/create).
+
+New events may be introduced at any time, without prior notice. Your application has to be able to cope with such. Our recommendation would be to silently ignore unknown events.
+
+## Handling a webhook
+
+Webhooks are delivered in the form of a HTTP POST request, to which your application should reply to as soon as possible. If the response takes longer, our system accepts this as a failed notification and retries it.
+
+Your application should return a valid, empty response with any `2xx` status code. Any response other than a `2xx` is treated as erroneous.
+
+<Aside type="note">
+
+After receiving a webhook call, your application must **always** verify if the event really took place, by calling a relevant SumUp's API.
+
+</Aside>
+
+Here's a sample of the webhook payload:
+
+```json
+{
+  "event_type": "CHECKOUT_STATUS_CHANGED",
+  "id": "id-of-the-changed-checkout"
+}
+```
+
+## Retries
+
+When an erroneous response is received, a webhook delivery is retried with the following delays:
+
+- 1 minute
+- 5 minutes
+- 20 minutes
+- 2 hours

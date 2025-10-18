@@ -1,0 +1,77 @@
+---
+title: Building with LLMs
+---
+
+You can use large language models (LLMs) to assist in the building of SumUp integrations. We provide a set of tools and best practices if you use LLMs during development.
+
+## Plain text docs
+
+You can access all of our documentation as plain text markdown files by adding .md to the end of any url. For example, you can find the plain text version of this page itself at https://developer.sumup.com/building-with-llms.md.
+
+This helps AI tools and agents consume our content and allows you to copy and paste the entire contents of a doc into an LLM. This format is preferable to scraping or copying from our HTML and JavaScript-rendered pages because:
+
+- Plain text contains fewer formatting tokens.
+- Content that isn’t rendered in the default view (for example, it’s hidden in a tab) of a given page is rendered in the plain text version.
+- LLMs can parse and understand markdown hierarchy.
+
+We also host an [/llms.txt](/llms.txt) file which instructs AI tools and agents how to retrieve the plain text versions of our pages. The `/llms.txt` file is an [emerging standard](https://llmstxt.org/) for making websites and content more accessible to LLMs.
+
+## SumUp Model Context Protocol (MCP) Server
+
+[MCP](https://modelcontextprotocol.io/introduction) is an open protocol that standardizes how applications provide context to LLMs. For developers using code editors that use AI, such as Cursor or Windsurf, or general purpose tools such as Claude Desktop, we provide the [SumUp Model Context Protocol (MCP) server](https://github.com/sumup/sumup-agent-toolkit/tree/main/mcp). The MCP server provides AI agents a set of tools for calling the SumUp API and searching our knowledge base (documentation, support articles, and so on).
+
+### CLI
+
+Run the following command to start the MCP server locally.
+
+```sh
+SUMUP_API_KEY='sup_sk_MvxmLOl0...' npx -y @sumup/mcp
+```
+
+The MCP server uses either the passed in --api-key or the `SUMUP_API_KEY` environment variable.
+
+### [Cursor](https://www.cursor.com/)
+
+1. Go to `Cursor Settings` > `MCP`
+2. Click `+ Add new Global MCP Server`
+3. Add the following configuration to your global `.cursor/mcp.json` file.
+
+See the [Cursor documentation](https://docs.cursor.com/context/model-context-protocol) for more details. Note that you can also add this to your project specific cursor configuration. (Supported in Cursor 0.46+)
+
+```json
+{
+  "mcpServers": {
+    "sumup": {
+      "command": "npx",
+      "args": ["-y", "@sumup/mcp"],
+      "env": {
+        "SUMUP_API_KEY": "sup_sk_..."
+      }
+    }
+  }
+}
+```
+
+### [Claude](https://claude.ai)
+
+Add the following to your `claude_desktop_config.json` file. See the [Claude Desktop documentation](https://modelcontextprotocol.io/quickstart/user) for more details.
+
+```json
+{
+  "mcpServers": {
+    "sumup": {
+      "command": "npx",
+      "args": ["-y", "@sumup/mcp"],
+      "env": {
+        "SUMUP_API_KEY": "sup_sk_..."
+      }
+    }
+  }
+}
+```
+
+The code editor agent automatically detects all the available tools and calls the relevant tool when you post a related question in the chat.
+
+## SumUp Agent Toolkit SDK
+
+If you’re building agentic software, we provide an SDK for adding SumUp functionality to your agent’s capabilities. Learn more in our [agents documentation](/tools/LLMs/agent-toolkit).

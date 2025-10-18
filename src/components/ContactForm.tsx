@@ -1,4 +1,5 @@
 import {
+  Anchor,
   Body,
   Button,
   ToastProvider,
@@ -191,8 +192,23 @@ const Contact: FC<ContactParams> = ({ status }) => {
                 marginBottom: "var(--cui-spacings-mega)",
               }}
             >
-              <a href="https://sumup.com/terms/">Terms and Conditions</a> and{" "}
-              <a href="https://sumup.com/privacy/">Privacy Policy</a>
+              <Anchor
+                size="s"
+                href="https://sumup.com/terms/"
+                target="_blank"
+                externalLabel="Opens in a new tab."
+              >
+                Terms and Conditions
+              </Anchor>{" "}
+              and{" "}
+              <Anchor
+                size="s"
+                href="https://sumup.com/privacy/"
+                target="_blank"
+                externalLabel="Opens in a new tab."
+              >
+                Privacy Policy
+              </Anchor>
             </Body>
             <CheckboxField
               name="terms"

@@ -7,6 +7,6 @@ export default {
       options: {
         parser: "astro",
       },
-    },
+    }
   ],
 };

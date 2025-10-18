@@ -1,0 +1,12 @@
+---
+title: "Android Tap-to-Pay 1.0.0"
+tags: ["Android", "Tap to Pay", "SDK"]
+publishedDate: 2025-10-02
+---
+
+### New Features
+
+- Added support of Online Pin SCA (Strong Customer Authentication).
+- Added card data to `PaymentEvent.TransactionDone` event: card type, card scheme, last four digits, and merchant code.
+- Transparent attestation process. The SDK now returns error details if attestation fails in `PaymentEvent.TransactionFailed` event. This helps developers understand and resolve attestation issues more effectively.
+- API changes to make it more concise. Now `TapToPay.startPayment()` function returns `Flow<PaymentEvent>` instead of `Flow<Result<PaymentEvent>>`.

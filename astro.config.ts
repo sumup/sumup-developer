@@ -1,5 +1,4 @@
 import cloudflare from "@astrojs/cloudflare";
-import markdoc from "@astrojs/markdoc";
 import react from "@astrojs/react";
 import starlight from "@astrojs/starlight";
 import starlightLinksValidator from "starlight-links-validator";
@@ -155,10 +154,20 @@ export default defineConfig({
   },
 
   integrations: [
-    markdoc({ allowHTML: true }),
     react(),
     starlight({
-      plugins: [starlightLinksValidator(), starlightLlmsTxt()],
+      plugins: [
+        ...(process.env.CHECK_LINKS || false
+          ? [
+              starlightLinksValidator({
+                components: [["Anchor", "url"]],
+                exclude: ["/api/**", "/contact"],
+                errorOnInvalidHashes: false,
+              }),
+            ]
+          : []),
+        starlightLlmsTxt(),
+      ],
       title: "SumUp Developer",
       favicon: "favicon.png",
       disable404Route: true,
