@@ -1,0 +1,32 @@
+---
+title: Getting Started
+description: Learn how to get started with webhooks and how to handle them in your applications.
+sidebar:
+  order: 101
+  hidden: true
+---
+
+In this guide will let dive into how to get started with webhooks and how to handle them in your applications.
+
+## Create an endpoint in your application to receive webhooks
+
+To start receiving webhooks, you need to create an endpoint in your application that can receive HTTP POST requests. This endpoint will receive the events.
+The endpoint should answer with a 200 HTTP status code to acknowledge the receipt of the event. If the endpoint does not respond with a 200 status code, the webhook will be retried.
+
+### Retries
+
+The webhooks grantees delivery of the event to the endpoint. If the endpoint does not respond with a 200 status code, the webhook will be retried. The webhook will be retried up to 9 times with an exponential backoff.
+
+## Securing your endpoint
+
+To secure your endpoint, you can use the webhook signature to verify the authenticity of the event. The webhook signature is a hash generated using the webhook secret and the event payload. You can use the signature to verify that the event was sent by the SumUp API.
+
+```json
+{
+  "headers": {
+    "x-payload-signature": "78fe461fd72e68a1c71c6986d863069d8ae74e"
+  }
+}
+```
+
+We are using the HMAC SHA-256 algorithm to generate the signature. You can use the signature to verify that the event was sent by the SumUp API. to know more check [Hash-based Message Authentication Code (HMAC)](https://webhooks.fyi/security/hmac)

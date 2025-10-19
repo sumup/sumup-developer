@@ -1,0 +1,34 @@
+---
+title: Introduction to Webhooks
+description: Learn how our webhooks work and how integrate it into your application.
+sidebar:
+  label: Overview
+  hidden: true
+  order: 100
+---
+
+Webhooks are a powerful and efficient method for enabling real-time communication between different web applications and services. They provide a way for applications to send automated messages or information to other applications as soon as an event occurs, rather than having the receiving application continuously check for updates. This mechanism enhances the functionality, efficiency, and responsiveness of software integrations.
+
+## Understanding Webhooks
+
+A webhook is essentially a user-defined HTTP callback or an HTTP POST request that is triggered by specific events. When an event occurs within SumUp API, the webhook sees this event and sends data to a specified URL in real-time. This URL is the webhook endpoint, typically a component of the integrator application that is set up to receive and process this data.
+
+## How Webhooks Work
+
+When an event occurs in the SumUp system (e.g., a checkout is processed), it sends an HTTP POST request to a predefined URL in the integrator application. This URL is known as the webhook endpoint. The integrator application listens for incoming requests on this endpoint and processes the data sent by SumUp.
+
+## Benefits of Using Webhooks
+
+Webhooks are a popular technology for enabling real-time, automated interactions between different software applications. Here are some key reasons why using webhooks can be beneficial:
+
+- **Real-time updates**: With webhooks, you can receive instant notifications, allowing you to take immediate action.
+- **Automation**: By integrating webhooks into your applications, you can automate processes and workflows, reducing manual effort and improving efficiency.
+- **Seamless integration**: Webhooks provide a standardized way for different events to be communicated with the integrator.
+
+## Getting Started with Webhooks
+
+To start using webhooks, you'll need to:
+
+1. Set up a webhook endpoint in your application.
+2. Make sure your endpoint is publicly accessible.
+3. Add the webhook endpoint from the developer portal [Webhooks](/webhooks).

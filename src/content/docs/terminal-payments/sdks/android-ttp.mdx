@@ -1,0 +1,329 @@
+---
+title: Android Tap-to-Pay SDK
+sidebar:
+  order: 15
+---
+
+import { Aside } from "@astrojs/starlight/components";
+
+## About Tap to Pay on Android SDK
+
+Tap to Pay on Android SDK enables your mobile app to accept card-present contactless payments with a smartphone only, without the need for any additional hardware.
+This guide explains how you can integrate this functionality into your Android mobile app.
+
+- Transactions are performed in the production environment.
+- Used for live, customer-facing operations.
+- The SDK is not debuggable. Additionally, **Attestation & Monitoring** is enabled. If a device doesn’t meet our threat policy (for example, if debug mode is enabled or the device is rooted) then payment operations will not be available.
+- For testing purposes, use dedicated developer credentials to prevent actual card charges. You can request access by contacting integration@sumup.com.
+- For latest information, please check the [Android Tap-to-Pay Changelog](/changelog/tap-to-pay).
+
+### Prerequisites
+
+- Kotlin version: 1.9.22 or later
+- `minSDK`: 30 or later
+- `targetSDK`/`compileSDK`: 34 or later
+- Android Gradle Plugin: 7.3.0 or later
+- Java 17 or later
+- maven repository credentials (to access the SDK repository, can be requested by sending an email to integration@sumup.com).
+- a Secret API key, in case you don't intend to use the OAuth2 authentication process. You can generate a Secret API key in the [SumUp Dashboard](https://developer.sumup.com/online-payments/introduction/authorization#api-keys).
+- Access to Android Tap-to-Pay GitHub repository (can be requested by sending an email to integration@sumup.com).
+
+### Hardware Requirements
+
+- NFC-enabled Android device (emulators are not supported)
+- Android 11 or later
+
+## Integration
+
+You can use the sample app provided in the GitHub repository as a reference.
+
+<Aside type="note">
+  If your app shuts down immediately upon start, try disconnecting your phone
+  and launching the app from your phone and not your IDE.
+</Aside>
+
+### Dependencies
+
+1. Add the following to the Gradle dependencies:
+
+   ```kotlin
+   allprojects {
+       repositories {
+           maven {
+               url = uri("https://maven.sumup.com/releases")
+           }
+           maven {
+               url = uri("https://tap-to-pay-sdk.fleet.live.sumup.net/")
+               credentials {
+                   username = "your_username"  // The maven credentials are provided by SumUp
+                   password = "your_password"
+               }
+           }
+           google()
+           mavenCentral()
+       }
+   }
+   ```
+
+2. Add the dependency to a module `build.gradle`:
+
+   ```kotlin
+   implementation("com.sumup.tap-to-pay:utopia-sdk:1.0.0")
+   ```
+
+### Authentication
+
+Tap to Pay on Android SDK uses the transparent authentication approach.
+It means that the SDK is not responsible for the authentication process.
+The authentication process is handled by the consuming app.
+The SDK provides the `init` [method](#1-initialization) with the `AuthTokenProvider` interface as a parameter.
+The `AuthTokenProvider` interface is responsible for providing the access token to the SDK.
+
+```kotlin
+interface AuthTokenProvider {
+    fun getAccessToken(): String
+}
+```
+
+There are several ways for a consumer app to provide the access token to the SDK.
+
+1. Using the OAuth2 [flow](https://developer.sumup.com/online-payments/introduction/authorization#o-auth-2-0):
+   The consumer app can implement the OAuth2 flow to get the access token and provide it to the SDK. The SDK provides the `AuthTokenProvider` interface that should be implemented by the consumer app. The implementation of the `getAccessToken` method should return the access token. This way is preferable and recommended because it provides a more secure way to authenticate the user.
+
+2. Using API Key:
+   You can use an API Key as an auth token. Generate the key in the [SumUp Dashboard](https://developer.sumup.com/online-payments/introduction/authorization#api-keys) and provide it to the SDK through `AuthTokenProvider.getAccessToken()` method.
+
+> ⚠️ **Important:**
+> The API keys should be stored securely and should not be hardcoded in the app. Instead, they should be stored in the secure storage and provided to the SDK when needed. Do not share your secret API keys in publicly accessible places such as GitHub repositories, client-side code, etc.
+
+### Using API
+
+The `TapToPay` interface provides methods to interact with the SDK. To get an implementation of the `TapToPay` interface, call:
+
+```kotlin
+val tapToPay = TapToPayApiProvider.provide(applicationContext)
+```
+
+where `applicationContext` is the context of a consumer application.
+
+The `TapToPay` interface has the following methods:
+
+#### 1. Initialization
+
+```kotlin
+suspend fun init(authTokenProvider: AuthTokenProvider): Result<Unit>
+```
+
+The `init` method initializes the session. The `AuthTokenProvider` interface is responsible for providing the access token to the SDK (see [here](#Authentication)).
+Please, note that the `init` method should be called only once during the app lifecycle. The `init` method should be called as soon as possible after the app starts.
+
+The `init` function returns a `Result` object that can be either a `Result.Success` if the initialization was successful.
+The function can also return `Result.Failure` with one exception from the list of exceptions mentioned [here](#Exceptions).
+
+#### 2. Start Payment
+
+```kotlin
+suspend fun startPayment(
+    checkoutData: CheckoutData,
+    skipSuccessScreen: Boolean
+): Flow<PaymentEvent>
+```
+
+The `startPayment` method initiates the payment process. It returns a `Flow` that emits `PaymentEvent` or throws an exception with an error message.
+
+The list of possible events:
+
+- `CardRequested` - the SDK is trying to detect a card, waiting for the cardholder to tap/present their card.
+- `CardPresented` - a card is detected.
+- `CVMRequested` - a CVM (Cardholder Verification Method) is requested. This event is fired when the card is detected and the SDK is waiting for the cardholder to enter the PIN.
+- `CVMPresented` - a CVM was entered by the cardholder. This event is fired upon completion of the CVM regardless if it was successful or not.
+- `TransactionDone(val paymentOutput: PaymentOutput)` - transaction was completed. `PaymentOutput` param is:
+  ```kotlin
+  data class PaymentOutput(
+      val txCode: String,
+      val serverTransactionId: String,
+      val cardType: String? = null,
+      val lastFour: String? = null,
+      val merchantCode: String? = null,
+      val cardScheme: String? = null
+  )
+  ```
+- `TransactionFailed(val paymentOutput: PaymentOutput?, val tapToPayException: TapToPayException?)` - transaction failed. It might happen due to many reasons, like attestation error, backend error, card reader error, and so on. The full list of errors is described in the [Exceptions](#Exceptions) section. `PaymentOutput` param might be null if the transaction failed before reaching the backend.
+- `TransactionCanceled(val paymentOutput: PaymentOutput?)` - transaction was cancelled by the user.
+- `TransactionResultUnknown(val paymentOutput: PaymentOutput?)` - transaction result is unknown. This might happen on remote calls, when there is no response due to timeout.
+- `PaymentFlowClosedSuccessfully(val paymentOutput: PaymentOutput?, val shouldDisplayReceipt: Boolean)` - after a successful transaction, users see the successful screen with two buttons: **Send receipt** and **Done**. Once the user clicks on any button, the screen closes and fires the `PaymentClosed` event.
+
+##### Parameters
+
+`checkoutData` - The checkout data object.
+
+`skipSuccessScreen` - A boolean value that controls whether the user is redirected to a built-in success screen after a successful payment.
+
+```kotlin
+data class CheckoutData(
+    val totalAmount: Long,
+    val tipsAmount: Long?,
+    val vatAmount: Long?,
+    val clientUniqueTransactionId: String,
+    val customItems: List<CustomItem>?,
+    val priceItems: List<PriceItem>?,
+    val products: List<ProductModel>?,
+    val processCardAs: ProcessCardAs?,
+    val affiliateData: AffiliateModel?
+) : Serializable
+```
+
+Where:
+
+- `totalAmount` - The amount expressed in the minor unit of the currency. Total amount includes tip amount and VAT amount.
+- `tipsAmount` - The amount of tips expressed in the minor unit of the currency. Please, note that the tip amount is included in the total amount. Ignored if null.
+- `vatAmount` - The amount of VAT expressed in the minor unit of the currency. Please, note that the VAT amount is included in the total amount. Ignored if null.
+- `clientUniqueTransactionId` - This should be a unique identifier for the transaction. A random UUID is can be used.
+- `customItems` - The list of custom items. Set null if not used.
+- `priceItems` - The list of price items. Set null if not used.
+- `products` - The list of product items. Set null if not used.
+- `processCardAs` - The type of the card processing. The default value is `null`. The possible values are `ProcessCardAs.Credit(val instalments: Int)` and `ProcessCardAs.Debit`, where `instalments` is the number of instalments. This parameter is optional and only applicable to some markets, such as Brazil, where the card type selection and instalments are supported.
+- `affiliateData` - The affiliate data refers to tracking and attributing transactions to specific affiliates, integrators, or referral sources.
+
+**Note:** The amounts shall be provided in minor unit of the currency according to the list below.  
+Currencies with exponent 2 : `AUD, BGN, BRL, CHF, CLP, COP, CZK, DKK, EUR, GBP, HRK, HUF, NOK, PEN, PLN, RON, SEK, USD`.
+
+For example, an amount of `$12.34` corresponds to a value of `1234`, `$11.00` corresponds to a value of `1100`.
+
+**Note 2:** Some currencies (Hungarian Forint `HUF`, Chilean Peso `CLP` and Colombian Peso `COP`) are displayed to the merchant and cardholder without minor unit of the currency but still require it.
+
+For these specific currencies, the amount shall still be multiplied by 100 (exponent 2).
+For example, `Ft100` should be provided as `10000`.
+
+The `AffiliateModel` data type has the following parameters:
+
+```kotlin
+data class AffiliateModel(
+    val key: String,
+    val foreignTransactionId: String? = null,
+    val tags: Map<String, String>? = null
+) : Serializable
+```
+
+Where:
+
+- `key` - The primary identifier for the affiliate or integrator partner.
+- `foreignTransactionId` - An optional reference to an external transaction ID (from the integrator's system).
+- `tags` - Flexible key-value pairs for additional metadata about the transaction or affiliate.
+
+The required minimum to make the transaction looks like:
+
+```kotlin
+fun startPayment() {
+    tapToPay.startPayment(
+        checkoutData = CheckoutData(
+            totalAmount = 1234, // 12.34 EUR
+            clientUniqueTransactionId = "123",
+            tipsAmount = null,
+            vatAmount = null,
+            customItems = null,
+            priceItems = null,
+            processCardAs = null,
+        ),
+        skipSuccessScreen = false
+    ).collectLatest {
+        Log.d("Payment event: $it")
+    }
+}
+```
+
+#### 3. Tear Down
+
+```kotlin
+suspend fun tearDown(): Result<Unit>
+```
+
+The `tearDown` function logs out the user, cleans up keys and other sensitive data, and closes the session.
+The `tearDown` method should be called when the app is closed or when the user logs out.
+It returns a `Result` object that can be either a `Result.Success` if the teardown was successful or a `Result.Failure` if there was an error during the teardown.
+
+#### Exceptions
+
+The SDK may return a `Result.Failure` containing an exception when one of its methods is called.
+Every exception belongs to one of the base types.
+The base types are listed below, and each of these is further divided into more specific exception types.
+
+- `CommonException` - These exceptions cover scenarios such as initialization issues, registration problems, authentication failures, and required updates, providing a consistent and predictable way to handle errors across the system.
+- `NetworkException` - These exceptions represent network-related and communication errors encountered during SDK operation. They include issues such as interrupted connections, authentication problems, and server/client-side failures.
+- `PaymentException` - These exceptions represent errors related to the payment transaction flow, covering everything from preprocessing to final charge attempts. They include issues such as invalid payment actions, timeouts, incorrect amounts, unsupported card technologies, and unexpected states during card reading.
+- `PaymentPreparationException` - These exceptions relate to the preparation and availability of the payment process. They indicate failures such as the unavailability of the payment function, issues during kernel setup, missing security-related data, and general checkout failures. These errors typically occur before or at the start of a transaction and prevent it from proceeding.
+- `AttestationException` - These exceptions represent errors related to the attestation process, which is crucial for ensuring the security and integrity of the payment environment. They include issues like enabled USB debugging, non secure device or network.
+- `TapToPayException.Unknown` - The Unknown exception represents an internal error that cannot be exposed externally. It acts as a fallback for unexpected or unclassified issues that occur within the SDK, ensuring sensitive or implementation-specific details are not leaked.
+
+#### Error Codes
+
+| **Base Type**                   | **Exception Type**          | **Error Code** | **Description**                                           |
+| ------------------------------- | --------------------------- | -------------- | --------------------------------------------------------- |
+| **CommonException**             | Parsing                     | 101            | Error occurred during parsing.                            |
+|                                 | Environment                 | 102            | Environment-related issue.                                |
+|                                 | NotRegisteredTerminal       | 103            | Terminal is not registered.                               |
+|                                 | AuthTokenProvider           | 105            | Authentication token issue.                               |
+|                                 | Update                      | 106            | Update is required.                                       |
+|                                 | SDKIsAlreadyInitialized     | 107            | SDK is already initialized.                               |
+|                                 | SDKIsNotInitialized         | 108            | SDK is not initialized.                                   |
+|                                 | SDKTearDown                 | 109            | SDK teardown process.                                     |
+|                                 | TerminalRegistration        | 110            | Terminal registration issue.                              |
+|                                 | MissingResult               | 111            | Missing result error.                                     |
+| **NetworkException**            | NetworkConnection           | 201            | General network error.                                    |
+|                                 | Authentication              | 202            | Authentication failure.                                   |
+|                                 | Server                      | 204            | Server-related issue.                                     |
+|                                 | Client                      | 205            | Client-related issue.                                     |
+|                                 | NetworkSecurity             | 206            | Secure network (mTLS) issue.                              |
+| **PaymentException**            | InvalidPaymentAction        | 1001           | Invalid payment action.                                   |
+|                                 | UncertainTransaction        | 1002           | Transaction status is uncertain.                          |
+|                                 | Timeout                     | 1003           | Payment process timed out.                                |
+|                                 | Preprocessing               | 1005           | Error during preprocessing.                               |
+|                                 | CombinationSelection        | 1006           | Error in combination selection.                           |
+|                                 | Transaction                 | 1007           | Transaction-related issue.                                |
+|                                 | ExtractPAN                  | 1008           | Error extracting PAN.                                     |
+|                                 | UnknownCVM                  | 1009           | Unknown Cardholder Verification Method.                   |
+|                                 | IncorrectAmount             | 1010           | Incorrect amount specified.                               |
+|                                 | UnsupportedCardTechnology   | 1011           | Unsupported card technology.                              |
+|                                 | UnexpectedCardReadState     | 1012           | Unexpected card read state.                               |
+|                                 | UnexpectedOutcome           | 1013           | Unexpected transaction outcome.                           |
+|                                 | IncorrectFormat             | 1014           | Card read process failed.                                 |
+|                                 | ReadEMVTagsException        | 1015           | Error reading EMV tags.                                   |
+|                                 | TechnoPollingStopped        | 1016           | Techno polling process stopped.                           |
+|                                 | CancelationFailed           | 1017           | Cancelation process failed.                               |
+|                                 | ChargeFailed                | 1018           | Charge process failed.                                    |
+|                                 | UnsupportedOnlinePin        | 1020           | Unsupported online PIN.                                   |
+|                                 | UnsupportedSignatureRequest | 1021           | Unsupported signature request.                            |
+|                                 | ErrorAction                 | 1022           | Error in payment action.                                  |
+|                                 | TransactionInterrupted      | 1023           | Transaction was interrupted.                              |
+|                                 | CardReadFailed              | 1024           | Card read failed.                                         |
+|                                 | DeclinedOutcome             | 1025           | Card declined.                                            |
+|                                 | EmptyCandidatesList         | 1026           | No candidates available.                                  |
+|                                 | UnknownKernel               | 1027           | Unknown kernel error.                                     |
+| **PaymentPreparationException** | PaymentAvailability         | 1101           | Payment availability issue.                               |
+|                                 | KernelPreparation           | 1102           | Error during kernel preparation.                          |
+|                                 | EmptyAntireplayData         | 1103           | Antireplay data is empty.                                 |
+|                                 | CheckoutFailed              | 1104           | Checkout process failed.                                  |
+| **AttestationException**        | UsbDebuggingEnabled         | 301            | USB debugging enabled. Disable USB debugging.             |
+|                                 | AppDebuggable               | 302            | App is build as debuggable. Rebuild it as non debuggable. |
+|                                 | AdbSessionActive            | 303            | There is an active ADB session.                           |
+|                                 | DeviceSecurity              | 305            | The device is not secure.                                 |
+|                                 | NetworkSecurity             | 304            | The network is not secure.                                |
+| **TapToPayException**           | Unknown                     | 0              | An internal error that cannot be exposed externally       |
+
+### Testing the SDK
+
+Before testing, make sure of the following:
+
+1. The app is not debuggable. Making the build debuggable will cause the attestation to fail and the payments will not work.
+   ```kotlin
+      buildTypes {
+          release {
+              isDebuggable = false
+          }
+      }
+   ```
+2. You have USB debugging disabled on your device. Even if you install the app through a cable, disable the USB debugging after installation.
+3. You have Developer Mode disabled on your device. Even if you install the app through a cable, disable the Developer Mode after installation.
+
+On some devices (e.g. Samsung), you still have to disable USB debugging before disabling the Developer Mode.
+It is still possible to have a USB debugging enabled and Developer Mode disabled, but it depends on the device manufacturer.
