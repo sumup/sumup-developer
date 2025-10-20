@@ -1,5 +1,6 @@
 import cloudflare from "@astrojs/cloudflare";
 import react from "@astrojs/react";
+import starlightImageZoom from "starlight-image-zoom";
 import starlight from "@astrojs/starlight";
 import starlightLinksValidator from "starlight-links-validator";
 import mermaid from "astro-mermaid";
@@ -171,6 +172,7 @@ export default defineConfig({
             ]
           : []),
         starlightLlmsTxt(),
+        starlightImageZoom(),
       ],
       title: "SumUp Developer",
       favicon: "favicon.png",
