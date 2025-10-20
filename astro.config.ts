@@ -5,6 +5,8 @@ import starlight from "@astrojs/starlight";
 import starlightLinksValidator from "starlight-links-validator";
 import mermaid from "astro-mermaid";
 import starlightLlmsTxt from "starlight-llms-txt";
+import opengraphImages, { presets } from "astro-opengraph-images";
+import * as fs from "fs"; // The fs module is required to load fonts
 import { loadEnv } from "vite";
 
 import { defineConfig } from "astro/config";
@@ -159,6 +161,22 @@ export default defineConfig({
     react(),
     mermaid({
       autoTheme: true,
+    }),
+    opengraphImages({
+      options: {
+        verbose: true,
+        fonts: [
+          {
+            name: "Inter",
+            weight: 400,
+            style: "normal",
+            data: fs.readFileSync(
+              "node_modules/@fontsource/inter/files/inter-latin-400-normal.woff",
+            ),
+          },
+        ],
+      },
+      render: presets.blackAndWhite,
     }),
     starlight({
       plugins: [

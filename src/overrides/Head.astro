@@ -2,6 +2,9 @@
 import Default from "@astrojs/starlight/components/Head.astro";
 import "@sumup-oss/design-tokens/fonts.css";
 import "@sumup-oss/design-tokens/dynamic.css";
+
+const url = Astro.url.href.slice(-1);
+console.info(url);
 ---
 
 {/* This code is intentionally inlined to avoid FOUC. */}
@@ -20,5 +23,5 @@ import "@sumup-oss/design-tokens/dynamic.css";
     });
   })();
 </script>
-
 <Default {...Astro.props} />
+<meta property="og:image" content={`${url || "index"}.png`} />
