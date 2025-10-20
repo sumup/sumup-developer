@@ -2,6 +2,7 @@ import cloudflare from "@astrojs/cloudflare";
 import react from "@astrojs/react";
 import starlight from "@astrojs/starlight";
 import starlightLinksValidator from "starlight-links-validator";
+import mermaid from 'astro-mermaid';
 import starlightLlmsTxt from "starlight-llms-txt";
 import { loadEnv } from "vite";
 
@@ -155,6 +156,9 @@ export default defineConfig({
 
   integrations: [
     react(),
+    mermaid({
+      autoTheme: true
+    }),
     starlight({
       plugins: [
         ...(process.env.CHECK_LINKS || false
