@@ -24,26 +24,30 @@ const {
 
 <div class:list={["codeblock", "not-content", cls]} {...props}>
   <slot name="header">
-    {title && (
-      <div class="header">
-        <div class="name">{title}</div>
-        <div class="options">
-          <slot name="extra-options" />
-          <CopyButton />
+    {
+      title && (
+        <div class="header">
+          <div class="name">{title}</div>
+          <div class="options">
+            <slot name="extra-options" />
+            <CopyButton />
+          </div>
         </div>
-      </div>
-    )}
+      )
+    }
   </slot>
   <slot name="code">
-    {code && language && (
-      <div
-        class:list={["code", "active"]}
-        data-lang={language}
-        data-code={code.replace(/\n/g, "\u007f")}
-      >
-        <Default lang={language} code={code} meta={meta} />
-      </div>
-    )}
+    {
+      code && language && (
+        <div
+          class:list={["code", "active"]}
+          data-lang={language}
+          data-code={code.replace(/\n/g, "\u007f")}
+        >
+          <Default lang={language} code={code} meta={meta} />
+        </div>
+      )
+    }
   </slot>
   {!Astro.slots.has("header") && !title && <CopyButton float />}
 </div>

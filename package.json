@@ -30,7 +30,9 @@
     "check": "astro check",
     "prelint": "astro sync",
     "lint": "npx eslint",
-    "format": "prettier --write \"**/*.{md,mdx,astro}\"",
+    "format": "npm run format:src && npm run format:content",
+    "format:content": "prettier --write \"**/*.{md,mdx,astro}\"",
+    "format:src": "npx prettier --write \"**/*.{js,jsx,ts,tsx,mjs,css,json}\"",
     "linkcheck": "CHECK_LINKS=true astro build"
   },
   "devDependencies": {
