@@ -7,7 +7,14 @@ const {
 ---
 
 <div class="hero">
-  <Display as="h1" size="m" weight="bold" id={"_top"} data-page-title>
+  <Display
+    as="h1"
+    size="m"
+    weight="bold"
+    id={"_top"}
+    className="title"
+    data-page-title
+  >
     {title}
   </Display>
 </div>
@@ -15,5 +22,12 @@ const {
 <style>
   .hero {
     margin-top: 2rem;
+  }
+
+  @media screen and (max-width: 600px) {
+    .title {
+      font-size: var(--cui-display-s-font-size);
+      line-height: var(--cui-display-s-line-height);
+    }
   }
 </style>
