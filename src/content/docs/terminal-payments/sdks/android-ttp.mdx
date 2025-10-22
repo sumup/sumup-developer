@@ -11,7 +11,6 @@ import { Aside } from "@astrojs/starlight/components";
 Tap to Pay on Android SDK enables your mobile app to accept card-present contactless payments with a smartphone only, without the need for any additional hardware.
 This guide explains how you can integrate this functionality into your Android mobile app.
 
-- Transactions are performed in the production environment.
 - Used for live, customer-facing operations.
 - The SDK is not debuggable. Additionally, **Attestation & Monitoring** is enabled. If a device doesn’t meet our threat policy (for example, if debug mode is enabled or the device is rooted) then payment operations will not be available.
 - For testing purposes, use dedicated developer credentials to prevent actual card charges. You can request access by contacting integration@sumup.com.
@@ -67,8 +66,14 @@ You can use the sample app provided in the GitHub repository as a reference.
 
 2. Add the dependency to a module `build.gradle`:
 
+   Production dependency:
    ```kotlin
    implementation("com.sumup.tap-to-pay:utopia-sdk:1.0.1")
+   ```
+
+   Testing dependency:
+   ```kotlin
+   implementation("com.sumup.tap-to-pay:utopia-sdk-dev-protected:1.0.1")
    ```
 
 ### Authentication
@@ -312,7 +317,7 @@ The base types are listed below, and each of these is further divided into more 
 
 ### Testing the SDK
 
-Before testing, make sure of the following:
+Before testing in production, make sure of the following:
 
 1. The app is not debuggable. Making the build debuggable will cause the attestation to fail and the payments will not work.
    ```kotlin
@@ -327,3 +332,28 @@ Before testing, make sure of the following:
 
 On some devices (e.g. Samsung), you still have to disable USB debugging before disabling the Developer Mode.
 It is still possible to have a USB debugging enabled and Developer Mode disabled, but it depends on the device manufacturer.
+
+### Testing in Specific Regions
+
+#### Brazil and Chile
+
+To test Tap to Pay on Android in Brazil and Chile, you should set `processCardAs` for each transaction. For example:
+
+``` kotlin
+tapToPay.startPayment(
+    CheckoutData(
+        totalAmount = amount,
+        clientUniqueTransactionId = UUID.randomUUID().toString(),
+        tipsAmount = null,
+        vatAmount = null,
+        customItems = null,
+        products = null,
+        priceItems = null,
+        processCardAs = ProcessCardAs.Credit(instalments = 5), // or ProcessCardAs.Debit
+        affiliateData = null
+    )
+)
+```
+
+Additionally, each transaction in Brazil and Chile should be verified by PIN.
+However, the PIN entry screen will appear only if *Developer Options* are *disabled* on the device - otherwise, the transaction will fail with an error.
