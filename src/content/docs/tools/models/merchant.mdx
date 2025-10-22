@@ -1,0 +1,590 @@
+---
+title: Merchant
+sidebar:
+  order: 10
+---
+
+A Merchant is a business and a user can own and/or manage multiple businesses.
+Within SumUp every merchant is identified by its merchant code, typically a
+string like `MK01A8C2`. For a detailed list of properties of the Merchant,
+please have a look at the [Merchants API reference](/api/merchants).
+
+## Company
+
+The `company` field of the Merchant contains the business's legal information.
+This is the data SumUp checks when verifying the merchant before enabling
+products.
+
+### Company Identifiers
+
+A key part of the company data are identification numbers contained in the
+`identifiers` array. Each identifier is a `CompanyIdentifier` object with:
+
+- **`ref`** (string): The unique reference for the identifier type
+- **`value`** (string): The actual identifier value
+
+For every identifier, we use a unique reference as key following the pattern
+`{country_code}.{identifier_type}`. The prefix indicates the country (using ISO 3166-1 alpha-2 codes), and the
+suffix identifies the specific type of identifier.
+
+{/* COMPANY_IDENTIFIERS_START */}
+
+- **Australia** (`AU`)
+
+  - **Australian Business Number** `au.abn`\
+    Australian Business Number is the Australian Business Number. Every Australian business must have one. Companies with an ABN may use it instead of the TFN and the ACN. The ABN is an 11-digit number.
+  - **Australian Company Number** `au.acn`\
+    Australian Company Number is the Australian Company Number. It is used for specific registered companies and is a subset of the ABN. We only use it for the legal type "company". The ACN is a 9-digit number.
+
+- **Austria** (`AT`)
+
+  - **Umsatzsteuer-Identifikationsnummer** `at.uid`\
+    Umsatzsteuer-Identifikationsnummer is referece to the Austrian VAT ID, the Umsatzsteuer-Identifikationsnummer.
+  - **Abgabenkontonummer** `at.abgabenkontonummer`\
+    Abgabenkontonummer is the Austrian tax identification number, Abgabenkontonummer. It is issued to natural and legal persons for he purpose of declaring taxes and interacting with the local revenue offices. The number consists of 9 digits. The first two digits identify the local tax office (uses leading zero). The next six digits are the actual tax ID. The last digit is a check digit.
+  - **Zentrale Vereinsregister-Zahl** `at.zvr`\
+    Zentrale Vereinsregister-Zahl is the Austrian association registry number, Zentrale Vereinsregister-Zahl. It is a mandatory identifier for all associations. It is a 10-digit number.
+  - **Firmenbuchnummer** `at.fn`\
+    Firmenbuchnummer is the Austrian company registration number, the "Firmenbuchnummer". It consists of six digits and a check letter.
+
+- **Belgium** (`BE`)
+
+  - **Belasting over de Toegevoegde Waarde nummer** `be.btw`\
+    Belasting over de Toegevoegde Waarde nummer is the Belgian VAT number. Since 2020 it's the same as the Ondernemingsnummer, but with the `BE` prefix.
+  - **Ondernemingsnummer** `be.ondernemingsnummer`\
+    Ondernemingsnummer is the Belgian company registration number. Before 2023 all numbers started with `0`. Since 2023 numbers may start with `0` or `1`.
+
+- **Brazil** (`BR`)
+
+  - **Cadastro Nacional de Pessoa Juridica** `br.cnpj`\
+    Cadastro Nacional de Pessoa Juridica is the Brazilian company registration number. It is used as company identifier and as VAT ID for a company.
+
+- **Bulgaria** (`BG`)
+
+  - **Identifikacionen nomer po DDS ** `bg.dds`\
+    Identifikacionen nomer po DDS is the Bulgarian VAT number. It is the same for individuals and registered companies.
+  - **BULSTAT Unified Identification Code** `bg.uic`\
+    BULSTAT Unified Identification Code is the Bulgarian BULSTAT Unified Identification Code. Every individual business or registered company must have one.
+
+- **Canada** (`CA`)
+
+  - **Business Number** `ca.business_number`\
+    Business Number (BN) is a unique number assigned by the Canada Revenue Agency (CRA) to identify a business.
+  - **GST/HST Number** `ca.gst_hst_number`\
+    GST/HST Number is a unique number assigned by the Canada Revenue Agency (CRA) to identify a business for Goods and Services Tax (GST) and Harmonized Sales Tax (HST).
+  - **QST Number (Quebec)** `ca.qst_number`\
+    QST Number is a unique number assigned by Revenu Québec to identify a business for Quebec Sales Tax (QST).
+
+- **Chile** (`CL`)
+
+  - **Rol Único Tributario** `cl.rut`\
+    Rol Único Tributario is the Chilean tax ID. For individuals the RUT is the same as the RUN (the national ID). Registered companies have to obtain a RUT.
+
+- **Colombia** (`CO`)
+
+  - **Número de Identificación Tributaria** `co.nit`\
+    Número de Identificación Tributaria is the Colombian tax ID. It applies to individuals and companies.
+
+- **Croatia** (`HR`)
+
+  - **Osobni identifikacijski broj** `hr.oib`\
+    In Croatia, the OIB (Osobni identifikacijski broj) is a unique, permanent personal identification number assigned to both citizens and legal entities.
+
+- **Cyprus** (`CY`)
+
+  - **Arithmós Engraphḗs phi. pi. a.** `cy.fpa`\
+    Arithmós Engraphḗs phi. pi. a. is the Cypriot VAT number.
+  - **Company Registration Number** `cy.crn`\
+    Company Registration Number is the Cypriot company registration number.
+
+- **Czech Republic** (`CZ`)
+
+  - **Daňové identifikační číslo** `cz.dic`\
+    Daňové identifikační číslo is the Czech VAT ID, the Daňové identifikační číslo.
+  - **Identifikační číslo osoby** `cz.ico`\
+    Identifikační číslo osoby is the Czech company registration number, the Identifikační číslo osoby.
+
+- **Denmark** (`DK`)
+
+  - **CVR-nummer** `dk.cvr`\
+    CVR-nummer is the Danish company registration number number, Centrale Virksomhedsregister nummer. It is used both as company identifier and VAT ID.
+  - **CVR-nummer** `dk.cvr`\
+    CVR-nummer is the Danish company registration number number, Centrale Virksomhedsregister nummer. It is used both as company identifier and VAT ID.
+
+- **Estonia** (`EE`)
+
+  - **Käibemaksukohustuslase number** `ee.kmkr`\
+    Käibemaksukohustuslase number is the Estonian VAT ID, the Käibemaksukohustuslase.
+  - **Äriregistri Kood** `ee.reg`\
+    Äriregistri Kood is the Estonian company registration number, the Registrikood.
+
+- **Finland** (`FI`)
+
+  - **Arvonlisäveronumero Mervärdesskattenummer** `fi.alv`\
+    Arvonlisäveronumero Mervärdesskattenummer is the Finnish VAT number. The VAT number can be derived directly from the Business ID by prefixing the Business ID with `FI` and removing the dash before the check digit at the end. Businesses must register with the Finnish tax office before they can use their Business ID dependent VAT number..
+  - **Y-tunnus** `fi.yt`\
+    Y-tunnus is the Finnish Business ID, the Y-tunnus. Sole traders and registered companies must obtain one. The Business ID The Business ID of a legal person, such as a company, remains the same as long as the legal person is operative. If the company type changes in a way defined by law, the Business ID remains the same. If the activities of a general partnership or a limited liability company are continued by a person operating as a sole trader, the Business ID changes. The Y-tunnus consists of seven digits, a dash and a control mark
+
+- **France** (`FR`)
+
+  - **Numéro d'identification à la taxe sur la valeur ajoutée / Numéro de TVA intracommunautaire** `fr.tva`\
+    Numéro d'identification à la taxe sur la valeur ajoutée / Numéro de TVA intracommunautaire is the French VAT number, the Taxe sur la valeur ajoutée. For registered companies, the TVA is derived from the SIREN by prefixing the SIREN with `FR`. Any company, exceeding a certain annual revenue are liable for VAT.
+  - **Système d'identification du répertoire des entreprises** `fr.siren`\
+    Système d'identification du répertoire des entreprises is the french registration number given to French businesses and non-profit associations. The number consists of nine digits, of which the final digit is a check digit calculated via Luhn. Exampels: - `123 123 123`
+  - **Système d’identification du répertoire des établissements** `fr.siret`\
+    Système d’identification du répertoire des établissements is a unique French identifier for a specific business location. SIRET is the Système d'identification du répertoire des établissements. Each SIRET number identifies a specific establishment/location of a business. The first nine digits of the SIRET are the business' SIREN number. The business location is identified by the next four digits, the NIC or "Numéro interne de classement". The final 14th digit is a check digit, calculated via Luhn. Sole traders
+  - **Numéro Répertoire national des associations / Numéro RNA** `fr.rna`\
+    Numéro Répertoire national des associations / Numéro RNA is the French association number, the Numéro d'Association. It starts with the letter `W`, followed by 9 digits. Associatinos must use a SIRET instead of the RNA, if they have employees, wish to apply for subsidies, or when they are required to pay VAT or corporate tax.
+
+- **Germany** (`DE`)
+
+  - **Umsatzsteuer-Identifikationsnummer** `de.ust_idnr`\
+    Umsatzsteuer-Identifikationsnummer is the German VAT ID, Umstatzsteuer-Identifikationsnummer.
+  - **Handelsregister A Nummer** `de.hra`\
+    Handelsregister A Nummer is the German company registration number for individual enterprises (e.K.), commercial (general and limited) partnerships (OHG and KG), corporations of public law running a business and EEIGs.
+  - **Handelsregister B Nummer** `de.hrb`\
+    Handelsregister B Nummer is the German company registration number for covers the following company types: public limited company (AG), association limited by shares (KGaA), limited liability companies (GmbH), and others.
+  - **Vereinsregenister Nummer** `de.vr`\
+    Vereinsregenister Nummer is the German registration number for registered associations, eingegratener Verein (e.V.).
+  - **Other registration numbers** `de.other`\
+    Other registration numbers is used to identify other German company registration numbers.
+
+- **Greece** (`GR`)
+
+  - **Arithmós Forologikou Mētrṓou - ΑΦΜ** `gr.afm`\
+    Arithmós Forologikou Mētrṓou - ΑΦΜ is the Greece tax ID, the Arithmós Forologikou Mētrṓou (AFM). Sole traders (sole proprietorship) use their personal tax ID to conduct business. Companies register for a tax ID. We always require an AFM in Greece.
+  - **General Commercial Registry number.** `gr.gemi`\
+    General Commercial Registry number. is the Greek company registration number, the General Commercial Registry (Γ.Ε.ΜI.) number. All Natural or legal persons or associations of such persons have to register in the General Commercial Registry. The exception are sole traders, wo can start conducting their business without going through GEMI.
+
+- **Hungary** (`HU`)
+
+  - **Közösségi adószám** `hu.anum`\
+    Közösségi adószám is the Hungarian vat number, the Közösségi adószám. The format of the ANUM is HU12345678. The eight digit are the first digits in the Hungarian tax ID, the adószám. The tax ID has the format 12345678-1-23 (see references). The regex we have for the ANUM also accepts the adószám and leaves the country code prefix optional.
+  - **Cégjegyzékszám** `hu.cegjegyzekszam`\
+    Cégjegyzékszám is the Hungarian company registration number, the Cégjegyzékszám. NOTE: the values we have for this in platform DB are all over the place in terms of legal types. Technically, the cegjegyzekszam contains the company form. Looking at the numbers we have to the sole trader and registered sole trader legal types, the numbers map to limited liability companies and other legal types.
+  - **Adószám** `hu.adoszam`\
+    Adószám is the Hungarian tax number, the Adószám. It is not to be confused with the tax identification number, adoazonosító jel.
+
+- **Ireland** (`IE`)
+
+  - **Value added tax identification no.** `ie.vat`\
+    Value added tax identification no. is the Irish VAT number and a unique identifier for Irish companies. It is identical to the TRN prefixed with `IE`.
+  - **Tax Registration Number** `ie.trn`\
+    Tax Registration Number is the Irish tax ID, the Tax Registration Number. Companies must register with Revenue to obtain a TRN. For sole traders who register with Revenue their PPSN becomes their business' TRN. We collect the TRN for non-registered companies as company registration number.
+  - **Value added tax identification no.** `ie.crn`\
+    Value added tax identification no. is the Irish company registration number, issued by Companies Registaion Office. It's a six digit code. NOTE: I found it very hard to find _any_ references for this. I asked some AI search which gave the six digit answer and maybe found something in a forum somewhere. Additionally our database is full of six digit numbers, so I deem this to be correct. Users does not have any validations for Irish CRNs.
+  - **Tax identification number for charities** `ie.chy`\
+    Tax identification number for charities is the tax identification number for charitable organizations. The format starts with the letters `CHY`, followed by 1 to 5 digits.
+
+- **Italy** (`IT`)
+
+  - **Partita IVA** `it.p_iva`\
+    Partita IVA is the Italian VAT number. It is used for individual businesses and registered companies. If a natural or legal person has a partita IVA, then it is used as fiscal code.
+  - **REA Number** `it.rea_number`\
+    REA Number is the Italian REA number, the "Repertorio Economico Amministrativo". It's issued upon registration with the Italian chamber of commerce. The REA also serves as fiscal code. It seems that if a company has a VAT number and a REA, the VAT number is used as fiscal code.
+
+- **Latvia** (`LV`)
+
+  - **PVN reģistrācijas numurs** `lv.pvn`\
+    PVN reģistrācijas numurs is the Latvian VAT number, the Pievienotās vērtības nodokļa numurs. It is the same as the personal or company TIN, but prefixed with "LV" and without the check digit.
+  - **Reģistrācijas numur** `lv.registracijas_numur`\
+    Reģistrācijas numur is the Latvian company identification code. It is issued by the State Revenue Service or by the Enterprise Register. The number consists of 11 digits. The State Revenue Service issues numbers starting "9000", while the Enterprise Register numbers start with "4000" or "5000". There is no documented check digit algorithm. The identification code is also used as tax identification number (TIN).
+
+- **Lithuania** (`LT`)
+
+  - **PVM mokėtojo kodas** `lt.pvm_kodas`\
+    PVM mokėtojo kodas is the Lithuanian VAT number, the PVM mokėtojo kodas. NOTE: You can almost not find any information about this identifier.
+  - **Įmonės kodas** `lt.imones_kodas`\
+    Įmonės kodas is the Lithuanian company code, the Įmonės kodas. NOTE: I've found nothing on this. An AI search said legal persons have a 9 digit code, natural persons have an 11 digit code. In our database we only seem to have 9 digit codes.
+
+- **Luxembourg** (`LU`)
+
+  - **Numéro d'identification à la taxe sur la valeur ajoutée** `lu.tva`\
+    Numéro d'identification à la taxe sur la valeur ajoutée is the Luxembourgian VAT number, the Taxe sur la valeur ajoutée. Natural and legal persons typically must register for a VAT number, meaning sole traders and registered companies. "A taxable person liable for VAT is each natural or legal person who carries out, on an independent and regular basis, any operation falling within any economic activity, whatever the purpose or result of the activity and from whatever location it is performed."
+  - **Matricule** `lu.matricule`\
+    Matricule is the Luxembourgian unique identification number for both natural and legal persons. It's referred to as matricule or "numéro d’identification personnelle" and is used as tax ID. In the case of natural persons the matricule can have 11 or 13 digits. Any numbers issued from 2014 have 13 digits. Legal persons are issued matricules with 11 digits. The format for a natural person is `YYYY MMDD XXX (XX)`, where the first 8 digits are the date of birth of the person. The remaining five digits are "random". The 12th digit is a Luhn10 check digit. The 13th digit is a de Verhoeff check digit. Both are calculated from the first 11 digits. The format for legal persons is `AAAA FF XX XXX`, where `AAAA` is the year of formation, `FF` is the form of the company, and `XX XXX`are random numbers.
+  - **Numéro d'identification unique** `lu.rcs`\
+    Numéro d'identification unique is the Luxmebourgian company registration number, stored in the "Registre du commerce et des sociétés". The number format is `B123456`, it may be prefixed by variations of `RCS`. The letter at the beginning of the number indicates the kind of company. `B` stands for a commercial company. NOTE: I was not able to find any documentation on the exact format and the different letters used to identify the company type.
+
+- **Malta** (`MT`)
+
+  - **Numru tal-VAT** `mt.vat_no`\
+    Numru tal-VAT is the Maltese VAT number, the Numru tal-VAT. It starts with "MT", followed by 8 digits.
+  - **Business Registration Number** `mt.brn`\
+    Business Registration Number is the Maltese business registration number. The Maltese Business Register maintains a register of companies, foundations, and associations NOTE: sent an email to Malta Business Register to get clarification on different business registration number formats. We have many numbers with the formats C12345, P12345, V/O12345. These seem to be companies, partnerships, and associations.
+
+- **Mexico** (`MX`)
+
+  - **Registro Federal de Contribuyentes** `mx.rfc`\
+    Registro Federal de Contribuyentes is the Mexican tax identification number, the Registro Federal de Contribuyentes. It is issued to natural persons and legal entities and required to perform any economic activity in Mexico, including VAT. The RFC format depends on whether it belongs to a natural person or legal entity. - Natural erson: XXXX YYMMDD ZZZ - Legal entity: XXX YYMMDD ZZZ The XXXX and XXX parts are derived from the person's or company's name. The YYMMDD is the date of birth or date of company formation, respectively. ZZZ is a randomly assigned alphanumeric code by the tax administration service. It includes a checksum.
+
+- **Netherlands** (`NL`)
+
+  - **Btw-nummer** `nl.btw`\
+    Btw-nummer is the Dutch VAT identification number, the btw-identificatienummer. A Dutch VAT number starts with NL, then comes 9 digits, the letter B, and then another 2 digits. Sole traders and registered companies receive VAT IDs. There's also a VAT tax number (omzetbelastingnummer), which is only used to communicate with the tax authorities.
+  - **Kamer van Koophandel nummer** `nl.kvk`\
+    Kamer van Koophandel nummer is the Dutch company registration number, the Kamer van Koophandel nummer (KVK nummer). It's issued for every business registering in the chamber of commerce. Most businesses must register with the KVK, there are only a few exceptions. When the owner of a company changes, the KVK number will also change. The KVK number is an eight-digit number.
+
+- **Norway** (`NO`)
+
+  - **MVA-nummer** `no.mva`\
+    MVA-nummer is the Norwegian VAT number, the Merverdiavgiftsnummer. It is the same as the Organisasjonsnummer, but with an extra suffix `MVA`.
+  - **Organisasjonsnummer** `no.orgnr`\
+    Organisasjonsnummer is the Norwegian organization number, the Organisasjonsnummer. It is assigned to legal entities upon registration. Sole traders who are subject to value added tax must also register. The organization number consists of 9 digits whereof the last digit is a check digit based on a special weighted code, modulus 11.
+
+- **Poland** (`PL`)
+
+  - **Numer identyfikacji podatkowej** `pl.nip`\
+    Numer identyfikacji podatkowej is the Polish tax identification number for for businesses, the numer identyfikacji podatkowej. It is used for both natural and legal persons. The NIP is also used as VAT ID, in which case it's prefixed by `PL`. The hyphens are only used for formatting. The positioning of the hyphens depends on whether the NIP belongs to a natural or legal person. lib.
+  - **Numer Krajowego Rejestru Sądowego** `pl.krs`\
+    Numer Krajowego Rejestru Sądowego is the Polish registration number for companies, associations, foundations, etc., the numer Krajowego Rejestru Sądowego. It is used for companies only, sole traders register in a different registry. The KRS number has ten digits with leading zeros.
+  - **Numer Rejestr Gospodarki Narodowej** `pl.regon`\
+    Numer Rejestr Gospodarki Narodowej is the polish business registration number for sole traders, the numer Rejestr Gospodarki Narodowej. All natural and legal persons performing economic activies must register in the system. The number consists of 9 or 14 digits. Regular businesses receive a 9 digit REGON number. Larger businesses with multiple branches receive a 14 digit number. The first two digits identify the county in Poland where the business is registered. The following six digits are uniquely assigned to the business. In a 14 digit REGON number, the next 4 digits identify the local business unit. The final digit is a check digit.
+
+- **Portugal** (`PT`)
+
+  - **Número de Identificação Fiscal** `pt.nif`\
+    Número de Identificação Fiscal is the Portuguese tax identification number for natural persons, the Número de Identificação Fiscal. The NIF is assigned by the Tax and Customs Authority for all citizens. NIFs can be distinguished from NIPCs by the first digit. NIFs start with 1, 2, or 3. The number has 9 digits, the last digit is a check digit.
+  - **Número de Identificação de Pessoa Coletiva** `pt.nipc`\
+    Número de Identificação de Pessoa Coletiva is the Portuguese tax identification number for legal persons, the Número de Identificação de Pessoa Coletiva. The NIPC is issued when a company is registered National Register of Legal Entities.. NIPCs can be distinguished from NIFs by the first digit. NIPCs start with the numbers 5 through 9 (see OECD TIN document). The number has 9 digits, the last digit is a check digit.
+  - **Código de acesso à certidão permanente** `pt.codigo`\
+    Código de acesso à certidão permanente is the access code for the permanent certificate of business registration, the código de acesso à certidão permanente. This code is required to access a company's records (the permanent certificate) in the commercial register. NOTE: we seem to have collected this number for both the company registration number and as a dedicated field. The company registration numbers for Portugal seem to therefore be all over the place. Users were probably confused because there is no such thing as a company registration number in Portugal, that resembles the access code's format. The NIPC serves as company identifier for tax purposes. The code consists of 12 digits in groups of four, separated by hyphens.
+
+- **Romania** (`RO`)
+
+  - **Codul de TVA** `ro.cui`\
+    Codul de TVA is the Romanian unique identification number for businesses, the Codul Unic de Înregistrare. Pretty much all businesses, including sole traders, must register for a CUI. The CUI serves as tax identification number. If the business is registered for VAT, their CUI is also their VAT ID when prefixed with `RO`. The CUI consists of 2 to 10 digits. The last digit is a check digit (see linked Wikipedia).
+  - **Codul Unic de Înregistrare** `ro.cui`\
+    Codul Unic de Înregistrare is the Romanian unique identification number for businesses, the Codul Unic de Înregistrare. Pretty much all businesses, including sole traders, must register for a CUI. The CUI serves as tax identification number. If the business is registered for VAT, their CUI is also their VAT ID when prefixed with `RO`. The CUI consists of 2 to 10 digits. The last digit is a check digit (see linked Wikipedia).
+  - **Codul de identificare fiscală** `ro.cif`\
+    Codul de identificare fiscală is the generic term for the Romanian tax identification number, the Codul de identificare fiscală. The CIF can take several forms. - For Romanian citizens who have not registered their business in the Trade Register, due to exemptinos, their CNP is their business' CIF. - For non-romanian citizens, the CIF is issued by the tax administration and takes the same shape as the CNP. - For natural persons who exercise their business under a special law, not requiring them to register, the CIF is issued by the tax authorities. - Businesses that register with the Trade Register receive a CUI to serve as their CIF. In most cases we should not collect a generic CIF and instead require a CUI or CNP.
+  - **Numărul de ordine în registrul comerţului** `ro.onrc`\
+    Numărul de ordine în registrul comerţului is the Romanian registration number from the trade register, the numărul de ordine în registrul comerţului. When registering a company in the trade register, one receives the ONRC number, which is akin to a company registration number, as well as the unique company code, CUI (see [refROCUI]). The ONRC number is local to the province one registers in. It can change over time, for example when a company moves to a different province. The number consists of three parts. The first part starts with one of the letters J (legal entities), F (authorized natural persons, sole proprietorships and family businesses), or C (cooperative societies). The letter is followed by a number from 1 to 40 (with leading zero), identifying the county in which the business is registered. The second part of the ONRC is the local register's "order number" of the year of registration. It gets reset every year. The last part is the year of registration.
+
+- **Slovakia** (`SK`)
+
+  - **Identifikačné číslo pre daň z pridanej hodnoty** `sk.dph`\
+    Identifikačné číslo pre daň z pridanej hodnoty is the Slovak Republic's VAT ID, the Identifikačné číslo pre daň z pridanej hodnoty. Any business making more than a certain threshold is required to register for VAT, including sole traders. It's a ten-digit number, prefixed with `SK`. The number can be validated by calculating its modulo 11. The result has to be `0`.
+  - **Identifikačné číslo organizácie** `sk.ico`\
+    Identifikačné číslo organizácie is the Slovak Republic's organization identification number, the Identifikačné číslo organizácie. It is issued automatically to natural persons and legal entities running a business as well as public sector organizations etc. The first seven digits are the identification number. The eights digit is a check digit.
+
+- **Slovenia** (`SI`)
+
+  - **Identifikacijska številka za DDV** `si.ddv`\
+    Identifikacijska številka za DDV is the Slovenian tax identification number, the Davčna številka. It is issued to all natural and legal persons. The DDV serves as VAT number when prefixed with `SI`. The DDV is an eight-digit number. The first seven digits are random, the eighth digit is a mod11 check digit.
+  - **Matična številka** `si.maticna`\
+    Matična številka is the Slovenian company registration number, the Matična številka poslovnega registra. The number consists of 7 or 10 digits and includes a check digit. The first 6 digits represent a unique number for each unit or company, followed by a check digit. The last 3 digits represent an additional business unit of the company, starting at 001. When a company consists of more than 1000 units, a letter is used instead of the first digit in the business unit. Unit 000 always represents the main registered address.
+
+- **Spain** (`ES`)
+
+  - **Número de Identificación Fiscal** `es.nif`\
+    Número de Identificación Fiscal is the Spanish personal identification number. It is used for individual company types. The NIF corresponds to the DNI for Spanish nationals and the NIE for foreign nationals.
+  - **Certificado de Identificación Fiscal** `es.cif`\
+    Certificado de Identificación Fiscal is the Spanish tax ID for companies and legal entities, the Código de Identificación Fiscal. It is used as unique identifier for companies and as VAT ID.
+
+- **Sweden** (`SE`)
+
+  - **VAT-nummer** `se.momsnr`\
+    VAT-nummer is the Swedish VAT number, the Momsregistreringsnummer. The format for the Momsregistreringsnummer is `SEXXXXXX-XXXX01` It always starts with `SE` and ends in `01`. For legal entities the middle part is the Organisationsnummer (see [refSEOrgNr]). For sole traders, the part contains the Personnummer (see [refSEPers]).
+  - **Organisationsnumret** `se.orgnr`\
+    Organisationsnumret is the Swedish tax identification number for legal entities, the Organisationsnummer. It is assigned by the authority, which registers the respective organization type (i.e., Companies Registration Office, Tax Agency, Central Bureau of Statistics, etc.). The Organisationsnummer is used as tax identification number. Sole traders use their social security number as tax identification numbers. The Organisationsnummer has 10 digits and should pass luhn's checksum algorithm.
+
+- **Switzerland** (`CH`)
+
+  - **Mehrwertsteuernummer / Taxe sur la valeur ajoutée / Imposta sul valore aggiunto** `ch.mwst`\
+    Mehrwertsteuernummer / Taxe sur la valeur ajoutée / Imposta sul valore aggiunto is the Swiss VAT number. It is identical to the UID but uses a MWST suffix when written without a label, i.e. `CHE123456789MWST`.
+  - **Unternehmens-Identifikationsnummer** `ch.uid`\
+    Unternehmens-Identifikationsnummer is the Swiss company registration number, the Unternehmens-Identifikationsnummer. It is has the format `CHE123456789`.
+
+- **United Kingdom** (`GB`)
+
+  - **Value added tax registration number** `gb.vrn`\
+    Value added tax registration number is the British VAT number, the VAT registration number. Any business with an annual turnover exceeding a VAT threshold must register for a VRN.
+  - **The company registration number for companies registered with Companies House** `gb.crn`\
+    The company registration number for companies registered with Companies House is the British company registration number. Limited companies, Limited Partnerships, and Limited Liability Partnerships have to register with Companies House and receive the CRN.
+
+- **United States** (`US`)
+
+  - **Social Security Number** `us.ssn`\
+    Social Security Number is the United States social security number. It is used for taxation of natural persons, like sole traders. From Wikipedia: > The SSN is a nine-digit number, usually written in the format `AAA-GG-SSSS`. > The number has three parts: the first three digits, called the area number because > they were formerly assigned by geographical region; the middle two digits, the > group number; and the last four digits, the serial number.
+  - **Employer Identification Number** `us.ein`\
+    Employer Identification Number is the United States employer identification number. It is used for business entities which have to pay withholding taxes on employees. The EIN is a nine-digit number, usually written in form 00-0000000.
+  - **Social Security Number** `us.itin`\
+    Social Security Number is the United States individual tax identification number. Individuals who cannot get a social security number (see refUSSSN) can apply for an ITIN. From Wikipedia: > It is a nine-digit number beginning with the number “9”, has a range > of numbers from "50" to "65", "70" to "88", “90” to “92” and “94” to “99” > for the fourth and fifth digits, and is formatted like a SSN (i.e., 9XX-XX-XXXX).
+  - **Social Security Number** `us.ssn`\
+    Social Security Number is the United States social security number. It is used for taxation of natural persons, like sole traders. From Wikipedia: > The SSN is a nine-digit number, usually written in the format `AAA-GG-SSSS`. > The number has three parts: the first three digits, called the area number because > they were formerly assigned by geographical region; the middle two digits, the > group number; and the last four digits, the serial number.
+  - **Employer Identification Number** `us.ein`\
+    Employer Identification Number is the United States employer identification number. It is used for business entities which have to pay withholding taxes on employees. The EIN is a nine-digit number, usually written in form 00-0000000.
+  - **Social Security Number** `us.itin`\
+    Social Security Number is the United States individual tax identification number. Individuals who cannot get a social security number (see refUSSSN) can apply for an ITIN. From Wikipedia: > It is a nine-digit number beginning with the number “9”, has a range > of numbers from "50" to "65", "70" to "88", “90” to “92” and “94” to “99” > for the fourth and fifth digits, and is formatted like a SSN (i.e., 9XX-XX-XXXX).
+
+{/* COMPANY_IDENTIFIERS_END */}
+
+Example:
+
+```json
+{
+  "identifiers": [
+    {
+      "ref": "de.hrb",
+      "value": "HRB 123456 B"
+    },
+    {
+      "ref": "de.ust_idnr", 
+      "value": "DE123456789"
+    }
+  ]
+}
+```
+
+## Business Profile
+
+A Merchant's business profile contains information that a Merchant wants to be
+publicly visible for their customers, for example on their website.
+You should not rely on the information here, unless you are building a feature
+for the Merchant's customers.
+
+## Addresses
+
+The Merchant object uses a comprehensive address format that can handle addresses
+from around the world. The address fields used depend on the country conventions.
+For example, in Great Britain, `city` is `post_town`. In the United States, the
+top-level administrative unit used in addresses is `state`, whereas in Chile it's
+`region`.
+
+The address structure is based on [libaddressinput](https://github.com/google/libaddressinput)
+used by Android and Chromium.
+
+Whether an address is valid depends on whether the locally required fields are
+present. Fields not supported in a country will be ignored. For example:
+
+- **Germany**: Requires `street_address`, `post_code`, and `city`
+- **United States**: Uses `state` for the top-level administrative unit
+- **Great Britain**: Uses `post_town` instead of `city`
+- **Chile**: Uses `region` for the top-level administrative unit
+- **Ireland**: Uses `eircode` instead of `post_code`
+
+### Core Address Fields
+
+- **`country`**: The two letter country code formatted according to [ISO3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2). Example: `["DE", "GB"]`
+- **`street_address`**: The address lines, with each element representing one line. Example: `["Paul-Linke-Ufer 39-40", "2. Hinterhof"]`
+
+### Post code
+
+A postal code included in a postal address for the purpose of sorting mail. 
+
+The following fields are used for post code, depending on the country:
+
+- **`post_code`** (default): Used by most countries. Example: `"10999"`
+- **`zip_code`**: Used in the United States
+- **`eircode`**: Used in the Ireland
+
+### Administrative areas
+
+The address supports up to 3 levels of administrative areas, `administrative_area_level_1` through `administrative_area_level_3`.
+
+The following fields are used for administrative divisions, depending on the country:
+
+- **`province`** (default): Used in some countries for administrative divisions
+- **`state`**: Used in countries like the United States for the top-level administrative unit
+- **`region`**: Used in countries like Chile for administrative divisions
+- **`county`**: Used in countries like Ireland and Romania
+- **`autonomous_community`**: Used in Spain for the first sub-national level
+
+### Locality levels
+
+The address supports up to 3 levels of locality levels, `locality_level_1` through `locality_level_3`. 
+
+For more specific location information:
+
+- **`city`** (default): A city
+- **`post_town`**: Used in Great Britain instead of city
+- **`district`**: A district within a city or region
+- **`neighborhood`**: A neighborhood or local area
+- **`suburb`**: A suburb or outlying area of a city
+- **`village`**: A village or small settlement
+- **`municipality`**: A municipality or local government area
+
+## Persons
+
+The Merchants API uses a new Person model, which is exposed as a sub-resource of
+the merchant. A Person is someone who plays some legally relevant role in the
+Merchant. This can be what we call legal representative, a business owner, or a
+business officer.
+
+### Person Relations
+
+Persons can have various roles within a merchant:
+
+- **Legal Representative**: The person legally representing the business
+- **Business Owner**: Owner of the business (especially for sole traders)
+- **Business Officer**: Officer of the business (for corporations)
+
+### Person identifiers
+
+{/* PERSON_IDENTIFIERS_START */}
+
+- **Belgium** (`BE`)
+
+  - **Numéro de registre national** `be.nn`\
+    Numéro de registre national is the Belgian National Registration Number. Every Belgian citizen above the age of 12 has one upon first registration for an ID card. The format is YY.MM.DD-XXX.XX where YY.MM.DD is the birthdate and XXX.XX are a sequential ID and checksum.
+
+- **Brazil** (`BR`)
+
+  - **Cadastro de Pessoas Física** `br.cpf`\
+    Cadastro de Pessoas Física is the Brazilian personal identification number (Cadastro de Pessoas Físicas).
+
+- **Bulgaria** (`BG`)
+
+  - **Единен граждански номер (Edinen grazhdanski nomer)** `bg.egn`\
+    Единен граждански номер (Edinen grazhdanski nomer) is the Bulgarian Unified Civil Number (Единен граждански номер) which serves as a national identification number
+
+- **Chile** (`CL`)
+
+  - **Rol Único Nacional** `cl.run`\
+    Rol Único Nacional is the Chilean national ID number. For individuals it is used as tax ID. It is therefore the same as the RUT.
+  - **Número de Documento** `cl.id_card_serial`\
+    Número de Documento is the Chilean ID card serial number. It identifies the document, not the person. The document number used to be the same as the RUN, but that's no longer the case.
+
+- **Colombia** (`CO`)
+
+  - **Número Único de Identificación Personal** `co.nuip`\
+    Número Único de Identificación Personal is the personal identification number on the Colombian cédula. The number is the same across all official documents, such as drivers licenses and civil registry documents. The cedula is between 6-10 digits long depending on when it was issued.
+
+- **Cyprus** (`CY`)
+
+  - **Δελτίο Ταυτότητας** `cy.identity_card`\
+    Δελτίο Ταυτότητας is the Cypriot national ID number.
+
+- **Czech Republic** (`CZ`)
+
+  - **Občanský průkaz** `cz.civil_card`\
+    Občanský průkaz is the Czech national ID number
+
+- **Denmark** (`DK`)
+
+  - **Det Centrale Personregister nummer** `dk.cpr`\
+    Det Centrale Personregister nummer is the Danish personal identification number, the Central Person Register number. It is used for identification purposes.
+
+- **Estonia** (`EE`)
+
+  - **Isikukoodi** `ee.isikukoodi`\
+    Isikukoodi is the Estonian national ID number.
+
+- **Finland** (`FI`)
+
+  - **Henkilötunnus** `fi.hetu`\
+    Henkilötunnus is the Finnish personal identification number, the Henkilötunnus.
+
+- **Hong Kong** (`HK`)
+
+  - **Hong Kong Identity Card** `hk.hkid`\
+    TODO
+
+- **Hungary** (`HU`)
+
+  - **Személyi igazolvány** `hu.szemelyi`\
+    Személyi igazolvány is the Hungarian National ID the Személyi igazolvány. It is issued to Hungarian citizens and is used for identification purposes. The Personal ID is not used anymore.
+  - **Adóazonosító jel** `hu.adoazonosito_jel`\
+    Adóazonosító jel is the Hungarian personal tax identification number, the adóazonosító jel. It should not be confused with the adószám, the tax number. The difference between the adóazonosító jel and the adószám is that the latter is specifically issued for business purposes of natural and legal persons. The former is a personal identifier that should not be shared, for example on invoices, for privacy reasons. The two do share the same basic format. NOTE: because of this we should not expect to have adóazonosító jel values in our DB and should not collect them.
+
+- **Italy** (`IT`)
+
+  - **Carta d'identità** `it.cie`\
+    Carta d'identità is the Italian Carta d'Identità Elettronica, the electronic identity card. It is used as personal identification number.
+  - **Codice fiscale** `it.itax`\
+    Codice fiscale is the Italian tax identification number for natural and some legal persons. Registered companies use their REA as tax ID. Any entity with a VAT number uses that as tax ID. For natural persons the codice fiscale has 16 alphanumeric characters, for legal persons it has 11. The OECD and Wikipedia describe the format in detail.
+
+- **Japan** (`JP`)
+
+  - **My Number** `jp.resident_id`\
+    No description available
+
+- **Latvia** (`LV`)
+
+  - **Personas kods** `lv.personas_kods`\
+    Personas kods is the Latvian personal identification code (PIC), the Personas kods. Every Latvian citizen has one, and foreigners can get one. The identifier is used for all interaction with the government and serves as personal tax ID. Sole traders may use their PIC for their business. It is an 11 digit number with an optional hyphen after the sixth digit. Before 1. July 2017, the PIC would consist of the date of birth of a person, followed by 5 random digits, withthe blocks separated by a dash.: YYMMDD-XXXXX. PICs issued from 1. July 2017 onward start with the number "3" followed by ten random numbers, also separated by a dash after position six: 3XXXXX-XXXXX. Sources are conflicting regarding the second digit. The EU Commission document on clickworker.com mentions that numbers should start with the digits "32". The OECD document states numbers start with the number "3", their example however starts with "38", while all remaining digits are scrambled to not potentially leak a real number.
+
+- **Lithuania** (`LT`)
+
+  - **Asmens tapatybės kortelė** `lt.asmens`\
+    Asmens tapatybės kortelė is the Lithuanian personal identification number, the Asmens tapatybės kortelė. It is used for identification purposes.
+
+- **Luxembourg** (`LU`)
+
+  - **Matricule** `lu.matricule`\
+    Matricule is the Luxembourgian unique identification number for both natural and legal persons. It's referred to as matricule or "numéro d’identification personnelle" and is used as tax ID. In the case of natural persons the matricule can have 11 or 13 digits. Any numbers issued from 2014 have 13 digits. Legal persons are issued matricules with 11 digits. The format for a natural person is `YYYY MMDD XXX (XX)`, where the first 8 digits are the date of birth of the person. The remaining five digits are "random". The 12th digit is a Luhn10 check digit. The 13th digit is a de Verhoeff check digit. Both are calculated from the first 11 digits. The format for legal persons is `AAAA FF XX XXX`, where `AAAA` is the year of formation, `FF` is the form of the company, and `XX XXX`are random numbers.
+
+- **Malaysia** (`MY`)
+
+  - **National Registration Identity Card** `my.nric`\
+    No description available
+
+- **Malta** (`MT`)
+
+  - **Karta tal-Identità** `mt.karta_tal_identita`\
+    Karta tal-Identità is the Maltese national ID number, the Identity Card Number. It is used for identification purposes.
+
+- **Mexico** (`MX`)
+
+  - **Clave Única de Registro de Población** `mx.curp`\
+    Clave Única de Registro de Población is the Mexican personal identification number, the Clave Única de Registro de Población. It is used for identification purposes.
+  - **Régimen Fiscal** `mx.tax_regimen`\
+    The Tax Regime classifies taxpayers according to their economic activity and tax obligations.
+
+- **Norway** (`NO`)
+
+  - **Fødselsnummer** `no.fodelsnummer`\
+    Fødselsnummer is the Norwegian national ID number, the Fødselsnummer. It is used for identification purposes. All official IDs, including passports, national ID cards, driving licenses and bank cards contain the National Identity Number.
+
+- **Peru** (`PE`)
+
+  - **Cédula Única de Identidad** `pe.cui`\
+    Cédula Única de Identidad is the Peruvian unique identity number that appears on the Documento Nacional de Identidad (DNI), the national identity document of Peru. The number consists of 8 digits and an optional extra check digit.
+
+- **Poland** (`PL`)
+
+  - **Powszechny Elektroniczny System Ewidencji Ludności** `pl.pesel`\
+    Powszechny Elektroniczny System Ewidencji Ludności is the Polish national ID number, the Powszechny Elektroniczny System Ewidencji Ludności. The number consists of the date of birth, a serial number, the person's gender and a check digit.
+
+- **Portugal** (`PT`)
+
+  - **Cartão de Cidadão** `pt.cc`\
+    Cartão de Cidadão is the Portuguese citizen card number, the Cartão de Cidadão. It is alphanumeric and consists of the numeric Número de Identificação Civil, a two-letter version and a check digit. Format: DDDDDDDD C AAT - DDDDDDDD: Número de Identificação Civil [0-9] - C: Check digit [0-9] - AA: Two-letter version [A-Z, 0-9] - T: Check digit [0-9]
+
+- **Romania** (`RO`)
+
+  - **Codul numeric personal** `ro.cnp`\
+    Codul numeric personal is the Romanian unique identification number for individuals, the Cod numeric personal. The CNP is issued for residents by the Ministry of Internal Affairs. It also serves as tax identification number for natural persons, in particular for sole traders and similar legal types that do not register with the Trade Registry. The CNP consists of 13 digits, the last of which is a check digit (see wikipedia).
+
+- **Slovakia** (`SK`)
+
+  - **Rodné číslo** `sk.rc`\
+    Rodné číslo is the Slovak Republic's birth number, the Rodné číslo. The birth number is the Slovak national identifier. The number can be 9 or 10 digits long. Numbers given out after January 1st 1954 should have 10 digits. The number includes the birth date of the person and their gender
+
+- **Slovenia** (`SI`)
+
+  - **Enotna matična številka občana (Unique Master Citizen Number)** `si.emso`\
+    Enotna matična številka občana (Unique Master Citizen Number) is the Slovenian personal identification number, the EMŠO. The EMŠO is used for uniquely identify persons including foreign citizens living in Slovenia. It is issued by Centralni Register Prebivalstva CRP (Central Citizen Registry). used for identification purposes. The number consists of 13 digits and includes the person's date of birth, a political region of birth and a unique number that encodes a person's gender followed by a check digit.
+
+- **Spain** (`ES`)
+
+  - **Número de Identificación de Extranjero** `es.nie`\
+    Número de Identificación de Extranjero is the Spanish tax ID for foreign nationals, the Número de Identificación de Extranjero.
+  - **Documento Nacional de Identidad** `es.dni`\
+    Documento Nacional de Identidad is the Spanish national ID number, the Documento Nacional de Identidad. It is used for Spanish nationals. Foreign nationals, since 2010 are issued an NIE (Número de Identificación de Extranjeros, Foreigner's Identity Number) instead.
+
+- **Sweden** (`SE`)
+
+  - **Personnummer** `se.pn`\
+    Personnummer is the Swedish personal identity number number, the personnummer. It is issued at birth, or at registration. The personnummer is used as tax identification number. The personnummer has 10 digits and should pass luhn's checksum algorithm. The first six or eight digits are the date of birth of a person, i.e. YYMMDD or YYYYMMDD. The In case the specific day is out of birth numbers, another day (close to the correct one) is used. They are followed by a hyphen, and four final digits. The year a person turns 100 the hyphen is replaced with a plus sign. Among the four last digits, the three first are a serial number. For the last digit among these three, an odd number is assigned to males and an even number to females.
+
+- **United States** (`US`)
+
+  - **Social Security Number** `us.ssn`\
+    Social Security Number is the United States social security number. It is used for taxation of natural persons, like sole traders. From Wikipedia: > The SSN is a nine-digit number, usually written in the format `AAA-GG-SSSS`. > The number has three parts: the first three digits, called the area number because > they were formerly assigned by geographical region; the middle two digits, the > group number; and the last four digits, the serial number.
+
+{/* PERSON_IDENTIFIERS_START */}
+
+{/* PERSON_IDENTIFIERS_START */}
+
