@@ -81,8 +81,10 @@ const { hasSidebar } = Astro.locals.starlightRoute;
   }
 
   .sidebar-content {
-    height: 100%;
-    min-height: max-content;
+    /* Changes here to keep the sidebar footer always visible */
+    flex: 1;
+    overflow: auto;
+    /* End of customization */
     padding: 1rem var(--sl-sidebar-pad-x) 0;
     flex-direction: column;
     gap: 1rem;
