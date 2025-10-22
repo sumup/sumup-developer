@@ -30,17 +30,8 @@ const { sidebar } = Astro.locals.starlightRoute;
 </div>
 
 <style>
-  :root,
-  :root[data-theme="light"] {
+  :root {
     --sl-color-bg-sidebar: var(--cui-bg-normal);
     --sl-sidebar-width: 17rem;
-  }
-
-  :global(sl-sidebar-state-persist) {
-    display: block;
-  }
-
-  :global(.sidebar-content) {
-    gap: 0;
   }
 </style>

@@ -214,7 +214,6 @@ export default defineConfig({
         Sidebar: "./src/overrides/Sidebar.astro",
         SiteTitle: "./src/overrides/SiteTitle.astro",
         SocialIcons: "./src/overrides/SocialIcons.astro",
-        MobileTableOfContents: "./src/overrides/MobileTableOfContents.astro",
         PageFrame: "./src/overrides/PageFrame.astro",
         PageTitle: "./src/overrides/PageTitle.astro",
       },

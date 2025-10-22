@@ -3,7 +3,6 @@ import Default from "@astrojs/starlight/components/MarkdownContent.astro";
 import ImageZoom from "starlight-image-zoom/components/ImageZoom.astro";
 ---
 
-<ImageZoom />
 {
   Astro.locals.starlightRoute.custom ? (
     <slot />
@@ -13,3 +12,4 @@ import ImageZoom from "starlight-image-zoom/components/ImageZoom.astro";
     </Default>
   )
 }
+<ImageZoom />
