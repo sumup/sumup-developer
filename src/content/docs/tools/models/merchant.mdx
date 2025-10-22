@@ -337,6 +337,493 @@ Example:
 }
 ```
 
+### Legal types
+
+Legal type is the official way the business is set up and recognized by the law.
+Legal types are of the pattern `{country_code}.{identifier_type}`. The prefix indicates the country (using [ISO3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)), and the suffix identifies the specific legal type within that country.
+
+{/* LEGAL_TYPES_START */}
+
+#### Australia `AU`
+
+- **Agent** (Agent) `au.agt`
+- **Trust** (Trust) `au.trust`
+- **Co-operative** (Co-operative) `au.coop`
+- **Sole Trader** (Sole Trader) `au.st`
+- **Company** (Company) `au.co`
+- **Partnership** (Partnership) `au.pship`
+- **Association** (Association) `au.assoc`
+
+#### Austria `AT`
+
+- **Alle nicht registrierten Einzelunternehmen und freien Berufe ohne andere Gesellschaftsform** (Einzelunternehmer/Freiberufler) `at.freiberufler`
+- **Eingetragenes Einzelunternehmen (e. U.)** (e.U.) `at.eu`
+- **Gesellschaft bürgerlichen Rechts (GesbR)** (GesbR) `at.gesbr`
+- **Offene Gesellschaft (OG)** (OG) `at.og`
+- **Kommanditgesellschaft (KG)** (KG) `at.kg`
+- **Gesellschaft mit beschränkter Haftung (GmbH)** (GmbH) `at.gmbh`
+- **Aktiengesellschaft (AG)** (AG) `at.ag`
+- **Verein** (Verein) `at.verein`
+- **Andere Rechtsformen** (Andere) `at.andere`
+
+#### Belgium `BE`
+
+- **Entreprise individuelle** (Entreprise individuelle) `be.ei`
+- **Partenariat** (Partenariat) `be.partenariat`
+- **Société en Nom Collectif (SNC)** (Société en Nom Collectif (SNC)) `be.vof`
+- **Société en Commandite par Action (SCA)** (Société en Commandite par Action (SCA)) `be.sca`
+- **Société en Commandite Simple (SCS)** (Société en Commandite Simple (SCS)) `be.cv`
+- **Société Anonyme (SA)** (Société Anonyme (SA)) `be.nv`
+- **Société à responsabilité limitée (S.R.L.)** (Société à responsabilité limitée (S.R.L.)) `be.sprl`
+- **Fondations** (Fondations) `be.stichting`
+- **Association Sans But Lucratif (ASBL)** (Association Sans But Lucratif (ASBL)) `be.asbl`
+- **Société Coopérative à Responsabilité Limitée (SC/SCRL)** (Société Coopérative à Responsabilité Limitée (SC/SCRL)) `be.scscrl`
+- **Société Coopérative à Responsabilité Illimitée (SCRI)** (Société Coopérative à Responsabilité Illimitée (SCRI)) `be.scri`
+- **Agence Publique** (Agence Publique) `be.state_agency`
+
+#### Brazil `BR`
+
+- **Pessoa Física** (Pessoa Física) `br.pessoa_fisica`
+- **LTDA** (LTDA) `br.ltda`
+- **S/A Capital Aberto** (S/A Capital Aberto) `br.sa_capital_aberto`
+- **S/A Capital Fechado** (S/A Capital Fechado) `br.sa_capital_fechado`
+- **Sociedade Simples** (Sociedade Simples) `br.sociedade_simples`
+- **Cooperativa** (Cooperativa) `br.cooperativa`
+- **Associação** (Associação) `br.associacao`
+- **Fundação** (Fundação) `br.fundacao`
+- **Outros** (Outros) `br.outros`
+- **Entidade Sindical** (Entidade Sindical) `br.entidade_sindical`
+- **Empresa de Pequeno Porte (EPP)** (Empresa de Pequeno Porte (EPP)) `br.empresa_pequeno_porte`
+- **Empresa Individual de Responsabilidade Limitada (Eireli)** (Empresa Individual de Responsabilidade Limitada (Eireli)) `br.eireli`
+- **Pessoa Jurídica payleven** (Pessoa Jurídica payleven) `br.pessoa_juridica_payleven`
+- **Micro Empreendedor Individual (MEI)** (Micro Empreendedor Individual (MEI)) `br.empresario_individual`
+- **Pessoa Jurídica** (Pessoa Jurídica) `br.pessoa_juridica`
+- **Empresa individual (EI)** (Empresa individual (EI)) `br.empresa_individual`
+
+#### Bulgaria `BG`
+
+- **Събирателно дружество** (СД) `bg.general_partnership`
+- **Командитно дружество** (КД) `bg.limited_partnership`
+- **Командитно дружество с акции** (КДА) `bg.limited_partnership_with_shares`
+- **Дружество с ограничена oтговорност** (ООД) `bg.private_limited_company`
+- **Еднолично дружество с ограничена отговорност** (ЕООД) `bg.private_limited_company_with_a_single_member`
+- **Акционерно дружество** (АД) `bg.joint-stock_company`
+- **Консорциум** (Консорциум) `bg.association`
+- **Фондация** (Фондация) `bg.foundation`
+- **Кооперация** (Кооперация) `bg.cooperative`
+- **Друго** (Друго) `bg.other`
+- **Едноличен търговец** (Едноличен търговец) `bg.sole_trader`
+- **Професионалист на свободна практика** (Професионалист на свободна практика) `bg.freelancer`
+- **Еднолично акционерно дружество** (ЕАД) `bg.sole_shareholding_company`
+
+#### Canada `CA`
+
+- **Sole proprietorship** (Sole proprietorship) `ca.sp`
+- **Private company** (Private company) `ca.bsns`
+- **Listed public company** (Listed public company) `ca.lpc`
+- **Governmental organization** (Governmental organization) `ca.gorg`
+- **Association incorporated** (Association incorporated) `ca.asinc`
+- **Nonprofit or charitable organisation** (Non-profit) `ca.npro`
+- **Unincorporated partnership** (Unincorporated partnership) `ca.unincpar`
+- **Incorporated partnership** (Partnership) `ca.pship`
+
+#### Chile `CL`
+
+- **Persona Natural** (Persona Natural) `cl.sole_trader`
+- **Sociedad de Responsabilidad Limitada** (Sociedad de Responsabilidad Limitada (SRL)) `cl.ltda`
+- **Sociedad Anónima** (Sociedad Anónima (SA)) `cl.sa`
+- **Sociedad por Acciones** (Sociedad por Acciones (SPA)) `cl.sca`
+- **Empresas Individuales de Responsabilidad Limitada** (Empresa Individual de Responsabilidad Limitada (EIRL)) `cl.eirl`
+- **Sociedad en Comandita Simple** (Sociedad en Comandita Simple) `cl.scs`
+
+#### Colombia `CO`
+
+- **Sociedad por Acciones Simplificadas (S.A.S.)** (Sociedad por Acciones Simplificadas (S.A.S.)) `co.sas`
+- **Sociedad de Responsabilidad Limitada (Ltda.)** (Sociedad de Responsabilidad Limitada (Ltda.)) `co.ltda`
+- **Sociedad Colectiva (S.C.)** (Sociedad Colectiva (S.C.)) `co.sc`
+- **Sociedad Comandita Simple (S. en C.)** (Sociedad Comandita Simple (S. en C.)) `co.sec`
+- **Persona Natural** (Persona Natural) `co.pers`
+- **Empresa Unipersonal (E.U.)** (Empresa Unipersonal (E.U.)) `co.eu`
+- **Sociedad Comandita por Acciones (S.C.A.)** (Sociedad Comandita por Acciones (S.C.A.)) `co.sca`
+- **Sociedad Anónima (S.A.)** (Sociedad Anónima (S.A.)) `co.sa`
+
+#### Croatia `HR`
+
+- **udruga** (udruga) `hr.association_new`
+- **obrt** (obrt) `hr.sole_trader_new`
+- **javno trgovačko društvo** (j.t.d.) `hr.general_partnership_new`
+- **komanditno društvo** (k.d.) `hr.limited_partnership_new`
+- **društvo s ograničenom odgovornošću** (d.o.o. / j.d.o.o.) `hr.private_limited_company_new`
+- **dioničko društvo** (d.d.) `hr.public_limited_company_new`
+- **zadruga** (zadruga) `hr.cooperative_new`
+- **Drugo** (Drugo) `hr.other_new`
+- **Ortaštvo** (Ortaštvo) `hr.partnership_of_two_or_more_sole_traders_new`
+
+#### Cyprus `CY`
+
+- **Δημόσια εταιρεία περιορισμένης ευθύνης** (Δημόσια εταιρεία περιορισμένης ευθύνης) `cy.public_limited_company`
+- **Ατομική επιχείρηση** (Ατομική επιχείρηση) `cy.sole_trader`
+- **Εταιρεία περιορισμένης ευθύνης δια μετοχών** (Εταιρεία περιορισμένης ευθύνης δια μετοχών) `cy.private_limited_company`
+- **Άλλο** (Άλλο) `cy.other`
+- **Εταιρεία περιορισμένης ευθύνης με εγγύηση** (Εταιρεία περιορισμένης ευθύνης με εγγύηση) `cy.company_limited_by_guarantee`
+- **Ομόρρυθμη εταιρεία** (Ομόρρυθμη εταιρεία) `cy.general_partnership`
+- **Συνεταιρισμός** (Συνεταιρισμός) `cy.associations`
+- **Ίδρυμα** (Ίδρυμα) `cy.foundation`
+- **Ετερόρρυθμη εταιρεία** (Ετερόρρυθμη εταιρεία) `cy.limited_partnership`
+
+#### Czech Republic `CZ`
+
+- **Živnost** (Živnost) `cz.sole_trader`
+- **Společnost** (Společnost) `cz.unregistered_partnership`
+- **Veřejná obchodní společnost** (v.o.s.) `cz.general_partnership`
+- **Komanditní společnost** (k.s.) `cz.limited_partnerhip`
+- **Společnost s ručením omezeným** (s.r.o., spol. s r.o.) `cz.private_limited_company`
+- **Akciová společnost** (a.s., akc. spol.) `cz.public_limited_company`
+- **Družstvo** (Družstvo) `cz.cooperative`
+- **Zapsaný spolek** (z.s.) `cz.association`
+- **Nadační fond** (Nadační fond) `cz.foundation`
+- **jiný** (jiný) `cz.other`
+
+#### Denmark `DK`
+
+- **Enkeltmandsvirksomhed** (Enkeltmandsvirksomhed) `dk.sole_trader`
+- **Interessentskab** (I/S) `dk.general_partnership`
+- **Kommanditselskab** (K/S) `dk.limited_partnership`
+- **Partnerselskab or Kommanditaktieselskab** (P/S) `dk.partnership_limited_by_shares`
+- **Anpartsselskab** (ApS) `dk.private_limited_company`
+- **Aktieselskab** (A/S) `dk.public_limited_company`
+- **Andelsselskab med begrænset ansvar** (A.M.B.A.) `dk.limited_liability_co-operative`
+- **Forening med begrænset ansvar** (F.M.B.A.) `dk.limited_liability_voluntary_association`
+- **Forening** (Forening) `dk.association`
+- **Erhvervsdrivende fond** (Erhvervsdrivende fond) `dk.commercial_foundation`
+- **Ikke-erhvervsdrivende fond** (Ikke-erhvervsdrivende fond) `dk.non_commercial_foundation`
+- **Anden** (Anden) `dk.other`
+
+#### Estonia `EE`
+
+- **Füüsilisest Isikust Ettevõtja** (FIE) `ee.sole_trader`
+- **Täisühing** (TÜ) `ee.general_partnership`
+- **Usaldusühing** (UÜ) `ee.limited_partnership`
+- **Osaühing** (OÜ) `ee.private_limited_company`
+- **Aktsiaselts** (AS) `ee.public_limited_company`
+- **Ühistu** (Ühistu) `ee.cooperative`
+- **Muud liiki** (Muud liiki) `ee.other`
+- **Tulundusühistu** (TulÜ) `ee.commercial_association`
+
+#### Finland `FI`
+
+- **Avoin yhtiö** (Ay) `fi.general_partnership`
+- **Kommandiittiyhtiö** (Ky) `fi.limited_partnership`
+- **Osakeyhtiö** (Oy) `fi.private_limited_company`
+- **Julkinen osakeyhtiö** (Oyj) `fi.public_limited_company`
+- **Osuuskunta** (Osk) `fi.cooperative`
+- **Rekisteröity yhdistys** (ry) `fi.registered_association`
+- **Säätiö** (rs) `fi.foundation`
+- **Muut** (Muut) `fi.other`
+- **Yksityinen elinkeinonharjoittaja** (Yksityinen elinkeinonharjoittaja) `fi.sole_trader`
+
+#### France `FR`
+
+- **Entrepreneur Individuel is a sole trader legal type.** (Entrepreneur Individuel) `fr.ei`
+- **EURL** (EURL) `fr.eurl`
+- **SARL** (SARL) `fr.sarl`
+- **SA** (SA) `fr.sa`
+- **SAS** (SAS) `fr.sas`
+- **SASU** (SASU) `fr.sasu`
+- **SNC** (SNC) `fr.snc`
+- **Association** (Association) `fr.association`
+- **Autres** (Autres) `fr.autres`
+
+#### Germany `DE`
+
+- **Alle nicht registrierten Einzelunternehmen und freien Berufe ohne andere Gesellschaftsform** (Einzelunternehmer/Freiberufler) `de.freiberufler`
+- **Eingetragener Kaufmann / Eingetragene Kauffrau (e.K., e.Kfm. oder e.Kfr.)** (e.Kfm./e.Kfr.) `de.ekfr`
+- **Gesellschaft bürgerlichen Rechts (GbR)** (GbR) `de.gbr`
+- **Offene Handelsgesellschaft (OHG)** (OHG) `de.ohg`
+- **Kommanditgesellschaft (KG)** (KG) `de.kg`
+- **Unternehmergesellschaft (UG (haftungsbeschränkt))** (UG (haftungsbeschränkt)) `de.ug`
+- **Gesellschaft mit beschränkter Haftung (GmbH)** (GmbH) `de.gmbh`
+- **GmbH & Co. KG** (GmbH & Co. KG) `de.gmbhco`
+- **Aktiengesellschaft (AG)** (AG) `de.ag`
+- **Eingetragener Verein (e.V.)** (e.V.) `de.ev`
+- **Andere Rechtsformen** (Andere) `de.andere`
+- **Stiftung** (Stiftung) `de.stiftung`
+- **Genossenschaft (eG)** (eG) `de.genossenschaft`
+- **Körperschaft öffentlichen Rechts (KöR)** (KöR) `de.koerperschaft`
+
+#### Greece `GR`
+
+- **Atomikí epicheírisi / ατομική επιχείρηση** (Atomikí epicheírisi / ατομική επιχείρηση) `gr.sole_trader`
+- **Omórithmi Etaireía / Ομόρρυθμη Εταιρεία** (OE) `gr.general_partnership`
+- **Eterórithmi Etaireía / Ετερόρρυθμη Εταιρία** (EE) `gr.limited_partnership`
+- **Anónimi Etaireía / Ανώνυμη Εταιρεία** (AE) `gr.public_limited_company`
+- **Etaireía Periorisménis Euthínis / Εταιρεία Περιορισμένης Ευθύνης** (EPE) `gr.private_limited_company`
+- **Monoprósopi Etaireía Periorisménis Euthínis / Μονοπρόσωπη** (MEPE) `gr.ltd_with_a_single_member`
+- **Άλλο** (Άλλο) `gr.other`
+- **Συνεταιρισμός** (Συνεταιρισμός) `gr.association`
+- **Ίδρυμα** (Ίδρυμα) `gr.foundation`
+
+#### Hungary `HU`
+
+- **Egyéni vállalkozó** (e.v.) `hu.sole_trader`
+- **Egyéni cég** (e.c.) `hu.registered_sole_trader`
+- **Betéti társaság** (bt.) `hu.limited_partnership`
+- **Közkereseti társaság** (kkt.) `hu.general_partnership`
+- **Korlátolt felelősségű társaság** (kft.) `hu.private_limited_company`
+- **Nyilvánosan működő részvénytársaság** (Nyrt.) `hu.public_limited_company`
+- **Zártközűen működő részvénytársaság** (Zártközűen működő részvénytársaság) `hu.privately_held_company`
+- **Társaság** (Társaság) `hu.cooperative`
+- **Szövetség** (Szövetség) `hu.association`
+- **Alapítvány** (Alapítvány) `hu.foundation`
+- **Más** (Más) `hu.other`
+
+#### Ireland `IE`
+
+- **Sole proprietorship / sole trader** (Sole trader) `ie.sole_trader`
+- **All clubs or societies** (Club or society) `ie.society`
+- **All schools, colleges or universities** (School, college or university) `ie.edu`
+- **All other legal forms** (Other) `ie.other`
+- **Private limited company** (Limited company (Ltd.)) `ie.limited`
+- **All partnerships** (Partnership (LP, LLP)) `ie.partnership`
+
+#### Italy `IT`
+
+- **Società a responsabilità limitata semplificata (Srls)** (Società a responsabilità limitata semplificata (Srls)) `it.srls`
+- **Società a responsabilità limitata unipersonale (Srl Uni)** (Società a responsabilità limitata unipersonale (Srl Uni)) `it.srl_uni`
+- **Società Semplice (S.s.)** (Società Semplice (S.s.)) `it.ss`
+- **Libero Professionista** (Libero Professionista) `it.libero`
+- **Imprenditore individuale** (Imprenditore individuale) `it.individuale`
+- **Società in nome collettivo (S.n.c.)** (Società in nome collettivo (S.n.c.)) `it.snc`
+- **Società in accomandita semplice (S.a.s)** (Società in accomandita semplice (S.a.s)) `it.sas`
+- **Società Cooperativa** (Società Cooperativa) `it.societa_cooperative`
+- **Società per Azioni (Spa)** (Società per Azioni (Spa)) `it.spa`
+- **Società a responsabilità limitata (Srl)** (Società a responsabilità limitata (Srl)) `it.srl`
+- **Società di capitali** (Società di capitali) `it.società_di_capitali`
+- **Società di persone** (Società di persone) `it.società_di_persone`
+- **Società in accomandita per azioni** (Società in accomandita per azioni) `it.siapa`
+- **Agenzia Statale** (Agenzia Statale) `it.agenzia_statale`
+- **Associazioni** (Associazioni) `it.associazioni`
+
+#### Latvia `LV`
+
+- **Individuālais komersants** (IK) `lv.sole_trader`
+- **Komandītsabiedrība** (KS) `lv.limited_partnership`
+- **Pilnsabiedrība** (PS) `lv.general_partnership`
+- **Sabiedrība ar ierobežotu atbildību** (SIA) `lv.private_limited_company`
+- **Akciju sabiedrība** (AS) `lv.public_limited_company`
+- **Asociācija** (Asociācija) `lv.association`
+- **Fonds** (Fonds) `lv.foundation`
+
+#### Lithuania `LT`
+
+- **Individuali veikla** (Individuali veikla) `lt.sole_trader`
+- **Individuali įmonė** (IĮ) `lt.individual_company`
+- **Tikroji ūkinė bendrija** (TŪB) `lt.general_partnership`
+- **Komanditinė ūkinė bendrija** (KŪB) `lt.limited_partnership`
+- **Mažoji bendrija** (MB) `lt.small_partnership`
+- **Uždaroji akcinė bendrovė** (UAB) `lt.private_limited_company`
+- **Akcinė bendrovė** (AB) `lt.public_limited_company`
+- **Kooperatinė bendrovė** (Kooperatinė bendrovė) `lt.cooperative`
+- **Asociacija** (Asociacija) `lt.association`
+- **Fondas** (Fondas) `lt.foundation`
+- **Kitas** (Kitas) `lt.other`
+
+#### Luxembourg `LU`
+
+- **Entrepreneur Individual** (Entrepreneur Individual) `lu.sole_trader`
+- **Société en commandite simple** (SECS) `lu.limited_partnership`
+- **Sociéteé civil or sociéteé en nom collectif** (SENC) `lu.general_partnership`
+- **Société en commandité par actions** (SCA) `lu.partnership_limited_by_shares`
+- **Société à responsabilitée limitée** (SARL) `lu.private_limited_company`
+- **Société anonyme** (SA) `lu.public_limited_company`
+- **Société co-opérative** (SC) `lu.cooperative`
+- **Association** (Association) `lu.association`
+- **Autres** (Autres) `lu.other`
+
+#### Malta `MT`
+
+- **Sole trader** (Sole trader) `mt.sole_trader`
+- **Limited partnership** (Limited partnership) `mt.limited_partnership`
+- **General partnership** (General partnership) `mt.general_partnership`
+- **Private limited company** (Private limited company) `mt.private_limited_company`
+- **Public limited company** (Public limited company) `mt.public_limited_company`
+- **Association** (Association) `mt.associations`
+- **Foundation** (Foundation) `mt.foundation`
+- **Other** (Other) `mt.other`
+
+#### Mexico `MX`
+
+- **Persona fisica** (Persona fisica) `mx.persona_fisica`
+- **Persona moral** (Persona moral) `mx.persona_moral`
+- **Empresa sin fin de lucro** (Empresa sin fin de lucro) `mx.empresa_sin_fin_de_lucro`
+
+#### Netherlands `NL`
+
+- **Zzp (Zelfstandige Zonder Personeel)** (Zzp (Zelfstandige Zonder Personeel)) `nl.zzp`
+- **Eenmanszaak (KvK registratie)** (Eenmanszaak (KvK registratie)) `nl.kvk`
+- **Maatschap** (Maatschap) `nl.maatschap`
+- **Vennootschap Onder Firma (VOF)** (Vennootschap Onder Firma (VOF)) `nl.vof`
+- **Commanditaire Vennootschap (CV)** (Commanditaire Vennootschap (CV)) `nl.cv`
+- **Naamloze Vennootschap (NV)** (Naamloze Vennootschap (NV)) `nl.nv`
+- **Besloten Vennootschap (BV)** (Besloten Vennootschap (BV)) `nl.bv`
+- **Stichting** (Stichting) `nl.stichting`
+- **Vereniging met volledige rechtsbevoegdheid** (Vereniging met volledige rechtsbevoegdheid) `nl.vvr`
+- **Vereniging met beperkte rechtsbevoegdheid** (Vereniging met beperkte rechtsbevoegdheid) `nl.vbr`
+- **Coöperatie en Onderlinge Waarborgmaatschappij** (Coöperatie en Onderlinge Waarborgmaatschappij) `nl.cow`
+- **Overheidsinstelling** (Overheidsinstelling) `nl.overheidsinstelling`
+- **Vereniging** (Vereniging) `nl.vereniging`
+
+#### Norway `NO`
+
+- **Enkeltpersonforetak** (ENK) `no.sole_trader`
+- **Kommandittselsjap** (KS) `no.limited_partnership`
+- **Ansvarlig Selskap** (ANS/DA) `no.general_partnership`
+- **Aksjeselskap** (AS) `no.private_limited_company`
+- **Allmennaksjeselskap** (ASA) `no.public_limited_company`
+- **Samvirkeforetak** (Samvirkeforetak) `no.cooperative`
+- **Stiftelse** (Stiftelse) `no.foundation`
+- **Forening** (Forening) `no.association`
+- **Norskregistrert Utenlandsk Foretak** (Norskregistrert Utenlandsk Foretak) `no.norwegian_registered_foreign_enterprise`
+- **Annen** (Annen) `no.other`
+
+#### Peru `PE`
+
+- **Persona Natural** (Persona Natural) `pe.pers`
+- **Empresa Unipersonal (E.U.)** (Empresa Unipersonal (E.U.)) `pe.eu`
+- **Empresa Individual de Responsabilidad Limitada (E.I.R.L.)** (Empresa Individual de Responsabilidad Limitada (E.I.R.L.)) `pe.eirl`
+- **Sociedad Anónima (S.A.)** (Sociedad Anónima (S.A.)) `pe.sa`
+- **Sociedad Anónima Abierta (S.A.A.)** (Sociedad Anónima Abierta (S.A.A.)) `pe.saa`
+- **Sociedad Anónima Cerrada (S.A.C.)** (Sociedad Anónima Cerrada (S.A.C.)) `pe.sac`
+- **Sociedad Comercial de Responsabilidad Limitada (S.R.L.)** (Sociedad Comercial de Responsabilidad Limitada (S.R.L.)) `pe.srl`
+- **Sociedad por Acciones Cerrada Simplificada (S.A.C.S.)** (Sociedad por Acciones Cerrada Simplificada (S.A.C.S.)) `pe.sacs`
+- **Associación** (Associación) `pe.associación`
+- **Fundación** (Fundación) `pe.fundación`
+- **Comité** (Comité) `pe.comité`
+
+#### Poland `PL`
+
+- **Spółka Cywilna** (Spółka Cywilna) `pl.cywilna`
+- **Indywidualna działalność gospodarcza** (Indywidualna działalność gospodarcza) `pl.indywidualna`
+- **Stowarzyszenie/Fundacja** (Stowarzyszenie/Fundacja) `pl.stowarzyszenie_fundacja`
+- **spółka komandytowo-akcyjna** (Spółka komandytowo-akcyjna) `pl.komandytowo-akcyjna`
+- **spółka komandytowa** (Spółka komandytowa) `pl.komandytowa`
+- **spółka jawna** (Spółka jawna) `pl.jawna`
+- **spółka akcyjna** (Spółka akcyjna) `pl.akcyjna`
+- **spółka z o.o.** (Spółka z o.o.) `pl.zoo`
+- **spółka partnerska** (Spółka partnerska) `pl.partnerska`
+
+#### Portugal `PT`
+
+- **Empresário em nome individual** (Empresário em nome individual) `pt.eni`
+- **Associação/Organização sem fins lucrativos** (Associação/Organização sem fins lucrativos) `pt.asfl`
+- **Sociedade Civil** (Sociedade Civil) `pt.sociedad`
+- **Sociedade por Quotas** (Sociedade por Quotas) `pt.sociedad_limitada`
+- **Sociedade Anônima** (Sociedade Anônima) `pt.sociedad_anonima`
+- **Sociedade em Comandita** (Sociedade em Comandita) `pt.sociedad_comanditaria`
+- **Sociedade em Nome Colectivo** (Sociedade em Nome Colectivo) `pt.sociedad_colectiva`
+- **Cooperativas** (Cooperativas) `pt.sociedad_cooperativa`
+- **Espresa Estatal** (Espresa Estatal) `pt.state_agency`
+- **Pessoas Colectivas de Direito Público** (Pessoas Colectivas de Direito Público) `pt.pcdp`
+
+#### Romania `RO`
+
+- **Persoana fizica autorizata** (PFA) `ro.sole_trader`
+- **Asociere fără personalitate juridică** (Asociere fără personalitate juridică) `ro.unregistered_partnership`
+- **Societatea în nume colectiv** (SNC) `ro.general_partnership`
+- **Societatea în comandită simplă** (SCS) `ro.limited_partnership`
+- **Societatea în comandită pe acțiuni,** (SCA) `ro.partnership_limited_by_shares`
+- **Societatea pe acțiuni** (SA) `ro.public_limited_company`
+- **Societatea cu răspundere limitată** (SRL) `ro.private_limited_company`
+- **Societatea cu răspundere limitată cu proprietar unic** (SRL cu proprietar unic) `ro.private_limited_company_with_sole_owner`
+- **Cooperativă** (Cooperativă) `ro.cooperative`
+- **Asociație** (Asociație) `ro.association`
+- **Fundație** (Fundație) `ro.foundation`
+- **Alt** (Alt) `ro.other`
+
+#### Slovakia `SK`
+
+- **akciová spoločnosť** (a.s.) `sk.public_limited_company`
+- **verejná obchodná spoločnosť** (v.o.s.) `sk.general_partnership`
+- **komanditná spoločnosť** (k.s.) `sk.limited_partnership`
+- **spoločnosť s ručením obmedzeným** (s.r.o.) `sk.private_limited_company`
+- **živnostník** (živnostník) `sk.sole_trader`
+- **Združenie bez právnej subjektivity** (Združenie bez právnej subjektivity) `sk.unregistered_partnership`
+- **Združenie** (Združenie) `sk.association`
+- **Nadácia** (Nadácia) `sk.foundation`
+- **Podnik / Organizačná zložka podniku zahraničnej osob** (Podnik / Organizačná zložka podniku zahraničnej osob) `sk.enterprise_or_foreign_company`
+- **Iný** (Iný) `sk.other`
+- **Družstvo** (Družstvo) `sk.cooperative`
+
+#### Slovenia `SI`
+
+- **Komanditna delniška družba** (k.d.d.) `si.partnership_limited_by_shares`
+- **Združenje** (Združenje) `si.foundation`
+- **Samostojni podjetnik** (s.p.) `si.sole_trader`
+- **Komanditna družba** (k.d.) `si.limited_partnership`
+- **Družba z neomejeno odgovornostjo** (d.n.o.) `si.private_unlimited_company`
+- **Družba z omejeno odgovornostjo** (d.o.o.) `si.private_limited_company`
+- **Delniška družba** (d.d.) `si.public_limited_company`
+- **Zadruga** (Zadruga) `si.cooperative`
+- **Druga** (Druga) `si.other`
+- **Društvo, zveza društev** (Društvo, zveza društev) `si.association`
+
+#### Spain `ES`
+
+- **Empresario Individual/autónomo** (Empresario Individual/autónomo) `es.autonomo`
+- **Comunidad de Bienes** (Comunidad de Bienes) `es.comunidad`
+- **Sociedad Civil** (Sociedad Civil) `es.sociedad`
+- **Asociaciones sin ánimo de lucro** (Asociaciones sin ánimo de lucro) `es.asociaciones`
+- **Sociedad Colectiva** (Sociedad Colectiva) `es.sociedad_colectiva`
+- **Sociedad Limitada** (Sociedad Limitada) `es.sociedad_limitada`
+- **Sociedad Anónima** (Sociedad Anónima) `es.sociedad_anonima`
+- **Sociedad Comanditaria** (Sociedad Comanditaria) `es.sociedad_comanditaria`
+- **Sociedad Cooperativa** (Sociedad Cooperativa) `es.sociedad_cooperativa`
+- **Agencia Estatal** (Agencia Estatal) `es.state_agency`
+
+#### Sweden `SE`
+
+- **Enskildnärings - verksamhet** (Enskildnärings) `se.sole_trader`
+- **Kommanditbolag** (Kommanditbolag) `se.limited_partnership`
+- **Aktiebolag** (Aktiebolag) `se.limited`
+- **Handelsbolag** (Handelsbolag) `se.trading_partnership`
+- **Förening** (Förening) `se.economic_association`
+
+#### Switzerland `CH`
+
+- **Kollektivgesellschaft** (Kollektivgesellschaft) `ch.kollektivgesellschaft`
+- **Kollektivgesellschaft (OLD)** (Kollektivgesellschaft (OLD)) `ch.kollektivgesellschaft`
+- **Einzelfirma** (Einzelfirma) `ch.einzelfirma`
+- **Kommanditgesellschaft** (Kommanditgesellschaft) `ch.kommanditgesellschaft`
+- **Gesellschaft mit beschränkter Haftung** (Gesellschaft mit beschränkter Haftung) `ch.gesellschaft_haftung`
+- **Aktiengesellschaft/ Société anonyme** (Aktiengesellschaft/ Société anonyme) `ch.aktiengesellschaft_societe`
+- **Verein** (Verein) `ch.ch_verein`
+- **Einfache Gesellschaft** (Einfache Gesellschaft) `ch.einfachegesellschaft`
+
+#### United Kingdom `GB`
+
+- **All partnerships** (Partnership (LP, LLP)) `gb.partnership`
+- **Sole proprietorship / sole trader** (Sole trader) `gb.sole_trader`
+- **All clubs or societies** (Club or society) `gb.society`
+- **All schools, colleges or universities** (School, college or university) `gb.edu`
+- **All other legal forms** (Other) `gb.other`
+- **Private limited company** (Limited company (Ltd.)) `gb.limited`
+
+#### United States `US`
+
+- **Limited Partnership** (LP) `us.partnership`
+- **Limited Liability Partnership** (LLP) `us.llp`
+- **Limited Liability Limited Partnership** (LLLP) `us.lllp`
+- **Limited Company** (LC) `us.lc`
+- **Limited Liability Company** (LLC) `us.llc`
+- **Professional Limited Liability Company** (PLLC) `us.pllc`
+- **Single Member Limited Liability Company** (SMLLC) `us.smllc`
+- **Corporation Incorporated** (Corp. Inc.) `us.corp_inc`
+- **Professional Corporation** (PC) `us.pc`
+- **Non-profit Organisation** (Non-profit Organisation) `us.uba_org`
+- **Sole proprietorship** (Sole proprietorship) `us.sole_trader`
+
+{/* LEGAL_TYPES_END */}
+
 ## Business Profile
 
 A Merchant's business profile contains information that a Merchant wants to be
