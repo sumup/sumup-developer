@@ -67,11 +67,13 @@ You can use the sample app provided in the GitHub repository as a reference.
 2. Add the dependency to a module `build.gradle`:
 
    Production dependency:
+
    ```kotlin
    implementation("com.sumup.tap-to-pay:utopia-sdk:1.0.1")
    ```
 
    Testing dependency:
+
    ```kotlin
    implementation("com.sumup.tap-to-pay:utopia-sdk-dev-protected:1.0.1")
    ```
@@ -339,7 +341,7 @@ It is still possible to have a USB debugging enabled and Developer Mode disabled
 
 To test Tap to Pay on Android in Brazil and Chile, you should set `processCardAs` for each transaction. For example:
 
-``` kotlin
+```kotlin
 tapToPay.startPayment(
     CheckoutData(
         totalAmount = amount,
@@ -356,4 +358,4 @@ tapToPay.startPayment(
 ```
 
 Additionally, each transaction in Brazil and Chile should be verified by PIN.
-However, the PIN entry screen will appear only if *Developer Options* are *disabled* on the device - otherwise, the transaction will fail with an error.
+However, the PIN entry screen will appear only if _Developer Options_ are _disabled_ on the device - otherwise, the transaction will fail with an error.
