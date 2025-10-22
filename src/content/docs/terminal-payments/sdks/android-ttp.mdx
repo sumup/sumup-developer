@@ -332,3 +332,28 @@ Before testing in production, make sure of the following:
 
 On some devices (e.g. Samsung), you still have to disable USB debugging before disabling the Developer Mode.
 It is still possible to have a USB debugging enabled and Developer Mode disabled, but it depends on the device manufacturer.
+
+### Testing in Specific Regions
+
+#### Brazil and Chile
+
+To test Tap to Pay on Android in Brazil and Chile, you should set `processCardAs` for each transaction. For example:
+
+``` kotlin
+tapToPay.startPayment(
+    CheckoutData(
+        totalAmount = amount,
+        clientUniqueTransactionId = UUID.randomUUID().toString(),
+        tipsAmount = null,
+        vatAmount = null,
+        customItems = null,
+        products = null,
+        priceItems = null,
+        processCardAs = ProcessCardAs.Credit(instalments = 5), // or ProcessCardAs.Debit
+        affiliateData = null
+    )
+)
+```
+
+Additionally, each transaction in Brazil and Chile should be verified by PIN.
+However, the PIN entry screen will appear only if *Developer Options* are *disabled* on the device - otherwise, the transaction will fail with an error.
