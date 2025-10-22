@@ -199,6 +199,10 @@ export default defineConfig({
           label: "Common Topics",
           autogenerate: { directory: "tools", collapsed: true },
         },
+        {
+          label: "Resources",
+          autogenerate: { directory: "resources", collapsed: true },
+        },
       ],
       head: head(),
       components: {
