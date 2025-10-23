@@ -3855,7 +3855,7 @@ paths:
       operationId: CreateReaderCheckout
       summary: Create a Reader Checkout
       description: |
-        Create a Checkout for a Reader.
+        Creates a Checkout for a Reader.
 
         This process is asynchronous and the actual transaction may take some time to be stared on the device.
 
@@ -3956,6 +3956,8 @@ paths:
             - readers.write
       tags:
         - Readers
+      x-codegen:
+        method_name: create_checkout
       x-permissions:
         - readers_checkout_create
       x-scopes:
@@ -3963,11 +3965,9 @@ paths:
   '/v0.1/merchants/{merchant_code}/readers/{reader_id}/terminate':
     post:
       operationId: CreateReaderTerminate
-      summary: Create a Reader Terminate action
+      summary: Terminate a Reader Checkout
       description: |
-        Create a Terminate action for a Reader.
-
-        It stops the current transaction on the target device.
+        Terminate a Reader Checkout stops the current transaction on the target device.
 
         This process is asynchronous and the actual termination may take some time to be performed on the device.
 
@@ -4052,6 +4052,8 @@ paths:
             - readers.write
       tags:
         - Readers
+      x-codegen:
+        method_name: terminate_checkout
       x-permissions:
         - readers_checkout_create
       x-scopes:
@@ -8092,12 +8094,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Customer'
-    CustomerCreate:
-      description: Created
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Customer'
     PaymentInstrumentList:
       description: OK
       content:
@@ -8106,18 +8102,6 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/PaymentInstrumentResponse'
-    PaymentInstrument:
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/PaymentInstrumentCard'
-    PaymentInstrumentCreate:
-      description: Created
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/PaymentInstrumentResponse'
     PersonalProfileLegacy:
       description: OK
       content:
@@ -8131,8 +8115,6 @@ components:
           schema:
             $ref: '#/components/schemas/TransactionFull'
     NoBodyResponse:
-      description: No Content
-    ErrorBadRequest:
       description: No Content
     ErrorNotAuthorized:
       description: Unauthorized
@@ -8259,54 +8241,6 @@ components:
                     $ref: '#/components/schemas/ErrorCategoryClient'
                   code:
                     $ref: '#/components/schemas/ErrorCodeNotFound'
-    400BadRequest:
-      description: |
-        The request is invalid. This can happen if the request body is malformed, or if the request parameters are invalid.
-      content:
-        application/json:
-          schema:
-            allOf:
-              - $ref: '#/components/schemas/BaseError'
-              - type: object
-                properties:
-                  category:
-                    $ref: '#/components/schemas/ErrorCategoryClient'
-                  code:
-                    $ref: '#/components/schemas/ErrorCodeBadRequest'
-    401Unauthorized:
-      description: |
-        The request cannot be authorized. The access token is either missing or expired.
-      headers:
-        WWW-Authenticate:
-          description: |
-            HTTP Authentication methods that might be used to gain access to the resource.
-
-            Can be one of the authentication methods usable with the SumupAPIs:
-
-            * "X-Challenge-Id" authentication method
-              * error "challenge_required" means that the endpoint requires the user to confirm the request by solving a challenge. The response will contain `challenge_id` field with the ID of the challenge that can be used with the challenges APIs to solve it. After that the user should retry the request with the solved challenge included.
-            * "Bearer" authentication method
-              * error "insufficient_user_authentication" which means that it requires the user to go through step-up first. The response can also contains `max_age`, `acr_values`, and `authorization_details` that are to be passed to the `/authorize` endpoint.
-          schema:
-            type: string
-          examples:
-            Challenge required:
-              value: |
-                Bearer error="challenge_required", error_description="Method requires activation via challenge.", challenge_id="chlng_12c1XKOd1pkcjOIJ1llk1nSskj1"
-            Step-up required:
-              value: |
-                Bearer error="challenge_required", error_description="Method requires activation via challenge.", max_age="300"
-      content:
-        application/json:
-          schema:
-            allOf:
-              - $ref: '#/components/schemas/BaseError'
-              - type: object
-                properties:
-                  category:
-                    $ref: '#/components/schemas/ErrorCategoryAuthorization'
-                  code:
-                    $ref: '#/components/schemas/ErrorCodeUnauthorized'
     500InternalServerError:
       description: |
         An internal server error occurred.
@@ -8321,40 +8255,6 @@ components:
                     $ref: '#/components/schemas/ErrorCategoryServer'
                   code:
                     $ref: '#/components/schemas/ErrorCodeInternalServerError'
-    403Forbidden:
-      description: |
-        The request is not allowed. The user not allowed to perform specific action or the action is otherwise restricted.
-      headers:
-        WWW-Authenticate:
-          description: |
-            HTTP Authentication methods that might be used to gain access to the resource.
-
-            Can be one of the authentication methods usable with the SumupAPIs:
-
-            * "X-Challenge-Id" authentication method
-              * error "challenge_required" means that the endpoint requires the user to confirm the request by solving a challenge. The response will contain `challenge_id` field with the ID of the challenge that can be used with the challenges APIs to solve it. After that the user should retry the request with the solved challenge included.
-            * "Bearer" authentication method
-              * error "insufficient_user_authentication" which means that it requires the user to go through step-up first. The response can also contains `max_age`, `acr_values`, and `authorization_details` that are to be passed to the `/authorize` endpoint.
-          schema:
-            type: string
-          examples:
-            Challenge required:
-              value: |
-                Bearer error="challenge_required", error_description="Method requires activation via challenge.", challenge_id="chlng_12c1XKOd1pkcjOIJ1llk1nSskj1"
-            Step-up required:
-              value: |
-                Bearer error="challenge_required", error_description="Method requires activation via challenge.", max_age="300"
-      content:
-        application/json:
-          schema:
-            allOf:
-              - $ref: '#/components/schemas/BaseError'
-              - type: object
-                properties:
-                  category:
-                    $ref: '#/components/schemas/ErrorCategoryClient'
-                  code:
-                    $ref: '#/components/schemas/ErrorCodeForbidden'
   securitySchemes:
     apiKey:
       description: |
