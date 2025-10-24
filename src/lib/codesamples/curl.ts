@@ -1,7 +1,10 @@
 // Adapted from https://github.com/albertodeago/curl-generator
 import type { OperationObject } from "src/types/openapi";
-import { bodyExample } from "./util";
+import { getRequestBodyExample } from "./util";
 
+/**
+ * Generates a JSON body string for curl commands.
+ */
 export function jsonBody(
   body: Record<string | number | symbol, unknown>,
 ): string {
@@ -51,24 +54,22 @@ const getCurlHeaders = function (headers?: StringMap): string {
   return result;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const getCurlBody = function (body?: any): string {
-  let result = "";
-  if (body) {
-    result += `${slash}${newLine} ${jsonBody(body)}`;
+const getCurlBody = function (operation: OperationObject): string {
+  const body = getRequestBodyExample(operation);
+  if (!body) {
+    return "";
   }
-  return result;
+
+  return `${slash}${newLine} ${jsonBody(body)}`;
 };
 
 export const curl = (operation: OperationObject): string => {
-  const example = bodyExample(operation);
-
   let curlSnippet = "curl ";
   curlSnippet += `https://api.sumup.com${operation.path}`;
   curlSnippet += getCurlMethod(operation.method);
   curlSnippet += getCurlHeaders({
     Authorization: "Bearer $SUMUP_API_KEY",
   });
-  curlSnippet += getCurlBody(example);
+  curlSnippet += getCurlBody(operation);
   return curlSnippet.trim();
 };
