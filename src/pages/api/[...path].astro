@@ -110,17 +110,17 @@ const { path } = Astro.params;
 const [tag, section] = (path || "").split("/");
 ---
 
+<link
+  slot="head"
+  rel="canonical"
+  href={`https://developer.sumup.com/docs/api/${section || tag}`}
+/>
+{
+  (tag || section) && (
+    <link rel="canonical" href="`https://developer.sumup.com/api" />
+  )
+}
 <StarlightPage {...props}>
-  <link
-    slot="head"
-    rel="canonical"
-    href={`https://developer.sumup.com/docs/api/${section || tag}`}
-  />
-  {
-    (tag || section) && (
-      <link rel="canonical" href="`https://developer.sumup.com/api" />
-    )
-  }
   <ApiDocs target={path} />
 </StarlightPage>
 
