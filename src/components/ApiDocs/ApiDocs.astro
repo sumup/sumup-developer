@@ -78,6 +78,12 @@ const { target } = Astro.props;
                 code: "composer require sumup/sumup-ecom-php-sdk",
                 lang: "bash",
               },
+              {
+                label: "Rust",
+                value: "rust",
+                code: "cargo add sumup",
+                lang: "bash",
+              },
             ]}
             isLanguageSelect
           >
@@ -101,6 +107,10 @@ const { target } = Astro.props;
                   {
                     label: "Php",
                     value: "php",
+                  },
+                  {
+                    label: "Rust",
+                    value: "rust",
                   },
                 ]}
               />
@@ -189,6 +199,14 @@ client = SumUp(api_key="sup_sk_MvxmLOl0...")`,
                 code: "composer require sumup/sumup-ecom-php-sdk",
                 lang: "php",
               },
+              {
+                label: "Rust",
+                value: "rust",
+                code: `use sumup::Client;
+
+let client = Client::default().with_authorization("sup_sk_MvxmLOl0...");`,
+                lang: "rust",
+              },
             ]}
             isLanguageSelect
           >
@@ -212,6 +230,10 @@ client = SumUp(api_key="sup_sk_MvxmLOl0...")`,
                   {
                     label: "Php",
                     value: "php",
+                  },
+                  {
+                    label: "Rust",
+                    value: "rust",
                   },
                 ]}
               />

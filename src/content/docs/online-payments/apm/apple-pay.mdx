@@ -6,7 +6,7 @@ sidebar:
 ---
 
 import { Aside } from "@astrojs/starlight/components";
-import Image from '@components/content/Image.astro';
+import Image from "@components/content/Image.astro";
 
 In this guide, you will learn how to directly integrate Apple Pay with SumUp.
 
@@ -16,9 +16,13 @@ In this guide, you will learn how to directly integrate Apple Pay with SumUp.
 - Get familiar with [Apple Pay on the Web guide](https://developer.apple.com/documentation/apple_pay_on_the_web).
 - Offering Apple Pay requires registering with Apple on all web domains that will expose an Apple Pay button (includes TLD and subdomains). This is a requirement for production AND test environments.
 - If you want to test payments without involving real funds, [create a test profile](/online-payments/#getting-a-test-account).
-- Complete the domain onboarding setup steps described in your Dashboard under **Settings** > **For developers** > **Payment wallets**. 
+- Complete the domain onboarding setup steps described in your Dashboard under **Settings** > **For developers** > **Payment wallets**.
 
-<Image alt="Screenshot of the dashboard Developer Settings, showing Payment wallets section that includes Apple Pay and Google Pay" src="/img/guides/find_payment_wallets.png" width="80%" />
+<Image
+  alt="Screenshot of the dashboard Developer Settings, showing Payment wallets section that includes Apple Pay and Google Pay"
+  src="/img/guides/find_payment_wallets.png"
+  width="80%"
+/>
 
 ## Accepting Apple Pay Payments With SumUp
 
