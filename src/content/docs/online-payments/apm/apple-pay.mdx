@@ -6,24 +6,26 @@ sidebar:
 ---
 
 import { Aside } from "@astrojs/starlight/components";
+import Image from '@components/content/Image.astro';
 
-Offering Apple Pay requires registering with Apple on all web domains that will expose an Apple Pay button (includes TLD and subdomains). This is a requirement for production AND test environments.
+In this guide, you will learn how to directly integrate Apple Pay with SumUp.
 
-## Before you begin
+## Prerequisites
 
-Here are the things that you need in order to complete the steps in this guide:
+- You have a merchant profile with [SumUp](https://me.sumup.com/login) and have already filled in your [profile details](https://me.sumup.com/account).
+- Get familiar with [Apple Pay on the Web guide](https://developer.apple.com/documentation/apple_pay_on_the_web).
+- Offering Apple Pay requires registering with Apple on all web domains that will expose an Apple Pay button (includes TLD and subdomains). This is a requirement for production AND test environments.
+- If you want to test payments without involving real funds, [create a test profile](/online-payments/#getting-a-test-account).
+- Complete the domain onboarding setup steps described in your Dashboard under **Settings** > **For developers** > **Payment wallets**. 
 
-- You have a merchant profile with [SumUp](https://me.sumup.com/login) and have already filled in your [profile details](https://me.sumup.com/account)
-- For a test profile reach out to our support team through this [contact form](https://developer.sumup.com/contact/)
+<Image alt="Screenshot of the dashboard Developer Settings, showing Payment wallets section that includes Apple Pay and Google Pay" src="/img/guides/find_payment_wallets.png" width="80%" />
 
-## Steps
+## Accepting Apple Pay Payments With SumUp
 
-Apple’s documentation for [Apple Pay on the Web](https://developer.apple.com/documentation/apple_pay_on_the_web) describes the specifics required from their side in order to successfully move forward with creating and processing checkouts. To begin your implementation, follow these steps:
+To begin your implementation, follow these steps:
 
-1. Host the [domain association file](https://checkout.sumup.link/.well-known/apple-developer-merchantid-domain-association) at `https://[YOUR_DOMAIN_NAME]/.well-known/apple-developer-merchantid-domain-association`. Once hosted, request [our integration specialists](/contact) help finalize your connection to Apple Pay
-2. Before moving on to the next steps, get familiar with [Apple’s requirements](https://developer.apple.com/documentation/apple_pay_on_the_web/applepaypaymentrequest)
-3. [Create a checkout](https://developer.sumup.com/api/checkouts/create#create-a-checkout)
-4. Create an [Apple Payment request](https://developer.apple.com/documentation/apple_pay_on_the_web/applepaypaymentrequest)
+1. [Create a checkout](https://developer.sumup.com/api/checkouts/create#create-a-checkout)
+2. Create an [Apple Payment request](https://developer.apple.com/documentation/apple_pay_on_the_web/applepaypaymentrequest)
 
 ```js
 const applePaymentRequest = {
@@ -39,8 +41,8 @@ const applePaymentRequest = {
 };
 ```
 
-5. Initiate an [Apple Pay session](https://developer.apple.com/documentation/apple_pay_on_the_web/applepaysession/2320659-applepaysession) and call the [begin method](https://developer.apple.com/documentation/apple_pay_on_the_web/applepaysession/1778001-begin)
-6. Listen for the `onvalidatemerchant` callback and collect the `validateUrl` property. Create the following payload
+3. Initiate an [Apple Pay session](https://developer.apple.com/documentation/apple_pay_on_the_web/applepaysession/2320659-applepaysession) and call the [begin method](https://developer.apple.com/documentation/apple_pay_on_the_web/applepaysession/1778001-begin)
+4. Listen for the `onvalidatemerchant` callback and collect the `validateUrl` property. Create the following payload
 
 ```json
 {
@@ -55,9 +57,9 @@ and initiate a merchant session by calling
 PUT https://api.sumup.com/v0.1/checkouts/${checkoutId}/apple-pay-session
 ```
 
-7. The response from the previous step is needed to complete the merchant validation with the [`completeMerchantValidation`](https://developer.apple.com/documentation/apple_pay_on_the_web/applepaysession/1778015-completemerchantvalidation/) method
+5. The response from the previous step is needed to complete the merchant validation with the [`completeMerchantValidation`](https://developer.apple.com/documentation/apple_pay_on_the_web/applepaysession/1778015-completemerchantvalidation/) method
 
-8. Submitting the payment dialogue triggers the `onpaymentauthorized` callback, this is when you need to [process the checkout](https://developer.sumup.com/api/checkouts/process#process-a-checkout). The process checkout request body needs to include a `payment_type` of `apple_pay` and an `apple_pay` object, containing the response from step 7
+6. Submitting the payment dialogue triggers the `onpaymentauthorized` callback, this is when you need to [process the checkout](https://developer.sumup.com/api/checkouts/process#process-a-checkout). The process checkout request body needs to include a `payment_type` of `apple_pay` and an `apple_pay` object, containing the response from step 7
 
 ```json
 {
