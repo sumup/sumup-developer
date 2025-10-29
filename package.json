@@ -80,6 +80,6 @@
     "tsx": "^4.20.6",
     "typescript": "^5.9.3",
     "typescript-eslint": "8.46.2",
-    "wrangler": "4.45.0"
+    "wrangler": "4.45.1"
   }
 }
