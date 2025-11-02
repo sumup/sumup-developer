@@ -1,0 +1,58 @@
+---
+title: API Keys
+description: Learn how to use and protect SumUp API keys for direct integrations.
+sidebar:
+  order: 2
+---
+
+import { Aside, Steps } from '@astrojs/starlight/components';
+
+## Overview
+
+API keys are static credentials that let your application act on behalf of the merchant account that created the key.
+Use them when you control the merchant account and need direct access to SumUp APIs with the full set of permissions.
+
+## Authorize requests with an API key
+
+Include the API key in the `Authorization` header using the `Bearer` scheme when calling SumUp APIs.
+
+```bash
+curl https://api.sumup.com/v0.1/me -H "Authorization: Bearer $SUMUP_API_KEY"
+```
+
+<Aside type="caution">
+
+Do not expose secret API keys in publicly accessible places such as client-side code or repositories.
+API keys grant broad access to the merchant account, so treat them as sensitive credentials.
+
+</Aside>
+
+## Create an API key
+
+<Steps>
+
+1. Log in to [https://me.sumup.com](https://me.sumup.com).
+2. Expand your profile and open **Settings**.
+3. Go to **For Developers** > **Toolkit**.
+4. Select **API Keys**.
+
+   If this is your first key, the page only shows the SumUp Public Key.
+   Existing API keys are also listed here.
+
+   Do not use the public key in your integration.
+
+5. Select **Create** and name the key so you can identify it later.
+6. When prompted, copy or download the key. SumUp does not store the key, so you are responsible for keeping it secure.
+
+</Steps>
+
+## Handle API keys securely
+
+- Keep the key in a secure secret store and rotate it regularly.
+- Avoid sharing the key with third parties. If sharing is unavoidable, make sure they meet your security expectations.
+- Monitor how the key is used and revoke it promptly if you suspect misuse.
+
+## When to choose another method
+
+Use [OAuth 2.0](/tools/authorization/oauth/) when you build an integration that other merchants or their staff will authorize.
+For card-present scenarios, combine your chosen authorization method with an [Affiliate Key](/tools/authorization/affiliate-keys/).

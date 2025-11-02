@@ -1,18 +1,23 @@
 ---
 title: Authorization
-description: Select the appropriate authorization method for your integration.
 sidebar:
   label: Overview
   order: 1
 ---
 
-SumUp provides a REST API to manage checkouts, retrieve transactions, and perform other operations programmatically. Authorize your application before making requests. For card-present integrations, you also need to provide an [Affiliate Key](/tools/authorization/affiliate-keys/).​
+SumUp exposes REST APIs for managing checkouts, retrieving transactions, and more.
+Every integration needs a way to authorize API requests, and card-present solutions also need to identify the integration itself.
 
-Key topics in this section:
+## Choose the right option
 
-- **[Authorization](/tools/authorization/authorization/)** – explains how to use API Keys or OAuth 2.0 access tokens.
-- **[Affiliate Keys](/tools/authorization/affiliate-keys/)** – learn why affiliate
-  keys are required and how to generate one.
+- **[API keys](/tools/authorization/api-keys/)** – Static credentials owned by a single merchant.
+  Use them for direct server-to-server integrations when you control the merchant account and need full API access.
+- **[OAuth 2.0](/tools/authorization/oauth/)** – Standards-based authorization for multi-merchant solutions.
+  Use it when other merchants or their employees connect to your application and must explicitly grant access.
+- **[Affiliate Keys](/tools/authorization/affiliate-keys/)** – Required for card-present scenarios to attribute transactions to your integration.
+  Combine them with API keys or OAuth depending on how you authorize API calls.
 
-Once you are familiar with these concepts, you can explore the detailed
-[API reference](/api/).
+## Next steps
+
+- Review the [API reference](/api/) once you have your credentials.
+- Follow product-specific guides such as [terminal integrations](/terminal-payments/) or [online payments](/online-payments/) with the appropriate authorization method in place.

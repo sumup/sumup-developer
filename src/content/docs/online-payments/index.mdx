@@ -39,7 +39,7 @@ When finished experimenting with the sandbox merchant account, switch back to a 
 
 ## Authorization
 
-All online payment products use SumUp APIs, which require authorization via an API key or access token. See the [Authorization Guide](/tools/authorization/authorization/) for details on available options.​
+All online payment products use SumUp APIs, which require authorization via an API key or access token. See the [Authorization Guide](/tools/authorization/) for details on available options.​
 
 ## Checkout Products
 
@@ -91,12 +91,12 @@ The API handles requests and responses primarily in JSON format, except when req
 
 ### Receiving Payments
 
-To receive payments, [create a checkout](/online-payments/guides/single-payment/#1-create-a-checkout). Use merchant-direct payments or initiate on a merchant's behalf based on your [authorization type](/tools/authorization/authorization/). Checkouts are created via server-to-server communication to keep access tokens and credentials secret and prevent changes to sensitive details like transaction amount or recipient.
+To receive payments, [create a checkout](/online-payments/guides/single-payment/#1-create-a-checkout). Use merchant-direct payments or initiate on a merchant's behalf based on your [authorization type](/tools/authorization/). Checkouts are created via server-to-server communication to keep access tokens and credentials secret and prevent changes to sensitive details like transaction amount or recipient.
 
 [Completing checkouts](/online-payments/guides/single-payment/#2-complete-a-checkout) via web browser or mobile app to avoid handling sensitive data like card details on your servers, eliminating PCI DSS compliance needs.
 
 <Aside type="tip">
-A checkout can be completed in a browser only from a domain that is present as an authorized JavaScript origin when [creating your client credentials](/tools/authorization/register-app/#3-create-oauth-client-credentials).
+A checkout can be completed in a browser only from a domain that is present as an authorized JavaScript origin when [creating your client credentials](/tools/authorization/oauth/#3-create-oauth-client-credentials).
 </Aside>
 
 SumUp offers the following checkout completion options:

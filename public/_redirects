@@ -1,229 +1,137 @@
-# SDKs redirects
-/tools/sdks/ios-sdk/                                                         /terminal-payments/sdks/ios-sdk
-/tools/sdks/android-ttp/                                                     /terminal-payments/sdks/android-ttp
-/tools/sdks/android-sdk/                                                     /terminal-payments/sdks/android-sdk
-
-# Terminal Payments redirects
-/terminal-payments/tools/cloud-api/                                          /terminal-payments/cloud-api
-/terminal-payments/introduction/                                             /terminal-payments
-/terminal-payments/introduction/getting-started/                             /terminal-payments
-/terminal-payments/industry/                                                 /terminal-payments
-/docs/terminal-sdk/                                                          /terminal-payments/sdks
-/docs/terminal-overview/                                                     /terminal-payments
-/docs/terminal-getting-started/                                              /terminal-payments
-/docs/terminal-api/                                                          /terminal-payments/cloud-api
-/docs/integration-transport/                                                 /terminal-payments
-/docs/integration-retail/                                                    /terminal-payments
-/docs/integration-hospitality/                                               /terminal-payments
-/docs/integration-enterprise/                                                /terminal-payments
-/docs/integration-bookings/                                                  /terminal-payments
-
-# Online Payments - Tools & SDKs
-/tools/sdks/                                                                 /online-payments/sdks
-/docs/tools/sdks/                                                            /online-payments/sdks
-/tools/sdks/nodejs/                                                          /online-payments/sdks/nodejs
-/tools/sdks/go/                                                              /online-payments/sdks/go
-/tools/sdks/python/                                                          /online-payments/sdks/python
-/tools/sdks/java/                                                            /online-payments/sdks/java
-/tools/sdks/php/                                                             /online-payments/sdks/php
-/tools/sdks/php-sdk/                                                         /online-payments/sdks/php
-/tools/sdks/dotnet/                                                          /online-payments/sdks/dotnet
-/tools/sdks/rust/                                                            /online-payments/sdks/rust
-/online-payments/sdks/react-native-sdk/                                      /online-payments/sdks/react-native
-/docs/online-payments/sdks/react-native-sdk/                                 /online-payments/sdks/react-native
-/online-payments/sdks/swift-checkout/                                        /online-payments/checkouts/swift-checkout
-/docs/online-payments/sdks/swift-checkout/                                   /online-payments/checkouts/swift-checkout
-/online-payments/checkouts/react-native-sdk/                                 /online-payments/sdks/react-native
-/docs/online-payments/checkouts/react-native-sdk/                            /online-payments/sdks/react-native
-/online-payments/checkouts/sdks/react-native-sdk/                            /online-payments/sdks/react-native
-/docs/online-payments/checkouts/sdks/react-native-sdk/                       /online-payments/sdks/react-native
-/online-payments/checkouts/sdks/swift-checkout/                              /online-payments/checkouts/swift-checkout
-/docs/online-payments/checkouts/sdks/swift-checkout/                         /online-payments/checkouts/swift-checkout
-/online-payments/tools/react-native-sdk/                                     /online-payments/sdks/react-native
-/online-payments/tools/hosted-checkout/                                      /online-payments/checkouts/hosted-checkout
-/docs/online-payments/tools/swift-checkout/                                  /online-payments/checkouts/swift-checkout
-/docs/online-payments/tools/php-sdk/                                         /online-payments/sdks/php
-/docs/online-payments/tools/card-widget/                                     /online-payments/checkouts/card-widget
-/docs/php-sdk/                                                               /online-payments/sdks/php
-/online-payments/sdks/php-sdk/                                               /online-payments/sdks/php
-/docs/online-payments/sdks/php-sdk/                                          /online-payments/sdks/php
-
-# Online Payments - Plugins
-/docs/sumup-woocommerce-plugin/                                              /online-payments/plugins/woocommerce
-/docs/sumup-prestashop-plugin/                                               /online-payments/plugins/prestashop
-/docs/online-payments/plugins/woocommerce/                                   /online-payments/plugins/woocommerce
-/docs/online-payments/plugins/wix/                                           /online-payments/plugins/wix
-/docs/online-payments/plugins/prestashop/                                    /online-payments/plugins/prestashop
-
-# Online Payments - General
-/online-payments/introduction/webhooks/                                      /online-payments/webhooks
-/online-payments/introduction/response-handling/                             /online-payments/guides/response-handling
-/online-payments/introduction/register-app/                                  /tools/authorization/register-app
-/online-payments/introduction/get-started/                                   /online-payments
-/online-payments/introduction/authorization/                                 /tools/authorization/authorization
-/online-payments/introduction/3ds/                                           /online-payments/3ds
-/online-payments/apm/introduction/                                           /online-payments/apm
-/docs/online-payments/introduction/getting-started/                          /online-payments
-/docs/getting-started/                                                       /online-payments
-/docs/online-payments/features/3ds/                                          /online-payments/3ds
-
-# Online Payments - Guides
-/docs/single-payment/                                                        /online-payments/guides/single-payment
-/docs/refund/                                                                /online-payments/guides/refund
-/docs/recurring-payments/                                                    /online-payments/guides/recurring-payments
-/docs/online-payments/guides/single-payment/                                 /online-payments/guides/single-payment
-
-# Online Payments - APM
-/docs/online-payments/google-pay-integration/                                /online-payments/apm/google-pay
-/docs/online-payments/apple-pay-integration/                                 /online-payments/apm/apple-pay
-/docs/online-payments/apm-integration/                                       /online-payments/apm
-/docs/online-payments/alternative-payment-methods/                           /online-payments/apm
-/docs/online-payments/alternative-payment-methods/google-pay-integration/    /online-payments/apm/google-pay
-/docs/online-payments/alternative-payment-methods/apple-pay-integration/     /online-payments/apm/apple-pay
-/docs/online-payments/alternative-payment-methods/apm-integration/           /online-payments/apm/integration-guide
-/docs/apm/                                                                   /online-payments/apm
-
-# Category redirects
-/docs/category/plugins/                                                      /online-payments/plugins
-/docs/category/guides/                                                       /online-payments/guides
-/docs/category/alternative-payment-methods/                                  /online-payments/apm
-/docs/category/tools-1/                                                      /terminal-payments/sdks
-/docs/category/tools/                                                        /online-payments/sdks
-/docs/category/introduction-1/                                               /terminal-payments
-/docs/category/features/                                                     /online-payments
-
-# Authorization & Tools
-/apps/                                                                       /tools/authorization
-/api-keys/                                                                   /tools/authorization
-/affiliate-keys/                                                             /tools/authorization/affiliate-keys
-/docs/authorization/                                                         /tools/authorization
-/docs/register-app/                                                          /tools/authorization/register-app
-/tools/models/merchant/                                                      /tools/glossary/merchant
-
-# Resources
-/extdev/                                                                     /getting-started
-/rest-api/                                                                   /api
-/docs/online-payments/features/open-banking/                                 /resources/open-banking
-
-# Webhooks
-/webhooks/create/                                                            /tools/webhooks
-
-# API - Subaccounts
-/docs/api/update-sub-account/                                                /api/subaccounts/update-sub-account
-/docs/api/update-a-subaccount/                                               /api/subaccounts/update-sub-account
-/docs/api/subaccounts/                                                       /api/subaccounts
-/docs/api/retrieve-an-account/                                               /api/subaccounts
-/docs/api/list-subaccounts/                                                  /api/subaccounts/list-sub-accounts
-/docs/api/list-sub-accounts/                                                 /api/subaccounts/list-sub-accounts
-/docs/api/get-account/                                                       /api/subaccounts
-/docs/api/deactivate-sub-account/                                            /api/subaccounts/deactivate-sub-account
-/docs/api/deactivate-a-subaccount/                                           /api/subaccounts/deactivate-sub-account
-/docs/api/create-sub-account/                                                /api/subaccounts/create-sub-account
-/docs/api/create-a-subaccount/                                               /api/subaccounts/create-sub-account
-
-# API - Customers
-/docs/api/update-customer/                                                   /api/customers/update
-/docs/api/update-a-customer/                                                 /api/customers/update
-/docs/api/retrieve-a-customer/                                               /api/customers/get
-/docs/api/list-payment-instruments/                                          /api/customers/list-payment-instruments
-/docs/api/get-customer/                                                      /api/customers/get
-/docs/api/deactivate-payment-instrument/                                     /api/customers/deactivate-payment-instrument
-/docs/api/deactivate-a-payment-instrument/                                   /api/customers/deactivate-payment-instrument
-/docs/api/customers/                                                         /api/customers
-/docs/api/create-customer/                                                   /api/customers/create
-/docs/api/create-a-customer/                                                 /api/customers/create
-
-# API - Transactions
-/docs/api/transactions/                                                      /api/transactions
-/docs/api/retrieve-a-transaction/                                            /api/transactions/get
-/docs/api/refund-transaction/                                                /api/transactions/refund
-/docs/api/refund-a-transaction/                                              /api/transactions/refund
-/docs/api/list-transactions/                                                 /api/transactions/list
-/docs/api/list-financial-transactions/                                       /api/transactions/list
-/docs/api/get-transaction/                                                   /api/transactions/get
-
-# API - Checkouts
-/docs/api/retrieve-a-checkout/                                               /api/checkouts/get
-/docs/api/process-checkout/                                                  /api/checkouts/process
-/docs/api/process-a-checkout/                                                /api/checkouts/process
-/docs/api/list-checkouts/                                                    /api/checkouts/list
-/docs/api/get-checkout/                                                      /api/checkouts/get
-/docs/api/get-payment-methods/                                               /api/checkouts/list-available-payment-methods
-/docs/api/get-available-payment-methods/                                     /api/checkouts/list-available-payment-methods
-/docs/api/deactivate-checkout/                                               /api/checkouts/deactivate
-/docs/api/deactivate-a-checkout/                                             /api/checkouts/deactivate
-/docs/api/checkouts/                                                         /api/checkouts
-/docs/api/create-checkout/                                                   /api/checkouts/create
-/docs/api/create-a-checkout/                                                 /api/checkouts/create
-
-# API - Merchant
-/docs/api/retrieve-dba/                                                      /api/merchant/get-doing-business-as
-/docs/api/retrieve-a-personal-profile/                                       /api/merchant/get-personal-profile
-/docs/api/retrieve-a-merchant-profile/                                       /api/merchant/get-merchant-profile
-/docs/api/merchant/                                                          /api/merchant
-/docs/api/list-settings/                                                     /api/merchant/get-settings
-/docs/api/list-bank-accounts/                                                /api/merchant/list-bank-accounts
-/docs/api/get-settings/                                                      /api/merchant/get-settings
-/docs/api/get-personal-profile/                                              /api/merchant/get-personal-profile
-/docs/api/get-merchant-profile/                                              /api/merchant/get
-/docs/api/get-doing-business-as/                                             /api/merchant/get-doing-business-as
-/api/get-doing-business-as/                                                  /api/merchant/get-doing-business-as
-
-# API - Receipts
-/docs/api/retrieve-receipt-details/                                          /api/receipts/get
-/docs/api/receipts/                                                          /api/receipts
-/docs/api/get-receipt/                                                       /api/receipts/get
-
-# API - Payouts
-/docs/api/payouts/                                                           /api/payouts
-/docs/api/list-payouts/                                                      /api/payouts/list
-
-# API - Authorization (deprecated endpoints)
-/docs/api/request-authorization-from-users/                                  /tools/authorization
-/docs/api/generate-a-token/                                                  /tools/authorization
-/docs/api/create-token/                                                      /tools/authorization
-/docs/api/authorize/                                                         /tools/authorization
-/docs/api/authorization/                                                     /tools/authorization
-/tools/api/authorization/                                                    /tools/authorization
-
-# API - General
-/docs/api/sum-up-rest-api/                                                   /api
-
-# Problem
-/problem/504-gateway-timeout/                                                /problem/gateway-timeout
-/problem/500-internal-server-error/                                          /problem/internal-server-error
-/problem/422-unprocessable-entity/                                           /problem/unprocessable-entity
-/problem/409-session-expired/                                                /problem/session-expired
-/problem/409-session-cant-be-deactivated/                                    /problem/session-cant-be-deactivated
-/problem/409-session-already-processed/                                      /problem/session-already-processed
-/problem/404-not-found/                                                      /problem/not-found
-/problem/404-checkout-not-found/                                             /problem/checkout-not-found
-/problem/403-forbidden/                                                      /problem/forbidden
-/problem/401-not-authorised-token/                                           /problem/not-authorised-token
-/problem/401-missing-token/                                                  /problem/missing-token
-/problem/401-invalid-token/                                                  /problem/invalid-token
-/problem/400-validation-failed/                                              /problem/validation-failed
-/problem/400-unknown-payment-method/                                         /problem/unknown-payment-method
-/problem/400-payment-method-not-allowed/                                     /problem/payment-method-not-allowed
-/problem/400-multiple-invalid-parameters/                                    /problem/multiple-invalid-parameters
-/problem/400-invalid-parameter/                                              /problem/invalid-parameter
-/docs/problem/problem/504-gateway-timeout                                    /problem/gateway-timeout
-/docs/problem/problem/500-internal-server-error                              /problem/internal-server-error
-/docs/problem/problem/422-unprocessable-entity                               /problem/unprocessable-entity
-/docs/problem/problem/409-session-expired                                    /problem/session-expired
-/docs/problem/problem/409-session-cant-be-deactivated                        /problem/session-cant-be-deactivated
-/docs/problem/problem/409-session-already-processed                          /problem/session-already-processed
-/docs/problem/problem/404-not-found                                          /problem/not-found
-/docs/problem/problem/404-checkout-not-found                                 /problem/checkout-not-found
-/docs/problem/problem/403-forbidden                                          /problem/forbidden
-/docs/problem/problem/401-not-authorised-token                               /problem/not-authorised-token
-/docs/problem/problem/401-missing-token                                      /problem/missing-token
-/docs/problem/problem/401-invalid-token                                      /problem/invalid-token
-/docs/problem/problem/400-validation-failed                                  /problem/validation-failed
-/docs/problem/problem/400-unknown-payment-method                             /problem/unknown-payment-method
-/docs/problem/problem/400-payment-method-not-allowed                         /problem/payment-method-not-allowed
-/docs/problem/problem/400-multiple-invalid-parameters                        /problem/multiple-invalid-parameters
-/docs/problem/problem/400-invalid-parameter                                  /problem/invalid-parameter
-
-# Catch-all for old docs structure
-/docs/*                                                                      /:splat
+/tools/sdks/ios-sdk                                                         /terminal-payments/sdks/ios-sdk/
+/tools/sdks/android-ttp                                                     /terminal-payments/sdks/android-ttp/
+/tools/sdks/android-sdk                                                     /terminal-payments/sdks/android-sdk/
+/terminal-payments/tools/cloud-api                                          /terminal-payments/cloud-api/
+/terminal-payments/introduction                                             /terminal-payments/
+/terminal-payments/introduction/getting-started                             /terminal-payments/
+/terminal-payments/industry                                                 /terminal-payments/
+/rest-api                                                                   /api
+/online-payments/tools/react-native-sdk                                     /online-payments/sdks/react-native-sdk/
+/online-payments/tools/hosted-checkout                                      /online-payments/checkouts/hosted-checkout/
+/online-payments/introduction/webhooks                                      /online-payments/webhooks/
+/online-payments/introduction/response-handling                             /online-payments/guides/response-handling/
+/online-payments/introduction/register-app                                  /tools/authorization/oauth/
+/online-payments/introduction/get-started                                   /online-payments/
+/online-payments/introduction/authorization                                 /tools/authorization/
+/online-payments/introduction/3ds                                           /online-payments/3ds/
+/online-payments/apm/introduction                                           /online-payments/apm
+/extdev                                                                     /quickstart
+/docs/terminal-sdk                                                          /terminal-payments/sdks
+/docs/terminal-overview                                                     /terminal-payments/
+/docs/terminal-getting-started                                              /terminal-payments/
+/docs/terminal-api                                                          /terminal-payments/cloud-api
+/docs/sumup-woocommerce-plugin                                              /online-payments/plugins/woocommerce
+/docs/sumup-prestashop-plugin                                               /online-payments/plugins/prestashop
+/docs/single-payment                                                        /online-payments/guides/single-payment
+/docs/register-app                                                          /tools/authorization/oauth/
+/docs/refund                                                                /online-payments/guides/refund
+/docs/recurring-payments                                                    /online-payments/guides/recurring-payments
+/docs/php-sdk                                                               /online-payments/sdks/php-sdk
+/docs/online-payments/tools/swift-checkout                                  /online-payments/checkouts/swift-checkout
+/docs/online-payments/tools/php-sdk                                         /online-payments/sdks/php-sdk
+/docs/online-payments/tools/card-widget                                     /online-payments/checkouts/card-widget
+/docs/online-payments/plugins/woocommerce                                   /online-payments/plugins/woocommerce
+/docs/online-payments/plugins/wix                                           /online-payments/plugins/wix
+/docs/online-payments/plugins/prestashop                                    /online-payments/plugins/prestashop
+/docs/online-payments/introduction/getting-started                          /online-payments/
+/docs/online-payments/guides/single-payment                                 /online-payments/guides/single-payment
+/docs/online-payments/google-pay-integration                                /online-payments/apm/google-pay
+/docs/online-payments/features/open-banking                                 /tools/open-banking
+/docs/online-payments/features/3ds                                          /online-payments/3ds
+/docs/online-payments/apple-pay-integration                                 /online-payments/apm/apple-pay
+/docs/online-payments/apm-integration                                       /online-payments/apm
+/docs/online-payments/alternative-payment-methods                           /online-payments/apm
+/docs/online-payments/alternative-payment-methods/google-pay-integration    /online-payments/apm/google-pay
+/docs/online-payments/alternative-payment-methods/apple-pay-integration     /online-payments/apm/apple-pay
+/docs/online-payments/alternative-payment-methods/apm-integration           /online-payments/apm/integration-guide
+/docs/integration-transport                                                 /terminal-payments/industry/transport
+/docs/integration-retail                                                    /terminal-payments/industry/retail
+/docs/integration-hospitality                                               /terminal-payments/industry/hospitality
+/docs/integration-enterprise                                                /terminal-payments/industry/enterprise
+/docs/integration-bookings                                                  /terminal-payments/industry/bookings
+/docs/getting-started                                                       /online-payments/
+/docs/category/tools-1                                                      /terminal-payments/tools
+/docs/category/tools                                                        /online-payments/tools
+/docs/category/plugins                                                      /online-payments/plugins
+/docs/category/introduction-1                                               /terminal-payments/introduction
+/docs/category/guides                                                       /online-payments/guides
+/docs/category/features                                                     /online-payments/features
+/docs/category/alternative-payment-methods                                  /online-payments/apm
+/docs/authorization                                                         /tools/api/authorization/
+/docs/apm                                                                   /online-payments/apm
+/docs/api/update-sub-account                                                /api/subaccounts/update
+/docs/api/update-customer                                                   /api/customers/update
+/docs/api/update-api-key                                                    /api/api-keys/update-api-key
+/docs/api/update-a-subaccount                                               /api/subaccounts/update
+/docs/api/update-a-customer                                                 /api/customers/update
+/docs/api/transactions                                                      /api/transactions
+/docs/api/sum-up-rest-api                                                   /api
+/docs/api/subaccounts                                                       /api/subaccounts
+/docs/api/revoke-api-key                                                    /api/api-keys/revoke-api-key
+/docs/api/retrieve-receipt-details                                          /api/receipts/get
+/docs/api/retrieve-dba                                                      /api/merchant/get-doing-business-as
+/docs/api/retrieve-an-account                                               /api/subaccounts
+/docs/api/retrieve-a-transaction                                            /api/transactions/get
+/docs/api/retrieve-a-personal-profile                                       /api/merchant/get-personal-profile
+/docs/api/retrieve-a-merchant-profile                                       /api/merchant/get-merchant-profile
+/docs/api/retrieve-a-customer                                               /api/customers/get
+/docs/api/retrieve-a-checkout                                               /api/get-checkout
+/docs/api/request-authorization-from-users                                  /api/authorization/authorize
+/docs/api/refund-transaction                                                /api/transactions/refund
+/docs/api/refund-a-transaction                                              /api/transactions/refund
+/docs/api/receipts                                                          /api/receipts
+/docs/api/process-checkout                                                  /api/checkouts/process
+/docs/api/process-a-checkout                                                /api/checkouts/process
+/docs/api/payouts                                                           /api/payouts
+/docs/api/merchant                                                          /api/merchant
+/docs/api/list-transactions                                                 /api/transactions/list-detailed
+/docs/api/list-subaccounts                                                  /api/subaccounts/list
+/docs/api/list-sub-accounts                                                 /api/subaccounts/list
+/docs/api/list-settings                                                     /api/merchant/get-settings
+/docs/api/list-payouts                                                      /api/payouts/list
+/docs/api/list-payment-instruments                                          /api/customers/list-payment-instruments
+/docs/api/list-financial-transactions                                       /api/transactions/list
+/docs/api/list-checkouts                                                    /api/checkouts/list
+/docs/api/list-bank-accounts                                                /api/merchant/list-bank-accounts
+/docs/api/list-api-keys                                                     /api/api-keys/list-api-keys
+/docs/api/get-transaction                                                   /api/transactions/get
+/docs/api/get-settings                                                      /api/merchant/get-settings
+/docs/api/get-receipt                                                       /api/receipts/get
+/docs/api/get-personal-profile                                              /api/merchant/get-personal-profile
+/docs/api/get-payment-methods                                               /api/checkouts/list-available-payment-methods
+/docs/api/get-merchant-profile                                              /api/merchant/get
+/docs/api/get-doing-business-as                                             /api/merchant/get-doing-business-as
+/docs/api/get-customer                                                      /api/customers/get
+/docs/api/get-checkout                                                      /api/checkouts/get
+/docs/api/get-available-payment-methods                                     /api/checkouts/list-available-payment-methods
+/docs/api/get-api-key                                                       /api/api-keys/get-api-key
+/docs/api/get-account                                                       /api/subaccounts
+/docs/api/generate-a-token                                                  /api/authorization/create-token
+/docs/api/deactivate-sub-account                                            /api/subaccounts/deactivate
+/docs/api/deactivate-payment-instrument                                     /api/customers/deactivate-payment-instrument
+/docs/api/deactivate-checkout                                               /api/checkouts/deactivate
+/docs/api/deactivate-a-subaccount                                           /api/subaccounts/deactivate
+/docs/api/deactivate-a-payment-instrument                                   /api/customers/deactivate-payment-instrument
+/docs/api/deactivate-a-checkout                                             /api/deactivate-checkout
+/docs/api/customers                                                         /api/customers
+/docs/api/create-token                                                      /api/authorization/create-token
+/docs/api/create-sub-account                                                /api/subaccounts/create-sub-account
+/docs/api/create-customer                                                   /api/customers/create
+/docs/api/create-checkout                                                   /api/checkouts/create
+/docs/api/create-api-key                                                    /api/api-keys/create-api-key
+/docs/api/create-a-subaccount                                               /api/subaccounts/create-sub-account
+/docs/api/create-a-payment-instrument                                       /api/customers/create-payment-instrument
+/docs/api/create-a-customer                                                 /api/customers/create
+/docs/api/create-a-checkout                                                 /api/checkouts/create
+/docs/api/checkouts                                                         /api/checkouts
+/docs/api/authorize                                                         /api/authorization/create-token
+/docs/api/authorization                                                     /api/authorization
+/docs/api/api-keys                                                          /api/api-keys
+/apps                                                                       /tools/api/authorization/
+/api-keys                                                                   /tools/api/authorization/
+/api/get-doing-business-as                                                  /api/merchant/retrieve-dba
+/affiliate-keys                                                             /tools/api/affiliate-keys/
+/webhooks/create                                                            /webhooks/
+/webhook-docs/introduction/*                                                /webhooks/:splat
+/webhook-docs/*                                                             /webhooks/:splat
+/docs/*                                                                     /:splat
