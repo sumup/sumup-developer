@@ -2935,7 +2935,7 @@ paths:
                   type: string
                   example: Test User
                 roles:
-                  description: 'List of roles to assign to the new member. In the case of service accounts, the roles are predefined.'
+                  description: List of roles to assign to the new member.
                   type: array
                   items:
                     type: string
