@@ -48,7 +48,7 @@
     "@expressive-code/plugin-collapsible-sections": "^0.41.3",
     "@expressive-code/plugin-line-numbers": "0.41.3",
     "@sindresorhus/slugify": "^3.0.0",
-    "@sumup-oss/circuit-ui": "^10.13.0",
+    "@sumup-oss/circuit-ui": "^10.13.2",
     "@sumup-oss/design-tokens": "^9.0.0",
     "@sumup-oss/icons": "^5.22.0",
     "@types/node": "^24.9.2",
