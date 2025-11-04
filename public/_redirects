@@ -156,11 +156,12 @@
 /docs/api/list-payouts/                                                      /api/payouts/list
 
 # API - Authorization (deprecated endpoints)
-/docs/api/request-authorization-from-users/                                  /api/authentication
-/docs/api/generate-a-token/                                                  /api/authentication
-/docs/api/create-token/                                                      /api/authentication
-/docs/api/authorize/                                                         /api/authentication
-/docs/api/authorization/                                                     /api/authentication
+/docs/api/request-authorization-from-users/                                  /tools/authorization
+/docs/api/generate-a-token/                                                  /tools/authorization
+/docs/api/create-token/                                                      /tools/authorization
+/docs/api/authorize/                                                         /tools/authorization
+/docs/api/authorization/                                                     /tools/authorization
+/tools/api/authorization/                                                    /tools/authorization
 
 # API - General
 /docs/api/sum-up-rest-api/                                                   /api
