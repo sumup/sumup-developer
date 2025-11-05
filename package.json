@@ -73,7 +73,7 @@
     "react-content-loader": "^7.1.1",
     "react-dom": "^18.2.0",
     "react-final-form": "^7.0.0",
-    "sass": "^1.93.2",
+    "sass": "^1.93.3",
     "starlight-image-zoom": "^0.13.0",
     "starlight-links-validator": "^0.19.0",
     "starlight-llms-txt": "0.6.0",
