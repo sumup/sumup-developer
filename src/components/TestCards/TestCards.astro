@@ -1,0 +1,196 @@
+---
+import { getIconURL } from "@sumup-oss/icons";
+import { testCards } from "../../lib/testCards";
+
+const successCards = testCards.filter((card) => !card.error && !card.challenge);
+const challengeCards = testCards.filter((card) => card.challenge);
+const errorCards = testCards.filter((card) => card.error);
+
+const sections = [
+  { title: "Successful Transactions", cards: successCards },
+  { title: "3DS Challenge Flows", cards: challengeCards },
+  { title: "Error Cases", cards: errorCards },
+];
+---
+
+<div class="test-cards">
+  {
+    sections.map(({ title, cards }) => (
+      <div class="test-cards-section">
+        <h2 class="test-cards-section-title">{title}</h2>
+        <div class="test-cards-list">
+          {cards.map((card) => (
+            <div class="test-card">
+              <div class="test-card-header">
+                <img
+                  src={getIconURL(card.brand, "24")}
+                  alt={card.brand}
+                  class="test-card-brand-icon"
+                />
+                <span class="test-card-name">{card.name}</span>
+                {card.returnsMethodData && (
+                  <span class="test-card-badge">Method Data</span>
+                )}
+              </div>
+              <div class="test-card-number-wrapper">
+                <code class="test-card-number">{card.number}</code>
+                <button
+                  class="test-card-copy"
+                  data-number={card.number.replace(/\s/g, "")}
+                  aria-label="Copy card number"
+                >
+                  📋
+                </button>
+              </div>
+              <p class="test-card-description">{card.description}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    ))
+  }
+</div>
+
+<style>
+  .test-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    margin: 2rem 0;
+  }
+
+  .test-cards-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .test-cards-section-title {
+    font-size: 1.75rem;
+    font-weight: 600;
+    margin: 0;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--sl-color-gray-5);
+  }
+
+  .test-cards-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1rem;
+  }
+
+  .test-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 1rem;
+    border: 1px solid var(--sl-color-gray-5);
+    border-radius: 0.5rem;
+    background-color: var(--sl-color-bg-nav);
+    transition: border-color 0.2s ease;
+  }
+
+  .test-card:hover {
+    border-color: var(--sl-color-text-accent);
+  }
+
+  .test-card-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .test-card-brand-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    object-fit: contain;
+    flex-shrink: 0;
+  }
+
+  .test-card-name {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--sl-color-white);
+    flex: 1;
+  }
+
+  .test-card-badge {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    background-color: var(--sl-color-gray-6);
+    color: var(--sl-color-gray-2);
+    white-space: nowrap;
+  }
+
+  .test-card-number-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .test-card-number {
+    font-family: var(--sl-font-mono);
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 0.5rem;
+    background-color: var(--sl-color-gray-7);
+    border-radius: 0.25rem;
+    letter-spacing: 0.05em;
+    user-select: all;
+    flex: 1;
+  }
+
+  .test-card-copy {
+    position: absolute;
+    right: 0.5rem;
+    padding: 0.25rem 0.5rem;
+    background-color: var(--sl-color-gray-6);
+    border: 1px solid var(--sl-color-gray-5);
+    border-radius: 0.25rem;
+    cursor: pointer;
+    font-size: 0.875rem;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+
+  .test-card-number-wrapper:hover .test-card-copy {
+    opacity: 1;
+  }
+
+  .test-card-copy:hover {
+    background-color: var(--sl-color-gray-5);
+  }
+
+  .test-card-description {
+    font-size: 0.875rem;
+    color: var(--sl-color-gray-2);
+    margin: 0;
+    line-height: 1.5;
+  }
+</style>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const copyButtons = document.querySelectorAll(".test-card-copy");
+
+    copyButtons.forEach((button) => {
+      button.addEventListener("click", async () => {
+        const number = button.getAttribute("data-number");
+        if (!number) return;
+
+        try {
+          await navigator.clipboard.writeText(number);
+          const originalText = button.textContent;
+          button.textContent = "✓";
+          setTimeout(() => {
+            button.textContent = originalText;
+          }, 2000);
+        } catch (err) {
+          console.error("Failed to copy:", err);
+        }
+      });
+    });
+  });
+</script>

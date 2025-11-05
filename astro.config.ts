@@ -211,7 +211,7 @@ export default defineConfig({
       disable404Route: true,
       tableOfContents: {
         minHeadingLevel: 2,
-        maxHeadingLevel: 2,
+        maxHeadingLevel: 3,
       },
       sidebar: [
         {
