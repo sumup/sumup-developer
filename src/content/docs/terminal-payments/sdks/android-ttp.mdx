@@ -87,11 +87,11 @@ interface AuthTokenProvider {
 
 There are several ways for a consumer app to provide the access token to the SDK.
 
-1. Using the OAuth2 [flow](https://developer.sumup.com/online-payments/introduction/authorization#o-auth-2-0):
+1. Using the OAuth2 [flow](https://developer.sumup.com/tools/authorization/authorization#integration-via-oauth-20):
    The consumer app can implement the OAuth2 flow to get the access token and provide it to the SDK. The SDK provides the `AuthTokenProvider` interface that should be implemented by the consumer app. The implementation of the `getAccessToken` method should return the access token. This way is preferable and recommended because it provides a more secure way to authenticate the user.
 
 2. Using API Key:
-   You can use an API Key as an auth token. Generate the key in the [SumUp Dashboard](https://developer.sumup.com/online-payments/introduction/authorization#api-keys) and provide it to the SDK through `AuthTokenProvider.getAccessToken()` method.
+   You can use an API Key as an auth token. Generate the key in the [SumUp Dashboard](https://developer.sumup.com/tools/authorization/authorization#integration-via-api-keys) and provide it to the SDK through `AuthTokenProvider.getAccessToken()` method.
 
 > ⚠️ **Important:**
 > The API keys should be stored securely and should not be hardcoded in the app. Instead, they should be stored in the secure storage and provided to the SDK when needed. Do not share your secret API keys in publicly accessible places such as GitHub repositories, client-side code, etc.
