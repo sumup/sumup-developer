@@ -1,27 +1,32 @@
 ---
 title: Recurring payments with Strong Customer Authentication
 sidebar:
-  label: Recurrent payments
+  label: Recurrent Payments
   order: 500
 ---
 
 import { Aside } from '@astrojs/starlight/components';
 
+## Prerequisites
+
+- You have completed the [card tokenization](/online-payments/guides/tokenization-with-payment-sdk) for a customer
+- You have an API Key. For more details see the [Authorization Guide](/tools/authorization/authorization/#api-keys).
+- You have control over the backend server to retrieve data securely.
+
+## Overview
 
 To ease the subsequent payments event, an initial checkout is authenticated according to 3DS checks. All following checkouts refer to the initial one in terms of 3DS authentication.
 
 You will go through the following steps:
 
-1. [Set up a checkout session](#1-set-up-a-checkout-session)
-2. [Process checkout](#2-process-checkout)
-3. [Retrieve the checkout](#3-retrieve-the-checkout)
-4. [Process future subsequent payments with a token](#4-process-future-subsequent-payments-with-a-token)
+1. [Set up a checkout session](#setting-up-checkout-session)
+2. [Process checkout](#processing-checkout)
+3. [Retrieve the checkout](#retrieving-checkout)
+4. [Process future subsequent payments with a token](#processing-subsequent-payments)
 
-## Steps
+## Setting up Checkout Session
 
-### 1. Set up a checkout session
-
-The flow is initiated with the `create a checkout` endpoint. It is important to pass the `customer_id` parameter in this step, for future linking to a payment instrument, ideal for quickly creating and processing later payments. Additionally, a `purpose` parameter is passed to indicate the payment type as **recurrent** and process an authorisation charge of the checkout amount indicated, **which is instantly reimbursed**.
+The flow is initiated with the `create a checkout` endpoint. It is important to pass the `customer_id` parameter in this step, for future linking to a payment instrument, ideal for quickly creating and processing later payments. Additionally, a `purpose` parameter is passed to indicate the payment type as **recurrent** and process an authorization charge of the checkout amount indicated, **which is instantly reimbursed**.
 
 ```json
 {
@@ -48,17 +53,11 @@ Sample request available in our [API Reference](/api/checkouts/create).
 }
 ```
 
-### 2. Process checkout
+### Processing Checkout
 
-A `mandate` object needs to be passed at checkout processing. This object indicates that a customer has given consent to store their payment details for recurrent payments.
+A `mandate` object must be passed at checkout processing stage. This object indicates that a customer has given consent to store their payment details for recurrent payments. You need to handle consent, 3DS flow and PCI/DSS compliance yourself in case of recurring payments, and by passing the `mandate` object, you assert that you have done so.
 
-<Aside type="caution">
-
-As an integrating party you are obliged to collect such customer consent.
-
-</Aside>
-
-Depending on the local region regulations this request may result in a 3DS redirection step, which you will need to handle accordingly.
+Depending on the local region regulations, this request may result in a 3DS redirection step, which you will need to handle accordingly. If you want to test 3DS flow, you can request SumUp to enable 3DS on your test account.
 
 ```json
 {
@@ -80,9 +79,9 @@ Depending on the local region regulations this request may result in a 3DS redir
 }
 ```
 
-### 3. Retrieve the checkout
+### Retrieving Checkout
 
-If the previous operation is successful, a token representing a payment instrument is created. You can `retrieve a checkout` to find the value within a `payment_instrument` object.
+If you have successfully processed the checkout, a token representing a payment instrument is created. You can [retrieve the checkout](/api/checkouts/get) to find the token within a `payment_instrument` object.
 
 ```json
 {
@@ -97,7 +96,7 @@ If the previous operation is successful, a token representing a payment instrume
 }
 ```
 
-### 4. Process future subsequent payments with a token
+### Processing Subsequent Payments
 
 After following the above requests you can now process recurring payments by referencing the saved token and the associated customer. Both `token` and `customer_id` fields are required.
 

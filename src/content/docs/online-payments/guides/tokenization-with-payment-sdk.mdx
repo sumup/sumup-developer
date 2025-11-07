@@ -1,39 +1,39 @@
 ---
-title: Save cards with the payment widget
+title: Save Cards with Payment Widget
 sidebar:
-  label: Save card with payment widget
+  label: Save Cards with Payment Widget
   order: 200
 ---
 
-In this guide you will learn how to use the payment widget to store card details for future use.
+import { Aside } from "@astrojs/starlight/components";
+import Image from '@components/content/Image.astro';
+
+## Overview
+
+In this guide, you will learn how to use the payment widget to store card details for future use, for example to set up recurring payments.
 This feature is also known as **card on file** or **tokenization**.
-
-## Prerequisites
-
-Here are the things that you need in order to complete the steps in this guide:
-
-- You have a merchant account with [SumUp](https://me.sumup.com/login) and have already filled in your [account details](https://me.sumup.com/account).
-  - For a **test account** reach out to our support team through this [contact form](/contact).
-- You have [an api key](/api-keys/). For more details see [docs](/tools/authorization/authorization/#api-keys)
-- You have control over the backend server to retrieve data in a secure manner.
-
-## Summary
 
 You will go through the following steps:
 
-1. [Create a customer](#create-a-customer)
-2. [Create checkout for saving cards](#create-a-checkout-for-saving-cards)
-3. [Collecting consent with the payment widget](#collecting-consent-with-the-payment-widget)
-4. [Subsequent payments with a payment instrument](#subsequent-payments-with-a-payment-instrument)
+1. [Create a customer](#creating-customer)
+2. [Create checkout intended for card tokenization](#creating-checkout-to-save-card), where we specify it's for tokenization purpose. This is where 3DS verification takes place. The transaction amount is instantly reimbursed.
+3. [Process payment with the payment widget](#processing-request-with-payment-widget)
+4. [Make subsequent payments with a payment instrument](#setting-up-recurring-payments)
 
-## Create a customer
+## Prerequisites
+
+- You have a merchant account with [SumUp](https://me.sumup.com/login) and have already filled in your [account details](https://me.sumup.com/account).
+  - For a **test account** reach out to our support team through this [contact form](/contact).
+- You have an API Key. For more details see the [Authorization Guide](/tools/authorization/authorization/#api-keys).
+- You have control over the backend server to retrieve data securely.
+
+
+## Creating Customer
 
 A customer resource is a representation of a person or business that is paying for a product or service.
-It contains information such as their name, contact details, postal address, as well as a unique identifier that is relevant to your business logic (`customer_id`).
+It contains personal information such as their name, contact details, postal address, as well as a unique identifier that is relevant to your business logic (`customer_id`).
 
-To create a new customer resource, make a POST request to the `https://api.sumup.com/v0.1/customers` endpoint.
-
-Example of such request:
+To create a new customer resource, make a POST request to the `https://api.sumup.com/v0.1/customers` endpoint:
 
 ```bash
 curl -X POST \
@@ -60,14 +60,14 @@ curl -X POST \
 }'
 ```
 
-For more details see the [create a customer](/api/customers/create) endpoint.
+You should expect a standard `201 Created` response, with the customer details you passed. For more details see the [create a customer](/api/customers/create) endpoint. Having created the customer, we can now proceed to making a payment
 
-## Create a checkout for saving cards
+## Creating Checkout to Save Card
 
-The checkout resource is a representation of a payment that is being made by a customer.
-It contains information such as the amount, currency, and a unique identifier that is relevant to your business logic (`checkout_reference`).
+The checkout resource is a representation of a payment being made by the previously created customer.
+It contains information such as the amount, currency, and a unique `checkout_reference` identifier that is relevant to your business logic.
 
-The flow is initiated with the `create a checkout` endpoint. It is important to pass the `customer_id` parameter in this step, for future linking to a payment instrument. Additionally, a `purpose` parameter is passed to indicate the payment type as **card on file** and process an authorization charge of the checkout amount indicated, **which is instantly reimbursed**.
+The flow is initiated with the `create a checkout` endpoint. It is important to pass the `customer_id` parameter in this step, for future linking to a payment instrument. Critically, a `purpose` parameter is passed to indicate the payment type as **recurring payment** and process an authorization charge of the checkout amount indicated, **which is instantly reimbursed**. Note that this doesn't automatically imply further payments from this customer - at this point, we're just tokenizing the card.
 
 To create a new checkout resource, make a POST request to the `https://api.sumup.com/v0.1/checkouts` endpoint.
 
@@ -79,23 +79,45 @@ curl -X POST \
   -H "Authorization: Bearer $SUMUP_API_KEY" \
   -H 'Content-Type: application/json' \
   -d '{
-        "checkout_reference": "CO746453",
+        "checkout_reference": "MYCHECKOUT",
         "amount": 100,
         "currency": "EUR",
-        "merchant_code": "ME7RMQN3",
+        "merchant_code": "MDEERENR",
         "description": "My checkout",
         "customer_id": "MYCUSTOMERID-123",
         "purpose": "SETUP_RECURRING_PAYMENT"
       }'
 ```
 
-For more info see the [create a checkout](/api/checkouts/create) endpoint.
+You should expect a standard `201 Created` response, with the checkout reference and both merchant and customer information.
 
-## Collecting consent with the payment widget
+```json
+{
+    "amount": 100,
+    "checkout_reference": "MYCHECKOUT",
+    "checkout_type": "checkout",
+    "currency": "EUR",
+    "customer_id": "MYCUSTOMERID-123",
+    "date": "2025-10-29T15:09:11.550+00:00",
+    "description": "My checkout",
+    "id": "7164c99b-13cb-42a1-8ba1-3c2c46a29de7",
+    "merchant_code": "MDEERENR",
+    "merchant_country": "PL",
+    "merchant_name": "Test Account",
+    "pay_to_email": "a8e019f9bb2f49159182e8bd61eb5ea6@developer.sumup.com",
+    "purpose": "SETUP_RECURRING_PAYMENT",
+    "status": "PENDING",
+    "transactions": []
+}
+```
 
-The [SumUp's payment widget](/online-payments/checkouts/card-widget/) is a JavaScript library that allows you to process checkouts and collect card details in a secure way.
+For more information, see the [create a checkout](/api/checkouts/create) endpoint.
 
-Once you have a checkout id, you can mount the payment widget into your website and collect the card details.
+## Processing Request with Payment Widget
+
+The [SumUp's Payment Widget](/online-payments/checkouts/card-widget/) is a JavaScript library that allows you to securely process checkouts and collect card details securely, handling consent collection and 3DS verification. These steps are mandatory due to legal requirements, which is why you should always process the checkout with the widget.
+
+Once you have a checkout reference from the step above, you can mount the payment widget into your website and collect the card details. Pass the `checkout_reference` from above as the `checkoutId` here.
 
 ```html
 <div id="sumup-card"></div>
@@ -106,7 +128,7 @@ Once you have a checkout id, you can mount the payment widget into your website 
 <script type="text/javascript">
   SumUpCard.mount({
     id: "sumup-card",
-    checkoutId: `${checkout_id}`, // Ex: '2ceffb63-cbbe-4227-87cf-0409dd191a98'
+    checkoutId: `${checkout_id}`, // Ex: '7164c99b-13cb-42a1-8ba1-3c2c46a29de7'
     onResponse: function (type, body) {
       console.log("Type", type);
       console.log("Body", body);
@@ -115,21 +137,22 @@ Once you have a checkout id, you can mount the payment widget into your website 
 </script>
 ```
 
-Upon mouting the payment widget with a recurring purpose checkout you should see the following screen:
+Upon mounting the Payment Widget with a recurring purpose checkout, you should see the following screen:
 
-<p align="center" style={{ border: "1px solid #ccc" }}>
-  <img
-    src="/img/guides/cof-payment-sdk.png"
-    alt="Card on file with payment widget"
-    width="400"
-  />
-</p>
+<Image alt="Card on file with payment widget" src="/img/guides/cof-payment-sdk.png" width="40%" />
 
-The user will be prompted to enter their card details, give consent to store their card details and complete the checkout.
+The user is prompted to enter their card details, give consent to store their card details and complete the checkout. The widget uses the [Process Checkout endpoint](/api/checkouts/process) to securely process the checkout. We strongly recommend using the widget over direct integration, as the widget correctly handles all legal requirements for payments.
 
-If the previous operation is successful, and the card is stored, a token representing a payment instrument is created (AKA tokenized card).
+If the previous operation is successful, and the card is stored with the **Save for future payments option**, a `payment_instrument` object containing a `token` representing the card is created (AKA tokenized card) for this customer.
 
-The checkout process response contains the newly created payment instruments but you can fetch the list of tokenized cards of a customer by
+```json
+"payment_instrument": {
+    "mandate_reference": "2078683",
+    "token": "6878cb7f-6515-47bf-bdd9-1408d270fdce"
+}
+```
+
+At any time, you can fetch the list of tokenized cards of a customer by
 requesting them via [the list payment instruments](/api/customers/list-payment-instruments) endpoint.
 
 ```bash
@@ -139,20 +162,6 @@ curl -X GET \
   -H "Content-Type: application/json;charset=UTF-8"
 ```
 
-## Subsequent payments with a payment instrument
+## Setting up Recurring Payments
 
-To process future subsequent payments with a token by passing a payment instrument as the `token` parameter of the checkout request and `payment_type` as card.
-
-Example of such request:
-
-```bash
-curl -X PUT \
-  "https://api.sumup.com/v0.1/checkouts/${CHECKOUT_ID}" \
-  -H "Content-Type: application/json" \
-  -H "Accept: application/json" \
-  -H "Authorization: Bearer $SUMUP_API_KEY" \
-  -d '{
-    "payment_type": "card"
-    "token": "${token}",
-  }'
-```
+Having tokenized the customer's card, we can use it to process recurring payments. For detailed information, read the [Recurring Payments](/online-payments/guides/recurring-payments) guide.
