@@ -3328,76 +3328,6 @@ paths:
       x-scopes:
         - user.profile
         - user.profile_readonly
-    delete:
-      operationId: DeletePersons
-      summary: Delete Persons
-      description: |
-        Deletes all Persons of a Merchant except the legal representative.
-      parameters:
-        - name: merchant_code
-          in: path
-          description: Short unique identifier for the merchant.
-          required: true
-          schema:
-            type: string
-            example: MK10CL2A
-      responses:
-        '200':
-          description: Persons have been deleted successfully.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DeletePersonsResponseBody'
-        '202':
-          description: |
-            The data has been accepted but still has to go through further asynchronous validation before being made available through the API. This happens for requests which contain data that we have to perform verification checks on for regulatory reasons. After successful verification, the data will be "promoted" and will be available through the regular read endpoint.
-            You may make additional changes to the person, which will also go through verification, and will be applied in order during promotion.
-            Refer to the `version` query parameter documentation on the read endpoint.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DeletePersonsResponseBody'
-        '404':
-          description: |
-            No user with the specified ID exists.
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - $ref: '#/components/schemas/BaseError'
-                  - type: object
-                    properties:
-                      category:
-                        $ref: '#/components/schemas/ErrorCategoryClient'
-                      code:
-                        $ref: '#/components/schemas/ErrorCodeNotFound'
-        '500':
-          description: |
-            An internal server error occurred.
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - $ref: '#/components/schemas/BaseError'
-                  - type: object
-                    properties:
-                      category:
-                        $ref: '#/components/schemas/ErrorCategoryServer'
-                      code:
-                        $ref: '#/components/schemas/ErrorCodeInternalServerError'
-      externalDocs:
-        description: Person documentation
-        url: 'https://sumup.roadie.so/docs/default/Component/merchants/merchant/#persons'
-      security:
-        - apiKey: []
-        - oauth2:
-            - user.profile
-      tags:
-        - Merchants
-      x-permissions:
-        - merchant_write
-      x-scopes:
-        - user.profile
   '/v1/merchants/{merchant_code}/persons/{person_id}':
     get:
       operationId: GetPerson
@@ -6349,17 +6279,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Person'
-      required:
-        - items
-    DeletePersonsResponseBody:
-      type: object
-      properties:
-        items:
-          description: |
-            A list of IDs of the persons deleted.
-          type: array
-          items:
-            type: string
       required:
         - items
     Merchant:
