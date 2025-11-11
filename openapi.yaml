@@ -8265,4 +8265,3 @@ tags:
     description: A reader represents a device that accepts payments. You can use the SumUp Solo to accept in-person payments.
     x-core-objects:
       - $ref: '#/components/schemas/Reader'
-    x-beta: true

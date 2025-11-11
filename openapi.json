@@ -11596,8 +11596,7 @@
         {
           "$ref": "#/components/schemas/Reader"
         }
-      ],
-      "x-beta": true
+      ]
     }
   ]
 }
