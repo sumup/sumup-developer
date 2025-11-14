@@ -1,5 +1,5 @@
 ---
-import { Display } from "@sumup-oss/circuit-ui";
+import { Display, Body } from "@sumup-oss/circuit-ui";
 
 const {
   data: { title },
@@ -17,11 +17,19 @@ const {
   >
     {title}
   </Display>
+  <Body
+    size="l"
+    style={{ marginTop: "var(--cui-spacings-kilo)" }}
+    color="subtle"
+  >
+    Docs, guides, and resources to help you accept payments with SumUp.
+  </Body>
 </div>
 
 <style>
   .hero {
-    margin-top: 2rem;
+    margin: var(--cui-spacings-giga) var(--cui-spacings-zetta);
+    text-align: center;
   }
 
   @media screen and (max-width: 600px) {

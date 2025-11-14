@@ -217,6 +217,7 @@ export default defineConfig({
         SocialIcons: "./src/overrides/SocialIcons.astro",
         PageFrame: "./src/overrides/PageFrame.astro",
         PageTitle: "./src/overrides/PageTitle.astro",
+        MobileTableOfContents: "./src/overrides/MobileTableOfContents.astro",
       },
       social: [
         {

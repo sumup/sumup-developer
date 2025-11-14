@@ -34,7 +34,6 @@
 :root[data-theme="light"] {
   /* Layout sizing */
   --sl-content-width: 50rem;
-  --sl-mobile-toc-height: 2.5rem;
 
   /* Custom colors for page elements */
   --sl-color-hairline-shade: var(--cui-border-subtle);

@@ -1,27 +1,31 @@
 ---
-import { Display } from "@sumup-oss/circuit-ui";
+import { Display, Body } from "@sumup-oss/circuit-ui";
 
 const {
-  data: { title },
+  data: { title, description },
 } = Astro.locals.starlightRoute.entry;
 ---
 
-<Display
-  as="h1"
-  size="s"
-  weight="bold"
-  id={"_top"}
-  className="title"
-  data-page-title
->
-  {title}
-</Display>
+<div class="page-title">
+  <Display as="h1" size="s" weight="semibold" id={"_top"} data-page-title>
+    {title}
+  </Display>
+  {
+    description && (
+      <Body
+        size="l"
+        style={{ marginTop: "var(--cui-spacings-mega)" }}
+        color="subtle"
+      >
+        {description}
+      </Body>
+    )
+  }
+</div>
 
 <style>
-  @media screen and (max-width: 600px) {
-    .title {
-      font-size: var(--cui-headline-l-font-size);
-      line-height: var(--cui-headline-l-line-height);
-    }
+  .page-title {
+    text-align: center;
+    padding: var(--cui-spacings-tera) 0 var(--cui-spacings-byte);
   }
 </style>
