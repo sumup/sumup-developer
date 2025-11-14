@@ -9,18 +9,20 @@ publishedDate: 2025-11-03
 **Offline payments**
 
 - Introduces Offline payments with Solo lite, please refer to the dedicated section in [OFFLINE_PAYMENTS.md](https://github.com/sumup/sumup-android-sdk/blob/master/OFFLINE_PAYMENTS.md) for more information.
-    - Please contact integrations@sumup.com for enabling offline payments on your SumUp merchant account.
+  - Please contact integrations@sumup.com for enabling offline payments on your SumUp merchant account.
 
 **Added:**
 
 - Payment intent now also returns the card reader model and firmware version in new response fields `SumUpAPI.Response.CARD_READER_MODEL` and `SumUpAPI.Response.CARD_READER_FIRMWARE_VERSION` at the end of every transaction.
 
 **Improvements:**
+
 - Renames package of `TransactionInfo`: `com.sumup.merchant.reader.models.TransactionInfo` > `com.sumup.checkout.core.models.TransactionInfo`
 - Renames package of `SumUpState`: `import com.sumup.merchant.api.SumUpState` > `import com.sumup.reader.sdk.api.SumUpState`
 - Miscellaneous bug fixes and enhancements.
 
 **Updates about the technical stack:**
+
 - Minimum supported targetSDK is 35
 - Minimum Kotlin is upgraded to 1.9.0
 - Minimum Kotlin Coroutine is upgraded to 1.8.0

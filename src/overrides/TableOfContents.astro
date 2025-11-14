@@ -1,23 +1,18 @@
 ---
 import TableOfContentsList from "@astrojs/starlight/components/TableOfContents.astro";
+import CopyPageButton from "@components/CopyPageButton.astro";
 
 const { toc } = Astro.locals.starlightRoute;
 ---
 
-{
-  toc && (
-    <starlight-toc
-      data-min-h={toc.minHeadingLevel}
-      data-max-h={toc.maxHeadingLevel}
-    >
-      <nav aria-labelledby="starlight__on-this-page">
-        <h2 id="starlight__on-this-page">
-          {Astro.locals.t("tableOfContents.onThisPage")}
-        </h2>
-        <TableOfContentsList toc={toc.items} />
-      </nav>
-    </starlight-toc>
-  )
-}
+{toc && <TableOfContentsList />}
+<div class="page-options">
+  <CopyPageButton />
+</div>
 
-<script src="./TableOfContents/starlight-toc"></script>
+<style>
+  .page-options {
+    margin-top: var(--cui-spacings-giga);
+    margin-left: var(--cui-spacings-byte);
+  }
+</style>

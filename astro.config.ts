@@ -207,6 +207,7 @@ export default defineConfig({
       head: head(),
       components: {
         Footer: "./src/overrides/Footer.astro",
+        TableOfContents: "./src/overrides/TableOfContents.astro",
         Head: "./src/overrides/Head.astro",
         MobileMenuToggle: "./src/overrides/MobileMenuToggle.astro",
         Hero: "./src/overrides/Hero.astro",
