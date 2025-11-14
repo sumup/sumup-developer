@@ -26,7 +26,8 @@ const posts = await Promise.all(
 const props = {
   frontmatter: {
     title: "Changelog",
-    description: "Changelog",
+    description:
+      "Subscribe to stay up to date with new features and API and SDK changes.",
     template: "splash",
     tableOfContents: false,
   },
@@ -35,7 +36,7 @@ const props = {
 ---
 
 <StarlightPage {...props}>
-  <div class="subcription">
+  <div class="subscription">
     <Subscribe />
   </div>
   <main class="content" data-pagefind-body>
@@ -100,7 +101,7 @@ const props = {
     scrollbar-width: thin;
   }
 
-  .subcription {
+  .subscription {
     display: flex;
     flex-direction: row;
     justify-content: center;
