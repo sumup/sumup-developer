@@ -1,5 +1,6 @@
 ---
 import { resolveSchema } from "@lib/openapi";
+import Markdown from "@components/Markdown.astro";
 import type { OpenAPIV3_1 } from "openapi-types";
 import InlineCode from "../Highlight/InlineCode.astro";
 import ParameterName from "./ParameterName.astro";
@@ -27,9 +28,11 @@ const { parameters = [], kind } = Astro.props;
               def={p.schema}
               required={!!p.required}
             />
-            {schema.example && (
+            {p.description && <Markdown>{p.description}</Markdown>}
+            {"example" in schema && (
               <div>
-                Example: <InlineCode>{schema.example}</InlineCode>
+                Example:{" "}
+                <InlineCode>{JSON.stringify(schema.example)}</InlineCode>
               </div>
             )}
           </li>
