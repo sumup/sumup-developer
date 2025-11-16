@@ -102,12 +102,17 @@ const generateRustStructInit = (
 
       // Primitives - handle strings with proper Rust syntax
       if (typeof value === "string") {
+        if (resolved.format === "password") {
+          return `${indent}  ${fieldName}: crate::secret::Secret::from("${value}"),`;
+        }
         return `${indent}  ${fieldName}: "${value}".to_string(),`;
       }
 
       return `${indent}  ${fieldName}: ${JSON.stringify(value)},`;
     })
     .join("\n");
+
+  if (!fields) return "{}";
 
   return `{\n${fields}\n${indent}}`;
 };
@@ -132,7 +137,7 @@ const requestBody = (operation: OperationObject): string => {
     return "";
   }
 
-  return `sumup::${bodyStructName} ${generateRustStructInit(example, schema)}`;
+  return `sumup::${bodyStructName}${generateRustStructInit(example, schema)}`;
 };
 
 export const rust = (operation: OperationObject): string => {
@@ -143,19 +148,52 @@ export const rust = (operation: OperationObject): string => {
 
   const body = requestBody(operation);
 
-  // Extract required parameters and use their examples from referenced schemas if available
-  const requiredParams = operation.parameters?.filter((p) => p.required) || [];
+  // Separate path and query parameters
+  const pathParams =
+    operation.parameters?.filter((p) => p.in === "path" && p.required) || [];
+  const queryParams =
+    operation.parameters?.filter((p) => p.in === "query") || [];
 
-  // Build the parameter list with references
+  // Build the parameter list
   const paramsList: string[] = [];
-  for (const param of requiredParams) {
+
+  // Add path parameters first
+  for (const param of pathParams) {
     const example = getParameterExample(param);
+    const paramSchema = param.schema ? resolveSchema(param.schema) : {};
     if (typeof example === "string") {
-      paramsList.push(`&"${example}".to_string()`);
+      if (paramSchema.format === "password") {
+        paramsList.push(`crate::secret::Secret::from("${example}")`);
+      } else {
+        paramsList.push(`"${example}"`);
+      }
     } else {
       paramsList.push(`&${JSON.stringify(example)}`);
     }
   }
+
+  // Add query parameters as a struct if any exist
+  if (queryParams.length > 0) {
+    const paramsStructName = `${Case.pascal(operation.operationId!)}Params`;
+    const queryFields = queryParams
+      .map((param) => {
+        const fieldName = Case.snake(param.name);
+        const example = getParameterExample(param);
+        if (typeof example === "string") {
+          return `    ${fieldName}: Some("${example}".to_string()),`;
+        } else if (typeof example === "number") {
+          return `    ${fieldName}: Some(${example}),`;
+        } else if (typeof example === "boolean") {
+          return `    ${fieldName}: Some(${example}),`;
+        }
+        return `    ${fieldName}: Some(${JSON.stringify(example)}),`;
+      })
+      .join("\n");
+
+    paramsList.push(`sumup::${paramsStructName}{\n${queryFields}\n}`);
+  }
+
+  // Add body last
   if (body) {
     paramsList.push(`${body}`);
   }
