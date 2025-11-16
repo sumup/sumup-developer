@@ -5,7 +5,6 @@ import type { StarlightPageProps } from "@astrojs/starlight/props";
 import { formatSlug } from "@lib/helpers";
 import { doc, pathsByTag } from "@lib/openapi";
 import type { StarlightUserConfig } from "@astrojs/starlight/types";
-import type { I18nBadgeConfig } from "node_modules/@astrojs/starlight/schemas/badge";
 
 // list of resources that are expanded by default
 const mainResources = ["Checkouts", "Customers"];
@@ -72,12 +71,6 @@ const sidebar: StarlightUserConfig["sidebar"] = [
               ...operations.map((op) => ({
                 label: op.summary!,
                 link: `/api/${formatSlug(tag.name)}/${formatSlug(op.slug)}`,
-                badge: (op.deprecated
-                  ? {
-                      text: "Deprecated",
-                      variant: "caution",
-                    }
-                  : undefined) as I18nBadgeConfig,
                 attrs: {
                   "data-scroll-to": `${formatSlug(tag.name)}-${op.slug}`,
                 },

@@ -3,7 +3,7 @@
 // very similar to Startlight's SidebarSublist but we adjust
 // the styles and for certain content don't use expandable
 // sections.
-import { Badge, Icon } from "@astrojs/starlight/components";
+import { Icon } from "@astrojs/starlight/components";
 import type { SidebarEntry, Link, Group } from "../types/sidebar";
 import SidebarRestorePoint from "./SidebarRestorePoint.astro";
 
@@ -75,13 +75,6 @@ const isOpen = (entry: Group): boolean => {
             {...entry.attrs}
           >
             <span>{entry.label}</span>
-            {entry.badge && (
-              <Badge
-                variant={entry.badge.variant}
-                class={entry.badge.class}
-                text={entry.badge.text}
-              />
-            )}
           </a>
         )}
         {entry.type === "group" && isExpandable(entry) && (
@@ -90,13 +83,6 @@ const isOpen = (entry: Group): boolean => {
             <summary class:list={["entry", depth < 1 && "group-header"]}>
               <div class="group-label">
                 <span>{applyLabelOverride(entry.label)}</span>
-                {entry.badge && (
-                  <Badge
-                    variant={entry.badge.variant}
-                    class={entry.badge.class}
-                    text={entry.badge.text}
-                  />
-                )}
               </div>
               <Icon name="right-caret" class="caret" size="1.25rem" />
             </summary>
@@ -111,13 +97,6 @@ const isOpen = (entry: Group): boolean => {
           <>
             <span class:list={["entry", "group-header"]}>
               <span>{entry.label}</span>
-              {entry.badge && (
-                <Badge
-                  variant={entry.badge.variant}
-                  class={entry.badge.class}
-                  text={entry.badge.text}
-                />
-              )}
             </span>
             <Astro.self
               sublist={entry.entries}
