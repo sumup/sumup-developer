@@ -62,7 +62,7 @@ const baseRequest = {
 ```
 
 2. Load the [Google Pay API JavaScript library](https://developers.google.com/pay/api/web/guides/tutorial#js-load) on the web page you will offer this payment method
-3. Initialize a `PaymentsClient` object for the environment you are implementing //TEST is for test, PRODUCTION is for live
+3. Initialize a `PaymentsClient` object for the environment you are implementing. Two values are possible here: `TEST` for testing the integration and `PRODUCTION` for live payments.
 
 ```js
 const paymentsClient = new google.payments.api.PaymentsClient({
@@ -72,7 +72,7 @@ const paymentsClient = new google.payments.api.PaymentsClient({
 
 4. [Check readiness to pay](https://developers.google.com/pay/api/web/guides/tutorial#isreadytopay) with Google Pay API
 5. [Launch the Google Pay button](https://developers.google.com/pay/api/web/guides/tutorial#add-button)
-6. [Create a PaymentDataRequest](https://developers.google.com/pay/api/web/guides/tutorial#paymentdatarequest) using the baseRequest object and append the `transactionInfo` and `merchantInfo` objects. Your `PaymentDataRequest` should look like this:
+6. [Create a PaymentDataRequest](https://developers.google.com/pay/api/web/guides/tutorial#paymentdatarequest) using the `baseRequest` object and append the `transactionInfo` and `merchantInfo` objects. Your `PaymentDataRequest` should look like this:
 
 ```js
 const paymentDataRequest = {
