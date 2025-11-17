@@ -10,7 +10,7 @@ import { Aside } from '@astrojs/starlight/components';
 import Image from '@components/content/Image.astro';
 
 
-In this guide, you will learn how to directly integrate Google Pay with SumUp. This payment method is also available via the [SumUp Payment Widget](/online-payments/checkouts/card-widget/).
+In this guide, you will learn how to directly integrate Google Pay with SumUp. Please note that you can also offer Google Pay through our Payment Widget (see [Payment Widget documentation](/online-payments/checkouts/card-widget#alternative-payment-methods)).
 
 ## Prerequisites
 
@@ -62,17 +62,17 @@ const baseRequest = {
 ```
 
 2. Load the [Google Pay API JavaScript library](https://developers.google.com/pay/api/web/guides/tutorial#js-load) on the web page you will offer this payment method
-3. Initialize a `PaymentsClient` object for the environment you are implementing
+3. Initialize a `PaymentsClient` object for the environment you are implementing. Two values are possible here: `TEST` for testing the integration and `PRODUCTION` for live payments.
 
 ```js
 const paymentsClient = new google.payments.api.PaymentsClient({
-  environment: 'TEST',
+  environment: 'PRODUCTION',
 });
 ```
 
 4. [Check readiness to pay](https://developers.google.com/pay/api/web/guides/tutorial#isreadytopay) with Google Pay API
 5. [Launch the Google Pay button](https://developers.google.com/pay/api/web/guides/tutorial#add-button)
-6. [Create a PaymentDataRequest](https://developers.google.com/pay/api/web/guides/tutorial#paymentdatarequest) using the baseRequest object and append the `transactionInfo` and `merchantInfo` objects. Your `PaymentDataRequest` should look like this:
+6. [Create a PaymentDataRequest](https://developers.google.com/pay/api/web/guides/tutorial#paymentdatarequest) using the `baseRequest` object and append the `transactionInfo` and `merchantInfo` objects. Your `PaymentDataRequest` should look like this:
 
 ```js
 const paymentDataRequest = {
