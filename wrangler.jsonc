@@ -23,8 +23,8 @@
   },
   "routes": [
     {
-      "pattern": "developer.sumup.com/*",
-      "zone_name": "sumup.com"
+      "pattern": "developer.sumup.com",
+      "custom_domain": true
     }
   ]
 }
