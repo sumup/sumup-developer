@@ -55,7 +55,7 @@
     "@types/react": "^18.2.31",
     "@types/react-dom": "^18.2.14",
     "@typescript-eslint/parser": "^8.46.2",
-    "astro": "^5.15.4",
+    "astro": "^5.15.8",
     "astro-mermaid": "1.1.0",
     "change-case-all": "^2.1.0",
     "eslint": "^9.39.1",
