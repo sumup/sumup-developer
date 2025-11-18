@@ -143,3 +143,23 @@ const paymentDataRequest = {
 <Aside type="note">
 Handling the responses from the API calls should be according to our public <a href="/api">API contract & guidelines</a>
 </Aside>
+
+## Troubleshooting
+
+### Screenshots for Google
+
+Google demands screenshots for the onboarding process, but you don't have the integration ready yet? Simply add `#sumup-widget:google-pay-demo-mode` to your URL to render the Google Pay button for onboarding purposes.
+
+### Testing Google Pay Integration Locally
+
+This is not possible at the moment. You need to use a staging environment and validate the test domain in Google API console.
+
+### Error Decrypting Google Pay Token
+
+Internal Server Error with a message pointing to Google Pay token decryption error is most likely caused by the wrong `environment` value in the `paymentsClient` object. Make sure it's set to `PRODUCTION` as below.
+
+```js
+const paymentsClient = new google.payments.api.PaymentsClient({
+  environment: 'PRODUCTION',
+});
+```
