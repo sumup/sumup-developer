@@ -1,7 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import slugify from "@sindresorhus/slugify";
-import { Badge } from "@sumup-oss/circuit-ui";
+import { Badge, Body } from "@sumup-oss/circuit-ui";
 import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
 import type { StarlightPageProps } from "@astrojs/starlight/props";
 import Subscribe from "@components/Subscribe.astro";
@@ -10,9 +10,17 @@ import MarkdownContent from "@astrojs/starlight/components/MarkdownContent.astro
 
 const { tag: currentTag } = Astro.params;
 
+const changelogDocs = await getCollection("changelog");
+
+const allTags = [
+  ...new Set(changelogDocs.flatMap(({ data: { tags } }) => tags)),
+];
+
 const collectionDocs = (
-  await getCollection("changelog", ({ data: { tags } }) =>
-    tags.map((tag) => slugify(tag)).includes(currentTag),
+  await getCollection(
+    "changelog",
+    ({ data: { tags } }) =>
+      !currentTag || tags.map((tag) => slugify(tag)).includes(currentTag),
   )
 )
   .sort(
@@ -26,7 +34,7 @@ export async function getStaticPaths() {
   const posts = (await getCollection("changelog")).flatMap(
     ({ data }) => data.tags,
   );
-  const tags = [...new Set(posts)];
+  const tags = ["", ...new Set(posts)];
 
   return tags.map((tag) => ({
     params: { tag: slugify(tag) },
@@ -40,10 +48,11 @@ const posts = await Promise.all(
   }),
 );
 
+const tagName = posts.at(0)?.data.tags.find((t) => slugify(t) === currentTag);
+
 const props = {
   frontmatter: {
-    title: "Changelog",
-    description: "Changelog",
+    title: tagName ? `${tagName} Changelog` : `Changelog`,
     template: "splash",
     tableOfContents: false,
   },
@@ -52,42 +61,62 @@ const props = {
 ---
 
 <StarlightPage {...props}>
-  <div class="subcription">
-    <Subscribe />
+  <div>
+    <ul class="tags">
+      <li>
+        <a href="/changelog">
+          <Badge>All</Badge>
+        </a>
+      </li>
+      {
+        allTags.map((tag) => (
+          <li>
+            <a href={`/changelog/${slugify(tag)}`}>
+              <Badge>{tag}</Badge>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
   </div>
+  {
+    !currentTag && (
+      <div class="subscription">
+        <Subscribe />
+      </div>
+    )
+  }
   <main class="content" data-pagefind-body>
     {
       posts.map(async ({ Content, data: { title, tags, publishedDate } }) => {
         return (
           <>
-            <div class="time">
-              <time
-                data-pagefind-meta="datetime"
-                datetime={publishedDate.toISOString()}
-              >
-                {publishedDate.toISOString().split("T")[0]}
-              </time>
-            </div>
             <div class="post">
-              <Headline as="h2" size="m">
+              <Body size="s" color="subtle">
+                <time
+                  data-pagefind-meta="datetime"
+                  datetime={publishedDate.toISOString()}
+                >
+                  {publishedDate.toISOString().split("T")[0]}
+                </time>
+              </Body>
+              <Headline as="h2" size="m" className="title">
                 {title}
               </Headline>
-              <div class="details">
-                {tags && tags.length > 0 && (
-                  <ul class="tags">
-                    {tags.map((tag) => (
-                      <li>
-                        <a href={`./${slugify(tag)}`}>
-                          <Badge>{tag}</Badge>
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </div>
               <MarkdownContent>
                 <Content />
               </MarkdownContent>
+              {tags && tags.length > 0 && (
+                <ul class="tags entryTags">
+                  {tags.map((tag) => (
+                    <li>
+                      <a href={`./${slugify(tag)}`}>
+                        <Badge>{tag}</Badge>
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
           </>
         );
@@ -99,17 +128,9 @@ const props = {
 <style lang="scss">
   .content {
     margin-top: var(--cui-spacings-zetta);
-    display: grid;
-    grid-template-columns: auto minmax(0, 1fr);
-    row-gap: var(--cui-spacings-zetta);
-    column-gap: var(--cui-spacings-giga);
-  }
-
-  @media screen and (max-width: 940px) {
-    .content {
-      grid-template-columns: 100%;
-      row-gap: var(--cui-spacings-mega);
-    }
+    display: flex;
+    flex-direction: column;
+    gap: var(--cui-spacings-giga);
   }
 
   :global(.expressive-code .frame pre) {
@@ -128,10 +149,8 @@ const props = {
     justify-self: end;
   }
 
-  @media screen and (max-width: 940px) {
-    .time {
-      justify-self: start;
-    }
+  .title {
+    margin-bottom: var(--cui-spacings-mega);
   }
 
   .post {
@@ -145,24 +164,21 @@ const props = {
     &:last-of-type {
       border-bottom: none;
     }
-
-    .details {
-      display: block;
-      margin-bottom: var(--cui-spacings-mega);
-      color: var(--cui-fg-subtle);
-    }
   }
 
   .tags {
-    margin: 0;
-    margin-top: var(--cui-spacings-byte);
     padding: 0;
-    display: inline-flex;
+    margin: 0;
+    display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
     list-style: none;
+    justify-content: center;
+    gap: var(--cui-spacings-byte);
+  }
 
-    li {
-      margin-right: var(--cui-spacings-byte);
-    }
+  .entryTags {
+    margin-top: var(--cui-spacings-tera);
+    justify-content: start;
   }
 </style>
