@@ -1,0 +1,68 @@
+---
+title: "Rust SDK"
+tags: ["SDK", "Rust"]
+publishedDate: 2025-10-13
+---
+
+We are happy to announce the release of our [Rust](https://rust-lang.org/) SDK. The SDK is maintained under [sumup/sumup-rs](https://github.com/sumup/sumup-rs) and covers all of SumUp's public APIs. For full documentation, see [https://docs.rs/sumup](https://docs.rs/sumup/latest/sumup/).
+
+```rs
+use sumup::Client;
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let client = Client::default();
+
+    let merchant_code = std::env::var("SUMUP_MERCHANT_CODE")
+        .expect("SUMUP_MERCHANT_CODE environment variable must be set");
+
+    let readers = client
+        .readers()
+        .list(&merchant_code)
+        .await
+        .expect("couldn't list merchant's readers");
+
+    let reader = readers
+        .items
+        .first()
+        .expect("merchant doesn't have any paired card readers");
+
+    let checkout_reference = format!("checkout-{}", uuid::Uuid::new_v4());
+
+    println!("Creating checkout with reference: {}", checkout_reference);
+
+    match client
+        .readers()
+        .create_checkout(
+            &merchant_code,
+            &reader.id,
+            sumup::CreateReaderCheckoutRequest {
+                total_amount: sumup::Money {
+                    currency: "EUR".into(),
+                    minor_unit: 2,
+                    value: 1000,
+                },
+                affiliate: None,
+                card_type: None,
+                description: Some("sumup-rs card reader checkout example".into()),
+                installments: None,
+                return_url: None,
+                tip_rates: None,
+                tip_timeout: None,
+            },
+        )
+        .await
+    {
+        Ok(_) => {
+            println!("✓ Checkout created successfully!");
+        }
+        Err(e) => {
+            eprintln!("✗ Failed to create checkout: {}", e);
+        }
+    }
+
+    Ok(())
+}
+```
+
+See the repository for more [examples](https://github.com/sumup/sumup-rs/main/examples) and don't hesitate to [let us know](/contact) if you have any questions.
