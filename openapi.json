@@ -3738,6 +3738,22 @@
             }
           },
           {
+            "name": "status",
+            "in": "query",
+            "description": "Filter the returned memberships by the membership status.",
+            "schema": {
+              "$ref": "#/components/schemas/MembershipStatus"
+            }
+          },
+          {
+            "name": "resource.type",
+            "in": "query",
+            "description": "Filter memberships by resource kind.",
+            "schema": {
+              "$ref": "#/components/schemas/ResourceType"
+            }
+          },
+          {
             "name": "resource.attributes.sandbox",
             "in": "query",
             "description": "Filter memberships by the sandbox status of the resource the membership is in.",
@@ -3836,7 +3852,8 @@
               "type": "boolean",
               "example": true,
               "default": false
-            }
+            },
+            "x-document": false
           },
           {
             "name": "email",
@@ -8524,7 +8541,7 @@
         ]
       },
       "ResourceType": {
-        "description": "The kind of the membership resource.\nPossible values are:\n* `merchant` - merchant account(s)\n* `organization` - organization(s)",
+        "description": "The type of the membership resource.\nPossible values are:\n* `merchant` - merchant account(s)\n* `organization` - organization(s)",
         "type": "string",
         "example": "merchant"
       },
