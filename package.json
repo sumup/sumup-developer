@@ -37,7 +37,7 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.5",
-    "@astrojs/cloudflare": "^12.6.10",
+    "@astrojs/cloudflare": "^12.6.11",
     "@astrojs/language-server": "^2.16.0",
     "@astrojs/react": "^4.4.2",
     "@astrojs/rss": "^4.0.13",
@@ -55,7 +55,7 @@
     "@types/react": "^18.2.31",
     "@types/react-dom": "^18.2.14",
     "@typescript-eslint/parser": "^8.46.2",
-    "astro": "^5.15.8",
+    "astro": "^5.15.9",
     "astro-mermaid": "1.1.0",
     "change-case-all": "^2.1.0",
     "eslint": "^9.39.1",
