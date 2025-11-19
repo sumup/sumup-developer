@@ -2493,6 +2493,16 @@ paths:
           description: Filter memberships by resource kind.
           schema:
             $ref: '#/components/schemas/ResourceType'
+        - name: status
+          in: query
+          description: Filter the returned memberships by the membership status.
+          schema:
+            $ref: '#/components/schemas/MembershipStatus'
+        - name: resource.type
+          in: query
+          description: Filter memberships by resource kind.
+          schema:
+            $ref: '#/components/schemas/ResourceType'
         - name: resource.attributes.sandbox
           in: query
           description: Filter memberships by the sandbox status of the resource the membership is in.
@@ -2559,6 +2569,7 @@ paths:
             type: boolean
             example: true
             default: false
+          x-document: false
         - name: email
           in: query
           description: Filter the returned members by email address prefix.
@@ -5892,7 +5903,7 @@ components:
         - unknown
     ResourceType:
       description: |-
-        The kind of the membership resource.
+        The type of the membership resource.
         Possible values are:
         * `merchant` - merchant account(s)
         * `organization` - organization(s)
