@@ -177,6 +177,10 @@ export default defineConfig({
       title: "SumUp Developer",
       favicon: "favicon.png",
       disable404Route: true,
+      tableOfContents: {
+        minHeadingLevel: 2,
+        maxHeadingLevel: 2,
+      },
       sidebar: [
         {
           label: "Get Started",

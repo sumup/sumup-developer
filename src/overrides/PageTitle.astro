@@ -1,5 +1,5 @@
 ---
-import { Display, Body } from "@sumup-oss/circuit-ui";
+import { Headline, Body } from "@sumup-oss/circuit-ui";
 
 const {
   data: { title, description },
@@ -7,20 +7,12 @@ const {
 ---
 
 <div class="page-title">
-  <Display
-    as="h1"
-    size="s"
-    weight="semibold"
-    id={"_top"}
-    className="title"
-    data-page-title
-  >
+  <Headline as="h1" size="l" id={"_top"} className="title" data-page-title>
     {title}
-  </Display>
+  </Headline>
   {
     description && (
       <Body
-        size="l"
         style={{ marginTop: "var(--cui-spacings-mega)" }}
         color="subtle"
         className="subtitle"
@@ -33,18 +25,6 @@ const {
 
 <style>
   .page-title {
-    text-align: center;
-    padding: var(--cui-spacings-tera) 0 var(--cui-spacings-byte);
-  }
-
-  @media screen and (max-width: 980px) {
-    .title {
-      font-size: var(--cui-headline-l-font-size);
-      line-height: var(--cui-headline-l-line-height);
-    }
-    .subtitle {
-      font-size: var(--cui-body-m-font-size);
-      line-height: var(--cui-body-m-line-height);
-    }
+    padding: var(--cui-spacings-mega) 0 var(--cui-spacings-byte);
   }
 </style>
