@@ -166,5 +166,24 @@
 # API - General
 /docs/api/sum-up-rest-api/                                                   /api
 
+# Problem
+/docs/problem/problem/504-gateway-timeout                                    /problem/504-gateway-timeout
+/docs/problem/problem/500-internal-server-error                              /problem/500-internal-server-error
+/docs/problem/problem/422-unprocessable-entity                               /problem/422-unprocessable-entity
+/docs/problem/problem/409-session-expired                                    /problem/409-session-expired
+/docs/problem/problem/409-session-cant-be-deactivated                        /problem/409-session-cant-be-deactivated
+/docs/problem/problem/409-session-already-processed                          /problem/409-session-already-processed
+/docs/problem/problem/404-not-found                                          /problem/404-not-found
+/docs/problem/problem/404-checkout-not-found                                 /problem/404-checkout-not-found
+/docs/problem/problem/403-forbidden                                          /problem/403-forbidden
+/docs/problem/problem/401-not-authorised-token                               /problem/401-not-authorised-token
+/docs/problem/problem/401-missing-token                                      /problem/401-missing-token
+/docs/problem/problem/401-invalid-token                                      /problem/401-invalid-token
+/docs/problem/problem/400-validation-failed                                  /problem/400-validation-failed
+/docs/problem/problem/400-unknown-payment-method                             /problem/400-unknown-payment-method
+/docs/problem/problem/400-payment-method-not-allowed                         /problem/400-payment-method-not-allowed
+/docs/problem/problem/400-multiple-invalid-parameters                        /problem/400-multiple-invalid-parameters
+/docs/problem/problem/400-invalid-parameter                                  /problem/400-invalid-parameter
+
 # Catch-all for old docs structure
 /docs/*                                                                      /:splat
