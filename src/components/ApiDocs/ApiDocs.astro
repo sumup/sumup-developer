@@ -2,7 +2,7 @@
 import Markdown from "@components/Markdown.astro";
 import { formatSlug } from "@lib/helpers";
 import { doc, pathsByTag } from "@lib/openapi";
-import { Anchor, Card, Body } from "@sumup-oss/circuit-ui";
+import { Anchor, Card, Body, Button } from "@sumup-oss/circuit-ui";
 import LRGrid from "./LRGrid.astro";
 import SDKList from "./SDKList";
 import {
@@ -13,6 +13,7 @@ import {
   CodeBlockHeader,
 } from "@components/Code";
 import TagSection from "./TagSection.astro";
+import { ArrowSlanted } from "@sumup-oss/icons";
 
 export interface Props {
   target?: string;
@@ -27,6 +28,26 @@ const { target } = Astro.props;
       <LRGrid>
         <div class="info">
           <Markdown>{doc.info.description}</Markdown>
+          <div class="spec-links">
+            <Button
+              size="s"
+              href="https://raw.githubusercontent.com/sumup/sumup-openapi/refs/heads/main/openapi.yaml"
+              target="_blank"
+              rel="noreferrer noopener"
+              icon={ArrowSlanted}
+            >
+              View YAML spec
+            </Button>
+            <Button
+              size="s"
+              href="https://raw.githubusercontent.com/sumup/sumup-openapi/refs/heads/main/openapi.json"
+              target="_blank"
+              rel="noreferrer noopener"
+              icon={ArrowSlanted}
+            >
+              View JSON spec
+            </Button>
+          </div>
         </div>
         {
           doc.servers && (
@@ -311,6 +332,13 @@ let client = Client::default().with_authorization("sup_sk_MvxmLOl0...");`,
 </script>
 
 <style>
+  .spec-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--cui-spacings-kilo);
+    margin-top: var(--cui-spacings-giga);
+  }
+
   .specs {
     font-size: 0.9rem;
     flex-grow: 1;
