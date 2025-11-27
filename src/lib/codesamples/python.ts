@@ -148,9 +148,9 @@ export const python = (operation: OperationObject): string => {
 
   const njs = `from sumup import Sumup
 
-client = SumUp()
+client = Sumup()
 
-res = sumup.${resource}.${method}(${paramsSection}${body})`;
+result = client.${resource}.${method}(${paramsSection}${body})`;
 
   return njs;
 };

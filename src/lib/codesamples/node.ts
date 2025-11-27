@@ -114,11 +114,11 @@ export const node = (operation: OperationObject): string => {
     ? `${paramsString}${body ? ", " : ""}`
     : "";
 
-  const njs = `import { SumUp } from '@sumup/sdk';
+  const njs = `import SumUp from '@sumup/sdk';
 
-const sumup = new SumUp();
+const client = new SumUp();
 
-const res = await sumup.${resource}.${method}(${paramsSection}${body});`;
+const result = await client.${resource}.${method}(${paramsSection}${body});`;
 
   return njs;
 };
