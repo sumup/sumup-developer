@@ -1,21 +1,22 @@
 ---
 title: Android Tap-to-Pay SDK
-description: Integrate with Android Tap to Pay SDK to process contactless payments on a phone.
+description: Integrate with Android Tap-to-Pay SDK to process contactless payments on a phone.
 sidebar:
   order: 15
 ---
 
+import { androidttpsdkname } from '@lib/productnames.ts';
 import { Aside } from "@astrojs/starlight/components";
 
-## About Tap to Pay on Android SDK
+## About Android Tap-to-Pay SDK
 
-Tap to Pay on Android SDK enables your mobile app to accept card-present contactless payments with a smartphone only, without the need for any additional hardware.
+{ androidttpsdkname } enables your mobile app to accept card-present contactless payments with a smartphone only, without the need for any additional hardware.
 This guide explains how you can integrate this functionality into your Android mobile app.
 
 - Used for live, customer-facing operations.
 - The SDK is not debuggable. Additionally, **Attestation & Monitoring** is enabled. If a device doesn’t meet our threat policy (for example, if debug mode is enabled or the device is rooted) then payment operations will not be available.
 - For testing purposes, use dedicated developer credentials to prevent actual card charges. You can request access by contacting integration@sumup.com.
-- For latest information, please check the [Android Tap-to-Pay Changelog](/changelog/tap-to-pay).
+- For latest information, please check the [{ androidttpsdkname } Changelog](/changelog/tap-to-pay).
 
 ### Prerequisites
 
@@ -26,7 +27,7 @@ This guide explains how you can integrate this functionality into your Android m
 - Java 17 or later
 - maven repository credentials (to access the SDK repository, can be requested by sending an email to integration@sumup.com).
 - a Secret API key, in case you don't intend to use the OAuth2 authentication process. You can generate a Secret API key in the [SumUp Dashboard](https://developer.sumup.com/online-payments/introduction/authorization#api-keys).
-- Access to Android Tap-to-Pay GitHub repository (can be requested by sending an email to integration@sumup.com).
+- Access to { androidttpsdkname } GitHub repository (please send an email to integration@sumup.com).
 
 ### Hardware Requirements
 
@@ -81,7 +82,7 @@ You can use the sample app provided in the GitHub repository as a reference.
 
 ### Authentication
 
-Tap to Pay on Android SDK uses the transparent authentication approach.
+{ androidttpsdkname } uses the transparent authentication approach.
 It means that the SDK is not responsible for the authentication process.
 The authentication process is handled by the consuming app.
 The SDK provides the `init` [method](#1-initialization) with the `AuthTokenProvider` interface as a parameter.
@@ -95,8 +96,8 @@ interface AuthTokenProvider {
 
 There are several ways for a consumer app to provide the access token to the SDK.
 
-1. Using the OAuth2 [flow](https://developer.sumup.com/tools/authorization/authorization#integration-via-oauth-20):
-   The consumer app can implement the OAuth2 flow to get the access token and provide it to the SDK. The SDK provides the `AuthTokenProvider` interface that should be implemented by the consumer app. The implementation of the `getAccessToken` method should return the access token. This way is preferable and recommended because it provides a more secure way to authenticate the user.
+1. Using the OAuth 2.0 [flow](https://developer.sumup.com/tools/authorization/authorization#integration-via-oauth-20):
+   The consumer app can implement the OAuth 2.0 flow to get the access token and provide it to the SDK. The SDK provides the `AuthTokenProvider` interface that should be implemented by the consumer app. The implementation of the `getAccessToken` method should return the access token. This way is preferable and recommended because it provides a more secure way to authenticate the user.
 
 2. Using API Key:
    You can use an API Key as an auth token. Generate the key in the [SumUp Dashboard](https://developer.sumup.com/tools/authorization/authorization#create-api-key) and provide it to the SDK through `AuthTokenProvider.getAccessToken()` method.
@@ -190,7 +191,7 @@ Where:
 - `customItems` - The list of custom items. Set null if not used.
 - `priceItems` - The list of price items. Set null if not used.
 - `products` - The list of product items. Set null if not used.
-- `processCardAs` - The type of the card processing. The default value is `null`. The possible values are `ProcessCardAs.Credit(val instalments: Int)` and `ProcessCardAs.Debit`, where `instalments` is the number of instalments. This parameter is optional and only applicable to some markets, such as Brazil, where the card type selection and instalments are supported.
+- `processCardAs` - The type of the card processing. The default value is `null`. The possible values are `ProcessCardAs.Credit(val instalments: Int)` and `ProcessCardAs.Debit`, where `instalments` is the number of installments. This parameter is optional and only applicable to some markets, such as Brazil, where the card type selection and installments are supported.
 - `affiliateData` - The affiliate data refers to tracking and attributing transactions to specific affiliates, integrators, or referral sources.
 
 **Note:** The amounts shall be provided in minor unit of the currency according to the list below.  
@@ -252,7 +253,7 @@ It returns a `Result` object that can be either a `Result.Success` if the teardo
 
 #### Exceptions
 
-The SDK may return a `Result.Failure` containing an exception when one of its methods is called.
+{ androidttpsdkname } may return a `Result.Failure` containing an exception when one of its methods is called.
 Every exception belongs to one of the base types.
 The base types are listed below, and each of these is further divided into more specific exception types.
 
@@ -340,7 +341,7 @@ It is still possible to have a USB debugging enabled and Developer Mode disabled
 
 #### Brazil and Chile
 
-To test Tap to Pay on Android in Brazil and Chile, you should set `processCardAs` for each transaction. For example:
+To test { androidttpsdkname } in Brazil and Chile, you should set `processCardAs` for each transaction. For example:
 
 ```kotlin
 tapToPay.startPayment(

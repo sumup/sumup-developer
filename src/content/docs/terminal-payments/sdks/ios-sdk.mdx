@@ -1,17 +1,18 @@
 ---
-title: iOS SDK
-description: Explains how the iOS SDK works, required setup, and how it delivers card-present and Tap to Pay experiences.
+title: iOS Terminal SDK
+description: Explains how the iOS Terminal SDK works, how to set it up, and how it delivers card-present and Tap to Pay experiences.
 sidebar:
   order: 20
 ---
 
 import { Aside, Steps, Tabs, TabItem } from '@astrojs/starlight/components';
 import Image from '@components/content/Image.astro';
+import { iossdkname } from '@lib/productnames.ts';
 
 
-## About SumUp iOS SDK
+## About SumUp iOS Terminal SDK
 
-SumUp provides a [native iOS SDK](https://github.com/sumup/sumup-ios-sdk) that enables you to integrate SumUp's proprietary
+SumUp provides a [native { iossdkname }](https://github.com/sumup/sumup-ios-sdk) that enables you to integrate SumUp's proprietary
 card terminal(s) and its payment platform to accept credit and debit card payments
 (incl. VISA, MasterCard, American Express and more) as well as Tap-to-Pay payments on iPhones. SumUp's SDK communicates transparently
 to the card terminal(s) via Bluetooth. Upon initiating
@@ -24,9 +25,9 @@ No sensitive card data is ever passed through to or stored on the merchant’s p
 All data is encrypted by the card terminal, which has been fully certified to the highest
 industry standards (PCI, EMV I & II, Visa, MasterCard & Amex).
 
-SumUp iOS SDK is provided as an Objective C binary. However, when you use the SDK in Swift projects, Xcode uses automatic bridging to generate Swift-friendly interfaces from the Objective-C headers. For that reason, code samples in this guide are provided both in Swift and Objective C.
+SumUp { iossdkname } is provided as an Objective C binary. However, when you use the SDK in Swift projects, Xcode uses automatic bridging to generate Swift-friendly interfaces from the Objective-C headers. For that reason, code samples in this guide are provided both in Swift and Objective C.
 
-The iOS SDK includes a [Sample App](https://github.com/sumup/sumup-ios-sdk/tree/master/SampleApp/SumUpSDKSampleApp), which you can run out-of-the-box to immediately test the implementation in practice.
+The { iossdkname } includes a [Sample App](https://github.com/sumup/sumup-ios-sdk/tree/master/SampleApp/SumUpSDKSampleApp), which you can run out-of-the-box to immediately test the implementation in practice.
 
 ## Prerequisites
 
@@ -34,7 +35,7 @@ The iOS SDK includes a [Sample App](https://github.com/sumup/sumup-ios-sdk/tree/
 * Received SumUp card terminal: Solo Lite, Solo, Air, 3G, PIN+.
 * Requested an Affiliate (Access) Key via [SumUp Dashboard](https://me.sumup.com/developers) for Developers.
 * Deployment Target iOS 14.0 or later.
-* Recommended to use on Xcode 14.3.1 and iOS SDK 16 or later.
+* Recommended to use on Xcode 14.3.1 and { iossdkname } 16 or later.
 * iPhone or iPad.
 * If your device is managed by an organization, make sure app installation is permitted.
 
@@ -67,7 +68,7 @@ When you're done experimenting with the test account, switch back to a regular a
 
 ### Match Affiliate Key to App Bundle ID
 
-iOS SDK uses the Affiliate Key from your merchant account to authenticate your app.
+{ iossdkname } uses the Affiliate Key from your merchant account to authenticate your app.
 
 1. Log in to SumUp with your merchant account and open the [Affiliate Key page](https://developer.sumup.com/affiliate-keys). 
 2. Create an Affiliate Key if you don't have one yet.
@@ -75,7 +76,7 @@ iOS SDK uses the Affiliate Key from your merchant account to authenticate your a
 
 ### Add Property List Keys to Project
 
-The SumUp iOS SDK requires access to the user's location and Bluetooth peripherals. If your app has not asked for the user's permission, the SumUp iOS SDK will ask at the time of the first login or checkout attempt.
+The SumUp { iossdkname } requires access to the user's location and Bluetooth peripherals. If your app has not asked for the user's permission, the SumUp { iossdkname } will ask at the time of the first login or checkout attempt.
 Please add the following keys to your `info.plist` file and set some values:
 
 ```txt
@@ -130,11 +131,11 @@ Please consider the following when building Tap-to-Pay solutions, as Apple revie
 4. [Log the user in](#logging-the-user-in).
 5. Follow steps under [Implementing Tap-to-Pay](#implementing-tap-to-pay).
 
-## Integrating iOS SDK
+## Integrating iOS Terminal SDK
 
 ### Adding SDK Framework to Project
 
-The SumUp iOS SDK is provided as an XCFramework `SumUpSDK.xcframework` that contains
+The SumUp { iossdkname } is provided as an XCFramework `SumUpSDK.xcframework` that contains
 the headers and bundles containing resources such as images and localizations. You can add the SDK binary manually or use a package manager such as Swift Package Manager, Cocoapods, or Carthage.
 Please follow the relevant instructions below to prepare your project:
 
@@ -149,7 +150,7 @@ If you're using Xcode 12.3 or later, this should work out of the box.
 
 Unfortunately, Xcode 12 releases before that had an issue, (https://bugs.swift.org/browse/SR-13343), that added the framework as a static library, not as an embedded dynamic framework. 
 
-Follow this workaround to manage SumUp iOS SDK versions via Swift PM in those cases:
+Follow this workaround to manage SumUp { iossdkname } versions via Swift PM in those cases:
 
 <Steps>
 1. Add the package dependency to the repository `https://github.com/sumup/sumup-ios-sdk` (*File > Swift Packages > Add Package Dependency...*) with the version `Up to Next Major: 4.0.0`
@@ -188,7 +189,7 @@ Distributing XCFrameworks with the latest Carthage version (0.35.0) is not yet a
 There is an open issue ([#2799](https://github.com/Carthage/Carthage/issues/2799)) to solve this.
 Once that issue is fixed, we expect Carthage to work again.
 
-The SumUp iOS SDK can be integrated with Carthage by following the steps below:
+The SumUp { iossdkname } can be integrated with Carthage by following the steps below:
 
 <Steps>
 1. Add the following line to your `Cartfile`:
@@ -215,7 +216,7 @@ In Swift, use `import SumUpSDK`. You do not have to add any headers to your brid
 
 ### Initialization
 
-Before calling any additional feature of the SumUp iOS SDK, you are required to set up the SDK with your Affiliate Key. Call on the main thread. You may wish to defer calling `setupWithAPIKey:` until after app launch, as it requests the user's location permission.
+Before calling any additional feature of the SumUp { iossdkname }, you are required to set up the SDK with your Affiliate Key. Call on the main thread. You may wish to defer calling `setupWithAPIKey:` until after app launch, as it requests the user's location permission.
 
 <Image alt="Login screen" src="/img/guides/use_location.png" width="40%" />
 
@@ -288,7 +289,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 ### Authentication - Component Definitions
 
-SumUp iOS SDK supports either the OAuth 2.0 Authorization Code Flow login with Access Token or a modally presented login from a View Controller (as you can see implemented in the Sample App). We strongly recommend the OAuth 2.0 approach for new integrations, due to support for MFA, better overall security, and possible deprecation of the View Controller in the future.
+SumUp { iossdkname } supports either the OAuth 2.0 Authorization Code Flow login with Access Token or a modally presented login from a View Controller (as you can see implemented in the Sample App). We strongly recommend the OAuth 2.0 approach for new integrations, due to support for MFA, better overall security, and possible deprecation of the View Controller in the future.
 
 <Tabs>
 

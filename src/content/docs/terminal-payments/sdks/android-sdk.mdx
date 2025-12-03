@@ -1,17 +1,18 @@
 ---
-title: Android SDK
-description: Guides you through integrating the Android SDK, prerequisites, and embedding the checkout flow within your app.
+title: Android Reader SDK
+description: Guides you through integrating the Android Reader SDK, and embedding the checkout flow within your app.
 sidebar:
   order: 16
 ---
 
 import { Aside, Steps } from '@astrojs/starlight/components';
 import Image from '@components/content/Image.astro';
+import { androidreadersdkname } from '@lib/productnames.ts';
 
 
-## About Android SDK
+## About Android Reader SDK
 
-This guide provides a step-by-step documentation for SumUp's native Android SDK, that enables you to integrate our proprietary card terminal(s) and its payment platform to accept credit and debit card payments (incl. VISA, MasterCard, American Express and more). The SDK communicates transparently to the card terminal(s) via Bluetooth (BLE 4.0). Upon initiating a checkout, the SDK guides your user using appropriate screens through each step of the payment process. As part of the process, SumUp provides also the card terminal setup screen, along with the cardholder signature verification screen. The checkout result is returned with the relevant data for your records.
+This guide provides a step-by-step documentation for SumUp's native { androidreadersdkname }, that enables you to integrate our proprietary card terminal(s) and its payment platform to accept credit and debit card payments (incl. VISA, MasterCard, American Express and more). The SDK communicates transparently to the card terminal(s) via Bluetooth (BLE 4.0). Upon initiating a checkout, the SDK guides your user using appropriate screens through each step of the payment process. As part of the process, SumUp provides also the card terminal setup screen, along with the cardholder signature verification screen. The checkout result is returned with the relevant data for your records.
 
 No sensitive card data is ever passed through to or stored on the merchant’s phone. All data is encrypted by the card terminal, which has been fully certified to the highest industry standards (PCI, EMV I & II, Visa, MasterCard & Amex).
 
@@ -24,7 +25,7 @@ SumUp also provides the [Android Tap to Pay SDK](/terminal-payments/sdks/android
 *  Registered for a merchant account via SumUp's [country websites](https://sumup.com/) (or created a test account)
 *  Received SumUp card terminal: Solo, Air, Air Lite or PIN+ Terminal
 *  Generated an [Affiliate Key](/tools/authorization/affiliate-keys)
-*  Downloaded the [Android SDK Repository](https://github.com/sumup/sumup-android-sdk)
+*  Downloaded the [{ androidreadersdkname } Repository](https://github.com/sumup/sumup-android-sdk)
 *  SumUp SDK requires `minSdkVersion` 26 or later
 *  SumUp SDK ensures support for
    - `targetSDK` 31 or later
@@ -352,4 +353,4 @@ See [SumUp Changelog](/changelog/).
 
 ## License
 
-See [SumUp Android SDK License](https://github.com/sumup/Android-MerchantSDK/blob/master/LICENSE.md).
+See [SumUp { androidreadersdkname } License](https://github.com/sumup/Android-MerchantSDK/blob/master/LICENSE.md).
