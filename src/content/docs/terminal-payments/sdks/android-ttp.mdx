@@ -8,7 +8,7 @@ sidebar:
 import { androidttpsdkname } from '@lib/productnames.ts';
 import { Aside } from "@astrojs/starlight/components";
 
-## About { androidttpsdkname }
+## About Android Tap-to-Pay SDK
 
 { androidttpsdkname } enables your mobile app to accept card-present contactless payments with a smartphone only, without the need for any additional hardware.
 This guide explains how you can integrate this functionality into your Android mobile app.
@@ -191,7 +191,7 @@ Where:
 - `customItems` - The list of custom items. Set null if not used.
 - `priceItems` - The list of price items. Set null if not used.
 - `products` - The list of product items. Set null if not used.
-- `processCardAs` - The type of the card processing. The default value is `null`. The possible values are `ProcessCardAs.Credit(val instalments: Int)` and `ProcessCardAs.Debit`, where `instalments` is the number of instalments. This parameter is optional and only applicable to some markets, such as Brazil, where the card type selection and instalments are supported.
+- `processCardAs` - The type of the card processing. The default value is `null`. The possible values are `ProcessCardAs.Credit(val instalments: Int)` and `ProcessCardAs.Debit`, where `instalments` is the number of installments. This parameter is optional and only applicable to some markets, such as Brazil, where the card type selection and installments are supported.
 - `affiliateData` - The affiliate data refers to tracking and attributing transactions to specific affiliates, integrators, or referral sources.
 
 **Note:** The amounts shall be provided in minor unit of the currency according to the list below.  
