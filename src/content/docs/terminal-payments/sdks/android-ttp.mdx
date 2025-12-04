@@ -1,6 +1,6 @@
 ---
 title: Android Tap-to-Pay SDK
-description: Integrate with Android Tap-to-Pay SDK to process contactless payments on a phone.
+description: Integrate with the Android Tap to Pay SDK to process contactless payments directly on a phone.
 sidebar:
   order: 15
 ---
@@ -10,13 +10,12 @@ import { Aside } from "@astrojs/starlight/components";
 
 ## About Android Tap-to-Pay SDK
 
-{ androidttpsdkname } enables your mobile app to accept card-present contactless payments with a smartphone only, without the need for any additional hardware.
-This guide explains how you can integrate this functionality into your Android mobile app.
+The { androidttpsdkname } enables your mobile app to accept card-present contactless payments using only a smartphone, without any additional hardware. This guide explains how to integrate this functionality into your Android app.
 
-- Used for live, customer-facing operations.
-- The SDK is not debuggable. Additionally, **Attestation & Monitoring** is enabled. If a device doesn’t meet our threat policy (for example, if debug mode is enabled or the device is rooted) then payment operations will not be available.
+- Intended for live, customer-facing use.
+- The SDK is not debuggable. Additionally, **Attestation & Monitoring** is enabled. If a device fails to meet our security policies (e.g., debug mode enabled or rooted device), payment operations will be disabled.
 - For testing purposes, use dedicated developer credentials to prevent actual card charges. You can request access by contacting integration@sumup.com.
-- For latest information, please check the [{ androidttpsdkname } Changelog](/changelog/tap-to-pay).
+- For the latest updates, consult the [{ androidttpsdkname } Changelog](/changelog/tap-to-pay).
 
 ### Prerequisites
 
@@ -25,9 +24,9 @@ This guide explains how you can integrate this functionality into your Android m
 - `targetSDK`/`compileSDK`: 34 or later
 - Android Gradle Plugin: 7.3.0 or later
 - Java 17 or later
-- maven repository credentials (to access the SDK repository, can be requested by sending an email to integration@sumup.com).
-- a Secret API key, in case you don't intend to use the OAuth2 authentication process. You can generate a Secret API key in the [SumUp Dashboard](https://developer.sumup.com/online-payments/introduction/authorization#api-keys).
-- Access to { androidttpsdkname } GitHub repository (please send an email to integration@sumup.com).
+- maven repository credentials (to access the SDK repository, request by emailing integration@sumup.com).
+- A Secret API key, if not using OAuth2 authentication. You can generate a Secret API key in the [SumUp Dashboard](https://developer.sumup.com/online-payments/introduction/authorization#api-keys).
+- Access to the { androidttpsdkname } GitHub repository (request by emailing integration@sumup.com).
 
 ### Hardware Requirements
 
@@ -82,9 +81,7 @@ You can use the sample app provided in the GitHub repository as a reference.
 
 ### Authentication
 
-{ androidttpsdkname } uses the transparent authentication approach.
-It means that the SDK is not responsible for the authentication process.
-The authentication process is handled by the consuming app.
+The { androidttpsdkname } uses a transparent authentication approach: authentication is handled by the consumer app, not the SDK.
 The SDK provides the `init` [method](#1-initialization) with the `AuthTokenProvider` interface as a parameter.
 The `AuthTokenProvider` interface is responsible for providing the access token to the SDK.
 
@@ -123,11 +120,11 @@ The `TapToPay` interface has the following methods:
 suspend fun init(authTokenProvider: AuthTokenProvider): Result<Unit>
 ```
 
-The `init` method initializes the session. The `AuthTokenProvider` interface is responsible for providing the access token to the SDK (see [here](#Authentication)).
+The `init` method initializes the session. The `AuthTokenProvider` interface is responsible for providing the access token to the SDK (see [Authentication](#Authentication)).
 Please, note that the `init` method should be called only once during the app lifecycle. The `init` method should be called as soon as possible after the app starts.
 
 The `init` function returns a `Result` object that can be either a `Result.Success` if the initialization was successful.
-The function can also return `Result.Failure` with one exception from the list of exceptions mentioned [here](#Exceptions).
+The function can also return `Result.Failure` with one exception from the list of exceptions mentioned [under Exceptions](#Exceptions).
 
 #### 2. Start Payment
 
@@ -253,7 +250,7 @@ It returns a `Result` object that can be either a `Result.Success` if the teardo
 
 #### Exceptions
 
-{ androidttpsdkname } may return a `Result.Failure` containing an exception when one of its methods is called.
+The { androidttpsdkname } may return a `Result.Failure` containing an exception when one of its methods is called.
 Every exception belongs to one of the base types.
 The base types are listed below, and each of these is further divided into more specific exception types.
 
@@ -341,7 +338,7 @@ It is still possible to have a USB debugging enabled and Developer Mode disabled
 
 #### Brazil and Chile
 
-To test { androidttpsdkname } in Brazil and Chile, you should set `processCardAs` for each transaction. For example:
+To test the { androidttpsdkname } in Brazil and Chile, you should set `processCardAs` for each transaction. For example:
 
 ```kotlin
 tapToPay.startPayment(
@@ -359,5 +356,5 @@ tapToPay.startPayment(
 )
 ```
 
-Additionally, each transaction in Brazil and Chile should be verified by PIN.
+Additionally, PIN verification for transactions is mandatory for these countries.
 However, the PIN entry screen will appear only if _Developer Options_ are _disabled_ on the device - otherwise, the transaction will fail with an error.
