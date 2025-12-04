@@ -1,16 +1,18 @@
 ---
-import { Icons } from "./Icons";
+import { getIconURL, type IconName } from "@sumup-oss/icons";
 
 interface Props {
-  icon?: string;
+  icon?: IconName;
+  size?: "16" | "24" | "32";
 }
 
-const { icon } = Astro.props;
-const I = Icons[icon as keyof typeof Icons];
+const { icon, size = "24" } = Astro.props;
 
-if (!I) {
-  throw new Error(`Invalid icon ${icon}!`);
+if (!icon) {
+  throw new Error("Icon prop is required!");
 }
+
+const iconUrl = getIconURL(icon, size);
 ---
 
-<I />
+<img src={iconUrl} alt="" aria-hidden="true" />

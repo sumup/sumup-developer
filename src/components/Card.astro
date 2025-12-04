@@ -1,20 +1,20 @@
 ---
-import { Icons } from "./Icons";
+import { getIconURL, type IconName } from "@sumup-oss/icons";
 
 interface Props {
-  icon?: keyof typeof Icons;
+  icon?: IconName;
   title?: string;
 }
 
 const { icon, title, ...props } = Astro.props;
-const Icon = icon && Icons[icon];
+const iconUrl = icon ? getIconURL(icon, "24") : null;
 ---
 
 <div class="card" {...props}>
   {
     title && (
       <div class="title">
-        {Icon && <Icon />}
+        {iconUrl && <img src={iconUrl} alt="" aria-hidden="true" />}
         {title}
       </div>
     )
