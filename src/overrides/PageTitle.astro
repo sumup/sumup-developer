@@ -1,9 +1,12 @@
 ---
-import { Headline, Body } from "@sumup-oss/circuit-ui";
+import { Headline, Body, Button } from "@sumup-oss/circuit-ui";
+import { ArrowSlanted } from "@sumup-oss/icons";
 
 const {
-  data: { title, description },
+  data: { title, description, links = [] },
 } = Astro.locals.starlightRoute.entry;
+
+const linkItems = Array.isArray(links) ? links : [];
 ---
 
 <div class="page-title">
@@ -21,10 +24,43 @@ const {
       </Body>
     )
   }
+  {
+    linkItems.length > 0 && (
+      <div class="page-links">
+        {linkItems.map((link) => {
+          const isExternal = /^https?:\/\//.test(link.href);
+          return (
+            <Button
+              size="s"
+              href={link.href}
+              target={isExternal ? "_blank" : undefined}
+              rel={isExternal ? "noreferrer noopener" : undefined}
+              icon={isExternal ? ArrowSlanted : undefined}
+              className="page-link"
+            >
+              <span>{link.title}</span>
+            </Button>
+          );
+        })}
+      </div>
+    )
+  }
 </div>
 
 <style>
   .page-title {
     padding: var(--cui-spacings-mega) 0 var(--cui-spacings-byte);
+  }
+
+  .page-links {
+    margin-top: var(--cui-spacings-mega);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--cui-spacings-kilo);
+  }
+
+  .page-link img {
+    display: inline-block;
+    margin-right: var(--cui-spacings-byte);
   }
 </style>

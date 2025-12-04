@@ -22,9 +22,11 @@
 /online-payments/tools/react-native-sdk/                                     /online-payments/sdks/react-native-sdk
 /online-payments/tools/hosted-checkout/                                      /online-payments/checkouts/hosted-checkout
 /docs/online-payments/tools/swift-checkout/                                  /online-payments/sdks/swift-checkout
-/docs/online-payments/tools/php-sdk/                                         /online-payments/sdks/php-sdk
+/docs/online-payments/tools/php-sdk/                                         /tools/sdks/php-sdk
 /docs/online-payments/tools/card-widget/                                     /online-payments/checkouts/card-widget
-/docs/php-sdk/                                                               /online-payments/sdks/php-sdk
+/docs/php-sdk/                                                               /tools/sdks/php-sdk
+/online-payments/sdks/php-sdk/                                               /tools/sdks/php-sdk
+/docs/online-payments/sdks/php-sdk/                                          /tools/sdks/php-sdk
 
 # Online Payments - Plugins
 /docs/sumup-woocommerce-plugin/                                              /online-payments/plugins/woocommerce

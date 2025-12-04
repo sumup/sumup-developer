@@ -1,0 +1,124 @@
+---
+title: PHP SDK
+description: Introduction to the SumUp PHP SDK and first steps to get you started.
+sidebar:
+  order: 40
+links:
+  - title: Source code
+    href: https://github.com/sumup/sumup-ecom-php-sdk
+  - title: Documentation
+    href: https://github.com/sumup/sumup-ecom-php-sdk#readme
+---
+
+The [`sumup-ecom-php-sdk`](https://github.com/sumup/sumup-ecom-php-sdk) package wraps SumUp's public APIs with Guzzle-powered service classes. It is designed to facilitate payment integrators and provide easier access to common resources, such as:
+
+- managing merchant profiles
+- managing checkouts
+- managing customers
+- managing payouts
+- querying transactions
+
+## Installation
+
+Install with `composer require sumup/sumup-ecom-php-sdk`.
+
+## Configure authentication
+
+Provide your `app_id`, `app_secret`, and either an authorization code or API key to the `SumUp\SumUp` constructor. The SDK handles token refreshes and injects headers into each service call.
+
+## Examples
+
+### Online payment checkout
+
+```php
+<?php
+
+use SumUp\SumUp;
+use SumUp\Exceptions\SumUpSDKException;
+
+try {
+    $sumup = new SumUp([
+        'app_id' => getenv('SUMUP_APP_ID'),
+        'app_secret' => getenv('SUMUP_APP_SECRET'),
+        'code' => getenv('SUMUP_AUTHORIZATION_CODE'),
+    ]);
+
+    $checkoutService = $sumup->getCheckoutService();
+    $response = $checkoutService->create(
+        25.00,
+        'EUR',
+        'ORDER-1001',
+        getenv('SUMUP_MERCHANT_CODE'),
+        'Online payment via card widget',
+        getenv('SUMUP_PAY_TO_EMAIL')
+    );
+
+    $checkout = json_decode($response->getBody(), true);
+    echo $checkout['id'] . PHP_EOL;
+    // Return $checkout['id'] to your webpage so the SumUp card widget can complete the payment.
+} catch (SumUpSDKException $exception) {
+    echo 'SumUp SDK error: ' . $exception->getMessage();
+}
+```
+
+### Solo Cloud API checkout
+
+```php
+<?php
+
+use SumUp\SumUp;
+use SumUp\Exceptions\SumUpSDKException;
+
+try {
+    $sumup = new SumUp([
+        'app_id' => getenv('SUMUP_APP_ID'),
+        'app_secret' => getenv('SUMUP_APP_SECRET'),
+        'code' => getenv('SUMUP_AUTHORIZATION_CODE'),
+    ]);
+
+    $merchantCode = getenv('SUMUP_MERCHANT_CODE');
+    $customService = $sumup->getCustomService();
+
+    $listResponse = $customService->request('GET', sprintf('/v0.1/merchants/%s/readers', $merchantCode));
+    $readers = json_decode($listResponse->getBody(), true)['items'] ?? [];
+    $solo = array_filter($readers, fn($reader) => $reader['device']['model'] === 'solo');
+    $firstSolo = reset($solo);
+
+    if (!$firstSolo) {
+        throw new RuntimeException('Pair a Solo reader before using the Cloud API.');
+    }
+
+    $payload = [
+        'total_amount' => [
+            'currency' => 'EUR',
+            'minor_unit' => 2,
+            'value' => 1500,
+        ],
+        'affiliate' => [
+            'app_id' => getenv('SUMUP_APP_ID'),
+            'foreign_transaction_id' => 'solo-' . time(),
+            'key' => getenv('SUMUP_AFFILIATE_KEY'),
+        ],
+        'description' => 'Solo Cloud API checkout',
+    ];
+
+    $checkoutResponse = $customService->request(
+        'POST',
+        sprintf(
+            '/v0.1/merchants/%s/readers/%s/checkout',
+            $merchantCode,
+            $firstSolo['id']
+        ),
+        $payload
+    );
+
+    $data = json_decode($checkoutResponse->getBody(), true);
+    echo $data['data']['client_transaction_id'] . PHP_EOL;
+} catch (SumUpSDKException | RuntimeException $exception) {
+    echo 'Error: ' . $exception->getMessage();
+}
+```
+
+## SDK documentation
+
+For more information read the **[documentation](https://github.com/sumup/sumup-ecom-php-sdk)**.

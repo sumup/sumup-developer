@@ -1,0 +1,130 @@
+---
+title: Rust SDK
+description: Use the `sumup` crate to access SumUp APIs from Rust.
+sidebar:
+  order: 50
+links:
+  - title: Source code
+    href: https://github.com/sumup/sumup-rs
+  - title: Documentation
+    href: https://docs.rs/sumup/latest/sumup/
+---
+
+[`sumup-rs`](https://github.com/sumup/sumup-rs) is the official crate published as [`sumup`](https://crates.io/crates/sumup). It covers all public APIs, supports async/await, and exposes helpers for card-present and eCom workflows.
+
+## Installation
+
+Install the crate with `cargo add sumup` (enable the `jiff` feature if you prefer alternative datetime handling).
+
+## Configure authentication
+
+Set the `SUMUP_API_KEY` environment variable (or provide an OAuth token) and pass it to `Client::builder().with_api_key`. You can also inject the key directly:
+
+```rs
+let client = Client::builder()
+    .with_api_key("sup_sk_MvxmLOl0...")
+    .build()?;
+```
+
+## Examples
+
+### Online payment checkout
+
+```rs
+use sumup::{resources::checkouts::CheckoutCreateRequest, Client, Currency};
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let client = Client::builder()
+        .with_api_key(std::env::var("SUMUP_API_KEY")?)
+        .build()?;
+
+    let checkout = client
+        .checkouts()
+        .create(Some(CheckoutCreateRequest {
+            merchant_code: std::env::var("SUMUP_MERCHANT_CODE")?,
+            amount: 25.00,
+            checkout_reference: "ORDER-1001".into(),
+            currency: Currency::EUR,
+            description: Some("Online payment via card widget".into()),
+            customer_id: None,
+            purpose: None,
+            id: None,
+            status: None,
+            date: None,
+            valid_until: None,
+            transactions: None,
+            redirect_url: None,
+            return_url: None,
+        }))
+        .await?;
+
+    println!("{}", checkout.id.unwrap_or_default());
+    // Return checkout ID to your webpage so the SumUp card widget can complete the payment.
+    Ok(())
+}
+```
+
+### Solo Cloud API checkout
+
+```rs
+use std::{
+    io::{Error, ErrorKind},
+    time::{SystemTime, UNIX_EPOCH},
+};
+
+use sumup::{
+    resources::readers::CreateReaderCheckoutRequestAffiliate,
+    Client, CreateReaderCheckoutRequest, Money,
+};
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let client = Client::builder()
+        .with_api_key(std::env::var("SUMUP_API_KEY")?)
+        .build()?;
+
+    let merchant_code = std::env::var("SUMUP_MERCHANT_CODE")?;
+    let readers = client.readers().list(&merchant_code).await?;
+    let solo = readers
+        .items
+        .into_iter()
+        .find(|reader| reader.device.model == "solo")
+        .ok_or_else(|| Error::new(ErrorKind::NotFound, "Pair a Solo reader before using the Cloud API."))?;
+
+    let affiliate = CreateReaderCheckoutRequestAffiliate {
+        app_id: std::env::var("SUMUP_APP_ID")?,
+        foreign_transaction_id: format!(
+            "solo-{}",
+            SystemTime::now().duration_since(UNIX_EPOCH)?.as_secs()
+        ),
+        key: std::env::var("SUMUP_AFFILIATE_KEY")?,
+        tags: None,
+    };
+
+    let checkout = client
+        .readers()
+        .create_checkout(
+            &merchant_code,
+            &solo.id,
+            CreateReaderCheckoutRequest {
+                total_amount: Money {
+                    currency: "EUR".into(),
+                    minor_unit: 2,
+                    value: 1_500,
+                },
+                affiliate: Some(affiliate),
+                card_type: None,
+                description: Some("Solo Cloud API checkout".into()),
+                installments: None,
+                return_url: None,
+                tip_rates: None,
+                tip_timeout: None,
+            },
+        )
+        .await?;
+
+    println!("{}", checkout.data.client_transaction_id);
+    Ok(())
+}
+```

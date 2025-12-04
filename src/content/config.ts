@@ -30,6 +30,14 @@ export const collections = {
     schema: docsSchema({
       extend: z.object({
         icon: z.string().optional(),
+        links: z
+          .array(
+            z.object({
+              title: z.string(),
+              href: z.string(),
+            }),
+          )
+          .optional(),
       }),
     }),
     loader: docsLoader(),

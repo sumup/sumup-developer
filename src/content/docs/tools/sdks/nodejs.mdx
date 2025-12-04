@@ -1,0 +1,102 @@
+---
+title: Node.js SDK
+description: Use the official TypeScript client to talk to every SumUp public API.
+sidebar:
+  order: 10
+links:
+  - title: Source code
+    href: https://github.com/sumup/sumup-ts
+    icon: /img/logos/github-mark.svg
+  - title: Documentation
+    href: https://sumup.github.io/sumup-ts/
+---
+
+The [`@sumup/sdk`](https://github.com/sumup/sumup-ts) package wraps every public SumUp API, ships TypeScript declarations, and works in modern Node.js runtimes (>=18) as well as Cloudflare Workers, Vercel, and other ESM-friendly environments.
+
+## Installation
+
+Install with `npm install @sumup/sdk` (or `yarn add` / `pnpm add`).
+
+## Configure authentication
+
+The client reads the `SUMUP_API_KEY` environment variable automatically, so deploying with `SUMUP_API_KEY=sup_sk_MvxmLOl0...` is enough for most server workloads. You can also pass the secret explicitly:
+
+```ts
+const client = new SumUp({ apiKey: "sup_sk_MvxmLOl0..." });
+```
+
+If you use OAuth, exchange the authorization code for an access token and pass it as the `accessToken` option instead of `apiKey`.
+
+## Examples
+
+### Online payment checkout
+
+```ts
+import SumUp from "@sumup/sdk";
+
+const client = new SumUp({ apiKey: process.env.SUMUP_API_KEY ?? "" });
+
+async function createOnlineCheckout() {
+  const checkout = await client.checkouts.create({
+    amount: 2500,
+    checkout_reference: "ORDER-1001",
+    currency: "EUR",
+    merchant_code: process.env.SUMUP_MERCHANT_CODE ?? "",
+    pay_to_email: process.env.SUMUP_PAY_TO_EMAIL ?? "",
+    description: "Online payment via card widget",
+  });
+
+  console.log(checkout.id);
+  // Return checkout.id to your webpage so the SumUp card widget can complete the payment.
+}
+
+createOnlineCheckout().catch((error) => {
+  console.error(error);
+  process.exit(1);
+});
+```
+
+### Solo Cloud API checkout
+
+```ts
+import SumUp from "@sumup/sdk";
+
+const client = new SumUp({ apiKey: process.env.SUMUP_API_KEY ?? "" });
+
+async function createSoloCheckout() {
+  const merchantCode = process.env.SUMUP_MERCHANT_CODE ?? "";
+  const affiliateKey = process.env.SUMUP_AFFILIATE_KEY ?? "";
+  const affiliateAppId = process.env.SUMUP_APP_ID ?? "";
+  if (!affiliateKey || !affiliateAppId) {
+    throw new Error(
+      "Set SUMUP_AFFILIATE_KEY and SUMUP_APP_ID to use the Cloud API.",
+    );
+  }
+  const { items: readers } = await client.readers.list(merchantCode);
+  const solo = readers.find((reader) => reader.device.model === "solo");
+  if (!solo) {
+    throw new Error("Pair a Solo reader before using the Cloud API.");
+  }
+
+  const checkout = await client.readers.createCheckout(merchantCode, solo.id, {
+    total_amount: {
+      currency: "EUR",
+      minor_unit: 2,
+      value: 1500,
+    },
+    affiliate: {
+      app_id: affiliateAppId,
+      foreign_transaction_id: `solo-${Date.now()}`,
+      key: affiliateKey,
+    },
+    description: "Solo Cloud API checkout",
+  });
+
+  console.log(checkout.data.client_transaction_id);
+}
+
+createSoloCheckout().catch((error) => {
+  console.error(error);
+  process.exit(1);
+});
+```

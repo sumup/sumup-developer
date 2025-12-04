@@ -1,0 +1,94 @@
+---
+title: Python SDK
+description: Build synchronous or async SumUp integrations with Python.
+sidebar:
+  order: 30
+links:
+  - title: Source code
+    href: https://github.com/sumup/sumup-py
+  - title: Documentation
+    href: https://github.com/sumup/sumup-py#readme
+---
+
+[`sumup-py`](https://github.com/sumup/sumup-py) provides first-party Python bindings for every SumUp API. It ships both synchronous and asynchronous clients powered by `httpx`, includes Pydantic models for request bodies, and offers type hints for modern editors.
+
+## Installation
+
+Install with `pip install sumup`. If you use [uv](https://docs.astral.sh/uv/), run `uv add sumup`.
+
+## Configure authentication
+
+Expose your secret API key or OAuth access token as an environment variable and pass it to either the synchronous `Sumup` or asynchronous `AsyncSumup` client. You can also pass the key manually:
+
+```py
+client = Sumup(api_key="sup_sk_MvxmLOl0...")
+```
+
+## Examples
+
+### Online payment checkout
+
+```py
+import os
+
+from sumup import Sumup
+from sumup.checkouts.resource import CreateCheckoutBody
+
+
+client = Sumup(api_key=os.environ["SUMUP_API_KEY"])
+checkout = client.checkouts.create(
+    CreateCheckoutBody(
+        merchant_code=os.environ["SUMUP_MERCHANT_CODE"],
+        amount=25.00,
+        checkout_reference="ORDER-1001",
+        currency="EUR",
+        description="Online payment via card widget",
+    )
+)
+
+print(checkout.id)
+# Return checkout.id to your webpage so the SumUp card widget can complete the payment.
+```
+
+### Solo Cloud API checkout
+
+```py
+import asyncio
+import os
+from time import time
+
+from sumup import AsyncSumup
+from sumup.readers.resource import (
+    CreateReaderCheckoutBody,
+    CreateReaderCheckoutBodyAffiliate,
+    CreateReaderCheckoutBodyTotalAmount,
+)
+
+
+async def create_solo_checkout() -> None:
+    client = AsyncSumup(api_key=os.environ["SUMUP_API_KEY"])
+    merchant_code = os.environ["SUMUP_MERCHANT_CODE"]
+    readers = await client.readers.list(merchant_code)
+    solo = next((reader for reader in readers.items if reader.device.model == "solo"), None)
+    if solo is None:
+        raise RuntimeError("Pair a Solo reader before using the Cloud API.")
+
+    checkout = await client.readers.create_checkout(
+        merchant_code,
+        solo.id,
+        CreateReaderCheckoutBody(
+            total_amount=CreateReaderCheckoutBodyTotalAmount(currency="EUR", minor_unit=2, value=1500),
+            affiliate=CreateReaderCheckoutBodyAffiliate(
+                app_id=os.environ["SUMUP_APP_ID"],
+                foreign_transaction_id=f"solo-{int(time())}",
+                key=os.environ["SUMUP_AFFILIATE_KEY"],
+            ),
+            description="Solo Cloud API checkout",
+        ),
+    )
+
+    print(checkout.data.client_transaction_id)
+
+
+asyncio.run(create_solo_checkout())
+```

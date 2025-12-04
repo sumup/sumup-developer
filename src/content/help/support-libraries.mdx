@@ -2,6 +2,25 @@
 title: Which libraries are supported by SumUp?
 ---
 
-For [Online Payments](/online-payments/) we offer a [PHP SDK](https://github.com/sumup/sumup-ecom-php-sdk).
+SumUp maintains multiple SDKs and APIs to simplify your integration work across online and in-person payments.
 
-For [card readers](/terminal-payments/introduction/overview/) we have an [Android SDK](https://github.com/sumup/sumup-android-sdk), [iOS SDK](https://github.com/sumup/sumup-ios-sdk), [Android API](https://github.com/sumup/sumup-android-api) and [an iOS API](https://github.com/sumup/sumup-ios-url-scheme).
+## Online payments SDKs
+
+- [Node.js / TypeScript, Go, Python, PHP, and Rust SDK guides](/tools/sdks/) cover server-to-SumUp API calls for card-not-present flows.
+- Use these when you’re building checkout pages, recurring billing, or want to control the full online payments lifecycle via API.
+
+## Card-present SDKs
+
+- [Android SDK](https://github.com/sumup/sumup-android-sdk) and [iOS SDK](https://github.com/sumup/sumup-ios-sdk) let you embed our reader experience inside native apps.
+- [Android API](https://github.com/sumup/sumup-android-api) and [iOS URL scheme](https://github.com/sumup/sumup-ios-url-scheme) are lightweight options for launching the SumUp app to take a payment.
+- See the [terminal payments docs](/terminal-payments/) for installation and certification requirements.
+
+## Server SDKs
+
+- All server-side SDKs (Node.js, Go, Python, PHP, Rust) support both online payments and remote reader management via the same client libraries.
+- They handle authentication, pagination, and typed payloads so you can call **any** SumUp REST endpoint from your backend.
+
+## Cloud API for Solo readers
+
+- The [Cloud API](/terminal-payments/cloud-api/) triggers card-present transactions on Solo readers from any backend or platform that can make HTTPS calls.
+- Use it when your POS runs on web, desktop, or another environment that can’t embed the native Android/iOS SDKs but still needs in-person payments.
