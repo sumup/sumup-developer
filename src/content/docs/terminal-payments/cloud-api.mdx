@@ -1,6 +1,6 @@
 ---
 title: Cloud API
-description: Details how to use Solo card readers and run remote in-person payments via the Cloud API.
+description: Details on using Solo card readers and processing remote in-person payments via the Cloud API.
 sidebar:
   order: 2
 ---
@@ -12,56 +12,54 @@ import { cloudapiname } from '@lib/productnames.ts';
 
 ## About Payments with Cloud API
 
-The { cloudapiname } allows you to start a transaction from a Point of Sales (POS) running on any platform (Windows, iOS, Linux, Android, Web-based etc.) capable of sending HTTPS requests and complete said transaction via a Solo reader.
+The { cloudapiname } lets you start a transaction from a Point of Sale (POS) running on any platform (Windows, iOS, Linux, Android, Web-based, etc.) capable of sending HTTPS requests and complete that transaction via a Solo reader.
 
-The main advantages of this integration are:
+Key advantages include:
 
-* Suitability for any operating system and platform.
-* Can process simultaneous transactions to multiple Solo card readers at a time.
-* No distance limitation between your POS device and the Solo card reader. You can
-even send transactions remotely.
-* No Bluetooth connection required.
-* PCI Compliance, ensuring secure and compliant transactions.
+* Compatibility with any operating system and platform
+* Ability to process simultaneous transactions on multiple Solo card readers at once
+* No distance limitation between your POS device and the Solo card reader; transactions can be sent remotely
+* No Bluetooth connection required
+* PCI compliance, ensuring secure and compliant transactions
 
 The { cloudapiname } integration supports:
 
-* Debit, credit and installment transactions
-* The pairing of multiple Solo card readers to any SumUp account
-* Naming each Solo card reader as you see fit to guarantee a smooth checkout
-* Wi-Fi and mobile data connectivity (the latter needs to be enabled manually by SumUp)
+* Debit, credit, and installment transactions
+* Pairing multiple Solo card readers with any SumUp account
+* Naming each Solo card reader as desired to streamline checkout
+* Wi-Fi and mobile data connectivity (mobile data needs manual enabling by SumUp)
 
 ## Prerequisites
 
-* Your device must be authorized to use the { cloudapiname }. [Read the authorization guide](/tools/authorization/authorization/) and implement a method that best fits your use case. The API key should be sufficient if you do not intend to delegate access to third parties.
-* You need to [create an Affiliate Key](/tools/authorization/affiliate-keys/) for your app. SumUp { cloudapiname } requires the Affiliate Key to be present in checkout requests.
-* We strongly recommend keeping the Solo terminal plugged-in when using { cloudapiname }.
-* If you want to use mobile data, make sure that you're not connected to a Wi-Fi network. Disconnect if you are -
-  in case both mobile data and Wi-Fi is available, Solo reader will always use Wi-Fi.
+* Your device must be authorized to use the { cloudapiname }. [Refer to the authorization guide](/tools/authorization/authorization/) and implement the method that best fits your use case. An API key should be sufficient if you don’t plan to delegate access to third parties.
+* You must [create an Affiliate Key](/tools/authorization/affiliate-keys/) for your app, as SumUp { cloudapiname } requires this key in checkout requests.
+* We strongly recommend keeping the Solo terminal plugged in when using the { cloudapiname }.
+* If you want to use mobile data, ensure you are not connected to Wi-Fi. Disconnect from Wi-Fi if necessary—when both mobile data and Wi-Fi are available, the Solo reader will always use Wi-Fi.
 
-  To disconnect Wi-Fi, go to **Connections** > **Wi-Fi** and disable Wi-Fi using the on-screen slider.
+  To disconnect Wi-Fi, navigate to **Connections** > **Wi-Fi** and disable Wi-Fi using the on-screen slider.
 
 ## Solo Virtual Terminal
 
-If you don't have the Solo reader yet, you can still try out the flow using the [Virtual Solo](https://virtual-solo.sumup.com) with a [SumUp test account](/online-payments/#getting-a-test-account)!
+If you don’t have a Solo reader yet, you can try out the flow using the [Virtual Solo](https://virtual-solo.sumup.com) with a [SumUp test account](/online-payments/#getting-a-test-account).
 
-Virtual Solo works just like the real device, with certain limitations. The following actions are not supported virtually:
+Virtual Solo works like the real device but with some limitations. The following actions are not supported virtually:
 
-* Physical card insertion/tap simulation (since there's no physical Solo involved)
+* Physical card insertion or tap simulation (since there is no physical Solo device)
 * Real funds transfer (test accounts only)
 * PIN entry simulation (always auto-approved)
 * Offline transactions
 * Custom receipt printing
 * Network configuration
-* Real device pairing (simulator uses virtual device identifiers)
+* Real device pairing (the simulator uses virtual device identifiers)
 
 ## Pairing Solo Reader via Cloud API
 
-The { cloudapiname } works as bridge between your application and the Solo reader. The { cloudapiname } has two key processes:
+The { cloudapiname } acts as a bridge between your application and the Solo reader. It supports two main processes:
 
-1. Pairing a Solo reader to your account.
-2. Taking an in-person payment via Solo.
+* Pairing a Solo reader to your account
+* Taking in-person payments via Solo
 
-Once the Solo is paired to your SumUp account, you can initiate a request to charge a card from your application and SumUp handles the rest. Your customer goes through a seamless payment experience where all card data is encrypted from end-to-end. Once the payment has been processed the transaction result is available in real time via webhooks.
+Once the Solo reader is paired to your SumUp account, your application can initiate a card charge request. SumUp handles the rest, providing a seamless payment experience where all card data is encrypted end-to-end. Transaction results are available in real-time via webhooks.
 
 ```mermaid
 sequenceDiagram
@@ -81,7 +79,7 @@ sequenceDiagram
 
 ### Log Out of Solo
 
-{ cloudapiname } pairing process is only available for logged-out users. If you're logged in to your merchant account, do as follows:
+The { cloudapiname } pairing process is only available for logged-out users. If you're logged in to your merchant account, do the following:
 
 1. Open the top-side menu on your Solo.
 2. Select **Settings**. The **Device settings** menu opens.
@@ -90,11 +88,7 @@ sequenceDiagram
 
 ### Generate Pairing Code
 
-In order to initiate a payment on the Solo card reader, the device must be enrolled with the
-merchant account. This enrollment process is what we call reader pairing.
-The pairing process starts on the card reader side by generating the pairing code, and finishes
-when the target device successfully completes a pairing request using the { cloudapiname }, providing the code.
-Both your application and the Solo card reader need to be connected to the internet (it doesn't have to be the same network).
+To initiate a payment on the Solo card reader, it must be enrolled with the merchant account. This enrollment, called reader pairing, starts on the card reader by generating a pairing code and finishes when your device completes a pairing request using the { cloudapiname } with that code. Both your application and Solo reader must be connected to the internet (not necessarily the same network).
 
 <Aside type="note">
 
@@ -126,13 +120,13 @@ Solo card reader screen. You will need this code to pair your Solo reader with y
 
 ## Using Paired Reader
 
-{ cloudapiname } provides the possibility to manage transactions using the connected reader(s), as well as reader management endpoints. For details, check the section below. 
+{ cloudapiname } lets you manage transactions and readers connected to your account.
 
 ### Initiate Transaction
 
-This process is asynchronous, and the actual transaction may take some time to be stared on the device.
+This is an asynchronous process; starting the transaction on the device may take some time.
 
-There are some caveats when using this endpoint:
+Important notes:
 
 * The target device must be online, otherwise checkout won't be accepted
 * After the checkout is accepted, the system has 60 seconds to start the payment on the target device. During this time, any other checkout for the same device will be rejected.
@@ -145,7 +139,7 @@ Read the [Create Checkout API endpoint documentation](/api/readers/create-checko
 Stops the current transaction on the target device.
 This process is asynchronous, and the actual termination may take some time to be performed on the device.
 
-There are some caveats when using this endpoint:
+Important notes:
 
 * The target device must be online, otherwise termination won't be accepted.
 * This action is only possible if the device is waiting for cardholder action: waiting for card, waiting for PIN, etc.

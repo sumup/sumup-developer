@@ -1,6 +1,6 @@
 ---
 title: Android Reader SDK
-description: Guides you through integrating the Android Reader SDK, and embedding the checkout flow within your app.
+description: This guide walks you through integrating the Android SDK and embedding the checkout flow within your app.
 sidebar:
   order: 16
 ---
@@ -12,9 +12,11 @@ import { androidreadersdkname } from '@lib/productnames.ts';
 
 ## About Android Reader SDK
 
-This guide provides a step-by-step documentation for SumUp's native { androidreadersdkname }, that enables you to integrate our proprietary card terminal(s) and its payment platform to accept credit and debit card payments (incl. VISA, MasterCard, American Express and more). The SDK communicates transparently to the card terminal(s) via Bluetooth (BLE 4.0). Upon initiating a checkout, the SDK guides your user using appropriate screens through each step of the payment process. As part of the process, SumUp provides also the card terminal setup screen, along with the cardholder signature verification screen. The checkout result is returned with the relevant data for your records.
+This documentation provides a step-by-step guide for SumUp’s native { androidreadersdkname }, which enables you to integrate SumUp’s proprietary card terminals and payment platform to accept credit and debit card payments (including VISA, MasterCard, American Express, and more). The SDK communicates with card terminals via Bluetooth (BLE 4.0).
 
-No sensitive card data is ever passed through to or stored on the merchant’s phone. All data is encrypted by the card terminal, which has been fully certified to the highest industry standards (PCI, EMV I & II, Visa, MasterCard & Amex).
+During checkout, the SDK guides users through each payment step with appropriate screens. It also provides terminal setup and cardholder signature verification interfaces. The checkout result is returned with relevant transaction data for your records.
+
+Sensitive card data is never passed to or stored on the merchant’s phone. All data is encrypted by the card terminal, which complies with top industry standards (PCI, EMV I & II, Visa, MasterCard, Amex).
 
 <Aside>
 SumUp also provides the [Android Tap to Pay SDK](/terminal-payments/sdks/android-ttp) as a separate package for handling tap-to-pay payments via smartphone.
@@ -26,8 +28,8 @@ SumUp also provides the [Android Tap to Pay SDK](/terminal-payments/sdks/android
 *  Received SumUp card terminal: Solo, Air, Air Lite or PIN+ Terminal
 *  Generated an [Affiliate Key](/tools/authorization/affiliate-keys)
 *  Downloaded the [{ androidreadersdkname } Repository](https://github.com/sumup/sumup-android-sdk)
-*  SumUp SDK requires `minSdkVersion` 26 or later
-*  SumUp SDK ensures support for
+*  The SDK requires `minSdkVersion` 26 or later
+*  The SDK ensures support for
    - `targetSDK` 31 or later
    - AGP 7.3.0 or later
    - Kotlin version 1.7.21 or later
@@ -35,7 +37,7 @@ SumUp also provides the [Android Tap to Pay SDK](/terminal-payments/sdks/android
 
 ## Getting a test account
 
-To start testing SumUp APIs and tools without involving real money, you need to have a test account. You can create a test account from your account in the Dashboard as shown below.
+To test SumUp APIs without real money involved:
 
 <Steps>
 
@@ -49,7 +51,7 @@ To start testing SumUp APIs and tools without involving real money, you need to 
 
 <Image alt="A screenshot of the account selection dropdown in the SumUp dashboard with the test account highlighted with red circle" src="/img/guides/test_acc.png" width="40%" />
 
-Once you have your test account you can begin making API calls with real data. Our test accounts **do not** process transactions with real funds. Test account has a different ID, and shows a clear warning. When you try to process a request with the value of 11 (in any currency), the test account will always fail - this is by design, to enable testing failed transactions.
+Once you have your test account you can begin making API calls with real data. Our test accounts **do not** process transactions with real funds. Test account has a different ID, and shows a clear warning. Processing a request with the value of 11 (in any currency) will always fail deliberately, to enable testing failed transactions.
 
 <Image alt="A screenshot of the dashboard with test account selected" src="/img/guides/test-account-warning.png" width="100%" />
 
@@ -59,7 +61,7 @@ When you're done experimenting with the test account, switch back to a regular a
 
 Starting with firmware version 1.0.1.84, Air card readers with serial numbers starting with 108, 109 or later require SDK version 4.0.0 and later. Please update to the latest SDK version if you need to support these readers.
 
-## Integrate the SumUp SDK
+## Integrate the Android Reader SDK
 
 You can use the sample app provided in the repository as a reference.
 
@@ -99,7 +101,7 @@ public class SampleApplication extends Application {
 
 ### Logging Merchant In and Out
 
-Before calling any features of the SumUp SDK, a registered SumUp merchant account needs to be logged in. Use the Affiliate Key by entering the application ID of your app. (e.g. com.sumup.sdksampleapp)
+Before calling any features of the { androidreadersdkname }, a registered SumUp merchant account needs to be logged in. Log in by supplying your Affiliate Key (your app’s application ID, e.g., com.sumup.sdksampleapp):
 
 ```java
 SumUpLogin sumupLogin = SumUpLogin.builder(mAffiliateKey).build();
@@ -120,7 +122,9 @@ SumUpAPI.logout();
 
 ### Making Payments
 
-Once logged in, you can start using the SumUp SDK to accept card payments. If no account is logged in, `SumUpAPI.Response.ResultCode.ERROR_NOT_LOGGED_IN` will be returned.
+After logging in, start accepting card payments. If no account is logged in, an error `ERROR_NOT_LOGGED_IN` is returned.
+
+Once logged in, you can start using the { androidreadersdkname } to accept card payments. If no account is logged in, `SumUpAPI.Response.ResultCode.ERROR_NOT_LOGGED_IN` will be returned.
 
 ```java
     SumUpPayment payment = SumUpPayment.builder()
@@ -154,6 +158,8 @@ Once logged in, you can start using the SumUp SDK to accept card payments. If no
 
 ### Handling Payment Result
 
+Override `onActivityResult` to handle payment results:
+
 ```java
    @Override
    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -165,12 +171,9 @@ Once logged in, you can start using the SumUp SDK to accept card payments. If no
 
 ### Connecting Reader
 
-
 ## Additional Features
 
 ### Response Fields
-
-
 
 Several response fields are available when the callback activity is called: 
 
@@ -192,12 +195,11 @@ The response flags are provided within the Bundle that is passed back to the cal
 
 When a merchant is logged in, you can open this activity to access all the settings and options related to the card reader.
 
-* This activity mainly offers
-    * To be able to connect to a new card reader.
-    * To be able to see the reader attributes when previously connected i.e. Battery percentage, Serial number, Last three digits of serial number, Software version.
-    * Connect to the last saved reader if it is inactive.
-    * Update firmware of the reader if available.
-    * Visual illustration of the saved reader with it's current connectivity status and name.
+  * Connect to new readers.
+  * View the reader attributes when previously connected i.e. Battery percentage, Serial number, Last three digits of serial number, Software version.
+  * Connect to the last saved reader if it is inactive.
+  * Update firmware of the reader if available.
+  * Visual illustration of the saved reader with its current connectivity status and name.
 
 ```java
  	SumUpAPI.openCardReaderPage(MainActivity.this, 4);
@@ -275,7 +277,7 @@ To skip the failed screen shown at the end of a failed transaction, the `skipFai
 
 ### Transparent Authentication
 
-To authenticate an account without the user typing in their SumUp credentials each time, you can generate an access token using OAuth2.0 and use it to transparently login to the SumUp SDK.
+To authenticate an account without the user typing in their SumUp credentials each time, you can generate an access token using OAuth2.0 and use it to transparently login to the { androidreadersdkname }.
 
 ```java
 SumUpLogin sumupLogin = SumUpLogin.builder(mAffiliateKey).accessToken("MY_ACCESS_TOKEN").build();
@@ -320,7 +322,7 @@ In order to use it you need to add the dependency in `build.gradle` file
 implementation "com.google.android.gms:play-services-location:19.0.1"
 ```
        
-If the GLS dependency is not added to the project or Google Play Services are not installed on the mobile device, the SumUp SDK will determine the location with the default Location Service provided by Android.
+If the GLS dependency is not added to the project or Google Play Services are not installed on the mobile device, the { androidreadersdkname } will determine the location with the default Location Service provided by Android.
 
 <Aside>     
 Using GLS version 19.0.1 is recommended.
@@ -349,7 +351,7 @@ Please provide as much information as possible.
 
 ## Changelog
 
-See [SumUp Changelog](/changelog/).
+See the [SumUp Changelog](/changelog/) for updates.
 
 ## License
 
