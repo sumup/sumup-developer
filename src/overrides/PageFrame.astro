@@ -178,6 +178,9 @@ const { hasSidebar } = Astro.locals.starlightRoute;
   :global(.content-panel) {
     border: none !important;
   }
+  :global(.content-panel:first-of-type) {
+    padding-bottom: 0;
+  }
 
   :global(.right-sidebar-panel) {
     padding: var(--cui-spacings-tera) 0 var(--cui-spacings-tera)

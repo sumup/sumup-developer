@@ -19,9 +19,19 @@
 /docs/integration-bookings/                                                  /terminal-payments
 
 # Online Payments - Tools & SDKs
-/online-payments/tools/react-native-sdk/                                     /online-payments/sdks/react-native-sdk
+/online-payments/sdks/                                                       /online-payments/checkouts/sdks
+/docs/online-payments/sdks/                                                  /online-payments/checkouts/sdks
+/online-payments/sdks/react-native-sdk/                                      /online-payments/checkouts/react-native-sdk
+/docs/online-payments/sdks/react-native-sdk/                                 /online-payments/checkouts/react-native-sdk
+/online-payments/sdks/swift-checkout/                                        /online-payments/checkouts/swift-checkout
+/docs/online-payments/sdks/swift-checkout/                                   /online-payments/checkouts/swift-checkout
+/online-payments/checkouts/sdks/react-native-sdk/                            /online-payments/checkouts/react-native-sdk
+/docs/online-payments/checkouts/sdks/react-native-sdk/                       /online-payments/checkouts/react-native-sdk
+/online-payments/checkouts/sdks/swift-checkout/                              /online-payments/checkouts/swift-checkout
+/docs/online-payments/checkouts/sdks/swift-checkout/                         /online-payments/checkouts/swift-checkout
+/online-payments/tools/react-native-sdk/                                     /online-payments/checkouts/react-native-sdk
 /online-payments/tools/hosted-checkout/                                      /online-payments/checkouts/hosted-checkout
-/docs/online-payments/tools/swift-checkout/                                  /online-payments/sdks/swift-checkout
+/docs/online-payments/tools/swift-checkout/                                  /online-payments/checkouts/swift-checkout
 /docs/online-payments/tools/php-sdk/                                         /tools/sdks/php-sdk
 /docs/online-payments/tools/card-widget/                                     /online-payments/checkouts/card-widget
 /docs/php-sdk/                                                               /tools/sdks/php-sdk
@@ -68,7 +78,7 @@
 /docs/category/guides/                                                       /online-payments/guides
 /docs/category/alternative-payment-methods/                                  /online-payments/apm
 /docs/category/tools-1/                                                      /terminal-payments/sdks
-/docs/category/tools/                                                        /online-payments/sdks
+/docs/category/tools/                                                        /online-payments/checkouts/sdks
 /docs/category/introduction-1/                                               /terminal-payments
 /docs/category/features/                                                     /online-payments
 
