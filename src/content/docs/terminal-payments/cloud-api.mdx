@@ -8,6 +8,7 @@ sidebar:
 import { Aside, Steps } from '@astrojs/starlight/components';
 import Video from '@components/content/Video.astro';
 import SoloScreen from '@components/content/SoloScreen.astro';
+import VirtualSoloEmbed from '@components/content/VirtualSoloEmbed.astro';
 import { cloudapiname } from '@lib/productnames.ts';
 
 ## About Payments with Cloud API
@@ -41,6 +42,8 @@ The { cloudapiname } integration supports:
 ## Solo Virtual Terminal
 
 If you don’t have a Solo reader yet, you can try out the flow using the [Virtual Solo](https://virtual-solo.sumup.com) with a [SumUp test account](/online-payments/#getting-a-test-account).
+
+<VirtualSoloEmbed />
 
 Virtual Solo works like the real device but with some limitations. The following actions are not supported virtually:
 

@@ -1,0 +1,35 @@
+---
+const {
+  src = "https://virtual-solo.sumup.com?embed",
+  title = "Virtual Solo simulator",
+  width = 400,
+  height = 500,
+} = Astro.props;
+---
+
+<div class="virtual-solo-embed">
+  <iframe
+    src={src}
+    title={title}
+    loading="lazy"
+    width={width}
+    height={height}
+    allow="clipboard-write; encrypted-media"></iframe>
+</div>
+
+<style>
+  .virtual-solo-embed {
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .virtual-solo-embed iframe {
+    display: block;
+    margin: 0 auto;
+    border: 0;
+    max-width: 400px;
+    width: 100%;
+    /* Solo is a square but we need extra room at the bottom for the "Pay" button */
+    aspect-ratio: 0.8;
+  }
+</style>
