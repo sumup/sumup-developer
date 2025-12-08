@@ -22,9 +22,9 @@ SumUp also provides the [Android Tap to Pay SDK](/terminal-payments/sdks/android
 
 ## Prerequisites
 
-*  Registered for a merchant account via SumUp's [country websites](https://sumup.com/) (or created a test account)
+*  Registered for a merchant account via SumUp's [country websites](https://sumup.com/) (or [created a test account](#getting-a-test-account))
 *  Received SumUp card terminal: Solo, Air, Air Lite or PIN+ Terminal
-*  Generated an [Affiliate Key](/tools/authorization/affiliate-keys)
+*  [Generated an Affiliate Key](/tools/authorization/affiliate-keys) associated with your Application ID found in the `build.gradle` file.
 *  Downloaded the [{ androidreadersdkname } Repository](https://github.com/sumup/sumup-android-sdk)
 *  The SDK requires `minSdkVersion` 26 or later
 *  The SDK ensures support for
@@ -99,7 +99,7 @@ public class SampleApplication extends Application {
 
 ### Logging Merchant In and Out
 
-Before calling any features of the { androidreadersdkname }, a registered SumUp merchant account needs to be logged in. Log in by supplying your Affiliate Key (your app’s application ID, e.g., com.sumup.sdksampleapp):
+Before calling any features of the { androidreadersdkname }, a registered SumUp merchant account needs to be logged in. Log in by supplying your Affiliate Key ([create one](/tools/authorization/affiliate-keys) if necessary):
 
 ```java
 SumUpLogin sumupLogin = SumUpLogin.builder(mAffiliateKey).build();
@@ -282,7 +282,7 @@ SumUpLogin sumupLogin = SumUpLogin.builder(mAffiliateKey).accessToken("MY_ACCESS
 SumUpAPI.openLoginActivity(MainActivity.this, sumupLogin, 1);
 ```
 
-For information about how to obtain a token, please see the [Authorization Documentation](/tools/api/authorization).
+For information about how to obtain a token, please see the [Authorization Documentation](/tools/authorization/authorization).
 
 If the token is invalid, `SumUpAPI.Response.ResultCode.ERROR_INVALID_TOKEN` is returned.
 
