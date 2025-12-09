@@ -33,7 +33,7 @@ SumUp also provides the [Android Tap to Pay SDK](/terminal-payments/sdks/android
    - Kotlin version 1.7.21 or later
    - Java 11 and later 
 
-## Getting a test account
+## Getting a Test Account
 
 To test SumUp APIs without real money involved:
 
@@ -222,11 +222,11 @@ SumUpAPI.prepareForCheckout()
 
 When setting up the `SumUpPayment` object, the following optional parameters can be included:
 
-#### Tip amount
+#### Tip Amount
 
 A tip amount can be processed in addition to the `total` using the `tip` parameter. The tip amount will then be shown during the checkout process and be included in the response. Please note that a tip amount cannot be changed during/after the checkout.
 
-##### Tip on card reader
+##### Tip on Card Reader
 
 This allows the customer to add a tip directly on the card reader, rather than prompting for a tip amount on the Android device.
 
@@ -260,22 +260,22 @@ SumupPayment.builder()
 ```
 If there are connectivity issues and the transaction status can not be retrieved, the API will return `ERROR_UNKNOWN_TRANSACTION_STATUS`. In such cases, you can query the transaction status by calling [SumUp transaction status API](https://developer.sumup.com/api/transactions/get) using the specified `foreignTransactionId`.
 
-#### Transaction identifier
+#### Transaction Identifier
 
 The `foreignTransactionID` identifier will be associated with the transaction and can be used to retrieve details related to the transaction. See [API documentation](https://developer.sumup.com/rest-api/#tag/Transactions) for details. Please make sure that this ID is unique within the scope of the SumUp merchant account and sub-accounts. It must not be longer than 128 characters.
 The foreignTransactionID is available when the callback activity is called: `SumUpAPI.Param.FOREIGN_TRANSACTION_ID`
 
-#### Skip success screen
+#### Skip Success Screen
 
 To skip the success screen shown at the end of a successful transaction, the `skipSuccessScreen` parameter can be used. When using this parameter, your application is responsible for displaying the transaction result to the customer. In combination with the Receipts API your application can also send your own receipts, see [API documentation](https://developer.sumup.com/rest-api/#tag/Receipts) for details. Please note success screens will still be shown when using the SumUp Air Lite readers.
 
-#### Skip failed screen
+#### Skip Failed Screen
 
-To skip the failed screen shown at the end of a failed transaction, the `skipFailedScreen` parameter can be used. When using this parameter  your application is responsible for displaying the transaction result to the customer. Please note failed screens will still be shown when using the SumUp Air Lite readers.
+To skip the failed screen shown at the end of a failed transaction, the `skipFailedScreen` parameter can be used. When using this parameter, your application is responsible for displaying the transaction result to the customer. Please note failed screens will still be shown when using the SumUp Air Lite readers.
 
 ### Transparent Authentication
 
-To authenticate an account without the user typing in their SumUp credentials each time, you can generate an access token using OAuth2.0 and use it to transparently login to the { androidreadersdkname }.
+To authenticate an account without the user typing in their SumUp credentials each time, you can generate an access token using OAuth2 Authorization Code Flow and use it to transparently log in to the { androidreadersdkname }.
 
 ```java
 SumUpLogin sumupLogin = SumUpLogin.builder(mAffiliateKey).accessToken("MY_ACCESS_TOKEN").build();
