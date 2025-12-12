@@ -10,14 +10,13 @@ icon: card_in
 import { Aside, Steps } from '@astrojs/starlight/components';
 import Image from '@components/content/Image.astro';
 
-
-You can accept card payments using SumUp’s platform accompanied by our proprietary Card Terminals available in these [European countries](https://help.sumup.com/hc/en-gb/articles/360018586874-Accepting-card-payments-abroad), Brazil, Chile, and the USA. You can offer a complete user journey through the payment flow with our [SDK](/terminal-payments/tools/sdk) or you can approach a lightweight integration with our [API](/terminal-payments/payment-switch), using the SumUp app to execute payments.
+You can accept card payments using SumUp’s platform accompanied by our proprietary Card Terminals available in these [European countries](https://help.sumup.com/hc/en-gb/articles/360018586874-Accepting-card-payments-abroad), Brazil, Chile, and the USA. You can offer a complete user journey through the payment flow with our [SDK](/terminal-payments/sdks) or approach a lightweight integration with our [API](/terminal-payments/payment-switch), using the SumUp app to execute payments.
 
 ## Prerequisites
 
-* Before you integrate either the [Native SDK](/terminal-payments/tools/sdk/) or the [Payment API Switch](/terminal-payments/payment-switch), you need to create a SumUp account in the [SumUp Dashboard](https://me.sumup.com). Alternatively, you can [create a test account](#getting-a-test-account).
+* Before integrating either the [Native SDK](/terminal-payments/sdks/) or the [Payment API Switch](/terminal-payments/payment-switch), create a SumUp account in the [SumUp Dashboard](https://me.sumup.com). The dashboard offers [a test account](#getting-a-test-account), allowing for integration tests without involving real money.
 
-* Once you have an account, you need to [create an Affiliate Key](/tools/authorization/affiliate-keys/) for your app and [provide means of authorization](/tools/authorization/authorization/).
+* Once you have an account, [create an Affiliate Key](/tools/authorization/affiliate-keys/) for your app and [provide authorization](/tools/authorization/authorization/).
 
 <Aside type="caution">
 
@@ -25,31 +24,31 @@ The Affiliate Key and Application ID coming from your app must match those obtai
 
 </Aside>
 
-The Card Terminal(s) allow complete flexibility as they are not assigned to individual accounts. Once connected to a merchant account, the card terminal(s) lock to countries and currencies. This includes test accounts, which are intended for testing integrations and do not process any transactions.
+The Card Terminals allow complete flexibility as they are not assigned to individual accounts. Once connected to a merchant account, the card terminals lock to specific countries and currencies. This applies to test accounts, which are for testing integrations and do not process transactions.
 
-You are now ready to start integrating the SumUp payment capabilities in your app, provided you have also received a SumUp card terminal: SumUp Air, SumUp Air Lite, SumUp Top/PIN+, SumUp 3G, SumUp Total, SumUp Super, SumUp On or SumUp Air Register.
+You are now ready to integrate SumUp payment capabilities into your app, provided you have a SumUp card terminal: SumUp Air, SumUp Air Lite, SumUp Top/PIN+, SumUp 3G, SumUp Total, SumUp Super, SumUp On, or SumUp Air Register.
 
-## Getting a test account
+## Getting a Test Account
 
-To start testing SumUp APIs and tools without involving real money, you need to have a test account. You can create a test account from your account in the Dashboard as shown below.
+To test SumUp APIs and tools without involving real money, use a test account. Create one from your Dashboard account as follows.
 
 <Steps>
 
 1. Log in to your SumUp account.
 
-2. Open the drop-down menu between Support and your user panel.
+2. Open the drop-down menu between **Support** and your user panel.
 
-3. Select Test Account. Your merchant account is now switched to test mode.
+3. Select **Test Account**. Your merchant account is now in test mode.
 
 </Steps>
 
 <Image alt="A screenshot of the account selection dropdown in the SumUp dashboard with the test account highlighted with red circle" src="/img/guides/test_acc.png" width="40%" />
 
-Once you have your test account you can begin making API calls with real data. Our test accounts **do not** process transactions with real funds. Test account has a different ID, and shows a clear warning. When you try to process a request with the value of 11 (in any currency), the test account will always fail - this is by design, to enable testing failed transactions.
+With your test account, begin making API calls with real data. Test accounts **do not** process transactions with real funds. The test account has a different ID and displays a clear warning. Requests with a value of 11 (in any currency) always fail by design, to test failed transaction scenarios.
 
 <Image alt="A screenshot of the dashboard with test account selected" src="/img/guides/test-account-warning.png" width="100%" />
 
-When you're done experimenting with the test account, switch back to a regular account for business purposes. 
+When finished experimenting with the test account, switch back to a regular account for business purposes.
 
 ## Affiliate Keys
 
@@ -57,14 +56,14 @@ All card-present integrations require an Affiliate Key. Read the [Affiliate Keys
 
 ## Industry
 
-SumUp merchants operate in various industry segments, and we have made sure our card terminals are fit to accommodate a wide range of use cases and business approaches. We have outlined our merchants' most favored ones, along with what they find most beneficial from our services:
+SumUp merchants operate in various industry segments, and our card terminals accommodate a wide range of use cases and business approaches. The following outlines the most common segments and the key benefits merchants report:
 
-- Retail classified businesses and services
-- The hospitality industry and more specifically Restaurants, Cafés and Bars
+- Retail businesses and services
+- The hospitality industry, specifically restaurants, cafés and bars
 - Transportation and delivery services
 - Booking for Health, Beauty and Wellness
 
-In order to fulfill other industries' business needs, you are offered a range of integration options through the [Payment SDK](/terminal-payments/sdks) and the [API](/terminal-payments/payment-switch) sections, and a full list of available services through the [API reference](/api) section.
+Integration options through the [Payment SDK](/terminal-payments/sdks) and [API](/terminal-payments/payment-switch), plus the full [API reference](/api), support other industries' needs.
 
 ## Communication with the terminal
 
@@ -72,4 +71,4 @@ The SDK and API Switch handle all communication with SumUp’s Card Terminal(s) 
 
 ## Security
 
-No sensitive data will ever be passed through or stored on the merchant’s phone. All data is encrypted by the card terminal which is certified by the relevant payment industry groups (PCI, EMV I & II, Visa, MasterCard and Amex).
+No sensitive data passes through or stores on the merchant’s phone. The card terminal encrypts all data and holds certifications from relevant payment industry groups (PCI, EMV I & II, Visa, MasterCard, and Amex).

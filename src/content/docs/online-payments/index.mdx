@@ -1,6 +1,6 @@
 ---
 title: Online Payments
-description: Get started with accepting online payments. The guide will take you through creating test profile to processing your first transaction in matter of minutes.
+description: Get started with accepting online payments. This guide walks you through creating a test profile and processing your first transaction in minutes.
 sidebar:
   label: Quickstart
   order: 1
@@ -9,38 +9,37 @@ sidebar:
 import { Aside, Steps } from '@astrojs/starlight/components';
 import Image from '@components/content/Image.astro';
 
-
-Online payments are an integral part of SumUp product portfolio. At SumUp, accepting online payments is possible through a number of different approaches, to cater every merchants' use case. You can either use one of our out-of-the-box integrations, or build a complete and custom payments flow yourself using our APIs. Your app can communicate with SumUp via HTTP requests, all defined in our API Reference. 
+Online payments form an integral part of the SumUp product portfolio. SumUp supports online payments through multiple approaches to address every merchant use case. Use one of the out-of-the-box integrations or build a complete custom payments flow with the APIs. Your app communicates with SumUp via HTTP requests defined in the [API Reference](/api).​
 
 ![Image showing integrations in SumUp](/img/guides/integrations.png)
 
-To get started, we will walk you through the options SumUp offers for managing online payments.
+To get started, review the options SumUp offers for managing online payments.
 
-## Getting a test account
+## Getting a Test Account
 
-To start testing SumUp APIs and tools without involving real money, you need to have a test account. You can create a test account from your account in the Dashboard as shown below.
+To test SumUp APIs and tools without involving real money, use a test account. Create one from your Dashboard account as follows.
 
 <Steps>
 
 1. Log in to your SumUp account.
 
-2. Open the drop-down menu between Support and your user panel.
+2. Open the drop-down menu between **Support** and your user panel.
 
-3. Select Test Account. Your merchant account is now switched to test mode.
+3. Select **Test Account**. Your merchant account is now in test mode.
 
 </Steps>
 
 <Image alt="A screenshot of the account selection dropdown in the SumUp dashboard with the test account highlighted with red circle" src="/img/guides/test_acc.png" width="40%" />
 
-Once you have your test account you can begin making API calls with real data. Our test accounts **do not** process transactions with real funds. Test account has a different ID, and shows a clear warning. When you try to process a request with the value of 11 (in any currency), the test account will always fail - this is by design, to enable testing failed transactions. Please note that setting up 3DS verification in a test account requires contact with our team at integrations@sumup.com
+With your test account, begin making API calls with real data. Test accounts **do not** process transactions with real funds. The test account has a different ID and displays a clear warning. Requests with a value of 11 (in any currency) always fail by design, to test failed transaction scenarios.
 
 <Image alt="A screenshot of the dashboard with test account selected" src="/img/guides/test-account-warning.png" width="100%" />
 
-When you're done experimenting with the test account, switch back to a regular account for business purposes. 
+When finished experimenting with the test account, switch back to a regular account for business purposes.
 
 ## Authorization
 
-All Online Payment products consume SumUp APIs, which requires a means of authorization - either an API Key or Access Token. Check the [Authorization Guide](/tools/authorization/authorization/) for details on the available authorization options in SumUp.
+All online payment products use SumUp APIs, which require authorization via an API key or access token. See the [Authorization Guide](/tools/authorization/authorization/) for details on available options.​
 
 ## Checkout Products
 
@@ -52,9 +51,9 @@ For a quick and seamless integration, we've developed a sleek payment widget. In
 
 #### Alternative Payment Methods
 
-The Card Widget supports [Alternative Payment Methods](/online-payments/apm) (APMs), which enable you to accept payments other than traditional card schemes (Visa or Mastercard). APMs can be accessed through the [SumUp Card Widget](/online-payments/checkouts/card-widget/). Request access by contacting us via our [contact form](/contact).
+The Card Widget supports [Alternative Payment Methods](/online-payments/apm) (APMs) to accept payments beyond traditional card schemes (Visa or Mastercard). Access APMs through the [SumUp Card Widget](/online-payments/checkouts/card-widget/) by contacting us via the [contact form](/contact).
 
-At SumUp you can make use of the following APMs:
+Available APMs include:
 
 - Apple Pay
 - Bancontact
@@ -74,41 +73,40 @@ The APMs you can offer depend on the location your business is registered and op
 
 ### SumUp Swift Checkout SDK
 
-The Swift Checkout SDK enables you to offer a complete and fast checkout experience to your end users, allowing you to collect payment, address, and contact information with a click of a button.
+The Swift Checkout SDK provides a complete and fast checkout experience to your end users, collecting payment, address, and contact information with a click of a button.
 
-See [Swift Checkout Documentation](/online-payments/checkouts/swift-checkout/) for more information.
+See the [Swift Checkout Documentation](/online-payments/checkouts/swift-checkout/) for details.
 
 ## Plugins
 
-If you're using Prestashop, Wix, or WooCommerce, good news! You can use one of our plugins to seamlessly get paid with SumUp. Please check the [Plugins section](/online-payments/plugins/) for details on each plugin.
+For Prestashop, Wix, or WooCommerce, use SumUp plugins for seamless payments. See the [Plugins section](/online-payments/plugins/) for details on each.​
 
 ## Custom Integrations
 
 ### SumUp APIs
 
-SumUp provides REST API for most of its services like creating and executing payments, storing cards for future payments, issuing refunds among others. Our API uses either API Keys or [OAuth 2.0](http://tools.ietf.org/html/rfc6749) authorization standards to authenticate applications access to its services. We also support Cross-origin resource sharing (CORS) allowing web browsers securely to consume our API from a different domain origin.
+SumUp provides REST APIs for services such as creating and executing payments, storing cards, and issuing refunds. SumUp APIs use API keys or [OAuth 2.0](http://tools.ietf.org/html/rfc6749) for authentication. They also support Cross-Origin Resource Sharing (CORS) for secure browser access from different domains.
 
-The API receives requests and communicates responses mostly in [JSON](http://www.json.org) format, except for when the request needs to contain form encoded data. Typically, the requests are data objects consisting of name/value pairs sent to the SumUp API URI: **api.sumup.com**
+The API handles requests and responses primarily in JSON format, except when requests contain form-encoded data. Typically, requests consist of name/value pairs sent to SumUp API URI: `api.sumup.com`.
 
 ### Receiving payments
 
-In order to receive payments, you need to [create a checkout](/online-payments/guides/single-payment/#1-create-a-checkout). Whether you would like to receive payments as a merchant directly, or initiate payments on a merchant's behalf depends on the type of [authorization](/tools/authorization/authorization/) provided.
-Checkouts are created in a server-to-server communication. This ensures that you can keep your access token and client credentials secret and guarantees that sensitive checkout details, e.g. amount or recipient, cannot be changed.
+To receive payments, [create a checkout](/online-payments/guides/single-payment/#1-create-a-checkout). Use merchant-direct payments or initiate on a merchant's behalf based on your [authorization type](/tools/authorization/authorization/). Checkouts are created via server-to-server communication to keep access tokens and credentials secret and prevent changes to sensitive details like transaction amount or recipient.
 
-[Completing checkouts](/online-payments/guides/single-payment/#2-complete-a-checkout) could be done via your web browser or mobile application, which guarantees you do not need to worry about sensitive data, like card data, ever hitting your servers and thus avoiding the need to be PCI DSS compliant.
+[Completing checkouts](/online-payments/guides/single-payment/#2-complete-a-checkout) via web browser or mobile app to avoid handling sensitive data like card details on your servers, eliminating PCI DSS compliance needs.
 
 <Aside type="tip">
 A checkout can be completed in a browser only from a domain that is present as an authorized JavaScript origin when [creating your client credentials](/tools/authorization/register-app/#3-create-oauth-client-credentials).
 </Aside>
 
-SumUp provides flexibility to complete a checkout by offering a couple of integration approaches:
+SumUp offers the following checkout completion options:
 
 - You could build a [custom card form](/online-payments/guides/single-payment/#2-complete-a-checkout) that you must submit to the SumUp servers for processing
 - You could use the [SumUp Card Widget](/online-payments/checkouts/card-widget/)
 - You could process payments with [Alternative Payment Methods](/online-payments/apm), like Boleto, Bancontact & iDeal
-- You could process [recurring payments](https://developer.sumup.com/online-payments/guides/tokenization-with-payment-sdk)
+- You could process [recurring payments](/online-payments/guides/tokenization-with-payment-sdk)
 
-Once you complete the checkout, you would have processed a payment successfully to a merchant’s SumUp account.
+Successful checkout completion processes payment to the merchant's SumUp account.​
 
 ## Contact SumUp
 
