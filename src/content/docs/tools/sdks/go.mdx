@@ -105,26 +105,17 @@ func main() {
 		log.Fatal("Pair a Solo reader before using the Cloud API.")
 	}
 
-	description := "Solo Cloud API checkout"
-	body := readers.CreateReaderCheckoutBody{
-		Affiliate: &readers.CreateReaderCheckoutBodyAffiliate{
-			AppId:               appID,
-			ForeignTransactionId: fmt.Sprintf("solo-%d", time.Now().Unix()),
-			Key:                 affiliateKey,
-		},
-		Description: &description,
+	checkout, err := client.Readers.CreateCheckout(ctx, merchantCode, string(solo.ID), readers.CreateReaderCheckoutBody{
 		TotalAmount: readers.CreateReaderCheckoutBodyTotalAmount{
 			Currency: "EUR",
 			MinorUnit: 2,
 			Value:    1500,
 		},
-	}
-
-resp, err := client.Readers.CreateCheckout(ctx, merchantCode, string(solo.ID), body)
+	})
 	if err != nil {
-		log.Fatalf("create Solo checkout: %v", err)
+		log.Fatalf("create checkout: %v", err)
 	}
 
-	fmt.Println(resp.Data.ClientTransactionId)
+	fmt.Println(checkout.Data.ClientTransactionId)
 }
 ```
