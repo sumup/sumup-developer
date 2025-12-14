@@ -60,42 +60,80 @@ The table below lists only the required parameters for the request. For a full l
 
 Following is a sample request for creating a new checkout resource:
 
-<Tabs>
-<TabItem label="cURL">
-```bash
-curl -X POST \
-  https://api.sumup.com/v0.1/checkouts \
-  -H "Authorization: Bearer $SUMUP_API_KEY" \
-  -H 'Content-Type: application/json' \
-  -d '{
-        "checkout_reference": "CO746453",
-        "amount": 10,
-        "currency": "EUR",
-        "merchant_code": "ME7RMQN3",
-        "description": "Sample one-time payment"
-      }'
-```
-</TabItem>
-<TabItem label="Go">
-```go
-ctx := context.Background()
-client := sumup.NewClient().WithAuth(os.Getenv("SUMUP_API_KEY"))
-
-checkout, err := client.Checkouts.Create(ctx, sumup.CreateCheckoutBody{
-	Amount:            19,
-	CheckoutReference: "CO746453",
-	Currency:          "EUR",
-	MerchantCode:      "MK0001",
-})
-```
-</TabItem>
-<TabItem label="PHP">
-```php
-$checkoutsService = $sumup->getCheckoutService();
-$response = $checkoutsService->create(10, 'EUR', 'CO746453', 'docuser@sumup.com', 'Sample one-time payment');
-$checkoutId = $response->getBody()->id;
-```
-</TabItem>
+<Tabs syncKey="backend_lang">
+  <TabItem label="cURL" icon="seti:powershell">
+    ```bash
+    curl -X POST \
+      https://api.sumup.com/v0.1/checkouts \
+      -H "Authorization: Bearer $SUMUP_API_KEY" \
+      -H 'Content-Type: application/json' \
+      -d '{
+            "merchant_code": "ME7RMQN3",
+            "amount": 15.0,
+            "currency": "EUR",
+            "checkout_reference": "unique-checkout-ref-123"
+          }'
+    ```
+  </TabItem>
+  <TabItem label="Node.js" icon="seti:javascript">
+    ```ts
+    const checkout = await client.checkouts.create({
+    	merchant_code: merchantCode,
+      amount: 15.0,
+      currency: "EUR",
+    	checkout_reference: "unique-checkout-ref-123"
+    });
+    ```
+  </TabItem>
+  <TabItem label="Go" icon="seti:go">
+    ```go
+    checkout, err := client.Checkouts.Create(ctx, sumup.CreateCheckoutBody{
+    	MerchantCode:      merchantCode,
+    	Amount:            15.0,
+    	Currency:          "EUR",
+    	CheckoutReference: "unique-checkout-ref-123",
+    })
+    ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+    ```py
+    checkout = client.checkouts.create(
+        CreateCheckoutBody(
+            merchant_code=merchant_code,
+            amount=15.00,
+            currency="EUR",
+            checkout_reference="unique-checkout-ref-123",
+        )
+    )
+    ```
+  </TabItem>
+  <TabItem label="Rust" icon="seti:rust">
+    ```rust
+    let checkout = client.checkouts().create(Some(CheckoutCreateRequest {
+        merchant_code,
+        amount: 15.,
+        currency: Currency::EUR,
+        checkout_reference: "unique-checkout-ref-123".into(),
+        description: None,
+        return_url: None,
+        customer_id: None,
+        purpose: None,
+        id: None,
+        status: None,
+        date: None,
+        valid_until: None,
+        transactions: None,
+        redirect_url: None,
+    })).await?;
+    ```
+  </TabItem>
+  <TabItem label="PHP" icon="seti:php">
+    ```php
+    $checkoutsService = $sumup->getCheckoutService();
+    $response = $checkoutsService->create(10, 'EUR', 'CO746453', 'docuser@sumup.com', 'Sample one-time payment');
+    $checkoutId = $response->getBody()->id;
+    ```
+  </TabItem>
 </Tabs>
 
 The response contains a JSON body with the details of the created checkout resource. What you need to note in the response is the identifier of the resource - you will need it for all operations that you perform with the resource, such as completing it in the next step.

@@ -5,7 +5,7 @@ sidebar:
   order: 2
 ---
 
-import { Aside, Steps } from '@astrojs/starlight/components';
+import { Aside, Steps, Tabs, TabItem } from '@astrojs/starlight/components';
 import Video from '@components/content/Video.astro';
 import SoloScreen from '@components/content/SoloScreen.astro';
 import { cloudapiname } from '@lib/productnames.ts';
@@ -126,6 +126,79 @@ Solo card reader screen. You will need this code to pair your Solo reader with y
 
 This is an asynchronous process; starting the transaction on the device may take some time.
 
+<Tabs syncKey="backend_lang">
+  <TabItem label="cURL" icon="seti:powershell">
+    ```bash
+    curl -X POST \
+      https://api.sumup.com/v0.1/merchants/$SUMUP_MERCHANT_CODE/readers/$READER_ID/checkout \
+      -H "Authorization: Bearer $SUMUP_API_KEY" \
+      -H 'Content-Type: application/json' \
+      -d '{
+            "total_amount": {
+              "currency": "EUR",
+              "minor_unit": 2,
+              "value": 1500,
+            }
+          }'
+    ```
+  </TabItem>
+  <TabItem label="Node.js" icon="seti:javascript">
+    ```ts
+    const checkout = await client.readers.createCheckout(merchantCode, readerId, {
+      total_amount: {
+        currency: "EUR",
+        minor_unit: 2,
+        value: 1500,
+      },
+    });
+    ```
+  </TabItem>
+  <TabItem label="Go" icon="seti:go">
+    ```go
+    checkout, err := client.Readers.CreateCheckout(ctx, merchantCode, readerID, readers.CreateReaderCheckoutBody{
+  		TotalAmount: readers.CreateReaderCheckoutBodyTotalAmount{
+  			Currency:  "EUR",
+  			MinorUnit: 2,
+  			Value:     1500,
+  		},
+  	})
+    ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+    ```py
+    checkout = await client.readers.create_checkout(
+        merchant_code,
+        reader_id,
+        CreateReaderCheckoutBody(
+            total_amount=CreateReaderCheckoutBodyTotalAmount(currency="EUR", minor_unit=2, value=1500),
+        ),
+    )
+    ```
+  </TabItem>
+  <TabItem label="Rust" icon="seti:rust">
+    ```rust
+    let checkout = client.readers().create_checkout(
+        &merchant_code,
+        &reader_id,
+        CreateReaderCheckoutRequest {
+            total_amount: Money {
+                currency: "EUR".into(),
+                minor_unit: 2,
+                value: 1_500,
+            },
+            affiliate: None,
+            card_type: None,
+            description: None,
+            installments: None,
+            return_url: None,
+            tip_rates: None,
+            tip_timeout: None,
+        },
+    ).await?;
+    ```
+  </TabItem>
+</Tabs>
+
 Important notes:
 
 * The target device must be online, otherwise checkout won't be accepted
@@ -139,6 +212,36 @@ Read the [Create Checkout API endpoint documentation](/api/readers/create-checko
 Stops the current transaction on the target device.
 This process is asynchronous, and the actual termination may take some time to be performed on the device.
 
+<Tabs syncKey="backend_lang">
+  <TabItem label="cURL" icon="seti:powershell">
+    ```bash
+    curl -X POST \
+      https://api.sumup.com/v0.1/merchants/$SUMUP_MERCHANT_CODE/readers/$READER_ID/terminate \
+      -H "Authorization: Bearer $SUMUP_API_KEY"
+    ```
+  </TabItem>
+  <TabItem label="Node.js" icon="seti:javascript">
+    ```ts
+    await client.readers.terminateCheckout(merchantCode, readerId)
+    ```
+  </TabItem>
+  <TabItem label="Go" icon="seti:go">
+    ```go
+    err := client.Readers.TerminateCheckout(ctx, merchantCode, readerID)
+    ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+    ```py
+    await client.readers.terminate_checkout(merchant_code, reader_id)
+    ```
+  </TabItem>
+  <TabItem label="Rust" icon="seti:rust">
+    ```rust
+    client.readers().terminate_checkout(&merchant_code, &reader_id).await?;
+    ```
+  </TabItem>
+</Tabs>
+
 Important notes:
 
 * The target device must be online, otherwise termination won't be accepted.
@@ -151,6 +254,35 @@ Read the [Terminate Checkout API endpoint documentation](/api/readers/terminate-
 ### List Connected Readers
 
 List all readers connected to your merchant account.
+
+<Tabs syncKey="backend_lang">
+  <TabItem label="cURL" icon="seti:powershell">
+    ```bash
+    curl https://api.sumup.com/v0.1/merchants/$SUMUP_MERCHANT_CODE/readers \
+      -H "Authorization: Bearer $SUMUP_API_KEY"
+    ```
+  </TabItem>
+  <TabItem label="Node.js" icon="seti:javascript">
+    ```ts
+    const readers = await client.readers.list(merchantCode)
+    ```
+  </TabItem>
+  <TabItem label="Go" icon="seti:go">
+    ```go
+    readers, err := client.Readers.List(ctx, merchantCode)
+    ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+    ```py
+    readers = await client.readers.list(merchant_code)
+    ```
+  </TabItem>
+  <TabItem label="Rust" icon="seti:rust">
+    ```rust
+    let readers = client.readers().list(&merchant_code).await?;
+    ```
+  </TabItem>
+</Tabs>
 
 Read the [List API endpoint documentation](/api/readers/list) for details on the API request, examples, and parameter descriptions.
 

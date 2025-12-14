@@ -84,12 +84,6 @@ async function createSoloCheckout() {
       minor_unit: 2,
       value: 1500,
     },
-    affiliate: {
-      app_id: affiliateAppId,
-      foreign_transaction_id: `solo-${Date.now()}`,
-      key: affiliateKey,
-    },
-    description: "Solo Cloud API checkout",
   });
 
   console.log(checkout.data.client_transaction_id);

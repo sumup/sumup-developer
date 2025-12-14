@@ -92,16 +92,6 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .find(|reader| reader.device.model == "solo")
         .ok_or_else(|| Error::new(ErrorKind::NotFound, "Pair a Solo reader before using the Cloud API."))?;
 
-    let affiliate = CreateReaderCheckoutRequestAffiliate {
-        app_id: std::env::var("SUMUP_APP_ID")?,
-        foreign_transaction_id: format!(
-            "solo-{}",
-            SystemTime::now().duration_since(UNIX_EPOCH)?.as_secs()
-        ),
-        key: std::env::var("SUMUP_AFFILIATE_KEY")?,
-        tags: None,
-    };
-
     let checkout = client
         .readers()
         .create_checkout(
@@ -113,9 +103,9 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
                     minor_unit: 2,
                     value: 1_500,
                 },
-                affiliate: Some(affiliate),
+                affiliate: None,
                 card_type: None,
-                description: Some("Solo Cloud API checkout".into()),
+                description: None,
                 installments: None,
                 return_url: None,
                 tip_rates: None,

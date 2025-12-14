@@ -78,12 +78,6 @@ async def create_solo_checkout() -> None:
         solo.id,
         CreateReaderCheckoutBody(
             total_amount=CreateReaderCheckoutBodyTotalAmount(currency="EUR", minor_unit=2, value=1500),
-            affiliate=CreateReaderCheckoutBodyAffiliate(
-                app_id=os.environ["SUMUP_APP_ID"],
-                foreign_transaction_id=f"solo-{int(time())}",
-                key=os.environ["SUMUP_AFFILIATE_KEY"],
-            ),
-            description="Solo Cloud API checkout",
         ),
     )
 
