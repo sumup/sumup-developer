@@ -2,7 +2,6 @@
 interface Props {
   options: {
     label: string;
-    value?: string;
   }[];
 }
 
@@ -14,11 +13,7 @@ if (options.length < 1) {
 ---
 
 <select class="langSelector">
-  {
-    options.map(({ label, value }) => (
-      <option value={value || label.toLowerCase()}>{label}</option>
-    ))
-  }
+  {options.map(({ label }) => <option value={label}>{label}</option>)}
 </select>
 
 <script>

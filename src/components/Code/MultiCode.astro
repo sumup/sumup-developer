@@ -15,7 +15,6 @@ interface Props {
   isLanguageSelect?: boolean;
   options: {
     label: string;
-    value?: string;
     code: string;
     lang: string;
     meta?: string;
@@ -48,10 +47,10 @@ const defaultOption = options[0].label;
   </slot>
   <div slot="code">
     {
-      options.map(({ lang, code, label, value, meta }) => (
+      options.map(({ lang, code, label, meta }) => (
         <div
           class:list={["code", label === defaultOption ? "active" : ""]}
-          data-lang={value || label.toLowerCase()}
+          data-lang={label}
           data-code={code.replace(/\n/g, "\u007f")}
         >
           <Default lang={lang} code={code} meta={meta} />

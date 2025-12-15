@@ -15,11 +15,11 @@ const updateCodeblocks = (lang: string) => {
 };
 
 export const currentLanguage = () => {
-  return localStorage.getItem("language");
+  return localStorage.getItem("starlight-synced-tabs__backend_lang");
 };
 
 export const setCurrentLanguage = (lang: string) => {
-  localStorage.setItem("language", lang);
+  localStorage.setItem("starlight-synced-tabs__backend_lang", lang);
   updateCodeblocks(lang);
 };
 
