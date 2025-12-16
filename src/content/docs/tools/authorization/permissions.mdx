@@ -1,0 +1,268 @@
+---
+title: Permissions
+description: Explore the assignable user → merchant permissions and the granular capabilities they unlock.
+sidebar:
+  order: 3
+---
+
+import { Tabs, TabItem } from "@astrojs/starlight/components";
+import MerchantPermissionsTable from "@components/content/MerchantPermissionsTable.tsx";
+import { SystemRolePermissionsList } from "@components/SystemRolePermissionsList.tsx";
+import {
+  assignableMerchantPermissions,
+  customRoleMerchantPermissions,
+} from "@lib/merchantPermissions.ts";
+
+:::caution[Experimental]
+This permissions explorer is experimental and the APIs backing it might still change in breaking ways.
+:::
+
+Permissions dictate everything a SumUp user can do on behalf of a merchant account.
+
+We provide two ways to work with permissions:
+
+- **System roles** — curated, high-level roles that you can assign directly to a user → merchant relationship.
+- **Custom roles** — bundles that you design by combining the granular permissions that match your workflow. Custom roles can be re-used across multiple teammates.
+
+## System Roles
+
+System roles are intentionally limited so you can review every option at a glance. Expand each role to inspect the permissions it grants without needing to search.
+
+<SystemRolePermissionsList
+  client:load
+  permissions={assignableMerchantPermissions}
+/>
+
+## Custom Roles
+
+When system roles are too coarse, create your own custom roles. A role groups the permissions that your process requires and can then be assigned to multiple members through memberships. All endpoints require an OAuth token or API key that grants the corresponding `roles_*` permission for the merchant you target.
+
+### Create a Custom Role
+
+Use `POST /v0.1/merchants/{merchant_code}/roles` to define a new role with the permissions you need.
+
+<Tabs syncKey="roles_sdk">
+  <TabItem label="cURL" icon="seti:powershell">
+    ```bash
+    curl -X POST \
+      https://api.sumup.com/v0.1/merchants/$SUMUP_MERCHANT_CODE/roles \
+      -H "Authorization: Bearer $SUMUP_API_KEY" \
+      -H "Content-Type: application/json" \
+      -d '{
+            "name": "Shop floor manager",
+            "permissions": [
+              "catalog_edit",
+              "members_access",
+              "payouts_view"
+            ],
+            "description": "Manages inventory and staff schedules."
+          }'
+    ```
+  </TabItem>
+  <TabItem label="Node.js" icon="seti:javascript">
+    ```ts
+    const role = await client.roles.create(merchantCode, {
+      name: "Shop floor manager",
+      permissions: ["catalog_edit", "members_access", "payouts_view"],
+      description: "Manages inventory and staff schedules.",
+    });
+    ```
+  </TabItem>
+  <TabItem label="Go" icon="seti:go">
+    ```go
+    role, err := client.Roles.Create(ctx, merchantCode, sumup.CreateRoleBody{
+    	Name:        "Shop floor manager",
+    	Permissions: []string{"catalog_edit", "members_access", "payouts_view"},
+    })
+    ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+    ```py
+    role = await client.roles.create(
+        merchant_code,
+        CreateRoleBody(
+            name="Shop floor manager",
+            permissions=["catalog_edit", "members_access", "payouts_view"],
+            description="Manages inventory and staff schedules.",
+        ),
+    )
+    ```
+  </TabItem>
+  <TabItem label="Rust" icon="seti:rust">
+    ```rust
+    let role = client.roles().create(
+        &merchant_code,
+        CreateRoleRequest {
+            name: "Shop floor manager".into(),
+            permissions: vec![
+                "catalog_edit".into(),
+                "members_access".into(),
+                "payouts_view".into(),
+            ],
+            description: Some("Manages inventory and staff schedules.".into()),
+            metadata: None,
+        },
+    ).await?;
+    ```
+  </TabItem>
+  <TabItem label="PHP" icon="seti:php">
+    ```php
+    $merchantCode = getenv('SUMUP_MERCHANT_CODE');
+    $customService = $sumup->getCustomService();
+    $response = $customService->request(
+        'POST',
+        sprintf('/v0.1/merchants/%s/roles', $merchantCode),
+        [
+            'name' => 'Shop floor manager',
+            'permissions' => ['catalog_edit', 'members_access', 'payouts_view'],
+            'description' => 'Manages inventory and staff schedules.',
+        ]
+    );
+    $role = json_decode($response->getBody(), true);
+    ```
+  </TabItem>
+</Tabs>
+
+### Update a Custom Role
+
+Use `PATCH /v0.1/merchants/{merchant_code}/roles/{role_id}` to rename a role or adjust its permissions. Provide the role ID returned by the create response (for example `role_WZsm7QTPhVrompscmPhoGTXXcrd58fr9MOhP`).
+
+<Tabs syncKey="roles_sdk">
+  <TabItem label="cURL" icon="seti:powershell">
+    ```bash
+    curl -X PATCH \
+      https://api.sumup.com/v0.1/merchants/$SUMUP_MERCHANT_CODE/roles/$ROLE_ID \
+      -H "Authorization: Bearer $SUMUP_API_KEY" \
+      -H "Content-Type: application/json" \
+      -d '{
+            "name": "Store manager",
+            "permissions": [
+              "catalog_edit",
+              "members_edit"
+            ]
+          }'
+    ```
+  </TabItem>
+  <TabItem label="Node.js" icon="seti:javascript">
+    ```ts
+    const updatedRole = await client.roles.update(merchantCode, roleId, {
+      name: "Store manager",
+      permissions: ["catalog_edit", "members_edit"],
+    });
+    ```
+  </TabItem>
+  <TabItem label="Go" icon="seti:go">
+    ```go
+    updatedRole, err := client.Roles.Update(ctx, merchantCode, roleID, sumup.UpdateRoleBody{
+    	Name:        "Store manager",
+    	Permissions: []string{"catalog_edit", "members_edit"},
+    })
+    ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+    ```py
+    updated_role = await client.roles.update(
+        merchant_code,
+        role_id,
+        UpdateRoleBody(
+            name="Store manager",
+            permissions=["catalog_edit", "members_edit"],
+        ),
+    )
+    ```
+  </TabItem>
+  <TabItem label="Rust" icon="seti:rust">
+    ```rust
+    let updated = client.roles().update(
+        &merchant_code,
+        &role_id,
+        UpdateRoleRequest {
+            name: Some("Store manager".into()),
+            permissions: Some(vec![
+                "catalog_edit".into(),
+                "members_edit".into(),
+            ]),
+            description: None,
+        },
+    ).await?;
+    ```
+  </TabItem>
+  <TabItem label="PHP" icon="seti:php">
+    ```php
+    $merchantCode = getenv('SUMUP_MERCHANT_CODE');
+    $roleId = 'role_WZsm7QTPhVrompscmPhoGTXXcrd58fr9MOhP';
+    $customService = $sumup->getCustomService();
+    $response = $customService->request(
+        'PATCH',
+        sprintf('/v0.1/merchants/%s/roles/%s', $merchantCode, $roleId),
+        [
+            'name' => 'Store manager',
+            'permissions' => ['catalog_edit', 'members_edit'],
+        ]
+    );
+    $updatedRole = json_decode($response->getBody(), true);
+    ```
+  </TabItem>
+</Tabs>
+
+### Delete a Custom Role
+
+Use `DELETE /v0.1/merchants/{merchant_code}/roles/{role_id}` to remove a role you no longer use. Provide the same role identifier you used for updates. SumUp will stop granting it to any members, but their existing memberships remain untouched, so be sure to assign an alternative role if needed.
+
+<Tabs syncKey="roles_sdk">
+  <TabItem label="cURL" icon="seti:powershell">
+    ```bash
+    curl -X DELETE \
+      https://api.sumup.com/v0.1/merchants/$SUMUP_MERCHANT_CODE/roles/$ROLE_ID \
+      -H "Authorization: Bearer $SUMUP_API_KEY"
+    ```
+  </TabItem>
+  <TabItem label="Node.js" icon="seti:javascript">
+    ```ts
+    await client.roles.delete(merchantCode, roleId);
+    ```
+  </TabItem>
+  <TabItem label="Go" icon="seti:go">
+    ```go
+    err := client.Roles.Delete(ctx, merchantCode, roleID)
+    ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+    ```py
+    await client.roles.delete(merchant_code, role_id)
+    ```
+  </TabItem>
+  <TabItem label="Rust" icon="seti:rust">
+    ```rust
+    client.roles().delete(&merchant_code, &role_id).await?;
+    ```
+  </TabItem>
+  <TabItem label="PHP" icon="seti:php">
+    ```php
+    $merchantCode = getenv('SUMUP_MERCHANT_CODE');
+    $roleId = 'role_WZsm7QTPhVrompscmPhoGTXXcrd58fr9MOhP';
+    $customService = $sumup->getCustomService();
+    $customService->request(
+        'DELETE',
+        sprintf('/v0.1/merchants/%s/roles/%s', $merchantCode, $roleId)
+    );
+    ```
+  </TabItem>
+</Tabs>
+
+## Permissions
+
+This searchable explorer lists every permission that can be assigned to a custom role. Expand an entry to inspect:
+
+- the granular capabilities it unlocks
+- any other permissions it grants
+- any other permissions that already grant it
+
+Granular-only permissions (for example `bookings_appointments_create`) will only show the "Granted by" section because they sit at the edge of the graph.
+
+Use the search box to filter by permission name and quickly spot the dependencies you care about.
+
+<MerchantPermissionsTable
+  client:load
+  permissions={customRoleMerchantPermissions}
+/>

@@ -32,6 +32,10 @@ const props = {
   },
   custom: true,
 } as StarlightPageProps;
+
+const AlternativePaymentMethod32 = (
+  iconProps: Parameters<typeof AlternativePaymentMethod>[0],
+) => AlternativePaymentMethod({ ...iconProps, size: "32" });
 ---
 
 <StarlightPage {...props}>
@@ -82,7 +86,7 @@ const props = {
           />
           <ListItem
             variant="navigation"
-            leadingComponent={AlternativePaymentMethod}
+            leadingComponent={AlternativePaymentMethod32}
             href="/online-payments/apm"
             label="Alternative payment options"
             details="Allow your customers to pay with Apple or Google pay."

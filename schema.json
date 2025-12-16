@@ -1,0 +1,5792 @@
+{
+  "id": "01KCKQKF0FRCHY6T24T0RKKQB0",
+  "schema_version": "1.2",
+  "type_definitions": [
+    {
+      "type": "merchant",
+      "relations": {
+        "accountant": {
+          "this": {}
+        },
+        "accounting_account-transactions_view": {
+          "computedUserset": {
+            "relation": "invoicing_access"
+          }
+        },
+        "accounting_balance-sheet_view": {
+          "computedUserset": {
+            "relation": "invoicing_access"
+          }
+        },
+        "accounting_bank-accounts_connect": {
+          "computedUserset": {
+            "relation": "admin"
+          }
+        },
+        "accounting_bank-accounts_create": {
+          "computedUserset": {
+            "relation": "invoicing_edit"
+          }
+        },
+        "accounting_bank-accounts_delete": {
+          "computedUserset": {
+            "relation": "invoicing_edit"
+          }
+        },
+        "accounting_bank-accounts_disconnect": {
+          "computedUserset": {
+            "relation": "admin"
+          }
+        },
+        "accounting_bank-accounts_list": {
+          "computedUserset": {
+            "relation": "invoicing_access"
+          }
+        },
+        "accounting_bank-accounts_update": {
+          "computedUserset": {
+            "relation": "invoicing_edit"
+          }
+        },
+        "accounting_bank-accounts_view": {
+          "computedUserset": {
+            "relation": "invoicing_access"
+          }
+        },
+        "accounting_customer-balances_view": {
+          "computedUserset": {
+            "relation": "invoicing_access"
+          }
+        },
+        "accounting_dashboard-graph_view": {
+          "computedUserset": {
+            "relation": "invoicing_access"
+          }
+        },
+        "accounting_documents-overview_view": {
+          "computedUserset": {
+            "relation": "invoicing_access"
+          }
+        },
+        "accounting_expenses-chart_view": {
+          "computedUserset": {
+            "relation": "invoicing_access"
+          }
+        },
+        "accounting_expenses_attachments_create": {
+          "computedUserset": {
+            "relation": "invoicing_edit"
+          }
+        },
+        "accounting_expenses_attachments_delete": {
+          "computedUserset": {
+            "relation": "invoicing_edit"
+          }
+        },
+        "accounting_expenses_attachments_list": {
+          "computedUserset": {
+            "relation": "invoicing_access"
+          }
+        },
+        "accounting_expenses_attachments_update": {
+          "computedUserset": {
+            "relation": "invoicing_edit"
+          }
+        },
+        "accounting_expenses_attachments_view": {
+          "computedUserset": {
+            "relation": "invoicing_access"
+          }
+        },
+        "accounting_expenses_audits_list": {
+          "computedUserset": {
+            "relation": "invoicing_access"
+          }
+        },
+        "accounting_expenses_audits_view": {
+          "computedUserset": {
+            "relation": "invoicing_access"
+          }
+        },
+        "accounting_expenses_categories_create": {
+          "computedUserset": {
+            "relation": "invoicing_edit"
+          }
+        },
+        "accounting_expenses_categories_delete": {
+          "computedUserset": {
+            "relation": "invoicing_edit"
+          }
+        },
+        "accounting_expenses_categories_list": {
+          "computedUserset": {
+            "relation": "invoicing_access"
+          }
+        },
+        "accounting_expenses_categories_update": {
+          "computedUserset": {
+            "relation": "invoicing_edit"
+          }
+        },
+        "accounting_expenses_create": {
+          "computedUserset": {
+            "relation": "invoicing_edit"
+          }
+        },
+        "accounting_expenses_delete": {
+          "computedUserset": {
+            "relation": "invoicing_edit"
+          }
+        },
+        "accounting_expenses_export": {
+          "computedUserset": {
+            "relation": "invoicing_edit"
+          }
+        },
+        "accounting_expenses_list": {
+          "computedUserset": {
+            "relation": "invoicing_access"
+          }
+        },
+        "accounting_expenses_send": {
+          "computedUserset": {
+            "relation": "invoicing_edit"
+          }
+        },
+        "accounting_expenses_share": {
+          "computedUserset": {
+            "relation": "invoicing_edit"
+          }
+        },
+        "accounting_expenses_update": {
+          "computedUserset": {
+            "relation": "invoicing_edit"
+          }
+        },
+        "accounting_expenses_view": {
+          "computedUserset": {
+            "relation": "invoicing_access"
+          }
+        },
+        "accounting_income_create": {
+          "computedUserset": {
+            "relation": "invoicing_edit"
+          }
+        },
+        "accounting_income_delete": {
+          "computedUserset": {
+            "relation": "invoicing_edit"
+          }
+        },
+        "accounting_income_export": {
+          "computedUserset": {
+            "relation": "invoicing_edit"
+          }
+        },
+        "accounting_income_list": {
+          "computedUserset": {
+            "relation": "invoicing_access"
+          }
+        },
+        "accounting_income_send": {
+          "computedUserset": {
+            "relation": "invoicing_edit"
+          }
+        },
+        "accounting_income_share": {
+          "computedUserset": {
+            "relation": "invoicing_edit"
+          }
+        },
+        "accounting_income_update": {
+          "computedUserset": {
+            "relation": "invoicing_edit"
+          }
+        },
+        "accounting_income_view": {
+          "computedUserset": {
+            "relation": "invoicing_access"
+          }
+        },
+        "accounting_integrations_access": {
+          "union": {
+            "child": [
+              {
+                "computedUserset": {
+                  "relation": "admin"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "manager"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "accountant"
+                }
+              }
+            ]
+          }
+        },
+        "accounting_integrations_create": {
+          "computedUserset": {
+            "relation": "accounting_integrations_access"
+          }
+        },
+        "accounting_integrations_delete": {
+          "computedUserset": {
+            "relation": "accounting_integrations_access"
+          }
+        },
+        "accounting_integrations_update": {
+          "computedUserset": {
+            "relation": "accounting_integrations_access"
+          }
+        },
+        "accounting_integrations_view": {
+          "computedUserset": {
+            "relation": "accounting_integrations_access"
+          }
+        },
+        "accounting_payment-accounts_create": {
+          "computedUserset": {
+            "relation": "invoicing_edit"
+          }
+        },
+        "accounting_payment-accounts_delete": {
+          "computedUserset": {
+            "relation": "invoicing_edit"
+          }
+        },
+        "accounting_payment-accounts_list": {
+          "computedUserset": {
+            "relation": "invoicing_access"
+          }
+        },
+        "accounting_payment-accounts_update": {
+          "computedUserset": {
+            "relation": "invoicing_edit"
+          }
+        },
+        "accounting_payment-accounts_view": {
+          "computedUserset": {
+            "relation": "invoicing_access"
+          }
+        },
+        "accounting_payments_create": {
+          "computedUserset": {
+            "relation": "invoicing_edit"
+          }
+        },
+        "accounting_payments_delete": {
+          "computedUserset": {
+            "relation": "invoicing_edit"
+          }
+        },
+        "accounting_payments_list": {
+          "computedUserset": {
+            "relation": "invoicing_access"
+          }
+        },
+        "accounting_payments_reconcile": {
+          "computedUserset": {
+            "relation": "invoicing_edit"
+          }
+        },
+        "accounting_payments_update": {
+          "computedUserset": {
+            "relation": "invoicing_edit"
+          }
+        },
+        "accounting_payments_view": {
+          "computedUserset": {
+            "relation": "invoicing_access"
+          }
+        },
+        "accounting_profit-and-loss_view": {
+          "computedUserset": {
+            "relation": "invoicing_access"
+          }
+        },
+        "accounting_purchases-graph_view": {
+          "computedUserset": {
+            "relation": "invoicing_access"
+          }
+        },
+        "accounting_suppliers_create": {
+          "computedUserset": {
+            "relation": "invoicing_edit"
+          }
+        },
+        "accounting_suppliers_delete": {
+          "computedUserset": {
+            "relation": "invoicing_edit"
+          }
+        },
+        "accounting_suppliers_export": {
+          "computedUserset": {
+            "relation": "invoicing_edit"
+          }
+        },
+        "accounting_suppliers_list": {
+          "computedUserset": {
+            "relation": "invoicing_access"
+          }
+        },
+        "accounting_suppliers_update": {
+          "computedUserset": {
+            "relation": "invoicing_edit"
+          }
+        },
+        "accounting_suppliers_view": {
+          "computedUserset": {
+            "relation": "invoicing_access"
+          }
+        },
+        "accounting_vat_report_submit": {
+          "computedUserset": {
+            "relation": "invoicing_edit"
+          }
+        },
+        "accounting_vat_view": {
+          "computedUserset": {
+            "relation": "invoicing_access"
+          }
+        },
+        "admin": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "owner"
+                }
+              },
+              {
+                "tupleToUserset": {
+                  "tupleset": {
+                    "relation": "parent"
+                  },
+                  "computedUserset": {
+                    "relation": "admin"
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "affiliate_keys_access": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "developer_settings_access"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "affiliate_keys_edit"
+                }
+              }
+            ]
+          }
+        },
+        "affiliate_keys_create": {
+          "computedUserset": {
+            "relation": "developer_settings_edit"
+          }
+        },
+        "affiliate_keys_delete": {
+          "computedUserset": {
+            "relation": "developer_settings_edit"
+          }
+        },
+        "affiliate_keys_edit": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "developer_settings_edit"
+                }
+              }
+            ]
+          }
+        },
+        "affiliate_keys_list": {
+          "computedUserset": {
+            "relation": "developer_settings_access"
+          }
+        },
+        "affiliate_keys_update": {
+          "computedUserset": {
+            "relation": "developer_settings_edit"
+          }
+        },
+        "affiliate_keys_view": {
+          "computedUserset": {
+            "relation": "developer_settings_access"
+          }
+        },
+        "api_keys_access": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "developer_settings_access"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "api_keys_edit"
+                }
+              }
+            ]
+          }
+        },
+        "api_keys_create": {
+          "computedUserset": {
+            "relation": "developer_settings_edit"
+          }
+        },
+        "api_keys_delete": {
+          "computedUserset": {
+            "relation": "developer_settings_edit"
+          }
+        },
+        "api_keys_edit": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "developer_settings_edit"
+                }
+              }
+            ]
+          }
+        },
+        "api_keys_list": {
+          "computedUserset": {
+            "relation": "developer_settings_access"
+          }
+        },
+        "api_keys_update": {
+          "computedUserset": {
+            "relation": "developer_settings_edit"
+          }
+        },
+        "api_keys_view": {
+          "computedUserset": {
+            "relation": "developer_settings_access"
+          }
+        },
+        "apps_access": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "developer_settings_access"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "apps_edit"
+                }
+              }
+            ]
+          }
+        },
+        "apps_create": {
+          "computedUserset": {
+            "relation": "developer_settings_edit"
+          }
+        },
+        "apps_credentials_create": {
+          "computedUserset": {
+            "relation": "developer_settings_edit"
+          }
+        },
+        "apps_credentials_delete": {
+          "computedUserset": {
+            "relation": "developer_settings_edit"
+          }
+        },
+        "apps_credentials_list": {
+          "computedUserset": {
+            "relation": "developer_settings_access"
+          }
+        },
+        "apps_credentials_update": {
+          "computedUserset": {
+            "relation": "developer_settings_edit"
+          }
+        },
+        "apps_credentials_view": {
+          "computedUserset": {
+            "relation": "developer_settings_access"
+          }
+        },
+        "apps_delete": {
+          "computedUserset": {
+            "relation": "developer_settings_edit"
+          }
+        },
+        "apps_edit": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "developer_settings_edit"
+                }
+              }
+            ]
+          }
+        },
+        "apps_list": {
+          "computedUserset": {
+            "relation": "developer_settings_access"
+          }
+        },
+        "apps_update": {
+          "computedUserset": {
+            "relation": "developer_settings_edit"
+          }
+        },
+        "apps_view": {
+          "computedUserset": {
+            "relation": "developer_settings_access"
+          }
+        },
+        "bank_account_create": {
+          "computedUserset": {
+            "relation": "admin"
+          }
+        },
+        "bank_account_list": {
+          "computedUserset": {
+            "relation": "admin"
+          }
+        },
+        "bank_bank-profile_create": {
+          "computedUserset": {
+            "relation": "admin"
+          }
+        },
+        "basic_discount_access": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "promotions_access"
+                }
+              }
+            ]
+          }
+        },
+        "basic_discount_create": {
+          "computedUserset": {
+            "relation": "basic_discount_edit"
+          }
+        },
+        "basic_discount_delete": {
+          "computedUserset": {
+            "relation": "basic_discount_edit"
+          }
+        },
+        "basic_discount_edit": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "promotions_edit"
+                }
+              }
+            ]
+          }
+        },
+        "basic_discount_get": {
+          "computedUserset": {
+            "relation": "basic_discount_access"
+          }
+        },
+        "basic_discount_list": {
+          "computedUserset": {
+            "relation": "basic_discount_access"
+          }
+        },
+        "bookings_access": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "manager"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "employee"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "bookings_edit"
+                }
+              }
+            ]
+          }
+        },
+        "bookings_appointments_create": {
+          "computedUserset": {
+            "relation": "bookings_access"
+          }
+        },
+        "bookings_appointments_list": {
+          "computedUserset": {
+            "relation": "bookings_access"
+          }
+        },
+        "bookings_appointments_update": {
+          "computedUserset": {
+            "relation": "bookings_access"
+          }
+        },
+        "bookings_appointments_view": {
+          "computedUserset": {
+            "relation": "bookings_access"
+          }
+        },
+        "bookings_banners_list": {
+          "computedUserset": {
+            "relation": "bookings_access"
+          }
+        },
+        "bookings_banners_update": {
+          "computedUserset": {
+            "relation": "bookings_access"
+          }
+        },
+        "bookings_calendar-integrations_create": {
+          "computedUserset": {
+            "relation": "bookings_access"
+          }
+        },
+        "bookings_calendar-integrations_delete": {
+          "computedUserset": {
+            "relation": "bookings_access"
+          }
+        },
+        "bookings_calendar-integrations_update": {
+          "computedUserset": {
+            "relation": "bookings_access"
+          }
+        },
+        "bookings_calendar-integrations_view": {
+          "computedUserset": {
+            "relation": "bookings_access"
+          }
+        },
+        "bookings_calendars_create": {
+          "computedUserset": {
+            "relation": "bookings_edit"
+          }
+        },
+        "bookings_calendars_delete": {
+          "computedUserset": {
+            "relation": "bookings_edit"
+          }
+        },
+        "bookings_calendars_list": {
+          "computedUserset": {
+            "relation": "bookings_access"
+          }
+        },
+        "bookings_calendars_update": {
+          "computedUserset": {
+            "relation": "bookings_access"
+          }
+        },
+        "bookings_calendars_view": {
+          "computedUserset": {
+            "relation": "bookings_access"
+          }
+        },
+        "bookings_customers_update": {
+          "computedUserset": {
+            "relation": "bookings_edit"
+          }
+        },
+        "bookings_edit": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "admin"
+                }
+              }
+            ]
+          }
+        },
+        "bookings_merchants_create": {
+          "computedUserset": {
+            "relation": "bookings_edit"
+          }
+        },
+        "bookings_merchants_delete": {
+          "computedUserset": {
+            "relation": "bookings_edit"
+          }
+        },
+        "bookings_merchants_update": {
+          "computedUserset": {
+            "relation": "bookings_edit"
+          }
+        },
+        "bookings_merchants_view": {
+          "computedUserset": {
+            "relation": "merchant_read"
+          }
+        },
+        "bookings_pages_list": {
+          "computedUserset": {
+            "relation": "bookings_edit"
+          }
+        },
+        "bookings_pages_update": {
+          "computedUserset": {
+            "relation": "bookings_edit"
+          }
+        },
+        "bookings_reports_view": {
+          "computedUserset": {
+            "relation": "bookings_edit"
+          }
+        },
+        "bookings_setup-guides_delete": {
+          "computedUserset": {
+            "relation": "bookings_edit"
+          }
+        },
+        "bookings_setup-guides_list": {
+          "computedUserset": {
+            "relation": "bookings_edit"
+          }
+        },
+        "bookings_setup-guides_update": {
+          "computedUserset": {
+            "relation": "bookings_edit"
+          }
+        },
+        "bookings_time-blocks_create": {
+          "computedUserset": {
+            "relation": "bookings_access"
+          }
+        },
+        "bookings_time-blocks_delete": {
+          "computedUserset": {
+            "relation": "bookings_access"
+          }
+        },
+        "bookings_time-blocks_update": {
+          "computedUserset": {
+            "relation": "bookings_access"
+          }
+        },
+        "bookings_time-blocks_view": {
+          "computedUserset": {
+            "relation": "bookings_access"
+          }
+        },
+        "catalog_access": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "catalog_edit"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "employee"
+                }
+              }
+            ]
+          }
+        },
+        "catalog_categories_access": {
+          "union": {
+            "child": [
+              {
+                "computedUserset": {
+                  "relation": "catalog_categories_edit"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "catalog_access"
+                }
+              }
+            ]
+          }
+        },
+        "catalog_categories_create": {
+          "computedUserset": {
+            "relation": "catalog_categories_edit"
+          }
+        },
+        "catalog_categories_delete": {
+          "computedUserset": {
+            "relation": "catalog_categories_edit"
+          }
+        },
+        "catalog_categories_edit": {
+          "computedUserset": {
+            "relation": "catalog_edit"
+          }
+        },
+        "catalog_categories_read": {
+          "computedUserset": {
+            "relation": "catalog_categories_access"
+          }
+        },
+        "catalog_categories_update": {
+          "computedUserset": {
+            "relation": "catalog_categories_edit"
+          }
+        },
+        "catalog_categories_upsert": {
+          "computedUserset": {
+            "relation": "catalog_categories_edit"
+          }
+        },
+        "catalog_deposits_access": {
+          "union": {
+            "child": [
+              {
+                "computedUserset": {
+                  "relation": "catalog_deposits_edit"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "catalog_access"
+                }
+              }
+            ]
+          }
+        },
+        "catalog_deposits_create": {
+          "computedUserset": {
+            "relation": "catalog_deposits_edit"
+          }
+        },
+        "catalog_deposits_delete": {
+          "computedUserset": {
+            "relation": "catalog_deposits_edit"
+          }
+        },
+        "catalog_deposits_edit": {
+          "computedUserset": {
+            "relation": "catalog_edit"
+          }
+        },
+        "catalog_deposits_read": {
+          "computedUserset": {
+            "relation": "catalog_deposits_access"
+          }
+        },
+        "catalog_deposits_update": {
+          "computedUserset": {
+            "relation": "catalog_deposits_edit"
+          }
+        },
+        "catalog_deposits_upsert": {
+          "computedUserset": {
+            "relation": "catalog_deposits_edit"
+          }
+        },
+        "catalog_edit": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "admin"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "manager"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "accountant"
+                }
+              }
+            ]
+          }
+        },
+        "catalog_inventory_access": {
+          "union": {
+            "child": [
+              {
+                "computedUserset": {
+                  "relation": "catalog_inventory_edit"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "catalog_access"
+                }
+              }
+            ]
+          }
+        },
+        "catalog_inventory_all_read": {
+          "computedUserset": {
+            "relation": "catalog_inventory_access"
+          }
+        },
+        "catalog_inventory_edit": {
+          "computedUserset": {
+            "relation": "catalog_edit"
+          }
+        },
+        "catalog_items_access": {
+          "union": {
+            "child": [
+              {
+                "computedUserset": {
+                  "relation": "catalog_items_edit"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "catalog_access"
+                }
+              }
+            ]
+          }
+        },
+        "catalog_items_create": {
+          "computedUserset": {
+            "relation": "catalog_items_edit"
+          }
+        },
+        "catalog_items_delete": {
+          "computedUserset": {
+            "relation": "catalog_items_edit"
+          }
+        },
+        "catalog_items_edit": {
+          "computedUserset": {
+            "relation": "catalog_edit"
+          }
+        },
+        "catalog_items_read": {
+          "computedUserset": {
+            "relation": "catalog_items_access"
+          }
+        },
+        "catalog_items_update": {
+          "computedUserset": {
+            "relation": "catalog_items_edit"
+          }
+        },
+        "catalog_items_upsert": {
+          "computedUserset": {
+            "relation": "catalog_items_edit"
+          }
+        },
+        "catalog_modifiers_access": {
+          "union": {
+            "child": [
+              {
+                "computedUserset": {
+                  "relation": "catalog_modifiers_edit"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "catalog_access"
+                }
+              }
+            ]
+          }
+        },
+        "catalog_modifiers_create": {
+          "computedUserset": {
+            "relation": "catalog_modifiers_edit"
+          }
+        },
+        "catalog_modifiers_delete": {
+          "computedUserset": {
+            "relation": "catalog_modifiers_edit"
+          }
+        },
+        "catalog_modifiers_edit": {
+          "computedUserset": {
+            "relation": "catalog_edit"
+          }
+        },
+        "catalog_modifiers_read": {
+          "computedUserset": {
+            "relation": "catalog_modifiers_access"
+          }
+        },
+        "catalog_modifiers_update": {
+          "computedUserset": {
+            "relation": "catalog_modifiers_edit"
+          }
+        },
+        "catalog_modifiers_upsert": {
+          "computedUserset": {
+            "relation": "catalog_modifiers_edit"
+          }
+        },
+        "catalog_offline_all_read": {
+          "computedUserset": {
+            "relation": "catalog_access"
+          }
+        },
+        "catalog_options_access": {
+          "union": {
+            "child": [
+              {
+                "computedUserset": {
+                  "relation": "catalog_options_edit"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "catalog_access"
+                }
+              }
+            ]
+          }
+        },
+        "catalog_options_create": {
+          "computedUserset": {
+            "relation": "catalog_options_edit"
+          }
+        },
+        "catalog_options_delete": {
+          "computedUserset": {
+            "relation": "catalog_options_edit"
+          }
+        },
+        "catalog_options_edit": {
+          "computedUserset": {
+            "relation": "catalog_edit"
+          }
+        },
+        "catalog_options_read": {
+          "computedUserset": {
+            "relation": "catalog_options_access"
+          }
+        },
+        "catalog_options_update": {
+          "computedUserset": {
+            "relation": "catalog_options_edit"
+          }
+        },
+        "catalog_options_upsert": {
+          "computedUserset": {
+            "relation": "catalog_options_edit"
+          }
+        },
+        "catalog_preset-discount_access": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "admin"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "manager"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "accountant"
+                }
+              }
+            ]
+          }
+        },
+        "catalog_preset-discount_create": {
+          "computedUserset": {
+            "relation": "catalog_preset-discount_edit"
+          }
+        },
+        "catalog_preset-discount_edit": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "admin"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "manager"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "accountant"
+                }
+              }
+            ]
+          }
+        },
+        "catalog_preset-discount_read": {
+          "computedUserset": {
+            "relation": "catalog_preset-discount_access"
+          }
+        },
+        "collection_list": {
+          "computedUserset": {
+            "relation": "admin"
+          }
+        },
+        "coupons_access": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "promotions_access"
+                }
+              }
+            ]
+          }
+        },
+        "coupons_create": {
+          "computedUserset": {
+            "relation": "coupons_edit"
+          }
+        },
+        "coupons_delete": {
+          "computedUserset": {
+            "relation": "coupons_edit"
+          }
+        },
+        "coupons_edit": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "promotions_edit"
+                }
+              }
+            ]
+          }
+        },
+        "coupons_get": {
+          "computedUserset": {
+            "relation": "coupons_access"
+          }
+        },
+        "coupons_list": {
+          "computedUserset": {
+            "relation": "coupons_access"
+          }
+        },
+        "coupons_verify": {
+          "computedUserset": {
+            "relation": "coupons_access"
+          }
+        },
+        "create_moto_payments": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "admin"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "manager"
+                }
+              }
+            ]
+          }
+        },
+        "create_referral": {
+          "union": {
+            "child": [
+              {
+                "computedUserset": {
+                  "relation": "admin"
+                }
+              }
+            ]
+          }
+        },
+        "customers_read": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "admin"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "manager"
+                }
+              }
+            ]
+          }
+        },
+        "customers_write": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "admin"
+                }
+              }
+            ]
+          }
+        },
+        "developer_settings_access": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "developer_settings_edit"
+                }
+              }
+            ]
+          }
+        },
+        "developer_settings_edit": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "admin"
+                }
+              }
+            ]
+          }
+        },
+        "employee": {
+          "this": {}
+        },
+        "expenses_access": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "expenses_edit"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "employee"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "manager"
+                }
+              }
+            ]
+          }
+        },
+        "expenses_attachments_create": {
+          "computedUserset": {
+            "relation": "expenses_edit"
+          }
+        },
+        "expenses_attachments_delete": {
+          "computedUserset": {
+            "relation": "expenses_edit"
+          }
+        },
+        "expenses_attachments_list": {
+          "computedUserset": {
+            "relation": "expenses_access"
+          }
+        },
+        "expenses_attachments_update": {
+          "computedUserset": {
+            "relation": "expenses_edit"
+          }
+        },
+        "expenses_attachments_view": {
+          "computedUserset": {
+            "relation": "expenses_access"
+          }
+        },
+        "expenses_audits_list": {
+          "computedUserset": {
+            "relation": "expenses_access"
+          }
+        },
+        "expenses_audits_view": {
+          "computedUserset": {
+            "relation": "expenses_access"
+          }
+        },
+        "expenses_budgets_create": {
+          "computedUserset": {
+            "relation": "expenses_edit"
+          }
+        },
+        "expenses_budgets_delete": {
+          "computedUserset": {
+            "relation": "expenses_edit"
+          }
+        },
+        "expenses_budgets_list": {
+          "computedUserset": {
+            "relation": "expenses_access"
+          }
+        },
+        "expenses_budgets_update": {
+          "computedUserset": {
+            "relation": "expenses_edit"
+          }
+        },
+        "expenses_budgets_view": {
+          "computedUserset": {
+            "relation": "expenses_access"
+          }
+        },
+        "expenses_categories_create": {
+          "computedUserset": {
+            "relation": "expenses_edit"
+          }
+        },
+        "expenses_categories_delete": {
+          "computedUserset": {
+            "relation": "expenses_edit"
+          }
+        },
+        "expenses_categories_list": {
+          "computedUserset": {
+            "relation": "expenses_access"
+          }
+        },
+        "expenses_categories_update": {
+          "computedUserset": {
+            "relation": "expenses_edit"
+          }
+        },
+        "expenses_categories_view": {
+          "computedUserset": {
+            "relation": "expenses_access"
+          }
+        },
+        "expenses_create": {
+          "computedUserset": {
+            "relation": "expenses_edit"
+          }
+        },
+        "expenses_delete": {
+          "computedUserset": {
+            "relation": "expenses_edit"
+          }
+        },
+        "expenses_edit": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "admin"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "accountant"
+                }
+              }
+            ]
+          }
+        },
+        "expenses_export": {
+          "computedUserset": {
+            "relation": "expenses_access"
+          }
+        },
+        "expenses_import": {
+          "computedUserset": {
+            "relation": "expenses_edit"
+          }
+        },
+        "expenses_integrations_admin": {
+          "computedUserset": {
+            "relation": "expenses_edit"
+          }
+        },
+        "expenses_list": {
+          "computedUserset": {
+            "relation": "expenses_access"
+          }
+        },
+        "expenses_settings_access": {
+          "computedUserset": {
+            "relation": "expenses_access"
+          }
+        },
+        "expenses_settings_edit": {
+          "computedUserset": {
+            "relation": "expenses_edit"
+          }
+        },
+        "expenses_suppliers_create": {
+          "computedUserset": {
+            "relation": "expenses_edit"
+          }
+        },
+        "expenses_suppliers_delete": {
+          "computedUserset": {
+            "relation": "expenses_edit"
+          }
+        },
+        "expenses_suppliers_list": {
+          "computedUserset": {
+            "relation": "expenses_access"
+          }
+        },
+        "expenses_suppliers_update": {
+          "computedUserset": {
+            "relation": "expenses_edit"
+          }
+        },
+        "expenses_suppliers_view": {
+          "computedUserset": {
+            "relation": "expenses_access"
+          }
+        },
+        "expenses_track": {
+          "computedUserset": {
+            "relation": "expenses_access"
+          }
+        },
+        "expenses_update": {
+          "computedUserset": {
+            "relation": "expenses_edit"
+          }
+        },
+        "expenses_view": {
+          "computedUserset": {
+            "relation": "expenses_access"
+          }
+        },
+        "full_transaction_history_view": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "admin"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "accountant"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "manager"
+                }
+              }
+            ]
+          }
+        },
+        "gift-cards_access": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "gift-cards_edit"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "accountant"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "employee"
+                }
+              }
+            ]
+          }
+        },
+        "gift-cards_create": {
+          "computedUserset": {
+            "relation": "gift-cards_edit"
+          }
+        },
+        "gift-cards_edit": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "admin"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "manager"
+                }
+              }
+            ]
+          }
+        },
+        "gift-cards_reports": {
+          "union": {
+            "child": [
+              {
+                "computedUserset": {
+                  "relation": "gift-cards_edit"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "accountant"
+                }
+              }
+            ]
+          }
+        },
+        "gift-cards_settings": {
+          "computedUserset": {
+            "relation": "gift-cards_edit"
+          }
+        },
+        "gift-cards_view": {
+          "computedUserset": {
+            "relation": "gift-cards_access"
+          }
+        },
+        "gift-cards_view_code": {
+          "computedUserset": {
+            "relation": "gift-cards_edit"
+          }
+        },
+        "iam_access": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "iam_edit"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "accountant"
+                }
+              }
+            ]
+          }
+        },
+        "iam_edit": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "admin"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "manager"
+                }
+              }
+            ]
+          }
+        },
+        "inventory_all_read": {
+          "computedUserset": {
+            "relation": "catalog_inventory_access"
+          }
+        },
+        "invoices_attachments_create": {
+          "computedUserset": {
+            "relation": "invoicing_edit"
+          }
+        },
+        "invoices_attachments_delete": {
+          "computedUserset": {
+            "relation": "invoicing_edit"
+          }
+        },
+        "invoices_attachments_list": {
+          "computedUserset": {
+            "relation": "invoicing_access"
+          }
+        },
+        "invoices_attachments_update": {
+          "computedUserset": {
+            "relation": "invoicing_edit"
+          }
+        },
+        "invoices_attachments_view": {
+          "computedUserset": {
+            "relation": "invoicing_access"
+          }
+        },
+        "invoices_creditnotes_create": {
+          "computedUserset": {
+            "relation": "invoicing_edit"
+          }
+        },
+        "invoices_creditnotes_delete": {
+          "computedUserset": {
+            "relation": "invoicing_edit"
+          }
+        },
+        "invoices_creditnotes_export": {
+          "computedUserset": {
+            "relation": "invoicing_edit"
+          }
+        },
+        "invoices_creditnotes_list": {
+          "computedUserset": {
+            "relation": "invoicing_access"
+          }
+        },
+        "invoices_creditnotes_send": {
+          "computedUserset": {
+            "relation": "invoicing_edit"
+          }
+        },
+        "invoices_creditnotes_share": {
+          "computedUserset": {
+            "relation": "invoicing_edit"
+          }
+        },
+        "invoices_creditnotes_update": {
+          "computedUserset": {
+            "relation": "invoicing_edit"
+          }
+        },
+        "invoices_creditnotes_view": {
+          "computedUserset": {
+            "relation": "invoicing_access"
+          }
+        },
+        "invoices_customers_create": {
+          "computedUserset": {
+            "relation": "invoicing_edit"
+          }
+        },
+        "invoices_customers_delete": {
+          "computedUserset": {
+            "relation": "invoicing_edit"
+          }
+        },
+        "invoices_customers_export": {
+          "computedUserset": {
+            "relation": "invoicing_edit"
+          }
+        },
+        "invoices_customers_list": {
+          "computedUserset": {
+            "relation": "invoicing_access"
+          }
+        },
+        "invoices_customers_update": {
+          "computedUserset": {
+            "relation": "invoicing_edit"
+          }
+        },
+        "invoices_customers_view": {
+          "computedUserset": {
+            "relation": "invoicing_access"
+          }
+        },
+        "invoices_deliverynotes_create": {
+          "computedUserset": {
+            "relation": "invoicing_edit"
+          }
+        },
+        "invoices_deliverynotes_delete": {
+          "computedUserset": {
+            "relation": "invoicing_edit"
+          }
+        },
+        "invoices_deliverynotes_export": {
+          "computedUserset": {
+            "relation": "invoicing_edit"
+          }
+        },
+        "invoices_deliverynotes_list": {
+          "computedUserset": {
+            "relation": "invoicing_access"
+          }
+        },
+        "invoices_deliverynotes_send": {
+          "computedUserset": {
+            "relation": "invoicing_edit"
+          }
+        },
+        "invoices_deliverynotes_share": {
+          "computedUserset": {
+            "relation": "invoicing_edit"
+          }
+        },
+        "invoices_deliverynotes_update": {
+          "computedUserset": {
+            "relation": "invoicing_edit"
+          }
+        },
+        "invoices_deliverynotes_view": {
+          "computedUserset": {
+            "relation": "invoicing_access"
+          }
+        },
+        "invoices_documents_edit": {
+          "computedUserset": {
+            "relation": "invoicing_edit"
+          }
+        },
+        "invoices_documents_export": {
+          "computedUserset": {
+            "relation": "invoicing_edit"
+          }
+        },
+        "invoices_documents_match": {
+          "computedUserset": {
+            "relation": "invoicing_edit"
+          }
+        },
+        "invoices_documents_send": {
+          "computedUserset": {
+            "relation": "invoicing_edit"
+          }
+        },
+        "invoices_invoices_create": {
+          "computedUserset": {
+            "relation": "invoicing_edit"
+          }
+        },
+        "invoices_invoices_delete": {
+          "computedUserset": {
+            "relation": "invoicing_edit"
+          }
+        },
+        "invoices_invoices_export": {
+          "computedUserset": {
+            "relation": "invoicing_edit"
+          }
+        },
+        "invoices_invoices_list": {
+          "computedUserset": {
+            "relation": "invoicing_access"
+          }
+        },
+        "invoices_invoices_send": {
+          "computedUserset": {
+            "relation": "invoicing_edit"
+          }
+        },
+        "invoices_invoices_share": {
+          "computedUserset": {
+            "relation": "invoicing_edit"
+          }
+        },
+        "invoices_invoices_update": {
+          "computedUserset": {
+            "relation": "invoicing_edit"
+          }
+        },
+        "invoices_invoices_view": {
+          "computedUserset": {
+            "relation": "invoicing_access"
+          }
+        },
+        "invoices_items_create": {
+          "computedUserset": {
+            "relation": "invoicing_edit"
+          }
+        },
+        "invoices_items_delete": {
+          "computedUserset": {
+            "relation": "invoicing_edit"
+          }
+        },
+        "invoices_items_export": {
+          "computedUserset": {
+            "relation": "invoicing_edit"
+          }
+        },
+        "invoices_items_list": {
+          "computedUserset": {
+            "relation": "invoicing_access"
+          }
+        },
+        "invoices_items_update": {
+          "computedUserset": {
+            "relation": "invoicing_edit"
+          }
+        },
+        "invoices_items_view": {
+          "computedUserset": {
+            "relation": "invoicing_access"
+          }
+        },
+        "invoices_payment_methods_edit": {
+          "computedUserset": {
+            "relation": "invoicing_edit"
+          }
+        },
+        "invoices_quotes_create": {
+          "computedUserset": {
+            "relation": "invoicing_edit"
+          }
+        },
+        "invoices_quotes_delete": {
+          "computedUserset": {
+            "relation": "invoicing_edit"
+          }
+        },
+        "invoices_quotes_export": {
+          "computedUserset": {
+            "relation": "invoicing_edit"
+          }
+        },
+        "invoices_quotes_list": {
+          "computedUserset": {
+            "relation": "invoicing_access"
+          }
+        },
+        "invoices_quotes_send": {
+          "computedUserset": {
+            "relation": "invoicing_edit"
+          }
+        },
+        "invoices_quotes_share": {
+          "computedUserset": {
+            "relation": "invoicing_edit"
+          }
+        },
+        "invoices_quotes_update": {
+          "computedUserset": {
+            "relation": "invoicing_edit"
+          }
+        },
+        "invoices_quotes_view": {
+          "computedUserset": {
+            "relation": "invoicing_access"
+          }
+        },
+        "invoices_settings_update": {
+          "computedUserset": {
+            "relation": "admin"
+          }
+        },
+        "invoices_settings_view": {
+          "computedUserset": {
+            "relation": "invoicing_access"
+          }
+        },
+        "invoices_templates_edit": {
+          "computedUserset": {
+            "relation": "invoicing_edit"
+          }
+        },
+        "invoicing_access": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "invoicing_edit"
+                }
+              }
+            ]
+          }
+        },
+        "invoicing_edit": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "admin"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "accountant"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "manager"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "employee"
+                }
+              }
+            ]
+          }
+        },
+        "kds_operation": {
+          "union": {
+            "child": [
+              {
+                "computedUserset": {
+                  "relation": "orderandpay_product_management"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "employee"
+                }
+              }
+            ]
+          }
+        },
+        "kiosk_operation": {
+          "computedUserset": {
+            "relation": "member"
+          }
+        },
+        "links_access": {
+          "union": {
+            "child": [
+              {
+                "computedUserset": {
+                  "relation": "links_edit"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "employee"
+                }
+              }
+            ]
+          }
+        },
+        "links_edit": {
+          "union": {
+            "child": [
+              {
+                "computedUserset": {
+                  "relation": "manager"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "accountant"
+                }
+              }
+            ]
+          }
+        },
+        "loyalty-autopilot_edit": {
+          "computedUserset": {
+            "relation": "loyalty_edit"
+          }
+        },
+        "loyalty-campaigns_create": {
+          "computedUserset": {
+            "relation": "loyalty_edit"
+          }
+        },
+        "loyalty-campaigns_delete": {
+          "computedUserset": {
+            "relation": "loyalty_edit"
+          }
+        },
+        "loyalty-campaigns_update": {
+          "computedUserset": {
+            "relation": "loyalty_edit"
+          }
+        },
+        "loyalty-clients_create": {
+          "computedUserset": {
+            "relation": "loyalty_access"
+          }
+        },
+        "loyalty-dashboard_view": {
+          "computedUserset": {
+            "relation": "member"
+          }
+        },
+        "loyalty-members_create": {
+          "computedUserset": {
+            "relation": "loyalty_edit"
+          }
+        },
+        "loyalty-members_definition_edit": {
+          "computedUserset": {
+            "relation": "loyalty_edit"
+          }
+        },
+        "loyalty-members_edit": {
+          "computedUserset": {
+            "relation": "loyalty_edit"
+          }
+        },
+        "loyalty-members_tag_assignment_create": {
+          "computedUserset": {
+            "relation": "loyalty_edit"
+          }
+        },
+        "loyalty-profile_update": {
+          "computedUserset": {
+            "relation": "loyalty_edit"
+          }
+        },
+        "loyalty-program_create": {
+          "computedUserset": {
+            "relation": "loyalty_edit"
+          }
+        },
+        "loyalty-rewards_create": {
+          "computedUserset": {
+            "relation": "loyalty_edit"
+          }
+        },
+        "loyalty-rewards_delete": {
+          "computedUserset": {
+            "relation": "loyalty_edit"
+          }
+        },
+        "loyalty_access": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "loyalty_edit"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "employee"
+                }
+              }
+            ]
+          }
+        },
+        "loyalty_edit": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "admin"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "manager"
+                }
+              }
+            ]
+          }
+        },
+        "loyalty_offer_access": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "promotions_access"
+                }
+              }
+            ]
+          }
+        },
+        "loyalty_offer_create": {
+          "computedUserset": {
+            "relation": "loyalty_offer_edit"
+          }
+        },
+        "loyalty_offer_delete": {
+          "computedUserset": {
+            "relation": "loyalty_offer_edit"
+          }
+        },
+        "loyalty_offer_edit": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "promotions_edit"
+                }
+              }
+            ]
+          }
+        },
+        "loyalty_offer_get": {
+          "computedUserset": {
+            "relation": "loyalty_offer_access"
+          }
+        },
+        "loyalty_offer_list": {
+          "computedUserset": {
+            "relation": "loyalty_offer_access"
+          }
+        },
+        "manager": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              }
+            ]
+          }
+        },
+        "member": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "tupleToUserset": {
+                  "tupleset": {
+                    "relation": "parent"
+                  },
+                  "computedUserset": {
+                    "relation": "member"
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "members_access": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "members_edit"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "iam_access"
+                }
+              }
+            ]
+          }
+        },
+        "members_create": {
+          "computedUserset": {
+            "relation": "members_edit"
+          }
+        },
+        "members_delegate": {
+          "union": {
+            "child": [
+              {
+                "computedUserset": {
+                  "relation": "admin"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "manager"
+                }
+              }
+            ]
+          }
+        },
+        "members_delete": {
+          "computedUserset": {
+            "relation": "members_edit"
+          }
+        },
+        "members_edit": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "iam_edit"
+                }
+              }
+            ]
+          }
+        },
+        "members_list": {
+          "union": {
+            "child": [
+              {
+                "computedUserset": {
+                  "relation": "members_access"
+                }
+              }
+            ]
+          }
+        },
+        "members_update": {
+          "computedUserset": {
+            "relation": "members_edit"
+          }
+        },
+        "members_view": {
+          "computedUserset": {
+            "relation": "members_access"
+          }
+        },
+        "merchant_read": {
+          "computedUserset": {
+            "relation": "member"
+          }
+        },
+        "merchant_write": {
+          "computedUserset": {
+            "relation": "admin"
+          }
+        },
+        "offers_access": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "promotions_access"
+                }
+              }
+            ]
+          }
+        },
+        "offers_create": {
+          "computedUserset": {
+            "relation": "offers_edit"
+          }
+        },
+        "offers_delete": {
+          "computedUserset": {
+            "relation": "offers_edit"
+          }
+        },
+        "offers_edit": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "promotions_edit"
+                }
+              }
+            ]
+          }
+        },
+        "offers_get": {
+          "computedUserset": {
+            "relation": "offers_access"
+          }
+        },
+        "offers_list": {
+          "computedUserset": {
+            "relation": "offers_access"
+          }
+        },
+        "online-store_access": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "online-store_edit"
+                }
+              }
+            ]
+          }
+        },
+        "online-store_catalog_importer_exporter_access": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "online-store_catalog_importer_exporter_edit"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "online-store_access"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "catalog_access"
+                }
+              }
+            ]
+          }
+        },
+        "online-store_catalog_importer_exporter_create": {
+          "computedUserset": {
+            "relation": "online-store_catalog_importer_exporter_edit"
+          }
+        },
+        "online-store_catalog_importer_exporter_edit": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "online-store_edit"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "catalog_items_edit"
+                }
+              }
+            ]
+          }
+        },
+        "online-store_catalog_importer_exporter_get": {
+          "computedUserset": {
+            "relation": "online-store_catalog_importer_exporter_access"
+          }
+        },
+        "online-store_catalog_importer_exporter_list": {
+          "computedUserset": {
+            "relation": "online-store_catalog_importer_exporter_access"
+          }
+        },
+        "online-store_catalog_importer_exporter_update": {
+          "computedUserset": {
+            "relation": "online-store_catalog_importer_exporter_edit"
+          }
+        },
+        "online-store_customers_access": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "online-store_customers_edit"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "online-store_access"
+                }
+              }
+            ]
+          }
+        },
+        "online-store_customers_create": {
+          "computedUserset": {
+            "relation": "online-store_customers_edit"
+          }
+        },
+        "online-store_customers_edit": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "online-store_edit"
+                }
+              }
+            ]
+          }
+        },
+        "online-store_customers_list": {
+          "computedUserset": {
+            "relation": "online-store_customers_access"
+          }
+        },
+        "online-store_edit": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "admin"
+                }
+              }
+            ]
+          }
+        },
+        "online-store_exporter_access": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "online-store_access"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "catalog_access"
+                }
+              }
+            ]
+          }
+        },
+        "online-store_exporter_list": {
+          "computedUserset": {
+            "relation": "online-store_exporter_access"
+          }
+        },
+        "online-store_promotions_access": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "online-store_promotions_edit"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "online-store_access"
+                }
+              }
+            ]
+          }
+        },
+        "online-store_promotions_create": {
+          "computedUserset": {
+            "relation": "online-store_promotions_edit"
+          }
+        },
+        "online-store_promotions_delete": {
+          "computedUserset": {
+            "relation": "online-store_promotions_edit"
+          }
+        },
+        "online-store_promotions_edit": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "online-store_edit"
+                }
+              }
+            ]
+          }
+        },
+        "online-store_promotions_get": {
+          "computedUserset": {
+            "relation": "online-store_promotions_access"
+          }
+        },
+        "online-store_promotions_list": {
+          "computedUserset": {
+            "relation": "online-store_promotions_access"
+          }
+        },
+        "online-store_promotions_update": {
+          "computedUserset": {
+            "relation": "online-store_promotions_edit"
+          }
+        },
+        "online-store_reports_access": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "online-store_access"
+                }
+              }
+            ]
+          }
+        },
+        "online-store_reports_views_by_device_get": {
+          "computedUserset": {
+            "relation": "online-store_reports_access"
+          }
+        },
+        "online-store_reports_visitors_get": {
+          "computedUserset": {
+            "relation": "online-store_reports_access"
+          }
+        },
+        "online-store_sales_access": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "online-store_sales_edit"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "online-store_access"
+                }
+              }
+            ]
+          }
+        },
+        "online-store_sales_edit": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "online-store_edit"
+                }
+              }
+            ]
+          }
+        },
+        "online-store_sales_get": {
+          "computedUserset": {
+            "relation": "online-store_sales_access"
+          }
+        },
+        "online-store_sales_list": {
+          "computedUserset": {
+            "relation": "online-store_sales_access"
+          }
+        },
+        "online-store_sales_update": {
+          "computedUserset": {
+            "relation": "online-store_sales_edit"
+          }
+        },
+        "online-store_se_access": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "online-store_se_edit"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "online-store_access"
+                }
+              }
+            ]
+          }
+        },
+        "online-store_se_campaign_bulk_delete": {
+          "computedUserset": {
+            "relation": "online-store_se_edit"
+          }
+        },
+        "online-store_se_campaign_bulk_update": {
+          "computedUserset": {
+            "relation": "online-store_se_edit"
+          }
+        },
+        "online-store_se_campaign_create": {
+          "computedUserset": {
+            "relation": "online-store_se_edit"
+          }
+        },
+        "online-store_se_campaign_delete": {
+          "computedUserset": {
+            "relation": "online-store_se_edit"
+          }
+        },
+        "online-store_se_campaign_get": {
+          "computedUserset": {
+            "relation": "online-store_se_access"
+          }
+        },
+        "online-store_se_campaign_get_campaign_available": {
+          "computedUserset": {
+            "relation": "online-store_se_access"
+          }
+        },
+        "online-store_se_campaign_list": {
+          "computedUserset": {
+            "relation": "online-store_se_access"
+          }
+        },
+        "online-store_se_campaign_put": {
+          "computedUserset": {
+            "relation": "online-store_se_edit"
+          }
+        },
+        "online-store_se_edit": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "online-store_edit"
+                }
+              }
+            ]
+          }
+        },
+        "online-store_shippings_access": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "online-store_shippings_edit"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "online-store_access"
+                }
+              }
+            ]
+          }
+        },
+        "online-store_shippings_create": {
+          "computedUserset": {
+            "relation": "online-store_shippings_edit"
+          }
+        },
+        "online-store_shippings_delete": {
+          "computedUserset": {
+            "relation": "online-store_shippings_edit"
+          }
+        },
+        "online-store_shippings_edit": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "online-store_edit"
+                }
+              }
+            ]
+          }
+        },
+        "online-store_shippings_get": {
+          "computedUserset": {
+            "relation": "online-store_shippings_access"
+          }
+        },
+        "online-store_shippings_list": {
+          "computedUserset": {
+            "relation": "online-store_shippings_access"
+          }
+        },
+        "online-store_shippings_update": {
+          "computedUserset": {
+            "relation": "online-store_shippings_edit"
+          }
+        },
+        "orderandpay_product_management": {
+          "union": {
+            "child": [
+              {
+                "computedUserset": {
+                  "relation": "admin"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "manager"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "accountant"
+                }
+              }
+            ]
+          }
+        },
+        "owner": {
+          "this": {}
+        },
+        "parent": {
+          "this": {}
+        },
+        "payment-links_access": {
+          "union": {
+            "child": [
+              {
+                "computedUserset": {
+                  "relation": "payment-links_view"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "payment-links_create"
+                }
+              }
+            ]
+          }
+        },
+        "payment-links_create": {
+          "union": {
+            "child": [
+              {
+                "computedUserset": {
+                  "relation": "admin"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "manager"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "employee"
+                }
+              }
+            ]
+          }
+        },
+        "payment-links_edit": {
+          "union": {
+            "child": [
+              {
+                "computedUserset": {
+                  "relation": "admin"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "manager"
+                }
+              }
+            ]
+          }
+        },
+        "payment-links_view": {
+          "union": {
+            "child": [
+              {
+                "computedUserset": {
+                  "relation": "payment-links_edit"
+                }
+              }
+            ]
+          }
+        },
+        "payouts_payouts_list": {
+          "union": {
+            "child": [
+              {
+                "computedUserset": {
+                  "relation": "admin"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "accountant"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "manager"
+                }
+              }
+            ]
+          }
+        },
+        "persons_read": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "admin"
+                }
+              }
+            ]
+          }
+        },
+        "pos-cashmgt_access": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "pos-cashmgt_edit"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "pos_access"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "employee"
+                }
+              }
+            ]
+          }
+        },
+        "pos-cashmgt_drawer_open": {
+          "computedUserset": {
+            "relation": "pos-cashmgt_edit"
+          }
+        },
+        "pos-cashmgt_edit": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "pos_edit"
+                }
+              }
+            ]
+          }
+        },
+        "pos-cashmgt_events_create": {
+          "union": {
+            "child": [
+              {
+                "computedUserset": {
+                  "relation": "pos_edit"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "employee"
+                }
+              }
+            ]
+          }
+        },
+        "pos-cashmgt_movements_create": {
+          "computedUserset": {
+            "relation": "pos-cashmgt_access"
+          }
+        },
+        "pos-cashmgt_movements_get": {
+          "union": {
+            "child": [
+              {
+                "computedUserset": {
+                  "relation": "pos-cashmgt_edit"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "accountant"
+                }
+              }
+            ]
+          }
+        },
+        "pos-cashmgt_my-movements_get": {
+          "union": {
+            "child": [
+              {
+                "computedUserset": {
+                  "relation": "pos-cashmgt_movements_get"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "pos-cashmgt_access"
+                }
+              }
+            ]
+          }
+        },
+        "pos-cashmgt_state_get": {
+          "computedUserset": {
+            "relation": "pos-cashmgt_access"
+          }
+        },
+        "pos-cashmgt_virtualdrawers_create": {
+          "computedUserset": {
+            "relation": "pos-cashmgt_access"
+          }
+        },
+        "pos-cashmgt_virtualdrawers_list": {
+          "computedUserset": {
+            "relation": "pos-cashmgt_edit"
+          }
+        },
+        "pos-cashmgt_virtualdrawers_update": {
+          "computedUserset": {
+            "relation": "pos-cashmgt_access"
+          }
+        },
+        "pos-fiscalisation_access": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "pos-fiscalisation_edit"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "pos_access"
+                }
+              }
+            ]
+          }
+        },
+        "pos-fiscalisation_edit": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "pos_edit"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "accountant"
+                }
+              }
+            ]
+          }
+        },
+        "pos-fiscalisation_german-tse_create": {
+          "computedUserset": {
+            "relation": "pos-fiscalisation_edit"
+          }
+        },
+        "pos-fiscalisation_german-tse_get": {
+          "computedUserset": {
+            "relation": "pos-fiscalisation_access"
+          }
+        },
+        "pos-fiscalisation_tse_create": {
+          "computedUserset": {
+            "relation": "pos-fiscalisation_edit"
+          }
+        },
+        "pos-fiscalisation_tse_get": {
+          "computedUserset": {
+            "relation": "pos-fiscalisation_access"
+          }
+        },
+        "pos-sales-period_access": {
+          "union": {
+            "child": [
+              {
+                "computedUserset": {
+                  "relation": "pos_access"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "employee"
+                }
+              }
+            ]
+          }
+        },
+        "pos-sales-period_periods_create": {
+          "computedUserset": {
+            "relation": "pos-sales-period_access"
+          }
+        },
+        "pos-sales-period_periods_get": {
+          "computedUserset": {
+            "relation": "pos_access"
+          }
+        },
+        "pos-sales-period_periods_update": {
+          "computedUserset": {
+            "relation": "pos-sales-period_access"
+          }
+        },
+        "pos-sales-period_state_get": {
+          "computedUserset": {
+            "relation": "pos-sales-period_access"
+          }
+        },
+        "pos-settings_access": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "pos-settings_edit"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "pos_access"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "employee"
+                }
+              }
+            ]
+          }
+        },
+        "pos-settings_cash-payment_update": {
+          "computedUserset": {
+            "relation": "admin"
+          }
+        },
+        "pos-settings_cashmgt_update": {
+          "computedUserset": {
+            "relation": "pos-settings_edit"
+          }
+        },
+        "pos-settings_edit": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "pos_edit"
+                }
+              }
+            ]
+          }
+        },
+        "pos-settings_payment-methods-cash_get": {
+          "computedUserset": {
+            "relation": "pos-settings_access"
+          }
+        },
+        "pos-settings_paymentmethod_update": {
+          "computedUserset": {
+            "relation": "admin"
+          }
+        },
+        "pos-settings_pos-pin-access_update": {
+          "computedUserset": {
+            "relation": "admin"
+          }
+        },
+        "pos-settings_sales-period_update": {
+          "computedUserset": {
+            "relation": "pos-settings_edit"
+          }
+        },
+        "pos-tablemgt_access": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "pos-tablemgt_edit"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "pos_access"
+                }
+              }
+            ]
+          }
+        },
+        "pos-tablemgt_edit": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "pos_edit"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "accountant"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "employee"
+                }
+              }
+            ]
+          }
+        },
+        "pos-tablemgt_layout_edit": {
+          "computedUserset": {
+            "relation": "pos-tablemgt_edit"
+          }
+        },
+        "pos-tablemgt_layout_read": {
+          "computedUserset": {
+            "relation": "pos-tablemgt_access"
+          }
+        },
+        "pos_access": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "pos_edit"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "accountant"
+                }
+              }
+            ]
+          }
+        },
+        "pos_edit": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "admin"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "manager"
+                }
+              }
+            ]
+          }
+        },
+        "pos_oms_access": {
+          "union": {
+            "child": [
+              {
+                "computedUserset": {
+                  "relation": "pos_oms_edit"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "merchant_read"
+                }
+              }
+            ]
+          }
+        },
+        "pos_oms_device_prefix_get": {
+          "computedUserset": {
+            "relation": "pos_oms_access"
+          }
+        },
+        "pos_oms_edit": {
+          "union": {
+            "child": [
+              {
+                "computedUserset": {
+                  "relation": "admin"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "manager"
+                }
+              }
+            ]
+          }
+        },
+        "promotions_access": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "promotions_edit"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "employee"
+                }
+              }
+            ]
+          }
+        },
+        "promotions_create": {
+          "computedUserset": {
+            "relation": "promotions_edit"
+          }
+        },
+        "promotions_delete": {
+          "computedUserset": {
+            "relation": "promotions_edit"
+          }
+        },
+        "promotions_edit": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "admin"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "manager"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "accountant"
+                }
+              }
+            ]
+          }
+        },
+        "promotions_get": {
+          "computedUserset": {
+            "relation": "promotions_access"
+          }
+        },
+        "promotions_list": {
+          "computedUserset": {
+            "relation": "promotions_access"
+          }
+        },
+        "readers_access": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "readers_edit"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "employee"
+                }
+              }
+            ]
+          }
+        },
+        "readers_checkout_create": {
+          "computedUserset": {
+            "relation": "readers_access"
+          }
+        },
+        "readers_create": {
+          "computedUserset": {
+            "relation": "readers_edit"
+          }
+        },
+        "readers_delete": {
+          "computedUserset": {
+            "relation": "readers_edit"
+          }
+        },
+        "readers_edit": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "admin"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "manager"
+                }
+              }
+            ]
+          }
+        },
+        "readers_list": {
+          "computedUserset": {
+            "relation": "readers_edit"
+          }
+        },
+        "readers_update": {
+          "computedUserset": {
+            "relation": "readers_edit"
+          }
+        },
+        "readers_view": {
+          "computedUserset": {
+            "relation": "readers_access"
+          }
+        },
+        "receipts_access": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "receipts_edit"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "employee"
+                }
+              }
+            ]
+          }
+        },
+        "receipts_automatic-receipts_create": {
+          "computedUserset": {
+            "relation": "receipts_access"
+          }
+        },
+        "receipts_automatic-receipts_delete": {
+          "computedUserset": {
+            "relation": "receipts_access"
+          }
+        },
+        "receipts_automatic-receipts_get": {
+          "computedUserset": {
+            "relation": "receipts_access"
+          }
+        },
+        "receipts_edit": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "admin"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "manager"
+                }
+              }
+            ]
+          }
+        },
+        "receipts_payment-receipts_create": {
+          "computedUserset": {
+            "relation": "receipts_access"
+          }
+        },
+        "receipts_payment-receipts_get": {
+          "computedUserset": {
+            "relation": "receipts_access"
+          }
+        },
+        "receipts_sale-receipts_create": {
+          "computedUserset": {
+            "relation": "receipts_access"
+          }
+        },
+        "receipts_sale-receipts_get": {
+          "computedUserset": {
+            "relation": "receipts_access"
+          }
+        },
+        "refund_transactions": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "admin"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "manager"
+                }
+              }
+            ]
+          }
+        },
+        "reporting_fee-invoice_get": {
+          "computedUserset": {
+            "relation": "reports_access"
+          }
+        },
+        "reporting_fiscal-report_get": {
+          "computedUserset": {
+            "relation": "stats-reports_access"
+          }
+        },
+        "reporting_italian-tax-report_get": {
+          "computedUserset": {
+            "relation": "reports_access"
+          }
+        },
+        "reporting_items-report_get": {
+          "computedUserset": {
+            "relation": "stats-reports_access"
+          }
+        },
+        "reporting_latam-tax-report_get": {
+          "union": {
+            "child": [
+              {
+                "computedUserset": {
+                  "relation": "admin"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "accountant"
+                }
+              }
+            ]
+          }
+        },
+        "reporting_my-cashmgt-report_get": {
+          "computedUserset": {
+            "relation": "stats-reports_own_access"
+          }
+        },
+        "reporting_my-items-report_get": {
+          "computedUserset": {
+            "relation": "stats-reports_own_access"
+          }
+        },
+        "reporting_my-reports_list": {
+          "computedUserset": {
+            "relation": "stats-reports_own_access"
+          }
+        },
+        "reporting_my-revenue-report_get": {
+          "computedUserset": {
+            "relation": "stats-reports_own_access"
+          }
+        },
+        "reporting_my-sales-report_get": {
+          "computedUserset": {
+            "relation": "stats-reports_own_access"
+          }
+        },
+        "reporting_my-sales-summary_get": {
+          "computedUserset": {
+            "relation": "stats-reports_own_access"
+          }
+        },
+        "reporting_my-transactions-report_get": {
+          "computedUserset": {
+            "relation": "reports_own_access"
+          }
+        },
+        "reporting_payout-payments-report_get": {
+          "computedUserset": {
+            "relation": "reports_access"
+          }
+        },
+        "reporting_payout-report_get": {
+          "computedUserset": {
+            "relation": "reports_access"
+          }
+        },
+        "reporting_receivable-balance_get": {
+          "computedUserset": {
+            "relation": "reports_access"
+          }
+        },
+        "reporting_reports_list": {
+          "computedUserset": {
+            "relation": "stats-reports_access"
+          }
+        },
+        "reporting_revenue-report_get": {
+          "computedUserset": {
+            "relation": "stats-reports_access"
+          }
+        },
+        "reporting_sales-report_get": {
+          "computedUserset": {
+            "relation": "stats-reports_access"
+          }
+        },
+        "reporting_sales-summary_get": {
+          "computedUserset": {
+            "relation": "stats-reports_access"
+          }
+        },
+        "reporting_transactions-report_get": {
+          "computedUserset": {
+            "relation": "reports_access"
+          }
+        },
+        "reports_access": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "admin"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "accountant"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "manager"
+                }
+              }
+            ]
+          }
+        },
+        "reports_own_access": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "reports_access"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "employee"
+                }
+              }
+            ]
+          }
+        },
+        "roles_access": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "roles_edit"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "members_edit"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "members_access"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "iam_access"
+                }
+              }
+            ]
+          }
+        },
+        "roles_create": {
+          "computedUserset": {
+            "relation": "roles_edit"
+          }
+        },
+        "roles_delete": {
+          "computedUserset": {
+            "relation": "roles_edit"
+          }
+        },
+        "roles_edit": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "iam_edit"
+                }
+              }
+            ]
+          }
+        },
+        "roles_list": {
+          "computedUserset": {
+            "relation": "roles_access"
+          }
+        },
+        "roles_update": {
+          "computedUserset": {
+            "relation": "roles_edit"
+          }
+        },
+        "roles_view": {
+          "computedUserset": {
+            "relation": "roles_access"
+          }
+        },
+        "sales_access": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "sales_edit"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "employee"
+                }
+              }
+            ]
+          }
+        },
+        "sales_edit": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "admin"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "manager"
+                }
+              }
+            ]
+          }
+        },
+        "sales_my-sale-details_get": {
+          "computedUserset": {
+            "relation": "sales_access"
+          }
+        },
+        "sales_my-sale_list": {
+          "computedUserset": {
+            "relation": "sales_access"
+          }
+        },
+        "sales_refund_create": {
+          "union": {
+            "child": [
+              {
+                "computedUserset": {
+                  "relation": "sales_edit"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "refund_transactions"
+                }
+              }
+            ]
+          }
+        },
+        "sales_sale-details_get": {
+          "union": {
+            "child": [
+              {
+                "computedUserset": {
+                  "relation": "sales_edit"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "accountant"
+                }
+              }
+            ]
+          }
+        },
+        "sales_sale_create": {
+          "computedUserset": {
+            "relation": "sales_access"
+          }
+        },
+        "sales_sale_list": {
+          "union": {
+            "child": [
+              {
+                "computedUserset": {
+                  "relation": "sales_edit"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "accountant"
+                }
+              }
+            ]
+          }
+        },
+        "service_accounts_access": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "developer_settings_access"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "service_accounts_edit"
+                }
+              }
+            ]
+          }
+        },
+        "service_accounts_create": {
+          "computedUserset": {
+            "relation": "developer_settings_edit"
+          }
+        },
+        "service_accounts_delete": {
+          "computedUserset": {
+            "relation": "developer_settings_edit"
+          }
+        },
+        "service_accounts_edit": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "developer_settings_edit"
+                }
+              }
+            ]
+          }
+        },
+        "service_accounts_list": {
+          "computedUserset": {
+            "relation": "developer_settings_access"
+          }
+        },
+        "service_accounts_update": {
+          "computedUserset": {
+            "relation": "developer_settings_edit"
+          }
+        },
+        "service_accounts_view": {
+          "computedUserset": {
+            "relation": "developer_settings_access"
+          }
+        },
+        "settings_access": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "settings_edit"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "manager"
+                }
+              }
+            ]
+          }
+        },
+        "settings_edit": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "admin"
+                }
+              }
+            ]
+          }
+        },
+        "settings_payouts_access": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "settings_payouts_edit"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "settings_access"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "accountant"
+                }
+              }
+            ]
+          }
+        },
+        "settings_payouts_bank-accounts_create": {
+          "computedUserset": {
+            "relation": "settings_payouts_edit"
+          }
+        },
+        "settings_payouts_bank-accounts_delete": {
+          "computedUserset": {
+            "relation": "settings_payouts_edit"
+          }
+        },
+        "settings_payouts_bank-accounts_list": {
+          "computedUserset": {
+            "relation": "settings_payouts_access"
+          }
+        },
+        "settings_payouts_bank-accounts_update": {
+          "computedUserset": {
+            "relation": "settings_payouts_edit"
+          }
+        },
+        "settings_payouts_edit": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "settings_edit"
+                }
+              }
+            ]
+          }
+        },
+        "settings_payouts_reports_get": {
+          "computedUserset": {
+            "relation": "settings_payouts_access"
+          }
+        },
+        "settings_payouts_reports_update": {
+          "computedUserset": {
+            "relation": "settings_payouts_edit"
+          }
+        },
+        "shopping-cart_cart-discount_add": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "admin"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "manager"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "accountant"
+                }
+              }
+            ]
+          }
+        },
+        "shopping-cart_item-discount_add": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "admin"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "manager"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "accountant"
+                }
+              }
+            ]
+          }
+        },
+        "stats-reports_access": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "admin"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "accountant"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "manager"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "full_transaction_history_view"
+                }
+              }
+            ]
+          }
+        },
+        "stats-reports_own_access": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "stats-reports_access"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "employee"
+                }
+              }
+            ]
+          }
+        },
+        "subscriptions_list": {
+          "computedUserset": {
+            "relation": "admin"
+          }
+        },
+        "sumup_go_payments_process": {
+          "computedUserset": {
+            "relation": "member"
+          }
+        },
+        "sumup_go_terminals_add": {
+          "computedUserset": {
+            "relation": "sumup_go_payments_process"
+          }
+        },
+        "sumup_go_terminals_list": {
+          "computedUserset": {
+            "relation": "sumup_go_payments_process"
+          }
+        },
+        "sumup_go_terminals_remove": {
+          "computedUserset": {
+            "relation": "sumup_go_payments_process"
+          }
+        },
+        "sumup_go_terminals_update": {
+          "computedUserset": {
+            "relation": "sumup_go_payments_process"
+          }
+        },
+        "taxes_access": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "taxes_edit"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "employee"
+                }
+              }
+            ]
+          }
+        },
+        "taxes_config_access": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "taxes_config_edit"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "taxes_access"
+                }
+              }
+            ]
+          }
+        },
+        "taxes_config_edit": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "taxes_edit"
+                }
+              }
+            ]
+          }
+        },
+        "taxes_configs_read": {
+          "computedUserset": {
+            "relation": "taxes_config_access"
+          }
+        },
+        "taxes_configs_update": {
+          "computedUserset": {
+            "relation": "taxes_config_edit"
+          }
+        },
+        "taxes_edit": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "admin"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "manager"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "accountant"
+                }
+              }
+            ]
+          }
+        },
+        "taxes_rates_access": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "taxes_rates_edit"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "taxes_access"
+                }
+              }
+            ]
+          }
+        },
+        "taxes_rates_create": {
+          "computedUserset": {
+            "relation": "taxes_rates_edit"
+          }
+        },
+        "taxes_rates_delete": {
+          "computedUserset": {
+            "relation": "taxes_rates_edit"
+          }
+        },
+        "taxes_rates_edit": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "taxes_edit"
+                }
+              }
+            ]
+          }
+        },
+        "taxes_rates_read": {
+          "computedUserset": {
+            "relation": "taxes_rates_access"
+          }
+        },
+        "taxes_rates_update": {
+          "computedUserset": {
+            "relation": "taxes_rates_edit"
+          }
+        },
+        "taxes_rates_upsert": {
+          "computedUserset": {
+            "relation": "taxes_rates_edit"
+          }
+        },
+        "ui_settings_access": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "ui_settings_edit"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "employee"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "manager"
+                }
+              }
+            ]
+          }
+        },
+        "ui_settings_edit": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "admin"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "accountant"
+                }
+              }
+            ]
+          }
+        },
+        "verification_file_collection_update": {
+          "computedUserset": {
+            "relation": "admin"
+          }
+        },
+        "verification_file_collections_list": {
+          "computedUserset": {
+            "relation": "admin"
+          }
+        },
+        "verification_file_upload": {
+          "computedUserset": {
+            "relation": "admin"
+          }
+        },
+        "verification_intents_list": {
+          "computedUserset": {
+            "relation": "admin"
+          }
+        }
+      },
+      "metadata": {
+        "relations": {
+          "accountant": {
+            "directly_related_user_types": [
+              {
+                "type": "user"
+              }
+            ]
+          },
+          "accounting_account-transactions_view": {},
+          "accounting_balance-sheet_view": {},
+          "accounting_bank-accounts_connect": {},
+          "accounting_bank-accounts_create": {},
+          "accounting_bank-accounts_delete": {},
+          "accounting_bank-accounts_disconnect": {},
+          "accounting_bank-accounts_list": {},
+          "accounting_bank-accounts_update": {},
+          "accounting_bank-accounts_view": {},
+          "accounting_customer-balances_view": {},
+          "accounting_dashboard-graph_view": {},
+          "accounting_documents-overview_view": {},
+          "accounting_expenses-chart_view": {},
+          "accounting_expenses_attachments_create": {},
+          "accounting_expenses_attachments_delete": {},
+          "accounting_expenses_attachments_list": {},
+          "accounting_expenses_attachments_update": {},
+          "accounting_expenses_attachments_view": {},
+          "accounting_expenses_audits_list": {},
+          "accounting_expenses_audits_view": {},
+          "accounting_expenses_categories_create": {},
+          "accounting_expenses_categories_delete": {},
+          "accounting_expenses_categories_list": {},
+          "accounting_expenses_categories_update": {},
+          "accounting_expenses_create": {},
+          "accounting_expenses_delete": {},
+          "accounting_expenses_export": {},
+          "accounting_expenses_list": {},
+          "accounting_expenses_send": {},
+          "accounting_expenses_share": {},
+          "accounting_expenses_update": {},
+          "accounting_expenses_view": {},
+          "accounting_income_create": {},
+          "accounting_income_delete": {},
+          "accounting_income_export": {},
+          "accounting_income_list": {},
+          "accounting_income_send": {},
+          "accounting_income_share": {},
+          "accounting_income_update": {},
+          "accounting_income_view": {},
+          "accounting_integrations_access": {},
+          "accounting_integrations_create": {},
+          "accounting_integrations_delete": {},
+          "accounting_integrations_update": {},
+          "accounting_integrations_view": {},
+          "accounting_payment-accounts_create": {},
+          "accounting_payment-accounts_delete": {},
+          "accounting_payment-accounts_list": {},
+          "accounting_payment-accounts_update": {},
+          "accounting_payment-accounts_view": {},
+          "accounting_payments_create": {},
+          "accounting_payments_delete": {},
+          "accounting_payments_list": {},
+          "accounting_payments_reconcile": {},
+          "accounting_payments_update": {},
+          "accounting_payments_view": {},
+          "accounting_profit-and-loss_view": {},
+          "accounting_purchases-graph_view": {},
+          "accounting_suppliers_create": {},
+          "accounting_suppliers_delete": {},
+          "accounting_suppliers_export": {},
+          "accounting_suppliers_list": {},
+          "accounting_suppliers_update": {},
+          "accounting_suppliers_view": {},
+          "accounting_vat_report_submit": {},
+          "accounting_vat_view": {},
+          "admin": {
+            "directly_related_user_types": [
+              {
+                "type": "user"
+              }
+            ]
+          },
+          "affiliate_keys_access": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "affiliate_keys_create": {},
+          "affiliate_keys_delete": {},
+          "affiliate_keys_edit": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "affiliate_keys_list": {},
+          "affiliate_keys_update": {},
+          "affiliate_keys_view": {},
+          "api_keys_access": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "api_keys_create": {},
+          "api_keys_delete": {},
+          "api_keys_edit": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "api_keys_list": {},
+          "api_keys_update": {},
+          "api_keys_view": {},
+          "apps_access": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "apps_create": {},
+          "apps_credentials_create": {},
+          "apps_credentials_delete": {},
+          "apps_credentials_list": {},
+          "apps_credentials_update": {},
+          "apps_credentials_view": {},
+          "apps_delete": {},
+          "apps_edit": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "apps_list": {},
+          "apps_update": {},
+          "apps_view": {},
+          "bank_account_create": {},
+          "bank_account_list": {},
+          "bank_bank-profile_create": {},
+          "basic_discount_access": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "basic_discount_create": {},
+          "basic_discount_delete": {},
+          "basic_discount_edit": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "basic_discount_get": {},
+          "basic_discount_list": {},
+          "bookings_access": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "bookings_appointments_create": {},
+          "bookings_appointments_list": {},
+          "bookings_appointments_update": {},
+          "bookings_appointments_view": {},
+          "bookings_banners_list": {},
+          "bookings_banners_update": {},
+          "bookings_calendar-integrations_create": {},
+          "bookings_calendar-integrations_delete": {},
+          "bookings_calendar-integrations_update": {},
+          "bookings_calendar-integrations_view": {},
+          "bookings_calendars_create": {},
+          "bookings_calendars_delete": {},
+          "bookings_calendars_list": {},
+          "bookings_calendars_update": {},
+          "bookings_calendars_view": {},
+          "bookings_customers_update": {},
+          "bookings_edit": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "bookings_merchants_create": {},
+          "bookings_merchants_delete": {},
+          "bookings_merchants_update": {},
+          "bookings_merchants_view": {},
+          "bookings_pages_list": {},
+          "bookings_pages_update": {},
+          "bookings_reports_view": {},
+          "bookings_setup-guides_delete": {},
+          "bookings_setup-guides_list": {},
+          "bookings_setup-guides_update": {},
+          "bookings_time-blocks_create": {},
+          "bookings_time-blocks_delete": {},
+          "bookings_time-blocks_update": {},
+          "bookings_time-blocks_view": {},
+          "catalog_access": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "catalog_categories_access": {},
+          "catalog_categories_create": {},
+          "catalog_categories_delete": {},
+          "catalog_categories_edit": {},
+          "catalog_categories_read": {},
+          "catalog_categories_update": {},
+          "catalog_categories_upsert": {},
+          "catalog_deposits_access": {},
+          "catalog_deposits_create": {},
+          "catalog_deposits_delete": {},
+          "catalog_deposits_edit": {},
+          "catalog_deposits_read": {},
+          "catalog_deposits_update": {},
+          "catalog_deposits_upsert": {},
+          "catalog_edit": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "catalog_inventory_access": {},
+          "catalog_inventory_all_read": {},
+          "catalog_inventory_edit": {},
+          "catalog_items_access": {},
+          "catalog_items_create": {},
+          "catalog_items_delete": {},
+          "catalog_items_edit": {},
+          "catalog_items_read": {},
+          "catalog_items_update": {},
+          "catalog_items_upsert": {},
+          "catalog_modifiers_access": {},
+          "catalog_modifiers_create": {},
+          "catalog_modifiers_delete": {},
+          "catalog_modifiers_edit": {},
+          "catalog_modifiers_read": {},
+          "catalog_modifiers_update": {},
+          "catalog_modifiers_upsert": {},
+          "catalog_offline_all_read": {},
+          "catalog_options_access": {},
+          "catalog_options_create": {},
+          "catalog_options_delete": {},
+          "catalog_options_edit": {},
+          "catalog_options_read": {},
+          "catalog_options_update": {},
+          "catalog_options_upsert": {},
+          "catalog_preset-discount_access": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "catalog_preset-discount_create": {},
+          "catalog_preset-discount_edit": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "catalog_preset-discount_read": {},
+          "collection_list": {},
+          "coupons_access": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "coupons_create": {},
+          "coupons_delete": {},
+          "coupons_edit": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "coupons_get": {},
+          "coupons_list": {},
+          "coupons_verify": {},
+          "create_moto_payments": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "create_referral": {},
+          "customers_read": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "customers_write": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "developer_settings_access": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "developer_settings_edit": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "employee": {
+            "directly_related_user_types": [
+              {
+                "type": "user"
+              }
+            ]
+          },
+          "expenses_access": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "expenses_attachments_create": {},
+          "expenses_attachments_delete": {},
+          "expenses_attachments_list": {},
+          "expenses_attachments_update": {},
+          "expenses_attachments_view": {},
+          "expenses_audits_list": {},
+          "expenses_audits_view": {},
+          "expenses_budgets_create": {},
+          "expenses_budgets_delete": {},
+          "expenses_budgets_list": {},
+          "expenses_budgets_update": {},
+          "expenses_budgets_view": {},
+          "expenses_categories_create": {},
+          "expenses_categories_delete": {},
+          "expenses_categories_list": {},
+          "expenses_categories_update": {},
+          "expenses_categories_view": {},
+          "expenses_create": {},
+          "expenses_delete": {},
+          "expenses_edit": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "expenses_export": {},
+          "expenses_import": {},
+          "expenses_integrations_admin": {},
+          "expenses_list": {},
+          "expenses_settings_access": {},
+          "expenses_settings_edit": {},
+          "expenses_suppliers_create": {},
+          "expenses_suppliers_delete": {},
+          "expenses_suppliers_list": {},
+          "expenses_suppliers_update": {},
+          "expenses_suppliers_view": {},
+          "expenses_track": {},
+          "expenses_update": {},
+          "expenses_view": {},
+          "full_transaction_history_view": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "gift-cards_access": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "gift-cards_create": {},
+          "gift-cards_edit": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "gift-cards_reports": {},
+          "gift-cards_settings": {},
+          "gift-cards_view": {},
+          "gift-cards_view_code": {},
+          "iam_access": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "iam_edit": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "inventory_all_read": {},
+          "invoices_attachments_create": {},
+          "invoices_attachments_delete": {},
+          "invoices_attachments_list": {},
+          "invoices_attachments_update": {},
+          "invoices_attachments_view": {},
+          "invoices_creditnotes_create": {},
+          "invoices_creditnotes_delete": {},
+          "invoices_creditnotes_export": {},
+          "invoices_creditnotes_list": {},
+          "invoices_creditnotes_send": {},
+          "invoices_creditnotes_share": {},
+          "invoices_creditnotes_update": {},
+          "invoices_creditnotes_view": {},
+          "invoices_customers_create": {},
+          "invoices_customers_delete": {},
+          "invoices_customers_export": {},
+          "invoices_customers_list": {},
+          "invoices_customers_update": {},
+          "invoices_customers_view": {},
+          "invoices_deliverynotes_create": {},
+          "invoices_deliverynotes_delete": {},
+          "invoices_deliverynotes_export": {},
+          "invoices_deliverynotes_list": {},
+          "invoices_deliverynotes_send": {},
+          "invoices_deliverynotes_share": {},
+          "invoices_deliverynotes_update": {},
+          "invoices_deliverynotes_view": {},
+          "invoices_documents_edit": {},
+          "invoices_documents_export": {},
+          "invoices_documents_match": {},
+          "invoices_documents_send": {},
+          "invoices_invoices_create": {},
+          "invoices_invoices_delete": {},
+          "invoices_invoices_export": {},
+          "invoices_invoices_list": {},
+          "invoices_invoices_send": {},
+          "invoices_invoices_share": {},
+          "invoices_invoices_update": {},
+          "invoices_invoices_view": {},
+          "invoices_items_create": {},
+          "invoices_items_delete": {},
+          "invoices_items_export": {},
+          "invoices_items_list": {},
+          "invoices_items_update": {},
+          "invoices_items_view": {},
+          "invoices_payment_methods_edit": {},
+          "invoices_quotes_create": {},
+          "invoices_quotes_delete": {},
+          "invoices_quotes_export": {},
+          "invoices_quotes_list": {},
+          "invoices_quotes_send": {},
+          "invoices_quotes_share": {},
+          "invoices_quotes_update": {},
+          "invoices_quotes_view": {},
+          "invoices_settings_update": {},
+          "invoices_settings_view": {},
+          "invoices_templates_edit": {},
+          "invoicing_access": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "invoicing_edit": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "kds_operation": {},
+          "kiosk_operation": {},
+          "links_access": {},
+          "links_edit": {},
+          "loyalty-autopilot_edit": {},
+          "loyalty-campaigns_create": {},
+          "loyalty-campaigns_delete": {},
+          "loyalty-campaigns_update": {},
+          "loyalty-clients_create": {},
+          "loyalty-dashboard_view": {},
+          "loyalty-members_create": {},
+          "loyalty-members_definition_edit": {},
+          "loyalty-members_edit": {},
+          "loyalty-members_tag_assignment_create": {},
+          "loyalty-profile_update": {},
+          "loyalty-program_create": {},
+          "loyalty-rewards_create": {},
+          "loyalty-rewards_delete": {},
+          "loyalty_access": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "loyalty_edit": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "loyalty_offer_access": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "loyalty_offer_create": {},
+          "loyalty_offer_delete": {},
+          "loyalty_offer_edit": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "loyalty_offer_get": {},
+          "loyalty_offer_list": {},
+          "manager": {
+            "directly_related_user_types": [
+              {
+                "type": "user"
+              }
+            ]
+          },
+          "member": {
+            "directly_related_user_types": [
+              {
+                "type": "user"
+              }
+            ]
+          },
+          "members_access": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "members_create": {},
+          "members_delegate": {},
+          "members_delete": {},
+          "members_edit": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "members_list": {},
+          "members_update": {},
+          "members_view": {},
+          "merchant_read": {},
+          "merchant_write": {},
+          "offers_access": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "offers_create": {},
+          "offers_delete": {},
+          "offers_edit": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "offers_get": {},
+          "offers_list": {},
+          "online-store_access": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "online-store_catalog_importer_exporter_access": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "online-store_catalog_importer_exporter_create": {},
+          "online-store_catalog_importer_exporter_edit": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "online-store_catalog_importer_exporter_get": {},
+          "online-store_catalog_importer_exporter_list": {},
+          "online-store_catalog_importer_exporter_update": {},
+          "online-store_customers_access": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "online-store_customers_create": {},
+          "online-store_customers_edit": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "online-store_customers_list": {},
+          "online-store_edit": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "online-store_exporter_access": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "online-store_exporter_list": {},
+          "online-store_promotions_access": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "online-store_promotions_create": {},
+          "online-store_promotions_delete": {},
+          "online-store_promotions_edit": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "online-store_promotions_get": {},
+          "online-store_promotions_list": {},
+          "online-store_promotions_update": {},
+          "online-store_reports_access": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "online-store_reports_views_by_device_get": {},
+          "online-store_reports_visitors_get": {},
+          "online-store_sales_access": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "online-store_sales_edit": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "online-store_sales_get": {},
+          "online-store_sales_list": {},
+          "online-store_sales_update": {},
+          "online-store_se_access": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "online-store_se_campaign_bulk_delete": {},
+          "online-store_se_campaign_bulk_update": {},
+          "online-store_se_campaign_create": {},
+          "online-store_se_campaign_delete": {},
+          "online-store_se_campaign_get": {},
+          "online-store_se_campaign_get_campaign_available": {},
+          "online-store_se_campaign_list": {},
+          "online-store_se_campaign_put": {},
+          "online-store_se_edit": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "online-store_shippings_access": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "online-store_shippings_create": {},
+          "online-store_shippings_delete": {},
+          "online-store_shippings_edit": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "online-store_shippings_get": {},
+          "online-store_shippings_list": {},
+          "online-store_shippings_update": {},
+          "orderandpay_product_management": {},
+          "owner": {
+            "directly_related_user_types": [
+              {
+                "type": "user"
+              }
+            ]
+          },
+          "parent": {
+            "directly_related_user_types": [
+              {
+                "type": "organization"
+              }
+            ]
+          },
+          "payment-links_access": {},
+          "payment-links_create": {},
+          "payment-links_edit": {},
+          "payment-links_view": {},
+          "payouts_payouts_list": {},
+          "persons_read": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "pos-cashmgt_access": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "pos-cashmgt_drawer_open": {},
+          "pos-cashmgt_edit": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "pos-cashmgt_events_create": {},
+          "pos-cashmgt_movements_create": {},
+          "pos-cashmgt_movements_get": {},
+          "pos-cashmgt_my-movements_get": {},
+          "pos-cashmgt_state_get": {},
+          "pos-cashmgt_virtualdrawers_create": {},
+          "pos-cashmgt_virtualdrawers_list": {},
+          "pos-cashmgt_virtualdrawers_update": {},
+          "pos-fiscalisation_access": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "pos-fiscalisation_edit": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "pos-fiscalisation_german-tse_create": {},
+          "pos-fiscalisation_german-tse_get": {},
+          "pos-fiscalisation_tse_create": {},
+          "pos-fiscalisation_tse_get": {},
+          "pos-sales-period_access": {},
+          "pos-sales-period_periods_create": {},
+          "pos-sales-period_periods_get": {},
+          "pos-sales-period_periods_update": {},
+          "pos-sales-period_state_get": {},
+          "pos-settings_access": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "pos-settings_cash-payment_update": {},
+          "pos-settings_cashmgt_update": {},
+          "pos-settings_edit": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "pos-settings_payment-methods-cash_get": {},
+          "pos-settings_paymentmethod_update": {},
+          "pos-settings_pos-pin-access_update": {},
+          "pos-settings_sales-period_update": {},
+          "pos-tablemgt_access": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "pos-tablemgt_edit": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "pos-tablemgt_layout_edit": {},
+          "pos-tablemgt_layout_read": {},
+          "pos_access": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "pos_edit": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "pos_oms_access": {},
+          "pos_oms_device_prefix_get": {},
+          "pos_oms_edit": {},
+          "promotions_access": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "promotions_create": {},
+          "promotions_delete": {},
+          "promotions_edit": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "promotions_get": {},
+          "promotions_list": {},
+          "readers_access": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "readers_checkout_create": {},
+          "readers_create": {},
+          "readers_delete": {},
+          "readers_edit": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "readers_list": {},
+          "readers_update": {},
+          "readers_view": {},
+          "receipts_access": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "receipts_automatic-receipts_create": {},
+          "receipts_automatic-receipts_delete": {},
+          "receipts_automatic-receipts_get": {},
+          "receipts_edit": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "receipts_payment-receipts_create": {},
+          "receipts_payment-receipts_get": {},
+          "receipts_sale-receipts_create": {},
+          "receipts_sale-receipts_get": {},
+          "refund_transactions": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "reporting_fee-invoice_get": {},
+          "reporting_fiscal-report_get": {},
+          "reporting_italian-tax-report_get": {},
+          "reporting_items-report_get": {},
+          "reporting_latam-tax-report_get": {},
+          "reporting_my-cashmgt-report_get": {},
+          "reporting_my-items-report_get": {},
+          "reporting_my-reports_list": {},
+          "reporting_my-revenue-report_get": {},
+          "reporting_my-sales-report_get": {},
+          "reporting_my-sales-summary_get": {},
+          "reporting_my-transactions-report_get": {},
+          "reporting_payout-payments-report_get": {},
+          "reporting_payout-report_get": {},
+          "reporting_receivable-balance_get": {},
+          "reporting_reports_list": {},
+          "reporting_revenue-report_get": {},
+          "reporting_sales-report_get": {},
+          "reporting_sales-summary_get": {},
+          "reporting_transactions-report_get": {},
+          "reports_access": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "reports_own_access": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "roles_access": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "roles_create": {},
+          "roles_delete": {},
+          "roles_edit": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "roles_list": {},
+          "roles_update": {},
+          "roles_view": {},
+          "sales_access": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "sales_edit": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "sales_my-sale-details_get": {},
+          "sales_my-sale_list": {},
+          "sales_refund_create": {},
+          "sales_sale-details_get": {},
+          "sales_sale_create": {},
+          "sales_sale_list": {},
+          "service_accounts_access": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "service_accounts_create": {},
+          "service_accounts_delete": {},
+          "service_accounts_edit": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "service_accounts_list": {},
+          "service_accounts_update": {},
+          "service_accounts_view": {},
+          "settings_access": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "settings_edit": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "settings_payouts_access": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "settings_payouts_bank-accounts_create": {},
+          "settings_payouts_bank-accounts_delete": {},
+          "settings_payouts_bank-accounts_list": {},
+          "settings_payouts_bank-accounts_update": {},
+          "settings_payouts_edit": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "settings_payouts_reports_get": {},
+          "settings_payouts_reports_update": {},
+          "shopping-cart_cart-discount_add": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "shopping-cart_item-discount_add": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "stats-reports_access": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "stats-reports_own_access": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "subscriptions_list": {},
+          "sumup_go_payments_process": {},
+          "sumup_go_terminals_add": {},
+          "sumup_go_terminals_list": {},
+          "sumup_go_terminals_remove": {},
+          "sumup_go_terminals_update": {},
+          "taxes_access": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "taxes_config_access": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "taxes_config_edit": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "taxes_configs_read": {},
+          "taxes_configs_update": {},
+          "taxes_edit": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "taxes_rates_access": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "taxes_rates_create": {},
+          "taxes_rates_delete": {},
+          "taxes_rates_edit": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "taxes_rates_read": {},
+          "taxes_rates_update": {},
+          "taxes_rates_upsert": {},
+          "ui_settings_access": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "ui_settings_edit": {
+            "directly_related_user_types": [
+              {
+                "type": "role",
+                "relation": "assignee"
+              }
+            ]
+          },
+          "verification_file_collection_update": {},
+          "verification_file_collections_list": {},
+          "verification_file_upload": {},
+          "verification_intents_list": {}
+        }
+      }
+    },
+    {
+      "type": "organization",
+      "relations": {
+        "admin": {
+          "union": {
+            "child": [
+              {
+                "this": {}
+              },
+              {
+                "computedUserset": {
+                  "relation": "owner"
+                }
+              }
+            ]
+          }
+        },
+        "member": {
+          "this": {}
+        },
+        "owner": {
+          "this": {}
+        },
+        "user_in_context": {
+          "this": {}
+        }
+      },
+      "metadata": {
+        "relations": {
+          "admin": {
+            "directly_related_user_types": [
+              {
+                "type": "user"
+              }
+            ]
+          },
+          "member": {
+            "directly_related_user_types": [
+              {
+                "type": "user"
+              }
+            ]
+          },
+          "owner": {
+            "directly_related_user_types": [
+              {
+                "type": "user"
+              }
+            ]
+          },
+          "user_in_context": {
+            "directly_related_user_types": [
+              {
+                "type": "user"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "type": "role",
+      "relations": {
+        "assignee": {
+          "this": {}
+        }
+      },
+      "metadata": {
+        "relations": {
+          "assignee": {
+            "directly_related_user_types": [
+              {
+                "type": "user"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "type": "user",
+      "relations": {
+        "impersonate": {
+          "this": {}
+        },
+        "owner": {
+          "union": {
+            "child": [
+              {
+                "computedUserset": {
+                  "relation": "owner_organization"
+                }
+              },
+              {
+                "computedUserset": {
+                  "relation": "owner_merchant"
+                }
+              }
+            ]
+          }
+        },
+        "owner_merchant": {
+          "this": {}
+        },
+        "owner_organization": {
+          "this": {}
+        }
+      },
+      "metadata": {
+        "relations": {
+          "impersonate": {
+            "directly_related_user_types": [
+              {
+                "type": "client"
+              }
+            ]
+          },
+          "owner": {},
+          "owner_merchant": {
+            "directly_related_user_types": [
+              {
+                "type": "merchant"
+              }
+            ]
+          },
+          "owner_organization": {
+            "directly_related_user_types": [
+              {
+                "type": "organization"
+              }
+            ]
+          }
+        }
+      }
+    }
+  ]
+}
