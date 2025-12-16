@@ -46,12 +46,17 @@ To look up the identifier of a transaction for a payment checkout you have alrea
 
 Following is a sample request for retrieving a checkout:
 
-<Tabs>
+<Tabs syncKey="backend_lang">
   <TabItem label="cURL" icon="seti:powershell">
     ```bash
     curl -X GET \
       https://api.sumup.com/v0.1/checkouts/4ebc2ed7-bb8c-4d4d-a110-08fd31301bf2 \
       -H "Authorization: Bearer $SUMUP_API_KEY"
+    ```
+  </TabItem>
+  <TabItem label="Node.js" icon="seti:javascript">
+    ```ts
+    const checkout = await client.checkouts.get("4ebc2ed7-bb8c-4d4d-a110-08fd31301bf2");
     ```
   </TabItem>
   <TabItem label="Go" icon="seti:go">
@@ -60,6 +65,19 @@ Following is a sample request for retrieving a checkout:
     client := sumup.NewClient().WithAuth(os.Getenv("SUMUP_API_KEY"))
 
     checkout, err := client.Checkouts.Get(ctx, "4ebc2ed7-bb8c-4d4d-a110-08fd31301bf2")
+    ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+    ```py
+    checkout = client.checkouts.get("4ebc2ed7-bb8c-4d4d-a110-08fd31301bf2")
+    ```
+  </TabItem>
+  <TabItem label="Rust" icon="seti:rust">
+    ```rust
+    let checkout = client
+        .checkouts()
+        .get("4ebc2ed7-bb8c-4d4d-a110-08fd31301bf2")
+        .await?;
     ```
   </TabItem>
   <TabItem label="PHP" icon="seti:php">
@@ -102,12 +120,17 @@ To make a full refund for a processed transaction, make a POST request with an e
 
 Following is a sample request for making a full refund for the transaction with identifier `664200af-2b62-4142-9c73-a2a505310d78`:
 
-<Tabs>
+<Tabs syncKey="backend_lang">
   <TabItem label="cURL" icon="seti:powershell">
     ```bash
     curl -X POST \
       https://api.sumup.com/v0.1/me/refund/19aa3cca-89f6-42d2-b462-463b0b53e959 \
       -H "Authorization: Bearer $SUMUP_API_KEY"
+    ```
+  </TabItem>
+  <TabItem label="Node.js" icon="seti:javascript">
+    ```ts
+    await client.transactions.refund("19aa3cca-89f6-42d2-b462-463b0b53e959");
     ```
   </TabItem>
   <TabItem label="Go" icon="seti:go">
@@ -116,6 +139,24 @@ Following is a sample request for making a full refund for the transaction with 
     client := sumup.NewClient().WithAuth(os.Getenv("SUMUP_API_KEY"))
 
     _, err := client.Transactions.Refund(ctx, "19aa3cca-89f6-42d2-b462-463b0b53e959", sumup.RefundTransactionBody{})
+    ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+    ```py
+    from sumup.transactions.resource import RefundTransactionBody
+
+    client.transactions.refund(
+        "19aa3cca-89f6-42d2-b462-463b0b53e959",
+        RefundTransactionBody(),
+    )
+    ```
+  </TabItem>
+  <TabItem label="Rust" icon="seti:rust">
+    ```rust
+    client
+        .transactions()
+        .refund("19aa3cca-89f6-42d2-b462-463b0b53e959", None)
+        .await?;
     ```
   </TabItem>
   <TabItem label="PHP" icon="seti:php">
@@ -136,7 +177,7 @@ Unlike the option for a full refund, the request body for partial refunds should
 
 Following is a sample request for making a partial refund for the amount of 24.42 EUR:
 
-<Tabs>
+<Tabs syncKey="backend_lang">
   <TabItem label="cURL" icon="seti:powershell">
     ```bash
     curl -X POST \
@@ -146,20 +187,50 @@ Following is a sample request for making a partial refund for the amount of 24.4
       -d '{"amount": 24.42}'
     ```
   </TabItem>
+  <TabItem label="Node.js" icon="seti:javascript">
+    ```ts
+    await client.transactions.refund("19aa3cca-89f6-42d2-b462-463b0b53e959", {
+      amount: 24.42,
+    });
+    ```
+  </TabItem>
   <TabItem label="Go" icon="seti:go">
     ```go
     ctx := context.Background()
     client := sumup.NewClient().WithAuth(os.Getenv("SUMUP_API_KEY"))
 
-    amount := 12.24
-    client.Transactions.Refund(ctx, "sa", sumup.RefundTransactionBody{
+    amount := 24.42
+    client.Transactions.Refund(ctx, "19aa3cca-89f6-42d2-b462-463b0b53e959", sumup.RefundTransactionBody{
     	Amount: &amount,
     })
     ```
   </TabItem>
+  <TabItem label="Python" icon="seti:python">
+    ```py
+    from sumup.transactions.resource import RefundTransactionBody
+
+    client.transactions.refund(
+        "19aa3cca-89f6-42d2-b462-463b0b53e959",
+        RefundTransactionBody(amount=24.42),
+    )
+    ```
+  </TabItem>
+  <TabItem label="Rust" icon="seti:rust">
+    ```rust
+    use sumup::resources::transactions::RefundTransactionBody;
+
+    client
+        .transactions()
+        .refund(
+            "19aa3cca-89f6-42d2-b462-463b0b53e959",
+            Some(RefundTransactionBody { amount: Some(24.42) }),
+        )
+        .await?;
+    ```
+  </TabItem>
   <TabItem label="PHP" icon="seti:php">
     ```php
-    $transactionsService = $sumup->getCheckoutService();
+    $transactionsService = $sumup->getTransactionService();
     $response = $transactionsService->refund('19aa3cca-89f6-42d2-b462-463b0b53e959', 24.42);
     ```
   </TabItem>

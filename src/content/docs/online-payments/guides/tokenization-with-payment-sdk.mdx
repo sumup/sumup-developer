@@ -5,7 +5,7 @@ sidebar:
   order: 200
 ---
 
-import { Aside } from "@astrojs/starlight/components";
+import { Aside, Tabs, TabItem } from '@astrojs/starlight/components';
 import Image from '@components/content/Image.astro';
 
 ## About Card Tokenization
@@ -36,6 +36,8 @@ It contains personal information such as their name, contact details, postal add
 
 To create a new customer resource, make a POST request to the `https://api.sumup.com/v0.1/customers` endpoint:
 
+<Tabs syncKey="backend_lang">
+  <TabItem label="cURL" icon="seti:powershell">
 ```bash
 curl -X POST \
   https://api.sumup.com/v0.1/customers \
@@ -60,6 +62,128 @@ curl -X POST \
   }
 }'
 ```
+</TabItem>
+  <TabItem label="Node.js" icon="seti:javascript">
+    ```ts
+    const customer = await client.customers.create({
+      customer_id: "MYCUSTOMERID-123",
+      personal_details: {
+        first_name: "Jeffrey",
+        last_name: "Lebowski",
+        email: "thedude@example.com",
+        phone: "+1 310-555-1234",
+        birth_date: "1949-11-11",
+        address: {
+          city: "Venice",
+          state: "California",
+          country: "US",
+          line_1: "606 Venezia Ave",
+          line_2: "Front",
+          postal_code: "90291",
+        },
+      },
+    });
+    ```
+  </TabItem>
+  <TabItem label="Go" icon="seti:go">
+    ```go
+    str := func(v string) *string { return &v }
+
+    customer, err := client.Customers.Create(ctx, sumup.CreateCustomerBody{
+    	CustomerId: "MYCUSTOMERID-123",
+    	PersonalDetails: &shared.PersonalDetails{
+    		FirstName: str("Jeffrey"),
+    		LastName:  str("Lebowski"),
+    		Email:     str("thedude@example.com"),
+    		Phone:     str("+1 310-555-1234"),
+    		Address: &shared.AddressLegacy{
+    			City:       str("Venice"),
+    			State:      str("California"),
+    			Country:    str("US"),
+    			Line1:      str("606 Venezia Ave"),
+    			Line2:      str("Front"),
+    			PostalCode: str("90291"),
+    		},
+    	},
+    })
+    ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+    ```py
+    from sumup.customers.resource import CreateCustomerBody
+    from sumup.customers.types import AddressLegacy, PersonalDetails
+
+    customer = client.customers.create(
+        CreateCustomerBody(
+            customer_id="MYCUSTOMERID-123",
+            personal_details=PersonalDetails(
+                first_name="Jeffrey",
+                last_name="Lebowski",
+                email="thedude@example.com",
+                phone="+1 310-555-1234",
+                birth_date="1949-11-11",
+                address=AddressLegacy(
+                    city="Venice",
+                    state="California",
+                    country="US",
+                    line_1="606 Venezia Ave",
+                    line_2="Front",
+                    postal_code="90291",
+                ),
+            ),
+        )
+    )
+    ```
+  </TabItem>
+  <TabItem label="Rust" icon="seti:rust">
+  ```rust
+    let customer = client
+        .customers()
+        .create(sumup::resources::customers::Customer {
+            customer_id: "MYCUSTOMERID-123".into(),
+            personal_details: Some(sumup::resources::common::PersonalDetails {
+                first_name: Some("Jeffrey".into()),
+                last_name: Some("Lebowski".into()),
+                email: Some("thedude@example.com".into()),
+                phone: Some("+1 310-555-1234".into()),
+                birth_date: None,
+                tax_id: None,
+                address: Some(sumup::resources::common::AddressLegacy {
+                    city: Some("Venice".into()),
+                    state: Some("California".into()),
+                    country: Some("US".into()),
+                    line_1: Some("606 Venezia Ave".into()),
+                    line_2: Some("Front".into()),
+                    postal_code: Some("90291".into()),
+                }),
+            }),
+        })
+        .await?;
+    ```
+  </TabItem>
+  <TabItem label="PHP" icon="seti:php">
+    ```php
+    $customersService = $sumup->getCustomerService();
+    $response = $customersService->create(
+        'MYCUSTOMERID-123',
+        [
+            'first_name' => 'Jeffrey',
+            'last_name' => 'Lebowski',
+            'email' => 'thedude@example.com',
+            'phone' => '+1 310-555-1234',
+        ],
+        [
+            'city' => 'Venice',
+            'state' => 'California',
+            'country' => 'US',
+            'line1' => '606 Venezia Ave',
+            'line2' => 'Front',
+            'postalCode' => '90291',
+        ]
+    );
+    ```
+  </TabItem>
+</Tabs>
 
 You should expect a standard `201 Created` response, with the customer details you passed. For more details see the [create a customer](/api/customers/create) endpoint. Having created the customer, we can now proceed to making a payment
 
@@ -74,21 +198,111 @@ To create a new checkout resource, make a POST request to the `https://api.sumup
 
 Example of such request:
 
-```bash
-curl -X POST \
-  https://api.sumup.com/v0.1/checkouts \
-  -H "Authorization: Bearer $SUMUP_API_KEY" \
-  -H 'Content-Type: application/json' \
-  -d '{
-        "checkout_reference": "MYCHECKOUT",
-        "amount": 1,
-        "currency": "EUR",
-        "merchant_code": "MDEERENR",
-        "description": "My checkout",
-        "customer_id": "MYCUSTOMERID-123",
-        "purpose": "SETUP_RECURRING_PAYMENT"
-      }'
-```
+<Tabs syncKey="backend_lang">
+  <TabItem label="cURL" icon="seti:powershell">
+    ```bash
+    curl -X POST \
+      https://api.sumup.com/v0.1/checkouts \
+      -H "Authorization: Bearer $SUMUP_API_KEY" \
+      -H 'Content-Type: application/json' \
+      -d '{
+            "checkout_reference": "MYCHECKOUT",
+            "amount": 1,
+            "currency": "EUR",
+            "merchant_code": "MDEERENR",
+            "description": "My checkout",
+            "customer_id": "MYCUSTOMERID-123",
+            "purpose": "SETUP_RECURRING_PAYMENT"
+          }'
+    ```
+  </TabItem>
+  <TabItem label="Node.js" icon="seti:javascript">
+    ```ts
+    const checkout = await client.checkouts.create({
+      checkout_reference: "MYCHECKOUT",
+      amount: 1,
+      currency: "EUR",
+      merchant_code: "MDEERENR",
+      description: "My checkout",
+      customer_id: "MYCUSTOMERID-123",
+      purpose: "SETUP_RECURRING_PAYMENT",
+    });
+    ```
+  </TabItem>
+  <TabItem label="Go" icon="seti:go">
+    ```go
+    customerID := "MYCUSTOMERID-123"
+    purpose := sumup.CreateCheckoutBodyPurposeSetupRecurringPayment
+    description := "My checkout"
+
+    checkout, err := client.Checkouts.Create(ctx, sumup.CreateCheckoutBody{
+    	CheckoutReference: "MYCHECKOUT",
+    	Amount:            1,
+    	Currency:          shared.CurrencyEUR,
+    	MerchantCode:      "MDEERENR",
+    	Description:       &description,
+    	CustomerId:        &customerID,
+    	Purpose:           &purpose,
+    })
+    ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+    ```py
+    from sumup.checkouts.resource import CreateCheckoutBody
+
+    checkout = client.checkouts.create(
+        CreateCheckoutBody(
+            checkout_reference="MYCHECKOUT",
+            amount=1,
+            currency="EUR",
+            merchant_code="MDEERENR",
+            description="My checkout",
+            customer_id="MYCUSTOMERID-123",
+            purpose="SETUP_RECURRING_PAYMENT",
+        )
+    )
+    ```
+  </TabItem>
+  <TabItem label="Rust" icon="seti:rust">
+    ```rust
+    let checkout = client
+        .checkouts()
+        .create(Some(sumup::resources::checkouts::CheckoutCreateRequest {
+            checkout_reference: "MYCHECKOUT".into(),
+            amount: 1.0,
+            currency: sumup::resources::checkouts::Currency::EUR,
+            merchant_code: "MDEERENR".into(),
+            description: Some("My checkout".into()),
+            customer_id: Some("MYCUSTOMERID-123".into()),
+            purpose: Some("SETUP_RECURRING_PAYMENT".into()),
+            id: None,
+            status: None,
+            date: None,
+            valid_until: None,
+            transactions: None,
+            return_url: None,
+            redirect_url: None,
+        }))
+        .await?;
+    ```
+  </TabItem>
+  <TabItem label="PHP" icon="seti:php">
+    ```php
+    $payload = [
+        'checkout_reference' => 'MYCHECKOUT',
+        'amount' => 1,
+        'currency' => 'EUR',
+        'merchant_code' => 'MDEERENR',
+        'description' => 'My checkout',
+        'customer_id' => 'MYCUSTOMERID-123',
+        'purpose' => 'SETUP_RECURRING_PAYMENT',
+    ];
+
+    $customService = $sumup->getCustomService();
+    $response = $customService->request('POST', '/v0.1/checkouts', $payload);
+    ```
+  </TabItem>
+</Tabs>
 
 You should expect a standard `201 Created` response, with the checkout reference and both merchant and customer information.
 
@@ -156,12 +370,45 @@ If the previous operation is successful, and the card is stored with the **Save 
 At any time, you can fetch the list of tokenized cards of a customer by
 requesting them via [the list payment instruments](/api/customers/list-payment-instruments) endpoint.
 
-```bash
-curl -X GET \
-  "https://api.sumup.com/v0.1/customers/${CUSTOMER_ID}/payment-instruments" \
-  -H "Authorization: Bearer $SUMUP_API_KEY" \
-  -H "Content-Type: application/json;charset=UTF-8"
-```
+<Tabs syncKey="backend_lang">
+  <TabItem label="cURL" icon="seti:powershell">
+    ```bash
+    curl -X GET \
+      "https://api.sumup.com/v0.1/customers/${CUSTOMER_ID}/payment-instruments" \
+      -H "Authorization: Bearer $SUMUP_API_KEY" \
+      -H "Content-Type: application/json;charset=UTF-8"
+    ```
+  </TabItem>
+  <TabItem label="Node.js" icon="seti:javascript">
+    ```ts
+    const instruments = await client.customers.listPaymentInstruments("MYCUSTOMERID-123");
+    ```
+  </TabItem>
+  <TabItem label="Go" icon="seti:go">
+    ```go
+    instruments, err := client.Customers.ListPaymentInstruments(ctx, "MYCUSTOMERID-123")
+    ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+    ```py
+    instruments = client.customers.list_payment_instruments("MYCUSTOMERID-123")
+    ```
+  </TabItem>
+  <TabItem label="Rust" icon="seti:rust">
+    ```rust
+    let instruments = client
+        .customers()
+        .list_payment_instruments("MYCUSTOMERID-123")
+        .await?;
+    ```
+  </TabItem>
+  <TabItem label="PHP" icon="seti:php">
+    ```php
+    $customersService = $sumup->getCustomerService();
+    $response = $customersService->getPaymentInstruments('MYCUSTOMERID-123');
+    ```
+  </TabItem>
+</Tabs>
 
 ## Processing Request Directly
 
