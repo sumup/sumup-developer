@@ -20,31 +20,26 @@ const { operation } = Astro.props;
   options={[
     {
       label: "cURL",
-      value: "curl",
       code: curl(operation),
       lang: "bash",
     },
     {
       label: "Node.js",
-      value: "node",
       code: node(operation),
       lang: "ts",
     },
     {
       label: "Python",
-      value: "python",
       code: python(operation),
       lang: "python",
     },
     {
       label: "Go",
-      value: "go",
       code: go(operation),
       lang: "go",
     },
     {
       label: "Rust",
-      value: "rust",
       code: rust(operation),
       lang: "rust",
     },
@@ -58,23 +53,18 @@ const { operation } = Astro.props;
       options={[
         {
           label: "cURL",
-          value: "curl",
         },
         {
           label: "Node.js",
-          value: "node",
         },
         {
           label: "Python",
-          value: "python",
         },
         {
           label: "Go",
-          value: "go",
         },
         {
           label: "Rust",
-          value: "rust",
         },
       ]}
     />

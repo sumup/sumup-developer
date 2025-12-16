@@ -3,12 +3,12 @@ import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
 import ApiDocs from "@components/ApiDocs/ApiDocs.astro";
 import type { StarlightPageProps } from "@astrojs/starlight/props";
 import { formatSlug } from "@lib/helpers";
-import { doc, pathsByTag } from "@lib/openapi";
+import { doc, orderedTagEntries, pathsByTag } from "@lib/openapi";
 import type { StarlightUserConfig } from "@astrojs/starlight/types";
 
 // list of resources that are expanded by default
 const mainResources = ["Checkouts", "Customers"];
-const downrankedResources = ["Merchant", "Subaccounts"];
+const tagEntries = orderedTagEntries();
 
 export async function getStaticPaths() {
   return [
@@ -54,37 +54,29 @@ const sidebar: StarlightUserConfig["sidebar"] = [
           "data-scroll-to": "authentication",
         },
       },
-      ...Object.entries(pathsByTag)
-        .map(([tagName, operations]) => {
-          const tag = doc.tags.find((t) => formatSlug(t.name) === tagName)!;
-          return {
-            label: tag.name,
-            collapsed: !mainResources.includes(tag.name),
-            items: [
-              {
-                label: "Overview",
-                link: `/api/${formatSlug(tag.name)}`,
-                attrs: {
-                  "data-scroll-to": `${formatSlug(tag.name)}`,
-                },
+      ...tagEntries.map(([tagName, operations]) => {
+        const tag = doc.tags.find((t) => formatSlug(t.name) === tagName)!;
+        return {
+          label: tag.name,
+          collapsed: !mainResources.includes(tag.name),
+          items: [
+            {
+              label: "Overview",
+              link: `/api/${formatSlug(tag.name)}`,
+              attrs: {
+                "data-scroll-to": `${formatSlug(tag.name)}`,
               },
-              ...operations.map((op) => ({
-                label: op.summary!,
-                link: `/api/${formatSlug(tag.name)}/${formatSlug(op.slug)}`,
-                attrs: {
-                  "data-scroll-to": `${formatSlug(tag.name)}-${op.slug}`,
-                },
-              })),
-            ],
-          };
-        })
-        .sort((a, b) => {
-          const aIsDownranked = downrankedResources.includes(a.label);
-          const bIsDownranked = downrankedResources.includes(b.label);
-          if (aIsDownranked && !bIsDownranked) return 1;
-          if (!aIsDownranked && bIsDownranked) return -1;
-          return 0;
-        }),
+            },
+            ...operations.map((op) => ({
+              label: op.summary!,
+              link: `/api/${formatSlug(tag.name)}/${formatSlug(op.slug)}`,
+              attrs: {
+                "data-scroll-to": `${formatSlug(tag.name)}-${op.slug}`,
+              },
+            })),
+          ],
+        };
+      }),
     ],
   },
 ];

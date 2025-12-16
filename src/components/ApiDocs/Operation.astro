@@ -5,7 +5,10 @@ import { resolveReference } from "@lib/openapi";
 import { Headline } from "@sumup-oss/circuit-ui";
 import type { HTMLAttributes } from "astro/types";
 import type { OpenAPIV3_1 } from "openapi-types";
-import type { OperationObject } from "src/types/openapi";
+import type {
+  OperationObject,
+  PermissionRequirements,
+} from "src/types/openapi";
 import InlineCode from "../Highlight/InlineCode.astro";
 import Example from "./Example.astro";
 import ExampleRequest from "./ExampleRequest.astro";
@@ -60,6 +63,19 @@ const pathParams = operation.parameters
 const queryParams = operation.parameters
   ?.filter(isParamterObject)
   .filter((p) => p.in === "query");
+
+const formatPermission = (
+  permission: PermissionRequirements[0],
+): string | undefined => {
+  if (typeof permission === "string") {
+    return permission;
+  }
+  return permission["relation"];
+};
+
+const formattedPermissions = (operation["x-permissions"] || [])
+  .map((permission) => formatPermission(permission))
+  .filter((permission): permission is string => Boolean(permission));
 ---
 
 <section id={`${operation.tagSlug}-${operation.slug}`} {...props}>
@@ -115,6 +131,16 @@ const queryParams = operation.parameters
               Required scopes:
               {operation["x-scopes"].map((scope) => (
                 <InlineCode>{scope}</InlineCode>
+              ))}
+            </div>
+          )
+        }
+        {
+          formattedPermissions.length > 0 && (
+            <div class="permissions" data-pagefind-ignore>
+              Required permissions:
+              {formattedPermissions.map((permission) => (
+                <InlineCode>{permission}</InlineCode>
               ))}
             </div>
           )
@@ -224,7 +250,8 @@ const queryParams = operation.parameters
     margin: var(--cui-spacings-giga) 0;
   }
 
-  .scopes {
+  .scopes,
+  .permissions {
     font-size: var(--cui-body-s-font-size);
     line-height: var(--cui-body-s-line-height);
   }

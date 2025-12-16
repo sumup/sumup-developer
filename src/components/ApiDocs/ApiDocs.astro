@@ -1,7 +1,7 @@
 ---
 import Markdown from "@components/Markdown.astro";
 import { formatSlug } from "@lib/helpers";
-import { doc, pathsByTag } from "@lib/openapi";
+import { doc, orderedTagEntries } from "@lib/openapi";
 import { Anchor, Card, Body, Button } from "@sumup-oss/circuit-ui";
 import LRGrid from "./LRGrid.astro";
 import SDKList from "./SDKList";
@@ -20,6 +20,7 @@ export interface Props {
 }
 
 const { target } = Astro.props;
+const tagEntries = orderedTagEntries();
 ---
 
 <article data-selected-operation={target}>
@@ -110,23 +111,18 @@ const { target } = Astro.props;
                 options={[
                   {
                     label: "Node.js",
-                    value: "node",
                   },
                   {
                     label: "Go",
-                    value: "go",
                   },
                   {
                     label: "Python",
-                    value: "python",
                   },
                   {
-                    label: "Php",
-                    value: "php",
+                    label: "PHP",
                   },
                   {
                     label: "Rust",
-                    value: "rust",
                   },
                 ]}
               />
@@ -180,7 +176,6 @@ const { target } = Astro.props;
             options={[
               {
                 label: "Node.js",
-                value: "node",
                 code: `import { SumUp } from '@sumup/sdk';
 
 const sumup = new SumUp({ apiKey: 'sup_sk_MvxmLOl0...' });`,
@@ -188,7 +183,6 @@ const sumup = new SumUp({ apiKey: 'sup_sk_MvxmLOl0...' });`,
               },
               {
                 label: "Go",
-                value: "go",
                 code: `package main
 
 import (
@@ -203,21 +197,18 @@ func main() {
               },
               {
                 label: "Python",
-                value: "python",
                 code: `from sumup import Sumup
 
 client = SumUp(api_key="sup_sk_MvxmLOl0...")`,
                 lang: "python",
               },
               {
-                label: "Php",
-                value: "php",
+                label: "PHP",
                 code: "composer require sumup/sumup-ecom-php-sdk",
                 lang: "php",
               },
               {
                 label: "Rust",
-                value: "rust",
                 code: `use sumup::Client;
 
 let client = Client::default().with_authorization("sup_sk_MvxmLOl0...");`,
@@ -233,23 +224,18 @@ let client = Client::default().with_authorization("sup_sk_MvxmLOl0...");`,
                 options={[
                   {
                     label: "Node.js",
-                    value: "node",
                   },
                   {
                     label: "Go",
-                    value: "go",
                   },
                   {
                     label: "Python",
-                    value: "python",
                   },
                   {
-                    label: "Php",
-                    value: "php",
+                    label: "PHP",
                   },
                   {
                     label: "Rust",
-                    value: "rust",
                   },
                 ]}
               />
@@ -260,7 +246,7 @@ let client = Client::default().with_authorization("sup_sk_MvxmLOl0...");`,
       </LRGrid>
     </section>
     {
-      Object.entries(pathsByTag).map(([tag, operations]) => (
+      tagEntries.map(([tag, operations]) => (
         <TagSection
           tag={
             // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain

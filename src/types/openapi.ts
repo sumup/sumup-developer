@@ -16,10 +16,20 @@ export type Document = Modify<
   }
 >;
 
+export type PermissionRequirements = (
+  | string
+  | {
+      relation: string;
+      object_type: string;
+      object_id_param: string;
+    }
+)[];
+
 export type OperationObject = Modify<
   OpenAPIV3_1.OperationObject<{
     "x-beta"?: boolean;
     "x-scopes"?: string[];
+    "x-permissions"?: PermissionRequirements;
     "x-codegen"?: {
       method_name: string;
     };
