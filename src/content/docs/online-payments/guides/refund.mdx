@@ -18,7 +18,7 @@ In this guide, you will learn how to refund a transaction for a payment you have
 
 When you complete these steps, the payment you have previously processed through SumUp will be refunded either partially or in full.
 
-## Before you begin
+## Before You Begin
 
 Here are the things that you need in order to complete the steps in this guide:
 
@@ -36,7 +36,7 @@ Transactions are associated with active merchant user accounts. As a result, you
 
 ## Steps
 
-### 1. Look up a transaction ID
+### 1. Look up a Transaction Id
 
 <Aside type="note">
 If you already have the ID of the transaction you want to refund, you can skip this step and continue with [Step 2](#2-refund-a-transaction).
@@ -107,14 +107,14 @@ The response contains a JSON body with the full details of the processed checkou
 }
 ```
 
-### 2. Refund a transaction
+### 2. Refund a Transaction
 
 You can use one the two available options for refunding a processed transaction:
 
 - [Option A: Make a full refund](#option-a-make-a-full-refund)
 - [Option B: Make a partial refund](#option-b-make-a-partial-refund)
 
-#### Option A: Make a full refund
+#### Make a Full Refund
 
 To make a full refund for a processed transaction, make a POST request with an empty request body to the `https://api.sumup.com/v0.1/me/refund/{txn_id}` endpoint, where the value of the `{txn_id}` path parameter is the identifier of the transaction resource.
 
@@ -169,7 +169,7 @@ Following is a sample request for making a full refund for the transaction with 
 
 The response returns a 204 HTTP status code and contains no body.
 
-#### Option B: Make a partial refund
+#### Make a Partial Refund
 
 To make a partial refund for a processed transaction, make a POST request to the `https://api.sumup.com/v0.1/me/refund/{txn_id}` endpoint, where the value of the `{txn_id}` path parameter is the identifier of the transaction resource.
 

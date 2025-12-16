@@ -10,7 +10,7 @@ import { Aside } from '@astrojs/starlight/components';
 
 Webhooks are a convenient approach to notify an application about relevant events that have taken place within another application.
 
-The event is similar to one in real-life, where you’re awaiting your favorite item to restock in a shop and ask a representative to notify you once it’s back. In this scenario, SumUp plays the role of the shop, the representative is the [SumUp APIs](/api) and the update seeker is your application.
+The event is similar to one in real-life, where you’re awaiting your favourite item to restock in a shop and ask a representative to notify you once it’s back. In this scenario, SumUp plays the role of the shop, the representative is the [SumUp APIs](/api) and the update seeker is your application.
 
 ## Events
 
@@ -18,7 +18,7 @@ At this time our system only allows you to get notified about a status change fo
 
 New events may be introduced at any time, without prior notice. Your application has to be able to cope with such. Our recommendation would be to silently ignore unknown events.
 
-## Handling a webhook
+## Handling a Webhook
 
 Webhooks are delivered in the form of a HTTP POST request, to which your application should reply to as soon as possible. If the response takes longer, our system accepts this as a failed notification and retries it.
 

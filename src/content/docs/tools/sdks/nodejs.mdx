@@ -11,13 +11,13 @@ links:
     href: https://sumup.github.io/sumup-ts/
 ---
 
-The [`@sumup/sdk`](https://github.com/sumup/sumup-ts) package wraps every public SumUp API, ships TypeScript declarations, and works in modern Node.js runtimes (>=18) as well as Cloudflare Workers, Vercel, and other ESM-friendly environments.
+The [`@sumup/sdk`](https://github.com/sumup/sumup-ts) package wraps SumUp API, ships TypeScript declarations, and works in modern Node.js runtimes (>=18) as well as Cloudflare Workers, Vercel, and other ESM-friendly environments.
 
 ## Installation
 
 Install with `npm install @sumup/sdk` (or `yarn add` / `pnpm add`).
 
-## Configure authentication
+## Configure Authentication
 
 The client reads the `SUMUP_API_KEY` environment variable automatically, so deploying with `SUMUP_API_KEY=sup_sk_MvxmLOl0...` is enough for most server workloads. You can also pass the secret explicitly:
 
@@ -29,7 +29,7 @@ If you use OAuth, exchange the authorization code for an access token and pass i
 
 ## Examples
 
-### Online payment checkout
+### Online Payment Checkout
 
 ```ts
 import SumUp from "@sumup/sdk";
@@ -56,7 +56,7 @@ createOnlineCheckout().catch((error) => {
 });
 ```
 
-### Solo Cloud API checkout
+### Solo Cloud API Checkout
 
 ```ts
 import SumUp from "@sumup/sdk";

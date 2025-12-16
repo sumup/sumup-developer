@@ -32,7 +32,7 @@ The final deadline for implementing the SCA requirements was 31 December 2020.
 
 Each of these elements must be independent from each other, to ensure the security of others is not compromised in the event of a security breach.
 
-## How it works
+## How It Works
 
 For the flow to be followed, both the merchant profile and the customer credit card issuer must support 3-D Secure.
 
@@ -107,6 +107,6 @@ One approach for accomplishing the end user redirection is through a form:
 </script>
 ```
 
-Once the form is submitted, the end user will be redirected to their issuer’s bank authentication screen, where the end-user must provide an additional authentication (e.g. a challenge token, SMS or other data). After submitting, SumUp completes the payment and the end user is redirected to the `redirect_url` appointed at the checkout creation, through a `GET` request with the corresponding `checkout_id` query parameter.
+Once the form is submitted, the end user will be redirected to their issuer’s bank authentication screen, where the end-user must provide an additional authentication (e.g. a challenge token, SMS, or other data). After submitting, SumUp completes the payment and the end user is redirected to the `redirect_url` appointed at the checkout creation, through a `GET` request with the corresponding `checkout_id` query parameter.
 
 To confirm a checkout's status, make a `GET` request to the [retrieve a checkout](/api/checkouts/get) endpoint.

@@ -31,7 +31,7 @@ For pages that have a strict Content Security Policy (CSP) visit the [Handling C
 Please note, that Swift Checkout SDK is in Alpha version, expect changes to be communicated in the future. For any feedbacks or questions, you can reach out to us through our [contact form](/contact).
 </Aside>
 
-## SumUp Swift Checkout SDK setup
+## SumUp Swift Checkout SDK Setup
 
 Include the SDK.js in your page as shown below:
 
@@ -61,11 +61,11 @@ function injectScript() {
 
 Once the script is loaded, a new SumUp object is injected into the window instance representing SumUp SDK namespace, which contains the SwiftCheckout client.
 
-## Obtaining a public API key
+## Obtaining a Public API Key
 
 To obtain a public API key navigate to your [Developer Settings Portal](https://developer.sumup.com/auth/login) and select **API keys** from the top right corner menu. Your public merchant key will be automatically generated with a `Private` label and a value such as `sup_pk_0x98lsJhJAs...u5kvg`.
 
-## SumUp Swift Checkout client
+## SumUp Swift Checkout Client
 
 ```javascript
 const swiftCheckoutClient = new window.SumUp.SwiftCheckout('sup_pk_0x98lsJhJAs...u5kvg');
@@ -73,7 +73,7 @@ const swiftCheckoutClient = new window.SumUp.SwiftCheckout('sup_pk_0x98lsJhJAs..
 
 The client contains a set of objects to render a payment element UI, request payment authorization and process a payment using SumUp’s API.
 
-### Payment request object
+### Payment Request Object
 
 The payment request object requests payment authorizations made with various payment methods. It requires an argument that contains a set of details, information about the requested transaction to be processed, that will be presented to the user to authorize the payment later.
 
@@ -116,7 +116,7 @@ This object is an analogue to the [PaymentRequest - Web APIs](https://developer.
 
 The payment request instance contains the logic related to **checking payment method availability and showing** the payment method dialogue once the user interacts with a **payment element**.
 
-### Payment request interface
+### Payment Request Interface
 
 All methods in the payment request object are asynchronous. Listed below are the payment request methods and their usage:
 
@@ -224,7 +224,7 @@ paymentRequest.onShippingOptionsChange(async (selectedShippingOption) => {
 });
 ```
 
-### Payment element builder
+### Payment Element Builder
 
 In order to request a payment, you need to create a UI element. The SDK provides a built-in PaymentElement UI builder, which allows you to create and configure the payment buttons.
 
@@ -250,7 +250,7 @@ buttons
 You can create your own custom buttons, but we recommend using the built-in PaymentElement UI builder.
 </Aside>
 
-#### Rendering buttons for available payment methods
+#### Rendering Buttons for Available Payment Methods
 
 Once the UI and Payment Request are configured, you have to check the availability of Swift payment methods and `mount` them into the page.
 
@@ -277,7 +277,7 @@ paymentRequest.canMakePayment().then((isAvailable) => {
 });
 ```
 
-### Requesting payment authorization
+### Requesting Payment Authorization
 
 The authorization dialogue is where the user will review the payment requested, select a payment card and a shipping address. Finally, they can authorize the payment request to be **processed**.
 
@@ -293,7 +293,7 @@ buttons.onSubmit((paymentMethodEvent) => {
 
 To understand more about the PaymentResponse objects see Mozilla's official [PaymentResponse - Web APIs](https://developer.mozilla.org/en-US/docs/Web/API/PaymentResponse) documentation.
 
-### Processing an authorized payment request
+### Processing an Authorized Payment Request
 
 To process a payment, the SumUp API requires you to create a checkout for a given amount. The checkout creation requires an authenticated request. Thus, we recommend implementing an endpoint on your backend that will authenticate with our API, create a checkout and return a `checkoutId`.
 
@@ -313,7 +313,7 @@ paymentRequest
   .catch(console.error);
 ```
 
-### The complete implementation
+### The Complete Implementation
 
 ```js
 const swiftCheckoutClient = new window.SumUp.SwiftCheckout(
@@ -384,7 +384,7 @@ paymentRequest.canMakePayment().then((isAvailable) => {
 });
 ```
 
-## Error handling
+## Error Handling
 
 The Swift Checkout SDK returns a series of Errors depending on the event that has taken place. You can use the errors to customise the user experience and communicate error causes as you see fit.
 
@@ -426,7 +426,7 @@ Apple’s documentation for Apple Pay on the Web describes their process of “m
 - Adhere to the [Google Pay requirements](https://developers.google.com/pay/api/web/guides/setup#get-started)
 - Review [Google Pay API terms of service](https://payments.developers.google.com/terms/sellertos)
 
-### Google Pay specific parameters
+### Google Pay Specific Parameters
 
 Google Pay’s base payment request object requires a few unique parameters:
 
@@ -452,9 +452,9 @@ Google Pay’s base payment request object requires a few unique parameters:
   });
   ```
 
-### Validating your domain with Google Pay
+### Validating Your Domain with Google Pay
 
-In order to use Google Pay you need to validate your domain with Google. This process requires rendering a non-functional Google Pay button on your website and providing them with screenshots of your checkout flow.
+In order to use Google Pay you need to validate your domain with Google. This process requires rendering a nonfunctional Google Pay button on your website and providing them with screenshots of your checkout flow.
 
 To render a Google Pay button on your shop in demo mode, you need to add the `#sumup:google-pay-demo-mode` hash to the page's URL.
 

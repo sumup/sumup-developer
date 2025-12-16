@@ -16,7 +16,7 @@ links:
 
 Install with `pip install sumup`. If you use [uv](https://docs.astral.sh/uv/), run `uv add sumup`.
 
-## Configure authentication
+## Configure Authentication
 
 Expose your secret API key or OAuth access token as an environment variable and pass it to either the synchronous `Sumup` or asynchronous `AsyncSumup` client. You can also pass the key manually:
 
@@ -26,7 +26,7 @@ client = Sumup(api_key="sup_sk_MvxmLOl0...")
 
 ## Examples
 
-### Online payment checkout
+### Online Payment Checkout
 
 ```py
 import os
@@ -50,7 +50,7 @@ print(checkout.id)
 # Return checkout.id to your webpage so the SumUp card widget can complete the payment.
 ```
 
-### Solo Cloud API checkout
+### Solo Cloud API Checkout
 
 ```py
 import asyncio

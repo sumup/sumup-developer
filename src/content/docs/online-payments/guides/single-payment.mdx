@@ -16,7 +16,7 @@ You will go through the following steps:
 
 When you complete these steps, you will have processed a payment with a payment card entered by a customer.
 
-## Before you begin
+## Before You Begin
 
 Here are the things that you need in order to complete the steps in this guide:
 
@@ -33,7 +33,7 @@ You can create and complete a payment checkout for any valid SumUp merchant user
 
 ## Steps
 
-### 1. Create a checkout
+### 1. Create a Checkout
 
 To create a new checkout resource, make a POST request to the `https://api.sumup.com/v0.1/checkouts` endpoint.
 
@@ -154,7 +154,7 @@ The resource identifier is returned in the `id` attribute, or `f14425c6-8bc1-4d0
 }
 ```
 
-### 2. Complete a checkout
+### 2. Complete a Checkout
 
 To complete the checkout and trigger the payment, make a PUT request to the `https://api.sumup.com/v0.1/checkouts/{id}` endpoint, where the value of the `{id}` path parameter is the identifier of the checkout resource.
 

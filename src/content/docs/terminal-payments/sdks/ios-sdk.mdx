@@ -37,7 +37,7 @@ The { iossdkname } includes a [Sample App](https://github.com/sumup/sumup-ios-sd
 * iPhone or iPad.
 * If your device is managed by an organization, make sure app installation is permitted.
 
-## Getting a test account
+## Getting a Test Account
 
 To start testing SumUp APIs and tools without involving real money, you need to have a test account. You can create a test account from your account in the Dashboard as shown below.
 
@@ -102,7 +102,7 @@ For further information, see the iOS Developer Library on [location usage on iOS
 
 </Aside>
 
-## Fast-track Implementation
+## Fast-Track Implementation
 
 If you want to dive straight into implementation, carry out the following steps:
 
@@ -349,7 +349,7 @@ SumUp can issue Access Tokens in accordance with the OAuth 2.0 Authorization Cod
 
 If you want to use the View Controller embedded in the SDK, this section explains how to do it. Please note that OAuth 2.0 Authorization Code Flow is supported and recommended, and the View Controller may become deprecated in the future.
 
-#### Logging the user in
+#### Logging the User In
 
 Following app authentication, a registered SumUp merchant account needs to be logged in. Present a login screen from your UIViewController:
 
@@ -400,7 +400,7 @@ private func presentLogin() {
 
 </Tabs>
 
-#### Logging the user out
+#### Logging the User Out
 
 Similarly, you can log the user out.
 
@@ -1128,7 +1128,7 @@ fileprivate func requestCheckout() {
 </Tabs>
 
 
-### Credit/debit selection (processAs property)
+### Credit/Debit Selection (processAs Property)
 
 Some countries require the customer to select Credit or Debit at the beginning of the checkout.
 This is because a payment card may contain multiple applications linked with different accounts, making it necessary for the customer to specify which application should be used to process the transaction.
@@ -1145,7 +1145,7 @@ To tell if the current country requires `processAs` to be set to a value other t
 If needed, your app should set the `processAs` property of `SMPCheckoutRequest` to `SMPProcessAsCredit` or `SMPProcessAsDebit` after showing its own UI that prompts the customer to select Credit or Debit.
 
 SDK 6.0 and earlier presented two screens during the checkout that prompted the user to select Credit or Debit, and if Credit, to also choose the number of installments.
-This functionality is now deprecated. However, it is still available if you need more time to migrate your app to use the above programmatic method. To keep the old behavior, set `processAs` to `SMPProcessAsPromptUser`.
+This functionality is now deprecated. However, it is still available if you need more time to migrate your app to use the above programmatic method. To keep the old behaviour, set `processAs` to `SMPProcessAsPromptUser`.
 
 #### Installments
 
@@ -1168,7 +1168,7 @@ In your code:
 * Trigger activation if needed. Activation sets up the iPhone to receive payments, shows the merchant how to use the feature, and links the SumUp account and Apple ID.
 * Start the checkout.
 
-#### Check feature availability
+#### Check Feature Availability
 
 * Call `checkTapToPayAvailability` on `SMPSumUpSDK` to check the availability of the Tap to Pay on iPhone payment method. This call, which requires the SDK to be in a logged-in state, may internally perform one or more network calls.
 * If the feature is not available, your app could, as an example, hide or disable a button or menu item representing the Tap to Pay on iPhone payment method. 
@@ -1176,7 +1176,7 @@ In your code:
     * the iPhone model and iOS version requirements are met 
     * the user logs in with a SumUp account registered in one of the countries where SumUp supports Tap to Pay on iPhone (temporarily with exception of Brazil) 
 
-#### Perform activation if needed
+#### Perform Activation If Needed
 
 * Activation must be completed before the first transaction can be performed. Activation means:
     * the merchant links their Apple ID with their SumUp account
@@ -1400,7 +1400,7 @@ SumUpSDK.checkTapToPayAvailability { isAvailable, isActivated, error in
 </Tabs>
 
 
-### Testing your Integration
+### Testing Your Integration
 
 In your debug setup you can call `+[SMPSumUpSDK testSDKIntegration]` or `SumUpSDK.testIntegration()` in Swift.
 It will run various checks and print its findings to the console.

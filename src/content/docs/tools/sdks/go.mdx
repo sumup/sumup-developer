@@ -16,7 +16,7 @@ links:
 
 Install the module with `go get github.com/sumup/sumup-go` (or `go install` for reproducible builds).
 
-## Configure authentication
+## Configure Authentication
 
 Create a secret API key or OAuth access token in the [developer dashboard](https://me.sumup.com/developers). The SDK reads `SUMUP_API_KEY` by default, so setting `SUMUP_API_KEY=sup_sk_MvxmLOl0...` before running your binary is enough. You can also pass the key explicitly:
 
@@ -26,7 +26,7 @@ client := sumup.NewClient().WithAuth("sup_sk_MvxmLOl0...")
 
 ## Examples
 
-### Online payment checkout
+### Online Payment Checkout
 
 ```go
 package main
@@ -64,7 +64,7 @@ func main() {
 }
 ```
 
-### Solo Cloud API checkout
+### Solo Cloud API Checkout
 
 ```go
 package main

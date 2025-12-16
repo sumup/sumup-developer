@@ -10,13 +10,13 @@ links:
     href: https://docs.rs/sumup/latest/sumup/
 ---
 
-[`sumup-rs`](https://github.com/sumup/sumup-rs) is the official crate published as [`sumup`](https://crates.io/crates/sumup). It covers all public APIs, supports async/await, and exposes helpers for card-present and eCom workflows.
+[`sumup-rs`](https://github.com/sumup/sumup-rs) is the official crate published as [`sumup`](https://crates.io/crates/sumup). It covers all public APIs, supports async/await, and exposes helpers for card-present and e-commerce workflows.
 
 ## Installation
 
 Install the crate with `cargo add sumup` (enable the `jiff` feature if you prefer alternative datetime handling).
 
-## Configure authentication
+## Configure Authentication
 
 Set the `SUMUP_API_KEY` environment variable (or provide an OAuth token) and pass it to `Client::builder().with_api_key`. You can also inject the key directly:
 
@@ -28,7 +28,7 @@ let client = Client::builder()
 
 ## Examples
 
-### Online payment checkout
+### Online Payment Checkout
 
 ```rs
 use sumup::{resources::checkouts::CheckoutCreateRequest, Client, Currency};
@@ -65,7 +65,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 }
 ```
 
-### Solo Cloud API checkout
+### Solo Cloud API Checkout
 
 ```rs
 use std::{

@@ -17,7 +17,7 @@ SumUp's React Native Payment SDK provides a payment sheet that is displayed on t
 
 ## Integration
 
-### Before you begin
+### Before You Begin
 
 Here are the things that you need in order to complete the steps in this guide:
 - You have a merchant account with [SumUp](https://me.sumup.com/login) and have already filled in your [account details](https://me.sumup.com/account).
@@ -27,7 +27,7 @@ Here are the things that you need in order to complete the steps in this guide:
 - The restricted `payment_instruments` scope is enabled for your client application. If it isn't enabled, [contact us](/contact) and request it.
 - Review how to create a single payment [here](https://developer.sumup.com/online-payments/guides/single-payment/#before-you-begin).
 
-### Create a checkout 
+### Create a Checkout 
 
 Initializing the SDK works by passing it a `checkout_id`. To [create a checkout](/api/checkouts/create) on your backend make the following request:
 
@@ -211,7 +211,7 @@ export default function App() {
 }
 ```
 
-## Provide payment details 
+## Provide Payment Details 
 
 Before showing the payment sheet, it needs to be initialized. Call `initPaymentSheet` with the parameters like in example below:
 
@@ -289,7 +289,7 @@ After initialization a payment sheet can be shown. When a user presses a button,
 
 ## Optional Integrations
 
-### Save a card for future usage
+### Save a Card for Future Usage
 
 To save a card for future usage, a customer should be created. It can be achieved by making the following request:
 
@@ -455,7 +455,7 @@ await initPaymentSheet({
 
 ### Use Google Pay
 
-To use Google Pay, first enable the Google Pay API by adding the following to the `application` tag of your AndroidManifest.xml:
+To use Google Pay, first enable the Google Pay API by adding the following to the `application` tag of your `AndroidManifest.xml`:
 
 ```bash
 <application>

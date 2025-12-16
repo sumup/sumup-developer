@@ -9,7 +9,7 @@ Once an API call is submitted to SumUp, you will receive a response informing yo
 
 Returned codes in the `2xx` range indicate success. Returned codes in the `4xx` range indicate errors where the information provided results in a failure. Returned codes in the `5xx` range are rare and indicate server-side errors.
 
-## Successful requests
+## Successful Requests
 
 Successfully processed requests return one of the following HTTP status codes: `200 OK`, `201 Created`, `202 Accepted`, `204 No Content`. Depending on the use case response bodies may not be present at all. A response body can look like this:
 
@@ -28,7 +28,7 @@ Successfully processed requests return one of the following HTTP status codes: `
 }
 ```
 
-## Client-side issues
+## Client-Side Issues
 
 `4xx` are occasions where you can take action to correct your application requests. Typically, these codes are returned upon user error, such as invalid API calls, incorrect values, missing parameters, etc. The response you receive will provide an indication to the root cause that triggered it. Here's an example of a `4xx` response:
 
@@ -40,6 +40,6 @@ Successfully processed requests return one of the following HTTP status codes: `
 }
 ```
 
-## Server-side issues
+## Server-Side Issues
 
 `5xx` stand for server errors. Although rare, if you receive such code, we recommend retrying your request. Should the returned codes continue to be in the `5xx` range, [reach out to us](/contact).

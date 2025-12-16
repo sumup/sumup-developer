@@ -38,7 +38,7 @@ The customer chooses one of the payment methods from the returned values, which 
 
 The currently available payment method ids are: `card`, `ideal`, `bancontact`, `boleto`, `eps`, `mybank`, `satispay`, `blik`, `p24`, `pix`, `qr_code_pix`, `apple_pay`, `paypal`, `google_pay`. _name_ is just for display purposes.
 
-APMs differ from the behavior of cards. There are two possible flows, which we call `artifacts` or `redirect instructions`, explained in more detail below. APMs also require different input parameters which you need to gather from the customer. The required parameters to gather and the payment method flows are listed below:
+APMs differ from the behaviour of cards. There are two possible flows, which we call `artifacts` or `redirect instructions`, explained in more detail below. APMs also require different input parameters which you need to gather from the customer. The required parameters to gather and the payment method flows are listed below:
 
 | Payment method name | Parameters                                          | Flow     |
 | ------------------- | --------------------------------------------------- | -------- |
@@ -100,7 +100,7 @@ Now you can retrieve the final status via a GET [checkout call](/api/checkouts/g
 
 ### Payment Method Artifacts
 
-Payment method artifacts are images, pdfs etc. which the customer gets in order to pay. Currently, we have 3 payment methods which have artifacts: `boleto`, `pix` and `qr_code_pix`. Examples of the type of information to expect can be found below:
+Payment method artifacts are images, PDFs etc. which the customer gets in order to pay. Currently, we have 3 payment methods which have artifacts: `boleto`, `pix` and `qr_code_pix`. Examples of the type of information to expect can be found below:
 
 **boleto:**
 
