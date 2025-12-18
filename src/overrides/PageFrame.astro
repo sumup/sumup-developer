@@ -195,4 +195,15 @@ const { hasSidebar } = Astro.locals.starlightRoute;
     font-size: var(--cui-body-s-font-size);
     line-height: var(--cui-body-s-line-height);
   }
+
+  :global(code[dir="auto"]) {
+    display: inline-block;
+    color: var(--cui-fg-normal);
+    background-color: var(--cui-bg-subtle);
+    padding: 0 var(--cui-spacings-byte);
+    border-radius: var(--cui-border-radius-bit);
+    border: var(--cui-border-width-kilo) solid var(--cui-border-subtle);
+    font-size: 0.9em;
+    word-break: break-all;
+  }
 </style>
