@@ -23,7 +23,7 @@ We also host an [/llms.txt](/llms.txt) file which instructs AI tools and agents 
 
 [MCP](https://modelcontextprotocol.io/introduction) is an open protocol that standardizes how applications provide context to LLMs. For developers using code editors that use AI, such as Cursor or Windsurf, or general purpose tools such as Claude Desktop, we provide the [SumUp Model Context Protocol (MCP) server](https://github.com/sumup/sumup-agent-toolkit/tree/main/mcp). The MCP server provides AI agents a set of tools for calling the SumUp API and searching our knowledge base (documentation, support articles, and so on).
 
-We also provide a self hosted MCP solution for direct integration with any MCP client that offers the standard API resources in case no customization is needed: [https://mcp.sumup.com/mcp](https://mcp.sumup.com/mcp)
+SumUp runs a managed MCP server at [https://mcp.sumup.com/mcp](https://mcp.sumup.com/mcp). This MCP Server allows your MCP Client to interact with SumUp APIs to manage your account, create checkouts, or even process payments using [Cloud API](/terminal-payments/cloud-api). The server supports both the streamble HTTP[^streamable_http] transport via `/mcp` and the SSE transport (deprecated) via `/sse`.
 
 ### CLI
 
@@ -80,3 +80,5 @@ The code editor agent automatically detects all the available tools and calls th
 ## SumUp Agent Toolkit SDK
 
 If you’re building agentic software, we provide an SDK for adding SumUp functionality to your agent’s capabilities. Learn more in our [agents documentation](/tools/LLMs/agent-toolkit).
+
+[^streamable_http]: https://modelcontextprotocol.io/specification/2025-11-25/basic/transports#streamable-http
