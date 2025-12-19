@@ -7,67 +7,62 @@ sidebar:
 import { Aside } from '@astrojs/starlight/components';
 import Image from '@components/content/Image.astro';
 
+Register an OAuth application to integrate with SumUp and generate client credentials for OAuth-authenticated requests. See [OAuth2 authorization flows](/tools/authorization/authorization/) for details on obtaining access tokens for protected API resources.
 
-In order to integrate an external application with SumUp's ecosystem, you have to register an OAuth application and generate the client credentials which are used to make OAuth-authenticated requests on behalf of your application. You can see more on [OAuth2 authorization flows](/tools/authorization/authorization/), which explain how to request an _access token_ that is used to obtain permission to protected resources within SumUp's API.
-
-In this guide, you will learn how to register a client application and obtain OAuth client credentials for it. You will go through the following steps:
+This guide covers registering a client application and obtaining credentials through these steps:
 
 1.  [Log in to your account](#1-log-in-to-your-account)
 2.  [Create an OAuth application](#2-create-an-o-auth-application)
-3.  [Generate the client credentials](#3-generate-the-client-credentials)
-4.  [Access the client credentials](#4-access-the-client-credentials)
+3.  [Generate client credentials](#3-generate-client-credentials)
+4.  [Access client credentials](#4-access-client-credentials)
 
-## Before You Begin
+## Prerequisites
 
-Here are the things that you need in order to complete the steps in this guide:
-
-- You have a merchant account with [SumUp](https://me.sumup.com/login) and have already filled in your [account details](https://me.sumup.com/account).
-  - You can also create a [test account](/online-payments/#getting-a-test-account).
-- You have the following information available:
-  - Your application name.
-  - One or more redirection URIs for registering with SumUp. We will use a registered URI to redirect users to your application after authentication and to send you the authorization codes for obtaining access tokens via the [OAuth2 Authorization Code Flow](/tools/authorization/authorization/#authorization-code-flow).
+- A [SumUp merchant account](https://me.sumup.com/login) with completed [account details](https://me.sumup.com/account) (or a [test account](/online-payments/#getting-a-test-account))
+- Your application name
+- One or more redirect URIs, used to redirect users after authentication and send authorization codes via [OAuth2 Authorization Code Flow](/tools/authorization/authorization/#authorization-code-flow).
 
 ### 1. Log in to Your Account
 
-Log in to [your SumUp account](/auth/login). Once logged in, **Account** will appear in place of the **Log in** button on the top right corner of the page.
+Log in to [your SumUp account](/auth/login). Log in to your SumUp account. **Account name** (First name + last name) replaces the **Log in** button in the top-right corner.
 
 ### 2. Create an OAuth Application
 
-Navigate to the [OAuth Apps](/apps/) page. This page allows you to create and edit OAuth applications.
+1. Navigate to **Account** > **Settings** > **For Developers** > **OAuth2 Apps**. This page allows you to create and edit OAuth applications.
 
-Click on **Create application** at the bottom right of the page to define your application.
+2. Click on **Create application** to define your application.
 
-<Image alt="Create OAuth App screen" src="/img/guides/create-oauth-apps.png" width="80%" />
+    <Image alt="Create OAuth App screen" src="/img/guides/create-oauth-apps.png" width="80%" />
 
-Describe your application and provide its homepage. Click **Register application** to complete.
+    Describe your application and provide its homepage. Click **Register application** to complete.
 
-It's possible to edit the registered application details by clicking on it. The editing page allows updating the initial data and include **optional information** such as a "Logo", "Terms & Conditions" and "Privacy policy" URLs.
+    Edit details by clicking the application. Update initial data and add optional items like logo, Terms & Conditions, and Privacy Policy URLs.
 
-Additionally, it's possible to specify the scope of access to your own merchant information. Each scope includes a short description of what it would give access to if selected.
+3. Under **Scopes**, specify the authorization scopes for your app. Scopes represent the access rights of the app once consent is granted by the user.
 
-<Aside type="caution">
+    <Aside type="caution">
 
-For security reasons, SumUp manually verifies the following scope grants:
+    For security reasons, SumUp manually verifies the following scope grants:
 
-* `payments` - required to process payments.
-* `payment_instruments` - required to store customer data and tokenize cards.
+    * `payments` - required to process payments.
+    * `payment_instruments` - required to store customer data and tokenize cards.
 
-[Contact us](/contact) to request those scopes to be granted to your app.
+    [Contact us](/contact) to request those scopes to be granted to your app.
 
-SumUp does not recommend direct OAuth 2.0 integration and does not expose detailed authorization endpoint documentation for that reason.
-Please use a library that handles OAuth 2.0 protocol. We highly recommend that you use one of the [existing reputable implementations](https://openid.net/developers/certified-openid-connect-implementations/).
+    SumUp does not recommend direct OAuth 2.0 integration and does not expose detailed authorization endpoint documentation for that reason.
+    Please use a library that handles OAuth 2.0 protocol. We highly recommend that you use one of the [existing reputable implementations](https://openid.net/developers/certified-openid-connect-implementations/).
 
-</Aside>
+    </Aside>
 
-<Image alt="Edit OAuth App screen" src="/img/guides/edit-oauth-apps.png" width="80%" />
+    <Image alt="Edit OAuth App screen" src="/img/guides/edit-oauth-apps.png" width="80%" />
 
-The information provided in this section is showed to users when requesting access to their SumUp account data. To read more about how this information is presented see our [OAuth2 Authorization Code Flow](/tools/authorization/authorization/).
+    The app requests user consent to access their data in line with the scopes granted here. For detailed information, see [OAuth2 Authorization Code Flow](/tools/authorization/authorization/).
 
-### 3. Generate the Client Credentials
+### 3. Generate Client Credentials
 
-On the [OAuth Apps](/apps) page, click on a registered application. At the bottom of the page click on **Create client secret** to begin.
+On the OAuth2 Apps page, click on a registered application. Go to the **Client credentials** tab.
 
-Click on **Create client secret** and the following form will be presented.
+Click on **Create client secret** to open the following form:
 
 <Image alt="Create new OAuth App credentials form" src="/img/guides/client-credentials-form.png" width="80%" />
 
@@ -76,21 +71,21 @@ Provide the following details:
 | Name | Required | Description |
 | -----| -------- | ----------  |
 | Client name | Yes | A descriptive name for your client application. |
-| Application type | Yes | The type of your client application. You can select from the following options: Web, Android, iOS, Other |
-| Authorized redirect URL | Yes | A redirect URL that you want to register for your client application. When merchant users authenticate with SumUp and authorize your client app to access their account data, they are redirected to this path in your application. To specify more than one redirection URL for the client application, separate each URL with a comma. |
+| Application type | Yes | Type: Web, Android, iOS, or Other. |
+| Authorized redirect URL | Yes | Redirect URL for post-authentication. When merchant users authenticate with SumUp and authorize your client app to access their account data, they are redirected to this path in your application. You can add multiple URLs; separate with a comma. |
 | Authorized JavaScript Origin | No | The origin URI of your client application. SumUp allows Cross-Origin Resource Sharing (CORS) across various domains from the browser and is available for type web applications only. The value allows your client application to request resources from SumUp servers. |
 
 Click **Save** to generate the client credentials. In the **Client secrets** section, you will see an entry with the name, application type, and client ID of each generated credential.
 
 <Aside type="note">
 
-You can register as many client applications as you need. To register another credential, repeat this step.
+You can register as many client applications as needed. To register another credential, repeat this step.
 
 </Aside>
 
-### 4. Access the Client Credentials
+### 4. Access Client Credentials
 
-Once the client credentials have been created, they will be displayed in the **Client credentials** section of your OAuth application's settings (see screenshot).
+Once created, credentials appear in the **Client credentials** section of your OAuth application's settings (see screenshot).
 
 <Image alt="OAuth client credentials section" src="/img/guides/client-credentials-list.png" width="80%" />
 
@@ -120,7 +115,7 @@ Make sure to store your client secret keys securely and never reveal them public
 
 ## Result
 
-You have registered at least one client application and have generated and downloaded your OAuth client credentials for it.
+You have registered a client application and downloaded OAuth client credentials.
 
 You can now use one of the [OAuth2 authorization flows](/tools/authorization/authorization/#authorization-flows) to obtain an access token and start making payments with either a [payment card entered by a customer](/online-payments/guides/single-payment/) or with a token for a [recurring payment](/online-payments/guides/tokenization-with-payment-sdk).
 
