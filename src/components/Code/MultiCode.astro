@@ -7,11 +7,14 @@
 // https://github.com/expressive-code/expressive-code/tree/main/packages/@expressive-code/plugin-frames
 import { Code as Default } from "@astrojs/starlight/components";
 import CodeBlock from "./CodeBlock.astro";
-import CodeLangSelector from "./CodeLangSelector.astro";
+import CodeLangSelector from "./CodeLangSelector";
+import CopyButton from "./CopyButton.astro";
+import CodeBlockHeader from "./CodeBlockHeader.astro";
 
 interface Props {
   class?: string;
   name?: string;
+  title?: string;
   isLanguageSelect?: boolean;
   options: {
     label: string;
@@ -22,29 +25,32 @@ interface Props {
 }
 
 const {
-  options,
+  options = [],
   name,
+  title,
   isLanguageSelect = false,
   class: cn,
   ...props
-} = Astro.props;
+} = Astro.props as Props;
 
-const defaultOption = options[0].label;
+const resolvedTitle = title ?? name;
+const defaultOption = options[0]?.label;
+const enableSelector = isLanguageSelect && options.length > 1;
+const selectorOptions = options.map(({ label }) => ({ label }));
 ---
 
-<CodeBlock
-  class:list={[isLanguageSelect && "multi-lang", cn]}
-  withCopyButton
-  {...props}
->
-  <slot name="header" slot="header">
-    <div slot="title">
-      <slot name="title">
-        <div class="name">{name}</div>
-      </slot>
-    </div>
-    <CodeLangSelector slot="extra-options" options={options} />
-  </slot>
+<CodeBlock class:list={[isLanguageSelect && "multi-lang", cn]} {...props}>
+  <CodeBlockHeader slot="header">
+    <slot slot="left" name="left">
+      {resolvedTitle && <div class="name">{resolvedTitle}</div>}
+    </slot>
+    {
+      enableSelector && (
+        <CodeLangSelector slot="right" options={selectorOptions} client:load />
+      )
+    }
+    <CopyButton slot="right" />
+  </CodeBlockHeader>
   <div slot="code">
     {
       options.map(({ lang, code, label, meta }) => (
@@ -59,30 +65,6 @@ const defaultOption = options[0].label;
     }
   </div>
 </CodeBlock>
-
-<script>
-  import { setCurrentLanguage } from "@lib/code";
-
-  document.addEventListener("DOMContentLoaded", () => {
-    document.querySelectorAll(".langSelector")?.forEach((s) => {
-      s.addEventListener("change", (e) => {
-        const target = e.target as HTMLSelectElement;
-        setCurrentLanguage(target.value);
-      });
-    });
-
-    for (const mc of document.querySelectorAll(".codeblock")) {
-      const blocks = mc.querySelectorAll(".code");
-      mc.querySelector(".codesSelector")?.addEventListener("change", (e) => {
-        const target = e.target as HTMLSelectElement;
-        blocks.forEach((b) => b.classList.remove("active"));
-        mc.querySelector(`[data-lang="${target.value}"]`)?.classList.add(
-          "active",
-        );
-      });
-    }
-  });
-</script>
 
 <style>
   .description {

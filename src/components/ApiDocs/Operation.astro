@@ -12,12 +12,7 @@ import type {
 import InlineCode from "../Highlight/InlineCode.astro";
 import Example from "./Example.astro";
 import ExampleRequest from "./ExampleRequest.astro";
-import {
-  CodeBlock,
-  MultiCode,
-  CodeBlockHeader,
-  CopyButton,
-} from "@components/Code";
+import { CodeBlock, MultiCode } from "@components/Code";
 import LRGrid from "./LRGrid.astro";
 import Parameters from "./Parameters.astro";
 import Schema from "./Schema.astro";
@@ -212,10 +207,7 @@ const formattedPermissions = (operation["x-permissions"] || [])
                   }),
                 )}
               >
-                <CodeBlockHeader slot="header">
-                  <div slot="left">Response</div>
-                  <CopyButton slot="right" />
-                </CodeBlockHeader>
+                <div slot="left">Response</div>
               </MultiCode>
             )}
             {!successResponse.example &&

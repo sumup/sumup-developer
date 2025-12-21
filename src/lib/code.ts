@@ -1,4 +1,25 @@
+export const CODE_LANG_SELECTOR_ATTR = "data-code-lang-selector";
+const STORAGE_KEY = "starlight-synced-tabs__backend_lang";
+const hasDocument = typeof document !== "undefined";
+const hasWindow = typeof window !== "undefined";
+
+const setSelectorValues = (lang: string) => {
+  if (!hasDocument) {
+    return;
+  }
+
+  document
+    .querySelectorAll<HTMLSelectElement>(`[${CODE_LANG_SELECTOR_ATTR}]`)
+    .forEach((selector) => {
+      selector.value = lang;
+    });
+};
+
 const updateCodeblocks = (lang: string) => {
+  if (!hasDocument) {
+    return;
+  }
+
   for (const block of document.querySelectorAll(".multi-lang .code")) {
     block.classList.remove("active");
   }
@@ -9,17 +30,22 @@ const updateCodeblocks = (lang: string) => {
     code.classList.add("active");
   }
 
-  for (const selector of document.querySelectorAll(".langSelector")) {
-    (selector as HTMLSelectElement).value = lang;
-  }
+  setSelectorValues(lang);
 };
 
-export const currentLanguage = () => {
-  return localStorage.getItem("starlight-synced-tabs__backend_lang");
+export const currentLanguage = (): string | null => {
+  if (!hasWindow) {
+    return null;
+  }
+
+  return window.localStorage.getItem(STORAGE_KEY);
 };
 
 export const setCurrentLanguage = (lang: string) => {
-  localStorage.setItem("starlight-synced-tabs__backend_lang", lang);
+  if (hasWindow) {
+    window.localStorage.setItem(STORAGE_KEY, lang);
+  }
+
   updateCodeblocks(lang);
 };
 
@@ -30,5 +56,7 @@ const initCodeblocks = () => {
   }
 };
 
-document.addEventListener("astro:page-load", initCodeblocks);
-document.addEventListener("DOMContentLoaded", initCodeblocks);
+if (hasDocument) {
+  document.addEventListener("astro:page-load", initCodeblocks);
+  document.addEventListener("DOMContentLoaded", initCodeblocks);
+}

@@ -5,13 +5,7 @@ import { doc, orderedTagEntries } from "@lib/openapi";
 import { Anchor, Card, Body, Button } from "@sumup-oss/circuit-ui";
 import LRGrid from "./LRGrid.astro";
 import SDKList from "./SDKList";
-import {
-  CodeBlock,
-  MultiCode,
-  CodeLangSelector,
-  CopyButton,
-  CodeBlockHeader,
-} from "@components/Code";
+import { CodeBlock, MultiCode } from "@components/Code";
 import TagSection from "./TagSection.astro";
 import { ArrowSlanted } from "@sumup-oss/icons";
 
@@ -77,6 +71,11 @@ const tagEntries = orderedTagEntries();
           <MultiCode
             options={[
               {
+                label: "cURL",
+                code: "# Select a client library to see installation instructions.",
+                lang: "bash",
+              },
+              {
                 label: "Node.js",
                 code: "npm install --save @sumup/sdk",
                 lang: "bash",
@@ -104,30 +103,7 @@ const tagEntries = orderedTagEntries();
             ]}
             isLanguageSelect
           >
-            <CodeBlockHeader slot="header">
-              <div slot="left">Install SDK</div>
-              <CodeLangSelector
-                slot="right"
-                options={[
-                  {
-                    label: "Node.js",
-                  },
-                  {
-                    label: "Go",
-                  },
-                  {
-                    label: "Python",
-                  },
-                  {
-                    label: "PHP",
-                  },
-                  {
-                    label: "Rust",
-                  },
-                ]}
-              />
-              <CopyButton slot="right" />
-            </CodeBlockHeader>
+            <div slot="left">Install SDK</div>
           </MultiCode>
           <Card style={{ marginTop: "var(--cui-spacings-mega)" }}>
             <Body size="s">
@@ -175,6 +151,12 @@ const tagEntries = orderedTagEntries();
           <MultiCode
             options={[
               {
+                label: "cURL",
+                code: `curl https://api.sumup.com/v0.1/checkouts \\
+  -H "Authorization: Bearer sup_sk_MvxmLOl0..."`,
+                lang: "bash",
+              },
+              {
                 label: "Node.js",
                 code: `import { SumUp } from '@sumup/sdk';
 
@@ -217,30 +199,7 @@ let client = Client::default().with_authorization("sup_sk_MvxmLOl0...");`,
             ]}
             isLanguageSelect
           >
-            <CodeBlockHeader slot="header">
-              <div slot="left">Authenticate</div>
-              <CodeLangSelector
-                slot="right"
-                options={[
-                  {
-                    label: "Node.js",
-                  },
-                  {
-                    label: "Go",
-                  },
-                  {
-                    label: "Python",
-                  },
-                  {
-                    label: "PHP",
-                  },
-                  {
-                    label: "Rust",
-                  },
-                ]}
-              />
-              <CopyButton slot="right" />
-            </CodeBlockHeader>
+            <div slot="left">Authenticate</div>
           </MultiCode>
         </div>
       </LRGrid>

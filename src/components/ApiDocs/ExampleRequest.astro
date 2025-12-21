@@ -1,10 +1,5 @@
 ---
-import {
-  CodeBlockHeader,
-  CodeLangSelector,
-  CopyButton,
-  MultiCode,
-} from "@components/Code";
+import { MultiCode } from "@components/Code";
 import { curl, go, node, python, rust } from "@lib/codesamples";
 import type { OperationObject } from "src/types/openapi";
 import OperationEndpoint from "./OperationEndpoint.astro";
@@ -46,28 +41,5 @@ const { operation } = Astro.props;
   ]}
   isLanguageSelect
 >
-  <CodeBlockHeader slot="header">
-    <OperationEndpoint operation={operation} slot="left" />
-    <CodeLangSelector
-      slot="right"
-      options={[
-        {
-          label: "cURL",
-        },
-        {
-          label: "Node.js",
-        },
-        {
-          label: "Python",
-        },
-        {
-          label: "Go",
-        },
-        {
-          label: "Rust",
-        },
-      ]}
-    />
-    <CopyButton slot="right" />
-  </CodeBlockHeader>
+  <OperationEndpoint operation={operation} slot="left" />
 </MultiCode>

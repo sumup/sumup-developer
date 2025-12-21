@@ -1,0 +1,12 @@
+.selector select {
+  padding: 2px 26px 2px var(--cui-spacings-byte);
+  font-size: var(--cui-body-s-font-size);
+  line-height: var(--cui-body-s-line-height);
+  background-color: var(--cui-bg-subtle);
+}
+
+.selector svg {
+  padding: 6px;
+  width: 26px;
+  height: 26px;
+}
