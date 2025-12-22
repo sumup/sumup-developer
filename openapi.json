@@ -9852,7 +9852,7 @@
             "$ref": "#/components/schemas/ReaderName"
           },
           "status": {
-            "$ref": "#/components/schemas/ReaderStatus"
+            "$ref": "#/components/schemas/ReaderPairingStatus"
           },
           "device": {
             "$ref": "#/components/schemas/ReaderDevice"
@@ -9896,8 +9896,8 @@
         "example": "Frontdesk",
         "maxLength": 500
       },
-      "ReaderStatus": {
-        "description": "The status of the reader object gives information about the current state of the reader.\n\nPossible values:\n\n- `unknown` - The reader status is unknown.\n- `processing` - The reader is created and waits for the physical device to confirm the pairing.\n- `paired` - The reader is paired with a merchant account and can be used with SumUp APIs.\n- `expired` - The pairing is expired and no longer usable with the account. The resource needs to get recreated.",
+      "ReaderPairingStatus": {
+        "description": "The pairing status of the reader object gives information about the current state of the reader.\n\nPossible values:\n\n- `unknown` - The reader pairing status is unknown.\n- `processing` - The reader is created and waits for the physical device to confirm the pairing.\n- `paired` - The reader is paired with a merchant account and can be used with SumUp APIs.\n- `expired` - The pairing is expired and no longer usable with the account. The resource needs to get recreated.",
         "type": "string",
         "example": "paired",
         "enum": [
