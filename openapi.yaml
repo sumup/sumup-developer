@@ -6925,7 +6925,7 @@ components:
         name:
           $ref: '#/components/schemas/ReaderName'
         status:
-          $ref: '#/components/schemas/ReaderPairingStatus'
+          $ref: '#/components/schemas/ReaderStatus'
         device:
           $ref: '#/components/schemas/ReaderDevice'
         metadata:
@@ -6962,13 +6962,13 @@ components:
       type: string
       example: Frontdesk
       maxLength: 500
-    ReaderPairingStatus:
+    ReaderStatus:
       description: |-
-        The pairing status of the reader object gives information about the current state of the reader.
+        The status of the reader object gives information about the current state of the reader.
 
         Possible values:
 
-        - `unknown` - The reader pairing status is unknown.
+        - `unknown` - The reader status is unknown.
         - `processing` - The reader is created and waits for the physical device to confirm the pairing.
         - `paired` - The reader is paired with a merchant account and can be used with SumUp APIs.
         - `expired` - The pairing is expired and no longer usable with the account. The resource needs to get recreated.
