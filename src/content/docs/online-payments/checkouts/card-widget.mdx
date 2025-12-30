@@ -1,6 +1,6 @@
 ---
 title: Payment Widget
-description: Explore the SumUp Payment Widget and how to mount and configure it on your site.
+description: Explore the SumUp Payment Widget, including mounting and configuration for your site.
 sidebar:
   order: 11
 ---
@@ -8,41 +8,36 @@ sidebar:
 import { Aside, Steps } from "@astrojs/starlight/components";
 import CardWidget from "@components/content/CardWidget.astro";
 
-SumUp provides the Payment Widget for easier processing of checkouts on your website, solving multiple issues for you as a merchant, including PCI and PSD2 compliance, while offering a number of customization options.
 
-The Payment Widget lets you collect card and alternative payment method information from your customers. For the card method, the Payment Widget dynamically recognizes the card brand and shows the respective brand icon.
+The Payment Widget, available to all SumUp merchants, simplifies website checkouts, handling PCI and PSD2 compliance with customization options. It collects card and alternative payment method details. For card payments, it dynamically recognizes the brand and shows the respective brand icon. Using the widget is really easy!
 
-A secure HTTPS connection is used to submit the payment information. To ensure an uninterrupted experience, without browser warnings on content being served through non-secure web pages, we highly recommend you serve your page containing the payment data form via HTTPS as well.
+A secure HTTPS connection is used to submit the payment information. We recommend to use HTTPS for the payment page as well, to avoid browser warnings on content being served through non-secure web pages, and ensure uninterrupted experience.
 
 ## Prerequisites
 
-Payment Widget is available to all SumUp merchants and getting started with it is really easy!
-
-The only requirement to use Payment Widget is the ability to create online checkouts [using SumUp checkout API](/api/checkouts/create). SumUp API requires authorization with an API Key or Access Token - see the [Authorization Guide](/tools/authorization/authorization/) for details.
+Payment Widget requires only the ability to create online checkouts via [SumUp checkout API](/api/checkouts/create), authorized by API key or access token (see the [Authorization Guide](/tools/authorization/authorization/) for details).​
 
 ## Compliance
 
 ### Payment Card Industry
 
-By using SumUp's Payment Widget for your business, you comply with the Payment Card Industry (PCI) standards and you do not need to worry about storing or sending sensitive information such as card details to our servers.
+The Payment Widget ensures PCI compliance for your business. You do not need to worry about storing or sending sensitive information, such as card details, to SumUp servers.
 
 ### Payment Services Directive 2
 
-Strong Customer Authentication (SCA) is part of a Payment Services Directive (PSD) 2 regulation in Europe which requires changes to how customers authenticate online payments. To ensure that SCA requirements are met, card transactions need to use two-factor authentication like 3D Secure where customers are typically directed to their bank’s website to approve the payment, or a code is sent to their phone, or they need to confirm the payment through the banking app on their phone.
-
-SumUp’s card widget is PSD2 SCA compliant and supports 3D Secure 2, provided the individual customers’ banks support it. In cases where they don’t, the authentication falls back to 3D Secure 1. Regardless of the version of 3D Secure, these additional security layers reduce fraud while ensuring a seamless checkout experience for customers.
+Strong Customer Authentication (SCA) under Payment Services Directive 2 (PSD2) requires two-factor authentication for European online payments. The widget supports 3D Secure, with bank fallback to 3D Secure 1 in case the customer's bank doesn't support 3DS 2, adding security layers like bank redirects, SMS codes, or app confirmation. Regardless of the 3DS version used, the customer is provided with a seamless checkout experience.
 
 ## Integration
 
 <Steps>
 
-1. In order to integrate the Payment Widget on your website, you simply need to include the `sdk.js` script on your payment page.
+1. In order to integrate the Payment Widget on your website, include the `sdk.js` script on your payment page.
 
    ```js
    <script src="https://gateway.sumup.com/gateway/ecom/card/v2/sdk.js"></script>
    ```
 
-2. Once the script is loaded, you have access to a global variable `SumUpCard`, that has a `mount` method which renders the available payment methods.
+2. Once the script is loaded, you have access to a global variable `SumUpCard`, with a `mount` method which renders the available payment methods.
 
 3. [Create a checkout](/api/checkouts/create) and copy the returned `id`.
 
@@ -74,7 +69,7 @@ SumUp’s card widget is PSD2 SCA compliant and supports 3D Secure 2, provided t
 
 ## Configurations
 
-The Payment Widget allows you to customize certain properties on the card display. Listed below are the available configuration properties. If you wish to override the default settings, add your own configuration property-value pairs to the `SumUpCard.mount` method.
+The Payment Widget allows you to customize certain properties on the card display, as listed below. If you wish to override the default settings, add your own configuration property-value pairs to the `SumUpCard.mount` method.
 
 ```js
 SumUpCard.mount({
@@ -127,9 +122,9 @@ You can begin offering APMs to your customers, once you are onboarded as a merch
 
 ## Custom Styling
 
-Custom styling to most of the SumUp Payment Card Widgets' elements is enabled by querying the `data-sumup-id` attribute. To get all elements with the `data-sumup-id` attribute, query the DOM with `document.querySelectorAll('[data-sumup-id]')`.
+Custom styling to most of the SumUp Payment Widget elements is enabled by the `data-sumup-id` attribute. To get all elements, query the DOM with `document.querySelectorAll('[data-sumup-id]')`.
 
-Here's an example of updating styles for one of the queryable elements:
+Here's an example of updating styles for one of the elements:
 
 ```css
 [data-sumup-id="widget__container"] {
@@ -150,7 +145,7 @@ Elements like Payment Selector have some additional items you can query to exten
 
 ## Using Your Own Submit Button
 
-If you need to use your own submit button you can achieve this by following the example below:
+If you need to use your own submit button, you can achieve this by following the example below:
 
 ```html
 <button id="custom-submit-button" class="custom-button">Pay your order</button>
@@ -177,9 +172,9 @@ If you need to use your own submit button you can achieve this by following the 
 
 ## Handling Strict Content Security Policies
 
-Pages with strict [Content Security Policies](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP) (CSP), may experience issues with styles or images when rendering the SumUp Payment Widget. This section contains the necessary adjustments to render the Payment Widget properly.
+Pages with strict [Content Security Policies](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP) (CSP) may experience issues with styles or images when rendering the SumUp Payment Widget. This section contains the necessary adjustments to render the Payment Widget properly.
 
-To confirm your issue is related to CSP, check your browser's console for an error message of this nature:
+To confirm your issue is related to CSP, check your browser's console for a similar error message:
 
 ```text
 Refused to apply inline style because it violates the following Content Security Policy directive: "style-src 'self' \*\*\* Either the 'unsafe-inline' keyword, a hash ('sha256-47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU='), or a nonce ('nonce-...') is required to enable inline execution.
@@ -194,9 +189,9 @@ In order to properly render the card widget with CSP in place, you must whitelis
 | SDK & API    | 'https://\*.sumup.com'              |
 | Images       | 'data:', 'https://static.sumup.com' |
 
-Additionally to the above, `nonce` is required to make inline styles work on your host page. For more information view [the CSP docs](https://content-security-policy.com/nonce/).
+Additionally, `nonce` is required to make inline styles work on your host page. For more information view [the CSP docs](https://content-security-policy.com/nonce/).
 
-Here’s an example implementation with nonce:
+Example implementation with `nonce`:
 
 ```js
 const express = require("express");
