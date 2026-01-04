@@ -85,6 +85,31 @@ curl -X POST \
     });
     ```
   </TabItem>
+  <TabItem label=".NET" icon="seti:c-sharp">
+    ```csharp
+    var customer = await client.Customers.CreateAsync(new Customer
+    {
+        CustomerId = "MYCUSTOMERID-123",
+        PersonalDetails = new PersonalDetails
+        {
+            FirstName = "Jeffrey",
+            LastName = "Lebowski",
+            Email = "thedude@example.com",
+            Phone = "+1 310-555-1234",
+            BirthDate = new System.DateTime(1949, 11, 11),
+            Address = new AddressLegacy
+            {
+                City = "Venice",
+                State = "California",
+                Country = "US",
+                Line1 = "606 Venezia Ave",
+                Line2 = "Front",
+                PostalCode = "90291",
+            },
+        },
+    });
+    ```
+  </TabItem>
   <TabItem label="Go" icon="seti:go">
     ```go
     str := func(v string) *string { return &v }
@@ -226,6 +251,20 @@ Example of such request:
       description: "My checkout",
       customer_id: "MYCUSTOMERID-123",
       purpose: "SETUP_RECURRING_PAYMENT",
+    });
+    ```
+  </TabItem>
+  <TabItem label=".NET" icon="seti:c-sharp">
+    ```csharp
+    var checkout = await client.Checkouts.CreateAsync(new CheckoutCreateRequest
+    {
+        CheckoutReference = "MYCHECKOUT",
+        Amount = 1.0f,
+        Currency = Currency.Eur,
+        MerchantCode = "MDEERENR",
+        Description = "My checkout",
+        CustomerId = "MYCUSTOMERID-123",
+        Purpose = "SETUP_RECURRING_PAYMENT",
     });
     ```
   </TabItem>
@@ -382,6 +421,11 @@ requesting them via [the list payment instruments](/api/customers/list-payment-i
   <TabItem label="Node.js" icon="seti:javascript">
     ```ts
     const instruments = await client.customers.listPaymentInstruments("MYCUSTOMERID-123");
+    ```
+  </TabItem>
+  <TabItem label=".NET" icon="seti:c-sharp">
+    ```csharp
+    var instruments = await client.Customers.ListPaymentInstrumentsAsync("MYCUSTOMERID-123");
     ```
   </TabItem>
   <TabItem label="Go" icon="seti:go">

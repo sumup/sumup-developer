@@ -62,7 +62,8 @@ const tagEntries = orderedTagEntries();
             <h2>SDKs</h2>
             <p>
               The SumUp SDKs reduce the amount of work required to use our REST
-              APIs. SumUp maintains SDKs for PHP, Node.js, Python, and Go.
+              APIs. SumUp maintains SDKs for PHP, Node.js, Python, Go, Rust, and
+              .NET.
             </p>
           </div>
           <SDKList />
@@ -83,6 +84,11 @@ const tagEntries = orderedTagEntries();
               {
                 label: "Go",
                 code: "go get github.com/sumup/sumup-go",
+                lang: "bash",
+              },
+              {
+                label: ".NET",
+                code: "dotnet add package SumUp",
                 lang: "bash",
               },
               {
@@ -176,6 +182,16 @@ func main() {
 }
 `,
                 lang: "go",
+              },
+              {
+                label: ".NET",
+                code: `using SumUp;
+
+var client = new SumUpClient(new SumUpClientOptions
+{
+    AccessToken = "sup_sk_MvxmLOl0...",
+});`,
+                lang: "csharp",
               },
               {
                 label: "Python",

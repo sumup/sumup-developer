@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import type { OpenAPIV3_1 } from "openapi-types";
 import type { OperationObject } from "../../types/openapi";
-import { curl, go, node as nodeSample, python, rust } from "./index";
+import { curl, dotnet, go, node as nodeSample, python, rust } from "./index";
 
 const checkoutBodySchema: OpenAPIV3_1.SchemaObject = {
   type: "object",
@@ -150,6 +150,24 @@ result = client.checkouts.create("MC123", CreateCheckoutBody(
   currency="EUR",
   description="Online order #42",
 ))`,
+    );
+  });
+
+  it("dotnet sample uses the SumUp .NET client", () => {
+    expect(dotnet(checkoutOperation)).toBe(
+      `using SumUp;
+
+var client = new SumUpClient();
+
+var result = await client.Checkouts.CreateAsync(
+    "MC123",
+    new CreateCheckoutBody
+    {
+        Amount = 1000,
+        Currency = "EUR",
+        Description = "Online order #42",
+    }
+);`,
     );
   });
 

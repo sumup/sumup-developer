@@ -62,6 +62,20 @@ Initializing the SDK works by passing it a `checkout_id`. To [create a checkout]
     });
     ```
   </TabItem>
+  <TabItem label=".NET" icon="seti:c-sharp">
+    ```csharp
+    var checkout = await client.Checkouts.CreateAsync(new CheckoutCreateRequest
+    {
+        CheckoutReference = "44ea5096-b83f-46e1-9323-fe82a8cb7eb5",
+        Amount = 9.99f,
+        Currency = Currency.Sek,
+        MerchantCode = "MXXXXXXX",
+        Description = "Order #1234",
+        ReturnUrl = "https://example.com",
+        RedirectUrl = "https://sumup.com",
+    });
+    ```
+  </TabItem>
   <TabItem label="Go" icon="seti:go">
     ```go
     description := "Order #1234"
@@ -339,6 +353,31 @@ To save a card for future usage, a customer should be created. It can be achieve
           postal_code: "10115",
         },
       },
+    });
+    ```
+  </TabItem>
+  <TabItem label=".NET" icon="seti:c-sharp">
+    ```csharp
+    var customer = await client.Customers.CreateAsync(new Customer
+    {
+        CustomerId = "831ff8d4cd5958ab5670",
+        PersonalDetails = new PersonalDetails
+        {
+            FirstName = "John",
+            LastName = "Doe",
+            Email = "user@example.com",
+            Phone = "+491635559723",
+            BirthDate = new System.DateTime(1993, 12, 31),
+            Address = new AddressLegacy
+            {
+                City = "Berlin",
+                State = "Berlin",
+                Country = "DE",
+                Line1 = "Sample street",
+                Line2 = "ap. 5",
+                PostalCode = "10115",
+            },
+        },
     });
     ```
   </TabItem>

@@ -1,162 +1,11 @@
 import { ListItemGroup } from "@sumup-oss/circuit-ui";
 
-const Nodejs = () => (
-  <svg
-    viewBox="0 0 32 32"
-    xmlns="http://www.w3.org/2000/svg"
-    width="24"
-    height="24"
-  >
-    <path
-      d="M15.516 28.952a2.09 2.09 0 01-1.002-.263l-3.17-1.883c-.478-.262-.24-.358-.096-.405.644-.215.763-.263 1.43-.644.072-.048.167-.024.239.024l2.432 1.454c.095.048.214.048.286 0l9.513-5.507c.095-.048.143-.143.143-.263v-10.99c0-.12-.048-.215-.143-.263L15.635 4.73c-.096-.048-.215-.048-.286 0l-9.513 5.483c-.096.048-.143.167-.143.262v10.991c0 .096.047.215.143.263l2.599 1.502c1.406.715 2.288-.12 2.288-.954V11.428a.29.29 0 01.286-.286h1.216a.29.29 0 01.287.286v10.848c0 1.884-1.026 2.98-2.814 2.98-.548 0-.977 0-2.193-.596L5 23.23A2.012 2.012 0 014 21.49V10.497c0-.715.381-1.383 1.001-1.74l9.513-5.508a2.128 2.128 0 012.003 0l9.513 5.508a2.012 2.012 0 011.001 1.74V21.49c0 .716-.381 1.383-1.001 1.74l-9.513 5.508a2.44 2.44 0 01-1.001.215zm2.932-7.558c-4.172 0-5.03-1.907-5.03-3.529a.29.29 0 01.286-.286h1.24c.142 0 .262.096.262.239.19 1.263.739 1.883 3.266 1.883 2.003 0 2.861-.453 2.861-1.526 0-.62-.238-1.073-3.362-1.383-2.598-.262-4.22-.834-4.22-2.908 0-1.931 1.622-3.076 4.34-3.076 3.051 0 4.553 1.05 4.744 3.338a.385.385 0 01-.072.215c-.047.047-.119.095-.19.095h-1.24a.28.28 0 01-.262-.215c-.286-1.31-1.025-1.74-2.98-1.74-2.194 0-2.456.763-2.456 1.335 0 .691.31.906 3.266 1.288 2.933.381 4.315.93 4.315 2.98-.023 2.098-1.74 3.29-4.768 3.29z"
-      fill="#89D42C"
-    ></path>
-  </svg>
-);
-
-const Go = () => (
-  <svg
-    viewBox="2 2 30 30"
-    xmlns="http://www.w3.org/2000/svg"
-    width="24"
-    height="24"
-  >
-    <g fill="#00ACD7" fill-rule="evenodd">
-      <path d="M3.35 13.5c-.06 0-.07-.04-.05-.08l.3-.4c.04-.03.11-.06.17-.06h5.17c.06 0 .07.04.05.08l-.25.38c-.03.04-.1.09-.15.09l-5.24-.02zm-2.19 1.33c-.06 0-.07-.03-.04-.08l.3-.39c.03-.04.1-.07.16-.07h6.6c.07 0 .1.04.08.09l-.12.34c-.01.06-.07.1-.13.1H1.16zm3.51 1.33c-.06 0-.08-.04-.05-.09l.2-.36c.04-.04.1-.09.15-.09h2.9c.06 0 .09.05.09.1l-.03.35c0 .06-.06.1-.1.1l-3.16-.01zm15.04-2.93l-2.43.64c-.22.06-.24.07-.42-.15-.22-.24-.38-.4-.69-.55a2.52 2.52 0 00-2.62.22 3.08 3.08 0 00-1.48 2.75 2.27 2.27 0 001.96 2.28c.98.13 1.81-.22 2.46-.96l.4-.53h-2.8c-.3 0-.38-.2-.28-.44.19-.45.54-1.2.74-1.58a.4.4 0 01.36-.23h5.28c-.03.4-.03.78-.09 1.18-.16 1.04-.55 2-1.19 2.84a6.04 6.04 0 01-4.13 2.46 5.13 5.13 0 01-3.9-.96A4.55 4.55 0 019.04 17c-.18-1.58.28-3 1.24-4.25a6.43 6.43 0 014.05-2.5 5 5 0 013.84.7c.77.5 1.32 1.2 1.69 2.05.08.13.02.2-.15.24z"></path>
-      <path
-        d="M24.5 21.25a5.44 5.44 0 01-3.53-1.28 4.55 4.55 0 01-1.56-2.8 5.53 5.53 0 011.17-4.37 6.08 6.08 0 014.06-2.42 5.38 5.38 0 014.13.74 4.51 4.51 0 012.04 3.23 5.6 5.6 0 01-1.67 4.91 6.64 6.64 0 01-3.47 1.86c-.4.07-.79.08-1.16.13zm3.46-5.86c-.02-.19-.02-.33-.05-.48A2.39 2.39 0 0024.96 13a3.17 3.17 0 00-2.54 2.52 2.39 2.39 0 001.33 2.74c.8.34 1.6.3 2.37-.1a3.17 3.17 0 001.84-2.76z"
-        fill-rule="nonzero"
-      ></path>
-    </g>
-  </svg>
-);
-
-const Python = () => (
-  <svg
-    viewBox="0 0 256 255"
-    xmlns="http://www.w3.org/2000/svg"
-    preserveAspectRatio="xMidYMid"
-    width="24"
-    height="24"
-  >
-    <path
-      d="M126.916.072c-64.832 0-60.784 28.115-60.784 28.115l.072 29.128h61.868v8.745H41.631S.145 61.355.145 126.77c0 65.417 36.21 63.097 36.21 63.097h21.61v-30.356s-1.165-36.21 35.632-36.21h61.362s34.475.557 34.475-33.319V33.97S194.67.072 126.916.072zM92.802 19.66a11.12 11.12 0 0111.13 11.13 11.12 11.12 0 01-11.13 11.13 11.12 11.12 0 01-11.13-11.13 11.12 11.12 0 0111.13-11.13z"
-      fill="#3372a7"
-    ></path>
-    <path
-      d="M128.757 254.126c64.832 0 60.784-28.115 60.784-28.115l-.072-29.127H127.6v-8.745h86.441s41.486 4.705 41.486-60.712c0-65.416-36.21-63.096-36.21-63.096h-21.61v30.355s1.165 36.21-35.632 36.21h-61.362s-34.475-.557-34.475 33.32v56.013s-5.235 33.897 62.518 33.897zm34.114-19.586a11.12 11.12 0 01-11.13-11.13 11.12 11.12 0 0111.13-11.131 11.12 11.12 0 0111.13 11.13 11.12 11.12 0 01-11.13 11.13z"
-      fill="#ffd235"
-    ></path>
-  </svg>
-);
-
-const PHP = () => (
-  <svg
-    viewBox="0 0 32 32"
-    xmlns="http://www.w3.org/2000/svg"
-    width="24"
-    height="24"
-  >
-    <g fill="#6181B6" fill-rule="evenodd">
-      <path d="M9.762 14.509h-1.18l-.643 3.31h1.047c.695 0 1.213-.132 1.553-.393.34-.262.569-.698.687-1.311.115-.588.063-1.002-.155-1.244-.218-.241-.653-.362-1.308-.362z"></path>
-      <path
-        d="M16 8.86c-8.284 0-15 3.533-15 7.89s6.716 7.891 15 7.891c8.284 0 15-3.533 15-7.891s-6.716-7.89-15-7.89zm-4.075 9.314a3.034 3.034 0 01-1.146.688c-.42.135-.956.205-1.606.205H7.696l-.408 2.102H5.564l1.538-7.908h3.312c.996 0 1.723.261 2.18.785.458.523.595 1.253.412 2.19-.07.371-.198.729-.38 1.059a3.57 3.57 0 01-.702.879zm5.03.893l.679-3.498c.079-.398.049-.67-.085-.814-.134-.145-.42-.218-.859-.218h-1.365l-.88 4.532h-1.71l1.538-7.909h1.708l-.408 2.103h1.522c.959 0 1.619.167 1.983.5s.472.876.328 1.625l-.715 3.68h-1.736zm9.496-2.83a3.477 3.477 0 01-.381 1.058 3.57 3.57 0 01-.701.879 3.05 3.05 0 01-1.147.688c-.42.135-.956.205-1.607.205H21.14l-.409 2.103H19.01l1.537-7.908h3.312c.996 0 1.722.262 2.18.785.457.522.596 1.252.413 2.19z"
-        fill-rule="nonzero"
-      ></path>
-      <path d="M23.207 14.509H22.03l-.645 3.31h1.047c.696 0 1.214-.132 1.553-.393.34-.262.568-.698.688-1.311.115-.588.062-1.002-.156-1.244-.217-.241-.655-.362-1.309-.362z"></path>
-    </g>
-  </svg>
-);
-
-const Rust = () => (
-  <svg
-    version="1.1"
-    viewBox="0 0 106 106"
-    height="24"
-    width="24"
-    xmlns="http://www.w3.org/2000/svg"
-    xmlnsXlink="http://www.w3.org/1999/xlink"
-  >
-    <g id="logo" transform="translate(53, 53)">
-      <path
-        id="r"
-        transform="translate(0.5, 0.5)"
-        stroke="black"
-        stroke-width="1"
-        stroke-linejoin="round"
-        d="
-    M -9,-15 H 4 C 12,-15 12,-7 4,-7 H -9 Z
-    M -40,22 H 0 V 11 H -9 V 3 H 1 C 12,3 6,22 15,22 H 40
-    V 3 H 34 V 5 C 34,13 25,12 24,7 C 23,2 19,-2 18,-2 C 33,-10 24,-26 12,-26 H -35
-    V -15 H -25 V 11 H -40 Z"
-      />
-      <g id="gear" mask="url(#holes)">
-        <circle r="43" fill="none" stroke="black" stroke-width="9" />
-        <g id="cogs">
-          <polygon
-            id="cog"
-            stroke="black"
-            stroke-width="3"
-            stroke-linejoin="round"
-            points="46,3 51,0 46,-3"
-          />
-          <use xlinkHref="#cog" transform="rotate(11.25)" />
-          <use xlinkHref="#cog" transform="rotate(22.50)" />
-          <use xlinkHref="#cog" transform="rotate(33.75)" />
-          <use xlinkHref="#cog" transform="rotate(45.00)" />
-          <use xlinkHref="#cog" transform="rotate(56.25)" />
-          <use xlinkHref="#cog" transform="rotate(67.50)" />
-          <use xlinkHref="#cog" transform="rotate(78.75)" />
-          <use xlinkHref="#cog" transform="rotate(90.00)" />
-          <use xlinkHref="#cog" transform="rotate(101.25)" />
-          <use xlinkHref="#cog" transform="rotate(112.50)" />
-          <use xlinkHref="#cog" transform="rotate(123.75)" />
-          <use xlinkHref="#cog" transform="rotate(135.00)" />
-          <use xlinkHref="#cog" transform="rotate(146.25)" />
-          <use xlinkHref="#cog" transform="rotate(157.50)" />
-          <use xlinkHref="#cog" transform="rotate(168.75)" />
-          <use xlinkHref="#cog" transform="rotate(180.00)" />
-          <use xlinkHref="#cog" transform="rotate(191.25)" />
-          <use xlinkHref="#cog" transform="rotate(202.50)" />
-          <use xlinkHref="#cog" transform="rotate(213.75)" />
-          <use xlinkHref="#cog" transform="rotate(225.00)" />
-          <use xlinkHref="#cog" transform="rotate(236.25)" />
-          <use xlinkHref="#cog" transform="rotate(247.50)" />
-          <use xlinkHref="#cog" transform="rotate(258.75)" />
-          <use xlinkHref="#cog" transform="rotate(270.00)" />
-          <use xlinkHref="#cog" transform="rotate(281.25)" />
-          <use xlinkHref="#cog" transform="rotate(292.50)" />
-          <use xlinkHref="#cog" transform="rotate(303.75)" />
-          <use xlinkHref="#cog" transform="rotate(315.00)" />
-          <use xlinkHref="#cog" transform="rotate(326.25)" />
-          <use xlinkHref="#cog" transform="rotate(337.50)" />
-          <use xlinkHref="#cog" transform="rotate(348.75)" />
-        </g>
-        <g id="mounts">
-          <polygon
-            id="mount"
-            stroke="black"
-            stroke-width="6"
-            stroke-linejoin="round"
-            points="-7,-42 0,-35 7,-42"
-          />
-          <use xlinkHref="#mount" transform="rotate(72)" />
-          <use xlinkHref="#mount" transform="rotate(144)" />
-          <use xlinkHref="#mount" transform="rotate(216)" />
-          <use xlinkHref="#mount" transform="rotate(288)" />
-        </g>
-      </g>
-      <mask id="holes">
-        <rect x="-60" y="-60" width="120" height="120" fill="white" />
-        <circle id="hole" cy="-40" r="3" />
-        <use xlinkHref="#hole" transform="rotate(72)" />
-        <use xlinkHref="#hole" transform="rotate(144)" />
-        <use xlinkHref="#hole" transform="rotate(216)" />
-        <use xlinkHref="#hole" transform="rotate(288)" />
-      </mask>
-    </g>
-  </svg>
-);
+import DotnetIcon from "./icons/DotnetIcon";
+import GoIcon from "./icons/GoIcon";
+import NodejsIcon from "./icons/NodejsIcon";
+import PHPIcon from "./icons/PHPIcon";
+import PythonIcon from "./icons/PythonIcon";
+import RustIcon from "./icons/RustIcon";
 
 export default () => {
   return (
@@ -166,37 +15,44 @@ export default () => {
       items={[
         {
           key: "node.js",
-          leadingComponent: Nodejs,
+          leadingComponent: NodejsIcon,
           label: "Node.js",
           href: "/tools/sdks/nodejs/",
           variant: "navigation",
         },
         {
           key: "go",
-          leadingComponent: Go,
+          leadingComponent: GoIcon,
           label: "Go",
           href: "/tools/sdks/go/",
           variant: "navigation",
         },
         {
           key: "python",
-          leadingComponent: Python,
+          leadingComponent: PythonIcon,
           label: "Python",
           href: "/tools/sdks/python/",
           variant: "navigation",
         },
         {
           key: "php",
-          leadingComponent: PHP,
+          leadingComponent: PHPIcon,
           label: "PHP",
           href: "/tools/sdks/php/",
           variant: "navigation",
         },
         {
           key: "rust",
-          leadingComponent: Rust,
+          leadingComponent: RustIcon,
           label: "Rust",
           href: "/tools/sdks/rust/",
+          variant: "navigation",
+        },
+        {
+          key: "dotnet",
+          leadingComponent: DotnetIcon,
+          label: ".NET",
+          href: "https://github.com/sumup/sumup-dotnet",
           variant: "navigation",
         },
       ]}
