@@ -1,6 +1,6 @@
 ---
 title: Save Customer Cards
-description: Shows how to tokenize cards with the Payment Widget so you can save payment instruments for future charges.
+description: Tokenize cards with the Payment Widget for future recurring payments.
 sidebar:
   order: 200
 ---
@@ -31,10 +31,10 @@ You will go through the following steps:
 
 ## Creating Customer
 
-A customer resource is a representation of a person or business that is paying for a product or service.
-It contains personal information such as their name, contact details, postal address, as well as a unique identifier that is relevant to your business logic (`customer_id`).
+A customer resource is a representation of a person or business paying for a product or service.
+It contains personal information such as name, contact details, postal address, as well as a unique identifier relevant to your business logic (`customer_id`).
 
-To create a new customer resource, make a POST request to the `https://api.sumup.com/v0.1/customers` endpoint:
+1. Create a new customer resource with a POST request to the `https://api.sumup.com/v0.1/customers` endpoint:
 
 <Tabs syncKey="backend_lang">
   <TabItem label="cURL" icon="seti:powershell">
@@ -210,7 +210,7 @@ curl -X POST \
   </TabItem>
 </Tabs>
 
-You should expect a standard `201 Created` response, with the customer details you passed. For more details see the [create a customer](/api/customers/create) endpoint. Having created the customer, we can now proceed to making a payment
+You should expect a standard `201 Created` response, with the customer details you passed. For full details, see the [endpoint documentation](/api/customers/create). Having created the customer, we can now proceed to making a payment
 
 ## Creating Checkout to Save Card
 
@@ -219,7 +219,7 @@ It contains information such as the amount, currency, and a unique `checkout_ref
 
 The flow is initiated with the `create a checkout` endpoint. It is important to pass the `customer_id` parameter in this step, for future linking to a payment instrument. Critically, a `purpose` parameter is passed to indicate the payment type as **recurring payment** and process an authorization charge of the checkout amount indicated, **which is instantly reimbursed**. Note that this doesn't automatically imply further payments from this customer - at this point, we're just tokenizing the card.
 
-To create a new checkout resource, make a POST request to the `https://api.sumup.com/v0.1/checkouts` endpoint.
+1. To create a new checkout resource, make a POST request to the `https://api.sumup.com/v0.1/checkouts` endpoint.
 
 Example of such request:
 
@@ -455,7 +455,7 @@ requesting them via [the list payment instruments](/api/customers/list-payment-i
 
 ## Processing Request Directly
 
-In case you want to provide a fully customized experience, you can process the request using [SumUp API directly](/api/checkouts/process). In this case, you need to make sure to handle all legal requirements yourself. Critically, SumUp API expects the `mandate` object in the request. By providing the `mandate` object, **you are stating that you have obtained the consent of the customer**. The `mandate` object establishes the authorization framework for storing and reusing card details. It defines what the card token will be used for (only recurring payments for the time being), while also capturing technical details about the tokenization request for security and compliance purposes.
+If you want to provide a fully customized experience, you can process the request using [SumUp API directly](/api/checkouts/process). In this case, you need to make sure to handle all legal requirements yourself. Critically, SumUp API expects the `mandate` object in the request. By providing the `mandate` object, **you are stating that you have obtained the consent of the customer**. The `mandate` object establishes the authorization framework for storing and reusing card details. It defines what the card token will be used for (only recurring payments for the time being), while capturing the technical details of the tokenization request for security and compliance purposes.
 
 ```json
 {
@@ -497,7 +497,9 @@ curl -X GET \
 
 ## Retrieving Tokenized Card
 
-If you have successfully processed the checkout, a token representing the payment instrument (card) is created. You can now [retrieve the checkout](/api/checkouts/get) to find the token within a `payment_instrument` object for later recurrent payment.
+Having successfully processed the checkout, a token representing the payment instrument (card) is created. You can now [retrieve the checkout](/api/checkouts/get) to find this token within a `payment_instrument` object for later recurrent payment.
+
+Example response:
 
 ```json
 {

@@ -8,8 +8,9 @@ sidebar:
 import { Aside, Tabs, TabItem } from '@astrojs/starlight/components';
 import Multicode from '@components/content/Multicode.astro';
 
+## Overview
 
-In this guide, you will learn how to refund a transaction for a payment you have already processed. You will go through the following steps:
+In this guide, you will learn how to refund a transaction. You will go through the following steps:
 
 1.  [Look up a transaction ID (Optional)](#1-look-up-a-transaction-id)
 2.  [Refund a transaction](#2-refund-a-transaction) by using one of the available options:
@@ -22,11 +23,12 @@ When you complete these steps, the payment you have previously processed through
 
 Here are the things that you need in order to complete the steps in this guide:
 
-- You have a merchant account with [SumUp](https://me.sumup.com/login) and have already filled in your [account details](https://me.sumup.com/account).
-  - For a **test account** reach out to our support team through this [contact form](/contact).
-- You have [registered your client application](/tools/authorization/register-app/) with SumUp.
-- You have a valid access token obtained via the [Authorization code flow](/tools/authorization/authorization/#authorization-code-flow).
-- You have processed successfully a payment checkout and you need to refund the transaction.
+- [SumUp merchant account](https://me.sumup.com/login) with completed [account details](https://me.sumup.com/account).
+  - You can also use a [test account](/online-payments/#getting-a-test-account).
+- [Registered client application](/tools/authorization/register-app/) with SumUp.
+- Valid access token obtained with the [Authorization code flow](/tools/authorization/authorization/#authorization-code-flow).
+- You have processed a checkout and you have the checkout ID.
+
 
 <Aside type="note">
 
@@ -36,15 +38,15 @@ Transactions are associated with active merchant user accounts. As a result, you
 
 ## Steps
 
-### 1. Look up a Transaction Id
+### 1. Look up a Transaction ID
 
 <Aside type="note">
 If you already have the ID of the transaction you want to refund, you can skip this step and continue with [Step 2](#2-refund-a-transaction).
 </Aside>
 
-To look up the identifier of a transaction for a payment checkout you have already completed, make a GET request to the `https://api.sumup.com/v0.1/checkouts/{id}` endpoint, where the value of the `{id}` path parameter is the identifier of the checkout resource.
+1. Make a GET request to the `https://api.sumup.com/v0.1/checkouts/{id}` endpoint, where the value of the `{id}` path parameter is the identifier of the checkout resource.
 
-Following is a sample request for retrieving a checkout:
+Example request:
 
 <Tabs syncKey="backend_lang">
   <TabItem label="cURL" icon="seti:powershell">
@@ -114,16 +116,14 @@ The response contains a JSON body with the full details of the processed checkou
 
 ### 2. Refund a Transaction
 
-You can use one the two available options for refunding a processed transaction:
-
 - [Option A: Make a full refund](#option-a-make-a-full-refund)
 - [Option B: Make a partial refund](#option-b-make-a-partial-refund)
 
 #### Make a Full Refund
 
-To make a full refund for a processed transaction, make a POST request with an empty request body to the `https://api.sumup.com/v0.1/me/refund/{txn_id}` endpoint, where the value of the `{txn_id}` path parameter is the identifier of the transaction resource.
+1. Make a POST request with an empty request body to the `https://api.sumup.com/v0.1/me/refund/{txn_id}` endpoint, where the value of the `{txn_id}` path parameter is the identifier of the transaction resource.
 
-Following is a sample request for making a full refund for the transaction with identifier `664200af-2b62-4142-9c73-a2a505310d78`:
+Example request for the transaction with identifier `664200af-2b62-4142-9c73-a2a505310d78`:
 
 <Tabs syncKey="backend_lang">
   <TabItem label="cURL" icon="seti:powershell">
@@ -181,11 +181,11 @@ The response returns a 204 HTTP status code and contains no body.
 
 #### Make a Partial Refund
 
-To make a partial refund for a processed transaction, make a POST request to the `https://api.sumup.com/v0.1/me/refund/{txn_id}` endpoint, where the value of the `{txn_id}` path parameter is the identifier of the transaction resource.
+1. Make a POST request to the `https://api.sumup.com/v0.1/me/refund/{txn_id}` endpoint, where the value of the `{txn_id}` path parameter is the identifier of the transaction resource.
 
 Unlike the option for a full refund, the request body for partial refunds should be a JSON object with the amount you want to refund for the transaction.
 
-Following is a sample request for making a partial refund for the amount of 24.42 EUR:
+Example request for a partial refund for the amount of 24.42 EUR:
 
 <Tabs syncKey="backend_lang">
   <TabItem label="cURL" icon="seti:powershell">

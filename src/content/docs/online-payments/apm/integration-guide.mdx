@@ -5,40 +5,46 @@ sidebar:
   order: 89
 ---
 
-Alternative Payment Methods (further referred to as APMs) are very similar to normal checkouts. The biggest difference is that the customer most of the time needs to take an additional action in order to finalize the payment. Please make sure that before you read this you familiarize yourself with how [card payments](/online-payments/) are done.
+## Overview
 
-First, you need to know which payment methods are available to your merchant profile. To check this [create a checkout](/api/checkouts/create) and use the checkout id to fetch the list of available payment methods from the following endpoint `https://api.sumup.com/v0.1/checkouts/{checkout_id}/payment-methods`.
+Alternative Payment Methods (further referred to as APMs) are similar to normal checkouts. One key difference is that the customer needs to take an additional action in order to finalize the payment with most APMs. Before proceeding, read the [online payments guide](/online-payments/).
 
-The response will look like this
+## Check Available APMs
 
-```json
-{
-  "items": [
+Check which payment methods are available to your merchant profile.
+
+1. [Create a checkout](/api/checkouts/create) and use the checkout `id` to fetch the list of available payment methods from the following endpoint `https://api.sumup.com/v0.1/checkouts/{checkout_id}/payment-methods`.
+
+    Example response:
+
+    ```json
     {
-      "id": "card",
-      "name": "Credit Card"
-    },
-    {
-      "id": "blik",
-      "name": "Blik"
-    },
-    {
-      "id": "apple_pay",
-      "name": "Apple Pay"
+      "items": [
+        {
+          "id": "card",
+          "name": "Credit Card"
+        },
+        {
+          "id": "blik",
+          "name": "Blik"
+        },
+        {
+          "id": "apple_pay",
+          "name": "Apple Pay"
+        }
+      ]
     }
-  ]
-}
-```
+    ```
 
-Note here that this is not a static list and might change from checkout to checkout as payment methods are not offered for all currencies and amounts, and we are continuously introducing new APMs you can include in your list of payment options.
+Note that this object might change between checkouts as APMs are not offered for all currencies and amounts, and we are continuously introducing new APMs for you to offer.
 
-Our suggestion would be to handle the returned payment methods as an allowlist for this checkout, and then from this list pick all the payment methods you want/can offer. Do **not** display all methods returned if you can not handle their respective flows.
+We recommend handling the returned payment methods as an allowlist for this checkout, and then picking all the payment methods you want to offer. Do **not** simply display all methods returned if your integration doesn't support them.
 
-The customer chooses one of the payment methods from the returned values, which should be sent as part of the process checkout request under `payment_type`.
+The customer chooses one of the payment methods from the returned values, sent as part of the process checkout request under `payment_type`.
 
 The currently available payment method ids are: `card`, `ideal`, `bancontact`, `boleto`, `eps`, `mybank`, `satispay`, `blik`, `p24`, `pix`, `qr_code_pix`, `apple_pay`, `paypal`, `google_pay`. _name_ is just for display purposes.
 
-APMs differ from the behaviour of cards. There are two possible flows, which we call `artifacts` or `redirect instructions`, explained in more detail below. APMs also require different input parameters which you need to gather from the customer. The required parameters to gather and the payment method flows are listed below:
+APMs differ from the behavior of cards. There are two possible flows, which we call `artifacts` or `redirect instructions`, explained in more detail below. APMs also require different input parameters obtained from the customer, as listed below:
 
 | Payment method name | Parameters                                          | Flow     |
 | ------------------- | --------------------------------------------------- | -------- |
@@ -53,7 +59,7 @@ APMs differ from the behaviour of cards. There are two possible flows, which we 
 | pix                 |                                                     | Artifact |
 | qr_code_pix         |                                                     | Artifact |
 
-The payload needs to be filled out like this:
+Example payload:
 
 ```json
 {
@@ -74,9 +80,9 @@ The payload needs to be filled out like this:
 }
 ```
 
-### Redirect Flow
+### Process Checkout Using Redirect Flow
 
-In the redirect flow when the checkout is processed you will receive the state “PENDING” and the response will include a `next_step` parameter, this means an additional action for the processing is needed. The response will look something like this:
+In the Redirect Flow, when the checkout is processed, you receive the `"status": "pending"` parameter and the `next_step` parameter, which means an additional action is required to process the payment.Example response:
 
 ```json
 {
@@ -93,14 +99,16 @@ In the redirect flow when the checkout is processed you will receive the state �
 }
 ```
 
-Most of the time this is a simple redirect to a 3rd party page, like Blik, where the customer can pay.
-But in this example, you can also see that this might be a POST request. For all calls, you should make sure that the payload is included and the appropriate method is used.
-Once the customer completes the necessary actions on the page they will be redirected to the `redirect_url` specified under the [create checkout request](/api/checkouts/create).
-Now you can retrieve the final status via a GET [checkout call](/api/checkouts/get/) request.
+Most of the time, this is a simple redirect to a 3rd party page, like Blik, where the customer can pay.
+But, as shown above, POST requests are also possible. For all calls, ensure that the payload is included, and the appropriate method is used.
+Once the customer completes the necessary actions on the page, they are redirected to the `redirect_url` specified under the [create checkout request](/api/checkouts/create).
+Now you can retrieve the final status via a [GET checkout request](/api/checkouts/get/).
 
-### Payment Method Artifacts
+### Process Checkout Using Payment Method Artifacts Flow
 
-Payment method artifacts are images, PDFs etc. which the customer gets in order to pay. Currently, we have 3 payment methods which have artifacts: `boleto`, `pix` and `qr_code_pix`. Examples of the type of information to expect can be found below:
+Payment method artifacts are images, PDFs etc. which the customer gets in order to pay. Currently, we have 3 payment methods which have artifacts: `boleto`, `pix` and `qr_code_pix`. 
+
+Example requests for each:
 
 **boleto:**
 
@@ -177,8 +185,8 @@ Payment method artifacts are images, PDFs etc. which the customer gets in order 
 }
 ```
 
-Note that the major difference between `qr_code_pix` and `pix` itself is that `pix` will be paid directly into the merchant's SumUp bank account if they have one. `qr_code_pix` will be paid out with the normal payout process and incurs a fee.
+The major difference between `qr_code_pix` and `pix` is that `pix` is paid directly into the merchant's SumUp bank account if they have one. `qr_code_pix` is paid out with the normal payout process and incurs a fee.
 
 For all artifact payments, you need to provide the customer with the artifact and wait for the checkout to eventually complete.
 
-Once the user has paid, you can retrieve the final status via a GET [checkout call](/api/checkouts/get/).
+Once the user has paid, you can retrieve the final status via the [GET checkout request](/api/checkouts/get/).
