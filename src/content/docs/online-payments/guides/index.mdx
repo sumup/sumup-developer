@@ -1,6 +1,6 @@
 ---
 title: Custom Integrations
-description: Introduces the custom integration guides and prerequisites for building with the SumUp SDKs and APIs.
+description: Integration guides for building with SumUp SDKs and APIs.
 sidebar:
   label: Overview
   order: 149
@@ -11,28 +11,28 @@ import { Steps } from '@astrojs/starlight/components';
 import Image from '@components/content/Image.astro';
 
 
-Guides in this section will walk you through basic usage of SumUp APIs, which allow you to develop a custom integration in case SumUp integrations don't fully support your use case.
+Guides in this section cover the basics of SumUp APIs, allowing you to develop a custom integration if SumUp products don't fully support your use case.
 
 ## Getting a Test Account
 
-To start testing SumUp APIs and tools without involving real money, you need to have a test account. You can create a test account from your account in the Dashboard as shown below.
+Create a test account to test APIs without real money:
 
 <Steps>
 
 1. Log in to your SumUp account.
 
-2. Open the drop-down menu between Support and your user panel.
+2. Open the drop-down menu between **Support** and your user panel.
 
-3. Select Test Account. Your merchant account is now switched to test mode.
+3. Select **Test Account**. Your merchant account is now switched to test mode.
 
 </Steps>
 
 <Image alt="A screenshot of the account selection dropdown in the SumUp dashboard with the test account highlighted with red circle" src="/img/guides/test_acc.png" width="40%" />
 
-Once you have your test account you can begin making API calls with real data. Our test accounts **do not** process transactions with real funds. Test account has a different ID, and shows a clear warning. When you try to process a request with the value of 11 (in any currency), the test account will always fail - this is by design, to enable testing failed transactions. Please note that setting up 3DS verification in a test account requires contact with our team at integrations@sumup.com
+With your test account, begin making API calls with real data. Test accounts **do not** process transactions with real funds. The test account has a different ID and displays a clear warning. Requests with a value of 11 (in any currency) always fail by design, to test failed transaction scenarios.
 
 <Image alt="A screenshot of the dashboard with test account selected" src="/img/guides/test-account-warning.png" width="100%" />
 
-When you're done experimenting with the test account, switch back to a regular account for business purposes. 
+When finished experimenting with the test account, switch back to a regular account for business purposes.
 
 SumUp provides official SDKs for Node.js, Go, Python, PHP, and Rust — visit the [SDKs overview page](/tools/sdks/) to choose the client that fits your stack.

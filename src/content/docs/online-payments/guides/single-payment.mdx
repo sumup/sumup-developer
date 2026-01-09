@@ -1,13 +1,15 @@
 ---
 title: Accept a Payment
-description: Teaches how to create and complete a checkout for a one-off card payments.
+description: Create and process a checkout for a single card payment.
 sidebar:
   order: 150
 ---
 
 import { Aside, Tabs, TabItem } from '@astrojs/starlight/components';
 
-The purpose of this guide is to explain processing a single payment over SumUp API, in case you don't want to use our [Payment Widget](/online-payments/checkouts/card-widget). In this guide, you will learn how to make a single payment with a payment card entered by a customer without associating it with a specific customer saved for the merchant user's account. This type of payment is most useful for quick processing of payment checkouts in which you don't store and manage any account data for your customers.
+## Overview
+
+This guide covers single payments over SumUp API, using customer-entered card details without associating it with a specific customer saved for the merchant user's account. Ideal for quick checkout processing if you don't want to use our [Payment Widget](/online-payments/checkouts/card-widget).
 
 You will go through the following steps:
 
@@ -16,20 +18,12 @@ You will go through the following steps:
 
 When you complete these steps, you will have processed a payment with a payment card entered by a customer.
 
-## Before You Begin
+## Prerequisites
 
-Here are the things that you need in order to complete the steps in this guide:
-
-- You have a merchant account with [SumUp](https://me.sumup.com/login) and have already filled in your [account details](https://me.sumup.com/account).
-  - You can also create a [test account](/online-payments/#getting-a-test-account).
-- You have [registered your client application](/tools/authorization/register-app/) with SumUp.
-- You have a valid access token obtained via one of the supported OAuth2 authorization flow, the [Authorization code flow](/tools/authorization/authorization/#authorization-code-flow) or [Client credentials flow](/tools/authorization/authorization/#client-credentials-flow).
-
-<Aside type="note">
-
-You can create and complete a payment checkout for any valid SumUp merchant user's account. As a result, you _can_ use an access token obtained either via the [Client credentials flow](/tools/authorization/authorization/#client-credentials-flow) or via the [Authorization code flow](/tools/authorization/authorization/#authorization-code-flow).
-
-</Aside>
+- [SumUp merchant account](https://me.sumup.com/login) with completed [account details](https://me.sumup.com/account).
+  - You can also use a [test account](/online-payments/#getting-a-test-account).
+- [Registered client application](/tools/authorization/register-app/) with SumUp.
+- Valid access token obtained either with the [Authorization code flow](/tools/authorization/authorization/#authorization-code-flow) or [Client credentials flow](/tools/authorization/authorization/#client-credentials-flow).
 
 ## Steps
 
@@ -39,15 +33,13 @@ To create a new checkout resource, make a POST request to the `https://api.sumup
 
 <Aside type="caution">
 
-This request must be made in a server-to-server communication between your server and SumUp API.
+Checkout request must be made in a server-to-server communication between your server and SumUp API.
 
 </Aside>
 
-The request body should be a JSON object with the following minimum details:
-
 <Aside type="note">
 
-The table below lists only the required parameters for the request. For a full list of the available parameters, see the [API Reference](/api/checkouts/create).
+The table below lists only the **required** parameters for the request. For a full list, see the [API Reference](/api/checkouts/create).
 
 </Aside>
 
@@ -55,10 +47,10 @@ The table below lists only the required parameters for the request. For a full l
 | ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | checkout_reference | A unique string identifying the payment in your system. It must be unique for your application.                                                                                                                      |
 | amount             | The amount for which the payment is made.                                                                                                                                                                            |
-| currency           | The three-letter [ISO4217](https://en.wikipedia.org/wiki/ISO_4217) code of the currency in which the payment is made. The value must match the currency registered for the specified merchant (see `merchant_code`). |
+| currency           | The three-letter [ISO4217](https://en.wikipedia.org/wiki/ISO_4217) code of the payment currency. It must match the currency registered for the specified merchant (see `merchant_code`). |
 | merchant_code      | The code of the registered SumUp merchant the payment is made.                                                                                                                                                       |
 
-Following is a sample request for creating a new checkout resource:
+Example request:
 
 <Tabs syncKey="backend_lang">
   <TabItem label="cURL" icon="seti:powershell">
@@ -147,7 +139,7 @@ Following is a sample request for creating a new checkout resource:
   </TabItem>
 </Tabs>
 
-The response contains a JSON body with the details of the created checkout resource. What you need to note in the response is the identifier of the resource - you will need it for all operations that you perform with the resource, such as completing it in the next step.
+The response contains a JSON body with the details of the created checkout resource. Note the identifier of the resource - you will need it for all operations on the resource, such as processing the payment in the next step.
 
 The resource identifier is returned in the `id` attribute, or `f14425c6-8bc1-4d02-957c-47573f762828` in the sample response below. The `status` attribute shows that the payment for this resource is pending and will be processed when you complete the checkout with the payment instrument details.
 
@@ -167,7 +159,7 @@ The resource identifier is returned in the `id` attribute, or `f14425c6-8bc1-4d0
 
 ### 2. Complete a Checkout
 
-To complete the checkout and trigger the payment, make a PUT request to the `https://api.sumup.com/v0.1/checkouts/{id}` endpoint, where the value of the `{id}` path parameter is the identifier of the checkout resource.
+To process the checkout and trigger the payment, make a PUT request to the `https://api.sumup.com/v0.1/checkouts/{id}` endpoint, where the value of the `{id}` path parameter is the identifier of the checkout resource.
 
 <Aside type="caution">
 
@@ -177,7 +169,7 @@ This request must be made from your client, _not_ from your server.
 
 The request body should be a JSON object with the payment type (`card`) and the payment card details. For more information about the request, see the [API Reference](/api/checkouts/process).
 
-Following is a sample request for completing the checkout from [Step 1](#1-create-a-checkout):
+Example request for [Step 1 checkout](#1-create-a-checkout):
 
 <Tabs syncKey="backend_lang">
   <TabItem label="cURL" icon="seti:powershell">
