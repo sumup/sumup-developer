@@ -110,6 +110,34 @@ curl -X POST \
     });
     ```
   </TabItem>
+  <TabItem label="Java" icon="seti:java">
+    ```java
+    var customer = client.customers().createCustomer(
+        Customer.builder()
+            .customerId("MYCUSTOMERID-123")
+            .personalDetails(
+                PersonalDetails.builder()
+                    .firstName("Jeffrey")
+                    .lastName("Lebowski")
+                    .email("thedude@example.com")
+                    .phone("+1 310-555-1234")
+                    .birthDate(java.time.LocalDate.parse("1949-11-11"))
+                    .address(
+                        AddressLegacy.builder()
+                            .city("Venice")
+                            .state("California")
+                            .country("US")
+                            .line1("606 Venezia Ave")
+                            .line2("Front")
+                            .postalCode("90291")
+                            .build()
+                    )
+                    .build()
+            )
+            .build()
+    );
+    ```
+  </TabItem>
   <TabItem label="Go" icon="seti:go">
     ```go
     str := func(v string) *string { return &v }
@@ -266,6 +294,21 @@ Example of such request:
         CustomerId = "MYCUSTOMERID-123",
         Purpose = "SETUP_RECURRING_PAYMENT",
     });
+    ```
+  </TabItem>
+  <TabItem label="Java" icon="seti:java">
+    ```java
+    var checkout = client.checkouts().createCheckout(
+        CheckoutCreateRequest.builder()
+            .checkoutReference("MYCHECKOUT")
+            .amount(1.0f)
+            .currency(Currency.EUR)
+            .merchantCode("MDEERENR")
+            .description("My checkout")
+            .customerId("MYCUSTOMERID-123")
+            .purpose(CheckoutCreateRequestPurpose.SETUP_RECURRING_PAYMENT)
+            .build()
+    );
     ```
   </TabItem>
   <TabItem label="Go" icon="seti:go">
@@ -425,6 +468,11 @@ requesting them via [the list payment instruments](/api/customers/list-payment-i
   <TabItem label=".NET" icon="seti:c-sharp">
     ```csharp
     var instruments = await client.Customers.ListPaymentInstrumentsAsync("MYCUSTOMERID-123");
+    ```
+  </TabItem>
+  <TabItem label="Java" icon="seti:java">
+    ```java
+    var instruments = client.customers().listPaymentInstruments("MYCUSTOMERID-123");
     ```
   </TabItem>
   <TabItem label="Go" icon="seti:go">

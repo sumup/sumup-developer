@@ -88,6 +88,18 @@ Example request:
     });
     ```
   </TabItem>
+  <TabItem label="Java" icon="seti:java">
+    ```java
+    var checkout = client.checkouts().createCheckout(
+        CheckoutCreateRequest.builder()
+            .merchantCode(merchantCode)
+            .amount(15.0f)
+            .currency(Currency.EUR)
+            .checkoutReference("unique-checkout-ref-123")
+            .build()
+    );
+    ```
+  </TabItem>
   <TabItem label="Go" icon="seti:go">
     ```go
     checkout, err := client.Checkouts.Create(ctx, sumup.CreateCheckoutBody{
@@ -222,6 +234,25 @@ Example request for [Step 1 checkout](#1-create-a-checkout):
                 Type = CardType.Visa,
             },
         });
+    ```
+  </TabItem>
+  <TabItem label="Java" icon="seti:java">
+    ```java
+    var checkout = client.checkouts().processCheckout(
+        "f14425c6-8bc1-4d02-957c-47573f762828",
+        ProcessCheckout.builder()
+            .paymentType(ProcessCheckoutPaymentType.CARD)
+            .card(
+                Card.builder()
+                    .name("Boaty McBoatface")
+                    .number("4200000000000042")
+                    .expiryMonth(CardExpiryMonth.fromValue("12"))
+                    .expiryYear("23")
+                    .cvv("123")
+                    .build()
+            )
+            .build()
+    );
     ```
   </TabItem>
   <TabItem label="Go" icon="seti:go">

@@ -1,6 +1,6 @@
 ---
 import { MultiCode } from "@components/Code";
-import { curl, dotnet, go, node, python, rust } from "@lib/codesamples";
+import { curl, dotnet, go, java, node, python, rust } from "@lib/codesamples";
 import type { OperationObject } from "src/types/openapi";
 import OperationEndpoint from "./OperationEndpoint.astro";
 
@@ -27,6 +27,11 @@ const { operation } = Astro.props;
       label: ".NET",
       code: dotnet(operation),
       lang: "csharp",
+    },
+    {
+      label: "Java",
+      code: java(operation),
+      lang: "java",
     },
     {
       label: "Python",

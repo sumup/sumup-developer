@@ -1,7 +1,15 @@
 import { describe, expect, it } from "vitest";
 import type { OpenAPIV3_1 } from "openapi-types";
 import type { OperationObject } from "../../types/openapi";
-import { curl, dotnet, go, node as nodeSample, python, rust } from "./index";
+import {
+  curl,
+  dotnet,
+  go,
+  java,
+  node as nodeSample,
+  python,
+  rust,
+} from "./index";
 
 const checkoutBodySchema: OpenAPIV3_1.SchemaObject = {
   type: "object",
@@ -180,6 +188,23 @@ result, err := client.Checkouts.Create(context.Background(), "MC123", checkouts.
   Currency: "EUR",
   Description: "Online order #42",
 })`,
+    );
+  });
+
+  it("java sample uses the SumUp client", () => {
+    expect(java(checkoutOperation)).toBe(
+      `import com.sumup.sdk.SumUpClient;
+
+SumUpClient client = SumUpClient.builder().build();
+
+var result = client.checkouts().createCheckout(
+  "MC123",
+  CreateCheckoutBody.builder()
+    .amount(1000f)
+    .currency("EUR")
+    .description("Online order #42")
+    .build()
+);`,
     );
   });
 

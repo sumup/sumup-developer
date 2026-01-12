@@ -87,6 +87,19 @@ const tagEntries = orderedTagEntries();
                 lang: "bash",
               },
               {
+                label: "Java",
+                code: `// Maven
+<dependency>
+  <groupId>com.stripe</groupId>
+  <artifactId>stripe-java</artifactId>
+  <version>31.1.0</version>
+</dependency>
+
+// Gradle
+compile "com.sumup:sumup:0.0.5"`,
+                lang: "xml",
+              },
+              {
                 label: ".NET",
                 code: "dotnet add package SumUp",
                 lang: "bash",
@@ -182,6 +195,14 @@ func main() {
 }
 `,
                 lang: "go",
+              },
+              {
+                label: "Java",
+                code: `SumUpClient client =
+    SumUpClient.builder()
+        .accessToken("sup_sk_MvxmLOl0...")
+        .build();`,
+                lang: "java",
               },
               {
                 label: ".NET",

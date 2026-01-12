@@ -76,6 +76,21 @@ Initializing the SDK works by passing it a `checkout_id`. To [create a checkout]
     });
     ```
   </TabItem>
+  <TabItem label="Java" icon="seti:java">
+    ```java
+    var checkout = client.checkouts().createCheckout(
+        CheckoutCreateRequest.builder()
+            .checkoutReference("44ea5096-b83f-46e1-9323-fe82a8cb7eb5")
+            .amount(9.99f)
+            .currency(Currency.SEK)
+            .merchantCode("MXXXXXXX")
+            .description("Order #1234")
+            .returnUrl("https://example.com")
+            .redirectUrl("https://sumup.com")
+            .build()
+    );
+    ```
+  </TabItem>
   <TabItem label="Go" icon="seti:go">
     ```go
     description := "Order #1234"
@@ -379,6 +394,34 @@ To save a card for future usage, a customer should be created. It can be achieve
             },
         },
     });
+    ```
+  </TabItem>
+  <TabItem label="Java" icon="seti:java">
+    ```java
+    var customer = client.customers().createCustomer(
+        Customer.builder()
+            .customerId("831ff8d4cd5958ab5670")
+            .personalDetails(
+                PersonalDetails.builder()
+                    .firstName("John")
+                    .lastName("Doe")
+                    .email("user@example.com")
+                    .phone("+491635559723")
+                    .birthDate(java.time.LocalDate.parse("1993-12-31"))
+                    .address(
+                        AddressLegacy.builder()
+                            .city("Berlin")
+                            .state("Berlin")
+                            .country("DE")
+                            .line1("Sample street")
+                            .line2("ap. 5")
+                            .postalCode("10115")
+                            .build()
+                    )
+                    .build()
+            )
+            .build()
+    );
     ```
   </TabItem>
   <TabItem label="Go" icon="seti:go">

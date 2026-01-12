@@ -5,6 +5,7 @@ import GoIcon from "./icons/GoIcon";
 import NodejsIcon from "./icons/NodejsIcon";
 import PHPIcon from "./icons/PHPIcon";
 import PythonIcon from "./icons/PythonIcon";
+import JavaIcon from "./icons/JavaIcon";
 import RustIcon from "./icons/RustIcon";
 
 export default () => {
@@ -32,6 +33,13 @@ export default () => {
           leadingComponent: PythonIcon,
           label: "Python",
           href: "/tools/sdks/python/",
+          variant: "navigation",
+        },
+        {
+          key: "java",
+          leadingComponent: JavaIcon,
+          label: "Java",
+          href: "/tools/sdks/java/",
           variant: "navigation",
         },
         {

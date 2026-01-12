@@ -66,6 +66,11 @@ Example request:
     var checkout = await client.Checkouts.GetAsync("4ebc2ed7-bb8c-4d4d-a110-08fd31301bf2");
     ```
   </TabItem>
+  <TabItem label="Java" icon="seti:java">
+    ```java
+    var checkout = client.checkouts().getCheckout("4ebc2ed7-bb8c-4d4d-a110-08fd31301bf2");
+    ```
+  </TabItem>
   <TabItem label="Go" icon="seti:go">
     ```go
     ctx := context.Background()
@@ -143,6 +148,14 @@ Example request for the transaction with identifier `664200af-2b62-4142-9c73-a2a
     await client.Transactions.RefundAsync("19aa3cca-89f6-42d2-b462-463b0b53e959");
     ```
   </TabItem>
+  <TabItem label="Java" icon="seti:java">
+    ```java
+    client.transactions().refundTransaction(
+        "19aa3cca-89f6-42d2-b462-463b0b53e959",
+        RefundTransactionRequest.builder().build()
+    );
+    ```
+  </TabItem>
   <TabItem label="Go" icon="seti:go">
     ```go
     ctx := context.Background()
@@ -212,6 +225,14 @@ Example request for a partial refund for the amount of 24.42 EUR:
         {
             Amount = 24.42f,
         });
+    ```
+  </TabItem>
+  <TabItem label="Java" icon="seti:java">
+    ```java
+    client.transactions().refundTransaction(
+        "19aa3cca-89f6-42d2-b462-463b0b53e959",
+        RefundTransactionRequest.builder().amount(24.42f).build()
+    );
     ```
   </TabItem>
   <TabItem label="Go" icon="seti:go">

@@ -169,6 +169,23 @@ This is an asynchronous process; starting the transaction on the device may take
         });
     ```
   </TabItem>
+  <TabItem label="Java" icon="seti:java">
+    ```java
+    var checkout = client.readers().createReaderCheckout(
+        merchantCode,
+        readerId,
+        CreateReaderCheckoutRequest.builder()
+            .totalAmount(
+                Money.builder()
+                    .currency("EUR")
+                    .minorUnit(2L)
+                    .value(1500L)
+                    .build()
+            )
+            .build()
+    );
+    ```
+  </TabItem>
   <TabItem label="Go" icon="seti:go">
     ```go
     checkout, err := client.Readers.CreateCheckout(ctx, merchantCode, readerID, readers.CreateReaderCheckoutBody{
@@ -246,6 +263,11 @@ This process is asynchronous, and the actual termination may take some time to b
     await client.Readers.TerminateCheckoutAsync(merchantCode, readerId);
     ```
   </TabItem>
+  <TabItem label="Java" icon="seti:java">
+    ```java
+    client.readers().createReaderTerminate(merchantCode, readerId, java.util.Map.of());
+    ```
+  </TabItem>
   <TabItem label="Go" icon="seti:go">
     ```go
     err := client.Readers.TerminateCheckout(ctx, merchantCode, readerID)
@@ -291,6 +313,11 @@ List all readers connected to your merchant account.
   <TabItem label=".NET" icon="seti:c-sharp">
     ```csharp
     var readers = await client.Readers.ListAsync(merchantCode);
+    ```
+  </TabItem>
+  <TabItem label="Java" icon="seti:java">
+    ```java
+    var readers = client.readers().listReaders(merchantCode);
     ```
   </TabItem>
   <TabItem label="Go" icon="seti:go">
