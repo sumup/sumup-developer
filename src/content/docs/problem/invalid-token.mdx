@@ -3,9 +3,13 @@ title: Invalid Token
 id: invalid-token
 ---
 
-# Invalid Token
-
 Indicates that the request has not been applied because it lacks valid authentication credentials for the target resource.
+
+## Common Causes
+
+- The access token has expired.
+- The token has been revoked or is no longer valid.
+- The token belongs to a different app or environment.
 
 ```json
 {

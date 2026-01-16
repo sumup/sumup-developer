@@ -1,0 +1,23 @@
+---
+title: Bad Request
+id: bad-request
+---
+
+Indicates that the server cannot or will not process the request due to a client error.
+
+## Common Causes
+
+- The request body is malformed JSON.
+- A required field is missing or has an invalid value.
+- The request uses an unsupported content type.
+
+```json
+{
+  "type": "https://developer.sumup.com/problem/bad-request",
+  "status": 400,
+  "detail": "Bad Request",
+  "fields": [
+    { "path": "$.user.name", "name": "name", "message": "Name must not be empty" }
+  ]
+}
+```

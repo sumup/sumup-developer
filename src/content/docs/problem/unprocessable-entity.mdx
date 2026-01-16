@@ -3,8 +3,13 @@ title: Unprocessable Entity
 id: unprocessable-entity
 ---
 
-# Unprocessable Entity
-
 Indicates that the server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions.
 
 **Important:** The client should not repeat this request without modification.
+
+## Common Causes
+
+- The request is syntactically valid but violates business rules.
+- A state transition is not allowed for the current resource status.
+- Referenced resources exist but are incompatible (for example, currency mismatch).
+

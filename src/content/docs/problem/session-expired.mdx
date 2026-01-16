@@ -3,9 +3,13 @@ title: Session Expired
 id: session-expired
 ---
 
-# Session Expired
-
 Indicates checkout session has reached its expiration point. Initiate a new checkout.
+
+## Common Causes
+
+- The checkout reached its expiration time before payment completed.
+- The customer attempted to pay after the checkout TTL elapsed.
+- A delayed payment method completed after expiration.
 
 ```json
 {

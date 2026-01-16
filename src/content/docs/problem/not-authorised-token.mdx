@@ -3,9 +3,13 @@ title: Not Authorised Token
 id: not-authorised-token
 ---
 
-# Not Authorised Token
-
 Indicates that the request has not been applied because it lacks valid authentication credentials for the target resource.
+
+## Common Causes
+
+- The token lacks the required scopes for the endpoint.
+- The token belongs to a different merchant than the resource.
+- A refresh token is used instead of an access token.
 
 ```json
 {

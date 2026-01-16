@@ -3,7 +3,13 @@ title: Internal Server Error
 id: internal-server-error
 ---
 
-# Internal Server Error
+Indicates that an unexpected server error occurred. Retry the request, if this persists, check the [SumUp status page](https://status.sumup.com/) or [contact us](/contact).
+
+## Common Causes
+
+- A transient internal exception occurred while processing the request.
+- A downstream dependency returned an unexpected error.
+- The service was temporarily unavailable under load.
 
 ```json
 {

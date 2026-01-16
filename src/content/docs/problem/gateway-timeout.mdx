@@ -3,9 +3,13 @@ title: Gateway Timeout
 id: gateway-timeout
 ---
 
-# Gateway Timeout
+Indicates that the server did not receive a timely response to complete the request. Retry the request, and if timeouts continue, check the [SumUp status page](https://status.sumup.com/) or [contact us](/contact).
 
-Indicates that the server didn't get a response on time to complete the request. Try again and [contact us](/contact) if the issue persists.
+## Common Causes
+
+- An upstream dependency did not respond in time.
+- Network latency or connectivity issues delayed the response.
+- The request required longer processing than the timeout window.
 
 ```json
 {

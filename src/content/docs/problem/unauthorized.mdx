@@ -1,0 +1,20 @@
+---
+title: Unauthorized
+id: unauthorized
+---
+
+Indicates that the request lacks valid authentication credentials for the target resource.
+
+## Common Causes
+
+- The access token is missing or empty.
+- The access token is expired or revoked.
+- The token is for a different environment or app.
+
+```json
+{
+  "type": "https://developer.sumup.com/problem/unauthorized",
+  "status": 401,
+  "detail": "Unauthorized"
+}
+```

@@ -3,9 +3,13 @@ title: Session Can't Be Deactivated
 id: session-cant-be-deactivated
 ---
 
-# Session Can't Be Deactivated
+Indicates checkout session can't be canceled due to a pending Boleto payment.
 
-Indicates checkout session can't be cancelled due to a pending Boleto payment.
+## Common Causes
+
+- A Boleto payment is still pending for the checkout.
+- The checkout is in a non-cancellable state.
+- A payment authorization is already in progress.
 
 ```json
 {

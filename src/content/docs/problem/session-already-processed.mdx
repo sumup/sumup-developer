@@ -3,9 +3,13 @@ title: Session Already Processed
 id: session-already-processed
 ---
 
-# Session Already Processed
-
 Indicates the checkout has already been processed. Check the transaction status by calling our `get transaction` endpoint.
+
+## Common Causes
+
+- The checkout has already completed successfully.
+- A duplicate processing request is sent for the same checkout.
+- A retry occurs after the transaction has already been captured.
 
 ```json
 {

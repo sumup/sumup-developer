@@ -3,9 +3,13 @@ title: Payment Method Not Allowed
 id: payment-method-not-allowed
 ---
 
-# Payment Method Not Allowed
-
 Ensure the payment method for the respective checkout, supports the merchant's country. To check which countries a payment method supports, visit our documentation on [Alternative Payment Methods](/online-payments/apm).
+
+## Common Causes
+
+- The payment method is not enabled for the merchant account.
+- The checkout currency is not supported by the selected payment method.
+- The payment method is not available in the merchant's country.
 
 ```json
 {

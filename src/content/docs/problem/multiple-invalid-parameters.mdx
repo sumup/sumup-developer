@@ -3,9 +3,13 @@ title: Multiple Invalid Parameters
 id: multiple-invalid-parameters
 ---
 
-# Multiple Invalid Parameters
-
 Indicates that the server cannot or will not process the request due to something that is perceived to be a client error (e.g., malformed request syntax, invalid request message framing, or deceptive request routing).
+
+## Common Causes
+
+- Multiple fields fail validation in the same request.
+- Mutually exclusive parameters are provided together.
+- A nested object contains one or more invalid fields.
 
 ```json
 [

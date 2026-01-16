@@ -3,9 +3,13 @@ title: Missing Token
 id: missing-token
 ---
 
-# Missing Token
-
 Indicates that the request has not been applied because it lacks valid authentication credentials for the target resource.
+
+## Common Causes
+
+- The `Authorization` header is missing.
+- The token is not included in the request at all.
+- The header is present but empty or malformed.
 
 ```json
 {

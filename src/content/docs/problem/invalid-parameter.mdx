@@ -3,9 +3,13 @@ title: Invalid Parameter
 id: invalid-parameter
 ---
 
-# Invalid Parameter
-
 Indicates that the server cannot or will not process the request due to something that is perceived to be a client error (e.g., malformed request syntax, invalid request message framing, or deceptive request routing).
+
+## Common Causes
+
+- A required field is missing or empty.
+- A field has the wrong type or format (for example, a string where a number is expected).
+- A value is outside the allowed range or list of supported values.
 
 ```json
 {
