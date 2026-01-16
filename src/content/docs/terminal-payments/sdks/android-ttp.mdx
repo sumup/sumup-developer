@@ -13,7 +13,7 @@ The { androidttpsdkname } enables your mobile app to accept card-present contact
 - Intended for live, customer-facing use.
 - The SDK is not debuggable. Additionally, **Attestation & Monitoring** is enabled. If a device fails to meet our security policies (e.g., debug mode enabled or rooted device), payment operations will be disabled.
 - For testing purposes, use dedicated developer credentials to prevent actual card charges. You can request access by contacting integration@sumup.com.
-- For the latest updates, consult the [{ androidttpsdkname } Changelog](/changelog/tap-to-pay).
+- For the latest updates, consult the [{ androidttpsdkname } Changelog](/changelog/android-tap-to-pay-sdk).
 
 ### Prerequisites
 
@@ -68,13 +68,13 @@ You can use the sample app provided in the GitHub repository as a reference.
    Production dependency:
 
    ```kotlin
-   implementation("com.sumup.tap-to-pay:utopia-sdk:1.0.1")
+   implementation("com.sumup.tap-to-pay:utopia-sdk:1.0.4")
    ```
 
    Testing dependency:
 
    ```kotlin
-   implementation("com.sumup.tap-to-pay:utopia-sdk-dev-protected:1.0.1")
+   implementation("com.sumup.tap-to-pay:utopia-sdk-dev-protected:1.0.4")
    ```
 
 ### Authentication
