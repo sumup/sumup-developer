@@ -1,15 +1,15 @@
 ---
-title: 401 Unauthorised - Not Authorised Token
-id: not-authorised-token
+title: Missing Token
+id: missing-token
 ---
 
-# 401 Unauthorised - Not Authorised Token
+# Missing Token
 
 Indicates that the request has not been applied because it lacks valid authentication credentials for the target resource.
 
 ```json
 {
-  "error_message": "NOT_AUTHORIZED",
+  "message": "access token required",
   "error_code": "NOT_AUTHORIZED"
 }
 ```
