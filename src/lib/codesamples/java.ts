@@ -129,7 +129,6 @@ const generateJavaBuilder = (
     return "";
   }
 
-  const indent = INDENT.repeat(indentLevel);
   const fieldIndent = INDENT.repeat(indentLevel + 1);
   const properties = schema.properties || {};
 
