@@ -2,6 +2,11 @@
 import { resolveReference } from "@lib/openapi";
 import type { OpenAPIV3_1 } from "openapi-types";
 
+type Constraint = {
+  text: string;
+  href?: string;
+};
+
 type Props = {
   name: string;
   required: boolean;
@@ -17,39 +22,138 @@ let { name, required, def } = Astro.props;
 if (def && "$ref" in def) {
   def = resolveReference(def.$ref);
 }
+
 if (def && "items" in def && def.items && "$ref" in def.items) {
   const resolved = resolveReference(def.items.$ref);
   if (resolved) def.items = resolved;
 }
+
+const formatValue = (value: unknown): string => {
+  if (value === undefined || value === null) return "";
+  if (typeof value === "string") return value;
+  try {
+    return JSON.stringify(value);
+  } catch {
+    return String(value);
+  }
+};
+
+const addConstraint = (
+  constraints: Constraint[],
+  label: string,
+  value: unknown,
+) => {
+  if (value === undefined || value === null || value === "") return;
+  constraints.push({ text: `${label}: ${formatValue(value)}` });
+};
+
+const schema = def && "type" in def ? def : undefined;
+const constraints: Constraint[] = [];
+
+if (schema) {
+  if (schema.type === "string") {
+    addConstraint(constraints, "min length", schema.minLength);
+    addConstraint(constraints, "max length", schema.maxLength);
+    addConstraint(constraints, "pattern", schema.pattern);
+    if (schema.format) {
+      constraints.push({ text: schema.format });
+    }
+  }
+
+  if (schema.type === "array") {
+    addConstraint(constraints, "min items", schema.minItems);
+    addConstraint(constraints, "max items", schema.maxItems);
+    if (schema.uniqueItems) {
+      constraints.push({ text: "unique items" });
+    }
+  }
+
+  if (schema.type === "object") {
+    addConstraint(constraints, "min properties", schema.minProperties);
+    addConstraint(constraints, "max properties", schema.maxProperties);
+  }
+
+  addConstraint(constraints, "minimum", schema.minimum);
+  addConstraint(constraints, "maximum", schema.maximum);
+  addConstraint(constraints, "exclusive min", schema.exclusiveMinimum);
+  addConstraint(constraints, "exclusive max", schema.exclusiveMaximum);
+  addConstraint(constraints, "multiple of", schema.multipleOf);
+
+  if (schema.default !== undefined) {
+    addConstraint(constraints, "default", schema.default);
+  }
+  if ("nullable" in schema && schema.nullable) {
+    constraints.push({ text: "nullable" });
+  }
+  if (schema.deprecated) {
+    constraints.push({ text: "deprecated" });
+  }
+  if (schema.readOnly) {
+    constraints.push({ text: "read only" });
+  }
+  if (schema.writeOnly) {
+    constraints.push({ text: "write only" });
+  }
+  if (schema.externalDocs?.url) {
+    constraints.push({ text: "docs", href: schema.externalDocs.url });
+  }
+}
+
+const typeText =
+  def &&
+  ("items" in def && def.items
+    ? `[]${("type" in def.items && def.items.type) || "object"}`
+    : "type" in def && def.type);
 ---
 
 <div class="parameter">
-  <span class="name">
-    {name}
-  </span>
-  <span class="type">
-    &nbsp;{
-      def &&
-        ("items" in def && def.items
-          ? `[]${("type" in def.items && def.items.type) || "object"}`
-          : "type" in def && def.type)
-    }
-  </span>
-  {required && <span class="required">&nbsp;required</span>}
+  <span class="name">{name}</span>
+  <span class="constraint">{typeText}</span>
+  {
+    constraints.map((constraint) =>
+      constraint.href ? (
+        <a
+          class="constraint link"
+          href={constraint.href}
+          target="_blank"
+          rel="noreferrer"
+        >
+          {constraint.text}
+        </a>
+      ) : (
+        <span class="constraint">{constraint.text}</span>
+      ),
+    )
+  }
+  {required && <span class="required">required</span>}
 </div>
 
 <style>
   .parameter {
     margin-bottom: var(--cui-spacings-bit);
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: var(--cui-spacings-bit);
+    align-items: baseline;
   }
 
   .name {
     font-family: var(--cui-font-stack-mono);
     font-weight: var(--cui-font-weight-bold);
+    margin-right: var(--cui-spacings-bit);
   }
 
-  .type {
+  .constraint {
     color: var(--cui-fg-subtle);
+  }
+
+  .constraint:not(:last-child)::after {
+    content: ",";
+  }
+
+  .link {
+    text-decoration: underline;
   }
 
   .required {
