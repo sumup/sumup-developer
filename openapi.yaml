@@ -3619,7 +3619,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Reader'
         '404':
-          description: The requested Reader resource does not exists.
+          description: The requested Reader resource does not exist.
           content:
             application/json:
               schema:
@@ -3660,7 +3660,7 @@ paths:
         '200':
           description: Returns an empty response if the deletion succeeded.
         '404':
-          description: The requested Reader resource does not exists.
+          description: The requested Reader resource does not exist.
           content:
             application/json:
               schema:
@@ -3722,7 +3722,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Problem'
         '404':
-          description: The requested Reader resource does not exists.
+          description: The requested Reader resource does not exist.
           content:
             application/json:
               schema:
@@ -3841,6 +3841,7 @@ paths:
                   description: |
                     Your server returns this code if it accepts the callback.
                     If the server returns any other code, the callback will be retried up to 5 times with exponential backoff.
+              callbacks: {}
       security:
         - apiKey: []
         - oauth2:
@@ -3898,6 +3899,7 @@ paths:
           example: rdr_3MSAFM23CK82VSTT4BN6RWSQ65
         - name: Accept
           in: header
+          description: ''
           required: true
           schema:
             type: string
@@ -3906,6 +3908,7 @@ paths:
           example: application/json
         - name: Content-Type
           in: header
+          description: ''
           required: true
           schema:
             type: string
@@ -3914,6 +3917,7 @@ paths:
           example: application/json
         - name: Authorization
           in: header
+          description: ''
           required: true
           schema:
             type: string
@@ -3963,6 +3967,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GatewayTimeout'
+      callbacks: {}
       security:
         - apiKey: []
         - oauth2:
@@ -4059,6 +4064,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CreateReaderTerminateError'
+      callbacks: {}
       security:
         - apiKey: []
         - oauth2:
@@ -5674,19 +5680,29 @@ components:
       description: Issuing card network of the payment card used for the transaction.
       type: string
       enum:
+        - ALELO
         - AMEX
+        - CONECS
         - CUP
         - DINERS
         - DISCOVER
+        - EFTPOS
         - ELO
         - ELV
+        - GIROCARD
         - HIPERCARD
+        - INTERAC
         - JCB
         - MAESTRO
         - MASTERCARD
+        - PLUXEE
+        - SWILE
+        - TICKET
         - VISA
         - VISA_ELECTRON
         - VISA_VPAY
+        - VPAY
+        - VR
         - UNKNOWN
     TransactionFull:
       allOf:
@@ -7982,12 +7998,14 @@ components:
       description: Delete the reader.
   requestBodies:
     BankAccounts:
+      description: ''
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/BankAccountPayload'
     CheckoutCreate:
       required: true
+      description: ''
       content:
         application/json:
           schema:
@@ -8102,6 +8120,7 @@ components:
             $ref: '#/components/schemas/Customer'
     CustomerUpdate:
       required: true
+      description: ''
       content:
         application/json:
           schema:
@@ -8110,31 +8129,37 @@ components:
               personal_details:
                 $ref: '#/components/schemas/PersonalDetails'
     DoingBusinessAsLegacy:
+      description: ''
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/DoingBusinessAsPayloadLegacy'
     MerchantProfile:
+      description: ''
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/MerchantProfilePayload'
     MerchantSettings:
+      description: ''
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/MerchantSettingsPayload'
     PaymentInstrument:
+      description: ''
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/PaymentInstrumentCard'
     PersonalProfile:
+      description: ''
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/PersonalProfilePayloadLegacy'
     Refund:
+      description: ''
       content:
         application/json:
           schema:
