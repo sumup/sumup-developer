@@ -102,10 +102,10 @@ Example request:
   </TabItem>
   <TabItem label="Go" icon="seti:go">
     ```go
-    checkout, err := client.Checkouts.Create(ctx, sumup.CreateCheckoutBody{
+    checkout, err := client.Checkouts.Create(ctx, sumup.CheckoutsCreateParams{
     	MerchantCode:      merchantCode,
     	Amount:            15.0,
-    	Currency:          "EUR",
+    	Currency:          sumup.CurrencyEUR,
     	CheckoutReference: "unique-checkout-ref-123",
     })
     ```
@@ -144,9 +144,12 @@ Example request:
   </TabItem>
   <TabItem label="PHP" icon="seti:php">
     ```php
-    $checkoutsService = $sumup->getCheckoutService();
-    $response = $checkoutsService->create(10, 'EUR', 'CO746453', 'docuser@sumup.com', 'Sample one-time payment');
-    $checkoutId = $response->getBody()->id;
+    $checkout = $sumup->checkouts->create([
+        'merchant_code' => $merchantCode,
+        'amount' => 15.0,
+        'currency' => 'EUR',
+        'checkout_reference' => 'unique-checkout-ref-123',
+    ]);
     ```
   </TabItem>
 </Tabs>
@@ -257,10 +260,7 @@ Example request for [Step 1 checkout](#1-create-a-checkout):
   </TabItem>
   <TabItem label="Go" icon="seti:go">
     ```go
-    ctx := context.Background()
-    client := sumup.NewClient().WithAuth(os.Getenv("SUMUP_API_KEY"))
-
-    checkoutSuccess, err := client.Checkouts.Process(ctx, "f14425c6-8bc1-4d02-957c-47573f762828", sumup.ProcessCheckoutBody{
+    checkoutSuccess, err := client.Checkouts.Process(ctx, "f14425c6-8bc1-4d02-957c-47573f762828", sumup.CheckoutsProcessParams{
     	Card: &sumup.Card{
     		Cvv:         "123",
     		ExpiryMonth: "12",
@@ -268,7 +268,7 @@ Example request for [Step 1 checkout](#1-create-a-checkout):
     		Name:        "Boaty McBoatface",
     		Number:      "4200000000000042",
     	},
-    	PaymentType: sumup.ProcessCheckoutBodyPaymentTypeCard,
+    	PaymentType: sumup.ProcessCheckoutPaymentTypeCard,
     })
     ```
   </TabItem>
@@ -317,6 +317,23 @@ Example request for [Step 1 checkout](#1-create-a-checkout):
             },
         )
         .await?;
+    ```
+  </TabItem>
+  <TabItem label="PHP" icon="seti:php">
+    ```php
+    $checkout = $sumup->checkouts->process(
+        'f14425c6-8bc1-4d02-957c-47573f762828',
+        [
+            'payment_type' => 'card',
+            'card' => [
+                'name' => 'Boaty McBoatface',
+                'number' => '4200000000000042',
+                'expiry_month' => '12',
+                'expiry_year' => '23',
+                'cvv' => '123',
+            ],
+        ]
+    );
     ```
   </TabItem>
 </Tabs>

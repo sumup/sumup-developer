@@ -7,6 +7,7 @@ import {
   go,
   java,
   node as nodeSample,
+  php,
   python,
   rust,
 } from "./index";
@@ -183,7 +184,7 @@ var result = await client.Checkouts.CreateAsync(
     expect(go(checkoutOperation)).toBe(
       `client := sumup.NewClient()
 
-result, err := client.Checkouts.Create(context.Background(), "MC123", checkouts.CreateCheckoutBody{
+result, err := client.Checkouts.Create(context.Background(), "MC123", sumup.CheckoutsCreateParams{
   Amount: 1000,
   Currency: "EUR",
   Description: "Online order #42",
@@ -219,6 +220,18 @@ let result = client.customers().update("cust_123", sumup::UpdateCustomerParams{
 }, sumup::UpdateCustomerBody{
   email: "ada@example.com".to_string(),
 }).await;`,
+    );
+  });
+
+  it("php sample uses the SumUp PHP SDK", () => {
+    expect(php(checkoutOperation)).toBe(
+      `$sumup = new \\SumUp\\SumUp();
+
+$result = $sumup->checkouts->create('MC123', [
+  'amount' => 1000,
+  'currency' => 'EUR',
+  'description' => 'Online order #42',
+]);`,
     );
   });
 

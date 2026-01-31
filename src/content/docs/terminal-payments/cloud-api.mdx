@@ -188,8 +188,8 @@ This is an asynchronous process; starting the transaction on the device may take
   </TabItem>
   <TabItem label="Go" icon="seti:go">
     ```go
-    checkout, err := client.Readers.CreateCheckout(ctx, merchantCode, readerID, readers.CreateReaderCheckoutBody{
-  		TotalAmount: readers.CreateReaderCheckoutBodyTotalAmount{
+    checkout, err := client.Readers.CreateCheckout(ctx, merchantCode, readerID, sumup.CreateCheckoutRequest{
+  		TotalAmount: sumup.CreateCheckoutRequestTotalAmount{
   			Currency:  "EUR",
   			MinorUnit: 2,
   			Value:     1500,

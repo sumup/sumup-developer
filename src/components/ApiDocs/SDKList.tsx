@@ -60,7 +60,7 @@ export default () => {
           key: "dotnet",
           leadingComponent: DotnetIcon,
           label: ".NET",
-          href: "https://github.com/sumup/sumup-dotnet",
+          href: "/tools/sdks/dotnet/",
           variant: "navigation",
         },
       ]}

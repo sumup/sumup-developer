@@ -11,7 +11,6 @@ const generateGoStructInit = (
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   example: any,
   schema: OpenAPIV3_1.SchemaObject,
-  packageName: string,
   indent = "",
 ): string => {
   if (example === null || example === undefined) {
@@ -48,13 +47,8 @@ const generateGoStructInit = (
           structName = Case.pascal(key);
         }
 
-        const nestedInit = generateGoStructInit(
-          value,
-          resolved,
-          packageName,
-          indent + "  ",
-        );
-        return `${indent}  ${fieldName}: ${packageName}.${structName}${nestedInit},`;
+        const nestedInit = generateGoStructInit(value, resolved, indent + "  ");
+        return `${indent}  ${fieldName}: sumup.${structName}${nestedInit},`;
       }
 
       // Handle arrays
@@ -90,11 +84,11 @@ const generateGoStructInit = (
                 "items" in resolved && resolved.items
                   ? resolveSchema(resolved.items)
                   : {};
-              return `${indent}    ${packageName}.${itemStructName}${generateGoStructInit(item, itemSchema as OpenAPIV3_1.SchemaObject, packageName, indent + "    ")}`;
+              return `${indent}    sumup.${itemStructName}${generateGoStructInit(item, itemSchema as OpenAPIV3_1.SchemaObject, indent + "    ")}`;
             })
             .join(",\n");
 
-          return `${indent}  ${fieldName}: []${packageName}.${itemStructName}{\n${itemsInit},\n${indent}  },`;
+          return `${indent}  ${fieldName}: []sumup.${itemStructName}{\n${itemsInit},\n${indent}  },`;
         }
 
         // Array of primitives
@@ -109,7 +103,10 @@ const generateGoStructInit = (
   return `{\n${fields}\n${indent}}`;
 };
 
-const requestBody = (operation: OperationObject): string => {
+const requestBody = (
+  operation: OperationObject,
+  methodName: string,
+): string => {
   const example = getRequestBodyExample(operation);
 
   if (!example || typeof example !== "object") {
@@ -127,19 +124,18 @@ const requestBody = (operation: OperationObject): string => {
     return "";
   }
 
-  const packageName = Case.snake(operation.tag);
-  const bodyStructName = `${Case.pascal(operation.operationId!)}Body`;
+  const bodyStructName = `${Case.pascal(operation.tag)}${Case.pascal(methodName)}Params`;
 
-  return `${packageName}.${bodyStructName}${generateGoStructInit(example, schema, packageName)}`;
+  return `sumup.${bodyStructName}${generateGoStructInit(example, schema)}`;
 };
 
 export const go = (operation: OperationObject): string => {
   const resource = Case.pascal(operation.tag);
-  const method = Case.pascal(
-    operation["x-codegen"]?.method_name || operation.operationId!,
-  );
+  const methodName =
+    operation["x-codegen"]?.method_name || operation.operationId || "";
+  const method = Case.pascal(methodName);
 
-  const body = requestBody(operation);
+  const body = requestBody(operation, methodName);
 
   // Extract required parameters and use their examples from referenced schemas if available
   const requiredParams = operation.parameters?.filter((p) => p.required) || [];

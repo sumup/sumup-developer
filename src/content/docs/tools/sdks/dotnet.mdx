@@ -1,0 +1,82 @@
+---
+title: .NET SDK
+description: Use the official .NET client to talk to every SumUp public API.
+sidebar:
+  order: 45
+links:
+  - title: Source code
+    href: https://github.com/sumup/sumup-dotnet
+  - title: Documentation
+    href: https://github.com/sumup/sumup-dotnet#readme
+---
+
+The [`SumUp`](https://github.com/sumup/sumup-dotnet) package is the official .NET SDK for SumUp APIs. It targets all currently supported .NET releases and ships async-first clients.
+
+## Installation
+
+```bash
+dotnet add package SumUp --prerelease
+```
+
+## Configure Authentication
+
+Set the `SUMUP_ACCESS_TOKEN` environment variable or pass the token into `SumUpClientOptions`.
+
+```bash
+export SUMUP_ACCESS_TOKEN="sup_sk_MvxmLOl0..."
+```
+
+## Examples
+
+### Online Payment Checkout
+
+```csharp
+using System;
+using SumUp;
+
+using var client = new SumUpClient();
+
+var merchantResponse = await client.Merchant.GetAsync();
+var merchantCode = merchantResponse.Data?.MerchantProfile?.MerchantCode
+    ?? throw new InvalidOperationException("Merchant code not returned.");
+
+var checkoutReference = $"checkout-{Guid.NewGuid():N}";
+
+var checkoutResponse = await client.Checkouts.CreateAsync(new CheckoutCreateRequest
+{
+    Amount = 10.00f,
+    Currency = Currency.Eur,
+    CheckoutReference = checkoutReference,
+    MerchantCode = merchantCode,
+    Description = "Test payment",
+    RedirectUrl = "https://example.com/success",
+    ReturnUrl = "https://example.com/webhook",
+});
+
+Console.WriteLine($"Checkout ID: {checkoutResponse.Data?.Id}");
+```
+
+### Solo Cloud API Checkout
+
+```csharp
+using SumUp;
+
+using var client = new SumUpClient();
+
+var readerCheckout = await client.Readers.CreateCheckoutAsync(
+    merchantCode: "your-merchant-code",
+    readerId: "your-reader-id",
+    body: new CreateReaderCheckoutRequest
+    {
+        Description = "Coffee purchase",
+        ReturnUrl = "https://example.com/webhook",
+        TotalAmount = new CreateReaderCheckoutRequestTotalAmount
+        {
+            Currency = "EUR",
+            MinorUnit = 2,
+            Value = 1000,
+        },
+    });
+
+Console.WriteLine($"Reader checkout created: {readerCheckout.Data?.Data?.ClientTransactionId}");
+```

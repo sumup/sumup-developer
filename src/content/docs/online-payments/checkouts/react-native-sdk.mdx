@@ -97,14 +97,14 @@ Initializing the SDK works by passing it a `checkout_id`. To [create a checkout]
     returnURL := "https://example.com"
     redirectURL := "https://sumup.com"
 
-    checkout, err := client.Checkouts.Create(ctx, sumup.CreateCheckoutBody{
+    checkout, err := client.Checkouts.Create(ctx, sumup.CheckoutsCreateParams{
     	CheckoutReference: "44ea5096-b83f-46e1-9323-fe82a8cb7eb5",
     	Amount:            9.99,
-    	Currency:          "SEK",
+    	Currency:          sumup.CurrencySEK,
     	MerchantCode:      "MXXXXXXX",
     	Description:       &description,
-    	ReturnUrl:         &returnURL,
-    	RedirectUrl:       &redirectURL,
+    	ReturnURL:         &returnURL,
+    	RedirectURL:       &redirectURL,
     })
     ```
   </TabItem>
@@ -150,7 +150,7 @@ Initializing the SDK works by passing it a `checkout_id`. To [create a checkout]
   </TabItem>
   <TabItem label="PHP" icon="seti:php">
     ```php
-    $payload = [
+    $checkout = $sumup->checkouts->create([
         'checkout_reference' => '44ea5096-b83f-46e1-9323-fe82a8cb7eb5',
         'currency' => 'SEK',
         'amount' => 9.99,
@@ -158,10 +158,7 @@ Initializing the SDK works by passing it a `checkout_id`. To [create a checkout]
         'merchant_code' => 'MXXXXXXX',
         'return_url' => 'https://example.com',
         'redirect_url' => 'https://sumup.com',
-    ];
-
-    $customService = $sumup->getCustomService();
-    $response = $customService->request('POST', '/v0.1/checkouts', $payload);
+    ]);
     ```
   </TabItem>
 </Tabs>
@@ -428,14 +425,14 @@ To save a card for future usage, a customer should be created. It can be achieve
     ```go
     str := func(v string) *string { return &v }
 
-    customer, err := client.Customers.Create(ctx, sumup.CreateCustomerBody{
-    	CustomerId: "831ff8d4cd5958ab5670",
-    	PersonalDetails: &shared.PersonalDetails{
+    customer, err := client.Customers.Create(ctx, sumup.CustomersCreateParams{
+    	CustomerID: "831ff8d4cd5958ab5670",
+    	PersonalDetails: &sumup.PersonalDetails{
     		FirstName: str("John"),
     		LastName:  str("Doe"),
     		Email:     str("user@example.com"),
     		Phone:     str("+491635559723"),
-    		Address: &shared.AddressLegacy{
+    		Address: &sumup.AddressLegacy{
     			City:       str("Berlin"),
     			State:      str("Berlin"),
     			Country:    str("DE"),
@@ -502,24 +499,23 @@ To save a card for future usage, a customer should be created. It can be achieve
   </TabItem>
   <TabItem label="PHP" icon="seti:php">
     ```php
-    $customersService = $sumup->getCustomerService();
-    $response = $customersService->create(
-        '831ff8d4cd5958ab5670',
-        [
+    $customer = $sumup->customers->create([
+        'customer_id' => '831ff8d4cd5958ab5670',
+        'personal_details' => [
             'first_name' => 'John',
             'last_name' => 'Doe',
             'email' => 'user@example.com',
             'phone' => '+491635559723',
+            'address' => [
+                'city' => 'Berlin',
+                'state' => 'Berlin',
+                'country' => 'DE',
+                'line_1' => 'Sample street',
+                'line_2' => 'ap. 5',
+                'postal_code' => '10115',
+            ],
         ],
-        [
-            'city' => 'Berlin',
-            'state' => 'Berlin',
-            'country' => 'DE',
-            'line1' => 'Sample street',
-            'line2' => 'ap. 5',
-            'postalCode' => '10115',
-        ]
-    );
+    ]);
     ```
   </TabItem>
 </Tabs>

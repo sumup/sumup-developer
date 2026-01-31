@@ -62,8 +62,8 @@ const tagEntries = orderedTagEntries();
             <h2>SDKs</h2>
             <p>
               The SumUp SDKs reduce the amount of work required to use our REST
-              APIs. SumUp maintains SDKs for PHP, Node.js, Python, Go, Rust, and
-              .NET.
+              APIs. SumUp maintains SDKs for PHP, Node.js, Python, Java, Go,
+              Rust, and .NET.
             </p>
           </div>
           <SDKList />
@@ -90,13 +90,13 @@ const tagEntries = orderedTagEntries();
                 label: "Java",
                 code: `// Maven
 <dependency>
-  <groupId>com.stripe</groupId>
-  <artifactId>stripe-java</artifactId>
-  <version>31.1.0</version>
+  <groupId>com.sumup</groupId>
+  <artifactId>sumup-sdk</artifactId>
+  <version>0.0.6</version>
 </dependency>
 
 // Gradle
-compile "com.sumup:sumup:0.0.5"`,
+implementation "com.sumup:sumup-sdk:0.0.6"`,
                 lang: "xml",
               },
               {
@@ -111,7 +111,7 @@ compile "com.sumup:sumup:0.0.5"`,
               },
               {
                 label: "PHP",
-                code: "composer require sumup/sumup-ecom-php-sdk",
+                code: "composer require sumup/sumup-php",
                 lang: "bash",
               },
               {
@@ -187,11 +187,12 @@ const sumup = new SumUp({ apiKey: 'sup_sk_MvxmLOl0...' });`,
                 code: `package main
 
 import (
+  "github.com/sumup/sumup-go/client"
   sumup "github.com/sumup/sumup-go"
 )
 
 func main() {
-  client := sumup.NewClient().WithAuth("sup_sk_MvxmLOl0...")  
+  client := sumup.NewClient(client.WithAPIKey("sup_sk_MvxmLOl0..."))
 }
 `,
                 lang: "go",
@@ -223,7 +224,7 @@ client = SumUp(api_key="sup_sk_MvxmLOl0...")`,
               },
               {
                 label: "PHP",
-                code: "composer require sumup/sumup-ecom-php-sdk",
+                code: `$sumup = new \\SumUp\\SumUp("sup_sk_MvxmLOl0...");`,
                 lang: "php",
               },
               {
