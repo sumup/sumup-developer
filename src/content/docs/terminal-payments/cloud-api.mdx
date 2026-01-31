@@ -230,6 +230,21 @@ This is an asynchronous process; starting the transaction on the device may take
     ).await?;
     ```
   </TabItem>
+  <TabItem label="PHP" icon="seti:php">
+    ```php
+    $checkout = $sumup->readers->createCheckout(
+        $merchantCode,
+        $readerId,
+        [
+            'total_amount' => [
+                'currency' => 'EUR',
+                'minor_unit' => 2,
+                'value' => 1500,
+            ],
+        ]
+    );
+    ```
+  </TabItem>
 </Tabs>
 
 Important notes:
@@ -283,6 +298,11 @@ This process is asynchronous, and the actual termination may take some time to b
     client.readers().terminate_checkout(&merchant_code, &reader_id).await?;
     ```
   </TabItem>
+  <TabItem label="PHP" icon="seti:php">
+    ```php
+    $sumup->readers->terminateCheckout($merchantCode, $readerId);
+    ```
+  </TabItem>
 </Tabs>
 
 Important notes:
@@ -333,6 +353,11 @@ List all readers connected to your merchant account.
   <TabItem label="Rust" icon="seti:rust">
     ```rust
     let readers = client.readers().list(&merchant_code).await?;
+    ```
+  </TabItem>
+  <TabItem label="PHP" icon="seti:php">
+    ```php
+    $readers = $sumup->readers->list($merchantCode);
     ```
   </TabItem>
 </Tabs>

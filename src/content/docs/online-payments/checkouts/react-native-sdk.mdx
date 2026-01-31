@@ -150,7 +150,7 @@ Initializing the SDK works by passing it a `checkout_id`. To [create a checkout]
   </TabItem>
   <TabItem label="PHP" icon="seti:php">
     ```php
-    $payload = [
+    $checkout = $sumup->checkouts->create([
         'checkout_reference' => '44ea5096-b83f-46e1-9323-fe82a8cb7eb5',
         'currency' => 'SEK',
         'amount' => 9.99,
@@ -158,10 +158,7 @@ Initializing the SDK works by passing it a `checkout_id`. To [create a checkout]
         'merchant_code' => 'MXXXXXXX',
         'return_url' => 'https://example.com',
         'redirect_url' => 'https://sumup.com',
-    ];
-
-    $customService = $sumup->getCustomService();
-    $response = $customService->request('POST', '/v0.1/checkouts', $payload);
+    ]);
     ```
   </TabItem>
 </Tabs>
@@ -502,24 +499,23 @@ To save a card for future usage, a customer should be created. It can be achieve
   </TabItem>
   <TabItem label="PHP" icon="seti:php">
     ```php
-    $customersService = $sumup->getCustomerService();
-    $response = $customersService->create(
-        '831ff8d4cd5958ab5670',
-        [
+    $customer = $sumup->customers->create([
+        'customer_id' => '831ff8d4cd5958ab5670',
+        'personal_details' => [
             'first_name' => 'John',
             'last_name' => 'Doe',
             'email' => 'user@example.com',
             'phone' => '+491635559723',
+            'address' => [
+                'city' => 'Berlin',
+                'state' => 'Berlin',
+                'country' => 'DE',
+                'line_1' => 'Sample street',
+                'line_2' => 'ap. 5',
+                'postal_code' => '10115',
+            ],
         ],
-        [
-            'city' => 'Berlin',
-            'state' => 'Berlin',
-            'country' => 'DE',
-            'line1' => 'Sample street',
-            'line2' => 'ap. 5',
-            'postalCode' => '10115',
-        ]
-    );
+    ]);
     ```
   </TabItem>
 </Tabs>

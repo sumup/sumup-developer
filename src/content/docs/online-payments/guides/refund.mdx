@@ -94,10 +94,9 @@ Example request:
   </TabItem>
   <TabItem label="PHP" icon="seti:php">
     ```php
-    $checkoutsService = $sumup->getCheckoutService();
-    $response = $checkoutsService->findById('4ebc2ed7-bb8c-4d4d-a110-08fd31301bf2');
-    $checkoutReference = $response->getBody()->checkout_reference;
-    $checkoutId = $response->getBody()->id;
+    $checkout = $sumup->checkouts->get('4ebc2ed7-bb8c-4d4d-a110-08fd31301bf2');
+    $checkoutReference = $checkout->checkout_reference;
+    $checkoutId = $checkout->id;
     ```
   </TabItem>
 </Tabs>
@@ -184,8 +183,7 @@ Example request for the transaction with identifier `664200af-2b62-4142-9c73-a2a
   </TabItem>
   <TabItem label="PHP" icon="seti:php">
     ```php
-    $transactionsService = $sumup->getTransactionService();
-    $response = $transactionsService->refund('19aa3cca-89f6-42d2-b462-463b0b53e959');
+    $sumup->transactions->refund('19aa3cca-89f6-42d2-b462-463b0b53e959');
     ```
   </TabItem>
 </Tabs>
@@ -271,8 +269,9 @@ Example request for a partial refund for the amount of 24.42 EUR:
   </TabItem>
   <TabItem label="PHP" icon="seti:php">
     ```php
-    $transactionsService = $sumup->getTransactionService();
-    $response = $transactionsService->refund('19aa3cca-89f6-42d2-b462-463b0b53e959', 24.42);
+    $sumup->transactions->refund('19aa3cca-89f6-42d2-b462-463b0b53e959', [
+        'amount' => 24.42,
+    ]);
     ```
   </TabItem>
 </Tabs>

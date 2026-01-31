@@ -216,24 +216,23 @@ curl -X POST \
   </TabItem>
   <TabItem label="PHP" icon="seti:php">
     ```php
-    $customersService = $sumup->getCustomerService();
-    $response = $customersService->create(
-        'MYCUSTOMERID-123',
-        [
+    $customer = $sumup->customers->create([
+        'customer_id' => 'MYCUSTOMERID-123',
+        'personal_details' => [
             'first_name' => 'Jeffrey',
             'last_name' => 'Lebowski',
             'email' => 'thedude@example.com',
             'phone' => '+1 310-555-1234',
+            'address' => [
+                'city' => 'Venice',
+                'state' => 'California',
+                'country' => 'US',
+                'line_1' => '606 Venezia Ave',
+                'line_2' => 'Front',
+                'postal_code' => '90291',
+            ],
         ],
-        [
-            'city' => 'Venice',
-            'state' => 'California',
-            'country' => 'US',
-            'line1' => '606 Venezia Ave',
-            'line2' => 'Front',
-            'postalCode' => '90291',
-        ]
-    );
+    ]);
     ```
   </TabItem>
 </Tabs>
@@ -370,7 +369,7 @@ Example of such request:
   </TabItem>
   <TabItem label="PHP" icon="seti:php">
     ```php
-    $payload = [
+    $checkout = $sumup->checkouts->create([
         'checkout_reference' => 'MYCHECKOUT',
         'amount' => 1,
         'currency' => 'EUR',
@@ -378,10 +377,7 @@ Example of such request:
         'description' => 'My checkout',
         'customer_id' => 'MYCUSTOMERID-123',
         'purpose' => 'SETUP_RECURRING_PAYMENT',
-    ];
-
-    $customService = $sumup->getCustomService();
-    $response = $customService->request('POST', '/v0.1/checkouts', $payload);
+    ]);
     ```
   </TabItem>
 </Tabs>
@@ -495,8 +491,7 @@ requesting them via [the list payment instruments](/api/customers/list-payment-i
   </TabItem>
   <TabItem label="PHP" icon="seti:php">
     ```php
-    $customersService = $sumup->getCustomerService();
-    $response = $customersService->getPaymentInstruments('MYCUSTOMERID-123');
+    $instruments = $sumup->customers->listPaymentInstruments('MYCUSTOMERID-123');
     ```
   </TabItem>
 </Tabs>

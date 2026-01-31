@@ -144,9 +144,12 @@ Example request:
   </TabItem>
   <TabItem label="PHP" icon="seti:php">
     ```php
-    $checkoutsService = $sumup->getCheckoutService();
-    $response = $checkoutsService->create(10, 'EUR', 'CO746453', 'docuser@sumup.com', 'Sample one-time payment');
-    $checkoutId = $response->getBody()->id;
+    $checkout = $sumup->checkouts->create([
+        'merchant_code' => $merchantCode,
+        'amount' => 15.0,
+        'currency' => 'EUR',
+        'checkout_reference' => 'unique-checkout-ref-123',
+    ]);
     ```
   </TabItem>
 </Tabs>
@@ -317,6 +320,23 @@ Example request for [Step 1 checkout](#1-create-a-checkout):
             },
         )
         .await?;
+    ```
+  </TabItem>
+  <TabItem label="PHP" icon="seti:php">
+    ```php
+    $checkout = $sumup->checkouts->process(
+        'f14425c6-8bc1-4d02-957c-47573f762828',
+        [
+            'payment_type' => 'card',
+            'card' => [
+                'name' => 'Boaty McBoatface',
+                'number' => '4200000000000042',
+                'expiry_month' => '12',
+                'expiry_year' => '23',
+                'cvv' => '123',
+            ],
+        ]
+    );
     ```
   </TabItem>
 </Tabs>
