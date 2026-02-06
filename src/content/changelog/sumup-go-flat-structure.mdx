@@ -1,0 +1,26 @@
+---
+title: "Go SDK flat structure refactor"
+tags: ["SDK", "Go", "Breaking change"]
+publishedDate: 2026-01-29
+---
+
+We have refactored the Go SDK into a flat package structure to simplify imports and make the public API easier to discover. This is a breaking change.
+
+## What Changed
+
+- Types and services previously nested under subpackages are now exported directly from `github.com/sumup/sumup-go`.
+- Import paths that referenced nested modules need to be updated.
+
+## Migration
+
+Update your imports and type references to use the root package. For example:
+
+```go
+// Before
+import "github.com/sumup/sumup-go/checkouts"
+
+// After
+import "github.com/sumup/sumup-go"
+```
+
+If you run into issues, please open a ticket or [let us know](/contact).
