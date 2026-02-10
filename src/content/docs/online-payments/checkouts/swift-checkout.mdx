@@ -8,8 +8,6 @@ sidebar:
 import { Aside } from '@astrojs/starlight/components';
 
 
-## About Swift Checkout SDK
-
 The Swift Checkout SDK enables you to offer a complete and fast checkout experience to your end users, allowing you to collect payment, address, and contact information with a click of a button. Swift Checkout SDK allows for Google Pay and Apple Pay setup.
 
 ### Prerequisites
@@ -195,8 +193,8 @@ paymentRequest.onShippingAddressChange(async (newShippingAddress) => {
 
 <Aside type="note">
 To protect user privacy, browsers might hide non-essential and sensitive details from the shipping address, and only provide data required for shipping cost estimation.
-The extent of information provided can vary based on the chosen browser and payment method, leading to certain fields being absent. 
-For example, the displayed shipping address might be limited to the city, state, country, and ZIP code. 
+The extent of information provided can vary based on the chosen browser and payment method, leading to certain fields being absent.
+For example, the displayed shipping address might be limited to the city, state, country, and ZIP code.
 
 The full shipping address is disclosed only in the `PaymentResponse` object after the payment is authorized by the account holder.
 </Aside>
@@ -241,7 +239,7 @@ buttons
       { id: 'apple_pay' },
       { id: 'google_pay' }
       // See `paymentRequest.availablePaymentMethods()` for all available payment methods
-    ], 
+    ],
     container: document.querySelector('#express-checkout-container'),
   });
 ```
@@ -465,4 +463,3 @@ Once the hash has been applied you can proceed with the domain validation steps:
 3. Navigate to the **Integrate with your website** and click on **+ Add website**
 4. Fill out the form with the requested information (domain name, buyflow screenshots, etc.)
 5. At the top of the page click on **Submit for approval**
-
