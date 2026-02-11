@@ -82,6 +82,6 @@
     "typescript": "^5.9.3",
     "typescript-eslint": "8.52.0",
     "vitest": "4.0.14",
-    "wrangler": "4.63.0"
+    "wrangler": "4.64.0"
   }
 }
