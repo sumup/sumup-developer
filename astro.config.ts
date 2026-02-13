@@ -200,7 +200,7 @@ export default defineConfig({
           autogenerate: { directory: "online-payments", collapsed: true },
         },
         {
-          label: "Common Topics",
+          label: "Developer Resources",
           autogenerate: { directory: "tools", collapsed: true },
         },
         {

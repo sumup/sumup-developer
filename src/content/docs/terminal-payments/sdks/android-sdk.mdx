@@ -2,7 +2,7 @@
 title: Android Reader SDK
 description: This guide walks you through integrating the Android SDK and embedding the checkout flow within your app.
 sidebar:
-  order: 16
+  order: 11
 ---
 
 import { Aside, Steps } from '@astrojs/starlight/components';
@@ -31,7 +31,7 @@ SumUp also provides the [Android Tap to Pay SDK](/terminal-payments/sdks/android
    - `targetSDK` 31 or later
    - AGP 7.3.0 or later
    - Kotlin version 1.7.21 or later
-   - Java 11 and later 
+   - Java 11 and later
 
 ## Getting a Test Account
 
@@ -53,7 +53,7 @@ Once you have your test account you can begin making API calls with real data. O
 
 <Image alt="A screenshot of the dashboard with test account selected" src="/img/guides/test-account-warning.png" width="100%" />
 
-When you're done experimenting with the test account, switch back to a regular account for business purposes. 
+When you're done experimenting with the test account, switch back to a regular account for business purposes.
 
 ## Compatibility
 
@@ -173,7 +173,7 @@ Override `onActivityResult` to handle payment results:
 
 ### Response Fields
 
-Several response fields are available when the callback activity is called: 
+Several response fields are available when the callback activity is called:
 
 | Property                          | Type                                             | Description / Possible Values                                                                                                                                                  |
 |----------------------------------|--------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -185,7 +185,7 @@ Several response fields are available when the callback activity is called:
 
 The response flags are provided within the Bundle that is passed back to the callback activity:
 
-```java 
+```java
  	int resultCode = getIntent().getExtras().getInt(SumUpAPI.Response.RESULT_CODE);
  ```
 
@@ -215,7 +215,7 @@ To call this method, user needs to be logged in with a SumUp account and their c
 SumUpAPI.prepareForCheckout()
 ```
 
-> Note: Air and Solo card readers remain connected via BLE after each transaction while `prepareForCheckout()` is used when the card reader becomes disconnected (e.g. the reader is out of range, the host app looses focus, or the reader is turned off). 
+> Note: Air and Solo card readers remain connected via BLE after each transaction while `prepareForCheckout()` is used when the card reader becomes disconnected (e.g. the reader is out of range, the host app looses focus, or the reader is turned off).
 
 
 ### Additional Checkout Parameters
@@ -311,18 +311,18 @@ If a merchant account is currently logged in, it is possible to retrieve the dat
 ```
 
 ### Use Google Location Services
-       
+
 The SDK supports Google Location Services, to improve location accuracy and reduce power consumption.
 
-In order to use it you need to add the dependency in `build.gradle` file 
+In order to use it you need to add the dependency in `build.gradle` file
 
 ```groovy
 implementation "com.google.android.gms:play-services-location:19.0.1"
 ```
-       
+
 If the GLS dependency is not added to the project or Google Play Services are not installed on the mobile device, the { androidreadersdkname } will determine the location with the default Location Service provided by Android.
 
-<Aside>     
+<Aside>
 Using GLS version 19.0.1 is recommended.
 </Aside>
 

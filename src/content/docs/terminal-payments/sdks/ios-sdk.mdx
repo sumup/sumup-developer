@@ -2,7 +2,7 @@
 title: iOS Terminal SDK
 description: Explains how the iOS Terminal SDK works, how to set it up, and how it delivers card-present and Tap to Pay experiences.
 sidebar:
-  order: 20
+  order: 13
 ---
 
 import { Aside, Steps, Tabs, TabItem } from '@astrojs/starlight/components';
@@ -57,7 +57,7 @@ Once you have your test account you can begin making API calls with real data. O
 
 <Image alt="A screenshot of the dashboard with test account selected" src="/img/guides/test-account-warning.png" width="100%" />
 
-When you're done experimenting with the test account, switch back to a regular account for business purposes. 
+When you're done experimenting with the test account, switch back to a regular account for business purposes.
 
 ### Compatibility
 
@@ -68,7 +68,7 @@ When you're done experimenting with the test account, switch back to a regular a
 
 { iossdkname } uses the Affiliate Key from your merchant account to authenticate your app.
 
-1. Log in to SumUp with your merchant account and open the [Affiliate Key page](https://developer.sumup.com/affiliate-keys). 
+1. Log in to SumUp with your merchant account and open the [Affiliate Key page](https://developer.sumup.com/affiliate-keys).
 2. Create an Affiliate Key if you don't have one yet.
 3. Add your app's _Bundle ID_ in the SumUp portal's _Application ID_ field. This way, your app will be able to call SumUp APIs, which require the Affiliate Key.
 
@@ -120,7 +120,7 @@ If you want to dive straight into implementation, carry out the following steps:
 
 Please consider the following when building Tap-to-Pay solutions, as Apple reviews them with high scrutiny:
 
-* Follow the [Human Interface Guidelines](https://developer.apple.com/design/human-interface-guidelines/tap-to-pay-on-iphone) to save time when Apple reviews your app. 
+* Follow the [Human Interface Guidelines](https://developer.apple.com/design/human-interface-guidelines/tap-to-pay-on-iphone) to save time when Apple reviews your app.
 * Also consider [Apple’s marketing guidelines](https://developer.apple.com/tap-to-pay/marketing-guidelines/) and use standard assets where possible.
 
 1. [Install the SDK](#installing-and-setting-up-ios-sdk).
@@ -142,11 +142,11 @@ Please follow the relevant instructions below to prepare your project:
 
 <TabItem label="Swift Package Manager">
 
-The latest Swift Package Manager version added support to [distribute binary frameworks as Swift Packages](https://developer.apple.com/documentation/swift_packages/distributing_binary_frameworks_as_swift_packages). 
+The latest Swift Package Manager version added support to [distribute binary frameworks as Swift Packages](https://developer.apple.com/documentation/swift_packages/distributing_binary_frameworks_as_swift_packages).
 
 If you're using Xcode 12.3 or later, this should work out of the box.
 
-Unfortunately, Xcode 12 releases before that had an issue, (https://bugs.swift.org/browse/SR-13343), that added the framework as a static library, not as an embedded dynamic framework. 
+Unfortunately, Xcode 12 releases before that had an issue, (https://bugs.swift.org/browse/SR-13343), that added the framework as a static library, not as an embedded dynamic framework.
 
 Follow this workaround to manage SumUp { iossdkname } versions via Swift PM in those cases:
 
@@ -242,7 +242,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
          *   and to properly localize it, see the
          *   Add Property List Keys to Project section.
          *
-         *   Ensure to add the Bundle Identifier of your iOS app to your 
+         *   Ensure to add the Bundle Identifier of your iOS app to your
          *   Affiliate Key's Application identifiers in the SumUp developer portal.
          */
         SumUpSDK.setup(withAPIKey: "sup_afk_abcqwerty")
@@ -436,7 +436,7 @@ fileprivate func requestLogout() {
 ### Payment Checkout Definitions
 
 * In order to prepare a SumUp card terminal for checkout, `prepareForCheckout` can be called in advance. A registered SumUp merchant account needs to be logged in, and the card terminal must already be setup.
-  You should use this method to let the SDK know that the user is most 
+  You should use this method to let the SDK know that the user is most
   likely starting a checkout attempt soon; for example when entering an amount or adding products to a shopping cart. This allows the SDK to take appropriate measures, like attempting to wake a connected card terminal.
 * When logged in you can let merchants check and update their checkout preferences. Merchants can select their preferred card terminal and set up a
   new one if needed. The preferences available to a merchant depend on their
@@ -517,14 +517,14 @@ In this step, we implement the payment checkout.
         // we assume a checkout is imminent
         // let the SDK know to e.g. wake a connected terminal
         [SMPSumUpSDK prepareForCheckout];
-        
+
         [self.textFieldTitle becomeFirstResponder];
     } else if ([SMPSumUpSDK isLoggedIn]) {
         [self buttonChargeTapped:nil];
     } else {
         [textField resignFirstResponder];
     }
-    
+
     return YES;
 }
 ```
@@ -997,7 +997,7 @@ fileprivate func requestCheckout() {
             request.tipAmount = tipAmount
         }
 
-        // set screenOptions to skip if switch is set to on 
+        // set screenOptions to skip if switch is set to on
         if let skip = switchSkipReceiptScreen?.isOn, skip {
             request.skipScreenOptions = .success
         }
@@ -1171,21 +1171,21 @@ In your code:
 #### Check Feature Availability
 
 * Call `checkTapToPayAvailability` on `SMPSumUpSDK` to check the availability of the Tap to Pay on iPhone payment method. This call, which requires the SDK to be in a logged-in state, may internally perform one or more network calls.
-* If the feature is not available, your app could, as an example, hide or disable a button or menu item representing the Tap to Pay on iPhone payment method. 
-* The feature is generally available when the following criteria are fulfilled: 
-    * the iPhone model and iOS version requirements are met 
-    * the user logs in with a SumUp account registered in one of the countries where SumUp supports Tap to Pay on iPhone (temporarily with exception of Brazil) 
+* If the feature is not available, your app could, as an example, hide or disable a button or menu item representing the Tap to Pay on iPhone payment method.
+* The feature is generally available when the following criteria are fulfilled:
+    * the iPhone model and iOS version requirements are met
+    * the user logs in with a SumUp account registered in one of the countries where SumUp supports Tap to Pay on iPhone (temporarily with exception of Brazil)
 
 #### Perform Activation If Needed
 
 * Activation must be completed before the first transaction can be performed. Activation means:
     * the merchant links their Apple ID with their SumUp account
     * the iPhone is prepared, which can take 45 seconds or longer
-* This needs to be done once per merchant account, per device. 
-* In addition to determining feature availability, `checkTapToPayAvailability` also indicates whether Tap to Pay on iPhone has been activated yet for the current merchant. 
+* This needs to be done once per merchant account, per device.
+* In addition to determining feature availability, `checkTapToPayAvailability` also indicates whether Tap to Pay on iPhone has been activated yet for the current merchant.
 * If it has not yet been activated then you should trigger activation by calling `presentTapToPayActivation` at a convenient time. Calling it more than once will still show the user education screens each time. Independently, the activation from the initial setup will remain valid.
 
- 
+
 
 #### Definitions
 
@@ -1205,7 +1205,7 @@ These methods handle Tap to Pay processing. Note that the SDK supports both Comp
  *
  *    - The feature must be available in the merchant's country
  *
- *    - It must be activated. This is where the merchant's Apple ID is linked with their SumUp account and the 
+ *    - It must be activated. This is where the merchant's Apple ID is linked with their SumUp account and the
  *      iPhone is prepared to work as a card reader. As this can take a minute or so the first time, the
  *      merchant is shown a UI that introduces them to the feature as it initializes in the background.
  *
@@ -1225,7 +1225,7 @@ open class func checkTapToPayAvailability(completion block: @escaping (Bool, Boo
  *
  *    - The feature must be available in the merchant's country
  *
- *    - It must be activated. This is where the merchant's Apple ID is linked with their SumUp account and the 
+ *    - It must be activated. This is where the merchant's Apple ID is linked with their SumUp account and the
  *      iPhone is prepared to work as a card reader. As this can take a minute or so the first time, the
  *      merchant is shown a UI that introduces them to the feature as it initializes in the background.
  *
@@ -1298,7 +1298,7 @@ open class func presentTapToPayActivation(from fromViewController: UIViewControl
  *
  *    - The feature must be available in the merchant's country
  *
- *    - It must be activated. This is where the merchant's Apple ID is linked with their SumUp account and the 
+ *    - It must be activated. This is where the merchant's Apple ID is linked with their SumUp account and the
  *      iPhone is prepared to work as a card reader. As this can take a minute or so the first time, the
  *      merchant is shown a UI that introduces them to the feature as it initializes in the background.
  *
@@ -1408,7 +1408,7 @@ Please do not call it in your Release build.
 
 ## SDK Structure
 
-The SDK uses Objective C header files, but XCode can also display its public types as Swift. The table below outlines the interfaces in the SDK and their purpose. 
+The SDK uses Objective C header files, but XCode can also display its public types as Swift. The table below outlines the interfaces in the SDK and their purpose.
 
 | Header (Swift alias) | Purpose |
 | --- | --- |

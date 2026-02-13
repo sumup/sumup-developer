@@ -2,7 +2,7 @@
 title: PHP SDK
 description: Introduction to the SumUp PHP SDK and first steps to get you started.
 sidebar:
-  order: 40
+  order: 104
 links:
   - title: Source code
     href: https://github.com/sumup/sumup-php
@@ -59,7 +59,7 @@ try {
 }
 ```
 
-### Solo Cloud API Checkout
+### Cloud API Checkout
 
 ```php
 <?php
@@ -89,7 +89,7 @@ try {
             'foreign_transaction_id' => 'solo-' . time(),
             'key' => getenv('SUMUP_AFFILIATE_KEY'),
         ],
-        'description' => 'Solo Cloud API checkout',
+        'description' => 'Cloud API checkout',
     ];
 
     $checkoutResponse = $sumup->readers->createCheckout(

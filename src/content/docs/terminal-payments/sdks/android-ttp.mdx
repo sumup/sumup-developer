@@ -2,7 +2,7 @@
 title: Android Tap-to-Pay SDK
 description: Integrate with the Android Tap to Pay SDK to process contactless payments directly on a phone.
 sidebar:
-  order: 15
+  order: 12
 ---
 
 import { androidttpsdkname } from "@lib/productnames.ts";
@@ -189,7 +189,7 @@ Where:
 - `processCardAs` - The type of the card processing. The default value is `null`. The possible values are `ProcessCardAs.Credit(val instalments: Int)` and `ProcessCardAs.Debit`, where `instalments` is the number of installments. This parameter is optional and only applicable to some markets, such as Brazil, where the card type selection and installments are supported.
 - `affiliateData` - The affiliate data refers to tracking and attributing transactions to specific affiliates, integrators, or referral sources.
 
-**Note:** The amounts shall be provided in minor unit of the currency according to the list below.  
+**Note:** The amounts shall be provided in minor unit of the currency according to the list below.
 Currencies with exponent 2 : `AUD, BGN, BRL, CHF, CLP, COP, CZK, DKK, EUR, GBP, HRK, HUF, NOK, PEN, PLN, RON, SEK, USD`.
 
 For example, an amount of `$12.34` corresponds to a value of `1234`, `$11.00` corresponds to a value of `1100`.

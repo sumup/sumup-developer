@@ -1,8 +1,8 @@
 ---
-title: React Native Payment SDK
+title: React Native Checkout SDK
 description: Step-by-step guide for integrating the SumUp React Native Payment SDK, from prerequisites to checkout creation and mounting the payment sheet.
 sidebar:
-  order: 140
+  order: 107
   hidden: true
 ---
 
@@ -27,7 +27,7 @@ Here are the things that you need in order to complete the steps in this guide:
 - The restricted `payment_instruments` scope is enabled for your client application. If it isn't enabled, [contact us](/contact) and request it.
 - Review how to create a single payment [here](https://developer.sumup.com/online-payments/guides/single-payment/#before-you-begin).
 
-### Create a Checkout 
+### Create a Checkout
 
 Initializing the SDK works by passing it a `checkout_id`. To [create a checkout](/api/checkouts/create) on your backend make the following request:
 
@@ -237,7 +237,7 @@ export default function App() {
 }
 ```
 
-## Provide Payment Details 
+## Provide Payment Details
 
 Before showing the payment sheet, it needs to be initialized. Call `initPaymentSheet` with the parameters like in example below:
 
@@ -572,7 +572,7 @@ Obtain an Apple Merchant ID by registering for a new identifier on the Apple Dev
 **Create a new Apple Pay certificate - needs to be implemented.**
 
 To enable Apple Pay in Xcode:
-1. Open your target settings 
+1. Open your target settings
 2. Go to Signing & Capabilities tab
 3. Click on Add Capability button
 4. Select your merchant identifier
