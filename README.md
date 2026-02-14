@@ -34,7 +34,7 @@ Open your terminal and navigate to the directory where you would like to store t
 
 ```bash
 git clone git@github.com:sumup/sumup-developer.git
-cd docs
+cd sumup-developer
 ```
 
 2. Install the dependencies
