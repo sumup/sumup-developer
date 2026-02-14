@@ -37,7 +37,7 @@ if (Astro.request.method === "POST") {
     if (!payload.email || !payload.category || !payload.country) {
       status = "error";
     } else {
-      await fetch(import.meta.env.MARKETING_CLOUD_URL, {
+      await fetch(import.meta.env.MARKETING_CLOUD_CONTACT_URL, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

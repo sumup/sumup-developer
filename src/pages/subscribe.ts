@@ -34,7 +34,7 @@ export const POST: APIRoute = async ({ request, redirect }) => {
     }
 
     const response = await fetch(
-      "https://cloud.crm.sumup.com/ae_xi_1_gl-subscribe-changelog-sumup-for-developers",
+      import.meta.env.MARKETING_CLOUD_SUBSCRIBE_URL,
       {
         method: "POST",
         headers: {
