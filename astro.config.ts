@@ -230,10 +230,9 @@ export default defineConfig({
           href: "https://github.com/sumup/documentation",
         },
       ],
-      // Disabled until the repo is made public
-      // editLink: {
-      //   baseUrl: "https://github.com/sumup/documentation/edit/main/",
-      // },
+      editLink: {
+        baseUrl: "https://github.com/sumup/sumup-developer/edit/main/",
+      },
       customCss: ["@sumup-oss/circuit-ui/styles.css", "./src/base.css"],
       pagination: false,
       lastUpdated: true,
