@@ -1,0 +1,74 @@
+---
+title: Agent Skills
+description: Use SumUp Agent Skills in AI coding assistants when building payment integrations.
+sidebar:
+  order: 51
+---
+
+[Agent Skills](https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills) let AI coding assistants load focused instructions for specific tasks. We publish SumUp skills in the [`sumup/sumup-skills`](https://github.com/sumup/sumup-skills) repository to help you build terminal and online payment integrations faster and with fewer mistakes.
+
+## Install from GitHub
+
+Use the `sumup/sumup-skills` repository:
+
+```txt
+https://github.com/sumup/sumup-skills
+```
+
+### Claude Code
+
+Install with the plugin marketplace:
+
+```bash
+/plugin marketplace add sumup/sumup-skills
+```
+
+### Cursor
+
+Install from the Cursor Marketplace, or add it manually in:
+
+`Settings` -> `Rules` -> `Add Rule` -> `Remote Rule (Github)` with:
+
+```txt
+sumup/sumup-skills
+```
+
+### npx skills
+
+Install with:
+
+```bash
+npx skills add https://github.com/sumup/sumup-skills
+```
+
+### Clone / Copy
+
+Clone the repository and copy the skill folders into your agent's skill directory:
+
+| Agent | Skill directory |
+| --- | --- |
+| Claude Code | `~/.claude/skills/` |
+| Cursor | `~/.cursor/skills/` |
+| OpenCode | `~/.config/opencode/skills/` |
+| OpenAI Codex | `~/.codex/skills/` |
+| Pi | `~/.pi/agent/skills/` |
+
+## Use the SumUp skill
+
+After installation, ask your assistant to use the `sumup` skill for checkout work, for example:
+
+- "Use `$sumup` to build a Cloud API payment flow for Solo."
+- "Use `$sumup` to implement a Card Widget checkout with server-side checkout creation."
+- "Use `$sumup` to troubleshoot 3DS and webhook handling for online payments."
+
+The skill routes the assistant to the relevant SumUp references for SDKs and APIs, including:
+
+- Terminal payments (Android/iOS SDKs, Cloud API, Payment Switch)
+- Online payments (Card Widget, Checkouts API, 3DS, webhooks)
+- Server SDKs (Node.js, Go, Python, Java, PHP, Rust, .NET)
+
+## Related
+
+- [LLMs overview](/tools/llms/)
+- [Agentic workflows](/tools/llms/agent-toolkit/)
+- [SumUp MCP Server](https://mcp.sumup.com/mcp)
