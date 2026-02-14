@@ -1,0 +1,70 @@
+---
+title: MCP Server
+description: Connect MCP-compatible clients and assistants to SumUp APIs and tools.
+sidebar:
+  order: 52
+---
+
+[MCP](https://modelcontextprotocol.io/introduction) is an open protocol that standardizes how applications provide context to LLMs. For developers using AI-powered code editors such as Cursor or Windsurf, or general-purpose tools such as Claude Desktop, we provide the [SumUp Model Context Protocol (MCP) server](https://github.com/sumup/sumup-agent-toolkit/tree/main/mcp).
+
+The MCP server gives AI agents tools for calling the SumUp API and searching our knowledge base (documentation, support articles, and so on).
+
+SumUp runs a managed MCP server at [https://mcp.sumup.com/mcp](https://mcp.sumup.com/mcp). This endpoint allows your MCP client to interact with SumUp APIs to manage your account, create checkouts, or process payments using [Cloud API](/terminal-payments/cloud-api). The server supports streamable HTTP[^streamable_http] transport via `/mcp` and the SSE transport (deprecated) via `/sse`.
+
+## Hosted MCP (managed)
+
+If your MCP client supports streamable HTTP, connect directly to the hosted server instead of running a local process. Configure your MCP client to use `https://mcp.sumup.com/mcp` and send your SumUp API key as a Bearer token in the `Authorization` header (or equivalent auth configuration in your client).
+
+## CLI
+
+Run the following command to start the MCP server locally.
+
+```sh
+SUMUP_API_KEY='sup_sk_MvxmLOl0...' npx -y @sumup/mcp
+```
+
+The MCP server uses either the passed `--api-key` or the `SUMUP_API_KEY` environment variable.
+
+## [Cursor](https://www.cursor.com/)
+
+1. Go to `Cursor Settings` > `MCP`
+2. Click `+ Add new Global MCP Server`
+3. Add the following configuration to your global `.cursor/mcp.json` file.
+
+See the [Cursor documentation](https://docs.cursor.com/context/model-context-protocol) for more details. You can also add this to your project-specific Cursor configuration (supported in Cursor 0.46+).
+
+```json
+{
+  "mcpServers": {
+    "sumup": {
+      "command": "npx",
+      "args": ["-y", "@sumup/mcp"],
+      "env": {
+        "SUMUP_API_KEY": "sup_sk_..."
+      }
+    }
+  }
+}
+```
+
+## [Claude](https://claude.ai)
+
+Add the following to your `claude_desktop_config.json` file. See the [Claude Desktop documentation](https://modelcontextprotocol.io/quickstart/user) for more details.
+
+```json
+{
+  "mcpServers": {
+    "sumup": {
+      "command": "npx",
+      "args": ["-y", "@sumup/mcp"],
+      "env": {
+        "SUMUP_API_KEY": "sup_sk_..."
+      }
+    }
+  }
+}
+```
+
+The code editor agent automatically detects available tools and calls the relevant tool when you ask related questions.
+
+[^streamable_http]: https://modelcontextprotocol.io/specification/2025-11-25/basic/transports#streamable-http

@@ -25,72 +25,18 @@ If you use AI coding assistants, SumUp also provides [Agent Skills](/tools/llms/
 
 ## SumUp Model Context Protocol (MCP) Server
 
-[MCP](https://modelcontextprotocol.io/introduction) is an open protocol that standardizes how applications provide context to LLMs. For developers using code editors that use AI, such as Cursor or Windsurf, or general purpose tools such as Claude Desktop, we provide the [SumUp Model Context Protocol (MCP) server](https://github.com/sumup/sumup-agent-toolkit/tree/main/mcp). The MCP server provides AI agents a set of tools for calling the SumUp API and searching our knowledge base (documentation, support articles, and so on).
+Use the [SumUp MCP server](/tools/llms/mcp-server/) to connect MCP-compatible clients and AI assistants to SumUp APIs and documentation tools.
 
-SumUp runs a managed MCP server at [https://mcp.sumup.com/mcp](https://mcp.sumup.com/mcp). This MCP Server allows your MCP Client to interact with SumUp APIs to manage your account, create checkouts, or even process payments using [Cloud API](/terminal-payments/cloud-api). The server supports both the streamable HTTP[^streamable_http] transport via `/mcp` and the SSE transport (deprecated) via `/sse`.
+Hosted MCP URL: [https://mcp.sumup.com/mcp](https://mcp.sumup.com/mcp)
 
-### Hosted MCP (managed)
-
-If your MCP client supports streamable HTTP, you can connect directly to the hosted server instead of running a local process. Configure your MCP client to use `https://mcp.sumup.com/mcp` and send your SumUp API key as a Bearer token in the `Authorization` header (or the equivalent auth configuration in your client).
-
-### CLI
-
-Run the following command to start the MCP server locally.
+You can also run MCP locally:
 
 ```sh
-SUMUP_API_KEY='sup_sk_MvxmLOl0...' npx -y @sumup/mcp
+SUMUP_API_KEY='sup_sk_...' npx -y @sumup/mcp
 ```
 
-The MCP server uses either the passed in `--api-key` or the `SUMUP_API_KEY` environment variable.
-
-### [Cursor](https://www.cursor.com/)
-
-1. Go to `Cursor Settings` > `MCP`
-2. Click `+ Add new Global MCP Server`
-3. Add the following configuration to your global `.cursor/mcp.json` file.
-
-See the [Cursor documentation](https://docs.cursor.com/context/model-context-protocol) for more details. Note that you can also add this to your project specific cursor configuration. (Supported in Cursor 0.46+)
-
-```json
-{
-  "mcpServers": {
-    "sumup": {
-      "command": "npx",
-      "args": ["-y", "@sumup/mcp"],
-      "env": {
-        "SUMUP_API_KEY": "sup_sk_..."
-      }
-    }
-  }
-}
-```
-
-### [Claude](https://claude.ai)
-
-Add the following to your `claude_desktop_config.json` file. See the [Claude Desktop documentation](https://modelcontextprotocol.io/quickstart/user) for more details.
-
-```json
-{
-  "mcpServers": {
-    "sumup": {
-      "command": "npx",
-      "args": ["-y", "@sumup/mcp"],
-      "env": {
-        "SUMUP_API_KEY": "sup_sk_..."
-      }
-    }
-  }
-}
-```
-
-The code editor agent automatically detects all the available tools and calls the relevant tool when you post a related question in the chat.
+For full setup instructions and client examples, see [MCP Server](/tools/llms/mcp-server/).
 
 ## SumUp Agent Toolkit SDK
 
 If you’re building agentic software, we provide an SDK for adding SumUp functionality to your agent’s capabilities. Learn more in our [agents documentation](/tools/llms/agent-toolkit/).
-
-## SumUp Agent Skills
-
-If you're using AI coding assistants, use our [Agent Skills page](/tools/llms/agent-skills/) to install and run the [`sumup/sumup-skills`](https://github.com/sumup/sumup-skills) repository in tools like Claude Code, Cursor, and OpenAI Codex.
-
-[^streamable_http]: https://modelcontextprotocol.io/specification/2025-11-25/basic/transports#streamable-http
