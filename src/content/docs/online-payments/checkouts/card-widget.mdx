@@ -11,7 +11,7 @@ import CardWidget from "@components/content/CardWidget.astro";
 
 The Payment Widget, available to all SumUp merchants, simplifies website checkouts, handling PCI and PSD2 compliance with customization options. It collects card and alternative payment method details. For card payments, it dynamically recognizes the brand and shows the respective brand icon. Using the widget is really easy!
 
-A secure HTTPS connection is used to submit the payment information. We recommend to use HTTPS for the payment page as well, to avoid browser warnings on content being served through non-secure web pages, and ensure uninterrupted experience.
+A secure HTTPS connection is used to submit the payment information. For production usage we only support HTTPS for the payment page. (note: [during development browsers will treat `localhost` as secure](https://developer.mozilla.org/en-US/docs/Web/Security/Defenses/Secure_Contexts#potentially_trustworthy_origins)).
 
 ## Prerequisites
 
