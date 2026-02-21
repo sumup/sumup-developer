@@ -14,7 +14,7 @@ You can accept card payments using SumUp’s platform accompanied by our proprie
 
 ## Prerequisites
 
-* Before integrating either the [Native SDK](/terminal-payments/sdks/) or the [Payment API Switch](/terminal-payments/payment-switch), create a SumUp account in the [SumUp Dashboard](https://me.sumup.com). The dashboard offers [a test account](#getting-a-test-account), allowing for integration tests without involving real money.
+* Before integrating either the [Native SDK](/terminal-payments/sdks/) or the [Payment API Switch](/terminal-payments/payment-switch), create a SumUp account in the [SumUp Dashboard](https://me.sumup.com). The dashboard offers [a sandbox merchant account](#getting-a-sandbox-merchant-account), allowing for integration tests without involving real money.
 
 * Once you have an account, [create an Affiliate Key](/tools/authorization/affiliate-keys/) for your app and [provide authorization](/tools/authorization/authorization/).
 
@@ -24,13 +24,13 @@ The Affiliate Key and Application ID coming from your app must match those obtai
 
 </Aside>
 
-The Card Terminals allow complete flexibility as they are not assigned to individual accounts. Once connected to a merchant account, the card terminals lock to specific countries and currencies. This applies to test accounts, which are for testing integrations and do not process transactions.
+The Card Terminals allow complete flexibility as they are not assigned to individual accounts. Once connected to a merchant account, the card terminals lock to specific countries and currencies. This applies to sandbox merchant accounts, which are for testing integrations and do not process transactions.
 
 You are now ready to integrate SumUp payment capabilities into your app, provided you have a SumUp card terminal: SumUp Air, SumUp Air Lite, SumUp Top/PIN+, SumUp 3G, SumUp Total, SumUp Super, SumUp On, or SumUp Air Register.
 
-## Getting a Test Account
+## Getting a Sandbox Merchant Account
 
-To test SumUp APIs and tools without involving real money, use a test account. Create one from your Dashboard account as follows.
+To test SumUp APIs and tools without involving real money, use a sandbox merchant account. Create one from your Dashboard account as follows.
 
 <Steps>
 
@@ -38,17 +38,17 @@ To test SumUp APIs and tools without involving real money, use a test account. C
 
 2. Open the drop-down menu between **Support** and your user panel.
 
-3. Select **Test Account**. Your merchant account is now in test mode.
+3. Select **Sandbox Merchant Account**. Your merchant account is now in sandbox mode.
 
 </Steps>
 
-<Image alt="A screenshot of the account selection dropdown in the SumUp dashboard with the test account highlighted with red circle" src="/img/guides/test_acc.png" width="40%" />
+<Image alt="A screenshot of the account selection dropdown in the SumUp dashboard with the sandbox merchant account highlighted with red circle" src="/img/guides/test_acc.png" width="40%" />
 
-With your test account, begin making API calls with real data. Test accounts **do not** process transactions with real funds. The test account has a different ID and displays a clear warning. Requests with a value of 11 (in any currency) always fail by design, to test failed transaction scenarios.
+With your sandbox merchant account, begin making API calls with real data. Sandbox merchant accounts **do not** process transactions with real funds. The sandbox merchant account has a different ID and displays a clear warning. Requests with a value of 11 (in any currency) always fail by design, to test failed transaction scenarios.
 
-<Image alt="A screenshot of the dashboard with test account selected" src="/img/guides/test-account-warning.png" width="100%" />
+<Image alt="A screenshot of the dashboard with sandbox merchant account selected" src="/img/guides/test-account-warning.png" width="100%" />
 
-When finished experimenting with the test account, switch back to a regular account for business purposes.
+When finished experimenting with the sandbox merchant account, switch back to a regular account for business purposes.
 
 ## Affiliate Keys
 

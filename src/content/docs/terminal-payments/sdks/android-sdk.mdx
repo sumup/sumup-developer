@@ -22,7 +22,7 @@ SumUp also provides the [Android Tap to Pay SDK](/terminal-payments/sdks/android
 
 ## Prerequisites
 
-*  Registered for a merchant account via SumUp's [country websites](https://sumup.com/) (or [created a test account](#getting-a-test-account))
+*  Registered for a merchant account via SumUp's [country websites](https://sumup.com/) (or [created a sandbox merchant account](#getting-a-sandbox-merchant-account))
 *  Received SumUp card terminal: Solo, Air, Air Lite or PIN+ Terminal
 *  [Generated an Affiliate Key](/tools/authorization/affiliate-keys) associated with your Application ID found in the `build.gradle` file.
 *  Downloaded the [{ androidreadersdkname } Repository](https://github.com/sumup/sumup-android-sdk)
@@ -33,7 +33,7 @@ SumUp also provides the [Android Tap to Pay SDK](/terminal-payments/sdks/android
    - Kotlin version 1.7.21 or later
    - Java 11 and later
 
-## Getting a Test Account
+## Getting a Sandbox Merchant Account
 
 To test SumUp APIs without real money involved:
 
@@ -43,17 +43,17 @@ To test SumUp APIs without real money involved:
 
 2. Open the drop-down menu between Support and your user panel.
 
-3. Select Test Account. Your merchant account is now switched to test mode.
+3. Select Sandbox Merchant Account. Your merchant account is now switched to sandbox mode.
 
 </Steps>
 
-<Image alt="A screenshot of the account selection dropdown in the SumUp dashboard with the test account highlighted with red circle" src="/img/guides/test_acc.png" width="40%" />
+<Image alt="A screenshot of the account selection dropdown in the SumUp dashboard with the sandbox merchant account highlighted with red circle" src="/img/guides/test_acc.png" width="40%" />
 
-Once you have your test account you can begin making API calls with real data. Our test accounts **do not** process transactions with real funds. Test account has a different ID, and shows a clear warning. Processing a request with the value of 11 (in any currency) will always fail deliberately, to enable testing failed transactions.
+Once you have your sandbox merchant account you can begin making API calls with real data. Our sandbox merchant accounts **do not** process transactions with real funds. The sandbox merchant account has a different ID, and shows a clear warning. Processing a request with the value of 11 (in any currency) will always fail deliberately, to enable testing failed transactions.
 
-<Image alt="A screenshot of the dashboard with test account selected" src="/img/guides/test-account-warning.png" width="100%" />
+<Image alt="A screenshot of the dashboard with sandbox merchant account selected" src="/img/guides/test-account-warning.png" width="100%" />
 
-When you're done experimenting with the test account, switch back to a regular account for business purposes.
+When you're done experimenting with the sandbox merchant account, switch back to a regular account for business purposes.
 
 ## Compatibility
 

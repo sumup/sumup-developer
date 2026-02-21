@@ -63,8 +63,8 @@ const supportCategoryOptions = [
     value: "Sales Enquiry",
   },
   {
-    label: "Test Account Request",
-    value: "Test Account Request",
+    label: "Sandbox Merchant Account Request",
+    value: "Sandbox Merchant Account Request",
   },
   {
     label: "Online Integration",

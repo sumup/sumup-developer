@@ -29,7 +29,7 @@ The { iossdkname } includes a [Sample App](https://github.com/sumup/sumup-ios-sd
 
 ## Prerequisites
 
-* Registered for a merchant account via SumUp's [country websites](https://sumup.com/) (or created a test account).
+* Registered for a merchant account via SumUp's [country websites](https://sumup.com/) (or created a sandbox merchant account).
 * Received SumUp card terminal: Solo Lite, Solo, Air, 3G, PIN+.
 * Requested an Affiliate (Access) Key via [SumUp Dashboard](https://me.sumup.com/developers) for Developers.
 * Deployment Target iOS 14.0 or later.
@@ -37,9 +37,9 @@ The { iossdkname } includes a [Sample App](https://github.com/sumup/sumup-ios-sd
 * iPhone or iPad.
 * If your device is managed by an organization, make sure app installation is permitted.
 
-## Getting a Test Account
+## Getting a Sandbox Merchant Account
 
-To start testing SumUp APIs and tools without involving real money, you need to have a test account. You can create a test account from your account in the Dashboard as shown below.
+To start testing SumUp APIs and tools without involving real money, you need a sandbox merchant account. You can create one from your Dashboard account as shown below.
 
 <Steps>
 
@@ -47,17 +47,17 @@ To start testing SumUp APIs and tools without involving real money, you need to 
 
 2. Open the drop-down menu between Support and your user panel.
 
-3. Select Test Account. Your merchant account is now switched to test mode.
+3. Select Sandbox Merchant Account. Your merchant account is now switched to sandbox mode.
 
 </Steps>
 
-<Image alt="A screenshot of the account selection dropdown in the SumUp dashboard with the test account highlighted with red circle" src="/img/guides/test_acc.png" width="40%" />
+<Image alt="A screenshot of the account selection dropdown in the SumUp dashboard with the sandbox merchant account highlighted with red circle" src="/img/guides/test_acc.png" width="40%" />
 
-Once you have your test account you can begin making API calls with real data. Our test accounts **do not** process transactions with real funds. Test account has a different ID, and shows a clear warning. When you try to process a request with the value of 11 (in any currency), the test account will always fail - this is by design, to enable testing failed transactions.
+Once you have your sandbox merchant account you can begin making API calls with real data. Our sandbox merchant accounts **do not** process transactions with real funds. The sandbox merchant account has a different ID, and shows a clear warning. When you try to process a request with the value of 11 (in any currency), the sandbox merchant account will always fail - this is by design, to enable testing failed transactions.
 
-<Image alt="A screenshot of the dashboard with test account selected" src="/img/guides/test-account-warning.png" width="100%" />
+<Image alt="A screenshot of the dashboard with sandbox merchant account selected" src="/img/guides/test-account-warning.png" width="100%" />
 
-When you're done experimenting with the test account, switch back to a regular account for business purposes.
+When you're done experimenting with the sandbox merchant account, switch back to a regular account for business purposes.
 
 ### Compatibility
 
@@ -1160,7 +1160,7 @@ To add Tap to Pay on iPhone to your app:
 * Request the Tap to Pay on iPhone entitlement from Apple, receive approval, and then add the `com.apple.developer.proximity-reader.payment.acceptance` entitlement to your app. [Setting up the entitlement](https://developer.apple.com/documentation/proximityreader/setting-up-the-entitlement-for-tap-to-pay-on-iphone?language=objc).
 * This feature requires an iPhone XS or later, running iOS 16.4 (iOS 16.7 starting July 8th) or later (ideally 17.5 or later.) The feature does not work on iPad.
 * For debugging and testing you will need to be logged into an iPhone with a non-Sandbox Apple ID. Using a Sandbox Apple ID requires both Apple and SumUp implementations to connect to their respective non-production (test) backends, which the SDK does not support.
-* **During testing use a SumUp test account**, to avoid transactions going to the acquirer and transferring real money.
+* **During testing use a SumUp sandbox merchant account**, to avoid transactions going to the acquirer and transferring real money.
 
 In your code:
 
