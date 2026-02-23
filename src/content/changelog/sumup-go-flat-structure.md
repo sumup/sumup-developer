@@ -6,12 +6,12 @@ publishedDate: 2026-01-29
 
 We have refactored the Go SDK into a flat package structure to simplify imports and make the public API easier to discover. This is a breaking change.
 
-## What Changed
+### What Changed
 
 - Types and services previously nested under subpackages are now exported directly from `github.com/sumup/sumup-go`.
 - Import paths that referenced nested modules need to be updated.
 
-## Migration
+### Migration
 
 Update your imports and type references to use the root package. For example:
 

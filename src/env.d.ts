@@ -5,7 +5,6 @@
 interface ImportMetaEnv {
   readonly MARKETING_CLOUD_AUTH: string;
   readonly MARKETING_CLOUD_CONTACT_URL: string;
-  readonly MARKETING_CLOUD_SUBSCRIBE_URL: string;
   readonly GA_TAG_ID: string;
   readonly ONETRUST_ENABLED: string;
 }
