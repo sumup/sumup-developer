@@ -14,17 +14,6 @@ export function minLength(len: number) {
   };
 }
 
-export function validateEmail(value: unknown) {
-  const isValidEmail = (v: unknown) => {
-    if (typeof v !== "string") return false;
-    return /^[a-zA-Z0-9.!#$%&'*+\\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/.test(
-      v,
-    );
-  };
-
-  return isValidEmail(value) ? undefined : "Please enter a valid email address";
-}
-
 export function composeValidators(
   ...validators: ((value: unknown) => string | undefined)[]
 ) {

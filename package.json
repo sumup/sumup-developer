@@ -25,6 +25,7 @@
     "info": "astro info",
     "dev": "astro dev",
     "start": "astro dev",
+    "prebuild": "astro sync --force",
     "build": "astro build",
     "precheck": "astro sync",
     "check": "astro check",

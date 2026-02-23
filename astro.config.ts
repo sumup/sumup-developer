@@ -112,6 +112,15 @@ const head = (): HeadUserConfig => {
       },
       content: "",
     },
+    {
+      tag: "link",
+      attrs: {
+        rel: "alternate",
+        type: "application/rss+xml",
+        title: "SumUp Developer Changelog RSS",
+        href: "/changelog/rss.xml",
+      },
+    },
   ];
 
   if (PUBLIC_ONETRUST_DOMAIN_ID) {
