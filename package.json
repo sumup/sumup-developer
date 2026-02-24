@@ -48,7 +48,7 @@
     "@astrojs/starlight-docsearch": "^0.6.1",
     "@astrojs/ts-plugin": "^1.10.6",
     "@expressive-code/plugin-collapsible-sections": "^0.41.6",
-    "@expressive-code/plugin-line-numbers": "0.41.6",
+    "@expressive-code/plugin-line-numbers": "0.41.7",
     "@sindresorhus/slugify": "^3.0.0",
     "@sumup-oss/circuit-ui": "^10.14.7",
     "@sumup-oss/design-tokens": "^9.0.0",
