@@ -1,267 +1,37 @@
 ---
-import Markdown from "@components/Markdown.astro";
-import { formatSlug } from "@lib/helpers";
-import { doc, orderedTagEntries } from "@lib/openapi";
-import { Anchor, Card, Body, Button } from "@sumup-oss/circuit-ui";
-import LRGrid from "./LRGrid.astro";
-import SDKList from "./SDKList";
-import { CodeBlock, MultiCode } from "@components/Code";
-import TagSection from "./TagSection.astro";
-import { ArrowSlanted } from "@sumup-oss/icons";
+import TopSections from "./TopSections.astro";
+import TagDocs from "./TagDocs.astro";
 
 export interface Props {
-  target?: string;
+  tagSlug?: string;
+  operationSlug?: string;
+  topSection?: "introduction" | "sdks" | "authentication";
 }
 
-const { target } = Astro.props;
-const tagEntries = orderedTagEntries();
+const { tagSlug, operationSlug, topSection } = Astro.props;
+const target = tagSlug
+  ? operationSlug
+    ? `${tagSlug}/${operationSlug}`
+    : tagSlug
+  : topSection;
 ---
 
 <article data-selected-operation={target}>
   <div class="specs">
-    <section id="introduction" data-pagefind-body={!target}>
-      <LRGrid>
-        <div class="info">
-          <Markdown>{doc.info.description}</Markdown>
-          <div class="spec-links">
-            <Button
-              size="s"
-              href="https://raw.githubusercontent.com/sumup/sumup-openapi/refs/heads/main/openapi.yaml"
-              target="_blank"
-              rel="noreferrer noopener"
-              icon={ArrowSlanted}
-            >
-              View YAML spec
-            </Button>
-            <Button
-              size="s"
-              href="https://raw.githubusercontent.com/sumup/sumup-openapi/refs/heads/main/openapi.json"
-              target="_blank"
-              rel="noreferrer noopener"
-              icon={ArrowSlanted}
-            >
-              View JSON spec
-            </Button>
-          </div>
-        </div>
-        {
-          doc.servers && (
-            <div class="servers">
-              {doc.servers.map((server) => (
-                <CodeBlock title="Base URL" language="bash" code={server.url} />
-              ))}
-            </div>
-          )
-        }
-      </LRGrid>
-    </section>
-    <section id="sdks" data-pagefind-body={!target}>
-      <LRGrid class="sdks">
-        <div>
-          <div class="info sl-markdown-content">
-            <h2>SDKs</h2>
-            <p>
-              The SumUp SDKs reduce the amount of work required to use our REST
-              APIs. SumUp maintains SDKs for PHP, Node.js, Python, Java, Go,
-              Rust, and .NET.
-            </p>
-          </div>
-          <SDKList />
-        </div>
-        <div>
-          <MultiCode
-            options={[
-              {
-                label: "cURL",
-                code: "# Select a client library to see installation instructions.",
-                lang: "bash",
-              },
-              {
-                label: "Node.js",
-                code: "npm install --save @sumup/sdk",
-                lang: "bash",
-              },
-              {
-                label: "Go",
-                code: "go get github.com/sumup/sumup-go",
-                lang: "bash",
-              },
-              {
-                label: "Java",
-                code: `// Maven
-<dependency>
-  <groupId>com.sumup</groupId>
-  <artifactId>sumup-sdk</artifactId>
-  <version>0.0.6</version>
-</dependency>
-
-// Gradle
-implementation "com.sumup:sumup-sdk:0.0.6"`,
-                lang: "xml",
-              },
-              {
-                label: ".NET",
-                code: "dotnet add package SumUp",
-                lang: "bash",
-              },
-              {
-                label: "Python",
-                code: "pip install python",
-                lang: "bash",
-              },
-              {
-                label: "PHP",
-                code: "composer require sumup/sumup-php",
-                lang: "bash",
-              },
-              {
-                label: "Rust",
-                code: "cargo add sumup",
-                lang: "bash",
-              },
-            ]}
-            isLanguageSelect
-          >
-            <div slot="left">Install SDK</div>
-          </MultiCode>
-          <Card style={{ marginTop: "var(--cui-spacings-mega)" }}>
-            <Body size="s">
-              You can also explore out APIs in Postman using
-              <Anchor
-                href="https://www.postman.com/sumupengineering/sumup-developers/overview"
-                target="_blank"
-                size="s"
-                externalLabel="Opens in a new tab"
-              >
-                SumUp Developers
-              </Anchor>
-              public collection.
-            </Body>
-          </Card>
-        </div>
-      </LRGrid>
-    </section>
-    <section id="authentication" data-pagefind-body={!target}>
-      <LRGrid>
-        <div class="info sl-markdown-content">
-          <h2>Authentication</h2>
-          <p>
-            The SumUp API uses API keys to authenticate requests. You can view,
-            create, and manage your API keys in the <a
-              href="https://me.sumup.com/settings/api-keys">Dashboard</a
-            >.
-          </p>
-          <p>
-            Test mode secret keys have the prefix sk_test_ and live mode secret
-            keys have the prefix sk_live_. Alternatively, you can use restricted
-            API keys for granular permissions.
-          </p>
-          <p>
-            Keep your API keys secret and safe. Do not share your API keys or
-            expose them in a publicly accessible areas such as client-side code
-            (browser or apps) or in the GitHub.
-          </p>
-          <p>
-            All API requests must be made over HTTPS and authenticated. Calls
-            made over plain HTTP or calls without authentication will fail.
-          </p>
-        </div>
-        <div class="servers">
-          <MultiCode
-            options={[
-              {
-                label: "cURL",
-                code: `curl https://api.sumup.com/v0.1/checkouts \\
-  -H "Authorization: Bearer sup_sk_MvxmLOl0..."`,
-                lang: "bash",
-              },
-              {
-                label: "Node.js",
-                code: `import { SumUp } from '@sumup/sdk';
-
-const sumup = new SumUp({ apiKey: 'sup_sk_MvxmLOl0...' });`,
-                lang: "ts",
-              },
-              {
-                label: "Go",
-                code: `package main
-
-import (
-  "github.com/sumup/sumup-go/client"
-  sumup "github.com/sumup/sumup-go"
-)
-
-func main() {
-  client := sumup.NewClient(client.WithAPIKey("sup_sk_MvxmLOl0..."))
-}
-`,
-                lang: "go",
-              },
-              {
-                label: "Java",
-                code: `SumUpClient client =
-    SumUpClient.builder()
-        .accessToken("sup_sk_MvxmLOl0...")
-        .build();`,
-                lang: "java",
-              },
-              {
-                label: ".NET",
-                code: `using SumUp;
-
-var client = new SumUpClient(new SumUpClientOptions
-{
-    AccessToken = "sup_sk_MvxmLOl0...",
-});`,
-                lang: "csharp",
-              },
-              {
-                label: "Python",
-                code: `from sumup import Sumup
-
-client = SumUp(api_key="sup_sk_MvxmLOl0...")`,
-                lang: "python",
-              },
-              {
-                label: "PHP",
-                code: `$sumup = new \\SumUp\\SumUp("sup_sk_MvxmLOl0...");`,
-                lang: "php",
-              },
-              {
-                label: "Rust",
-                code: `use sumup::Client;
-
-let client = Client::default().with_authorization("sup_sk_MvxmLOl0...");`,
-                lang: "rust",
-              },
-            ]}
-            isLanguageSelect
-          >
-            <div slot="left">Authenticate</div>
-          </MultiCode>
-        </div>
-      </LRGrid>
-    </section>
-    {
-      tagEntries.map(([tag, operations]) => (
-        <TagSection
-          tag={
-            // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
-            doc.tags?.find((t) => formatSlug(t.name) === tag)!
-          }
-          operations={operations}
-          target={target}
-        />
-      ))
-    }
+    {!tagSlug && <TopSections topSection={topSection} />}
+    {tagSlug && <TagDocs tagSlug={tagSlug} operationSlug={operationSlug} />}
   </div>
 </article>
 
 <script>
   import { setCurrentLanguage } from "@lib/code";
 
-  const scrollToCurrent = () => {
+  const initApiDocsUI = () => {
     document.querySelectorAll("button[data-lang]").forEach((btn) => {
+      if ((btn as HTMLElement).dataset.languageHandlerBound === "true") {
+        return;
+      }
+      (btn as HTMLElement).dataset.languageHandlerBound = "true";
       btn.addEventListener("click", () => {
         const lang = (btn as HTMLElement).dataset.lang;
         if (lang) {
@@ -269,54 +39,12 @@ let client = Client::default().with_authorization("sup_sk_MvxmLOl0...");`,
         }
       });
     });
-
-    const main = document.querySelector("main[data-selected-operation]");
-    if (main) {
-      const selectedOperation = main.getAttribute("data-selected-operation");
-      if (selectedOperation) {
-        const target = document.getElementById(selectedOperation);
-        if (target) {
-          console.info({
-            target,
-          });
-          target.scrollIntoView();
-        }
-      }
-    }
   };
 
-  document.addEventListener("astro:page-load", scrollToCurrent);
-  document.addEventListener("DOMContentLoaded", scrollToCurrent);
-
-  const persistSidebar = () => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            sessionStorage.setItem("lastVisible", entry.target.id);
-          }
-        });
-      },
-      { threshold: 0.5 },
-    );
-
-    document.querySelectorAll("section").forEach((section) => {
-      observer.observe(section);
-    });
-  };
-
-  document.addEventListener("astro:page-load", persistSidebar);
-  document.addEventListener("DOMContentLoaded", persistSidebar);
+  document.addEventListener("astro:page-load", initApiDocsUI);
 </script>
 
 <style>
-  .spec-links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--cui-spacings-kilo);
-    margin-top: var(--cui-spacings-giga);
-  }
-
   .specs {
     font-size: 0.9rem;
     flex-grow: 1;
@@ -333,18 +61,19 @@ let client = Client::default().with_authorization("sup_sk_MvxmLOl0...");`,
     gap: var(--cui-spacings-byte);
   }
 
-  :global(section) {
+  .specs :global(section) {
     border-bottom: var(--cui-border-width-kilo) solid var(--cui-border-subtle);
     padding: var(--cui-spacings-giga) 0;
     width: 100%;
   }
 
-  h1 {
-    margin: var(--cui-spacings-giga) 0;
+  .specs :global(section:last-child) {
+    border-bottom: none;
+    padding-bottom: 0;
   }
 
-  .servers {
-    position: relative;
+  h1 {
+    margin: var(--cui-spacings-giga) 0;
   }
 
   .lang-switch {

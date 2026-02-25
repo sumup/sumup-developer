@@ -1,0 +1,24 @@
+---
+import { getTagBySlug, getTagEntryBySlug } from "@lib/openapi";
+import TagSection from "./TagSection.astro";
+
+export interface Props {
+  tagSlug: string;
+  operationSlug?: string;
+}
+
+const { tagSlug, operationSlug } = Astro.props;
+const selectedTagEntry = getTagEntryBySlug(tagSlug);
+const selectedTag = getTagBySlug(tagSlug);
+const target = operationSlug ? `${tagSlug}/${operationSlug}` : tagSlug;
+---
+
+{
+  selectedTagEntry && selectedTag && (
+    <TagSection
+      tag={selectedTag}
+      operations={selectedTagEntry}
+      target={target}
+    />
+  )
+}

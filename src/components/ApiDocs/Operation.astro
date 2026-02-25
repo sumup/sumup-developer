@@ -76,7 +76,11 @@ const formattedPermissions = (operation["x-permissions"] || [])
 <section id={`${operation.tagSlug}-${operation.slug}`} {...props}>
   <LRGrid>
     <div>
-      <div class="info" data-pagefind-meta={`operation:${operation.summary}`}>
+      <div
+        class="info"
+        data-pagefind-operation={operation.summary}
+        data-pagefind-meta="operation[data-pagefind-operation]"
+      >
         <a
           href={`/api/${operation.tagSlug}`}
           data-scroll-to={operation.tagSlug}
@@ -87,6 +91,7 @@ const formattedPermissions = (operation["x-permissions"] || [])
         </a>
         <Headline
           as="h2"
+          id={`${operation.tagSlug}-${operation.slug}-heading`}
           size="m"
           data-pagefind-meta="title"
           className="headline"

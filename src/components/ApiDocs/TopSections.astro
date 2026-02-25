@@ -1,0 +1,260 @@
+---
+import { CodeBlock, MultiCode } from "@components/Code";
+import Markdown from "@components/Markdown.astro";
+import type { ApiTopSection } from "@lib/openapi/routes";
+import { doc } from "@lib/openapi";
+import { ArrowSlanted } from "@sumup-oss/icons";
+import { Anchor, Body, Button, Card } from "@sumup-oss/circuit-ui";
+import LRGrid from "./LRGrid.astro";
+import SDKList from "./SDKList";
+
+export interface Props {
+  topSection?: ApiTopSection;
+}
+
+const { topSection = "introduction" } = Astro.props;
+const sectionAttrs = (id: ApiTopSection) =>
+  topSection === id
+    ? { "data-pagefind-body": "" }
+    : { "data-pagefind-ignore": "all" };
+---
+
+<section id="introduction" {...sectionAttrs("introduction")}>
+  <LRGrid>
+    <div class="info">
+      <Markdown>{doc.info.description}</Markdown>
+      <div class="spec-links">
+        <Button
+          size="s"
+          href="https://raw.githubusercontent.com/sumup/sumup-openapi/refs/heads/main/openapi.yaml"
+          target="_blank"
+          rel="noreferrer noopener"
+          icon={ArrowSlanted}
+        >
+          View YAML spec
+        </Button>
+        <Button
+          size="s"
+          href="https://raw.githubusercontent.com/sumup/sumup-openapi/refs/heads/main/openapi.json"
+          target="_blank"
+          rel="noreferrer noopener"
+          icon={ArrowSlanted}
+        >
+          View JSON spec
+        </Button>
+      </div>
+    </div>
+    {
+      doc.servers && (
+        <div class="servers">
+          {doc.servers.map((server) => (
+            <CodeBlock title="Base URL" language="bash" code={server.url} />
+          ))}
+        </div>
+      )
+    }
+  </LRGrid>
+</section>
+
+<section id="sdks" {...sectionAttrs("sdks")}>
+  <LRGrid class="sdks">
+    <div>
+      <div class="info sl-markdown-content">
+        <h2 id="sdks-heading">SDKs</h2>
+        <p>
+          The SumUp SDKs reduce the amount of work required to use our REST
+          APIs. SumUp maintains SDKs for PHP, Node.js, Python, Java, Go, Rust,
+          and .NET.
+        </p>
+      </div>
+      <SDKList />
+    </div>
+    <div>
+      <MultiCode
+        options={[
+          {
+            label: "cURL",
+            code: "# Select a client library to see installation instructions.",
+            lang: "bash",
+          },
+          {
+            label: "Node.js",
+            code: "npm install --save @sumup/sdk",
+            lang: "bash",
+          },
+          {
+            label: "Go",
+            code: "go get github.com/sumup/sumup-go",
+            lang: "bash",
+          },
+          {
+            label: "Java",
+            code: `// Maven
+<dependency>
+  <groupId>com.sumup</groupId>
+  <artifactId>sumup-sdk</artifactId>
+  <version>0.0.6</version>
+</dependency>
+
+// Gradle
+implementation "com.sumup:sumup-sdk:0.0.6"`,
+            lang: "xml",
+          },
+          {
+            label: ".NET",
+            code: "dotnet add package SumUp",
+            lang: "bash",
+          },
+          {
+            label: "Python",
+            code: `pip install sumup
+# or
+uv add sumup`,
+            lang: "bash",
+          },
+          {
+            label: "PHP",
+            code: "composer require sumup/sumup-php",
+            lang: "bash",
+          },
+          {
+            label: "Rust",
+            code: "cargo add sumup",
+            lang: "bash",
+          },
+        ]}
+        isLanguageSelect
+      >
+        <div slot="left">Install SDK</div>
+      </MultiCode>
+      <Card style={{ marginTop: "var(--cui-spacings-mega)" }}>
+        <Body size="s">
+          You can also explore out APIs in Postman using
+          <Anchor
+            href="https://www.postman.com/sumupengineering/sumup-developers/overview"
+            target="_blank"
+            size="s"
+            externalLabel="Opens in a new tab"
+          >
+            SumUp Developers
+          </Anchor>
+          public collection.
+        </Body>
+      </Card>
+    </div>
+  </LRGrid>
+</section>
+
+<section id="authentication" {...sectionAttrs("authentication")}>
+  <LRGrid>
+    <div class="info sl-markdown-content">
+      <h2 id="authentication-heading">Authentication</h2>
+      <p>
+        The SumUp API uses API keys to authenticate requests. You can view,
+        create, and manage your API keys in the{" "}
+        <a href="https://me.sumup.com/settings/api-keys">Dashboard</a>.
+      </p>
+      <p>
+        Test mode secret keys have the prefix sk_test_ and live mode secret keys
+        have the prefix sk_live_. Alternatively, you can use restricted API keys
+        for granular permissions.
+      </p>
+      <p>
+        Keep your API keys secret and safe. Do not share your API keys or expose
+        them in a publicly accessible areas such as client-side code (browser or
+        apps) or in the GitHub.
+      </p>
+      <p>
+        All API requests must be made over HTTPS and authenticated. Calls made
+        over plain HTTP or calls without authentication will fail.
+      </p>
+    </div>
+    <div class="servers">
+      <MultiCode
+        options={[
+          {
+            label: "cURL",
+            code: `curl https://api.sumup.com/v0.1/checkouts \\
+  -H "Authorization: Bearer sup_sk_MvxmLOl0..."`,
+            lang: "bash",
+          },
+          {
+            label: "Node.js",
+            code: `import { SumUp } from '@sumup/sdk';
+
+const sumup = new SumUp({ apiKey: 'sup_sk_MvxmLOl0...' });`,
+            lang: "ts",
+          },
+          {
+            label: "Go",
+            code: `package main
+
+import (
+  "github.com/sumup/sumup-go/client"
+  sumup "github.com/sumup/sumup-go"
+)
+
+func main() {
+  client := sumup.NewClient(client.WithAPIKey("sup_sk_MvxmLOl0..."))
+}
+`,
+            lang: "go",
+          },
+          {
+            label: "Java",
+            code: `SumUpClient client =
+    SumUpClient.builder()
+        .accessToken("sup_sk_MvxmLOl0...")
+        .build();`,
+            lang: "java",
+          },
+          {
+            label: ".NET",
+            code: `using SumUp;
+
+var client = new SumUpClient(new SumUpClientOptions
+{
+    AccessToken = "sup_sk_MvxmLOl0...",
+});`,
+            lang: "csharp",
+          },
+          {
+            label: "Python",
+            code: `from sumup import Sumup
+
+client = SumUp(api_key="sup_sk_MvxmLOl0...")`,
+            lang: "python",
+          },
+          {
+            label: "PHP",
+            code: `$sumup = new \\SumUp\\SumUp("sup_sk_MvxmLOl0...");`,
+            lang: "php",
+          },
+          {
+            label: "Rust",
+            code: `use sumup::Client;
+
+let client = Client::default().with_authorization("sup_sk_MvxmLOl0...");`,
+            lang: "rust",
+          },
+        ]}
+        isLanguageSelect
+      >
+        <div slot="left">Authenticate</div>
+      </MultiCode>
+    </div>
+  </LRGrid>
+</section>
+
+<style>
+  .spec-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--cui-spacings-kilo);
+    margin-top: var(--cui-spacings-giga);
+  }
+
+  .servers {
+    position: relative;
+  }
+</style>

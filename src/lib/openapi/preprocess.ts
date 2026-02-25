@@ -19,7 +19,14 @@ const methods = [
   OpenAPIV3.HttpMethods.TRACE,
 ];
 
-// endpoints is list of Operations with fully resolved parameters and request objects.
+/**
+ * Flattened list of OpenAPI operations with resolved parameters/request body and derived slugs.
+ * The `slug` uses the first available value from:
+ * - `x-codegen.method_name`
+ * - `operationId`
+ * - `summary`
+ * - `method-path` fallback
+ */
 export const endpoints: OperationObject[] = Object.entries(
   doc.paths || {},
 ).flatMap(([path, pathItem]) => {
@@ -61,6 +68,10 @@ export const endpoints: OperationObject[] = Object.entries(
   return operations;
 });
 
+/**
+ * Operations grouped by tag slug.
+ * Note: operations with multiple tags are inserted into each corresponding tag bucket.
+ */
 export const groupped: Record<string, OperationObject[]> = endpoints.reduce(
   (group, operation) => {
     for (const tag of operation.tags || []) {
@@ -96,4 +107,10 @@ const sorted: Record<string, OperationObject[]> = Object.fromEntries(
   }),
 );
 
+/**
+ * Grouped operations sorted for rendering:
+ * - non-deprecated before deprecated
+ * - shorter path first
+ * - HTTP method order as a tiebreaker
+ */
 export const pathsByTag: Record<string, OperationObject[]> = sorted;
