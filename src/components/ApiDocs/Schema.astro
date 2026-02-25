@@ -126,9 +126,9 @@ const schema = resolveSchema(obj);
               )}
             {propertySchema.type === "object" &&
               getRenderableAttributesSchema(propertySchema) && (
-              <Attributes
-                schema={propertySchema}
-                kind={propertySchema.title || "Attributes"}
+                <Attributes
+                  schema={propertySchema}
+                  kind={propertySchema.title || "Attributes"}
                 />
               )}
             {propertySchema.type === "array" &&

@@ -10,6 +10,7 @@ class SchemaError extends Error {
   }
 }
 
+/** Resolves a parameter object, recursively following local `$ref` pointers in `components.parameters`. */
 export const resolveParameter = (
   param: OpenAPIV3_1.ReferenceObject | OpenAPIV3_1.ParameterObject,
 ): OpenAPIV3_1.ParameterObject => {
@@ -33,6 +34,7 @@ export const resolveParameter = (
   return param;
 };
 
+/** Resolves a request body object, recursively following local `$ref` pointers in `components.requestBodies`. */
 export const resolveBody = (
   body?: OpenAPIV3_1.ReferenceObject | OpenAPIV3_1.RequestBodyObject,
 ): OpenAPIV3_1.RequestBodyObject | undefined => {
@@ -57,10 +59,12 @@ export const resolveBody = (
   return body;
 };
 
+/** Returns a raw component collection (for example, `schemas`, `responses`, `parameters`). */
 export const reolveComponent = (ref: keyof OpenAPIV3_1.ComponentsObject) => {
   return doc.components?.[ref];
 };
 
+/** Resolves a local JSON pointer like `#/components/schemas/Foo` against the loaded OpenAPI document. */
 export const resolveReference = <
   T extends OpenAPIV3_1.SchemaObject = OpenAPIV3_1.SchemaObject,
 >(
@@ -79,6 +83,13 @@ export const resolveReference = <
   return x[path][kind][name] as T;
 };
 
+/**
+ * Resolves a schema reference and performs a light `allOf` merge.
+ *
+ * Non-obvious behavior:
+ * - This mutates the schema object by merging `allOf` properties into `obj.properties`.
+ * - It also forces `obj.type = "object"` as a compatibility fix for the current schema set.
+ */
 export const resolveSchema = (
   obj: OpenAPIV3_1.ReferenceObject | OpenAPIV3_1.SchemaObject,
 ): OpenAPIV3_1.SchemaObject => {
@@ -111,6 +122,7 @@ export const resolveSchema = (
   return obj;
 };
 
+/** Type guard used where request bodies may still be `$ref` objects. */
 export const isRequestBody = (
   object:
     | OpenAPIV3_1.RequestBodyObject
@@ -118,6 +130,10 @@ export const isRequestBody = (
     | undefined,
 ): object is OpenAPIV3_1.RequestBodyObject => !!object && !("$ref" in object);
 
+/**
+ * Builds a JSON-like example payload from a schema.
+ * Prefers explicit `example`/`examples`; otherwise generates by type recursively.
+ */
 export const schemaToExample = (
   obj: OpenAPIV3_1.ReferenceObject | OpenAPIV3_1.SchemaObject,
   required = false,

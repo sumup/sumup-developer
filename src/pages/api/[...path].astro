@@ -2,28 +2,35 @@
 import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
 import ApiDocs from "@components/ApiDocs/ApiDocs.astro";
 import type { StarlightPageProps } from "@astrojs/starlight/props";
-import { formatSlug } from "@lib/helpers";
-import { doc, orderedTagEntries, pathsByTag } from "@lib/openapi";
+import { pathsByTag } from "@lib/openapi";
+import {
+  apiTopLevelPaths,
+  getApiTopSection,
+  isApiTopLevelPath,
+} from "@lib/openapi/routes";
+import {
+  getTagBySlug,
+  getTagEntryBySlug,
+  orderedTagEntriesCached,
+} from "@lib/openapi/tags";
 import type { StarlightUserConfig } from "@astrojs/starlight/types";
 
 // list of resources that are expanded by default
 const mainResources = ["Checkouts", "Customers"];
-const tagEntries = orderedTagEntries();
 
 export async function getStaticPaths() {
   return [
-    // root
+    // top-level pages
     { params: { path: undefined }, props: {} },
-    { params: { path: "sdks" }, props: {} },
-    { params: { path: "authentication" }, props: {} },
+    ...apiTopLevelPaths.map((path) => ({ params: { path }, props: {} })),
     // tags
-    ...(doc.tags || []).map((tag) => ({
-      params: { path: formatSlug(tag.name) },
+    ...orderedTagEntriesCached.map(([tag]) => ({
+      params: { path: tag },
     })),
     // operations
     ...Object.entries(pathsByTag).flatMap(([tag, operations]) =>
-      operations.map((o) => ({
-        params: { path: `${formatSlug(tag)}/${formatSlug(o.slug)}` },
+      operations.map((operation) => ({
+        params: { path: `${tag}/${operation.slug}` },
       })),
     ),
   ];
@@ -54,24 +61,24 @@ const sidebar: StarlightUserConfig["sidebar"] = [
           "data-scroll-to": "authentication",
         },
       },
-      ...tagEntries.map(([tagName, operations]) => {
-        const tag = doc.tags.find((t) => formatSlug(t.name) === tagName)!;
+      ...orderedTagEntriesCached.map(([tagName, operations]) => {
+        const tag = getTagBySlug(tagName)!;
         return {
           label: tag.name,
           collapsed: !mainResources.includes(tag.name),
           items: [
             {
               label: "Overview",
-              link: `/api/${formatSlug(tag.name)}`,
+              link: `/api/${tagName}`,
               attrs: {
-                "data-scroll-to": `${formatSlug(tag.name)}`,
+                "data-scroll-to": tagName,
               },
             },
             ...operations.map((op) => ({
               label: op.summary!,
-              link: `/api/${formatSlug(tag.name)}/${formatSlug(op.slug)}`,
+              link: `/api/${tagName}/${op.slug}`,
               attrs: {
-                "data-scroll-to": `${formatSlug(tag.name)}-${op.slug}`,
+                "data-scroll-to": `${tagName}-${op.slug}`,
               },
             })),
           ],
@@ -81,9 +88,21 @@ const sidebar: StarlightUserConfig["sidebar"] = [
   },
 ];
 
+const { path } = Astro.params;
+const [segment, section] = (path || "").split("/");
+const currentTagEntry = segment ? getTagEntryBySlug(segment) : undefined;
+const isTopLevelPage = !segment || isApiTopLevelPath(segment);
+const topSection = getApiTopSection(segment);
+
+const currentTag = segment ? getTagBySlug(segment) : undefined;
+const currentOperation =
+  currentTagEntry && section
+    ? currentTagEntry.find((operation) => operation.slug === section)
+    : undefined;
+
 const props = {
   frontmatter: {
-    title: "API Reference",
+    title: currentOperation?.summary || currentTag?.name || "API Reference",
     description: "SumUp API reference and code samples.",
     tableOfContents: false,
   },
@@ -91,134 +110,27 @@ const props = {
   custom: true,
 } as StarlightPageProps;
 
-const { path } = Astro.params;
-const [tag, section] = (path || "").split("/");
+const canonicalPath = path ? `/api/${path}` : "/api";
 ---
 
 <link
   slot="head"
   rel="canonical"
-  href={`https://developer.sumup.com/docs/api/${section || tag}`}
+  href={`https://developer.sumup.com${canonicalPath}`}
 />
-{
-  (tag || section) && (
-    <link rel="canonical" href="`https://developer.sumup.com/api" />
-  )
-}
 <StarlightPage {...props}>
-  <ApiDocs target={path} />
+  <ApiDocs
+    tagSlug={isTopLevelPage ? undefined : segment}
+    operationSlug={isTopLevelPage ? undefined : section}
+    topSection={topSection}
+  />
 </StarlightPage>
 
 <script>
-  // scroll to the current Tag / Operation based on the path
-  // In order: '', 'api', tag, section
-  const [, , tag, section] = window.location.pathname.split("/");
-  if (tag) {
-    // scroll to current target
-    const scrollTo = section ? `${tag}-${section}` : tag;
-    const target = document.getElementById(scrollTo);
-    if (target) {
-      console.info({
-        target,
-      });
-      target.scrollIntoView();
-    }
-    const opt: HTMLOptionElement | undefined | null = document
-      .getElementById("apiSelectNav")
-      ?.querySelector(`option[value="${scrollTo}"]`);
-    if (opt) {
-      opt.selected = true;
-    }
-  }
+  import { initApiSidebarNavigation } from "@lib/openapi/sidebar-nav";
 
-  const initClientSideNavigation = () => {
-    const links = document.querySelectorAll("[data-scroll-to]");
-
-    const sections = Array.from(links).map((link) => {
-      const scrollTo = link.getAttribute("data-scroll-to");
-      if (scrollTo) {
-        return document.getElementById(scrollTo);
-      }
-    });
-
-    for (const link of links) {
-      link.addEventListener("click", (e) => {
-        const scrollTo = link.getAttribute("data-scroll-to");
-        if (!scrollTo) return;
-        e.preventDefault();
-        document
-          .querySelector('[aria-current="page"]')
-          ?.removeAttribute("aria-current");
-        link.setAttribute("aria-current", "page");
-        const target = document.getElementById(scrollTo);
-        if (target) {
-          console.info({
-            target,
-          });
-          target.scrollIntoView();
-          history.pushState({}, "", link.getAttribute("href"));
-          e.preventDefault();
-        }
-        document.body.toggleAttribute("data-mobile-menu-expanded", false);
-        document
-          .querySelector("starlight-menu-button")
-          ?.setAttribute("aria-expanded", "false");
-      });
-    }
-
-    const onScroll = () => {
-      let closestSection: HTMLElement | null = null;
-      let closestDistance = Infinity;
-
-      sections.forEach((section) => {
-        if (section) {
-          const rect = section.getBoundingClientRect();
-          const distanceFromTop = Math.abs(rect.top - 50); // Calculate distance from 50px
-          if (distanceFromTop < closestDistance) {
-            closestDistance = distanceFromTop;
-            closestSection = section;
-          }
-        }
-      });
-
-      if (closestSection) {
-        const link = Array.from(links).find(
-          (link) => link.getAttribute("data-scroll-to") === closestSection?.id,
-        );
-
-        if (link) {
-          // Update the aria-current attribute
-          document
-            .querySelector('[aria-current="page"]')
-            ?.removeAttribute("aria-current");
-          link.setAttribute("aria-current", "page");
-
-          // Open the parent <details> if necessary
-          const details = link.closest("details") as HTMLElement;
-          if (details && !details.hasAttribute("open")) {
-            details.setAttribute("open", "");
-            details.dataset.wasAutoOpened = "true"; // Mark as auto-opened
-          }
-
-          // Close other auto-opened details elements
-          Array.from(
-            document.querySelectorAll(
-              "details[data-was-auto-opened]",
-            ) as NodeListOf<HTMLElement>,
-          )
-            .filter((d) => d !== details)
-            .forEach((d) => {
-              d.removeAttribute("open");
-              delete d.dataset.wasAutoOpened;
-            });
-        }
-      }
-    };
-    document.addEventListener("scroll", onScroll, { passive: true });
-  };
-
-  document.addEventListener("astro:page-load", initClientSideNavigation);
-  document.addEventListener("DOMContentLoaded", initClientSideNavigation);
+  initApiSidebarNavigation();
+  document.addEventListener("astro:page-load", initApiSidebarNavigation);
 </script>
 
 <style is:global>

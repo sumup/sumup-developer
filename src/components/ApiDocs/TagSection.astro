@@ -50,7 +50,7 @@ const tagIsTarget = !targetOp && targetTag === slug;
 >
   <LRGrid class="tag">
     <div class="tag-info">
-      <Headline as="h2" className="headline">
+      <Headline as="h2" id={`${slug}-heading`} className="headline">
         {name}
         {
           beta && (

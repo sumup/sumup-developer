@@ -47,6 +47,7 @@ const compareTags = (slugA: string, slugB: string): number => {
 };
 
 export const orderedTagEntries = (): [string, OperationObject[]][] => {
+  // Sort by OpenAPI tag order first, but push deprecated/downranked tags to the end.
   return Object.entries(pathsByTag).sort(([slugA], [slugB]) =>
     compareTags(slugA, slugB),
   );
