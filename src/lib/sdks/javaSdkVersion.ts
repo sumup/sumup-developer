@@ -1,6 +1,7 @@
 const JAVA_SDK_VERSION_FALLBACK = "0.0.6";
 
 let javaSdkVersionPromise: Promise<string> | undefined;
+const githubToken = process.env.GITHUB_TOKEN;
 
 export const getJavaSdkVersion = async (): Promise<string> => {
   if (!javaSdkVersionPromise) {
@@ -12,6 +13,9 @@ export const getJavaSdkVersion = async (): Promise<string> => {
             headers: {
               Accept: "application/vnd.github+json",
               "User-Agent": "sumup-developer-docs",
+              ...(githubToken
+                ? { Authorization: `Bearer ${githubToken}` }
+                : {}),
             },
           },
         );
@@ -36,4 +40,3 @@ export const getJavaSdkVersion = async (): Promise<string> => {
 
   return javaSdkVersionPromise;
 };
-
