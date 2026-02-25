@@ -14,21 +14,21 @@ const isNonArraySchemaObject = (
 ): object is OpenAPIV3_1.NonArraySchemaObject =>
   !!object && !("items" in object);
 
-const hasRenderableAttributes = (
+const getRenderableAttributesSchema = (
   object: OpenAPIV3_1.SchemaObject | OpenAPIV3_1.ReferenceObject | undefined,
-): boolean => {
-  if (!object) return false;
+): OpenAPIV3_1.SchemaObject | null => {
+  if (!object) return null;
 
   const schema = resolveSchema(object);
   const hasProperties = Object.keys(schema.properties || {}).length > 0;
 
-  if (hasProperties) return true;
+  if (hasProperties) return schema;
 
   if (schema.type === "array" && "items" in schema) {
-    return hasRenderableAttributes(schema.items);
+    return getRenderableAttributesSchema(schema.items);
   }
 
-  return false;
+  return null;
 };
 
 export interface Props {
@@ -72,14 +72,20 @@ const schema = resolveSchema(obj);
   }
   {!nested && !collapsable && <h3>{schema.title || kind}</h3>}
   {
-    schema.type === "array" && "items" in schema && (
-      <div>
-        <ParameterName name={""} def={schema} required={false} />
-        {hasRenderableAttributes(schema.items) && (
-          <Attributes schema={schema.items} kind={"Attributes"} />
-        )}
-      </div>
-    )
+    schema.type === "array" &&
+      "items" in schema &&
+      (() => {
+        const attributesSchema = getRenderableAttributesSchema(schema.items);
+
+        return (
+          <div>
+            <ParameterName name={""} def={schema} required={false} />
+            {attributesSchema && (
+              <Attributes schema={attributesSchema} kind={"Attributes"} />
+            )}
+          </div>
+        );
+      })()
   }
   <ul class:list={[{ nested }]}>
     {
@@ -111,19 +117,28 @@ const schema = resolveSchema(obj);
               <Markdown>{propertySchema.description}</Markdown>
             )}
             {propertySchema.type === "object" &&
-              hasRenderableAttributes(propertySchema) && (
-              <Attributes
-                schema={propertySchema}
-                kind={propertySchema.title || "Attributes"}
-              />
-            )}
+              getRenderableAttributesSchema(propertySchema) && (
+                <Attributes
+                  schema={propertySchema}
+                  kind={propertySchema.title || "Attributes"}
+                />
+              )}
             {propertySchema.type === "array" &&
-              hasRenderableAttributes(propertySchema.items) && (
-              <Attributes
-                schema={propertySchema.items}
-                kind={propertySchema.title || "Attributes"}
-              />
-            )}
+              "items" in propertySchema &&
+              (() => {
+                const attributesSchema = getRenderableAttributesSchema(
+                  propertySchema.items,
+                );
+
+                return (
+                  attributesSchema && (
+                    <Attributes
+                      schema={attributesSchema}
+                      kind={propertySchema.title || "Attributes"}
+                    />
+                  )
+                );
+              })()}
             {isNonArraySchemaObject(propertySchema) &&
               propertySchema.example && (
                 <div class="example">
