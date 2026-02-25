@@ -193,6 +193,7 @@ const formattedPermissions = (operation["x-permissions"] || [])
           <div class="example-response">
             {successResponse.example && (
               <CodeBlock
+                data-pagefind-ignore="all"
                 title="Response"
                 language="json"
                 code={JSON.stringify(successResponse.example, null, 2)}
@@ -200,6 +201,7 @@ const formattedPermissions = (operation["x-permissions"] || [])
             )}
             {successResponse.examples && (
               <MultiCode
+                data-pagefind-ignore="all"
                 options={Object.entries(successResponse.examples).map(
                   ([key, value]) => ({
                     label: key,
