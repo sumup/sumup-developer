@@ -5,6 +5,7 @@ import type { ApiTopSection } from "@lib/openapi/routes";
 import { doc } from "@lib/openapi";
 import { ArrowSlanted } from "@sumup-oss/icons";
 import { Anchor, Body, Button, Card } from "@sumup-oss/circuit-ui";
+import { getJavaSdkVersion } from "@lib/sdks/javaSdkVersion";
 import LRGrid from "./LRGrid.astro";
 import SDKList from "./SDKList";
 
@@ -13,6 +14,7 @@ export interface Props {
 }
 
 const { topSection = "introduction" } = Astro.props;
+const javaSdkVersion = await getJavaSdkVersion();
 const sectionAttrs = (id: ApiTopSection) =>
   topSection === id
     ? { "data-pagefind-body": "" }
@@ -94,11 +96,11 @@ const sectionAttrs = (id: ApiTopSection) =>
 <dependency>
   <groupId>com.sumup</groupId>
   <artifactId>sumup-sdk</artifactId>
-  <version>0.0.6</version>
+  <version>${javaSdkVersion}</version>
 </dependency>
 
 // Gradle
-implementation "com.sumup:sumup-sdk:0.0.6"`,
+implementation "com.sumup:sumup-sdk:${javaSdkVersion}"`,
             lang: "xml",
           },
           {
