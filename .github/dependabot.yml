@@ -16,6 +16,10 @@ updates:
         patterns:
           - "astro"
           - "@astrojs/*"
+      expressive-code:
+        patterns:
+          - "@expressive-code/*"
+          - "*expressive-code*"
       react:
         patterns:
           - "react"
