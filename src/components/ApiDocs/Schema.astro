@@ -116,11 +116,19 @@ const schema = resolveSchema(obj);
             {propertySchema.description && (
               <Markdown>{propertySchema.description}</Markdown>
             )}
+            {propertySchema.type === "array" &&
+              !propertySchema.description &&
+              "items" in propertySchema &&
+              resolveSchema(propertySchema.items).description && (
+                <Markdown>
+                  {resolveSchema(propertySchema.items).description}
+                </Markdown>
+              )}
             {propertySchema.type === "object" &&
               getRenderableAttributesSchema(propertySchema) && (
-                <Attributes
-                  schema={propertySchema}
-                  kind={propertySchema.title || "Attributes"}
+              <Attributes
+                schema={propertySchema}
+                kind={propertySchema.title || "Attributes"}
                 />
               )}
             {propertySchema.type === "array" &&
