@@ -14,6 +14,23 @@ const isNonArraySchemaObject = (
 ): object is OpenAPIV3_1.NonArraySchemaObject =>
   !!object && !("items" in object);
 
+const hasRenderableAttributes = (
+  object: OpenAPIV3_1.SchemaObject | OpenAPIV3_1.ReferenceObject | undefined,
+): boolean => {
+  if (!object) return false;
+
+  const schema = resolveSchema(object);
+  const hasProperties = Object.keys(schema.properties || {}).length > 0;
+
+  if (hasProperties) return true;
+
+  if (schema.type === "array" && "items" in schema) {
+    return hasRenderableAttributes(schema.items);
+  }
+
+  return false;
+};
+
 export interface Props {
   kind: string;
   schema: OpenAPIV3_1.SchemaObject;
@@ -58,7 +75,9 @@ const schema = resolveSchema(obj);
     schema.type === "array" && "items" in schema && (
       <div>
         <ParameterName name={""} def={schema} required={false} />
-        <Attributes schema={schema.items} kind={"Attributes"} />
+        {hasRenderableAttributes(schema.items) && (
+          <Attributes schema={schema.items} kind={"Attributes"} />
+        )}
       </div>
     )
   }
@@ -91,13 +110,15 @@ const schema = resolveSchema(obj);
             {propertySchema.description && (
               <Markdown>{propertySchema.description}</Markdown>
             )}
-            {"type" in propertySchema && propertySchema.type === "object" && (
+            {propertySchema.type === "object" &&
+              hasRenderableAttributes(propertySchema) && (
               <Attributes
                 schema={propertySchema}
                 kind={propertySchema.title || "Attributes"}
               />
             )}
-            {"type" in def && propertySchema.type === "array" && (
+            {propertySchema.type === "array" &&
+              hasRenderableAttributes(propertySchema.items) && (
               <Attributes
                 schema={propertySchema.items}
                 kind={propertySchema.title || "Attributes"}
