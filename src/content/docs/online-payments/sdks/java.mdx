@@ -10,7 +10,7 @@ links:
     href: https://github.com/sumup/sumup-java#readme
 ---
 
-import { Tabs, TabItem } from '@astrojs/starlight/components';
+import JavaSdkInstallTabs from '@components/content/JavaSdkInstallTabs.astro';
 
 The [`com.sumup:sumup-sdk`](https://github.com/sumup/sumup-java) package is the official Java SDK generated from the SumUp OpenAPI specification. It requires Java 17 or newer and ships both synchronous and asynchronous clients.
 
@@ -18,31 +18,7 @@ The [`com.sumup:sumup-sdk`](https://github.com/sumup/sumup-java) package is the 
 
 Add the dependency to your build file.
 
-<Tabs>
-  <TabItem label="Gradle (Kotlin DSL)">
-    ```kotlin
-    dependencies {
-        implementation("com.sumup:sumup-sdk:0.0.6")
-    }
-    ```
-  </TabItem>
-  <TabItem label="Gradle (Groovy)">
-    ```groovy
-    dependencies {
-        implementation 'com.sumup:sumup-sdk:0.0.6'
-    }
-    ```
-  </TabItem>
-  <TabItem label="Maven">
-    ```xml
-    <dependency>
-      <groupId>com.sumup</groupId>
-      <artifactId>sumup-sdk</artifactId>
-      <version>0.0.6</version>
-    </dependency>
-    ```
-  </TabItem>
-</Tabs>
+<JavaSdkInstallTabs />
 
 ## Configure Authentication
 

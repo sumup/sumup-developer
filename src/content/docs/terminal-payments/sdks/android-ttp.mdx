@@ -7,6 +7,7 @@ sidebar:
 
 import { androidttpsdkname } from "@lib/productnames.ts";
 import { Aside } from "@astrojs/starlight/components";
+import AndroidTapToPayInstallSnippets from "@components/content/AndroidTapToPayInstallSnippets.astro";
 
 The { androidttpsdkname } enables your mobile app to accept card-present contactless payments using only a smartphone, without any additional hardware. This guide explains how to integrate this functionality into your Android app.
 
@@ -67,15 +68,11 @@ You can use the sample app provided in the GitHub repository as a reference.
 
    Production dependency:
 
-   ```kotlin
-   implementation("com.sumup.tap-to-pay:utopia-sdk:1.0.4")
-   ```
+   <AndroidTapToPayInstallSnippets variant="production" />
 
    Testing dependency:
 
-   ```kotlin
-   implementation("com.sumup.tap-to-pay:utopia-sdk-dev-protected:1.0.4")
-   ```
+   <AndroidTapToPayInstallSnippets variant="testing" />
 
 ### Authentication
 

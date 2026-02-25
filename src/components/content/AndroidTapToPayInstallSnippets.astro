@@ -1,0 +1,22 @@
+---
+import { CodeBlock } from "@components/Code";
+import { getAndroidTapToPaySdkVersion } from "@lib/sdks/androidSdkVersions";
+
+type Variant = "production" | "testing";
+
+interface Props {
+  variant: Variant;
+}
+
+const { variant } = Astro.props;
+const androidTapToPaySdkVersion = await getAndroidTapToPaySdkVersion();
+---
+
+<CodeBlock
+  language="kotlin"
+  code={
+    variant === "testing"
+      ? `implementation("com.sumup.tap-to-pay:utopia-sdk-dev-protected:${androidTapToPaySdkVersion}")`
+      : `implementation("com.sumup.tap-to-pay:utopia-sdk:${androidTapToPaySdkVersion}")`
+  }
+/>
