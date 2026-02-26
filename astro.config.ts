@@ -242,7 +242,13 @@ export default defineConfig({
       editLink: {
         baseUrl: "https://github.com/sumup/sumup-developer/edit/main/",
       },
-      customCss: ["@sumup-oss/circuit-ui/styles.css", "./src/base.css"],
+      customCss: [
+        "@sumup-oss/circuit-ui/styles.css",
+        "./src/styles/theme-dark.css",
+        "./src/styles/theme-light.css",
+        "./src/styles/starlight-vars.css",
+        "./src/styles/utilities.css",
+      ],
       pagination: false,
       lastUpdated: true,
     }),

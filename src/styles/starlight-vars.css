@@ -1,0 +1,29 @@
+/* Customization of Starlight beyond the theme colors. */
+:root,
+:root[data-theme="light"] {
+  /* Layout sizing */
+  --sl-content-width: 50rem;
+
+  /* Custom colors for page elements */
+  --sl-color-hairline-shade: var(--cui-border-subtle);
+  --sl-color-bg: var(--cui-bg-normal);
+
+  /* Typography */
+  --sl-text-h1: var(--cui-headline-l-font-size);
+  --sl-text-h2: var(--cui-headline-m-font-size);
+  --sl-text-h3: var(--cui-headline-s-font-size);
+  --sl-text-h4: var(--sl-text-base);
+  --sl-text-h5: var(--sl-text-base);
+
+  --sl-color-blue-high: var(--cui-fg-normal);
+  --sl-color-blue: var(--cui-border-strong);
+  --sl-color-blue-low: var(--cui-bg-subtle);
+
+  --sl-color-purple-high: var(--cui-fg-promo);
+  --sl-color-purple: var(--cui-border-promo);
+  --sl-color-purple-low: var(--cui-bg-promo);
+
+  --sl-color-orange-high: var(--cui-fg-warning);
+  --sl-color-orange: var(--cui-border-warning);
+  --sl-color-orange-low: var(--cui-bg-warning);
+}
