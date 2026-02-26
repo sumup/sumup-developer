@@ -14,9 +14,7 @@ const androidTapToPaySdkVersion = await getAndroidTapToPaySdkVersion();
 
 <CodeBlock
   language="kotlin"
-  code={
-    variant === "testing"
-      ? `implementation("com.sumup.tap-to-pay:utopia-sdk-dev-protected:${androidTapToPaySdkVersion}")`
-      : `implementation("com.sumup.tap-to-pay:utopia-sdk:${androidTapToPaySdkVersion}")`
-  }
+  code={variant === "testing"
+    ? `implementation("com.sumup.tap-to-pay:utopia-sdk-dev-protected:${androidTapToPaySdkVersion}")`
+    : `implementation("com.sumup.tap-to-pay:utopia-sdk:${androidTapToPaySdkVersion}")`}
 />
