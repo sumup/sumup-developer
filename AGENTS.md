@@ -17,9 +17,48 @@ The portal uses Astro with the Starlight theme. Application source sits in `src/
 
 Prettier (project defaults) handles whitespace, so commit formatted files rather than manual styling. Stick to TypeScript where possible; Astro islands may embed React components. Name components and directories in PascalCase (`src/components/LogoSlider`), utility modules in camelCase (`src/utils/formats.ts`), and content files in kebab-case (`src/content/docs/payments-overview.mdx`). Favor SumUp design tokens and Circuit UI primitives; extend `src/base.css` sparingly.
 
+## Docs Frontmatter Requirements
+
+For files in `src/content/docs/`, include frontmatter at the top of every page.
+
+- Required: `title`
+- Strongly recommended: `description` (used in previews and search snippets)
+- Add `sidebar.order` when page ordering should be explicit (instead of folder/default ordering)
+- Add `sidebar.label` when navigation text should differ from the page title
+- If a page uses custom page actions in this repo, keep `links` entries shaped as `{ title, href }`
+
+## Linking Rules
+
+- For internal docs links, use root-absolute paths (for example `/online-payments/checkouts/`), not relative paths (for example `./checkouts`).
+- Do not include `.md` or `.mdx` in internal URLs.
+- Link text must describe the target; avoid vague text such as “here” or “this page”.
+
+## Code Block Rules
+
+- Always specify a language on fenced code blocks (for example `bash`, `json`, `ts`).
+- Do not include `$` command prompts in shell snippets; keep blocks copy-paste ready.
+
 ## Testing Guidelines
 
 CI relies on `npm run check`. When editing MDX content, preview via `npm run dev` to verify navigation, sidebar ordering, and snippet rendering. There is no Jest-style test suite; document any manual verification steps in the pull request if behavior changes or APIs are added.
+
+## Validation Matrix
+
+Run at least the following commands before submitting changes:
+
+- Content-only updates: `npm run check` and `npm run build`
+- Source code changes (`.ts`, `.tsx`, `.astro`, config, or runtime logic): `npm run check`, `npm run lint`, and `npm run test`
+- Link, routing, or navigation structure updates: `npm run linkcheck`
+
+## Common Failure Checklist
+
+Before opening a PR, double-check these frequent breakpoints:
+
+- MDX uses a component but the import is missing.
+- A fenced code block is missing a language or uses an invalid language tag.
+- A local image reference points to a file that does not exist.
+- Heading levels jump (for example `##` directly to `####`) and hurt page structure.
+- Frontmatter fields use the wrong type or shape for this repo’s content schema.
 
 ## Commit & Pull Request Guidelines
 
