@@ -70,12 +70,12 @@ export const getApiScrollTarget = (pathname: string): string | undefined => {
   }
 
   if (!first) {
-    return "introduction";
+    return undefined;
   }
 
   if (first === "sdks" || first === "authentication") {
     return first;
   }
 
-  return second ? `${first}-${second}` : first;
+  return second ? `${first}-${second}` : undefined;
 };
