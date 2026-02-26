@@ -3,7 +3,7 @@
 # SumUp Developer Portal 👩‍💻
 
 [![Documentation][docs-badge]](https://developer.sumup.com)
-[![CI Status](https://github.com/sumup/sumup-developer/workflows/CI/badge.svg)](https://github.com/sumup/sumup-developer/actions/workflows/ci.yml)
+[![CI Status](https://github.com/sumup/sumup-developer/actions/workflows/ci.yaml/badge.svg?branch=main)](https://github.com/sumup/sumup-developer/actions/workflows/ci.yaml)
 [![License](https://img.shields.io/github/license/sumup/sumup-developer)](./LICENSE)
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v2.1%20adopted-ff69b4.svg)](https://github.com/sumup/sumup-developer/tree/main/CODE_OF_CONDUCT.md)
 
