@@ -15,11 +15,7 @@ const linkItems = Array.isArray(links) ? links : [];
   </Headline>
   {
     description && (
-      <Body
-        style={{ marginTop: "var(--cui-spacings-mega)" }}
-        color="subtle"
-        className="subtitle"
-      >
+      <Body color="subtle" className="subtitle" size="l">
         {description}
       </Body>
     )
@@ -62,5 +58,9 @@ const linkItems = Array.isArray(links) ? links : [];
   .page-link img {
     display: inline-block;
     margin-right: var(--cui-spacings-byte);
+  }
+
+  .subtitle {
+    margin-top: var(--cui-spacings-mega);
   }
 </style>
