@@ -43,9 +43,6 @@ const sidebar: StarlightUserConfig["sidebar"] = [
       {
         label: "Overview",
         link: "/api",
-        attrs: {
-          "data-scroll-to": "introduction",
-        },
       },
       {
         label: "SDKs",
@@ -70,9 +67,6 @@ const sidebar: StarlightUserConfig["sidebar"] = [
             {
               label: "Overview",
               link: `/api/${tagName}`,
-              attrs: {
-                "data-scroll-to": tagName,
-              },
             },
             ...operations.map((op) => ({
               label: op.summary!,
