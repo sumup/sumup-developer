@@ -1,0 +1,5 @@
+[global]
+disable = ["MD013"]
+
+[per-file-ignores]
+"src/content/changelog/*.md" = ["MD001"]
