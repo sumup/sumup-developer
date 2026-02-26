@@ -2,6 +2,109 @@
 import Default from "@astrojs/starlight/components/Head.astro";
 import "@sumup-oss/design-tokens/fonts.css";
 import "@sumup-oss/design-tokens/dynamic.css";
+
+const { entry, head, lastUpdated } = Astro.locals.starlightRoute;
+const frontmatter = entry.data;
+const routeTitle = frontmatter.title || "SumUp Developer";
+const title = routeTitle.includes("SumUp")
+  ? routeTitle
+  : `${routeTitle} | SumUp Developer`;
+const description = frontmatter.description;
+const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
+const markdownAlternateUrl = new URL(
+  `${Astro.url.pathname.replace(/\/?$/, "/")}index.md`,
+  Astro.site,
+).toString();
+const shouldNoIndex = Boolean((frontmatter as Record<string, unknown>).noindex);
+
+function upsertMetaByName(name: string, content: string) {
+  const existing = head.find(
+    ({ tag, attrs }) => tag === "meta" && attrs?.name === name,
+  );
+  if (existing?.attrs) {
+    existing.attrs.content = content;
+    return;
+  }
+  head.push({
+    tag: "meta",
+    attrs: { name, content },
+  });
+}
+
+function upsertMetaByProperty(property: string, content: string) {
+  const existing = head.find(
+    ({ tag, attrs }) => tag === "meta" && attrs?.property === property,
+  );
+  if (existing?.attrs) {
+    existing.attrs.content = content;
+    return;
+  }
+  head.push({
+    tag: "meta",
+    attrs: { property, content },
+  });
+}
+
+function upsertCanonicalLink(href: string) {
+  const existing = head.find(
+    ({ tag, attrs }) => tag === "link" && attrs?.rel === "canonical",
+  );
+  if (existing?.attrs) {
+    existing.attrs.href = href;
+    return;
+  }
+  head.push({
+    tag: "link",
+    attrs: { rel: "canonical", href },
+  });
+}
+
+function ensureMarkdownAlternateLink(href: string) {
+  const existing = head.find(
+    ({ tag, attrs }) =>
+      tag === "link" &&
+      attrs?.rel === "alternate" &&
+      attrs?.type === "text/markdown",
+  );
+  if (existing?.attrs) {
+    existing.attrs.href = href;
+    return;
+  }
+  head.push({
+    tag: "link",
+    attrs: { rel: "alternate", type: "text/markdown", href },
+  });
+}
+
+const existingTitle = head.find(({ tag }) => tag === "title");
+if (existingTitle) {
+  existingTitle.content = title;
+} else {
+  head.push({ tag: "title", content: title });
+}
+
+upsertMetaByProperty("og:title", title);
+upsertMetaByProperty("og:url", canonicalUrl);
+upsertMetaByProperty("og:type", entry.id === "" ? "website" : "article");
+upsertMetaByName("twitter:title", title);
+upsertMetaByName("twitter:card", "summary_large_image");
+
+if (description) {
+  upsertMetaByName("description", description);
+  upsertMetaByProperty("og:description", description);
+  upsertMetaByName("twitter:description", description);
+}
+
+if (lastUpdated) {
+  upsertMetaByProperty("article:modified_time", lastUpdated.toISOString());
+}
+
+if (shouldNoIndex) {
+  upsertMetaByName("robots", "noindex");
+}
+
+upsertCanonicalLink(canonicalUrl);
+ensureMarkdownAlternateLink(markdownAlternateUrl);
 ---
 
 {/* This code is intentionally inlined to avoid FOUC. */}
