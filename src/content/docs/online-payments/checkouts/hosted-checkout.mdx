@@ -9,7 +9,6 @@ sidebar:
 import { Aside } from '@astrojs/starlight/components';
 import Image from '@components/content/Image.astro';
 
-
 ## About Hosted Checkout
 
 Hosted Checkout offers a complete checkout flow for payment collection. It's called "Hosted Checkout", because SumUp renders and hosts the entire checkout UI, which your customers can access via URL returned by our checkout API. The hosted checkout page aims at ease of integration, requiring little to no code, offering a summary of the checkout details, and providing a complete flow for handling payment collection. It covers the payment flows all the way to the success page.
@@ -29,8 +28,8 @@ The parameter name should be `hosted_checkout` and the value should be an object
 
 The response includes the Hosted Checkout properties:
 
-* `hosted_checkout` is returned as provided in the request
-* `hosted_checkout_url` provides the URL of the page handling the payment flow
+- `hosted_checkout` is returned as provided in the request
+- `hosted_checkout_url` provides the URL of the page handling the payment flow
 
 1. Send a request with the `"hosted_checkout": { "enabled": true }` in the body.
 
@@ -76,7 +75,6 @@ The response includes the Hosted Checkout properties:
     Each Hosted Checkout session lasts for 30 minutes, after which end users are presented with a "not found" page upon access attempts.
     </Aside>
 
-
 ## Configuring Hosted Checkout
 
 ### Redirecting Users After Successful Payment
@@ -87,7 +85,6 @@ When creating a checkout, simply provide a `redirect_url` parameter to include a
 <Aside type="note">
 Differently from what's stated in our [API docs](/api/checkouts/create), the absence of this parameter does not affect the availability of payment methods in Hosted Checkouts.
 </Aside>
-
 
 ## Hosted Checkout Status Pages
 
@@ -101,17 +98,13 @@ With Hosted Checkout, your payment flow is covered from start to finish. All suc
 
 <Image alt="A screenshot of the Hosted Checkout payment failed form" src="/img/guides/hosted checkout_payment_declined.png" width="50%" />
 
-
 - Expired session page is shown for all unpaid checkouts after session expiration or checkout expiration (currently 30 minutes).
 
 <Image alt="A screenshot of the Hosted Checkout session expiry form" src="/img/guides/hosted checkout_session_timed_out.png" width="50%" />
 
-
 - Not found page is shown for all URLs that do not match any existing session in our system.
 
 <Image alt="A screenshot of the Hosted Checkout page not found form" src="/img/guides/hosted checkout_not_found.png" width="50%" />
-
-
 
 <Aside type="caution">
 Hosted Checkout is currently in beta and may be subject to change. We're currently working on new features, so

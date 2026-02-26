@@ -43,7 +43,7 @@ Should you decide to integrate third-parties with the API key, you are responsib
 2. Expand your user account menu and open **Settings**.
 3. Go to **For Developers** > **Toolkit**.
 4. Select **API Keys**.
-   
+
    If you didn't create a key before, this page only shows the SumUp Public Key.
    If you did, your existing API Keys can be found here.
 
@@ -53,10 +53,10 @@ Should you decide to integrate third-parties with the API key, you are responsib
 6. When prompted, copy the key (you can also download it). SumUp does not store the key for security reasons.
    Integrators are responsible for handling the key securely in accordance with best industry practices.
 
-   * Ideally, do not share the key with third parties. If you do, ensure they handle it securely.
-   * Do not add the key to source-controlled repository or client-side code.
-   * Monitor key usage.
-   * Rotate the key on regular basis.
+   - Ideally, do not share the key with third parties. If you do, ensure they handle it securely.
+   - Do not add the key to source-controlled repository or client-side code.
+   - Monitor key usage.
+   - Rotate the key on regular basis.
 
 </Steps>
 
@@ -72,7 +72,6 @@ SumUp conforms to the [OAuth 2.0 protocol](https://oauth.net/2/), providing an a
 - `https://api.sumup.com/authorize`
 - `https://api.sumup.com/token`
 
-
 [OAuth 2.0](https://oauth.net/2/) is an industry-standard authorization protocol that allows for control over an application’s scope, and authorization flows across multiple devices.
 OAuth 2.0 allows the app to request API access on behalf of other users after they grant you the permission.
 
@@ -85,8 +84,8 @@ SumUp supports the following OAuth 2.0 authorization flows:
 
 For security reasons, SumUp manually verifies the following scope grants:
 
-* `payments` - required to process payments.
-* `payment_instruments` - required to store customer data and tokenize cards.
+- `payments` - required to process payments.
+- `payment_instruments` - required to store customer data and tokenize cards.
 
 [Contact us](/contact) to request those scopes to be granted to your app.
 
@@ -109,8 +108,9 @@ This flow works [as specified by the RFC 6749 Authorization Code Grant](https://
     If the user denies and clicks the **Cancel** button on the request, the authorization server will not generate an authorization code and will instead return an `error` parameter with an `access_denied` value instead.
     </Aside>
 
-3. Once the user accepts your authorization request, the authorization server redirects the user back to your application by using the registered URI you specified in the `redirect_uri` at the initial GET request. 
-  The response will return the `code` parameter, which is mandatory for retrieving an access token.
+3. Once the user accepts your authorization request, the authorization server redirects the user back to your application by using the registered URI you specified in the `redirect_uri` at the initial GET request.
+
+   The response will return the `code` parameter, which is mandatory for retrieving an access token.
 
 4. To retrieve the access token, the app makes a request to the `https://api.sumup.com/token` endpoint with a `Content-Type: application/x-www-form-urlencoded` header.
 
@@ -148,17 +148,17 @@ Note that refresh tokens can be invalidated due to factors other than expiration
 
 Authorization scopes define what an application is allowed to do on a merchant's behalf. A required set of scopes may be passed as a space-separated list in the authorization request. When scopes are omitted, the default ones are granted. If additional scopes are required, a new `access_token` has to be collected via the [Authorization code flow](#authorization-code-flow).
 
-| Scope name                       | Default | Access Level | Description                                                                                                                                                                                                                                                             |
-| -------------------------------- | ------- | ------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| transactions.history             | yes     | merchant     | Allows to view the transactions and transaction history for a specific merchant user's account.                                                                                                                                                                     |
-| user.app-settings                | yes     | merchant     | Allows to view and modify the SumUp mobile application settings for a specific merchant user's account.                                                                                                                                                             |
-| user.profile_readonly            | yes     | merchant     | Allows viewing account details for a specific merchant user's account.                                                                                                                                                                                              |
-| user.profile                     | no      | merchant     | Allows modifying account details for a specific merchant user's account.                                                                                                                                                                                            |
-| user.subaccounts                 | no      | merchant     | Allows viewing and modifying account details of a sub-account created for a specific merchant user's account. Sub-accounts are user accounts for employees of a merchant and can be granted different permissions by the holder of the main merchant user's account.   |
-| user.payout-settings             | no      | merchant     | Allows to view and modify the payout settings for a specific merchant user's account.                                                                                                                                                                               |
-| products                         | no      | merchant     | Allows to view and modify the product store for a specific merchant user's account. This includes the products, shelves, prices, and VAT rates available in the merchant's product store.                                                                           |
-| `restricted` payments            | no      | feature      | Allows to make payments by creating and processing payment checkouts. Requires verification by SumUp before it can be granted.                                                                                                                                                                                               |
-| `restricted` payment_instruments | no      | feature      | Allows to save customers and tokenize their payment cards for a specific merchant user's account. Requires verification by SumUp before it can be granted.                                                                                                                                                         |
+| Scope name                       | Default | Access Level | Description                                                                                                                                                                                                                                                          |
+| -------------------------------- | ------- | ------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| transactions.history             | yes     | merchant     | Allows to view the transactions and transaction history for a specific merchant user's account.                                                                                                                                                                      |
+| user.app-settings                | yes     | merchant     | Allows to view and modify the SumUp mobile application settings for a specific merchant user's account.                                                                                                                                                              |
+| user.profile_readonly            | yes     | merchant     | Allows viewing account details for a specific merchant user's account.                                                                                                                                                                                               |
+| user.profile                     | no      | merchant     | Allows modifying account details for a specific merchant user's account.                                                                                                                                                                                             |
+| user.subaccounts                 | no      | merchant     | Allows viewing and modifying account details of a sub-account created for a specific merchant user's account. Sub-accounts are user accounts for employees of a merchant and can be granted different permissions by the holder of the main merchant user's account. |
+| user.payout-settings             | no      | merchant     | Allows to view and modify the payout settings for a specific merchant user's account.                                                                                                                                                                                |
+| products                         | no      | merchant     | Allows to view and modify the product store for a specific merchant user's account. This includes the products, shelves, prices, and VAT rates available in the merchant's product store.                                                                            |
+| `restricted` payments            | no      | feature      | Allows to make payments by creating and processing payment checkouts. Requires verification by SumUp before it can be granted.                                                                                                                                       |
+| `restricted` payment_instruments | no      | feature      | Allows to save customers and tokenize their payment cards for a specific merchant user's account. Requires verification by SumUp before it can be granted.                                                                                                           |
 
 Restricted scopes must be enabled by SumUp for your application. To do that, [contact us](/contact).
 
@@ -166,7 +166,7 @@ Restricted scopes must be enabled by SumUp for your application. To do that, [co
 
 This flow follows [the RFC 6749 Client Credentials Grant](https://datatracker.ietf.org/doc/html/rfc6749#section-4.4)
 
-In the Client Credentials flow, your application requests an access token without requesting authorization from the merchant. As a result, when you use this flow, your application is not authorized to access any data  associated with 
+In the Client Credentials flow, your application requests an access token without requesting authorization from the merchant. As a result, when you use this flow, your application is not authorized to access any data  associated with
 the merchant user's account, such as transactions, saved customers, or tokenized payment cards. In other words, you can only process payments for merchant accounts with an access token obtained via this grant flow.
 
 To request an access token, the app needs to make a request to the `https://api.sumup.com/token` endpoint as defined in the OAuth 2.0 Client Credentials protocol. This flow does not grant a Refresh Token.
@@ -175,9 +175,9 @@ To request an access token, the app needs to make a request to the `https://api.
 
 Check the following resources to build your integration:
 
-* [OAuth 2.0 App Registration Guide](/tools/authorization/register-app/)
-* [{ iossdkname } Guide](/terminal-payments/sdks/ios-sdk/)
-* [{ androidreadersdkname } Guide](https://github.com/sumup/sumup-android-sdk)
-* [PHP SDK Guide](/tools/sdks/php-sdk/)
-* [React Native SDK](/terminal-payments/sdks/react-native-sdk/)
-* [Cloud API for the Solo Card Reader](/terminal-payments/cloud-api/)
+- [OAuth 2.0 App Registration Guide](/tools/authorization/register-app/)
+- [{ iossdkname } Guide](/terminal-payments/sdks/ios-sdk/)
+- [{ androidreadersdkname } Guide](https://github.com/sumup/sumup-android-sdk)
+- [PHP SDK Guide](/tools/sdks/php-sdk/)
+- [React Native SDK](/terminal-payments/sdks/react-native-sdk/)
+- [Cloud API for the Solo Card Reader](/terminal-payments/cloud-api/)

@@ -10,7 +10,6 @@ import { Aside, Tabs, TabItem } from '@astrojs/starlight/components';
 import Button from '@components/content/Button.astro';
 import Image from '@components/content/Image.astro';
 
-
 SumUp's React Native Payment SDK provides a payment sheet that is displayed on top of your app. It collects user payment details, confirms a payment, and saves a card for future usage. Moreover, it allows a user to use Apple Pay or Google Pay to process payments.
 
 <Image alt="Challenge screen" src="/img/guides/react_native_payment_sheet.png" width="40%" />
@@ -20,6 +19,7 @@ SumUp's React Native Payment SDK provides a payment sheet that is displayed on t
 ### Before You Begin
 
 Here are the things that you need in order to complete the steps in this guide:
+
 - You have a merchant account with [SumUp](https://me.sumup.com/login) and have already filled in your [account details](https://me.sumup.com/account).
   - For a **sandbox merchant account** reach out to our support team through this [contact form](/contact).
 - You have [registered your client application](/tools/authorization/register-app/) with SumUp.
@@ -93,9 +93,11 @@ Initializing the SDK works by passing it a `checkout_id`. To [create a checkout]
   </TabItem>
   <TabItem label="Go" icon="seti:go">
     ```go
-    description := "Order #1234"
-    returnURL := "https://example.com"
-    redirectURL := "https://sumup.com"
+```
+description := "Order #1234"
+returnURL := "https://example.com"
+redirectURL := "https://sumup.com"
+```
 
     checkout, err := client.Checkouts.Create(ctx, sumup.CheckoutsCreateParams{
     	CheckoutReference: "44ea5096-b83f-46e1-9323-fe82a8cb7eb5",
@@ -110,7 +112,9 @@ Initializing the SDK works by passing it a `checkout_id`. To [create a checkout]
   </TabItem>
   <TabItem label="Python" icon="seti:python">
     ```py
-    from sumup.checkouts.resource import CreateCheckoutBody
+```
+from sumup.checkouts.resource import CreateCheckoutBody
+```
 
     checkout = client.checkouts.create(
         CreateCheckoutBody(
@@ -275,13 +279,13 @@ export default function MainScreen() {
 ```
 
 **Required** fields for `initPaymentSheet`:
+
 - `checkoutId` - described in section [Create a checkout](/online-payments/checkouts/react-native-sdk/#create-a-checkout).
 
 *Optional*:
 
 - `customerId` - used for saving cards for future usage.
 - `language` - English and Sweden are supported (if undefined, react-native-localization will be used to check user device language).
-
 
 ## Show Payment Sheet
 
@@ -423,7 +427,9 @@ To save a card for future usage, a customer should be created. It can be achieve
   </TabItem>
   <TabItem label="Go" icon="seti:go">
     ```go
-    str := func(v string) *string { return &v }
+```
+str := func(v string) *string { return &v }
+```
 
     customer, err := client.Customers.Create(ctx, sumup.CustomersCreateParams{
     	CustomerID: "831ff8d4cd5958ab5670",
@@ -446,8 +452,10 @@ To save a card for future usage, a customer should be created. It can be achieve
   </TabItem>
   <TabItem label="Python" icon="seti:python">
     ```py
-    from sumup.customers.resource import CreateCustomerBody
-    from sumup.customers.types import AddressLegacy, PersonalDetails
+```
+from sumup.customers.resource import CreateCustomerBody
+from sumup.customers.types import AddressLegacy, PersonalDetails
+```
 
     customer = client.customers.create(
         CreateCustomerBody(
@@ -572,6 +580,7 @@ Obtain an Apple Merchant ID by registering for a new identifier on the Apple Dev
 **Create a new Apple Pay certificate - needs to be implemented.**
 
 To enable Apple Pay in Xcode:
+
 1. Open your target settings
 2. Go to Signing & Capabilities tab
 3. Click on Add Capability button

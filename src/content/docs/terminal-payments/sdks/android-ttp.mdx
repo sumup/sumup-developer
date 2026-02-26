@@ -16,7 +16,7 @@ The { androidttpsdkname } enables your mobile app to accept card-present contact
 - For testing purposes, use dedicated developer credentials to prevent actual card charges. You can request access by contacting integration@sumup.com.
 - For the latest updates, consult the [{ androidttpsdkname } Changelog](/changelog/android-tap-to-pay-sdk).
 
-### Prerequisites
+## Prerequisites
 
 - Kotlin version: 1.9.22 or later
 - `minSDK`: 30 or later
@@ -139,6 +139,7 @@ The list of possible events:
 - `CVMRequested` - a CVM (Cardholder Verification Method) is requested. This event is fired when the card is detected and the SDK is waiting for the cardholder to enter the PIN.
 - `CVMPresented` - a CVM was entered by the cardholder. This event is fired upon completion of the CVM regardless if it was successful or not.
 - `TransactionDone(val paymentOutput: PaymentOutput)` - transaction was completed. `PaymentOutput` param is:
+
   ```kotlin
   data class PaymentOutput(
       val txCode: String,
@@ -149,6 +150,7 @@ The list of possible events:
       val cardScheme: String? = null
   )
   ```
+
 - `TransactionFailed(val paymentOutput: PaymentOutput?, val tapToPayException: TapToPayException?)` - transaction failed. It might happen due to many reasons, like attestation error, backend error, card reader error, and so on. The full list of errors is described in the [Exceptions](#Exceptions) section. `PaymentOutput` param might be null if the transaction failed before reaching the backend.
 - `TransactionCanceled(val paymentOutput: PaymentOutput?)` - transaction was cancelled by the user.
 - `TransactionResultUnknown(val paymentOutput: PaymentOutput?)` - transaction result is unknown. This might happen on remote calls, when there is no response due to timeout.
@@ -316,6 +318,7 @@ The base types are listed below, and each of these is further divided into more 
 Before testing in production, make sure of the following:
 
 1. The app is not debuggable. Making the build debuggable will cause the attestation to fail and the payments will not work.
+
    ```kotlin
       buildTypes {
           release {
@@ -323,6 +326,7 @@ Before testing in production, make sure of the following:
           }
       }
    ```
+
 2. You have USB debugging disabled on your device. Even if you install the app through a cable, disable the USB debugging after installation.
 3. You have Developer Mode disabled on your device. Even if you install the app through a cable, disable the Developer Mode after installation.
 

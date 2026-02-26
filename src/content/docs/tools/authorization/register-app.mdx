@@ -11,10 +11,10 @@ Register an OAuth application to integrate with SumUp and generate client creden
 
 This guide covers registering a client application and obtaining credentials through these steps:
 
-1.  [Log in to your account](#1-log-in-to-your-account)
-2.  [Create an OAuth application](#2-create-an-o-auth-application)
-3.  [Generate client credentials](#3-generate-client-credentials)
-4.  [Access client credentials](#4-access-client-credentials)
+1. [Log in to your account](#1-log-in-to-your-account)
+2. [Create an OAuth application](#2-create-an-o-auth-application)
+3. [Generate client credentials](#3-generate-client-credentials)
+4. [Access client credentials](#4-access-client-credentials)
 
 ## Prerequisites
 
@@ -44,19 +44,19 @@ Log in to [your SumUp account](/auth/login). Log in to your SumUp account. **Acc
 
     For security reasons, SumUp manually verifies the following scope grants:
 
-    * `payments` - required to process payments.
-    * `payment_instruments` - required to store customer data and tokenize cards.
+   - `payments` - required to process payments.
+   - `payment_instruments` - required to store customer data and tokenize cards.
 
-    [Contact us](/contact) to request those scopes to be granted to your app.
+     [Contact us](/contact) to request those scopes to be granted to your app.
 
-    SumUp does not recommend direct OAuth 2.0 integration and does not expose detailed authorization endpoint documentation for that reason.
+     SumUp does not recommend direct OAuth 2.0 integration and does not expose detailed authorization endpoint documentation for that reason.
     Please use a library that handles OAuth 2.0 protocol. We highly recommend that you use one of the [existing reputable implementations](https://openid.net/developers/certified-openid-connect-implementations/).
 
     </Aside>
 
-    <Image alt="Edit OAuth App screen" src="/img/guides/edit-oauth-apps.png" width="80%" />
+     <Image alt="Edit OAuth App screen" src="/img/guides/edit-oauth-apps.png" width="80%" />
 
-    The app requests user consent to access their data in line with the scopes granted here. For detailed information, see [OAuth2 Authorization Code Flow](/tools/authorization/authorization/).
+     The app requests user consent to access their data in line with the scopes granted here. For detailed information, see [OAuth2 Authorization Code Flow](/tools/authorization/authorization/).
 
 ### 3. Generate Client Credentials
 
@@ -69,7 +69,7 @@ Click on **Create client secret** to open the following form:
 Provide the following details:
 
 | Name | Required | Description |
-| -----| -------- | ----------  |
+| ----- | -------- | ---------- |
 | Client name | Yes | A descriptive name for your client application. |
 | Application type | Yes | Type: Web, Android, iOS, or Other. |
 | Authorized redirect URL | Yes | Redirect URL for post-authentication. When merchant users authenticate with SumUp and authorize your client app to access their account data, they are redirected to this path in your application. You can add multiple URLs; separate with a comma. |
@@ -118,4 +118,3 @@ Store your client secret keys securely and never reveal them publicly. If you su
 You have registered a client application and downloaded OAuth client credentials.
 
 You can now use one of the [OAuth2 authorization flows](/tools/authorization/authorization/#authorization-flows) to obtain an access token and start making payments with either a [payment card entered by a customer](/online-payments/guides/single-payment/) or with a token for a [recurring payment](/online-payments/guides/tokenization-with-payment-sdk).
-

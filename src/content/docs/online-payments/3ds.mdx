@@ -7,7 +7,6 @@ sidebar:
 
 import { Aside } from '@astrojs/starlight/components';
 
-
 <Aside type="caution">
 
 Affects all electronic payments accepted by merchants operating within the European Union.
@@ -42,7 +41,7 @@ Both the merchant account and card issuer must support 3-D Secure. The flow adds
 
 1. Add the `redirect_url` parameter to your [checkout creation request](/api/checkouts/create). This URL receives the user after payment completion.
 
-2. [Process the checkout](/api/checkouts/process) to get a `next_step` object with details for the required next action, allowing you to redirect the user to a required challenge screen. 
+2. [Process the checkout](/api/checkouts/process) to get a `next_step` object with details for the required next action, allowing you to redirect the user to a required challenge screen.
 
 3. Use the `next_step` content to redirect an end user to a challenge screen. The `next_step` object contains:
 
