@@ -7,8 +7,7 @@ sidebar:
 
 import { Aside, Steps } from '@astrojs/starlight/components';
 
-API keys are static credentials that let your application act on behalf of the merchant account that created the key.
-Use them when you control the merchant account and need direct access to SumUp APIs with the full set of permissions.
+API keys are static credentials that let your application act on behalf of the merchant account that created the key. Use them when you control the merchant account and need direct access to SumUp APIs with the full set of permissions.
 
 ## Authorize Requests with an API Key
 
@@ -20,8 +19,7 @@ curl https://api.sumup.com/v0.1/me -H "Authorization: Bearer $SUMUP_API_KEY"
 
 <Aside type="caution">
 
-Do not expose secret API keys in publicly accessible places such as client-side code or repositories.
-API keys grant broad access to the merchant account, so treat them as sensitive credentials.
+Do not expose secret API keys in publicly accessible places such as client-side code or repositories. API keys grant broad access to the merchant account, so treat them as sensitive credentials.
 
 </Aside>
 
@@ -34,8 +32,7 @@ API keys grant broad access to the merchant account, so treat them as sensitive 
 3. Go to **For Developers** > **Toolkit**.
 4. Select **API Keys**.
 
-   If this is your first key, the page only shows the SumUp Public Key.
-   Existing API keys are also listed here.
+   If this is your first key, the page only shows the SumUp Public Key. Existing API keys are also listed here.
 
    Do not use the public key in your integration.
 

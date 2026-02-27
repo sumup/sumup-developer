@@ -8,8 +8,9 @@ sidebar:
 import { Aside, Steps } from '@astrojs/starlight/components';
 import Image from '@components/content/Image.astro';
 
-OAuth 2.0 lets your application request permission to act on behalf of other SumUp merchants or their employees.
-It follows the industry-standard [OAuth 2.0 protocol](https://oauth.net/2/) and is the right choice for multi-merchant integrations or when you cannot rely on a single merchant-owned API key.
+OAuth 2.0 lets your application request permission to act on behalf of other SumUp users and access their merchant accounts. It follows the industry-standard OAuth 2.0 protocol and is the right choice for integrations where your application needs delegated access to a merchant’s data or needs to perform actions on their behalf.
+
+If you are building a multi-tenant integration, marketplace, SaaS platform, or any app that connects to multiple merchants, you should use OAuth 2.0.
 
 SumUp exposes two OAuth 2.0 endpoints:
 
@@ -83,8 +84,7 @@ The response contains an access token, refresh token, and metadata such as token
 
 ### Refresh the Access Token
 
-Access tokens expire, for example when a user changes their password or revokes access.
-Use the refresh token to request a new access token from `https://api.sumup.com/token` as defined by OAuth 2.0.
+Access tokens expire, for example when a user changes their password or revokes access. Use the refresh token to request a new access token from `https://api.sumup.com/token` as defined by OAuth 2.0.
 
 Refresh tokens are valid for six months. If you use a refresh token within 30 days of its expiration, SumUp issues a new token that remains valid for another six months. The previous token keeps working until it expires, giving you time to rotate it across your systems.
 
@@ -114,8 +114,7 @@ Request an access token from `https://api.sumup.com/token` using the client cred
 
 ## Register an OAuth Application
 
-To integrate an external application with SumUp, register an OAuth application and generate client credentials.
-These credentials let you complete the OAuth flows in this guide and obtain access tokens for protected SumUp resources.
+To integrate an external application with SumUp, register an OAuth application and generate client credentials. These credentials let you complete the OAuth flows in this guide and obtain access tokens for protected SumUp resources.
 
 ### Steps
 
