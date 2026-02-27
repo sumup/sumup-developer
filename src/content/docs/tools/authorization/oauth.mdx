@@ -1,0 +1,217 @@
+---
+title: OAuth 2.0
+description: Learn how to request SumUp API access on behalf of other merchants.
+sidebar:
+  order: 3
+---
+
+import { Aside, Steps } from '@astrojs/starlight/components';
+import Image from '@components/content/Image.astro';
+
+OAuth 2.0 lets your application request permission to act on behalf of other SumUp users and access their merchant accounts. It follows the industry-standard OAuth 2.0 protocol and is the right choice for integrations where your application needs delegated access to a merchant’s data or needs to perform actions on their behalf.
+
+If you are building a multi-tenant integration, marketplace, SaaS platform, or any app that connects to multiple merchants, you should use OAuth 2.0.
+
+SumUp exposes two OAuth 2.0 endpoints:
+
+- `https://api.sumup.com/authorize`
+- `https://api.sumup.com/token`
+
+SumUp supports two OAuth 2.0 flows:
+
+- The [authorization code flow](#authorization-code-flow) when an end user grants your application access.
+- The [client credentials flow](#client-credentials-flow) when your application authenticates as itself.
+
+## Authorization Flows
+
+Choose the flow that matches how your application obtains access while keeping scope verification requirements in mind.
+
+<Aside type="caution">
+
+SumUp manually verifies requests for the following scopes:
+
+* `payments` – required to create and process payments.
+* `payment_instruments` – required to store customer data and tokenize cards.
+
+[Contact us](/contact) to request those scopes for your application.
+
+Use a reputable OAuth 2.0 client implementation instead of handling the protocol manually.
+
+</Aside>
+
+## Authorization Code Flow
+
+This flow implements the [RFC 6749 Authorization Code Grant](https://datatracker.ietf.org/doc/html/rfc6749#section-4.1). It lets a SumUp merchant review the permissions you request and authorize your application accordingly. The [requested scopes](#authorization-scopes) determine the allowed actions.
+
+<Steps>
+
+1. Redirect the user to `https://api.sumup.com/authorize` with the required parameters.
+2. SumUp shows an authorization prompt describing your application and the scopes requested.
+
+   <Aside type="caution">
+   If the user denies the request, SumUp sends an error response to your redirect URI and does not issue an authorization code.
+   </Aside>
+
+3. After the user approves, SumUp redirects to your **Redirect URI** with an authorization code and the original `state`.
+4. Your application exchanges the authorization code for tokens by calling the token endpoint described below.
+5. Use the `access_token` in the `Authorization: Bearer` header when calling SumUp APIs.
+
+</Steps>
+
+### Exchange the Authorization Code
+
+Send the following request to `https://api.sumup.com/token`:
+
+```bash
+curl https://api.sumup.com/token \
+  -X POST \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  -d "grant_type=authorization_code&code={AUTHORIZATION_CODE}&redirect_uri={REDIRECT_URI}" \
+  -u "{CLIENT_ID}:{CLIENT_SECRET}"
+```
+
+The response contains an access token, refresh token, and metadata such as token lifetime and granted scopes.
+
+```json
+{
+  "access_token": "{ACCESS_TOKEN}",
+  "token_type": "Bearer",
+  "expires_in": 3599,
+  "refresh_token": "{REFRESH_TOKEN}",
+  "scope": "payments customers payment_instruments"
+}
+```
+
+### Refresh the Access Token
+
+Access tokens expire, for example when a user changes their password or revokes access. Use the refresh token to request a new access token from `https://api.sumup.com/token` as defined by OAuth 2.0.
+
+Refresh tokens are valid for six months. If you use a refresh token within 30 days of its expiration, SumUp issues a new token that remains valid for another six months. The previous token keeps working until it expires, giving you time to rotate it across your systems.
+
+## Authorization Scopes
+
+Scopes restrict what your application may do on behalf of the merchant. Request only the scopes you need. When you omit scopes, SumUp grants the defaults listed below. To obtain additional scopes later, repeat the authorization code flow.
+
+| Scope name                       | Default | Access Level | Description |
+| -------------------------------- | ------- | ------------ | ----------- |
+| transactions.history             | yes     | merchant     | View transactions and transaction history for the merchant user. |
+| user.app-settings                | yes     | merchant     | View and modify SumUp mobile app settings for the merchant user. |
+| user.profile_readonly            | yes     | merchant     | View profile details of the merchant user. |
+| user.profile                     | no      | merchant     | Modify profile details of the merchant user. |
+| user.subaccounts                 | no      | merchant     | View and modify sub-account profiles for the merchant user. |
+| user.payout-settings             | no      | merchant     | View and modify payout settings for the merchant user. |
+| products                         | no      | merchant     | View and modify products, shelves, prices, and VAT rates in the merchant's product store. |
+| `restricted` payments            | no      | feature      | Create and process payment checkouts. Requires manual verification by SumUp. |
+| `restricted` payment_instruments | no      | feature      | Save customers and tokenize their payment cards. Requires manual verification by SumUp. |
+
+Restricted scopes must be enabled by SumUp for your application. [Contact us](/contact) to request them.
+
+## Client Credentials Flow
+
+The client credentials flow follows [RFC 6749 Client Credentials Grant](https://datatracker.ietf.org/doc/html/rfc6749#section-4.4). It issues an access token without involving a merchant user. Because no user is associated with the token, the flow does not allow access to merchant-specific data such as transactions or stored customers. You can still process payments for merchants linked to your application.
+
+Request an access token from `https://api.sumup.com/token` using the client credentials grant parameters. This flow does not return a refresh token.
+
+## Register an OAuth Application
+
+To integrate an external application with SumUp, register an OAuth application and generate client credentials. These credentials let you complete the OAuth flows in this guide and obtain access tokens for protected SumUp resources.
+
+### Steps
+
+This section walks through the registration process:
+
+1. [Log in to your account](#1-log-in-to-your-account)
+2. [Create an OAuth application](#2-create-an-oauth-application)
+3. [Generate the client credentials](#3-generate-the-client-credentials)
+4. [Access the client credentials](#4-access-the-client-credentials)
+
+### Before You Begin
+
+Have the following ready before you register the application:
+
+- A SumUp merchant account with completed [account details](https://me.sumup.com/account). Reach out through the [contact form](/contact) if you need a sandbox merchant account.
+- Your application name.
+- One or more redirect URIs. SumUp redirects users to these URIs after authentication and sends the authorization codes you exchange for tokens in the [authorization code flow](#authorization-code-flow).
+
+### 1. Log in to Your Account
+
+Log in to [your SumUp account](/auth/login). Once logged in, **Account** appears in place of the **Log in** button at the top right.
+
+### 2. Create an OAuth Application
+
+Navigate to the [OAuth Apps](/apps/) page to create or manage OAuth applications.
+
+Select **Create application** at the bottom right to define your application.
+
+<Image alt="Create OAuth App screen" src="/img/guides/create-oauth-apps.png" width="80%" />
+
+Describe your application, provide its homepage, and select **Register application** to continue.
+
+You can edit the registered application by selecting it. The edit page lets you update details and add optional information such as a logo, terms and conditions, and privacy policy URLs.
+
+You can also select the scopes your application requires. Each scope includes a short description of the access it grants.
+
+### 3. Generate the Client Credentials
+
+On the [OAuth Apps](/apps) page, open your application and choose **Create client secret**.
+
+<Image alt="Create new OAuth App credentials form" src="/img/guides/client-credentials-form.png" width="80%" />
+
+Provide the following details:
+
+| Name | Required | Description |
+| -----| -------- | ----------  |
+| Client name | Yes | A descriptive name for your client application. |
+| Application type | Yes | The type of your client application. Options: Web, Android, iOS, Other. |
+| Authorized redirect URL | Yes | Redirect URL to register for your client application. Specify multiple URLs by separating them with commas. |
+| Authorized JavaScript Origin | No | Origin URI for browser-based web applications. SumUp enables CORS for registered origins. |
+
+Select **Save** to generate the credentials. The **Client secrets** section lists each credential with its name, application type, and client ID.
+
+<Aside type="note">
+
+You can register as many client credentials as you need. Repeat this step to create additional ones.
+
+</Aside>
+
+### 4. Access the Client Credentials
+
+After creation, credentials appear in the **Client credentials** section of your OAuth application (see screenshot).
+
+<Image alt="OAuth client credentials section" src="/img/guides/client-credentials-list.png" width="80%" />
+
+<Aside type="note">
+For security reasons, the client secrets are not displayed.
+</Aside>
+
+Use the download button to receive a JSON file with the full credential details, for example:
+
+```json
+{
+  "id": "CCCFAXYD",
+  "name": "SA web client",
+  "client_id": "fOcmczrYtYMJ7Li5GjMLLcUeC9dN",
+  "client_secret": "717bd571b54297494cd7a79b491e8f2c1da6189c4cc2d3481380e8366eef539c",
+  "application_type": "web",
+  "redirect_uris": ["https://sample-app.example.com/callback"]
+}
+```
+
+<Aside type="note">
+
+Store client secrets securely and never expose them publicly. If you suspect a secret was compromised, [contact us](/contact) immediately.
+
+</Aside>
+
+### Result
+
+You have registered at least one OAuth application and have downloaded its client credentials. Proceed with the [OAuth 2.0 flows](#authorization-flows) to obtain access tokens. Use them to accept payments with a [customer-entered card](/online-payments/guides/single-payment/) or with stored payment data in recurring scenarios.
+
+## What's Next?
+
+- [Review your OAuth application scopes](#authorization-scopes)
+- [iOS SDK Guide](/terminal-payments/sdks/ios-sdk/)
+- [Android SDK Guide](https://github.com/sumup/sumup-android-sdk)
+- [PHP SDK Guide](/online-payments/sdks/php-sdk/)
+- [React Native SDK](/terminal-payments/sdks/react-native-sdk/)
+- [Cloud API for the Solo Card Reader](/terminal-payments/cloud-api/)

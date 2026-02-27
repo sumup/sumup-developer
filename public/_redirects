@@ -58,9 +58,9 @@
 # Online Payments - General
 /online-payments/introduction/webhooks/                                      /online-payments/webhooks
 /online-payments/introduction/response-handling/                             /online-payments/guides/response-handling
-/online-payments/introduction/register-app/                                  /tools/authorization/register-app
+/online-payments/introduction/register-app/                                  /tools/authorization/oauth/
 /online-payments/introduction/get-started/                                   /online-payments
-/online-payments/introduction/authorization/                                 /tools/authorization/authorization
+/online-payments/introduction/authorization/                                 /tools/authorization/
 /online-payments/introduction/3ds/                                           /online-payments/3ds
 /online-payments/apm/introduction/                                           /online-payments/apm
 /docs/online-payments/introduction/getting-started/                          /online-payments
@@ -94,10 +94,14 @@
 
 # Authorization & Tools
 /apps/                                                                       /tools/authorization
-/api-keys/                                                                   /tools/authorization
+/api-keys/                                                                   /tools/authorization/api-keys/
 /affiliate-keys/                                                             /tools/authorization/affiliate-keys
 /docs/authorization/                                                         /tools/authorization
-/docs/register-app/                                                          /tools/authorization/register-app
+/docs/register-app/                                                          /tools/authorization/oauth/
+/tools/authorization/register-app/                                           /tools/authorization/oauth/
+/tools/authorization/register-app                                            /tools/authorization/oauth/
+/tools/authorization/authorization/                                          /tools/authorization/
+/tools/authorization/authorization                                           /tools/authorization/
 /tools/models/merchant/                                                      /tools/glossary/merchant
 
 # Resources
