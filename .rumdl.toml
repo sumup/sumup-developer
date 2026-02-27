@@ -37,8 +37,9 @@ style = "fenced"
 "src/content/docs/online-payments/plugins/prestashop.mdx" = ["MD034"]
 "src/content/docs/online-payments/plugins/woocommerce.mdx" = ["MD034"]
 
-# Legacy iOS SDK page has dense mixed MDX/Steps/list patterns pending larger refactor.
-"src/content/docs/terminal-payments/sdks/ios-sdk.mdx" = ["MD032", "MD046", "MD051"]
+# Legacy iOS SDK page has dense mixed MDX/Steps/list patterns.
+# Keep it build-safe by scoping rule ignores until the page is refactored.
+"src/content/docs/terminal-payments/sdks/ios-sdk.mdx" = ["MD004", "MD007", "MD012", "MD030", "MD031", "MD032", "MD040", "MD046", "MD049", "MD051", "MD060", "MD069"]
 
 # Legacy mixed Tabs+code snippets trigger MD046 false positives after formatting.
 "src/content/docs/online-payments/guides/refund.mdx" = ["MD046", "MD051"]

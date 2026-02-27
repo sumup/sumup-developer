@@ -139,9 +139,7 @@ curl -X POST \
   </TabItem>
   <TabItem label="Go" icon="seti:go">
     ```go
-```
-str := func(v string) *string { return &v }
-```
+    str := func(v string) *string { return &v }
 
     customer, err := client.Customers.Create(ctx, sumup.CustomersCreateParams{
     	CustomerID: "MYCUSTOMERID-123",
@@ -164,10 +162,8 @@ str := func(v string) *string { return &v }
   </TabItem>
   <TabItem label="Python" icon="seti:python">
     ```py
-```
-from sumup.customers.resource import CreateCustomerBody
-from sumup.customers.types import AddressLegacy, PersonalDetails
-```
+    from sumup.customers.resource import CreateCustomerBody
+    from sumup.customers.types import AddressLegacy, PersonalDetails
 
     customer = client.customers.create(
         CreateCustomerBody(

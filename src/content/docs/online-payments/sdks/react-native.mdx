@@ -427,9 +427,7 @@ To save a card for future usage, a customer should be created. It can be achieve
   </TabItem>
   <TabItem label="Go" icon="seti:go">
     ```go
-```
-str := func(v string) *string { return &v }
-```
+    str := func(v string) *string { return &v }
 
     customer, err := client.Customers.Create(ctx, sumup.CustomersCreateParams{
     	CustomerID: "831ff8d4cd5958ab5670",
@@ -452,10 +450,8 @@ str := func(v string) *string { return &v }
   </TabItem>
   <TabItem label="Python" icon="seti:python">
     ```py
-```
-from sumup.customers.resource import CreateCustomerBody
-from sumup.customers.types import AddressLegacy, PersonalDetails
-```
+    from sumup.customers.resource import CreateCustomerBody
+    from sumup.customers.types import AddressLegacy, PersonalDetails
 
     customer = client.customers.create(
         CreateCustomerBody(
