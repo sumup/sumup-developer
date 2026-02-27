@@ -1,0 +1,38 @@
+.section {
+  margin: var(--cui-spacings-kilo) 0;
+  width: 100%;
+}
+
+.tableContainer {
+  width: 100%;
+  overflow: scroll;
+  box-sizing: border-box;
+  border: var(--cui-border-width-kilo) solid var(--cui-border-normal);
+  border-radius: var(--cui-border-radius-byte);
+  margin-top: var(--cui-spacings-byte);
+}
+
+.table {
+  width: 100%;
+  min-width: 100%;
+  border-collapse: collapse;
+  font-size: var(--sl-text-sm);
+}
+
+.table th,
+.table td {
+  padding: var(--cui-spacings-byte) var(--cui-spacings-kilo);
+  border: var(--cui-border-width-kilo) solid var(--cui-border-subtle);
+  vertical-align: top;
+  text-align: left;
+}
+
+.table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.button {
+  display: block;
+  margin: 0 auto;
+  margin-top: var(--cui-spacings-byte);
+}

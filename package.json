@@ -40,7 +40,8 @@
     "format:markdown": "chmod +x node_modules/@rumdl/cli-*/rumdl 2>/dev/null || true && rumdl fmt .",
     "format:src": "npx prettier --write \"**/*.{js,jsx,ts,tsx,mjs,css,json}\"",
     "linkcheck": "CHECK_LINKS=true astro build",
-    "test": "vitest run"
+    "test": "vitest run",
+    "generate:merchant-country-data": "node scripts/generate-merchant-country-data.mjs"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.6",

@@ -1,0 +1,3197 @@
+{
+  "generatedAt": "2026-02-27T19:19:35.324Z",
+  "source": "../country-sdk/internal/countries/data",
+  "excludedCountries": ["HK", "NZ", "SG", "JP", "MY"],
+  "countries": [
+    {
+      "isoCode": "AR",
+      "displayName": "Argentina",
+      "companyIdentifiers": [
+        {
+          "ref": "ar.cuit",
+          "name": "Clave Única de Identificación Tributaria",
+          "description": "Clave Única de Identificación Tributaria (CUIT) is Argentina's tax identification number used by legal entities and by individuals carrying out economic activity. Format: - XX-XXXXXXXX-X - includes a check digit"
+        }
+      ],
+      "personIdentifiers": [
+        {
+          "ref": "ar.cuil",
+          "name": "Código Único de Identificación Laboral",
+          "description": "Código Único de Identificación Laboral (CUIL) identifies individuals for social security and employment-related purposes in Argentina. It shares the same numeric structure as CUIT."
+        },
+        {
+          "ref": "ar.dni",
+          "name": "Documento Nacional de Identidad",
+          "description": "Documento Nacional de Identidad (DNI) is the personal identity document number in Argentina. It is typically 7 or 8 digits and is sometimes written with dot separators."
+        }
+      ],
+      "legalTypes": [
+        {
+          "uniqueRef": "ar.pers",
+          "description": "Persona Natural",
+          "shortDescription": "Persona Natural"
+        },
+        {
+          "uniqueRef": "ar.eu",
+          "description": "Empresa Unipersonal (E.U.)",
+          "shortDescription": "Empresa Unipersonal (E.U.)"
+        },
+        {
+          "uniqueRef": "ar.sa",
+          "description": "Sociedad Anónima (S.A.)",
+          "shortDescription": "Sociedad Anónima (S.A.)"
+        },
+        {
+          "uniqueRef": "ar.sau",
+          "description": "Sociedad Anónima Unipersonal (S.A.U.)",
+          "shortDescription": "Sociedad Anónima Unipersonal (S.A.U.)"
+        },
+        {
+          "uniqueRef": "ar.sas",
+          "description": "Sociedad Anónima Cerrada (S.A.C.)",
+          "shortDescription": "Sociedad por Acciones Simplificadas (S.A.S.)"
+        },
+        {
+          "uniqueRef": "ar.srl",
+          "description": "Sociedad de Responsabilidad Limitada  (S.R.L.)",
+          "shortDescription": "Sociedad de Responsabilidad Limitada  (S.R.L.)"
+        },
+        {
+          "uniqueRef": "ar.sociedad_colectiva",
+          "description": "Sociedad Colectiva",
+          "shortDescription": "Sociedad Colectiva"
+        },
+        {
+          "uniqueRef": "ar.sociedad_en_comandita_por_acciones",
+          "description": "Sociedad en Comandita por Acciones",
+          "shortDescription": "Sociedad en Comandita por Acciones"
+        },
+        {
+          "uniqueRef": "ar.sociedad_en_comandita_simple",
+          "description": "Sociedad en Comandita Simple",
+          "shortDescription": "Sociedad en Comandita Simple"
+        },
+        {
+          "uniqueRef": "ar.asociación_civil",
+          "description": "Asociación Civil",
+          "shortDescription": "Asociación Civil"
+        },
+        {
+          "uniqueRef": "ar.fundación",
+          "description": "Fundación",
+          "shortDescription": "Fundación"
+        }
+      ],
+      "addressRequirements": {
+        "requiredFields": ["street_address", "post_code", "locality_level1"],
+        "allowedFields": [
+          "street_address",
+          "post_code",
+          "locality_level1",
+          "administrative_unit_level1"
+        ]
+      }
+    },
+    {
+      "isoCode": "AU",
+      "displayName": "Australia",
+      "companyIdentifiers": [
+        {
+          "ref": "au.abn",
+          "name": "Australian Business Number",
+          "description": "Australian Business Number is the Australian Business Number. Every Australian business must have one. Companies with an ABN may use it instead of the TFN and the ACN. The ABN is an 11-digit number."
+        },
+        {
+          "ref": "au.acn",
+          "name": "Australian Company Number",
+          "description": "Australian Company Number is the Australian Company Number. It is used for specific registered companies and is a subset of the ABN. We only use it for the legal type \"company\". The ACN is a 9-digit number."
+        }
+      ],
+      "personIdentifiers": [],
+      "legalTypes": [
+        {
+          "uniqueRef": "au.agt",
+          "description": "Agent",
+          "shortDescription": "Agent"
+        },
+        {
+          "uniqueRef": "au.trust",
+          "description": "Trust",
+          "shortDescription": "Trust"
+        },
+        {
+          "uniqueRef": "au.coop",
+          "description": "Co-operative",
+          "shortDescription": "Co-operative"
+        },
+        {
+          "uniqueRef": "au.st",
+          "description": "Sole Trader",
+          "shortDescription": "Sole Trader"
+        },
+        {
+          "uniqueRef": "au.co",
+          "description": "Company",
+          "shortDescription": "Company"
+        },
+        {
+          "uniqueRef": "au.pship",
+          "description": "Partnership",
+          "shortDescription": "Partnership"
+        },
+        {
+          "uniqueRef": "au.assoc",
+          "description": "Association",
+          "shortDescription": "Association"
+        }
+      ],
+      "addressRequirements": {
+        "requiredFields": [
+          "street_address",
+          "locality_level1",
+          "administrative_unit_level1",
+          "post_code"
+        ],
+        "allowedFields": [
+          "street_address",
+          "locality_level1",
+          "administrative_unit_level1",
+          "post_code"
+        ]
+      }
+    },
+    {
+      "isoCode": "AT",
+      "displayName": "Austria",
+      "companyIdentifiers": [
+        {
+          "ref": "at.uid",
+          "name": "Umsatzsteuer-Identifikationsnummer",
+          "description": "Umsatzsteuer-Identifikationsnummer is the Austrian VAT identification number (VAT ID)."
+        },
+        {
+          "ref": "at.abgabenkontonummer",
+          "name": "Abgabenkontonummer",
+          "description": "Abgabenkontonummer is the Austrian tax identification number. It is issued to natural and legal persons for tax declaration and communication with local tax offices. The number has 9 digits: - the first 2 digits identify the local tax office (with leading zero), - the next 6 digits are the tax ID, - the last digit is a check digit."
+        },
+        {
+          "ref": "at.zvr",
+          "name": "Zentrale Vereinsregister-Zahl",
+          "description": "Zentrale Vereinsregister-Zahl is the Austrian association registry number and is mandatory for all associations. It is a 10-digit number."
+        },
+        {
+          "ref": "at.fn",
+          "name": "Firmenbuchnummer",
+          "description": "Firmenbuchnummer is the Austrian company registration number. It consists of six digits and a check letter."
+        }
+      ],
+      "personIdentifiers": [],
+      "legalTypes": [
+        {
+          "uniqueRef": "at.freiberufler",
+          "description": "Alle nicht registrierten Einzelunternehmen und freien Berufe ohne andere Gesellschaftsform",
+          "shortDescription": "Einzelunternehmer/Freiberufler"
+        },
+        {
+          "uniqueRef": "at.eu",
+          "description": "Eingetragenes Einzelunternehmen (e. U.)",
+          "shortDescription": "e.U."
+        },
+        {
+          "uniqueRef": "at.gesbr",
+          "description": "Gesellschaft bürgerlichen Rechts (GesbR)",
+          "shortDescription": "GesbR"
+        },
+        {
+          "uniqueRef": "at.og",
+          "description": "Offene Gesellschaft (OG)",
+          "shortDescription": "OG"
+        },
+        {
+          "uniqueRef": "at.kg",
+          "description": "Kommanditgesellschaft (KG)",
+          "shortDescription": "KG"
+        },
+        {
+          "uniqueRef": "at.gmbh",
+          "description": "Gesellschaft mit beschränkter Haftung (GmbH)",
+          "shortDescription": "GmbH"
+        },
+        {
+          "uniqueRef": "at.ag",
+          "description": "Aktiengesellschaft (AG)",
+          "shortDescription": "AG"
+        },
+        {
+          "uniqueRef": "at.verein",
+          "description": "Verein",
+          "shortDescription": "Verein"
+        },
+        {
+          "uniqueRef": "at.andere",
+          "description": "Andere Rechtsformen",
+          "shortDescription": "Andere"
+        }
+      ],
+      "addressRequirements": {
+        "requiredFields": ["street_address", "locality_level1", "post_code"],
+        "allowedFields": ["street_address", "post_code", "locality_level1"]
+      }
+    },
+    {
+      "isoCode": "BE",
+      "displayName": "Belgium",
+      "companyIdentifiers": [
+        {
+          "ref": "be.btw",
+          "name": "Belasting over de Toegevoegde Waarde nummer",
+          "description": "Belasting over de Toegevoegde Waarde nummer is the Belgian VAT number. Since 2020 it's the same as the Ondernemingsnummer, but with the `BE` prefix."
+        },
+        {
+          "ref": "be.ondernemingsnummer",
+          "name": "Ondernemingsnummer",
+          "description": "Ondernemingsnummer is the Belgian company registration number. Before 2023 all numbers started with `0`. Since 2023 numbers may start with `0` or `1`."
+        }
+      ],
+      "personIdentifiers": [
+        {
+          "ref": "be.nn",
+          "name": "Numéro de registre national",
+          "description": "Numéro de registre national is the Belgian National Registration Number. Every Belgian citizen above the age of 12 has one upon first registration for an ID card. The format is YY.MM.DD-XXX.XX where YY.MM.DD is the birthdate and XXX.XX are a sequential ID and checksum."
+        }
+      ],
+      "legalTypes": [
+        {
+          "uniqueRef": "be.ei",
+          "description": "Entreprise individuelle",
+          "shortDescription": "Entreprise individuelle"
+        },
+        {
+          "uniqueRef": "be.partenariat",
+          "description": "Partenariat",
+          "shortDescription": "Partenariat"
+        },
+        {
+          "uniqueRef": "be.vof",
+          "description": "Société en Nom Collectif (SNC)",
+          "shortDescription": "Société en Nom Collectif (SNC)"
+        },
+        {
+          "uniqueRef": "be.sca",
+          "description": "Société en Commandite par Action (SCA)",
+          "shortDescription": "Société en Commandite par Action (SCA)"
+        },
+        {
+          "uniqueRef": "be.cv",
+          "description": "Société en Commandite Simple (SCS)",
+          "shortDescription": "Société en Commandite Simple (SCS)"
+        },
+        {
+          "uniqueRef": "be.nv",
+          "description": "Société Anonyme (SA)",
+          "shortDescription": "Société Anonyme (SA)"
+        },
+        {
+          "uniqueRef": "be.sprl",
+          "description": "Société à responsabilité limitée (S.R.L.)",
+          "shortDescription": "Société à responsabilité limitée (S.R.L.)"
+        },
+        {
+          "uniqueRef": "be.stichting",
+          "description": "Fondations",
+          "shortDescription": "Fondations"
+        },
+        {
+          "uniqueRef": "be.asbl",
+          "description": "Association Sans But Lucratif (ASBL)",
+          "shortDescription": "Association Sans But Lucratif (ASBL)"
+        },
+        {
+          "uniqueRef": "be.scscrl",
+          "description": "Société Coopérative à Responsabilité Limitée (SC/SCRL)",
+          "shortDescription": "Société Coopérative à Responsabilité Limitée (SC/SCRL)"
+        },
+        {
+          "uniqueRef": "be.scri",
+          "description": "Société Coopérative à Responsabilité Illimitée (SCRI)",
+          "shortDescription": "Société Coopérative à Responsabilité Illimitée (SCRI)"
+        },
+        {
+          "uniqueRef": "be.state_agency",
+          "description": "Agence Publique",
+          "shortDescription": "Agence Publique"
+        }
+      ],
+      "addressRequirements": {
+        "requiredFields": ["street_address", "locality_level1", "post_code"],
+        "allowedFields": ["street_address", "post_code", "locality_level1"]
+      }
+    },
+    {
+      "isoCode": "BR",
+      "displayName": "Brazil",
+      "companyIdentifiers": [
+        {
+          "ref": "br.cnpj",
+          "name": "Cadastro Nacional de Pessoa Juridica",
+          "description": "Cadastro Nacional de Pessoa Juridica is the Brazilian company registration number. It is used as company identifier and as VAT ID for a company."
+        }
+      ],
+      "personIdentifiers": [
+        {
+          "ref": "br.cpf",
+          "name": "Cadastro de Pessoas Física",
+          "description": "Cadastro de Pessoas Física is the Brazilian personal identification number (Cadastro de Pessoas Físicas)."
+        }
+      ],
+      "legalTypes": [
+        {
+          "uniqueRef": "br.pessoa_fisica",
+          "description": "Pessoa Física",
+          "shortDescription": "Pessoa Física"
+        },
+        {
+          "uniqueRef": "br.ltda",
+          "description": "LTDA",
+          "shortDescription": "LTDA"
+        },
+        {
+          "uniqueRef": "br.sa_capital_aberto",
+          "description": "S/A Capital Aberto",
+          "shortDescription": "S/A Capital Aberto"
+        },
+        {
+          "uniqueRef": "br.sa_capital_fechado",
+          "description": "S/A Capital Fechado",
+          "shortDescription": "S/A Capital Fechado"
+        },
+        {
+          "uniqueRef": "br.sociedade_simples",
+          "description": "Sociedade Simples",
+          "shortDescription": "Sociedade Simples"
+        },
+        {
+          "uniqueRef": "br.cooperativa",
+          "description": "Cooperativa",
+          "shortDescription": "Cooperativa"
+        },
+        {
+          "uniqueRef": "br.associacao",
+          "description": "Associação",
+          "shortDescription": "Associação"
+        },
+        {
+          "uniqueRef": "br.fundacao",
+          "description": "Fundação",
+          "shortDescription": "Fundação"
+        },
+        {
+          "uniqueRef": "br.outros",
+          "description": "Outros",
+          "shortDescription": "Outros"
+        },
+        {
+          "uniqueRef": "br.entidade_sindical",
+          "description": "Entidade Sindical",
+          "shortDescription": "Entidade Sindical"
+        },
+        {
+          "uniqueRef": "br.empresa_pequeno_porte",
+          "description": "Empresa de Pequeno Porte (EPP)",
+          "shortDescription": "Empresa de Pequeno Porte (EPP)"
+        },
+        {
+          "uniqueRef": "br.eireli",
+          "description": "Empresa Individual de Responsabilidade Limitada (Eireli)",
+          "shortDescription": "Empresa Individual de Responsabilidade Limitada (Eireli)"
+        },
+        {
+          "uniqueRef": "br.pessoa_juridica_payleven",
+          "description": "Pessoa Jurídica payleven",
+          "shortDescription": "Pessoa Jurídica payleven"
+        },
+        {
+          "uniqueRef": "br.empresario_individual",
+          "description": "Micro Empreendedor Individual (MEI)",
+          "shortDescription": "Micro Empreendedor Individual (MEI)"
+        },
+        {
+          "uniqueRef": "br.pessoa_juridica",
+          "description": "Pessoa Jurídica",
+          "shortDescription": "Pessoa Jurídica"
+        },
+        {
+          "uniqueRef": "br.empresa_individual",
+          "description": "Empresa individual (EI)",
+          "shortDescription": "Empresa individual (EI)"
+        }
+      ],
+      "addressRequirements": {
+        "requiredFields": [
+          "street_address",
+          "post_code",
+          "locality_level1",
+          "locality_level3",
+          "administrative_unit_level1"
+        ],
+        "allowedFields": [
+          "street_address",
+          "post_code",
+          "locality_level1",
+          "locality_level3",
+          "administrative_unit_level1"
+        ]
+      }
+    },
+    {
+      "isoCode": "BG",
+      "displayName": "Bulgaria",
+      "companyIdentifiers": [
+        {
+          "ref": "bg.dds",
+          "name": "Identifikacionen nomer po DDS",
+          "description": "Identifikacionen nomer po DDS is the Bulgarian VAT number. It is the same for individuals and registered companies."
+        },
+        {
+          "ref": "bg.uic",
+          "name": "BULSTAT Unified Identification Code",
+          "description": "BULSTAT Unified Identification Code is the Bulgarian BULSTAT Unified Identification Code. Every individual business or registered company must have one."
+        }
+      ],
+      "personIdentifiers": [
+        {
+          "ref": "bg.egn",
+          "name": "Единен граждански номер (Edinen grazhdanski nomer)",
+          "description": "Единен граждански номер (Edinen grazhdanski nomer) is the Bulgarian Unified Civil Number (Единен граждански номер) which serves as a national identification number"
+        }
+      ],
+      "legalTypes": [
+        {
+          "uniqueRef": "bg.general_partnership",
+          "description": "Събирателно дружество",
+          "shortDescription": "СД"
+        },
+        {
+          "uniqueRef": "bg.limited_partnership",
+          "description": "Командитно дружество",
+          "shortDescription": "КД"
+        },
+        {
+          "uniqueRef": "bg.limited_partnership_with_shares",
+          "description": "Командитно дружество с акции",
+          "shortDescription": "КДА"
+        },
+        {
+          "uniqueRef": "bg.private_limited_company",
+          "description": "Дружество с ограничена oтговорност",
+          "shortDescription": "ООД"
+        },
+        {
+          "uniqueRef": "bg.private_limited_company_with_a_single_member",
+          "description": "Еднолично дружество с ограничена отговорност",
+          "shortDescription": "ЕООД"
+        },
+        {
+          "uniqueRef": "bg.joint-stock_company",
+          "description": "Акционерно дружество",
+          "shortDescription": "АД"
+        },
+        {
+          "uniqueRef": "bg.association",
+          "description": "Консорциум",
+          "shortDescription": "Консорциум"
+        },
+        {
+          "uniqueRef": "bg.foundation",
+          "description": "Фондация",
+          "shortDescription": "Фондация"
+        },
+        {
+          "uniqueRef": "bg.cooperative",
+          "description": "Кооперация",
+          "shortDescription": "Кооперация"
+        },
+        {
+          "uniqueRef": "bg.other",
+          "description": "Друго",
+          "shortDescription": "Друго"
+        },
+        {
+          "uniqueRef": "bg.sole_trader",
+          "description": "Едноличен търговец",
+          "shortDescription": "Едноличен търговец"
+        },
+        {
+          "uniqueRef": "bg.freelancer",
+          "description": "Професионалист на свободна практика",
+          "shortDescription": "Професионалист на свободна практика"
+        },
+        {
+          "uniqueRef": "bg.sole_shareholding_company",
+          "description": "Еднолично акционерно дружество",
+          "shortDescription": "ЕАД"
+        }
+      ],
+      "addressRequirements": {
+        "requiredFields": ["street_address", "post_code", "locality_level1"],
+        "allowedFields": ["street_address", "post_code", "locality_level1"]
+      }
+    },
+    {
+      "isoCode": "CA",
+      "displayName": "Canada",
+      "companyIdentifiers": [
+        {
+          "ref": "ca.business_number",
+          "name": "Business Number",
+          "description": "Business Number (BN) is a unique number assigned by the Canada Revenue Agency (CRA) to identify a business."
+        },
+        {
+          "ref": "ca.gst_hst_number",
+          "name": "GST/HST Number",
+          "description": "GST/HST Number is a unique number assigned by the Canada Revenue Agency (CRA) to identify a business for Goods and Services Tax (GST) and Harmonized Sales Tax (HST)."
+        },
+        {
+          "ref": "ca.qst_number",
+          "name": "QST Number (Quebec)",
+          "description": "QST Number is a unique number assigned by Revenu Québec to identify a business for Quebec Sales Tax (QST)."
+        }
+      ],
+      "personIdentifiers": [],
+      "legalTypes": [
+        {
+          "uniqueRef": "ca.sp",
+          "description": "Sole proprietorship",
+          "shortDescription": "Sole proprietorship"
+        },
+        {
+          "uniqueRef": "ca.bsns",
+          "description": "Private company",
+          "shortDescription": "Private company"
+        },
+        {
+          "uniqueRef": "ca.lpc",
+          "description": "Listed public company",
+          "shortDescription": "Listed public company"
+        },
+        {
+          "uniqueRef": "ca.gorg",
+          "description": "Governmental organization",
+          "shortDescription": "Governmental organization"
+        },
+        {
+          "uniqueRef": "ca.asinc",
+          "description": "Association incorporated",
+          "shortDescription": "Association incorporated"
+        },
+        {
+          "uniqueRef": "ca.npro",
+          "description": "Nonprofit or charitable organisation",
+          "shortDescription": "Non-profit"
+        },
+        {
+          "uniqueRef": "ca.unincpar",
+          "description": "Unincorporated partnership",
+          "shortDescription": "Unincorporated partnership"
+        },
+        {
+          "uniqueRef": "ca.pship",
+          "description": "Incorporated partnership",
+          "shortDescription": "Partnership"
+        }
+      ],
+      "addressRequirements": {
+        "requiredFields": [
+          "street_address",
+          "locality_level1",
+          "administrative_unit_level1",
+          "post_code"
+        ],
+        "allowedFields": [
+          "street_address",
+          "locality_level1",
+          "administrative_unit_level1",
+          "post_code"
+        ]
+      }
+    },
+    {
+      "isoCode": "CL",
+      "displayName": "Chile",
+      "companyIdentifiers": [
+        {
+          "ref": "cl.rut",
+          "name": "Rol Único Tributario",
+          "description": "Rol Único Tributario is the Chilean tax ID. For individuals the RUT is the same as the RUN (the national ID). Registered companies have to obtain a RUT."
+        }
+      ],
+      "personIdentifiers": [
+        {
+          "ref": "cl.run",
+          "name": "Rol Único Nacional",
+          "description": "Rol Único Nacional is the Chilean national ID number. For individuals it is used as tax ID. It is therefore the same as the RUT."
+        },
+        {
+          "ref": "cl.id_card_serial",
+          "name": "Número de Documento",
+          "description": "Número de Documento is the Chilean ID card serial number. It identifies the document, not the person. The document number used to be the same as the RUN, but that's no longer the case."
+        }
+      ],
+      "legalTypes": [
+        {
+          "uniqueRef": "cl.sole_trader",
+          "description": "Persona Natural",
+          "shortDescription": "Persona Natural"
+        },
+        {
+          "uniqueRef": "cl.ltda",
+          "description": "Sociedad de Responsabilidad Limitada",
+          "shortDescription": "Sociedad de Responsabilidad Limitada (SRL)"
+        },
+        {
+          "uniqueRef": "cl.sa",
+          "description": "Sociedad Anónima",
+          "shortDescription": "Sociedad Anónima (SA)"
+        },
+        {
+          "uniqueRef": "cl.sca",
+          "description": "Sociedad por Acciones",
+          "shortDescription": "Sociedad por Acciones (SPA)"
+        },
+        {
+          "uniqueRef": "cl.eirl",
+          "description": "Empresas Individuales de Responsabilidad Limitada",
+          "shortDescription": "Empresa Individual de Responsabilidad Limitada (EIRL)"
+        },
+        {
+          "uniqueRef": "cl.scs",
+          "description": "Sociedad en Comandita Simple",
+          "shortDescription": "Sociedad en Comandita Simple"
+        }
+      ],
+      "addressRequirements": {
+        "requiredFields": [
+          "street_address",
+          "post_code",
+          "locality_level1",
+          "administrative_unit_level1",
+          "administrative_unit_level3"
+        ],
+        "allowedFields": [
+          "street_address",
+          "post_code",
+          "locality_level1",
+          "administrative_unit_level1",
+          "administrative_unit_level2",
+          "administrative_unit_level3"
+        ]
+      }
+    },
+    {
+      "isoCode": "CO",
+      "displayName": "Colombia",
+      "companyIdentifiers": [
+        {
+          "ref": "co.nit",
+          "name": "Número de Identificación Tributaria",
+          "description": "Número de Identificación Tributaria is the Colombian tax ID. It applies to individuals and companies."
+        }
+      ],
+      "personIdentifiers": [
+        {
+          "ref": "co.nuip",
+          "name": "Número Único de Identificación Personal",
+          "description": "Número Único de Identificación Personal is the personal identification number on the Colombian cédula. The number is the same across all official documents, such as drivers licenses and civil registry documents. The cedula is between 6-10 digits long depending on when it was issued."
+        }
+      ],
+      "legalTypes": [
+        {
+          "uniqueRef": "co.sas",
+          "description": "Sociedad por Acciones Simplificadas (S.A.S.)",
+          "shortDescription": "Sociedad por Acciones Simplificadas (S.A.S.)"
+        },
+        {
+          "uniqueRef": "co.ltda",
+          "description": "Sociedad de Responsabilidad Limitada (Ltda.)",
+          "shortDescription": "Sociedad de Responsabilidad Limitada (Ltda.)"
+        },
+        {
+          "uniqueRef": "co.sc",
+          "description": "Sociedad Colectiva (S.C.)",
+          "shortDescription": "Sociedad Colectiva (S.C.)"
+        },
+        {
+          "uniqueRef": "co.sec",
+          "description": "Sociedad Comandita Simple (S. en C.)",
+          "shortDescription": "Sociedad Comandita Simple (S. en C.)"
+        },
+        {
+          "uniqueRef": "co.pers",
+          "description": "Persona Natural",
+          "shortDescription": "Persona Natural"
+        },
+        {
+          "uniqueRef": "co.eu",
+          "description": "Empresa Unipersonal (E.U.)",
+          "shortDescription": "Empresa Unipersonal (E.U.)"
+        },
+        {
+          "uniqueRef": "co.sca",
+          "description": "Sociedad Comandita por Acciones (S.C.A.)",
+          "shortDescription": "Sociedad Comandita por Acciones (S.C.A.)"
+        },
+        {
+          "uniqueRef": "co.sa",
+          "description": "Sociedad Anónima (S.A.)",
+          "shortDescription": "Sociedad Anónima (S.A.)"
+        }
+      ],
+      "addressRequirements": {
+        "requiredFields": [
+          "street_address",
+          "locality_level1",
+          "administrative_unit_level1",
+          "administrative_unit_level2"
+        ],
+        "allowedFields": [
+          "street_address",
+          "locality_level2",
+          "locality_level1",
+          "administrative_unit_level1",
+          "administrative_unit_level2",
+          "post_code"
+        ]
+      }
+    },
+    {
+      "isoCode": "HR",
+      "displayName": "Croatia",
+      "companyIdentifiers": [
+        {
+          "ref": "hr.oib",
+          "name": "Osobni identifikacijski broj",
+          "description": "In Croatia, the OIB (Osobni identifikacijski broj) is a unique, permanent personal identification number assigned to both citizens and legal entities."
+        }
+      ],
+      "personIdentifiers": [],
+      "legalTypes": [
+        {
+          "uniqueRef": "hr.association_new",
+          "description": "udruga",
+          "shortDescription": "udruga"
+        },
+        {
+          "uniqueRef": "hr.sole_trader_new",
+          "description": "obrt",
+          "shortDescription": "obrt"
+        },
+        {
+          "uniqueRef": "hr.general_partnership_new",
+          "description": "javno trgovačko društvo",
+          "shortDescription": "j.t.d."
+        },
+        {
+          "uniqueRef": "hr.limited_partnership_new",
+          "description": "komanditno društvo",
+          "shortDescription": "k.d."
+        },
+        {
+          "uniqueRef": "hr.private_limited_company_new",
+          "description": "društvo s ograničenom odgovornošću",
+          "shortDescription": "d.o.o. / j.d.o.o."
+        },
+        {
+          "uniqueRef": "hr.public_limited_company_new",
+          "description": "dioničko društvo",
+          "shortDescription": "d.d."
+        },
+        {
+          "uniqueRef": "hr.cooperative_new",
+          "description": "zadruga",
+          "shortDescription": "zadruga"
+        },
+        {
+          "uniqueRef": "hr.other_new",
+          "description": "Drugo",
+          "shortDescription": "Drugo"
+        },
+        {
+          "uniqueRef": "hr.partnership_of_two_or_more_sole_traders_new",
+          "description": "Ortaštvo",
+          "shortDescription": "Ortaštvo"
+        }
+      ],
+      "addressRequirements": {
+        "requiredFields": ["street_address", "post_code", "locality_level1"],
+        "allowedFields": ["street_address", "post_code", "locality_level1"]
+      }
+    },
+    {
+      "isoCode": "CY",
+      "displayName": "Cyprus",
+      "companyIdentifiers": [
+        {
+          "ref": "cy.fpa",
+          "name": "Arithmós Engraphḗs phi. pi. a.",
+          "description": "Arithmós Engraphḗs phi. pi. a. is the Cypriot VAT number."
+        },
+        {
+          "ref": "cy.crn",
+          "name": "Company Registration Number",
+          "description": "Company Registration Number is the Cypriot company registration number."
+        }
+      ],
+      "personIdentifiers": [
+        {
+          "ref": "cy.identity_card",
+          "name": "Δελτίο Ταυτότητας",
+          "description": "Δελτίο Ταυτότητας is the Cypriot national ID number."
+        }
+      ],
+      "legalTypes": [
+        {
+          "uniqueRef": "cy.public_limited_company",
+          "description": "Δημόσια εταιρεία περιορισμένης ευθύνης",
+          "shortDescription": "Δημόσια εταιρεία περιορισμένης ευθύνης"
+        },
+        {
+          "uniqueRef": "cy.sole_trader",
+          "description": "Ατομική επιχείρηση",
+          "shortDescription": "Ατομική επιχείρηση"
+        },
+        {
+          "uniqueRef": "cy.private_limited_company",
+          "description": "Εταιρεία περιορισμένης ευθύνης δια μετοχών",
+          "shortDescription": "Εταιρεία περιορισμένης ευθύνης δια μετοχών"
+        },
+        {
+          "uniqueRef": "cy.other",
+          "description": "Άλλο",
+          "shortDescription": "Άλλο"
+        },
+        {
+          "uniqueRef": "cy.company_limited_by_guarantee",
+          "description": "Εταιρεία περιορισμένης ευθύνης με εγγύηση",
+          "shortDescription": "Εταιρεία περιορισμένης ευθύνης με εγγύηση"
+        },
+        {
+          "uniqueRef": "cy.general_partnership",
+          "description": "Ομόρρυθμη εταιρεία",
+          "shortDescription": "Ομόρρυθμη εταιρεία"
+        },
+        {
+          "uniqueRef": "cy.associations",
+          "description": "Συνεταιρισμός",
+          "shortDescription": "Συνεταιρισμός"
+        },
+        {
+          "uniqueRef": "cy.foundation",
+          "description": "Ίδρυμα",
+          "shortDescription": "Ίδρυμα"
+        },
+        {
+          "uniqueRef": "cy.limited_partnership",
+          "description": "Ετερόρρυθμη εταιρεία",
+          "shortDescription": "Ετερόρρυθμη εταιρεία"
+        }
+      ],
+      "addressRequirements": {
+        "requiredFields": ["street_address", "post_code", "locality_level1"],
+        "allowedFields": ["street_address", "post_code", "locality_level1"]
+      }
+    },
+    {
+      "isoCode": "CZ",
+      "displayName": "Czech Republic",
+      "companyIdentifiers": [
+        {
+          "ref": "cz.dic",
+          "name": "Daňové identifikační číslo",
+          "description": "Daňové identifikační číslo is the Czech VAT ID, the Daňové identifikační číslo."
+        },
+        {
+          "ref": "cz.ico",
+          "name": "Identifikační číslo osoby",
+          "description": "Identifikační číslo osoby is the Czech company registration number, the Identifikační číslo osoby."
+        }
+      ],
+      "personIdentifiers": [
+        {
+          "ref": "cz.civil_card",
+          "name": "Občanský průkaz",
+          "description": "Občanský průkaz is the Czech national ID number"
+        }
+      ],
+      "legalTypes": [
+        {
+          "uniqueRef": "cz.sole_trader",
+          "description": "Živnost",
+          "shortDescription": "Živnost"
+        },
+        {
+          "uniqueRef": "cz.unregistered_partnership",
+          "description": "Společnost",
+          "shortDescription": "Společnost"
+        },
+        {
+          "uniqueRef": "cz.general_partnership",
+          "description": "Veřejná obchodní společnost",
+          "shortDescription": "v.o.s."
+        },
+        {
+          "uniqueRef": "cz.limited_partnerhip",
+          "description": "Komanditní společnost",
+          "shortDescription": "k.s."
+        },
+        {
+          "uniqueRef": "cz.private_limited_company",
+          "description": "Společnost s ručením omezeným",
+          "shortDescription": "s.r.o., spol. s r.o."
+        },
+        {
+          "uniqueRef": "cz.public_limited_company",
+          "description": "Akciová společnost",
+          "shortDescription": "a.s., akc. spol."
+        },
+        {
+          "uniqueRef": "cz.cooperative",
+          "description": "Družstvo",
+          "shortDescription": "Družstvo"
+        },
+        {
+          "uniqueRef": "cz.association",
+          "description": "Zapsaný spolek",
+          "shortDescription": "z.s."
+        },
+        {
+          "uniqueRef": "cz.foundation",
+          "description": "Nadační fond",
+          "shortDescription": "Nadační fond"
+        },
+        {
+          "uniqueRef": "cz.other",
+          "description": "jiný",
+          "shortDescription": "jiný"
+        }
+      ],
+      "addressRequirements": {
+        "requiredFields": ["street_address", "locality_level1", "post_code"],
+        "allowedFields": ["street_address", "post_code", "locality_level1"]
+      }
+    },
+    {
+      "isoCode": "DK",
+      "displayName": "Denmark",
+      "companyIdentifiers": [
+        {
+          "ref": "dk.cvr",
+          "name": "CVR-nummer",
+          "description": "CVR-nummer is the Danish company registration number number, Centrale Virksomhedsregister nummer. It is used both as company identifier and VAT ID."
+        },
+        {
+          "ref": "dk.cvr",
+          "name": "CVR-nummer",
+          "description": "CVR-nummer is the Danish company registration number number, Centrale Virksomhedsregister nummer. It is used both as company identifier and VAT ID."
+        }
+      ],
+      "personIdentifiers": [
+        {
+          "ref": "dk.cpr",
+          "name": "Det Centrale Personregister nummer",
+          "description": "Det Centrale Personregister nummer is the Danish personal identification number, the Central Person Register number. It is used for identification purposes."
+        }
+      ],
+      "legalTypes": [
+        {
+          "uniqueRef": "dk.sole_trader",
+          "description": "Enkeltmandsvirksomhed",
+          "shortDescription": "Enkeltmandsvirksomhed"
+        },
+        {
+          "uniqueRef": "dk.general_partnership",
+          "description": "Interessentskab",
+          "shortDescription": "I/S"
+        },
+        {
+          "uniqueRef": "dk.limited_partnership",
+          "description": "Kommanditselskab",
+          "shortDescription": "K/S"
+        },
+        {
+          "uniqueRef": "dk.partnership_limited_by_shares",
+          "description": "Partnerselskab or Kommanditaktieselskab",
+          "shortDescription": "P/S"
+        },
+        {
+          "uniqueRef": "dk.private_limited_company",
+          "description": "Anpartsselskab",
+          "shortDescription": "ApS"
+        },
+        {
+          "uniqueRef": "dk.public_limited_company",
+          "description": "Aktieselskab",
+          "shortDescription": "A/S"
+        },
+        {
+          "uniqueRef": "dk.limited_liability_co-operative",
+          "description": "Andelsselskab med begrænset ansvar",
+          "shortDescription": "A.M.B.A."
+        },
+        {
+          "uniqueRef": "dk.limited_liability_voluntary_association",
+          "description": "Forening med begrænset ansvar",
+          "shortDescription": "F.M.B.A."
+        },
+        {
+          "uniqueRef": "dk.association",
+          "description": "Forening",
+          "shortDescription": "Forening"
+        },
+        {
+          "uniqueRef": "dk.commercial_foundation",
+          "description": "Erhvervsdrivende fond",
+          "shortDescription": "Erhvervsdrivende fond"
+        },
+        {
+          "uniqueRef": "dk.non_commercial_foundation",
+          "description": "Ikke-erhvervsdrivende fond",
+          "shortDescription": "Ikke-erhvervsdrivende fond"
+        },
+        {
+          "uniqueRef": "dk.other",
+          "description": "Anden",
+          "shortDescription": "Anden"
+        }
+      ],
+      "addressRequirements": {
+        "requiredFields": ["street_address", "locality_level1", "post_code"],
+        "allowedFields": ["street_address", "post_code", "locality_level1"]
+      }
+    },
+    {
+      "isoCode": "EE",
+      "displayName": "Estonia",
+      "companyIdentifiers": [
+        {
+          "ref": "ee.kmkr",
+          "name": "Käibemaksukohustuslase number",
+          "description": "Käibemaksukohustuslase number is the Estonian VAT ID, the Käibemaksukohustuslase."
+        },
+        {
+          "ref": "ee.reg",
+          "name": "Äriregistri Kood",
+          "description": "Äriregistri Kood is the Estonian company registration number, the Registrikood."
+        }
+      ],
+      "personIdentifiers": [
+        {
+          "ref": "ee.isikukoodi",
+          "name": "Isikukoodi",
+          "description": "Isikukoodi is the Estonian national ID number."
+        }
+      ],
+      "legalTypes": [
+        {
+          "uniqueRef": "ee.sole_trader",
+          "description": "Füüsilisest Isikust Ettevõtja",
+          "shortDescription": "FIE"
+        },
+        {
+          "uniqueRef": "ee.general_partnership",
+          "description": "Täisühing",
+          "shortDescription": "TÜ"
+        },
+        {
+          "uniqueRef": "ee.limited_partnership",
+          "description": "Usaldusühing",
+          "shortDescription": "UÜ"
+        },
+        {
+          "uniqueRef": "ee.private_limited_company",
+          "description": "Osaühing",
+          "shortDescription": "OÜ"
+        },
+        {
+          "uniqueRef": "ee.public_limited_company",
+          "description": "Aktsiaselts",
+          "shortDescription": "AS"
+        },
+        {
+          "uniqueRef": "ee.cooperative",
+          "description": "Ühistu",
+          "shortDescription": "Ühistu"
+        },
+        {
+          "uniqueRef": "ee.other",
+          "description": "Muud liiki",
+          "shortDescription": "Muud liiki"
+        },
+        {
+          "uniqueRef": "ee.commercial_association",
+          "description": "Tulundusühistu",
+          "shortDescription": "TulÜ"
+        }
+      ],
+      "addressRequirements": {
+        "requiredFields": ["street_address", "locality_level1", "post_code"],
+        "allowedFields": [
+          "street_address",
+          "post_code",
+          "locality_level1",
+          "administrative_unit_level1"
+        ]
+      }
+    },
+    {
+      "isoCode": "FI",
+      "displayName": "Finland",
+      "companyIdentifiers": [
+        {
+          "ref": "fi.alv",
+          "name": "Arvonlisäveronumero Mervärdesskattenummer",
+          "description": "Arvonlisäveronumero Mervärdesskattenummer is the Finnish VAT number. The VAT number can be derived directly from the Business ID by prefixing the Business ID with `FI` and removing the dash before the check digit at the end. Businesses must register with the Finnish tax office before they can use their Business ID dependent VAT number.."
+        },
+        {
+          "ref": "fi.yt",
+          "name": "Y-tunnus",
+          "description": "Y-tunnus is the Finnish Business ID, the Y-tunnus. Sole traders and registered companies must obtain one. The Business ID The Business ID of a legal person, such as a company, remains the same as long as the legal person is operative. If the company type changes in a way defined by law, the Business ID remains the same. If the activities of a general partnership or a limited liability company are continued by a person operating as a sole trader, the Business ID changes. The Y-tunnus consists of seven digits, a dash and a control mark"
+        }
+      ],
+      "personIdentifiers": [
+        {
+          "ref": "fi.hetu",
+          "name": "Henkilötunnus",
+          "description": "Henkilötunnus is the Finnish personal identification number, the Henkilötunnus."
+        }
+      ],
+      "legalTypes": [
+        {
+          "uniqueRef": "fi.general_partnership",
+          "description": "Avoin yhtiö",
+          "shortDescription": "Ay"
+        },
+        {
+          "uniqueRef": "fi.limited_partnership",
+          "description": "Kommandiittiyhtiö",
+          "shortDescription": "Ky"
+        },
+        {
+          "uniqueRef": "fi.private_limited_company",
+          "description": "Osakeyhtiö",
+          "shortDescription": "Oy"
+        },
+        {
+          "uniqueRef": "fi.public_limited_company",
+          "description": "Julkinen osakeyhtiö",
+          "shortDescription": "Oyj"
+        },
+        {
+          "uniqueRef": "fi.cooperative",
+          "description": "Osuuskunta",
+          "shortDescription": "Osk"
+        },
+        {
+          "uniqueRef": "fi.registered_association",
+          "description": "Rekisteröity yhdistys",
+          "shortDescription": "ry"
+        },
+        {
+          "uniqueRef": "fi.foundation",
+          "description": "Säätiö",
+          "shortDescription": "rs"
+        },
+        {
+          "uniqueRef": "fi.other",
+          "description": "Muut",
+          "shortDescription": "Muut"
+        },
+        {
+          "uniqueRef": "fi.sole_trader",
+          "description": "Yksityinen elinkeinonharjoittaja",
+          "shortDescription": "Yksityinen elinkeinonharjoittaja"
+        }
+      ],
+      "addressRequirements": {
+        "requiredFields": ["street_address", "locality_level1", "post_code"],
+        "allowedFields": ["street_address", "post_code", "locality_level1"]
+      }
+    },
+    {
+      "isoCode": "FR",
+      "displayName": "France",
+      "companyIdentifiers": [
+        {
+          "ref": "fr.tva",
+          "name": "Numéro d'identification à la taxe sur la valeur ajoutée / Numéro de TVA intracommunautaire",
+          "description": "Numéro d'identification à la taxe sur la valeur ajoutée / Numéro de TVA intracommunautaire is the French VAT number, the Taxe sur la valeur ajoutée. For registered companies, the TVA is derived from the SIREN by prefixing the SIREN with `FR`. Any company, exceeding a certain annual revenue are liable for VAT."
+        },
+        {
+          "ref": "fr.siren",
+          "name": "Système d'identification du répertoire des entreprises",
+          "description": "Système d'identification du répertoire des entreprises is the french registration number given to French businesses and non-profit associations. The number consists of nine digits, of which the final digit is a check digit calculated via Luhn. Exampels: - `123 123 123`"
+        },
+        {
+          "ref": "fr.siret",
+          "name": "Système d’identification du répertoire des établissements",
+          "description": "Système d’identification du répertoire des établissements is a unique French identifier for a specific business location. SIRET is the Système d'identification du répertoire des établissements. Each SIRET number identifies a specific establishment/location of a business. The first nine digits of the SIRET are the business' SIREN number. The business location is identified by the next four digits, the NIC or \"Numéro interne de classement\". The final 14th digit is a check digit, calculated via Luhn. Sole traders"
+        },
+        {
+          "ref": "fr.rna",
+          "name": "Numéro Répertoire national des associations / Numéro RNA",
+          "description": "Numéro Répertoire national des associations / Numéro RNA is the French association number, the Numéro d'Association. It starts with the letter `W`, followed by 9 digits. Associatinos must use a SIRET instead of the RNA, if they have employees, wish to apply for subsidies, or when they are required to pay VAT or corporate tax."
+        }
+      ],
+      "personIdentifiers": [],
+      "legalTypes": [
+        {
+          "uniqueRef": "fr.ei",
+          "description": "Entrepreneur Individuel is a sole trader legal type.",
+          "shortDescription": "Entrepreneur Individuel"
+        },
+        {
+          "uniqueRef": "fr.eurl",
+          "description": "EURL",
+          "shortDescription": "EURL"
+        },
+        {
+          "uniqueRef": "fr.sarl",
+          "description": "SARL",
+          "shortDescription": "SARL"
+        },
+        {
+          "uniqueRef": "fr.sa",
+          "description": "SA",
+          "shortDescription": "SA"
+        },
+        {
+          "uniqueRef": "fr.sas",
+          "description": "SAS",
+          "shortDescription": "SAS"
+        },
+        {
+          "uniqueRef": "fr.sasu",
+          "description": "SASU",
+          "shortDescription": "SASU"
+        },
+        {
+          "uniqueRef": "fr.snc",
+          "description": "SNC",
+          "shortDescription": "SNC"
+        },
+        {
+          "uniqueRef": "fr.association",
+          "description": "Association",
+          "shortDescription": "Association"
+        },
+        {
+          "uniqueRef": "fr.autres",
+          "description": "Autres",
+          "shortDescription": "Autres"
+        }
+      ],
+      "addressRequirements": {
+        "requiredFields": ["street_address", "locality_level1", "post_code"],
+        "allowedFields": ["street_address", "post_code", "locality_level1"]
+      }
+    },
+    {
+      "isoCode": "DE",
+      "displayName": "Germany",
+      "companyIdentifiers": [
+        {
+          "ref": "de.ust_idnr",
+          "name": "Umsatzsteuer-Identifikationsnummer",
+          "description": "Umsatzsteuer-Identifikationsnummer is the German VAT ID, Umstatzsteuer-Identifikationsnummer."
+        },
+        {
+          "ref": "de.hra",
+          "name": "Handelsregister A Nummer",
+          "description": "Handelsregister A Nummer is the German company registration number for individual enterprises (e.K.), commercial (general and limited) partnerships (OHG and KG), corporations of public law running a business and EEIGs."
+        },
+        {
+          "ref": "de.hrb",
+          "name": "Handelsregister B Nummer",
+          "description": "Handelsregister B Nummer is the German company registration number for covers the following company types: public limited company (AG), association limited by shares (KGaA), limited liability companies (GmbH), and others."
+        },
+        {
+          "ref": "de.vr",
+          "name": "Vereinsregenister Nummer",
+          "description": "Vereinsregenister Nummer is the German registration number for registered associations, eingegratener Verein (e.V.)."
+        },
+        {
+          "ref": "de.other",
+          "name": "Other registration numbers",
+          "description": "Other registration numbers is used to identify other German company registration numbers."
+        }
+      ],
+      "personIdentifiers": [],
+      "legalTypes": [
+        {
+          "uniqueRef": "de.freiberufler",
+          "description": "Alle nicht registrierten Einzelunternehmen und freien Berufe ohne andere Gesellschaftsform",
+          "shortDescription": "Einzelunternehmer/Freiberufler"
+        },
+        {
+          "uniqueRef": "de.ekfr",
+          "description": "Eingetragener Kaufmann / Eingetragene Kauffrau (e.K., e.Kfm. oder e.Kfr.)",
+          "shortDescription": "e.Kfm./e.Kfr."
+        },
+        {
+          "uniqueRef": "de.gbr",
+          "description": "Gesellschaft bürgerlichen Rechts (GbR)",
+          "shortDescription": "GbR"
+        },
+        {
+          "uniqueRef": "de.ohg",
+          "description": "Offene Handelsgesellschaft (OHG)",
+          "shortDescription": "OHG"
+        },
+        {
+          "uniqueRef": "de.kg",
+          "description": "Kommanditgesellschaft (KG)",
+          "shortDescription": "KG"
+        },
+        {
+          "uniqueRef": "de.ug",
+          "description": "Unternehmergesellschaft (UG (haftungsbeschränkt))",
+          "shortDescription": "UG (haftungsbeschränkt)"
+        },
+        {
+          "uniqueRef": "de.gmbh",
+          "description": "Gesellschaft mit beschränkter Haftung (GmbH)",
+          "shortDescription": "GmbH"
+        },
+        {
+          "uniqueRef": "de.gmbhco",
+          "description": "GmbH & Co. KG",
+          "shortDescription": "GmbH & Co. KG"
+        },
+        {
+          "uniqueRef": "de.ag",
+          "description": "Aktiengesellschaft (AG)",
+          "shortDescription": "AG"
+        },
+        {
+          "uniqueRef": "de.ev",
+          "description": "Eingetragener Verein (e.V.)",
+          "shortDescription": "e.V."
+        },
+        {
+          "uniqueRef": "de.andere",
+          "description": "Andere Rechtsformen",
+          "shortDescription": "Andere"
+        },
+        {
+          "uniqueRef": "de.stiftung",
+          "description": "Stiftung",
+          "shortDescription": "Stiftung"
+        },
+        {
+          "uniqueRef": "de.genossenschaft",
+          "description": "Genossenschaft (eG)",
+          "shortDescription": "eG"
+        },
+        {
+          "uniqueRef": "de.koerperschaft",
+          "description": "Körperschaft öffentlichen Rechts (KöR)",
+          "shortDescription": "KöR"
+        }
+      ],
+      "addressRequirements": {
+        "requiredFields": ["street_address", "locality_level1", "post_code"],
+        "allowedFields": ["street_address", "post_code", "locality_level1"]
+      }
+    },
+    {
+      "isoCode": "GR",
+      "displayName": "Greece",
+      "companyIdentifiers": [
+        {
+          "ref": "gr.afm",
+          "name": "Arithmós Forologikou Mētrṓou - ΑΦΜ",
+          "description": "Arithmós Forologikou Mētrṓou - ΑΦΜ is the Greece tax ID, the Arithmós Forologikou Mētrṓou (AFM). Sole traders (sole proprietorship) use their personal tax ID to conduct business. Companies register for a tax ID. We always require an AFM in Greece."
+        },
+        {
+          "ref": "gr.gemi",
+          "name": "General Commercial Registry number.",
+          "description": "General Commercial Registry number. is the Greek company registration number, the General Commercial Registry (Γ.Ε.ΜI.) number. All Natural or legal persons or associations of such persons have to register in the General Commercial Registry. The exception are sole traders, wo can start conducting their business without going through GEMI."
+        }
+      ],
+      "personIdentifiers": [],
+      "legalTypes": [
+        {
+          "uniqueRef": "gr.sole_trader",
+          "description": "Atomikí epicheírisi / ατομική επιχείρηση",
+          "shortDescription": "Atomikí epicheírisi / ατομική επιχείρηση"
+        },
+        {
+          "uniqueRef": "gr.general_partnership",
+          "description": "Omórithmi Etaireía / Ομόρρυθμη Εταιρεία",
+          "shortDescription": "OE"
+        },
+        {
+          "uniqueRef": "gr.limited_partnership",
+          "description": "Eterórithmi Etaireía / Ετερόρρυθμη Εταιρία",
+          "shortDescription": "EE"
+        },
+        {
+          "uniqueRef": "gr.public_limited_company",
+          "description": "Anónimi Etaireía / Ανώνυμη Εταιρεία",
+          "shortDescription": "AE"
+        },
+        {
+          "uniqueRef": "gr.private_limited_company",
+          "description": "Etaireía Periorisménis Euthínis / Εταιρεία Περιορισμένης Ευθύνης",
+          "shortDescription": "EPE"
+        },
+        {
+          "uniqueRef": "gr.ltd_with_a_single_member",
+          "description": "Monoprósopi Etaireía Periorisménis Euthínis / Μονοπρόσωπη",
+          "shortDescription": "MEPE"
+        },
+        {
+          "uniqueRef": "gr.other",
+          "description": "Άλλο",
+          "shortDescription": "Άλλο"
+        },
+        {
+          "uniqueRef": "gr.association",
+          "description": "Συνεταιρισμός",
+          "shortDescription": "Συνεταιρισμός"
+        },
+        {
+          "uniqueRef": "gr.foundation",
+          "description": "Ίδρυμα",
+          "shortDescription": "Ίδρυμα"
+        }
+      ],
+      "addressRequirements": {
+        "requiredFields": ["street_address", "locality_level1", "post_code"],
+        "allowedFields": ["street_address", "post_code", "locality_level1"]
+      }
+    },
+    {
+      "isoCode": "HU",
+      "displayName": "Hungary",
+      "companyIdentifiers": [
+        {
+          "ref": "hu.anum",
+          "name": "Közösségi adószám",
+          "description": "Közösségi adószám is the Hungarian vat number, the Közösségi adószám. The format of the ANUM is HU12345678. The eight digit are the first digits in the Hungarian tax ID, the adószám. The tax ID has the format 12345678-1-23 (see references). The regex we have for the ANUM also accepts the adószám and leaves the country code prefix optional."
+        },
+        {
+          "ref": "hu.cegjegyzekszam",
+          "name": "Cégjegyzékszám",
+          "description": "Cégjegyzékszám is the Hungarian company registration number, the Cégjegyzékszám. NOTE: the values we have for this in platform DB are all over the place in terms of legal types. Technically, the cegjegyzekszam contains the company form. Looking at the numbers we have to the sole trader and registered sole trader legal types, the numbers map to limited liability companies and other legal types."
+        },
+        {
+          "ref": "hu.adoszam",
+          "name": "Adószám",
+          "description": "Adószám is the Hungarian tax number, the Adószám. It is not to be confused with the tax identification number, adoazonosító jel."
+        }
+      ],
+      "personIdentifiers": [
+        {
+          "ref": "hu.szemelyi",
+          "name": "Személyi igazolvány",
+          "description": "Személyi igazolvány is the Hungarian National ID the Személyi igazolvány. It is issued to Hungarian citizens and is used for identification purposes. The Personal ID is not used anymore."
+        },
+        {
+          "ref": "hu.adoazonosito_jel",
+          "name": "Adóazonosító jel",
+          "description": "Adóazonosító jel is the Hungarian personal tax identification number, the adóazonosító jel. It should not be confused with the adószám, the tax number. The difference between the adóazonosító jel and the adószám is that the latter is specifically issued for business purposes of natural and legal persons. The former is a personal identifier that should not be shared, for example on invoices, for privacy reasons. The two do share the same basic format. NOTE: because of this we should not expect to have adóazonosító jel values in our DB and should not collect them."
+        }
+      ],
+      "legalTypes": [
+        {
+          "uniqueRef": "hu.sole_trader",
+          "description": "Egyéni vállalkozó",
+          "shortDescription": "e.v."
+        },
+        {
+          "uniqueRef": "hu.registered_sole_trader",
+          "description": "Egyéni cég",
+          "shortDescription": "e.c."
+        },
+        {
+          "uniqueRef": "hu.limited_partnership",
+          "description": "Betéti társaság",
+          "shortDescription": "bt."
+        },
+        {
+          "uniqueRef": "hu.general_partnership",
+          "description": "Közkereseti társaság",
+          "shortDescription": "kkt."
+        },
+        {
+          "uniqueRef": "hu.private_limited_company",
+          "description": "Korlátolt felelősségű társaság",
+          "shortDescription": "kft."
+        },
+        {
+          "uniqueRef": "hu.public_limited_company",
+          "description": "Nyilvánosan működő részvénytársaság",
+          "shortDescription": "Nyrt."
+        },
+        {
+          "uniqueRef": "hu.privately_held_company",
+          "description": "Zártközűen működő részvénytársaság",
+          "shortDescription": "Zártközűen működő részvénytársaság"
+        },
+        {
+          "uniqueRef": "hu.cooperative",
+          "description": "Társaság",
+          "shortDescription": "Társaság"
+        },
+        {
+          "uniqueRef": "hu.association",
+          "description": "Szövetség",
+          "shortDescription": "Szövetség"
+        },
+        {
+          "uniqueRef": "hu.foundation",
+          "description": "Alapítvány",
+          "shortDescription": "Alapítvány"
+        },
+        {
+          "uniqueRef": "hu.other",
+          "description": "Más",
+          "shortDescription": "Más"
+        }
+      ],
+      "addressRequirements": {
+        "requiredFields": ["street_address", "locality_level1", "post_code"],
+        "allowedFields": ["locality_level1", "street_address", "post_code"]
+      }
+    },
+    {
+      "isoCode": "IE",
+      "displayName": "Ireland",
+      "companyIdentifiers": [
+        {
+          "ref": "ie.vat",
+          "name": "Value added tax identification no.",
+          "description": "Value added tax identification no. is the Irish VAT number and a unique identifier for Irish companies. It is identical to the TRN prefixed with `IE`."
+        },
+        {
+          "ref": "ie.trn",
+          "name": "Tax Registration Number",
+          "description": "Tax Registration Number is the Irish tax ID, the Tax Registration Number. Companies must register with Revenue to obtain a TRN. For sole traders who register with Revenue their PPSN becomes their business' TRN. We collect the TRN for non-registered companies as company registration number."
+        },
+        {
+          "ref": "ie.crn",
+          "name": "Value added tax identification no.",
+          "description": "Value added tax identification no. is the Irish company registration number, issued by Companies Registaion Office. It's a six digit code. NOTE: I found it very hard to find _any_ references for this. I asked some AI search which gave the six digit answer and maybe found something in a forum somewhere. Additionally our database is full of six digit numbers, so I deem this to be correct. Users does not have any validations for Irish CRNs."
+        },
+        {
+          "ref": "ie.chy",
+          "name": "Tax identification number for charities",
+          "description": "Tax identification number for charities is the tax identification number for charitable organizations. The format starts with the letters `CHY`, followed by 1 to 5 digits."
+        }
+      ],
+      "personIdentifiers": [],
+      "legalTypes": [
+        {
+          "uniqueRef": "ie.sole_trader",
+          "description": "Sole proprietorship / sole trader",
+          "shortDescription": "Sole trader"
+        },
+        {
+          "uniqueRef": "ie.society",
+          "description": "All clubs or societies",
+          "shortDescription": "Club or society"
+        },
+        {
+          "uniqueRef": "ie.edu",
+          "description": "All schools, colleges or universities",
+          "shortDescription": "School, college or university"
+        },
+        {
+          "uniqueRef": "ie.other",
+          "description": "All other legal forms",
+          "shortDescription": "Other"
+        },
+        {
+          "uniqueRef": "ie.limited",
+          "description": "Private limited company",
+          "shortDescription": "Limited company (Ltd.)"
+        },
+        {
+          "uniqueRef": "ie.partnership",
+          "description": "All partnerships",
+          "shortDescription": "Partnership (LP, LLP)"
+        }
+      ],
+      "addressRequirements": {
+        "requiredFields": [
+          "street_address",
+          "post_code",
+          "locality_level1",
+          "administrative_unit_level1"
+        ],
+        "allowedFields": [
+          "street_address",
+          "locality_level2",
+          "locality_level1",
+          "administrative_unit_level1",
+          "post_code"
+        ]
+      }
+    },
+    {
+      "isoCode": "IT",
+      "displayName": "Italy",
+      "companyIdentifiers": [
+        {
+          "ref": "it.p_iva",
+          "name": "Partita IVA",
+          "description": "Partita IVA is the Italian VAT number. It is used for individual businesses and registered companies. If a natural or legal person has a partita IVA, then it is used as fiscal code."
+        },
+        {
+          "ref": "it.rea_number",
+          "name": "REA Number",
+          "description": "REA Number is the Italian REA number, the \"Repertorio Economico Amministrativo\". It's issued upon registration with the Italian chamber of commerce. The REA also serves as fiscal code. It seems that if a company has a VAT number and a REA, the VAT number is used as fiscal code."
+        }
+      ],
+      "personIdentifiers": [
+        {
+          "ref": "it.cie",
+          "name": "Carta d'identità",
+          "description": "Carta d'identità is the Italian Carta d'Identità Elettronica, the electronic identity card. It is used as personal identification number."
+        },
+        {
+          "ref": "it.cf",
+          "name": "Codice fiscale",
+          "description": "Codice fiscale is the Italian tax identification number for natural and some legal persons. Registered companies use their REA as tax ID. Any entity with a VAT number uses that as tax ID. For natural persons the codice fiscale has 16 alphanumeric characters, for legal persons it has 11. The OECD and Wikipedia describe the format in detail."
+        },
+        {
+          "ref": "it.itax",
+          "name": "Codice fiscale",
+          "description": "Codice fiscale is the Italian tax identification number for natural and some legal persons. Registered companies use their REA as tax ID. Any entity with a VAT number uses that as tax ID. For natural persons the codice fiscale has 16 alphanumeric characters, for legal persons it has 11. The OECD and Wikipedia describe the format in detail."
+        }
+      ],
+      "legalTypes": [
+        {
+          "uniqueRef": "it.srls",
+          "description": "Società a responsabilità limitata semplificata (Srls)",
+          "shortDescription": "Società a responsabilità limitata semplificata (Srls)"
+        },
+        {
+          "uniqueRef": "it.srl_uni",
+          "description": "Società a responsabilità limitata unipersonale (Srl Uni)",
+          "shortDescription": "Società a responsabilità limitata unipersonale (Srl Uni)"
+        },
+        {
+          "uniqueRef": "it.ss",
+          "description": "Società Semplice (S.s.)",
+          "shortDescription": "Società Semplice (S.s.)"
+        },
+        {
+          "uniqueRef": "it.libero",
+          "description": "Libero Professionista",
+          "shortDescription": "Libero Professionista"
+        },
+        {
+          "uniqueRef": "it.individuale",
+          "description": "Imprenditore individuale",
+          "shortDescription": "Imprenditore individuale"
+        },
+        {
+          "uniqueRef": "it.snc",
+          "description": "Società in nome collettivo (S.n.c.)",
+          "shortDescription": "Società in nome collettivo (S.n.c.)"
+        },
+        {
+          "uniqueRef": "it.sas",
+          "description": "Società in accomandita semplice (S.a.s)",
+          "shortDescription": "Società in accomandita semplice (S.a.s)"
+        },
+        {
+          "uniqueRef": "it.societa_cooperative",
+          "description": "Società Cooperativa",
+          "shortDescription": "Società Cooperativa"
+        },
+        {
+          "uniqueRef": "it.spa",
+          "description": "Società per Azioni (Spa)",
+          "shortDescription": "Società per Azioni (Spa)"
+        },
+        {
+          "uniqueRef": "it.srl",
+          "description": "Società a responsabilità limitata (Srl)",
+          "shortDescription": "Società a responsabilità limitata (Srl)"
+        },
+        {
+          "uniqueRef": "it.società_di_capitali",
+          "description": "Società di capitali",
+          "shortDescription": "Società di capitali"
+        },
+        {
+          "uniqueRef": "it.società_di_persone",
+          "description": "Società di persone",
+          "shortDescription": "Società di persone"
+        },
+        {
+          "uniqueRef": "it.siapa",
+          "description": "Società in accomandita per azioni",
+          "shortDescription": "Società in accomandita per azioni"
+        },
+        {
+          "uniqueRef": "it.agenzia_statale",
+          "description": "Agenzia Statale",
+          "shortDescription": "Agenzia Statale"
+        },
+        {
+          "uniqueRef": "it.associazioni",
+          "description": "Associazioni",
+          "shortDescription": "Associazioni"
+        }
+      ],
+      "addressRequirements": {
+        "requiredFields": [
+          "street_address",
+          "locality_level1",
+          "administrative_unit_level1",
+          "post_code"
+        ],
+        "allowedFields": [
+          "street_address",
+          "post_code",
+          "locality_level1",
+          "administrative_unit_level1"
+        ]
+      }
+    },
+    {
+      "isoCode": "LV",
+      "displayName": "Latvia",
+      "companyIdentifiers": [
+        {
+          "ref": "lv.pvn",
+          "name": "PVN reģistrācijas numurs",
+          "description": "PVN reģistrācijas numurs is the Latvian VAT number, the Pievienotās vērtības nodokļa numurs. It is the same as the personal or company TIN, but prefixed with \"LV\" and without the check digit."
+        },
+        {
+          "ref": "lv.registracijas_numur",
+          "name": "Reģistrācijas numur",
+          "description": "Reģistrācijas numur is the Latvian company identification code. It is issued by the State Revenue Service or by the Enterprise Register. The number consists of 11 digits. The State Revenue Service issues numbers starting \"9000\", while the Enterprise Register numbers start with \"4000\" or \"5000\". There is no documented check digit algorithm. The identification code is also used as tax identification number (TIN)."
+        }
+      ],
+      "personIdentifiers": [
+        {
+          "ref": "lv.personas_kods",
+          "name": "Personas kods",
+          "description": "Personas kods is the Latvian personal identification code (PIC), the Personas kods. Every Latvian citizen has one, and foreigners can get one. The identifier is used for all interaction with the government and serves as personal tax ID. Sole traders may use their PIC for their business. It is an 11 digit number with an optional hyphen after the sixth digit. Before 1. July 2017, the PIC would consist of the date of birth of a person, followed by 5 random digits, withthe blocks separated by a dash.: YYMMDD-XXXXX. PICs issued from 1. July 2017 onward start with the number \"3\" followed by ten random numbers, also separated by a dash after position six: 3XXXXX-XXXXX. Sources are conflicting regarding the second digit. The EU Commission document on clickworker.com mentions that numbers should start with the digits \"32\". The OECD document states numbers start with the number \"3\", their example however starts with \"38\", while all remaining digits are scrambled to not potentially leak a real number."
+        }
+      ],
+      "legalTypes": [
+        {
+          "uniqueRef": "lv.sole_trader",
+          "description": "Individuālais komersants",
+          "shortDescription": "IK"
+        },
+        {
+          "uniqueRef": "lv.limited_partnership",
+          "description": "Komandītsabiedrība",
+          "shortDescription": "KS"
+        },
+        {
+          "uniqueRef": "lv.general_partnership",
+          "description": "Pilnsabiedrība",
+          "shortDescription": "PS"
+        },
+        {
+          "uniqueRef": "lv.private_limited_company",
+          "description": "Sabiedrība ar ierobežotu atbildību",
+          "shortDescription": "SIA"
+        },
+        {
+          "uniqueRef": "lv.public_limited_company",
+          "description": "Akciju sabiedrība",
+          "shortDescription": "AS"
+        },
+        {
+          "uniqueRef": "lv.association",
+          "description": "Asociācija",
+          "shortDescription": "Asociācija"
+        },
+        {
+          "uniqueRef": "lv.foundation",
+          "description": "Fonds",
+          "shortDescription": "Fonds"
+        }
+      ],
+      "addressRequirements": {
+        "requiredFields": ["street_address", "locality_level1", "post_code"],
+        "allowedFields": [
+          "street_address",
+          "administrative_unit_level1",
+          "locality_level1",
+          "post_code"
+        ]
+      }
+    },
+    {
+      "isoCode": "LT",
+      "displayName": "Lithuania",
+      "companyIdentifiers": [
+        {
+          "ref": "lt.pvm_kodas",
+          "name": "PVM mokėtojo kodas",
+          "description": "PVM mokėtojo kodas is the Lithuanian VAT number, the PVM mokėtojo kodas. NOTE: You can almost not find any information about this identifier."
+        },
+        {
+          "ref": "lt.imones_kodas",
+          "name": "Įmonės kodas",
+          "description": "Įmonės kodas is the Lithuanian company code, the Įmonės kodas. NOTE: I've found nothing on this. An AI search said legal persons have a 9 digit code, natural persons have an 11 digit code. In our database we only seem to have 9 digit codes."
+        }
+      ],
+      "personIdentifiers": [
+        {
+          "ref": "lt.asmens",
+          "name": "Asmens tapatybės kortelė",
+          "description": "Asmens tapatybės kortelė is the Lithuanian personal identification number, the Asmens tapatybės kortelė. It is used for identification purposes."
+        }
+      ],
+      "legalTypes": [
+        {
+          "uniqueRef": "lt.sole_trader",
+          "description": "Individuali veikla",
+          "shortDescription": "Individuali veikla"
+        },
+        {
+          "uniqueRef": "lt.individual_company",
+          "description": "Individuali įmonė",
+          "shortDescription": "IĮ"
+        },
+        {
+          "uniqueRef": "lt.general_partnership",
+          "description": "Tikroji ūkinė bendrija",
+          "shortDescription": "TŪB"
+        },
+        {
+          "uniqueRef": "lt.limited_partnership",
+          "description": "Komanditinė ūkinė bendrija",
+          "shortDescription": "KŪB"
+        },
+        {
+          "uniqueRef": "lt.small_partnership",
+          "description": "Mažoji bendrija",
+          "shortDescription": "MB"
+        },
+        {
+          "uniqueRef": "lt.private_limited_company",
+          "description": "Uždaroji akcinė bendrovė",
+          "shortDescription": "UAB"
+        },
+        {
+          "uniqueRef": "lt.public_limited_company",
+          "description": "Akcinė bendrovė",
+          "shortDescription": "AB"
+        },
+        {
+          "uniqueRef": "lt.cooperative",
+          "description": "Kooperatinė bendrovė",
+          "shortDescription": "Kooperatinė bendrovė"
+        },
+        {
+          "uniqueRef": "lt.association",
+          "description": "Asociacija",
+          "shortDescription": "Asociacija"
+        },
+        {
+          "uniqueRef": "lt.foundation",
+          "description": "Fondas",
+          "shortDescription": "Fondas"
+        },
+        {
+          "uniqueRef": "lt.other",
+          "description": "Kitas",
+          "shortDescription": "Kitas"
+        }
+      ],
+      "addressRequirements": {
+        "requiredFields": ["street_address", "locality_level1", "post_code"],
+        "allowedFields": [
+          "street_address",
+          "post_code",
+          "locality_level1",
+          "administrative_unit_level1"
+        ]
+      }
+    },
+    {
+      "isoCode": "LU",
+      "displayName": "Luxembourg",
+      "companyIdentifiers": [
+        {
+          "ref": "lu.tva",
+          "name": "Numéro d'identification à la taxe sur la valeur ajoutée",
+          "description": "Numéro d'identification à la taxe sur la valeur ajoutée is the Luxembourgian VAT number, the Taxe sur la valeur ajoutée. Natural and legal persons typically must register for a VAT number, meaning sole traders and registered companies. \"A taxable person liable for VAT is each natural or legal person who carries out, on an independent and regular basis, any operation falling within any economic activity, whatever the purpose or result of the activity and from whatever location it is performed.\""
+        },
+        {
+          "ref": "lu.matricule",
+          "name": "Matricule",
+          "description": "Matricule is the Luxembourgian unique identification number for both natural and legal persons. It's referred to as matricule or \"numéro d’identification personnelle\" and is used as tax ID. In the case of natural persons the matricule can have 11 or 13 digits. Any numbers issued from 2014 have 13 digits. Legal persons are issued matricules with 11 digits. The format for a natural person is `YYYY MMDD XXX (XX)`, where the first 8 digits are the date of birth of the person. The remaining five digits are \"random\". The 12th digit is a Luhn10 check digit. The 13th digit is a de Verhoeff check digit. Both are calculated from the first 11 digits. The format for legal persons is `AAAA FF XX XXX`, where `AAAA` is the year of formation, `FF` is the form of the company, and `XX XXX`are random numbers."
+        },
+        {
+          "ref": "lu.rcs",
+          "name": "Numéro d'identification unique",
+          "description": "Numéro d'identification unique is the Luxmebourgian company registration number, stored in the \"Registre du commerce et des sociétés\". The number format is `B123456`, it may be prefixed by variations of `RCS`. The letter at the beginning of the number indicates the kind of company. `B` stands for a commercial company. NOTE: I was not able to find any documentation on the exact format and the different letters used to identify the company type."
+        }
+      ],
+      "personIdentifiers": [
+        {
+          "ref": "lu.matricule",
+          "name": "Matricule",
+          "description": "Matricule is the Luxembourgian unique identification number for both natural and legal persons. It's referred to as matricule or \"numéro d’identification personnelle\" and is used as tax ID. In the case of natural persons the matricule can have 11 or 13 digits. Any numbers issued from 2014 have 13 digits. Legal persons are issued matricules with 11 digits. The format for a natural person is `YYYY MMDD XXX (XX)`, where the first 8 digits are the date of birth of the person. The remaining five digits are \"random\". The 12th digit is a Luhn10 check digit. The 13th digit is a de Verhoeff check digit. Both are calculated from the first 11 digits. The format for legal persons is `AAAA FF XX XXX`, where `AAAA` is the year of formation, `FF` is the form of the company, and `XX XXX`are random numbers."
+        }
+      ],
+      "legalTypes": [
+        {
+          "uniqueRef": "lu.sole_trader",
+          "description": "Entrepreneur Individual",
+          "shortDescription": "Entrepreneur Individual"
+        },
+        {
+          "uniqueRef": "lu.limited_partnership",
+          "description": "Société en commandite simple",
+          "shortDescription": "SECS"
+        },
+        {
+          "uniqueRef": "lu.general_partnership",
+          "description": "Sociéteé civil or sociéteé en nom collectif",
+          "shortDescription": "SENC"
+        },
+        {
+          "uniqueRef": "lu.partnership_limited_by_shares",
+          "description": "Société en commandité par actions",
+          "shortDescription": "SCA"
+        },
+        {
+          "uniqueRef": "lu.private_limited_company",
+          "description": "Société à responsabilitée limitée",
+          "shortDescription": "SARL"
+        },
+        {
+          "uniqueRef": "lu.public_limited_company",
+          "description": "Société anonyme",
+          "shortDescription": "SA"
+        },
+        {
+          "uniqueRef": "lu.cooperative",
+          "description": "Société co-opérative",
+          "shortDescription": "SC"
+        },
+        {
+          "uniqueRef": "lu.association",
+          "description": "Association",
+          "shortDescription": "Association"
+        },
+        {
+          "uniqueRef": "lu.other",
+          "description": "Autres",
+          "shortDescription": "Autres"
+        }
+      ],
+      "addressRequirements": {
+        "requiredFields": ["street_address", "locality_level1", "post_code"],
+        "allowedFields": ["street_address", "post_code", "locality_level1"]
+      }
+    },
+    {
+      "isoCode": "MT",
+      "displayName": "Malta",
+      "companyIdentifiers": [
+        {
+          "ref": "mt.vat_no",
+          "name": "Numru tal-VAT",
+          "description": "Numru tal-VAT is the Maltese VAT number, the Numru tal-VAT. It starts with \"MT\", followed by 8 digits."
+        },
+        {
+          "ref": "mt.brn",
+          "name": "Business Registration Number",
+          "description": "Business Registration Number is the Maltese business registration number. The Maltese Business Register maintains a register of companies, foundations, and associations NOTE: sent an email to Malta Business Register to get clarification on different business registration number formats. We have many numbers with the formats C12345, P12345, V/O12345. These seem to be companies, partnerships, and associations."
+        }
+      ],
+      "personIdentifiers": [
+        {
+          "ref": "mt.karta_tal_identita",
+          "name": "Karta tal-Identità",
+          "description": "Karta tal-Identità is the Maltese national ID number, the Identity Card Number. It is used for identification purposes."
+        }
+      ],
+      "legalTypes": [
+        {
+          "uniqueRef": "mt.sole_trader",
+          "description": "Sole trader",
+          "shortDescription": "Sole trader"
+        },
+        {
+          "uniqueRef": "mt.limited_partnership",
+          "description": "Limited partnership",
+          "shortDescription": "Limited partnership"
+        },
+        {
+          "uniqueRef": "mt.general_partnership",
+          "description": "General partnership",
+          "shortDescription": "General partnership"
+        },
+        {
+          "uniqueRef": "mt.private_limited_company",
+          "description": "Private limited company",
+          "shortDescription": "Private limited company"
+        },
+        {
+          "uniqueRef": "mt.public_limited_company",
+          "description": "Public limited company",
+          "shortDescription": "Public limited company"
+        },
+        {
+          "uniqueRef": "mt.associations",
+          "description": "Association",
+          "shortDescription": "Association"
+        },
+        {
+          "uniqueRef": "mt.foundation",
+          "description": "Foundation",
+          "shortDescription": "Foundation"
+        },
+        {
+          "uniqueRef": "mt.other",
+          "description": "Other",
+          "shortDescription": "Other"
+        }
+      ],
+      "addressRequirements": {
+        "requiredFields": ["street_address", "post_code", "locality_level1"],
+        "allowedFields": ["street_address", "locality_level1", "post_code"]
+      }
+    },
+    {
+      "isoCode": "MX",
+      "displayName": "Mexico",
+      "companyIdentifiers": [
+        {
+          "ref": "mx.rfc",
+          "name": "Registro Federal de Contribuyentes",
+          "description": "Registro Federal de Contribuyentes is the Mexican tax identification number, the Registro Federal de Contribuyentes. It is issued to natural persons and legal entities and required to perform any economic activity in Mexico, including VAT. The RFC format depends on whether it belongs to a natural person or legal entity. - Natural erson: XXXX YYMMDD ZZZ - Legal entity: XXX YYMMDD ZZZ The XXXX and XXX parts are derived from the person's or company's name. The YYMMDD is the date of birth or date of company formation, respectively. ZZZ is a randomly assigned alphanumeric code by the tax administration service. It includes a checksum."
+        }
+      ],
+      "personIdentifiers": [
+        {
+          "ref": "mx.curp",
+          "name": "Clave Única de Registro de Población",
+          "description": "Clave Única de Registro de Población is the Mexican personal identification number, the Clave Única de Registro de Población. It is used for identification purposes."
+        },
+        {
+          "ref": "mx.tax_regimen",
+          "name": "Régimen Fiscal",
+          "description": "The Tax Regime classifies taxpayers according to their economic activity and tax obligations."
+        }
+      ],
+      "legalTypes": [
+        {
+          "uniqueRef": "mx.persona_fisica",
+          "description": "Persona fisica",
+          "shortDescription": "Persona fisica"
+        },
+        {
+          "uniqueRef": "mx.persona_moral",
+          "description": "Persona moral",
+          "shortDescription": "Persona moral"
+        },
+        {
+          "uniqueRef": "mx.empresa_sin_fin_de_lucro",
+          "description": "Empresa sin fin de lucro",
+          "shortDescription": "Empresa sin fin de lucro"
+        }
+      ],
+      "addressRequirements": {
+        "requiredFields": [
+          "street_address",
+          "post_code",
+          "locality_level1",
+          "administrative_unit_level1"
+        ],
+        "allowedFields": [
+          "street_address",
+          "post_code",
+          "locality_level1",
+          "locality_level3",
+          "administrative_unit_level1"
+        ]
+      }
+    },
+    {
+      "isoCode": "NL",
+      "displayName": "Netherlands",
+      "companyIdentifiers": [
+        {
+          "ref": "nl.btw",
+          "name": "Btw-nummer",
+          "description": "Btw-nummer is the Dutch VAT identification number, the btw-identificatienummer. A Dutch VAT number starts with NL, then comes 9 digits, the letter B, and then another 2 digits. Sole traders and registered companies receive VAT IDs. There's also a VAT tax number (omzetbelastingnummer), which is only used to communicate with the tax authorities."
+        },
+        {
+          "ref": "nl.kvk",
+          "name": "Kamer van Koophandel nummer",
+          "description": "Kamer van Koophandel nummer is the Dutch company registration number, the Kamer van Koophandel nummer (KVK nummer). It's issued for every business registering in the chamber of commerce. Most businesses must register with the KVK, there are only a few exceptions. When the owner of a company changes, the KVK number will also change. The KVK number is an eight-digit number."
+        }
+      ],
+      "personIdentifiers": [],
+      "legalTypes": [
+        {
+          "uniqueRef": "nl.zzp",
+          "description": "Zzp (Zelfstandige Zonder Personeel)",
+          "shortDescription": "Zzp (Zelfstandige Zonder Personeel)"
+        },
+        {
+          "uniqueRef": "nl.kvk",
+          "description": "Eenmanszaak (KvK registratie)",
+          "shortDescription": "Eenmanszaak (KvK registratie)"
+        },
+        {
+          "uniqueRef": "nl.maatschap",
+          "description": "Maatschap",
+          "shortDescription": "Maatschap"
+        },
+        {
+          "uniqueRef": "nl.vof",
+          "description": "Vennootschap Onder Firma (VOF)",
+          "shortDescription": "Vennootschap Onder Firma (VOF)"
+        },
+        {
+          "uniqueRef": "nl.cv",
+          "description": "Commanditaire Vennootschap (CV)",
+          "shortDescription": "Commanditaire Vennootschap (CV)"
+        },
+        {
+          "uniqueRef": "nl.nv",
+          "description": "Naamloze Vennootschap (NV)",
+          "shortDescription": "Naamloze Vennootschap (NV)"
+        },
+        {
+          "uniqueRef": "nl.bv",
+          "description": "Besloten Vennootschap (BV)",
+          "shortDescription": "Besloten Vennootschap (BV)"
+        },
+        {
+          "uniqueRef": "nl.stichting",
+          "description": "Stichting",
+          "shortDescription": "Stichting"
+        },
+        {
+          "uniqueRef": "nl.vvr",
+          "description": "Vereniging met volledige rechtsbevoegdheid",
+          "shortDescription": "Vereniging met volledige rechtsbevoegdheid"
+        },
+        {
+          "uniqueRef": "nl.vbr",
+          "description": "Vereniging met beperkte rechtsbevoegdheid",
+          "shortDescription": "Vereniging met beperkte rechtsbevoegdheid"
+        },
+        {
+          "uniqueRef": "nl.cow",
+          "description": "Coöperatie en Onderlinge Waarborgmaatschappij",
+          "shortDescription": "Coöperatie en Onderlinge Waarborgmaatschappij"
+        },
+        {
+          "uniqueRef": "nl.overheidsinstelling",
+          "description": "Overheidsinstelling",
+          "shortDescription": "Overheidsinstelling"
+        },
+        {
+          "uniqueRef": "nl.vereniging",
+          "description": "Vereniging",
+          "shortDescription": "Vereniging"
+        }
+      ],
+      "addressRequirements": {
+        "requiredFields": ["street_address", "locality_level1", "post_code"],
+        "allowedFields": ["street_address", "post_code", "locality_level1"]
+      }
+    },
+    {
+      "isoCode": "NO",
+      "displayName": "Norway",
+      "companyIdentifiers": [
+        {
+          "ref": "no.mva",
+          "name": "MVA-nummer",
+          "description": "MVA-nummer is the Norwegian VAT number, the Merverdiavgiftsnummer. It is the same as the Organisasjonsnummer, but with an extra suffix `MVA`."
+        },
+        {
+          "ref": "no.orgnr",
+          "name": "Organisasjonsnummer",
+          "description": "Organisasjonsnummer is the Norwegian organization number, the Organisasjonsnummer. It is assigned to legal entities upon registration. Sole traders who are subject to value added tax must also register. The organization number consists of 9 digits whereof the last digit is a check digit based on a special weighted code, modulus 11."
+        }
+      ],
+      "personIdentifiers": [
+        {
+          "ref": "no.fodelsnummer",
+          "name": "Fødselsnummer",
+          "description": "Fødselsnummer is the Norwegian national ID number, the Fødselsnummer. It is used for identification purposes. All official IDs, including passports, national ID cards, driving licenses and bank cards contain the National Identity Number."
+        }
+      ],
+      "legalTypes": [
+        {
+          "uniqueRef": "no.sole_trader",
+          "description": "Enkeltpersonforetak",
+          "shortDescription": "ENK"
+        },
+        {
+          "uniqueRef": "no.limited_partnership",
+          "description": "Kommandittselsjap",
+          "shortDescription": "KS"
+        },
+        {
+          "uniqueRef": "no.general_partnership",
+          "description": "Ansvarlig Selskap",
+          "shortDescription": "ANS/DA"
+        },
+        {
+          "uniqueRef": "no.private_limited_company",
+          "description": "Aksjeselskap",
+          "shortDescription": "AS"
+        },
+        {
+          "uniqueRef": "no.public_limited_company",
+          "description": "Allmennaksjeselskap",
+          "shortDescription": "ASA"
+        },
+        {
+          "uniqueRef": "no.cooperative",
+          "description": "Samvirkeforetak",
+          "shortDescription": "Samvirkeforetak"
+        },
+        {
+          "uniqueRef": "no.foundation",
+          "description": "Stiftelse",
+          "shortDescription": "Stiftelse"
+        },
+        {
+          "uniqueRef": "no.association",
+          "description": "Forening",
+          "shortDescription": "Forening"
+        },
+        {
+          "uniqueRef": "no.norwegian_registered_foreign_enterprise",
+          "description": "Norskregistrert Utenlandsk Foretak",
+          "shortDescription": "Norskregistrert Utenlandsk Foretak"
+        },
+        {
+          "uniqueRef": "no.other",
+          "description": "Annen",
+          "shortDescription": "Annen"
+        }
+      ],
+      "addressRequirements": {
+        "requiredFields": ["street_address", "locality_level1", "post_code"],
+        "allowedFields": ["street_address", "post_code", "locality_level1"]
+      }
+    },
+    {
+      "isoCode": "PE",
+      "displayName": "Peru",
+      "companyIdentifiers": [],
+      "personIdentifiers": [
+        {
+          "ref": "pe.cui",
+          "name": "Cédula Única de Identidad",
+          "description": "Cédula Única de Identidad is the Peruvian unique identity number that appears on the Documento Nacional de Identidad (DNI), the national identity document of Peru. The number consists of 8 digits and an optional extra check digit."
+        }
+      ],
+      "legalTypes": [
+        {
+          "uniqueRef": "pe.pers",
+          "description": "Persona Natural",
+          "shortDescription": "Persona Natural"
+        },
+        {
+          "uniqueRef": "pe.eu",
+          "description": "Empresa Unipersonal (E.U.)",
+          "shortDescription": "Empresa Unipersonal (E.U.)"
+        },
+        {
+          "uniqueRef": "pe.eirl",
+          "description": "Empresa Individual de Responsabilidad Limitada (E.I.R.L.)",
+          "shortDescription": "Empresa Individual de Responsabilidad Limitada (E.I.R.L.)"
+        },
+        {
+          "uniqueRef": "pe.sa",
+          "description": "Sociedad Anónima (S.A.)",
+          "shortDescription": "Sociedad Anónima (S.A.)"
+        },
+        {
+          "uniqueRef": "pe.saa",
+          "description": "Sociedad Anónima Abierta (S.A.A.)",
+          "shortDescription": "Sociedad Anónima Abierta (S.A.A.)"
+        },
+        {
+          "uniqueRef": "pe.sac",
+          "description": "Sociedad Anónima Cerrada (S.A.C.)",
+          "shortDescription": "Sociedad Anónima Cerrada (S.A.C.)"
+        },
+        {
+          "uniqueRef": "pe.srl",
+          "description": "Sociedad Comercial de Responsabilidad Limitada  (S.R.L.)",
+          "shortDescription": "Sociedad Comercial de Responsabilidad Limitada  (S.R.L.)"
+        },
+        {
+          "uniqueRef": "pe.sacs",
+          "description": "Sociedad por Acciones Cerrada Simplificada (S.A.C.S.)",
+          "shortDescription": "Sociedad por Acciones Cerrada Simplificada (S.A.C.S.)"
+        },
+        {
+          "uniqueRef": "pe.associación",
+          "description": "Associación",
+          "shortDescription": "Associación"
+        },
+        {
+          "uniqueRef": "pe.fundación",
+          "description": "Fundación",
+          "shortDescription": "Fundación"
+        },
+        {
+          "uniqueRef": "pe.comité",
+          "description": "Comité",
+          "shortDescription": "Comité"
+        }
+      ],
+      "addressRequirements": {
+        "requiredFields": [
+          "street_address",
+          "post_code",
+          "administrative_unit_level1",
+          "administrative_unit_level3"
+        ],
+        "allowedFields": [
+          "street_address",
+          "locality_level1",
+          "post_code",
+          "administrative_unit_level1",
+          "administrative_unit_level2",
+          "administrative_unit_level3"
+        ]
+      }
+    },
+    {
+      "isoCode": "PL",
+      "displayName": "Poland",
+      "companyIdentifiers": [
+        {
+          "ref": "pl.nip",
+          "name": "Numer identyfikacji podatkowej",
+          "description": "Numer identyfikacji podatkowej is the Polish tax identification number for for businesses, the numer identyfikacji podatkowej. It is used for both natural and legal persons. The NIP is also used as VAT ID, in which case it's prefixed by `PL`. The hyphens are only used for formatting. The positioning of the hyphens depends on whether the NIP belongs to a natural or legal person. lib."
+        },
+        {
+          "ref": "pl.krs",
+          "name": "Numer Krajowego Rejestru Sądowego",
+          "description": "Numer Krajowego Rejestru Sądowego is the Polish registration number for companies, associations, foundations, etc., the numer Krajowego Rejestru Sądowego. It is used for companies only, sole traders register in a different registry. The KRS number has ten digits with leading zeros."
+        },
+        {
+          "ref": "pl.regon",
+          "name": "Numer Rejestr Gospodarki Narodowej",
+          "description": "Numer Rejestr Gospodarki Narodowej is the polish business registration number for sole traders, the numer Rejestr Gospodarki Narodowej. All natural and legal persons performing economic activies must register in the system. The number consists of 9 or 14 digits. Regular businesses receive a 9 digit REGON number. Larger businesses with multiple branches receive a 14 digit number. The first two digits identify the county in Poland where the business is registered. The following six digits are uniquely assigned to the business. In a 14 digit REGON number, the next 4 digits identify the local business unit. The final digit is a check digit."
+        }
+      ],
+      "personIdentifiers": [
+        {
+          "ref": "pl.pesel",
+          "name": "Powszechny Elektroniczny System Ewidencji Ludności",
+          "description": "Powszechny Elektroniczny System Ewidencji Ludności is the Polish national ID number, the Powszechny Elektroniczny System Ewidencji Ludności. The number consists of the date of birth, a serial number, the person's gender and a check digit."
+        }
+      ],
+      "legalTypes": [
+        {
+          "uniqueRef": "pl.cywilna",
+          "description": "Spółka Cywilna",
+          "shortDescription": "Spółka Cywilna"
+        },
+        {
+          "uniqueRef": "pl.indywidualna",
+          "description": "Indywidualna działalność gospodarcza",
+          "shortDescription": "Indywidualna działalność gospodarcza"
+        },
+        {
+          "uniqueRef": "pl.stowarzyszenie_fundacja",
+          "description": "Stowarzyszenie/Fundacja",
+          "shortDescription": "Stowarzyszenie/Fundacja"
+        },
+        {
+          "uniqueRef": "pl.komandytowo-akcyjna",
+          "description": "spółka komandytowo-akcyjna",
+          "shortDescription": "Spółka komandytowo-akcyjna"
+        },
+        {
+          "uniqueRef": "pl.komandytowa",
+          "description": "spółka komandytowa",
+          "shortDescription": "Spółka komandytowa"
+        },
+        {
+          "uniqueRef": "pl.jawna",
+          "description": "spółka jawna",
+          "shortDescription": "Spółka jawna"
+        },
+        {
+          "uniqueRef": "pl.akcyjna",
+          "description": "spółka akcyjna",
+          "shortDescription": "Spółka akcyjna"
+        },
+        {
+          "uniqueRef": "pl.zoo",
+          "description": "spółka z o.o.",
+          "shortDescription": "Spółka z o.o."
+        },
+        {
+          "uniqueRef": "pl.partnerska",
+          "description": "spółka partnerska",
+          "shortDescription": "Spółka partnerska"
+        }
+      ],
+      "addressRequirements": {
+        "requiredFields": ["street_address", "locality_level1", "post_code"],
+        "allowedFields": [
+          "street_address",
+          "post_code",
+          "locality_level1",
+          "administrative_unit_level1"
+        ]
+      }
+    },
+    {
+      "isoCode": "PT",
+      "displayName": "Portugal",
+      "companyIdentifiers": [
+        {
+          "ref": "pt.nif",
+          "name": "Número de Identificação Fiscal",
+          "description": "Número de Identificação Fiscal is the Portuguese tax identification number for natural persons, the Número de Identificação Fiscal. The NIF is assigned by the Tax and Customs Authority for all citizens. NIFs can be distinguished from NIPCs by the first digit. NIFs start with 1, 2, or 3. The number has 9 digits, the last digit is a check digit."
+        },
+        {
+          "ref": "pt.nipc",
+          "name": "Número de Identificação de Pessoa Coletiva",
+          "description": "Número de Identificação de Pessoa Coletiva is the Portuguese tax identification number for legal persons, the Número de Identificação de Pessoa Coletiva. The NIPC is issued when a company is registered National Register of Legal Entities.. NIPCs can be distinguished from NIFs by the first digit. NIPCs start with the numbers 5 through 9 (see OECD TIN document). The number has 9 digits, the last digit is a check digit."
+        },
+        {
+          "ref": "pt.codigo",
+          "name": "Código de acesso à certidão permanente",
+          "description": "Código de acesso à certidão permanente is the access code for the permanent certificate of business registration, the código de acesso à certidão permanente. This code is required to access a company's records (the permanent certificate) in the commercial register. NOTE: we seem to have collected this number for both the company registration number and as a dedicated field. The company registration numbers for Portugal seem to therefore be all over the place. Users were probably confused because there is no such thing as a company registration number in Portugal, that resembles the access code's format. The NIPC serves as company identifier for tax purposes. The code consists of 12 digits in groups of four, separated by hyphens."
+        }
+      ],
+      "personIdentifiers": [
+        {
+          "ref": "pt.cc",
+          "name": "Cartão de Cidadão",
+          "description": "Cartão de Cidadão is the Portuguese citizen card number, the Cartão de Cidadão. It is alphanumeric and consists of the numeric Número de Identificação Civil, a two-letter version and a check digit. Format: DDDDDDDD C AAT - DDDDDDDD: Número de Identificação Civil [0-9] - C: Check digit [0-9] - AA: Two-letter version [A-Z, 0-9] - T: Check digit [0-9]"
+        }
+      ],
+      "legalTypes": [
+        {
+          "uniqueRef": "pt.eni",
+          "description": "Empresário em nome individual",
+          "shortDescription": "Empresário em nome individual"
+        },
+        {
+          "uniqueRef": "pt.asfl",
+          "description": "Associação/Organização sem fins lucrativos",
+          "shortDescription": "Associação/Organização sem fins lucrativos"
+        },
+        {
+          "uniqueRef": "pt.sociedad",
+          "description": "Sociedade Civil",
+          "shortDescription": "Sociedade Civil"
+        },
+        {
+          "uniqueRef": "pt.sociedad_limitada",
+          "description": "Sociedade por Quotas",
+          "shortDescription": "Sociedade por Quotas"
+        },
+        {
+          "uniqueRef": "pt.sociedad_anonima",
+          "description": "Sociedade Anônima",
+          "shortDescription": "Sociedade Anônima"
+        },
+        {
+          "uniqueRef": "pt.sociedad_comanditaria",
+          "description": "Sociedade em Comandita",
+          "shortDescription": "Sociedade em Comandita"
+        },
+        {
+          "uniqueRef": "pt.sociedad_colectiva",
+          "description": "Sociedade em Nome Colectivo",
+          "shortDescription": "Sociedade em Nome Colectivo"
+        },
+        {
+          "uniqueRef": "pt.sociedad_cooperativa",
+          "description": "Cooperativas",
+          "shortDescription": "Cooperativas"
+        },
+        {
+          "uniqueRef": "pt.state_agency",
+          "description": "Espresa Estatal",
+          "shortDescription": "Espresa Estatal"
+        },
+        {
+          "uniqueRef": "pt.pcdp",
+          "description": "Pessoas Colectivas de Direito Público",
+          "shortDescription": "Pessoas Colectivas de Direito Público"
+        }
+      ],
+      "addressRequirements": {
+        "requiredFields": ["street_address", "locality_level1", "post_code"],
+        "allowedFields": [
+          "street_address",
+          "post_code",
+          "locality_level1",
+          "administrative_unit_level1"
+        ]
+      }
+    },
+    {
+      "isoCode": "RO",
+      "displayName": "Romania",
+      "companyIdentifiers": [
+        {
+          "ref": "ro.cui",
+          "name": "Codul de TVA",
+          "description": "Codul de TVA is the Romanian unique identification number for businesses, the Codul Unic de Înregistrare. Pretty much all businesses, including sole traders, must register for a CUI. The CUI serves as tax identification number. If the business is registered for VAT, their CUI is also their VAT ID when prefixed with `RO`. The CUI consists of 2 to 10 digits. The last digit is a check digit (see linked Wikipedia)."
+        },
+        {
+          "ref": "ro.cui",
+          "name": "Codul Unic de Înregistrare",
+          "description": "Codul Unic de Înregistrare is the Romanian unique identification number for businesses, the Codul Unic de Înregistrare. Pretty much all businesses, including sole traders, must register for a CUI. The CUI serves as tax identification number. If the business is registered for VAT, their CUI is also their VAT ID when prefixed with `RO`. The CUI consists of 2 to 10 digits. The last digit is a check digit (see linked Wikipedia)."
+        },
+        {
+          "ref": "ro.cif",
+          "name": "Codul de identificare fiscală",
+          "description": "Codul de identificare fiscală is the generic term for the Romanian tax identification number, the Codul de identificare fiscală. The CIF can take several forms. - For Romanian citizens who have not registered their business in the Trade Register, due to exemptinos, their CNP is their business' CIF. - For non-romanian citizens, the CIF is issued by the tax administration and takes the same shape as the CNP. - For natural persons who exercise their business under a special law, not requiring them to register, the CIF is issued by the tax authorities. - Businesses that register with the Trade Register receive a CUI to serve as their CIF. In most cases we should not collect a generic CIF and instead require a CUI or CNP."
+        },
+        {
+          "ref": "ro.onrc",
+          "name": "Numărul de ordine în registrul comerţului",
+          "description": "Numărul de ordine în registrul comerţului is the Romanian registration number from the trade register, the numărul de ordine în registrul comerţului. When registering a company in the trade register, one receives the ONRC number, which is akin to a company registration number, as well as the unique company code, CUI (see [refROCUI]). The ONRC number is local to the province one registers in. It can change over time, for example when a company moves to a different province. The number consists of three parts. The first part starts with one of the letters J (legal entities), F (authorized natural persons, sole proprietorships and family businesses), or C (cooperative societies). The letter is followed by a number from 1 to 40 (with leading zero), identifying the county in which the business is registered. The second part of the ONRC is the local register's \"order number\" of the year of registration. It gets reset every year. The last part is the year of registration."
+        }
+      ],
+      "personIdentifiers": [
+        {
+          "ref": "ro.cnp",
+          "name": "Codul numeric personal",
+          "description": "Codul numeric personal is the Romanian unique identification number for individuals, the Cod numeric personal. The CNP is issued for residents by the Ministry of Internal Affairs. It also serves as tax identification number for natural persons, in particular for sole traders and similar legal types that do not register with the Trade Registry. The CNP consists of 13 digits, the last of which is a check digit (see wikipedia)."
+        }
+      ],
+      "legalTypes": [
+        {
+          "uniqueRef": "ro.sole_trader",
+          "description": "Persoana fizica autorizata",
+          "shortDescription": "PFA"
+        },
+        {
+          "uniqueRef": "ro.unregistered_partnership",
+          "description": "Asociere fără personalitate juridică",
+          "shortDescription": "Asociere fără personalitate juridică"
+        },
+        {
+          "uniqueRef": "ro.general_partnership",
+          "description": "Societatea în nume colectiv",
+          "shortDescription": "SNC"
+        },
+        {
+          "uniqueRef": "ro.limited_partnership",
+          "description": "Societatea în comandită simplă",
+          "shortDescription": "SCS"
+        },
+        {
+          "uniqueRef": "ro.partnership_limited_by_shares",
+          "description": "Societatea în comandită pe acțiuni,",
+          "shortDescription": "SCA"
+        },
+        {
+          "uniqueRef": "ro.public_limited_company",
+          "description": "Societatea pe acțiuni",
+          "shortDescription": "SA"
+        },
+        {
+          "uniqueRef": "ro.private_limited_company",
+          "description": "Societatea cu răspundere limitată",
+          "shortDescription": "SRL"
+        },
+        {
+          "uniqueRef": "ro.private_limited_company_with_sole_owner",
+          "description": "Societatea cu răspundere limitată cu proprietar unic",
+          "shortDescription": "SRL cu proprietar unic"
+        },
+        {
+          "uniqueRef": "ro.cooperative",
+          "description": "Cooperativă",
+          "shortDescription": "Cooperativă"
+        },
+        {
+          "uniqueRef": "ro.association",
+          "description": "Asociație",
+          "shortDescription": "Asociație"
+        },
+        {
+          "uniqueRef": "ro.foundation",
+          "description": "Fundație",
+          "shortDescription": "Fundație"
+        },
+        {
+          "uniqueRef": "ro.other",
+          "description": "Alt",
+          "shortDescription": "Alt"
+        }
+      ],
+      "addressRequirements": {
+        "requiredFields": ["street_address", "locality_level1", "post_code"],
+        "allowedFields": [
+          "street_address",
+          "post_code",
+          "administrative_unit_level1",
+          "locality_level1"
+        ]
+      }
+    },
+    {
+      "isoCode": "SK",
+      "displayName": "Slovakia",
+      "companyIdentifiers": [
+        {
+          "ref": "sk.dph",
+          "name": "Identifikačné číslo pre daň z pridanej hodnoty",
+          "description": "Identifikačné číslo pre daň z pridanej hodnoty is the Slovak Republic's VAT ID, the Identifikačné číslo pre daň z pridanej hodnoty. Any business making more than a certain threshold is required to register for VAT, including sole traders. It's a ten-digit number, prefixed with `SK`. The number can be validated by calculating its modulo 11. The result has to be `0`."
+        },
+        {
+          "ref": "sk.ico",
+          "name": "Identifikačné číslo organizácie",
+          "description": "Identifikačné číslo organizácie is the Slovak Republic's organization identification number, the Identifikačné číslo organizácie. It is issued automatically to natural persons and legal entities running a business as well as public sector organizations etc. The first seven digits are the identification number. The eights digit is a check digit."
+        }
+      ],
+      "personIdentifiers": [
+        {
+          "ref": "sk.rc",
+          "name": "Rodné číslo",
+          "description": "Rodné číslo is the Slovak Republic's birth number, the Rodné číslo. The birth number is the Slovak national identifier. The number can be 9 or 10 digits long. Numbers given out after January 1st 1954 should have 10 digits. The number includes the birth date of the person and their gender"
+        }
+      ],
+      "legalTypes": [
+        {
+          "uniqueRef": "sk.public_limited_company",
+          "description": "akciová spoločnosť",
+          "shortDescription": "a.s."
+        },
+        {
+          "uniqueRef": "sk.general_partnership",
+          "description": "verejná obchodná spoločnosť",
+          "shortDescription": "v.o.s."
+        },
+        {
+          "uniqueRef": "sk.limited_partnership",
+          "description": "komanditná spoločnosť",
+          "shortDescription": "k.s."
+        },
+        {
+          "uniqueRef": "sk.private_limited_company",
+          "description": "spoločnosť s ručením obmedzeným",
+          "shortDescription": "s.r.o."
+        },
+        {
+          "uniqueRef": "sk.sole_trader",
+          "description": "živnostník",
+          "shortDescription": "živnostník"
+        },
+        {
+          "uniqueRef": "sk.unregistered_partnership",
+          "description": "Združenie bez právnej subjektivity",
+          "shortDescription": "Združenie bez právnej subjektivity"
+        },
+        {
+          "uniqueRef": "sk.association",
+          "description": "Združenie",
+          "shortDescription": "Združenie"
+        },
+        {
+          "uniqueRef": "sk.foundation",
+          "description": "Nadácia",
+          "shortDescription": "Nadácia"
+        },
+        {
+          "uniqueRef": "sk.enterprise_or_foreign_company",
+          "description": "Podnik / Organizačná zložka podniku zahraničnej osob",
+          "shortDescription": "Podnik / Organizačná zložka podniku zahraničnej osob"
+        },
+        {
+          "uniqueRef": "sk.other",
+          "description": "Iný",
+          "shortDescription": "Iný"
+        },
+        {
+          "uniqueRef": "sk.cooperative",
+          "description": "Družstvo",
+          "shortDescription": "Družstvo"
+        }
+      ],
+      "addressRequirements": {
+        "requiredFields": ["street_address", "locality_level1", "post_code"],
+        "allowedFields": ["street_address", "post_code", "locality_level1"]
+      }
+    },
+    {
+      "isoCode": "SI",
+      "displayName": "Slovenia",
+      "companyIdentifiers": [
+        {
+          "ref": "si.ddv",
+          "name": "Identifikacijska številka za DDV",
+          "description": "Identifikacijska številka za DDV is the Slovenian tax identification number, the Davčna številka. It is issued to all natural and legal persons. The DDV serves as VAT number when prefixed with `SI`. The DDV is an eight-digit number. The first seven digits are random, the eighth digit is a mod11 check digit."
+        },
+        {
+          "ref": "si.maticna",
+          "name": "Matična številka",
+          "description": "Matična številka is the Slovenian company registration number, the Matična številka poslovnega registra. The number consists of 7 or 10 digits and includes a check digit. The first 6 digits represent a unique number for each unit or company, followed by a check digit. The last 3 digits represent an additional business unit of the company, starting at 001. When a company consists of more than 1000 units, a letter is used instead of the first digit in the business unit. Unit 000 always represents the main registered address."
+        }
+      ],
+      "personIdentifiers": [
+        {
+          "ref": "si.emso",
+          "name": "Enotna matična številka občana (Unique Master Citizen Number)",
+          "description": "Enotna matična številka občana (Unique Master Citizen Number) is the Slovenian personal identification number, the EMŠO. The EMŠO is used for uniquely identify persons including foreign citizens living in Slovenia. It is issued by Centralni Register Prebivalstva CRP (Central Citizen Registry). used for identification purposes. The number consists of 13 digits and includes the person's date of birth, a political region of birth and a unique number that encodes a person's gender followed by a check digit."
+        }
+      ],
+      "legalTypes": [
+        {
+          "uniqueRef": "si.partnership_limited_by_shares",
+          "description": "Komanditna delniška družba",
+          "shortDescription": "k.d.d."
+        },
+        {
+          "uniqueRef": "si.foundation",
+          "description": "Združenje",
+          "shortDescription": "Združenje"
+        },
+        {
+          "uniqueRef": "si.sole_trader",
+          "description": "Samostojni podjetnik",
+          "shortDescription": "s.p."
+        },
+        {
+          "uniqueRef": "si.limited_partnership",
+          "description": "Komanditna družba",
+          "shortDescription": "k.d."
+        },
+        {
+          "uniqueRef": "si.private_unlimited_company",
+          "description": "Družba z neomejeno odgovornostjo",
+          "shortDescription": "d.n.o."
+        },
+        {
+          "uniqueRef": "si.private_limited_company",
+          "description": "Družba z omejeno odgovornostjo",
+          "shortDescription": "d.o.o."
+        },
+        {
+          "uniqueRef": "si.public_limited_company",
+          "description": "Delniška družba",
+          "shortDescription": "d.d."
+        },
+        {
+          "uniqueRef": "si.cooperative",
+          "description": "Zadruga",
+          "shortDescription": "Zadruga"
+        },
+        {
+          "uniqueRef": "si.other",
+          "description": "Druga",
+          "shortDescription": "Druga"
+        },
+        {
+          "uniqueRef": "si.association",
+          "description": "Društvo, zveza društev",
+          "shortDescription": "Društvo, zveza društev"
+        }
+      ],
+      "addressRequirements": {
+        "requiredFields": ["street_address", "post_code", "locality_level1"],
+        "allowedFields": ["street_address", "post_code", "locality_level1"]
+      }
+    },
+    {
+      "isoCode": "ES",
+      "displayName": "Spain",
+      "companyIdentifiers": [
+        {
+          "ref": "es.nif",
+          "name": "Número de Identificación Fiscal",
+          "description": "Número de Identificación Fiscal is the Spanish personal identification number. It is used for individual company types. The NIF corresponds to the DNI for Spanish nationals and the NIE for foreign nationals."
+        },
+        {
+          "ref": "es.cif",
+          "name": "Certificado de Identificación Fiscal",
+          "description": "Certificado de Identificación Fiscal is the Spanish tax ID for companies and legal entities, the Código de Identificación Fiscal. It is used as unique identifier for companies and as VAT ID."
+        }
+      ],
+      "personIdentifiers": [
+        {
+          "ref": "es.nie",
+          "name": "Número de Identificación de Extranjero",
+          "description": "Número de Identificación de Extranjero is the Spanish tax ID for foreign nationals, the Número de Identificación de Extranjero."
+        },
+        {
+          "ref": "es.dni",
+          "name": "Documento Nacional de Identidad",
+          "description": "Documento Nacional de Identidad is the Spanish national ID number, the Documento Nacional de Identidad. It is used for Spanish nationals. Foreign nationals, since 2010 are issued an NIE (Número de Identificación de Extranjeros, Foreigner's Identity Number) instead."
+        }
+      ],
+      "legalTypes": [
+        {
+          "uniqueRef": "es.autonomo",
+          "description": "Empresario Individual/autónomo",
+          "shortDescription": "Empresario Individual/autónomo"
+        },
+        {
+          "uniqueRef": "es.comunidad",
+          "description": "Comunidad de Bienes",
+          "shortDescription": "Comunidad de Bienes"
+        },
+        {
+          "uniqueRef": "es.sociedad",
+          "description": "Sociedad Civil",
+          "shortDescription": "Sociedad Civil"
+        },
+        {
+          "uniqueRef": "es.asociaciones",
+          "description": "Asociaciones sin ánimo de lucro",
+          "shortDescription": "Asociaciones sin ánimo de lucro"
+        },
+        {
+          "uniqueRef": "es.sociedad_colectiva",
+          "description": "Sociedad Colectiva",
+          "shortDescription": "Sociedad Colectiva"
+        },
+        {
+          "uniqueRef": "es.sociedad_limitada",
+          "description": "Sociedad Limitada",
+          "shortDescription": "Sociedad Limitada"
+        },
+        {
+          "uniqueRef": "es.sociedad_anonima",
+          "description": "Sociedad Anónima",
+          "shortDescription": "Sociedad Anónima"
+        },
+        {
+          "uniqueRef": "es.sociedad_comanditaria",
+          "description": "Sociedad Comanditaria",
+          "shortDescription": "Sociedad Comanditaria"
+        },
+        {
+          "uniqueRef": "es.sociedad_cooperativa",
+          "description": "Sociedad Cooperativa",
+          "shortDescription": "Sociedad Cooperativa"
+        },
+        {
+          "uniqueRef": "es.state_agency",
+          "description": "Agencia Estatal",
+          "shortDescription": "Agencia Estatal"
+        }
+      ],
+      "addressRequirements": {
+        "requiredFields": [
+          "street_address",
+          "post_code",
+          "locality_level1",
+          "administrative_unit_level2"
+        ],
+        "allowedFields": [
+          "street_address",
+          "post_code",
+          "locality_level1",
+          "administrative_unit_level2"
+        ]
+      }
+    },
+    {
+      "isoCode": "SE",
+      "displayName": "Sweden",
+      "companyIdentifiers": [
+        {
+          "ref": "se.momsnr",
+          "name": "VAT-nummer",
+          "description": "VAT-nummer is the Swedish VAT number, the Momsregistreringsnummer. The format for the Momsregistreringsnummer is `SEXXXXXX-XXXX01` It always starts with `SE` and ends in `01`. For legal entities the middle part is the Organisationsnummer (see [refSEOrgNr]). For sole traders, the part contains the Personnummer (see [refSEPers])."
+        },
+        {
+          "ref": "se.orgnr",
+          "name": "Organisationsnumret",
+          "description": "Organisationsnumret is the Swedish tax identification number for legal entities, the Organisationsnummer. It is assigned by the authority, which registers the respective organization type (i.e., Companies Registration Office, Tax Agency, Central Bureau of Statistics, etc.). The Organisationsnummer is used as tax identification number. Sole traders use their social security number as tax identification numbers. The Organisationsnummer has 10 digits and should pass luhn's checksum algorithm."
+        }
+      ],
+      "personIdentifiers": [
+        {
+          "ref": "se.pn",
+          "name": "Personnummer",
+          "description": "Personnummer is the Swedish personal identity number number, the personnummer. It is issued at birth, or at registration. The personnummer is used as tax identification number. The personnummer has 10 digits and should pass luhn's checksum algorithm. The first six or eight digits are the date of birth of a person, i.e. YYMMDD or YYYYMMDD. The In case the specific day is out of birth numbers, another day (close to the correct one) is used. They are followed by a hyphen, and four final digits. The year a person turns 100 the hyphen is replaced with a plus sign. Among the four last digits, the three first are a serial number. For the last digit among these three, an odd number is assigned to males and an even number to females."
+        }
+      ],
+      "legalTypes": [
+        {
+          "uniqueRef": "se.sole_trader",
+          "description": "Enskildnärings - verksamhet",
+          "shortDescription": "Enskildnärings"
+        },
+        {
+          "uniqueRef": "se.limited_partnership",
+          "description": "Kommanditbolag",
+          "shortDescription": "Kommanditbolag"
+        },
+        {
+          "uniqueRef": "se.limited",
+          "description": "Aktiebolag",
+          "shortDescription": "Aktiebolag"
+        },
+        {
+          "uniqueRef": "se.trading_partnership",
+          "description": "Handelsbolag",
+          "shortDescription": "Handelsbolag"
+        },
+        {
+          "uniqueRef": "se.economic_association",
+          "description": "Förening",
+          "shortDescription": "Förening"
+        }
+      ],
+      "addressRequirements": {
+        "requiredFields": ["street_address", "locality_level1", "post_code"],
+        "allowedFields": ["street_address", "post_code", "locality_level1"]
+      }
+    },
+    {
+      "isoCode": "CH",
+      "displayName": "Switzerland",
+      "companyIdentifiers": [
+        {
+          "ref": "ch.mwst",
+          "name": "Mehrwertsteuernummer / Taxe sur la valeur ajoutée / Imposta sul valore aggiunto",
+          "description": "Mehrwertsteuernummer / Taxe sur la valeur ajoutée / Imposta sul valore aggiunto is the Swiss VAT number. It is identical to the UID but uses a MWST suffix when written without a label, i.e. `CHE123456789MWST`."
+        },
+        {
+          "ref": "ch.uid",
+          "name": "Unternehmens-Identifikationsnummer",
+          "description": "Unternehmens-Identifikationsnummer is the Swiss company registration number, the Unternehmens-Identifikationsnummer. It is has the format `CHE123456789`."
+        }
+      ],
+      "personIdentifiers": [],
+      "legalTypes": [
+        {
+          "uniqueRef": "ch.kollektivgesellschaft",
+          "description": "Kollektivgesellschaft",
+          "shortDescription": "Kollektivgesellschaft"
+        },
+        {
+          "uniqueRef": "ch.kollektivgesellschaft",
+          "description": "Kollektivgesellschaft (OLD)",
+          "shortDescription": "Kollektivgesellschaft (OLD)"
+        },
+        {
+          "uniqueRef": "ch.einzelfirma",
+          "description": "Einzelfirma",
+          "shortDescription": "Einzelfirma"
+        },
+        {
+          "uniqueRef": "ch.kommanditgesellschaft",
+          "description": "Kommanditgesellschaft",
+          "shortDescription": "Kommanditgesellschaft"
+        },
+        {
+          "uniqueRef": "ch.gesellschaft_haftung",
+          "description": "Gesellschaft mit beschränkter Haftung",
+          "shortDescription": "Gesellschaft mit beschränkter Haftung"
+        },
+        {
+          "uniqueRef": "ch.aktiengesellschaft_societe",
+          "description": "Aktiengesellschaft/ Société anonyme",
+          "shortDescription": "Aktiengesellschaft/ Société anonyme"
+        },
+        {
+          "uniqueRef": "ch.ch_verein",
+          "description": "Verein",
+          "shortDescription": "Verein"
+        },
+        {
+          "uniqueRef": "ch.einfachegesellschaft",
+          "description": "Einfache Gesellschaft",
+          "shortDescription": "Einfache Gesellschaft"
+        }
+      ],
+      "addressRequirements": {
+        "requiredFields": ["street_address", "locality_level1", "post_code"],
+        "allowedFields": ["street_address", "post_code", "locality_level1"]
+      }
+    },
+    {
+      "isoCode": "GB",
+      "displayName": "United Kingdom",
+      "companyIdentifiers": [
+        {
+          "ref": "gb.vrn",
+          "name": "Value added tax registration number",
+          "description": "Value added tax registration number is the British VAT number, the VAT registration number. Any business with an annual turnover exceeding a VAT threshold must register for a VRN."
+        },
+        {
+          "ref": "gb.crn",
+          "name": "The company registration number for companies registered with Companies House",
+          "description": "The company registration number for companies registered with Companies House is the British company registration number. Limited companies, Limited Partnerships, and Limited Liability Partnerships have to register with Companies House and receive the CRN."
+        }
+      ],
+      "personIdentifiers": [],
+      "legalTypes": [
+        {
+          "uniqueRef": "gb.partnership",
+          "description": "All partnerships",
+          "shortDescription": "Partnership (LP, LLP)"
+        },
+        {
+          "uniqueRef": "gb.sole_trader",
+          "description": "Sole proprietorship / sole trader",
+          "shortDescription": "Sole trader"
+        },
+        {
+          "uniqueRef": "gb.society",
+          "description": "All clubs or societies",
+          "shortDescription": "Club or society"
+        },
+        {
+          "uniqueRef": "gb.edu",
+          "description": "All schools, colleges or universities",
+          "shortDescription": "School, college or university"
+        },
+        {
+          "uniqueRef": "gb.other",
+          "description": "All other legal forms",
+          "shortDescription": "Other"
+        },
+        {
+          "uniqueRef": "gb.limited",
+          "description": "Private limited company",
+          "shortDescription": "Limited company (Ltd.)"
+        }
+      ],
+      "addressRequirements": {
+        "requiredFields": ["street_address", "locality_level1", "post_code"],
+        "allowedFields": ["street_address", "locality_level1", "post_code"]
+      }
+    },
+    {
+      "isoCode": "US",
+      "displayName": "United States",
+      "companyIdentifiers": [
+        {
+          "ref": "us.ssn",
+          "name": "Social Security Number",
+          "description": "Social Security Number is the United States social security number. It is used for taxation of natural persons, like sole traders. From Wikipedia: > The SSN is a nine-digit number, usually written in the format `AAA-GG-SSSS`. > The number has three parts: the first three digits, called the area number because > they were formerly assigned by geographical region; the middle two digits, the > group number; and the last four digits, the serial number."
+        },
+        {
+          "ref": "us.ein",
+          "name": "Employer Identification Number",
+          "description": "Employer Identification Number is the United States employer identification number. It is used for business entities which have to pay withholding taxes on employees. The EIN is a nine-digit number, usually written in form 00-0000000."
+        },
+        {
+          "ref": "us.itin",
+          "name": "Social Security Number",
+          "description": "Social Security Number is the United States individual tax identification number. Individuals who cannot get a social security number (see refUSSSN) can apply for an ITIN. From Wikipedia: > It is a nine-digit number beginning with the number “9”, has a range > of numbers from \"50\" to \"65\", \"70\" to \"88\", “90” to “92” and “94” to “99” > for the fourth and fifth digits, and is formatted like a SSN (i.e., 9XX-XX-XXXX)."
+        },
+        {
+          "ref": "us.ssn",
+          "name": "Social Security Number",
+          "description": "Social Security Number is the United States social security number. It is used for taxation of natural persons, like sole traders. From Wikipedia: > The SSN is a nine-digit number, usually written in the format `AAA-GG-SSSS`. > The number has three parts: the first three digits, called the area number because > they were formerly assigned by geographical region; the middle two digits, the > group number; and the last four digits, the serial number."
+        },
+        {
+          "ref": "us.ein",
+          "name": "Employer Identification Number",
+          "description": "Employer Identification Number is the United States employer identification number. It is used for business entities which have to pay withholding taxes on employees. The EIN is a nine-digit number, usually written in form 00-0000000."
+        },
+        {
+          "ref": "us.itin",
+          "name": "Social Security Number",
+          "description": "Social Security Number is the United States individual tax identification number. Individuals who cannot get a social security number (see refUSSSN) can apply for an ITIN. From Wikipedia: > It is a nine-digit number beginning with the number “9”, has a range > of numbers from \"50\" to \"65\", \"70\" to \"88\", “90” to “92” and “94” to “99” > for the fourth and fifth digits, and is formatted like a SSN (i.e., 9XX-XX-XXXX)."
+        }
+      ],
+      "personIdentifiers": [
+        {
+          "ref": "us.ssn",
+          "name": "Social Security Number",
+          "description": "Social Security Number is the United States social security number. It is used for taxation of natural persons, like sole traders. From Wikipedia: > The SSN is a nine-digit number, usually written in the format `AAA-GG-SSSS`. > The number has three parts: the first three digits, called the area number because > they were formerly assigned by geographical region; the middle two digits, the > group number; and the last four digits, the serial number."
+        }
+      ],
+      "legalTypes": [
+        {
+          "uniqueRef": "us.partnership",
+          "description": "Limited Partnership",
+          "shortDescription": "LP"
+        },
+        {
+          "uniqueRef": "us.llp",
+          "description": "Limited Liability Partnership",
+          "shortDescription": "LLP"
+        },
+        {
+          "uniqueRef": "us.lllp",
+          "description": "Limited Liability Limited Partnership",
+          "shortDescription": "LLLP"
+        },
+        {
+          "uniqueRef": "us.lc",
+          "description": "Limited Company",
+          "shortDescription": "LC"
+        },
+        {
+          "uniqueRef": "us.llc",
+          "description": "Limited Liability Company",
+          "shortDescription": "LLC"
+        },
+        {
+          "uniqueRef": "us.pllc",
+          "description": "Professional Limited Liability Company",
+          "shortDescription": "PLLC"
+        },
+        {
+          "uniqueRef": "us.smllc",
+          "description": "Single Member Limited Liability Company",
+          "shortDescription": "SMLLC"
+        },
+        {
+          "uniqueRef": "us.corp_inc",
+          "description": "Corporation Incorporated",
+          "shortDescription": "Corp. Inc."
+        },
+        {
+          "uniqueRef": "us.pc",
+          "description": "Professional Corporation",
+          "shortDescription": "PC"
+        },
+        {
+          "uniqueRef": "us.uba_org",
+          "description": "Non-profit Organisation",
+          "shortDescription": "Non-profit Organisation"
+        },
+        {
+          "uniqueRef": "us.sole_trader",
+          "description": "Sole proprietorship",
+          "shortDescription": "Sole proprietorship"
+        }
+      ],
+      "addressRequirements": {
+        "requiredFields": [
+          "street_address",
+          "locality_level1",
+          "administrative_unit_level1",
+          "post_code"
+        ],
+        "allowedFields": [
+          "street_address",
+          "locality_level1",
+          "administrative_unit_level1",
+          "post_code"
+        ]
+      }
+    }
+  ]
+}

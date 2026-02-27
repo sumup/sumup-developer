@@ -1,0 +1,10 @@
+---
+import merchantCountryData from "../../data/merchant-country-data.json";
+
+import AddressRequirementsTableClient from "./AddressRequirementsTable";
+---
+
+<AddressRequirementsTableClient
+  client:only="react"
+  data={merchantCountryData}
+/>

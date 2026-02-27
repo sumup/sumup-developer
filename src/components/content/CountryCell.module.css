@@ -1,0 +1,10 @@
+.countryCell {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--cui-spacings-bit);
+}
+
+.countryFlag {
+  width: 15px;
+  height: 10px;
+}
