@@ -4,10 +4,6 @@
 
 The portal uses Astro with the Starlight theme. Application source sits in `src/`, with `pages/` for route entry points, `content/` for MDX docs, `components/` for reusable UI (React, Astro, and Circuit UI), and `utils/`/`lib/` for shared logic. Assets live in `src/assets` and `public/`. Build outputs go to `dist/`. Configuration resides in `astro.config.ts`, `ec.config.mjs`, and `wrangler.jsonc`; adjust them when adding new content types or deployment targets. API documentation is based on `openapi.yaml`, this file is synchronized from outside this repository, do not edit it.
 
-## Content
-
-Content (`content/`) of the developer portal uses United States English spelling and grammar. The articles shall be clear and concise and refer to external documentation for established standards and RFCs. We don't use emojis.
-
 ## Build, Test, and Development Commands
 
 - `npm run dev` — watch mode with Hot Module Reloading; use when authoring docs or components.
