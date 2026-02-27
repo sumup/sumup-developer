@@ -46,7 +46,7 @@ import { Hamburger } from "@sumup-oss/circuit-ui";
   customElements.define("starlight-menu-button", StarlightMenuButton);
 </script>
 
-<style>
+<style is:global>
   starlight-menu-button {
     position: fixed;
     top: calc((var(--sl-nav-height) - var(--sl-menu-button-size)) / 2);
