@@ -6,18 +6,15 @@ sidebar:
 ---
 
 SumUp exposes REST APIs for managing checkouts, retrieving transactions, and more.
-Every integration needs a way to authorize API requests, and card-present solutions also need to identify the integration itself.
+Every integration needs a way to authorize its API requests, and card-present solutions also need to identify the integration itself.
 
-## Choose the right option
+## Choose the Right Option
 
-- **[API keys](/tools/authorization/api-keys/)** – Static credentials owned by a single merchant.
-  Use them for direct server-to-server integrations when you control the merchant account and need full API access.
-- **[OAuth 2.0](/tools/authorization/oauth/)** – Standards-based authorization for multi-merchant solutions.
-  Use it when other merchants or their employees connect to your application and must explicitly grant access.
-- **[Affiliate Keys](/tools/authorization/affiliate-keys/)** – Required for card-present scenarios to attribute transactions to your integration.
-  Combine them with API keys or OAuth depending on how you authorize API calls.
+- **[API keys](/tools/authorization/api-keys/)** – Static credentials owned by a single merchant. Use them for direct server-to-server integrations when you control the merchant account and need full API access.
+- **[OAuth 2.0](/tools/authorization/oauth/)** – Standards-based authorization for multi-merchant solutions. Use it when other merchants or their employees connect to your application and must explicitly grant access.
+- **[Affiliate Keys](/tools/authorization/affiliate-keys/)** – Required for card-present scenarios to attribute transactions to your integration. Combine them with API keys or OAuth depending on how you authorize API calls.
 
-## Next steps
+## Next Steps
 
 - Review the [API reference](/api/) once you have your credentials.
 - Follow product-specific guides such as [terminal integrations](/terminal-payments/) or [online payments](/online-payments/) with the appropriate authorization method in place.

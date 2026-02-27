@@ -23,7 +23,7 @@ SumUp supports two OAuth 2.0 flows:
 - The [authorization code flow](#authorization-code-flow) when an end user grants your application access.
 - The [client credentials flow](#client-credentials-flow) when your application authenticates as itself.
 
-## Authorization flows
+## Authorization Flows
 
 Choose the flow that matches how your application obtains access while keeping scope verification requirements in mind.
 
@@ -59,7 +59,7 @@ This flow implements the [RFC 6749 Authorization Code Grant](https://datatracker
 
 </Steps>
 
-### Exchange the authorization code
+### Exchange the Authorization Code
 
 Send the following request to `https://api.sumup.com/token`:
 
@@ -83,7 +83,7 @@ The response contains an access token, refresh token, and metadata such as token
 }
 ```
 
-### Refresh the access token
+### Refresh the Access Token
 
 Access tokens expire, for example when a user changes their password or revokes access.
 Use the refresh token to request a new access token from `https://api.sumup.com/token` as defined by OAuth 2.0.
@@ -114,7 +114,7 @@ The client credentials flow follows [RFC 6749 Client Credentials Grant](https://
 
 Request an access token from `https://api.sumup.com/token` using the client credentials grant parameters. This flow does not return a refresh token.
 
-## Register an OAuth application
+## Register an OAuth Application
 
 To integrate an external application with SumUp, register an OAuth application and generate client credentials.
 These credentials let you complete the OAuth flows in this guide and obtain access tokens for protected SumUp resources.
@@ -128,7 +128,7 @@ This section walks through the registration process:
 3. [Generate the client credentials](#3-generate-the-client-credentials)
 4. [Access the client credentials](#4-access-the-client-credentials)
 
-### Before you begin
+### Before You Begin
 
 Have the following ready before you register the application:
 
@@ -136,11 +136,11 @@ Have the following ready before you register the application:
 - Your application name.
 - One or more redirect URIs. SumUp redirects users to these URIs after authentication and sends the authorization codes you exchange for tokens in the [authorization code flow](#authorization-code-flow).
 
-### 1. Log in to your account
+### 1. Log in to Your Account
 
 Log in to [your SumUp account](/auth/login). Once logged in, **Account** appears in place of the **Log in** button at the top right.
 
-### 2. Create an OAuth application
+### 2. Create an OAuth Application
 
 Navigate to the [OAuth Apps](/apps/) page to create or manage OAuth applications.
 
@@ -154,7 +154,7 @@ You can edit the registered application by selecting it. The edit page lets you 
 
 You can also select the scopes your application requires. Each scope includes a short description of the access it grants.
 
-### 3. Generate the client credentials
+### 3. Generate the Client Credentials
 
 On the [OAuth Apps](/apps) page, open your application and choose **Create client secret**.
 
@@ -177,7 +177,7 @@ You can register as many client credentials as you need. Repeat this step to cre
 
 </Aside>
 
-### 4. Access the client credentials
+### 4. Access the Client Credentials
 
 After creation, credentials appear in the **Client credentials** section of your OAuth application (see screenshot).
 

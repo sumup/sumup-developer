@@ -12,7 +12,7 @@ import { Aside, Steps } from '@astrojs/starlight/components';
 API keys are static credentials that let your application act on behalf of the merchant account that created the key.
 Use them when you control the merchant account and need direct access to SumUp APIs with the full set of permissions.
 
-## Authorize requests with an API key
+## Authorize Requests with an API Key
 
 Include the API key in the `Authorization` header using the `Bearer` scheme when calling SumUp APIs.
 
@@ -27,7 +27,7 @@ API keys grant broad access to the merchant account, so treat them as sensitive 
 
 </Aside>
 
-## Create an API key
+## Create an API Key
 
 <Steps>
 
@@ -46,13 +46,13 @@ API keys grant broad access to the merchant account, so treat them as sensitive 
 
 </Steps>
 
-## Handle API keys securely
+## Handle API Keys Securely
 
 - Keep the key in a secure secret store and rotate it regularly.
 - Avoid sharing the key with third parties. If sharing is unavoidable, make sure they meet your security expectations.
 - Monitor how the key is used and revoke it promptly if you suspect misuse.
 
-## When to choose another method
+## When to Choose Another Method
 
 Use [OAuth 2.0](/tools/authorization/oauth/) when you build an integration that other merchants or their staff will authorize.
 For card-present scenarios, combine your chosen authorization method with an [Affiliate Key](/tools/authorization/affiliate-keys/).
