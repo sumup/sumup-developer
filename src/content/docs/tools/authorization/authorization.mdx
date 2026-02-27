@@ -13,7 +13,7 @@ import { androidreadersdkname } from '@lib/productnames.ts';
 
 All requests to the SumUp API must use [HTTPS](https://en.wikipedia.org/wiki/HTTPS) and include authorization.
 
-SumUp supports two authorization methods. [API keys](#api-keys) allow an app to authenticate and authorize on behalf of a merchant with full permissions. This simplest approach suits most use cases.
+SumUp supports two authorization methods. [API keys](#integration-via-api-keys) allow an app to authenticate and authorize on behalf of a merchant with full permissions. This simplest approach suits most use cases.
 
 [OAuth 2.0](#integration-via-oauth-20) enables apps to request access on behalf of third parties, ideal for multi-merchant integrations.
 
@@ -48,7 +48,6 @@ Should you decide to integrate third-parties with the API key, you are responsib
    If you did, your existing API Keys can be found here.
 
    Do not use the public key in your integration.
-
 5. Select **Create** and give the key a meaningful name. Your key is now created and granted permissions to access SumUp APIs.
 6. When prompted, copy the key (you can also download it). SumUp does not store the key for security reasons.
    Integrators are responsible for handling the key securely in accordance with best industry practices.
