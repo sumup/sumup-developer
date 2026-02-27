@@ -93,11 +93,9 @@ Initializing the SDK works by passing it a `checkout_id`. To [create a checkout]
   </TabItem>
   <TabItem label="Go" icon="seti:go">
     ```go
-```
-description := "Order #1234"
-returnURL := "https://example.com"
-redirectURL := "https://sumup.com"
-```
+    description := "Order #1234"
+    returnURL := "https://example.com"
+    redirectURL := "https://sumup.com"
 
     checkout, err := client.Checkouts.Create(ctx, sumup.CheckoutsCreateParams{
     	CheckoutReference: "44ea5096-b83f-46e1-9323-fe82a8cb7eb5",
@@ -112,9 +110,7 @@ redirectURL := "https://sumup.com"
   </TabItem>
   <TabItem label="Python" icon="seti:python">
     ```py
-```
-from sumup.checkouts.resource import CreateCheckoutBody
-```
+    from sumup.checkouts.resource import CreateCheckoutBody
 
     checkout = client.checkouts.create(
         CreateCheckoutBody(

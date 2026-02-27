@@ -234,10 +234,8 @@ Example request for a partial refund for the amount of 24.42 EUR:
   </TabItem>
   <TabItem label="Go" icon="seti:go">
     ```go
-```
-ctx := context.Background()
-client := sumup.NewClient()
-```
+    ctx := context.Background()
+    client := sumup.NewClient()
 
     amount := float32(24.42)
     client.Transactions.Refund(ctx, "19aa3cca-89f6-42d2-b462-463b0b53e959", sumup.TransactionsRefundParams{
@@ -247,9 +245,7 @@ client := sumup.NewClient()
   </TabItem>
   <TabItem label="Python" icon="seti:python">
     ```py
-```
-from sumup.transactions.resource import RefundTransactionBody
-```
+    from sumup.transactions.resource import RefundTransactionBody
 
     client.transactions.refund(
         "19aa3cca-89f6-42d2-b462-463b0b53e959",
@@ -259,9 +255,7 @@ from sumup.transactions.resource import RefundTransactionBody
   </TabItem>
   <TabItem label="Rust" icon="seti:rust">
     ```rust
-```
-use sumup::resources::transactions::RefundTransactionBody;
-```
+    use sumup::resources::transactions::RefundTransactionBody;
 
     client
         .transactions()
