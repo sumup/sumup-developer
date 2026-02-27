@@ -7,10 +7,9 @@ sidebar:
 
 import { Aside } from '@astrojs/starlight/components';
 
-
 The Swift Checkout SDK enables you to offer a complete and fast checkout experience to your end users, allowing you to collect payment, address, and contact information with a click of a button. Swift Checkout SDK allows for Google Pay and Apple Pay setup.
 
-### Prerequisites
+## Prerequisites
 
 - Add a payment method to your browser or wallet. For example, you can save a card in Chrome, add a card to your Apple Wallet for Safari and iOS
 
@@ -82,6 +81,7 @@ Payment request object arguments consist of:
 More specifically, the `amount` value should match the following regex: `^[0-9]+(\.[0-9][0-9])?$`
 
 Optional:
+
 - `locale`: Represents the locale the text "Pay with \{\{payment method\}\}" will be displayed with in the buttons.
 
 ```js

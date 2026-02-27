@@ -42,6 +42,13 @@ For files in `src/content/docs/`, include frontmatter at the top of every page.
 
 CI relies on `npm run check`. When editing MDX content, preview via `npm run dev` to verify navigation, sidebar ordering, and snippet rendering. There is no Jest-style test suite; document any manual verification steps in the pull request if behavior changes or APIs are added.
 
+## Markdown Linting Guidelines
+
+- Prefer fixing markdown issues in content first instead of adding linter exceptions.
+- Run `npm run lint:markdown` and `npm run build` after markdown-heavy changes to catch MDX parsing regressions early.
+- `rumdl` can produce impractical suggestions for complex MDX (for example mixed Tabs/Steps/components); in such cases, adding scoped ignores in `.rumdl.toml` is acceptable.
+- Every new ignore must be narrowly scoped (per-file/per-rule) and include a short comment explaining why it is needed.
+
 ## Validation Matrix
 
 Run at least the following commands before submitting changes:

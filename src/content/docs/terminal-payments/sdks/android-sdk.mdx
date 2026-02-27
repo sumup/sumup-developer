@@ -10,7 +10,6 @@ import Image from '@components/content/Image.astro';
 import AndroidReaderSdkInstallSnippet from '@components/content/AndroidReaderSdkInstallSnippet.astro';
 import { androidreadersdkname } from '@lib/productnames.ts';
 
-
 This documentation provides a step-by-step guide for SumUp’s native { androidreadersdkname }, which enables you to integrate SumUp’s proprietary card terminals and payment platform to accept credit and debit card payments (including VISA, MasterCard, American Express, and more). The SDK communicates with card terminals via Bluetooth (BLE 4.0).
 
 During checkout, the SDK guides users through each payment step with appropriate screens. It also provides terminal setup and cardholder signature verification interfaces. The checkout result is returned with relevant transaction data for your records.
@@ -23,16 +22,16 @@ SumUp also provides the [Android Tap to Pay SDK](/terminal-payments/sdks/android
 
 ## Prerequisites
 
-*  Registered for a merchant account via SumUp's [country websites](https://sumup.com/) (or [created a sandbox merchant account](#getting-a-sandbox-merchant-account))
-*  Received SumUp card terminal: Solo, Air, Air Lite or PIN+ Terminal
-*  [Generated an Affiliate Key](/tools/authorization/affiliate-keys) associated with your Application ID found in the `build.gradle` file.
-*  Downloaded the [{ androidreadersdkname } Repository](https://github.com/sumup/sumup-android-sdk)
-*  The SDK requires `minSdkVersion` 26 or later
-*  The SDK ensures support for
-   - `targetSDK` 31 or later
-   - AGP 7.3.0 or later
-   - Kotlin version 1.7.21 or later
-   - Java 11 and later
+- Registered for a merchant account via SumUp's [country websites](https://sumup.com/) (or [created a sandbox merchant account](#getting-a-sandbox-merchant-account))
+- Received SumUp card terminal: Solo, Air, Air Lite or PIN+ Terminal
+- [Generated an Affiliate Key](/tools/authorization/affiliate-keys) associated with your Application ID found in the `build.gradle` file.
+- Downloaded the [{ androidreadersdkname } Repository](https://github.com/sumup/sumup-android-sdk)
+- The SDK requires `minSdkVersion` 26 or later
+- The SDK ensures support for
+  - `targetSDK` 31 or later
+  - AGP 7.3.0 or later
+  - Kotlin version 1.7.21 or later
+  - Java 11 and later
 
 ## Getting a Sandbox Merchant Account
 
@@ -75,6 +74,7 @@ You can use the sample app provided in the repository as a reference.
       }
     }
     ```
+
 2. Add the SDK dependency to your app module build file:
 
     <AndroidReaderSdkInstallSnippet />
@@ -174,13 +174,13 @@ Override `onActivityResult` to handle payment results:
 
 Several response fields are available when the callback activity is called:
 
-| Property                          | Type                                             | Description / Possible Values                                                                                                                                                  |
-|----------------------------------|--------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **SumUpAPI.Response.RESULT_CODE** | int                                              | Possible Values:<br/>- SUCCESSFUL = 1<br/>- ERROR_TRANSACTION_FAILED = 2<br/>- ERROR_GEOLOCATION_REQUIRED = 3<br/>- ERROR_INVALID_PARAM = 4<br/>- ERROR_INVALID_TOKEN = 5<br/>- ERROR_NO_CONNECTIVITY = 6<br/>- ERROR_PERMISSION_DENIED = 7<br/>- ERROR_NOT_LOGGED_IN = 8<br/>- ERROR_DUPLICATE_FOREIGN_TX_ID = 9<br/>- ERROR_INVALID_AFFILIATE_KEY = 10<br/>- ERROR_ALREADY_LOGGED_IN = 11<br/>- ERROR_INVALID_AMOUNT_DECIMALS = 12<br/>- ERROR_API_LEVEL_TOO_LOW = 13<br/>- ERROR_CARD_READER_SETTINGS_OFF = 14<br/>- ERROR_UNKNOWN_TRANSACTION_STATUS = 15 |
-| **SumUpAPI.Response.MESSAGE**     | String                                           | A human readable message describing the result of the payment                                                                                                                  |
-| **SumUpAPI.Response.TX_CODE**    | String                                           | The transaction code associated with the payment                                                                                                                               |
-| **SumUpAPI.Response.TX_INFO**    | Parcelable (com.sumup.merchant.Models.TransactionInfo) | Transaction info object containing information about the transaction:<br/>- Transaction Code<br/>- Merchant Code<br/>- Amount (including tip amount and VAT)<br/>- Tip amount<br/>- VAT<br/>- Currency (e.g. EUR)<br/>- Payment Status (PENDING \| SUCCESSFUL \| CANCELLED \| FAILED)<br/>- Payment Type (CASH \| POS \| ECOM \| UNKNOWN \| RECURRING \| BITCOIN \| BALANCE)<br/>- Entry Mode (e.g. CHIP)<br/>- Number of Installments<br/>- Card Type (e.g. MASTERCARD)<br/>- Last four digits of the card<br/>- Product information |
-| **SumUpAPI.Response.RECEIPT_SENT** | boolean                                          | true if a receipt was issued to the customer, false otherwise                                                                                                                  |
+| Property                           | Type                                                   | Description / Possible Values                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| ---------------------------------- | ------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **SumUpAPI.Response.RESULT_CODE**  | int                                                    | Possible Values:<br/>- SUCCESSFUL = 1<br/>- ERROR_TRANSACTION_FAILED = 2<br/>- ERROR_GEOLOCATION_REQUIRED = 3<br/>- ERROR_INVALID_PARAM = 4<br/>- ERROR_INVALID_TOKEN = 5<br/>- ERROR_NO_CONNECTIVITY = 6<br/>- ERROR_PERMISSION_DENIED = 7<br/>- ERROR_NOT_LOGGED_IN = 8<br/>- ERROR_DUPLICATE_FOREIGN_TX_ID = 9<br/>- ERROR_INVALID_AFFILIATE_KEY = 10<br/>- ERROR_ALREADY_LOGGED_IN = 11<br/>- ERROR_INVALID_AMOUNT_DECIMALS = 12<br/>- ERROR_API_LEVEL_TOO_LOW = 13<br/>- ERROR_CARD_READER_SETTINGS_OFF = 14<br/>- ERROR_UNKNOWN_TRANSACTION_STATUS = 15 |
+| **SumUpAPI.Response.MESSAGE**      | String                                                 | A human readable message describing the result of the payment                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| **SumUpAPI.Response.TX_CODE**      | String                                                 | The transaction code associated with the payment                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| **SumUpAPI.Response.TX_INFO**      | Parcelable (com.sumup.merchant.Models.TransactionInfo) | Transaction info object containing information about the transaction:<br/>- Transaction Code<br/>- Merchant Code<br/>- Amount (including tip amount and VAT)<br/>- Tip amount<br/>- VAT<br/>- Currency (e.g. EUR)<br/>- Payment Status (PENDING \| SUCCESSFUL \| CANCELLED \| FAILED)<br/>- Payment Type (CASH \| POS \| ECOM \| UNKNOWN \| RECURRING \| BITCOIN \| BALANCE)<br/>- Entry Mode (e.g. CHIP)<br/>- Number of Installments<br/>- Card Type (e.g. MASTERCARD)<br/>- Last four digits of the card<br/>- Product information                         |
+| **SumUpAPI.Response.RECEIPT_SENT** | boolean                                                | true if a receipt was issued to the customer, false otherwise                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
 
 The response flags are provided within the Bundle that is passed back to the callback activity:
 
@@ -192,11 +192,11 @@ The response flags are provided within the Bundle that is passed back to the cal
 
 When a merchant is logged in, you can open this activity to access all the settings and options related to the card reader.
 
-  * Connect to new readers.
-  * View the reader attributes when previously connected i.e. Battery percentage, Serial number, Last three digits of serial number, Software version.
-  * Connect to the last saved reader if it is inactive.
-  * Update firmware of the reader if available.
-  * Visual illustration of the saved reader with its current connectivity status and name.
+   - Connect to new readers.
+   - View the reader attributes when previously connected i.e. Battery percentage, Serial number, Last three digits of serial number, Software version.
+   - Connect to the last saved reader if it is inactive.
+   - Update firmware of the reader if available.
+   - Visual illustration of the saved reader with its current connectivity status and name.
 
 ```java
  	SumUpAPI.openCardReaderPage(MainActivity.this, 4);
@@ -216,7 +216,6 @@ SumUpAPI.prepareForCheckout()
 
 > Note: Air and Solo card readers remain connected via BLE after each transaction while `prepareForCheckout()` is used when the card reader becomes disconnected (e.g. the reader is out of range, the host app looses focus, or the reader is turned off).
 
-
 ### Additional Checkout Parameters
 
 When setting up the `SumUpPayment` object, the following optional parameters can be included:
@@ -229,7 +228,7 @@ A tip amount can be processed in addition to the `total` using the `tip` paramet
 
 This allows the customer to add a tip directly on the card reader, rather than prompting for a tip amount on the Android device.
 
-A tip amount can be prompted directly in the card reader by using `tipOnCardReader` parameter, if the card reader supports tipping. See example [here](https://github.com/sumup/sumup-android-sdk#4-make-a-payment) for the field `tipOnCardReader`.
+A tip amount can be prompted directly in the card reader by using `tipOnCardReader` parameter, if the card reader supports tipping. See the [tipOnCardReader payment example](https://github.com/sumup/sumup-android-sdk#4-make-a-payment) for this field.
 
 <Aside>
 
@@ -241,10 +240,11 @@ Please also note that if both `tip` and `tipOnCardReader` are called then only `
 #### Retry Policy Configuration
 
 The `configureRetryPolicy()` feature allows you to set custom retry parameters for transaction result retrieval, using `pollingInterval`, `maxWaitingTime`, and `disableBackButton`.
-* Parameters: Both `pollingInterval` and `maxWaitingTime` should be provided in milliseconds, with default values of 2000 ms and 60000 ms, respectively. Setting `disableBackButton` to true disables the back button during retries.
-* Timeout: If `maxWaitingTime` elapses with no result, the SDK returns `SumUpAPI.ResultCode.ERROR_UNKNOWN_TRANSACTION_STATUS`. Pressing the back button (if enabled) during retries will also trigger this error.
-* Adjustments: If `pollingInterval` exceeds `maxWaitingTime`, `maxWaitingTime` will automatically be adjusted to match. Negative values for either parameter default to 0.
-* Default: If `configureRetryPolicy()` is not used, the SDK defaults to returning `SumUpAPI.ResultCode.ERROR_TRANSACTION_FAILED`.
+
+- Parameters: Both `pollingInterval` and `maxWaitingTime` should be provided in milliseconds, with default values of 2000 ms and 60000 ms, respectively. Setting `disableBackButton` to true disables the back button during retries.
+- Timeout: If `maxWaitingTime` elapses with no result, the SDK returns `SumUpAPI.ResultCode.ERROR_UNKNOWN_TRANSACTION_STATUS`. Pressing the back button (if enabled) during retries will also trigger this error.
+- Adjustments: If `pollingInterval` exceeds `maxWaitingTime`, `maxWaitingTime` will automatically be adjusted to match. Negative values for either parameter default to 0.
+- Default: If `configureRetryPolicy()` is not used, the SDK defaults to returning `SumUpAPI.ResultCode.ERROR_TRANSACTION_FAILED`.
 
 ##### Querying the Transaction Status
 
@@ -257,6 +257,7 @@ SumupPayment.builder()
 .configureRetryPolicy(2000, 60000, true)
 .build();
 ```
+
 If there are connectivity issues and the transaction status can not be retrieved, the API will return `ERROR_UNKNOWN_TRANSACTION_STATUS`. In such cases, you can query the transaction status by calling [SumUp transaction status API](https://developer.sumup.com/api/transactions/get) using the specified `foreignTransactionId`.
 
 #### Transaction Identifier
@@ -333,11 +334,11 @@ SumUp provides a sample app which implements main SDK components. You can find t
 
 The following functions are handled by the [SumUp APIs](/api/):
 
-* [Refunds](/api/transactions/refund/)
-* [Transaction history](/api/transactions/list/)
-* [Receipts](/api/receipts/get/)
-* [Account management](/api/merchant/)
-* [Online Payments](/online-payments/)
+- [Refunds](/api/transactions/refund/)
+- [Transaction history](/api/transactions/list/)
+- [Receipts](/api/receipts/get/)
+- [Account management](/api/merchant/)
+- [Online Payments](/online-payments/)
 
 ## Community
 

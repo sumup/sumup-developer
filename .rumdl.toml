@@ -1,0 +1,48 @@
+[global]
+# Keep legacy long lines and preserve alignment in code examples.
+disable = ["MD013", "MD034", "MD064"]
+
+# Enable table formatting/fixing support.
+extend-enable = ["MD060"]
+
+# Keep this empty for now; URL auto-fixing is covered by disabled MD034.
+unfixable = []
+
+[MD004]
+# Enforce '-' as the single bullet style across docs.
+style = "dash"
+
+[MD046]
+# Require fenced code blocks globally.
+style = "fenced"
+
+[per-file-flavor]
+# Parse MDX files with MDX-aware rules.
+"**/*.mdx" = "mdx"
+
+[per-file-ignores]
+# Historical changelog entries use legacy heading/list structures.
+"src/content/changelog/*.md" = ["MD001", "MD036"]
+
+# README uses custom HTML header layout and no leading H1.
+"README.md" = ["MD033", "MD041"]
+
+# Existing docs use inline HTML for embeds/widgets and should stay unchanged.
+"src/content/docs/online-payments/apm/apple-pay.mdx" = ["MD033"]
+"src/content/docs/online-payments/apm/google-pay.mdx" = ["MD033"]
+"src/content/docs/online-payments/checkouts/card-widget.mdx" = ["MD033"]
+"src/content/docs/terminal-payments/sdks/android-sdk.mdx" = ["MD033"]
+
+# Plugin pages use raw URL constants/props for MDX components.
+"src/content/docs/online-payments/plugins/prestashop.mdx" = ["MD034"]
+"src/content/docs/online-payments/plugins/woocommerce.mdx" = ["MD034"]
+
+# Legacy iOS SDK page has dense mixed MDX/Steps/list patterns.
+# Keep it build-safe by scoping rule ignores until the page is refactored.
+"src/content/docs/terminal-payments/sdks/ios-sdk.mdx" = ["MD004", "MD007", "MD012", "MD030", "MD031", "MD032", "MD040", "MD046", "MD049", "MD051", "MD060", "MD069"]
+
+# Legacy mixed Tabs+code snippets trigger MD046 false positives after formatting.
+"src/content/docs/online-payments/guides/refund.mdx" = ["MD046", "MD051"]
+"src/content/docs/online-payments/guides/single-payment.mdx" = ["MD046"]
+"src/content/docs/online-payments/guides/tokenization-with-payment-sdk.mdx" = ["MD046"]
+"src/content/docs/online-payments/sdks/react-native.mdx" = ["MD046"]

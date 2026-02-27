@@ -14,25 +14,25 @@ The { cloudapiname } lets you start a transaction from a Point of Sale (POS) run
 
 Key advantages include:
 
-* Compatibility with any operating system and platform
-* Ability to process simultaneous transactions on multiple Solo card readers at once
-* No distance limitation between your POS device and the Solo card reader; transactions can be sent remotely
-* No Bluetooth connection required
-* PCI compliance, ensuring secure and compliant transactions
+- Compatibility with any operating system and platform
+- Ability to process simultaneous transactions on multiple Solo card readers at once
+- No distance limitation between your POS device and the Solo card reader; transactions can be sent remotely
+- No Bluetooth connection required
+- PCI compliance, ensuring secure and compliant transactions
 
 The { cloudapiname } integration supports:
 
-* Debit, credit, and installment transactions
-* Pairing multiple Solo card readers with any SumUp account
-* Naming each Solo card reader as desired to streamline checkout
-* Wi-Fi and mobile data connectivity (mobile data needs manual enabling by SumUp)
+- Debit, credit, and installment transactions
+- Pairing multiple Solo card readers with any SumUp account
+- Naming each Solo card reader as desired to streamline checkout
+- Wi-Fi and mobile data connectivity (mobile data needs manual enabling by SumUp)
 
 ## Prerequisites
 
-* Your device must be authorized to use the { cloudapiname }. [Refer to the authorization guide](/tools/authorization/authorization/) and implement the method that best fits your use case. An API key should be sufficient if you don’t plan to delegate access to third parties.
-* You must [create an Affiliate Key](/tools/authorization/affiliate-keys/) for your app, as SumUp { cloudapiname } requires this key in checkout requests.
-* We strongly recommend keeping the Solo terminal plugged in when using the { cloudapiname }.
-* If you want to use mobile data, ensure you are not connected to Wi-Fi. Disconnect from Wi-Fi if necessary—when both mobile data and Wi-Fi are available, the Solo reader will always use Wi-Fi.
+- Your device must be authorized to use the { cloudapiname }. [Refer to the authorization guide](/tools/authorization/authorization/) and implement the method that best fits your use case. An API key should be sufficient if you don’t plan to delegate access to third parties.
+- You must [create an Affiliate Key](/tools/authorization/affiliate-keys/) for your app, as SumUp { cloudapiname } requires this key in checkout requests.
+- We strongly recommend keeping the Solo terminal plugged in when using the { cloudapiname }.
+- If you want to use mobile data, ensure you are not connected to Wi-Fi. Disconnect from Wi-Fi if necessary—when both mobile data and Wi-Fi are available, the Solo reader will always use Wi-Fi.
 
   To disconnect Wi-Fi, navigate to **Connections** > **Wi-Fi** and disable Wi-Fi using the on-screen slider.
 
@@ -42,20 +42,20 @@ If you don’t have a Solo reader yet, you can try out the flow using the [Virtu
 
 Virtual Solo works like the real device but with some limitations. The following actions are not supported virtually:
 
-* Physical card insertion or tap simulation (since there is no physical Solo device)
-* Real funds transfer (sandbox merchant accounts only)
-* PIN entry simulation (always auto-approved)
-* Offline transactions
-* Custom receipt printing
-* Network configuration
-* Real device pairing (the simulator uses virtual device identifiers)
+- Physical card insertion or tap simulation (since there is no physical Solo device)
+- Real funds transfer (sandbox merchant accounts only)
+- PIN entry simulation (always auto-approved)
+- Offline transactions
+- Custom receipt printing
+- Network configuration
+- Real device pairing (the simulator uses virtual device identifiers)
 
 ## Pairing Solo Reader via Cloud API
 
 The { cloudapiname } acts as a bridge between your application and the Solo reader. It supports two main processes:
 
-* Pairing a Solo reader to your account
-* Taking in-person payments via Solo
+- Pairing a Solo reader to your account
+- Taking in-person payments via Solo
 
 Once the Solo reader is paired to your SumUp account, your application can initiate a card charge request. SumUp handles the rest, providing a seamless payment experience where all card data is encrypted end-to-end. Transaction results are available in real-time via webhooks.
 
@@ -109,6 +109,7 @@ Solo card reader screen. You will need this code to pair your Solo reader with y
 ### Pair the Card Reader with Pairing Code
 
 <Steps>
+
 1. Send a request to the [Create Reader endpoint](/api/readers/create).
 2. Verify pairing confirmation on the reader screen. It appears for a short while, after which the reader returns to the idle screen.
 
@@ -232,9 +233,9 @@ This is an asynchronous process; starting the transaction on the device may take
 
 Important notes:
 
-* The target device must be online, otherwise checkout won't be accepted
-* After the checkout is accepted, the system has 60 seconds to start the payment on the target device. During this time, any other checkout for the same device will be rejected.
-* You need to send the Affiliate Key in the request.
+- The target device must be online, otherwise checkout won't be accepted
+- After the checkout is accepted, the system has 60 seconds to start the payment on the target device. During this time, any other checkout for the same device will be rejected.
+- You need to send the Affiliate Key in the request.
 
 Read the [Create Checkout API endpoint documentation](/api/readers/create-checkout) for details on the API request, examples, and parameter descriptions.
 
@@ -285,10 +286,10 @@ This process is asynchronous, and the actual termination may take some time to b
 
 Important notes:
 
-* The target device must be online, otherwise termination won't be accepted.
-* This action is only possible if the device is waiting for cardholder action: waiting for card, waiting for PIN, etc.
+- The target device must be online, otherwise termination won't be accepted.
+- This action is only possible if the device is waiting for cardholder action: waiting for card, waiting for PIN, etc.
 There is no confirmation of the termination.
-* If a transaction is successfully terminated and `return_url` has been provided on Checkout, the transaction status is sent as failed to the provided URL.
+- If a transaction is successfully terminated and `return_url` has been provided on Checkout, the transaction status is sent as failed to the provided URL.
 
 Read the [Terminate Checkout API endpoint documentation](/api/readers/terminate-checkout) for details on the API request, examples, and parameter descriptions.
 
@@ -366,7 +367,7 @@ Check the [Delete a Reader endpoint documentation](/api/readers/delete) for deta
 In order to unpair a reader from the merchant account, two steps are required:
 
 1. [Delete Reader](#delete-reader) from the Merchant account (via Readers API).
-2. [Disconnect Reader](#diconnect-reader) (manually via Solo).
+2. [Disconnect Reader](#disconnect-reader-physically) (manually via Solo).
 
 ### Disconnect Reader Physically
 

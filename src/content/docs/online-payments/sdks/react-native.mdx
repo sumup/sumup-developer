@@ -10,7 +10,6 @@ import { Aside, Tabs, TabItem } from '@astrojs/starlight/components';
 import Button from '@components/content/Button.astro';
 import Image from '@components/content/Image.astro';
 
-
 SumUp's React Native Payment SDK provides a payment sheet that is displayed on top of your app. It collects user payment details, confirms a payment, and saves a card for future usage. Moreover, it allows a user to use Apple Pay or Google Pay to process payments.
 
 <Image alt="Challenge screen" src="/img/guides/react_native_payment_sheet.png" width="40%" />
@@ -20,12 +19,13 @@ SumUp's React Native Payment SDK provides a payment sheet that is displayed on t
 ### Before You Begin
 
 Here are the things that you need in order to complete the steps in this guide:
+
 - You have a merchant account with [SumUp](https://me.sumup.com/login) and have already filled in your [account details](https://me.sumup.com/account).
   - For a **sandbox merchant account** reach out to our support team through this [contact form](/contact).
 - You have [registered your client application](/tools/authorization/register-app/) with SumUp.
 - You have a valid access token obtained via the [Authorization code flow](/tools/authorization/authorization/#authorization-code-flow).
 - The restricted `payment_instruments` scope is enabled for your client application. If it isn't enabled, [contact us](/contact) and request it.
-- Review how to create a single payment [here](https://developer.sumup.com/online-payments/guides/single-payment/#before-you-begin).
+- Review the [single payment guide](https://developer.sumup.com/online-payments/guides/single-payment/#before-you-begin).
 
 ### Create a Checkout
 
@@ -223,7 +223,7 @@ cd ios
 pod install
 ```
 
-SDK should be initialized by wrapping your payment screen into SumUpProvider. This component requires an `apiKey` that can be created [here](/protected/api-keys/).
+SDK should be initialized by wrapping your payment screen into SumUpProvider. This component requires an `apiKey` you can create in the [API Keys settings](/protected/api-keys/).
 
 ```javascript
 import { SumUpProvider } from 'sumup-react-native-alpha';
@@ -275,13 +275,13 @@ export default function MainScreen() {
 ```
 
 **Required** fields for `initPaymentSheet`:
+
 - `checkoutId` - described in section [Create a checkout](/online-payments/checkouts/react-native-sdk/#create-a-checkout).
 
 *Optional*:
 
 - `customerId` - used for saving cards for future usage.
 - `language` - English and Sweden are supported (if undefined, react-native-localization will be used to check user device language).
-
 
 ## Show Payment Sheet
 
@@ -572,6 +572,7 @@ Obtain an Apple Merchant ID by registering for a new identifier on the Apple Dev
 **Create a new Apple Pay certificate - needs to be implemented.**
 
 To enable Apple Pay in Xcode:
+
 1. Open your target settings
 2. Go to Signing & Capabilities tab
 3. Click on Add Capability button

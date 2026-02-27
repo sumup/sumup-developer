@@ -13,8 +13,8 @@ This guide covers single payments over SumUp API, using customer-entered card de
 
 You will go through the following steps:
 
-1.  [Create a checkout](#1-create-a-checkout)
-2.  [Complete a checkout](#2-complete-a-checkout)
+1. [Create a checkout](#1-create-a-checkout)
+2. [Complete a checkout](#2-complete-a-checkout)
 
 When you complete these steps, you will have processed a payment with a payment card entered by a customer.
 
@@ -43,12 +43,12 @@ The table below lists only the **required** parameters for the request. For a fu
 
 </Aside>
 
-| Attribute name     | Description                                                                                                                                                                                                          |
-| ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| checkout_reference | A unique string identifying the payment in your system. It must be unique for your application.                                                                                                                      |
-| amount             | The amount for which the payment is made.                                                                                                                                                                            |
+| Attribute name     | Description                                                                                                                                                                              |
+| ------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| checkout_reference | A unique string identifying the payment in your system. It must be unique for your application.                                                                                          |
+| amount             | The amount for which the payment is made.                                                                                                                                                |
 | currency           | The three-letter [ISO4217](https://en.wikipedia.org/wiki/ISO_4217) code of the payment currency. It must match the currency registered for the specified merchant (see `merchant_code`). |
-| merchant_code      | The code of the registered SumUp merchant the payment is made.                                                                                                                                                       |
+| merchant_code      | The code of the registered SumUp merchant the payment is made.                                                                                                                           |
 
 Example request:
 
