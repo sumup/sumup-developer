@@ -15,14 +15,12 @@ type IdentifierRow = {
   countryCode: string;
   name: string;
   ref: string;
-  description: string;
 };
 
 type LegalTypeRow = {
   country: string;
   countryCode: string;
   description: string;
-  shortDescription: string;
   uniqueRef: string;
 };
 
@@ -41,7 +39,6 @@ const buildIdentifierRows = (
       countryCode: country.isoCode,
       name: item.name,
       ref: item.ref,
-      description: item.description,
     })),
   );
 
@@ -51,7 +48,6 @@ const buildLegalTypeRows = (countries: MerchantCountry[]): LegalTypeRow[] =>
       country: country.displayName,
       countryCode: country.isoCode,
       description: item.description,
-      shortDescription: item.shortDescription,
       uniqueRef: item.uniqueRef,
     })),
   );
@@ -74,13 +70,9 @@ const MerchantCountrySectionClient = ({ section, data }: Props) => {
               getValue: (row) => row.description,
             },
             {
-              key: "shortDescription",
-              label: "Short description",
-              getValue: (row) => row.shortDescription,
-            },
-            {
               key: "uniqueRef",
               label: "Reference",
+              wrap: "nowrap",
               getValue: (row) => row.uniqueRef,
               render: (row) => <code>{row.uniqueRef}</code>,
             },
@@ -108,13 +100,9 @@ const MerchantCountrySectionClient = ({ section, data }: Props) => {
           {
             key: "ref",
             label: "Reference",
+            wrap: "nowrap",
             getValue: (row) => row.ref,
             render: (row) => <code>{row.ref}</code>,
-          },
-          {
-            key: "description",
-            label: "Description",
-            getValue: (row) => row.description,
           },
         ] satisfies SearchableTableColumn<IdentifierRow>[]
       }

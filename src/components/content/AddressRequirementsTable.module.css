@@ -1,6 +1,8 @@
 .fieldList {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: var(--cui-spacings-bit);
+  margin: 0;
+  padding-left: var(--cui-spacings-kilo);
+}
+
+.fieldList li + li {
+  margin-top: var(--cui-spacings-bit);
 }

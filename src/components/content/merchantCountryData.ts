@@ -1,18 +1,17 @@
 export type Identifier = {
   ref: string;
   name: string;
-  description: string;
 };
 
 export type LegalType = {
   uniqueRef: string;
   description: string;
-  shortDescription: string;
 };
 
 export type AddressRequirements = {
   requiredFields: string[];
   allowedFields: string[];
+  fieldNames: Partial<Record<string, string>>;
 };
 
 export type MerchantCountry = {

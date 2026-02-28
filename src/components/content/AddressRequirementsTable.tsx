@@ -13,9 +13,40 @@ type Props = {
 type AddressRequirementRow = {
   country: string;
   countryCode: string;
-  requiredFields: string[];
-  optionalFields: string[];
+  fields: { key: string; name: string; optional: boolean }[];
 };
+
+const defaultFieldNames: Record<string, string> = {
+  street_address: "street_address",
+  post_code: "post_code",
+  administrative_unit_level1: "province",
+  administrative_unit_level2: "administrative_unit_level2",
+  administrative_unit_level3: "administrative_unit_level3",
+  locality_level1: "city",
+  locality_level2: "district",
+  locality_level3: "neighborhood",
+};
+
+const getCountryFieldNames = (
+  country: MerchantCountry,
+): Partial<Record<string, string>> =>
+  country.addressRequirements.fieldNames;
+
+const getFieldDisplayName = (
+  field: string,
+  countryFieldNames: Partial<Record<string, string>>,
+): string => countryFieldNames[field] ?? defaultFieldNames[field] ?? field;
+
+const mapFields = (
+  fields: string[],
+  requiredFields: Set<string>,
+  countryFieldNames: Partial<Record<string, string>>,
+): { key: string; name: string; optional: boolean }[] =>
+  fields.map((field) => ({
+    key: field,
+    name: getFieldDisplayName(field, countryFieldNames),
+    optional: !requiredFields.has(field),
+  }));
 
 const buildAddressRequirementRows = (
   countries: MerchantCountry[],
@@ -24,19 +55,17 @@ const buildAddressRequirementRows = (
     .slice()
     .sort((a, b) => a.displayName.localeCompare(b.displayName))
     .map((country) => {
-      const requiredFields = country.addressRequirements.requiredFields
-        .slice()
-        .sort((a, b) => a.localeCompare(b));
-      const requiredFieldSet = new Set(requiredFields);
-      const optionalFields = country.addressRequirements.allowedFields
-        .filter((field) => !requiredFieldSet.has(field))
-        .sort((a, b) => a.localeCompare(b));
+      const countryFieldNames = getCountryFieldNames(country);
+      const requiredFieldSet = new Set(country.addressRequirements.requiredFields);
 
       return {
         country: country.displayName,
         countryCode: country.isoCode,
-        requiredFields: requiredFields,
-        optionalFields: optionalFields,
+        fields: mapFields(
+          country.addressRequirements.allowedFields,
+          requiredFieldSet,
+          countryFieldNames,
+        ),
       };
     });
 
@@ -46,37 +75,30 @@ const AddressRequirementsTable = ({ data }: Props) => {
   return (
     <SearchableTable
       searchPlaceholder="Search countries or address fields"
+      tableLayout="auto"
       rows={rows}
       getRowKey={(row) => row.countryCode}
       columns={
         [
-          createCountryColumn<AddressRequirementRow>(),
           {
-            key: "requiredFields",
-            label: "Required fields",
-            getValue: (row) => row.requiredFields.join(" "),
-            render: (row) => (
-              <div className={styles.fieldList}>
-                {row.requiredFields.map((field) => (
-                  <code key={`required-${row.countryCode}-${field}`}>
-                    {field}
-                  </code>
-                ))}
-              </div>
-            ),
+            ...createCountryColumn<AddressRequirementRow>(),
+            width: "1%",
+            wrap: "nowrap",
           },
           {
-            key: "optionalFields",
-            label: "Optional fields",
-            getValue: (row) => row.optionalFields.join(" "),
+            key: "fields",
+            label: "Fields",
+            getValue: (row) =>
+              row.fields.map((field) => `${field.key} ${field.name}`).join(" "),
             render: (row) => (
-              <div className={styles.fieldList}>
-                {row.optionalFields.map((field) => (
-                  <code key={`optional-${row.countryCode}-${field}`}>
-                    {field}
-                  </code>
+              <ul className={styles.fieldList}>
+                {row.fields.map((field) => (
+                  <li key={`${row.countryCode}-${field.key}`}>
+                    <code>{field.name}</code>
+                    {field.optional ? " (Optional)" : null}
+                  </li>
                 ))}
-              </div>
+              </ul>
             ),
           },
         ] satisfies SearchableTableColumn<AddressRequirementRow>[]

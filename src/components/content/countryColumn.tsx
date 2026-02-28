@@ -11,6 +11,7 @@ export const createCountryColumn = <
 >(): SearchableTableColumn<T> => ({
   key: "country",
   label: "Country",
+  wrap: "nowrap",
   getValue: (row) => `${row.country} ${row.countryCode}`,
   render: (row) => (
     <CountryCell country={row.country} countryCode={row.countryCode} />

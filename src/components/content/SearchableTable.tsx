@@ -8,6 +8,8 @@ export type SearchableTableColumn<T> = {
   label: string;
   getValue: (row: T) => string | number | null | undefined;
   render?: (row: T) => ReactNode;
+  width?: string;
+  wrap?: "anywhere" | "word" | "nowrap";
 };
 
 type Props<T> = {
@@ -17,6 +19,7 @@ type Props<T> = {
   getRowKey?: (row: T, index: number) => string;
   searchPlaceholder?: string;
   maxHeight?: number;
+  tableLayout?: "fixed" | "auto";
 };
 
 const SearchableTable = <T,>({
@@ -26,6 +29,7 @@ const SearchableTable = <T,>({
   getRowKey,
   searchPlaceholder = "Search",
   maxHeight = 320,
+  tableLayout = "fixed",
 }: Props<T>) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [isExpanded, setIsExpanded] = useState(false);
@@ -62,6 +66,28 @@ const SearchableTable = <T,>({
     setIsExpanded(false);
   }, [searchQuery]);
 
+  const getColumnStyle = (column: SearchableTableColumn<T>) => {
+    const wrapStyle =
+      column.wrap === "nowrap"
+        ? {
+            whiteSpace: "nowrap" as const,
+            overflowWrap: "normal" as const,
+            wordBreak: "normal" as const,
+          }
+        : column.wrap === "word"
+          ? {
+              whiteSpace: "normal" as const,
+              overflowWrap: "normal" as const,
+              wordBreak: "normal" as const,
+            }
+          : undefined;
+
+    return {
+      ...(column.width ? { width: column.width } : {}),
+      ...(wrapStyle ?? {}),
+    };
+  };
+
   return (
     <section className={`${styles.section} not-content`}>
       {title ? <h5>{title}</h5> : null}
@@ -79,11 +105,13 @@ const SearchableTable = <T,>({
         className={styles.tableContainer}
         style={{ maxHeight: isExpanded ? "none" : `${maxHeight}px` }}
       >
-        <table className={styles.table}>
+        <table className={styles.table} style={{ tableLayout }}>
           <thead>
             <tr>
               {columns.map((column) => (
-                <th key={column.key}>{column.label}</th>
+                <th key={column.key} style={getColumnStyle(column)}>
+                  {column.label}
+                </th>
               ))}
             </tr>
           </thead>
@@ -91,7 +119,7 @@ const SearchableTable = <T,>({
             {filteredRows.map((row, index) => (
               <tr key={getRowKey ? getRowKey(row, index) : String(index)}>
                 {columns.map((column) => (
-                  <td key={column.key}>
+                  <td key={column.key} style={getColumnStyle(column)}>
                     {column.render
                       ? column.render(row)
                       : String(column.getValue(row) ?? "")}

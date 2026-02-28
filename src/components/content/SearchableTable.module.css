@@ -5,26 +5,43 @@
 
 .tableContainer {
   width: 100%;
-  overflow: scroll;
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
   box-sizing: border-box;
   border: var(--cui-border-width-kilo) solid var(--cui-border-normal);
   border-radius: var(--cui-border-radius-byte);
+  clip-path: inset(0 round var(--cui-border-radius-byte));
   margin-top: var(--cui-spacings-byte);
 }
 
 .table {
   width: 100%;
   min-width: 100%;
-  border-collapse: collapse;
-  font-size: var(--sl-text-sm);
+  border-collapse: separate;
+  border-spacing: 0;
+  table-layout: fixed;
 }
 
 .table th,
 .table td {
   padding: var(--cui-spacings-byte) var(--cui-spacings-kilo);
-  border: var(--cui-border-width-kilo) solid var(--cui-border-subtle);
+  border-bottom: var(--cui-border-width-kilo) solid var(--cui-border-subtle);
   vertical-align: top;
   text-align: left;
+  font-size: var(--cui-body-s-font-size);
+  line-height: var(--cui-body-s-line-height);
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.table th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: var(--sl-color-bg);
 }
 
 .table tbody tr:last-child td {
