@@ -100,35 +100,37 @@ const SearchableTable = <T,>({
         hideLabel
       />
 
-      <div
-        ref={wrapperRef}
-        className={styles.tableContainer}
-        style={{ maxHeight: isExpanded ? "none" : `${maxHeight}px` }}
-      >
-        <table className={styles.table} style={{ tableLayout }}>
-          <thead>
-            <tr>
-              {columns.map((column) => (
-                <th key={column.key} style={getColumnStyle(column)}>
-                  {column.label}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {filteredRows.map((row, index) => (
-              <tr key={getRowKey ? getRowKey(row, index) : String(index)}>
+      <div className={styles.tableFrame}>
+        <div
+          ref={wrapperRef}
+          className={styles.tableContainer}
+          style={{ maxHeight: isExpanded ? "none" : `${maxHeight}px` }}
+        >
+          <table className={styles.table} style={{ tableLayout }}>
+            <thead>
+              <tr>
                 {columns.map((column) => (
-                  <td key={column.key} style={getColumnStyle(column)}>
-                    {column.render
-                      ? column.render(row)
-                      : String(column.getValue(row) ?? "")}
-                  </td>
+                  <th key={column.key} style={getColumnStyle(column)}>
+                    {column.label}
+                  </th>
                 ))}
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {filteredRows.map((row, index) => (
+                <tr key={getRowKey ? getRowKey(row, index) : String(index)}>
+                  {columns.map((column) => (
+                    <td key={column.key} style={getColumnStyle(column)}>
+                      {column.render
+                        ? column.render(row)
+                        : String(column.getValue(row) ?? "")}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
 
       {canExpand ? (

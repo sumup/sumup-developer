@@ -29,8 +29,7 @@ const defaultFieldNames: Record<string, string> = {
 
 const getCountryFieldNames = (
   country: MerchantCountry,
-): Partial<Record<string, string>> =>
-  country.addressRequirements.fieldNames;
+): Partial<Record<string, string>> => country.addressRequirements.fieldNames;
 
 const getFieldDisplayName = (
   field: string,
@@ -56,7 +55,9 @@ const buildAddressRequirementRows = (
     .sort((a, b) => a.displayName.localeCompare(b.displayName))
     .map((country) => {
       const countryFieldNames = getCountryFieldNames(country);
-      const requiredFieldSet = new Set(country.addressRequirements.requiredFields);
+      const requiredFieldSet = new Set(
+        country.addressRequirements.requiredFields,
+      );
 
       return {
         country: country.displayName,

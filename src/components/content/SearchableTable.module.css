@@ -3,17 +3,21 @@
   width: 100%;
 }
 
+.tableFrame {
+  width: 100%;
+  box-sizing: border-box;
+  border: var(--cui-border-width-kilo) solid var(--cui-border-normal);
+  border-radius: var(--cui-border-radius-byte);
+  overflow: hidden;
+  margin-top: var(--cui-spacings-byte);
+}
+
 .tableContainer {
   width: 100%;
   overflow-y: auto;
   overflow-x: hidden;
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
-  box-sizing: border-box;
-  border: var(--cui-border-width-kilo) solid var(--cui-border-normal);
-  border-radius: var(--cui-border-radius-byte);
-  clip-path: inset(0 round var(--cui-border-radius-byte));
-  margin-top: var(--cui-spacings-byte);
 }
 
 .table {

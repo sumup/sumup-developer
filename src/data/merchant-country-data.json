@@ -66,11 +66,7 @@
         }
       ],
       "addressRequirements": {
-        "requiredFields": [
-          "street_address",
-          "post_code",
-          "locality_level1"
-        ],
+        "requiredFields": ["street_address", "post_code", "locality_level1"],
         "allowedFields": [
           "street_address",
           "post_code",
@@ -205,16 +201,8 @@
         }
       ],
       "addressRequirements": {
-        "requiredFields": [
-          "street_address",
-          "locality_level1",
-          "post_code"
-        ],
-        "allowedFields": [
-          "street_address",
-          "post_code",
-          "locality_level1"
-        ],
+        "requiredFields": ["street_address", "locality_level1", "post_code"],
+        "allowedFields": ["street_address", "post_code", "locality_level1"],
         "fieldNames": {}
       }
     },
@@ -288,16 +276,8 @@
         }
       ],
       "addressRequirements": {
-        "requiredFields": [
-          "street_address",
-          "locality_level1",
-          "post_code"
-        ],
-        "allowedFields": [
-          "street_address",
-          "post_code",
-          "locality_level1"
-        ],
+        "requiredFields": ["street_address", "locality_level1", "post_code"],
+        "allowedFields": ["street_address", "post_code", "locality_level1"],
         "fieldNames": {}
       }
     },
@@ -477,16 +457,8 @@
         }
       ],
       "addressRequirements": {
-        "requiredFields": [
-          "street_address",
-          "post_code",
-          "locality_level1"
-        ],
-        "allowedFields": [
-          "street_address",
-          "post_code",
-          "locality_level1"
-        ],
+        "requiredFields": ["street_address", "post_code", "locality_level1"],
+        "allowedFields": ["street_address", "post_code", "locality_level1"],
         "fieldNames": {}
       }
     },
@@ -747,16 +719,8 @@
         }
       ],
       "addressRequirements": {
-        "requiredFields": [
-          "street_address",
-          "post_code",
-          "locality_level1"
-        ],
-        "allowedFields": [
-          "street_address",
-          "post_code",
-          "locality_level1"
-        ],
+        "requiredFields": ["street_address", "post_code", "locality_level1"],
+        "allowedFields": ["street_address", "post_code", "locality_level1"],
         "fieldNames": {}
       }
     },
@@ -818,16 +782,8 @@
         }
       ],
       "addressRequirements": {
-        "requiredFields": [
-          "street_address",
-          "post_code",
-          "locality_level1"
-        ],
-        "allowedFields": [
-          "street_address",
-          "post_code",
-          "locality_level1"
-        ],
+        "requiredFields": ["street_address", "post_code", "locality_level1"],
+        "allowedFields": ["street_address", "post_code", "locality_level1"],
         "fieldNames": {}
       }
     },
@@ -893,16 +849,8 @@
         }
       ],
       "addressRequirements": {
-        "requiredFields": [
-          "street_address",
-          "locality_level1",
-          "post_code"
-        ],
-        "allowedFields": [
-          "street_address",
-          "post_code",
-          "locality_level1"
-        ],
+        "requiredFields": ["street_address", "locality_level1", "post_code"],
+        "allowedFields": ["street_address", "post_code", "locality_level1"],
         "fieldNames": {}
       }
     },
@@ -976,16 +924,8 @@
         }
       ],
       "addressRequirements": {
-        "requiredFields": [
-          "street_address",
-          "locality_level1",
-          "post_code"
-        ],
-        "allowedFields": [
-          "street_address",
-          "post_code",
-          "locality_level1"
-        ],
+        "requiredFields": ["street_address", "locality_level1", "post_code"],
+        "allowedFields": ["street_address", "post_code", "locality_level1"],
         "fieldNames": {}
       }
     },
@@ -1043,11 +983,7 @@
         }
       ],
       "addressRequirements": {
-        "requiredFields": [
-          "street_address",
-          "locality_level1",
-          "post_code"
-        ],
+        "requiredFields": ["street_address", "locality_level1", "post_code"],
         "allowedFields": [
           "street_address",
           "post_code",
@@ -1117,16 +1053,8 @@
         }
       ],
       "addressRequirements": {
-        "requiredFields": [
-          "street_address",
-          "locality_level1",
-          "post_code"
-        ],
-        "allowedFields": [
-          "street_address",
-          "post_code",
-          "locality_level1"
-        ],
+        "requiredFields": ["street_address", "locality_level1", "post_code"],
+        "allowedFields": ["street_address", "post_code", "locality_level1"],
         "fieldNames": {}
       }
     },
@@ -1191,16 +1119,8 @@
         }
       ],
       "addressRequirements": {
-        "requiredFields": [
-          "street_address",
-          "locality_level1",
-          "post_code"
-        ],
-        "allowedFields": [
-          "street_address",
-          "post_code",
-          "locality_level1"
-        ],
+        "requiredFields": ["street_address", "locality_level1", "post_code"],
+        "allowedFields": ["street_address", "post_code", "locality_level1"],
         "fieldNames": {}
       }
     },
@@ -1289,16 +1209,8 @@
         }
       ],
       "addressRequirements": {
-        "requiredFields": [
-          "street_address",
-          "locality_level1",
-          "post_code"
-        ],
-        "allowedFields": [
-          "street_address",
-          "post_code",
-          "locality_level1"
-        ],
+        "requiredFields": ["street_address", "locality_level1", "post_code"],
+        "allowedFields": ["street_address", "post_code", "locality_level1"],
         "fieldNames": {}
       }
     },
@@ -1355,16 +1267,8 @@
         }
       ],
       "addressRequirements": {
-        "requiredFields": [
-          "street_address",
-          "locality_level1",
-          "post_code"
-        ],
-        "allowedFields": [
-          "street_address",
-          "post_code",
-          "locality_level1"
-        ],
+        "requiredFields": ["street_address", "locality_level1", "post_code"],
+        "allowedFields": ["street_address", "post_code", "locality_level1"],
         "fieldNames": {}
       }
     },
@@ -1442,16 +1346,8 @@
         }
       ],
       "addressRequirements": {
-        "requiredFields": [
-          "street_address",
-          "locality_level1",
-          "post_code"
-        ],
-        "allowedFields": [
-          "locality_level1",
-          "street_address",
-          "post_code"
-        ],
+        "requiredFields": ["street_address", "locality_level1", "post_code"],
+        "allowedFields": ["locality_level1", "street_address", "post_code"],
         "fieldNames": {}
       }
     },
@@ -1681,11 +1577,7 @@
         }
       ],
       "addressRequirements": {
-        "requiredFields": [
-          "street_address",
-          "locality_level1",
-          "post_code"
-        ],
+        "requiredFields": ["street_address", "locality_level1", "post_code"],
         "allowedFields": [
           "street_address",
           "administrative_unit_level1",
@@ -1763,11 +1655,7 @@
         }
       ],
       "addressRequirements": {
-        "requiredFields": [
-          "street_address",
-          "locality_level1",
-          "post_code"
-        ],
+        "requiredFields": ["street_address", "locality_level1", "post_code"],
         "allowedFields": [
           "street_address",
           "post_code",
@@ -1841,16 +1729,8 @@
         }
       ],
       "addressRequirements": {
-        "requiredFields": [
-          "street_address",
-          "locality_level1",
-          "post_code"
-        ],
-        "allowedFields": [
-          "street_address",
-          "post_code",
-          "locality_level1"
-        ],
+        "requiredFields": ["street_address", "locality_level1", "post_code"],
+        "allowedFields": ["street_address", "post_code", "locality_level1"],
         "fieldNames": {}
       }
     },
@@ -1908,16 +1788,8 @@
         }
       ],
       "addressRequirements": {
-        "requiredFields": [
-          "street_address",
-          "post_code",
-          "locality_level1"
-        ],
-        "allowedFields": [
-          "street_address",
-          "locality_level1",
-          "post_code"
-        ],
+        "requiredFields": ["street_address", "post_code", "locality_level1"],
+        "allowedFields": ["street_address", "locality_level1", "post_code"],
         "fieldNames": {}
       }
     },
@@ -2043,16 +1915,8 @@
         }
       ],
       "addressRequirements": {
-        "requiredFields": [
-          "street_address",
-          "locality_level1",
-          "post_code"
-        ],
-        "allowedFields": [
-          "street_address",
-          "post_code",
-          "locality_level1"
-        ],
+        "requiredFields": ["street_address", "locality_level1", "post_code"],
+        "allowedFields": ["street_address", "post_code", "locality_level1"],
         "fieldNames": {}
       }
     },
@@ -2118,16 +1982,8 @@
         }
       ],
       "addressRequirements": {
-        "requiredFields": [
-          "street_address",
-          "locality_level1",
-          "post_code"
-        ],
-        "allowedFields": [
-          "street_address",
-          "post_code",
-          "locality_level1"
-        ],
+        "requiredFields": ["street_address", "locality_level1", "post_code"],
+        "allowedFields": ["street_address", "post_code", "locality_level1"],
         "fieldNames": {
           "locality_level1": "post_town"
         }
@@ -2273,11 +2129,7 @@
         }
       ],
       "addressRequirements": {
-        "requiredFields": [
-          "street_address",
-          "locality_level1",
-          "post_code"
-        ],
+        "requiredFields": ["street_address", "locality_level1", "post_code"],
         "allowedFields": [
           "street_address",
           "post_code",
@@ -2355,11 +2207,7 @@
         }
       ],
       "addressRequirements": {
-        "requiredFields": [
-          "street_address",
-          "locality_level1",
-          "post_code"
-        ],
+        "requiredFields": ["street_address", "locality_level1", "post_code"],
         "allowedFields": [
           "street_address",
           "post_code",
@@ -2449,11 +2297,7 @@
         }
       ],
       "addressRequirements": {
-        "requiredFields": [
-          "street_address",
-          "locality_level1",
-          "post_code"
-        ],
+        "requiredFields": ["street_address", "locality_level1", "post_code"],
         "allowedFields": [
           "street_address",
           "post_code",
@@ -2531,16 +2375,8 @@
         }
       ],
       "addressRequirements": {
-        "requiredFields": [
-          "street_address",
-          "locality_level1",
-          "post_code"
-        ],
-        "allowedFields": [
-          "street_address",
-          "post_code",
-          "locality_level1"
-        ],
+        "requiredFields": ["street_address", "locality_level1", "post_code"],
+        "allowedFields": ["street_address", "post_code", "locality_level1"],
         "fieldNames": {}
       }
     },
@@ -2606,16 +2442,8 @@
         }
       ],
       "addressRequirements": {
-        "requiredFields": [
-          "street_address",
-          "post_code",
-          "locality_level1"
-        ],
-        "allowedFields": [
-          "street_address",
-          "post_code",
-          "locality_level1"
-        ],
+        "requiredFields": ["street_address", "post_code", "locality_level1"],
+        "allowedFields": ["street_address", "post_code", "locality_level1"],
         "fieldNames": {}
       }
     },
@@ -2744,16 +2572,8 @@
         }
       ],
       "addressRequirements": {
-        "requiredFields": [
-          "street_address",
-          "locality_level1",
-          "post_code"
-        ],
-        "allowedFields": [
-          "street_address",
-          "post_code",
-          "locality_level1"
-        ],
+        "requiredFields": ["street_address", "locality_level1", "post_code"],
+        "allowedFields": ["street_address", "post_code", "locality_level1"],
         "fieldNames": {
           "locality_level1": "post_town"
         }
@@ -2808,16 +2628,8 @@
         }
       ],
       "addressRequirements": {
-        "requiredFields": [
-          "street_address",
-          "locality_level1",
-          "post_code"
-        ],
-        "allowedFields": [
-          "street_address",
-          "post_code",
-          "locality_level1"
-        ],
+        "requiredFields": ["street_address", "locality_level1", "post_code"],
+        "allowedFields": ["street_address", "post_code", "locality_level1"],
         "fieldNames": {}
       }
     },
@@ -2862,16 +2674,8 @@
         }
       ],
       "addressRequirements": {
-        "requiredFields": [
-          "street_address",
-          "locality_level1",
-          "post_code"
-        ],
-        "allowedFields": [
-          "street_address",
-          "locality_level1",
-          "post_code"
-        ],
+        "requiredFields": ["street_address", "locality_level1", "post_code"],
+        "allowedFields": ["street_address", "locality_level1", "post_code"],
         "fieldNames": {
           "locality_level1": "post_town"
         }
