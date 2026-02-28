@@ -1,0 +1,2785 @@
+{
+  "countries": [
+    {
+      "isoCode": "AR",
+      "displayName": "Argentina",
+      "companyIdentifiers": [
+        {
+          "ref": "ar.cuit",
+          "name": "Clave Única de Identificación Tributaria"
+        }
+      ],
+      "personIdentifiers": [
+        {
+          "ref": "ar.cuil",
+          "name": "Código Único de Identificación Laboral"
+        },
+        {
+          "ref": "ar.dni",
+          "name": "Documento Nacional de Identidad"
+        }
+      ],
+      "legalTypes": [
+        {
+          "uniqueRef": "ar.pers",
+          "description": "Persona Natural"
+        },
+        {
+          "uniqueRef": "ar.eu",
+          "description": "Empresa Unipersonal (E.U.)"
+        },
+        {
+          "uniqueRef": "ar.sa",
+          "description": "Sociedad Anónima (S.A.)"
+        },
+        {
+          "uniqueRef": "ar.sau",
+          "description": "Sociedad Anónima Unipersonal (S.A.U.)"
+        },
+        {
+          "uniqueRef": "ar.sas",
+          "description": "Sociedad Anónima Cerrada (S.A.C.)"
+        },
+        {
+          "uniqueRef": "ar.srl",
+          "description": "Sociedad de Responsabilidad Limitada  (S.R.L.)"
+        },
+        {
+          "uniqueRef": "ar.sociedad_colectiva",
+          "description": "Sociedad Colectiva"
+        },
+        {
+          "uniqueRef": "ar.sociedad_en_comandita_por_acciones",
+          "description": "Sociedad en Comandita por Acciones"
+        },
+        {
+          "uniqueRef": "ar.sociedad_en_comandita_simple",
+          "description": "Sociedad en Comandita Simple"
+        },
+        {
+          "uniqueRef": "ar.asociación_civil",
+          "description": "Asociación Civil"
+        },
+        {
+          "uniqueRef": "ar.fundación",
+          "description": "Fundación"
+        }
+      ],
+      "addressRequirements": {
+        "requiredFields": ["street_address", "post_code", "locality_level1"],
+        "allowedFields": [
+          "street_address",
+          "post_code",
+          "locality_level1",
+          "administrative_unit_level1"
+        ],
+        "fieldNames": {
+          "administrative_unit_level1": "province"
+        }
+      }
+    },
+    {
+      "isoCode": "AU",
+      "displayName": "Australia",
+      "companyIdentifiers": [
+        {
+          "ref": "au.abn",
+          "name": "Australian Business Number"
+        },
+        {
+          "ref": "au.acn",
+          "name": "Australian Company Number"
+        }
+      ],
+      "personIdentifiers": [],
+      "legalTypes": [
+        {
+          "uniqueRef": "au.agt",
+          "description": "Agent"
+        },
+        {
+          "uniqueRef": "au.trust",
+          "description": "Trust"
+        },
+        {
+          "uniqueRef": "au.coop",
+          "description": "Co-operative"
+        },
+        {
+          "uniqueRef": "au.st",
+          "description": "Sole Trader"
+        },
+        {
+          "uniqueRef": "au.co",
+          "description": "Company"
+        },
+        {
+          "uniqueRef": "au.pship",
+          "description": "Partnership"
+        },
+        {
+          "uniqueRef": "au.assoc",
+          "description": "Association"
+        }
+      ],
+      "addressRequirements": {
+        "requiredFields": [
+          "street_address",
+          "locality_level1",
+          "administrative_unit_level1",
+          "post_code"
+        ],
+        "allowedFields": [
+          "street_address",
+          "locality_level1",
+          "administrative_unit_level1",
+          "post_code"
+        ],
+        "fieldNames": {
+          "administrative_unit_level1": "state"
+        }
+      }
+    },
+    {
+      "isoCode": "AT",
+      "displayName": "Austria",
+      "companyIdentifiers": [
+        {
+          "ref": "at.uid",
+          "name": "Umsatzsteuer-Identifikationsnummer"
+        },
+        {
+          "ref": "at.abgabenkontonummer",
+          "name": "Abgabenkontonummer"
+        },
+        {
+          "ref": "at.zvr",
+          "name": "Zentrale Vereinsregister-Zahl"
+        },
+        {
+          "ref": "at.fn",
+          "name": "Firmenbuchnummer"
+        }
+      ],
+      "personIdentifiers": [],
+      "legalTypes": [
+        {
+          "uniqueRef": "at.freiberufler",
+          "description": "Alle nicht registrierten Einzelunternehmen und freien Berufe ohne andere Gesellschaftsform"
+        },
+        {
+          "uniqueRef": "at.eu",
+          "description": "Eingetragenes Einzelunternehmen (e. U.)"
+        },
+        {
+          "uniqueRef": "at.gesbr",
+          "description": "Gesellschaft bürgerlichen Rechts (GesbR)"
+        },
+        {
+          "uniqueRef": "at.og",
+          "description": "Offene Gesellschaft (OG)"
+        },
+        {
+          "uniqueRef": "at.kg",
+          "description": "Kommanditgesellschaft (KG)"
+        },
+        {
+          "uniqueRef": "at.gmbh",
+          "description": "Gesellschaft mit beschränkter Haftung (GmbH)"
+        },
+        {
+          "uniqueRef": "at.ag",
+          "description": "Aktiengesellschaft (AG)"
+        },
+        {
+          "uniqueRef": "at.verein",
+          "description": "Verein"
+        },
+        {
+          "uniqueRef": "at.andere",
+          "description": "Andere Rechtsformen"
+        }
+      ],
+      "addressRequirements": {
+        "requiredFields": ["street_address", "locality_level1", "post_code"],
+        "allowedFields": ["street_address", "post_code", "locality_level1"],
+        "fieldNames": {}
+      }
+    },
+    {
+      "isoCode": "BE",
+      "displayName": "Belgium",
+      "companyIdentifiers": [
+        {
+          "ref": "be.btw",
+          "name": "Belasting over de Toegevoegde Waarde nummer"
+        },
+        {
+          "ref": "be.ondernemingsnummer",
+          "name": "Ondernemingsnummer"
+        }
+      ],
+      "personIdentifiers": [
+        {
+          "ref": "be.nn",
+          "name": "Numéro de registre national"
+        }
+      ],
+      "legalTypes": [
+        {
+          "uniqueRef": "be.ei",
+          "description": "Entreprise individuelle"
+        },
+        {
+          "uniqueRef": "be.partenariat",
+          "description": "Partenariat"
+        },
+        {
+          "uniqueRef": "be.vof",
+          "description": "Société en Nom Collectif (SNC)"
+        },
+        {
+          "uniqueRef": "be.sca",
+          "description": "Société en Commandite par Action (SCA)"
+        },
+        {
+          "uniqueRef": "be.cv",
+          "description": "Société en Commandite Simple (SCS)"
+        },
+        {
+          "uniqueRef": "be.nv",
+          "description": "Société Anonyme (SA)"
+        },
+        {
+          "uniqueRef": "be.sprl",
+          "description": "Société à responsabilité limitée (S.R.L.)"
+        },
+        {
+          "uniqueRef": "be.stichting",
+          "description": "Fondations"
+        },
+        {
+          "uniqueRef": "be.asbl",
+          "description": "Association Sans But Lucratif (ASBL)"
+        },
+        {
+          "uniqueRef": "be.scscrl",
+          "description": "Société Coopérative à Responsabilité Limitée (SC/SCRL)"
+        },
+        {
+          "uniqueRef": "be.scri",
+          "description": "Société Coopérative à Responsabilité Illimitée (SCRI)"
+        },
+        {
+          "uniqueRef": "be.state_agency",
+          "description": "Agence Publique"
+        }
+      ],
+      "addressRequirements": {
+        "requiredFields": ["street_address", "locality_level1", "post_code"],
+        "allowedFields": ["street_address", "post_code", "locality_level1"],
+        "fieldNames": {}
+      }
+    },
+    {
+      "isoCode": "BR",
+      "displayName": "Brazil",
+      "companyIdentifiers": [
+        {
+          "ref": "br.cnpj",
+          "name": "Cadastro Nacional de Pessoa Juridica"
+        }
+      ],
+      "personIdentifiers": [
+        {
+          "ref": "br.cpf",
+          "name": "Cadastro de Pessoas Física"
+        }
+      ],
+      "legalTypes": [
+        {
+          "uniqueRef": "br.pessoa_fisica",
+          "description": "Pessoa Física"
+        },
+        {
+          "uniqueRef": "br.ltda",
+          "description": "LTDA"
+        },
+        {
+          "uniqueRef": "br.sa_capital_aberto",
+          "description": "S/A Capital Aberto"
+        },
+        {
+          "uniqueRef": "br.sa_capital_fechado",
+          "description": "S/A Capital Fechado"
+        },
+        {
+          "uniqueRef": "br.sociedade_simples",
+          "description": "Sociedade Simples"
+        },
+        {
+          "uniqueRef": "br.cooperativa",
+          "description": "Cooperativa"
+        },
+        {
+          "uniqueRef": "br.associacao",
+          "description": "Associação"
+        },
+        {
+          "uniqueRef": "br.fundacao",
+          "description": "Fundação"
+        },
+        {
+          "uniqueRef": "br.outros",
+          "description": "Outros"
+        },
+        {
+          "uniqueRef": "br.entidade_sindical",
+          "description": "Entidade Sindical"
+        },
+        {
+          "uniqueRef": "br.empresa_pequeno_porte",
+          "description": "Empresa de Pequeno Porte (EPP)"
+        },
+        {
+          "uniqueRef": "br.eireli",
+          "description": "Empresa Individual de Responsabilidade Limitada (Eireli)"
+        },
+        {
+          "uniqueRef": "br.pessoa_juridica_payleven",
+          "description": "Pessoa Jurídica payleven"
+        },
+        {
+          "uniqueRef": "br.empresario_individual",
+          "description": "Micro Empreendedor Individual (MEI)"
+        },
+        {
+          "uniqueRef": "br.pessoa_juridica",
+          "description": "Pessoa Jurídica"
+        },
+        {
+          "uniqueRef": "br.empresa_individual",
+          "description": "Empresa individual (EI)"
+        }
+      ],
+      "addressRequirements": {
+        "requiredFields": [
+          "street_address",
+          "post_code",
+          "locality_level1",
+          "locality_level3",
+          "administrative_unit_level1"
+        ],
+        "allowedFields": [
+          "street_address",
+          "post_code",
+          "locality_level1",
+          "locality_level3",
+          "administrative_unit_level1"
+        ],
+        "fieldNames": {
+          "administrative_unit_level1": "state",
+          "locality_level3": "neighborhood"
+        }
+      }
+    },
+    {
+      "isoCode": "BG",
+      "displayName": "Bulgaria",
+      "companyIdentifiers": [
+        {
+          "ref": "bg.dds",
+          "name": "Identifikacionen nomer po DDS"
+        },
+        {
+          "ref": "bg.uic",
+          "name": "BULSTAT Unified Identification Code"
+        }
+      ],
+      "personIdentifiers": [
+        {
+          "ref": "bg.egn",
+          "name": "Единен граждански номер (Edinen grazhdanski nomer)"
+        }
+      ],
+      "legalTypes": [
+        {
+          "uniqueRef": "bg.general_partnership",
+          "description": "Събирателно дружество"
+        },
+        {
+          "uniqueRef": "bg.limited_partnership",
+          "description": "Командитно дружество"
+        },
+        {
+          "uniqueRef": "bg.limited_partnership_with_shares",
+          "description": "Командитно дружество с акции"
+        },
+        {
+          "uniqueRef": "bg.private_limited_company",
+          "description": "Дружество с ограничена oтговорност"
+        },
+        {
+          "uniqueRef": "bg.private_limited_company_with_a_single_member",
+          "description": "Еднолично дружество с ограничена отговорност"
+        },
+        {
+          "uniqueRef": "bg.joint-stock_company",
+          "description": "Акционерно дружество"
+        },
+        {
+          "uniqueRef": "bg.association",
+          "description": "Консорциум"
+        },
+        {
+          "uniqueRef": "bg.foundation",
+          "description": "Фондация"
+        },
+        {
+          "uniqueRef": "bg.cooperative",
+          "description": "Кооперация"
+        },
+        {
+          "uniqueRef": "bg.other",
+          "description": "Друго"
+        },
+        {
+          "uniqueRef": "bg.sole_trader",
+          "description": "Едноличен търговец"
+        },
+        {
+          "uniqueRef": "bg.freelancer",
+          "description": "Професионалист на свободна практика"
+        },
+        {
+          "uniqueRef": "bg.sole_shareholding_company",
+          "description": "Еднолично акционерно дружество"
+        }
+      ],
+      "addressRequirements": {
+        "requiredFields": ["street_address", "post_code", "locality_level1"],
+        "allowedFields": ["street_address", "post_code", "locality_level1"],
+        "fieldNames": {}
+      }
+    },
+    {
+      "isoCode": "CA",
+      "displayName": "Canada",
+      "companyIdentifiers": [
+        {
+          "ref": "ca.business_number",
+          "name": "Business Number"
+        },
+        {
+          "ref": "ca.gst_hst_number",
+          "name": "GST/HST Number"
+        },
+        {
+          "ref": "ca.qst_number",
+          "name": "QST Number (Quebec)"
+        }
+      ],
+      "personIdentifiers": [],
+      "legalTypes": [
+        {
+          "uniqueRef": "ca.sp",
+          "description": "Sole proprietorship"
+        },
+        {
+          "uniqueRef": "ca.bsns",
+          "description": "Private company"
+        },
+        {
+          "uniqueRef": "ca.lpc",
+          "description": "Listed public company"
+        },
+        {
+          "uniqueRef": "ca.gorg",
+          "description": "Governmental organization"
+        },
+        {
+          "uniqueRef": "ca.asinc",
+          "description": "Association incorporated"
+        },
+        {
+          "uniqueRef": "ca.npro",
+          "description": "Nonprofit or charitable organisation"
+        },
+        {
+          "uniqueRef": "ca.unincpar",
+          "description": "Unincorporated partnership"
+        },
+        {
+          "uniqueRef": "ca.pship",
+          "description": "Incorporated partnership"
+        }
+      ],
+      "addressRequirements": {
+        "requiredFields": [
+          "street_address",
+          "locality_level1",
+          "administrative_unit_level1",
+          "post_code"
+        ],
+        "allowedFields": [
+          "street_address",
+          "locality_level1",
+          "administrative_unit_level1",
+          "post_code"
+        ],
+        "fieldNames": {
+          "administrative_unit_level1": "province"
+        }
+      }
+    },
+    {
+      "isoCode": "CL",
+      "displayName": "Chile",
+      "companyIdentifiers": [
+        {
+          "ref": "cl.rut",
+          "name": "Rol Único Tributario"
+        }
+      ],
+      "personIdentifiers": [
+        {
+          "ref": "cl.run",
+          "name": "Rol Único Nacional"
+        },
+        {
+          "ref": "cl.id_card_serial",
+          "name": "Número de Documento"
+        }
+      ],
+      "legalTypes": [
+        {
+          "uniqueRef": "cl.sole_trader",
+          "description": "Persona Natural"
+        },
+        {
+          "uniqueRef": "cl.ltda",
+          "description": "Sociedad de Responsabilidad Limitada"
+        },
+        {
+          "uniqueRef": "cl.sa",
+          "description": "Sociedad Anónima"
+        },
+        {
+          "uniqueRef": "cl.sca",
+          "description": "Sociedad por Acciones"
+        },
+        {
+          "uniqueRef": "cl.eirl",
+          "description": "Empresas Individuales de Responsabilidad Limitada"
+        },
+        {
+          "uniqueRef": "cl.scs",
+          "description": "Sociedad en Comandita Simple"
+        }
+      ],
+      "addressRequirements": {
+        "requiredFields": [
+          "street_address",
+          "post_code",
+          "locality_level1",
+          "administrative_unit_level1",
+          "administrative_unit_level3"
+        ],
+        "allowedFields": [
+          "street_address",
+          "post_code",
+          "locality_level1",
+          "administrative_unit_level1",
+          "administrative_unit_level2",
+          "administrative_unit_level3"
+        ],
+        "fieldNames": {
+          "administrative_unit_level1": "region",
+          "administrative_unit_level2": "province",
+          "administrative_unit_level3": "commune"
+        }
+      }
+    },
+    {
+      "isoCode": "CO",
+      "displayName": "Colombia",
+      "companyIdentifiers": [
+        {
+          "ref": "co.nit",
+          "name": "Número de Identificación Tributaria"
+        }
+      ],
+      "personIdentifiers": [
+        {
+          "ref": "co.nuip",
+          "name": "Número Único de Identificación Personal"
+        }
+      ],
+      "legalTypes": [
+        {
+          "uniqueRef": "co.sas",
+          "description": "Sociedad por Acciones Simplificadas (S.A.S.)"
+        },
+        {
+          "uniqueRef": "co.ltda",
+          "description": "Sociedad de Responsabilidad Limitada (Ltda.)"
+        },
+        {
+          "uniqueRef": "co.sc",
+          "description": "Sociedad Colectiva (S.C.)"
+        },
+        {
+          "uniqueRef": "co.sec",
+          "description": "Sociedad Comandita Simple (S. en C.)"
+        },
+        {
+          "uniqueRef": "co.pers",
+          "description": "Persona Natural"
+        },
+        {
+          "uniqueRef": "co.eu",
+          "description": "Empresa Unipersonal (E.U.)"
+        },
+        {
+          "uniqueRef": "co.sca",
+          "description": "Sociedad Comandita por Acciones (S.C.A.)"
+        },
+        {
+          "uniqueRef": "co.sa",
+          "description": "Sociedad Anónima (S.A.)"
+        }
+      ],
+      "addressRequirements": {
+        "requiredFields": [
+          "street_address",
+          "locality_level1",
+          "administrative_unit_level1",
+          "administrative_unit_level2"
+        ],
+        "allowedFields": [
+          "street_address",
+          "locality_level2",
+          "locality_level1",
+          "administrative_unit_level1",
+          "administrative_unit_level2",
+          "post_code"
+        ],
+        "fieldNames": {
+          "administrative_unit_level1": "department",
+          "administrative_unit_level2": "municipality"
+        }
+      }
+    },
+    {
+      "isoCode": "HR",
+      "displayName": "Croatia",
+      "companyIdentifiers": [
+        {
+          "ref": "hr.oib",
+          "name": "Osobni identifikacijski broj"
+        }
+      ],
+      "personIdentifiers": [],
+      "legalTypes": [
+        {
+          "uniqueRef": "hr.association_new",
+          "description": "udruga"
+        },
+        {
+          "uniqueRef": "hr.sole_trader_new",
+          "description": "obrt"
+        },
+        {
+          "uniqueRef": "hr.general_partnership_new",
+          "description": "javno trgovačko društvo"
+        },
+        {
+          "uniqueRef": "hr.limited_partnership_new",
+          "description": "komanditno društvo"
+        },
+        {
+          "uniqueRef": "hr.private_limited_company_new",
+          "description": "društvo s ograničenom odgovornošću"
+        },
+        {
+          "uniqueRef": "hr.public_limited_company_new",
+          "description": "dioničko društvo"
+        },
+        {
+          "uniqueRef": "hr.cooperative_new",
+          "description": "zadruga"
+        },
+        {
+          "uniqueRef": "hr.other_new",
+          "description": "Drugo"
+        },
+        {
+          "uniqueRef": "hr.partnership_of_two_or_more_sole_traders_new",
+          "description": "Ortaštvo"
+        }
+      ],
+      "addressRequirements": {
+        "requiredFields": ["street_address", "post_code", "locality_level1"],
+        "allowedFields": ["street_address", "post_code", "locality_level1"],
+        "fieldNames": {}
+      }
+    },
+    {
+      "isoCode": "CY",
+      "displayName": "Cyprus",
+      "companyIdentifiers": [
+        {
+          "ref": "cy.fpa",
+          "name": "Arithmós Engraphḗs phi. pi. a."
+        },
+        {
+          "ref": "cy.crn",
+          "name": "Company Registration Number"
+        }
+      ],
+      "personIdentifiers": [
+        {
+          "ref": "cy.identity_card",
+          "name": "Δελτίο Ταυτότητας"
+        }
+      ],
+      "legalTypes": [
+        {
+          "uniqueRef": "cy.public_limited_company",
+          "description": "Δημόσια εταιρεία περιορισμένης ευθύνης"
+        },
+        {
+          "uniqueRef": "cy.sole_trader",
+          "description": "Ατομική επιχείρηση"
+        },
+        {
+          "uniqueRef": "cy.private_limited_company",
+          "description": "Εταιρεία περιορισμένης ευθύνης δια μετοχών"
+        },
+        {
+          "uniqueRef": "cy.other",
+          "description": "Άλλο"
+        },
+        {
+          "uniqueRef": "cy.company_limited_by_guarantee",
+          "description": "Εταιρεία περιορισμένης ευθύνης με εγγύηση"
+        },
+        {
+          "uniqueRef": "cy.general_partnership",
+          "description": "Ομόρρυθμη εταιρεία"
+        },
+        {
+          "uniqueRef": "cy.associations",
+          "description": "Συνεταιρισμός"
+        },
+        {
+          "uniqueRef": "cy.foundation",
+          "description": "Ίδρυμα"
+        },
+        {
+          "uniqueRef": "cy.limited_partnership",
+          "description": "Ετερόρρυθμη εταιρεία"
+        }
+      ],
+      "addressRequirements": {
+        "requiredFields": ["street_address", "post_code", "locality_level1"],
+        "allowedFields": ["street_address", "post_code", "locality_level1"],
+        "fieldNames": {}
+      }
+    },
+    {
+      "isoCode": "CZ",
+      "displayName": "Czech Republic",
+      "companyIdentifiers": [
+        {
+          "ref": "cz.dic",
+          "name": "Daňové identifikační číslo"
+        },
+        {
+          "ref": "cz.ico",
+          "name": "Identifikační číslo osoby"
+        }
+      ],
+      "personIdentifiers": [
+        {
+          "ref": "cz.civil_card",
+          "name": "Občanský průkaz"
+        }
+      ],
+      "legalTypes": [
+        {
+          "uniqueRef": "cz.sole_trader",
+          "description": "Živnost"
+        },
+        {
+          "uniqueRef": "cz.unregistered_partnership",
+          "description": "Společnost"
+        },
+        {
+          "uniqueRef": "cz.general_partnership",
+          "description": "Veřejná obchodní společnost"
+        },
+        {
+          "uniqueRef": "cz.limited_partnerhip",
+          "description": "Komanditní společnost"
+        },
+        {
+          "uniqueRef": "cz.private_limited_company",
+          "description": "Společnost s ručením omezeným"
+        },
+        {
+          "uniqueRef": "cz.public_limited_company",
+          "description": "Akciová společnost"
+        },
+        {
+          "uniqueRef": "cz.cooperative",
+          "description": "Družstvo"
+        },
+        {
+          "uniqueRef": "cz.association",
+          "description": "Zapsaný spolek"
+        },
+        {
+          "uniqueRef": "cz.foundation",
+          "description": "Nadační fond"
+        },
+        {
+          "uniqueRef": "cz.other",
+          "description": "jiný"
+        }
+      ],
+      "addressRequirements": {
+        "requiredFields": ["street_address", "locality_level1", "post_code"],
+        "allowedFields": ["street_address", "post_code", "locality_level1"],
+        "fieldNames": {}
+      }
+    },
+    {
+      "isoCode": "DK",
+      "displayName": "Denmark",
+      "companyIdentifiers": [
+        {
+          "ref": "dk.cvr",
+          "name": "CVR-nummer"
+        },
+        {
+          "ref": "dk.cvr",
+          "name": "CVR-nummer"
+        }
+      ],
+      "personIdentifiers": [
+        {
+          "ref": "dk.cpr",
+          "name": "Det Centrale Personregister nummer"
+        }
+      ],
+      "legalTypes": [
+        {
+          "uniqueRef": "dk.sole_trader",
+          "description": "Enkeltmandsvirksomhed"
+        },
+        {
+          "uniqueRef": "dk.general_partnership",
+          "description": "Interessentskab"
+        },
+        {
+          "uniqueRef": "dk.limited_partnership",
+          "description": "Kommanditselskab"
+        },
+        {
+          "uniqueRef": "dk.partnership_limited_by_shares",
+          "description": "Partnerselskab or Kommanditaktieselskab"
+        },
+        {
+          "uniqueRef": "dk.private_limited_company",
+          "description": "Anpartsselskab"
+        },
+        {
+          "uniqueRef": "dk.public_limited_company",
+          "description": "Aktieselskab"
+        },
+        {
+          "uniqueRef": "dk.limited_liability_co-operative",
+          "description": "Andelsselskab med begrænset ansvar"
+        },
+        {
+          "uniqueRef": "dk.limited_liability_voluntary_association",
+          "description": "Forening med begrænset ansvar"
+        },
+        {
+          "uniqueRef": "dk.association",
+          "description": "Forening"
+        },
+        {
+          "uniqueRef": "dk.commercial_foundation",
+          "description": "Erhvervsdrivende fond"
+        },
+        {
+          "uniqueRef": "dk.non_commercial_foundation",
+          "description": "Ikke-erhvervsdrivende fond"
+        },
+        {
+          "uniqueRef": "dk.other",
+          "description": "Anden"
+        }
+      ],
+      "addressRequirements": {
+        "requiredFields": ["street_address", "locality_level1", "post_code"],
+        "allowedFields": ["street_address", "post_code", "locality_level1"],
+        "fieldNames": {}
+      }
+    },
+    {
+      "isoCode": "EE",
+      "displayName": "Estonia",
+      "companyIdentifiers": [
+        {
+          "ref": "ee.kmkr",
+          "name": "Käibemaksukohustuslase number"
+        },
+        {
+          "ref": "ee.reg",
+          "name": "Äriregistri Kood"
+        }
+      ],
+      "personIdentifiers": [
+        {
+          "ref": "ee.isikukoodi",
+          "name": "Isikukoodi"
+        }
+      ],
+      "legalTypes": [
+        {
+          "uniqueRef": "ee.sole_trader",
+          "description": "Füüsilisest Isikust Ettevõtja"
+        },
+        {
+          "uniqueRef": "ee.general_partnership",
+          "description": "Täisühing"
+        },
+        {
+          "uniqueRef": "ee.limited_partnership",
+          "description": "Usaldusühing"
+        },
+        {
+          "uniqueRef": "ee.private_limited_company",
+          "description": "Osaühing"
+        },
+        {
+          "uniqueRef": "ee.public_limited_company",
+          "description": "Aktsiaselts"
+        },
+        {
+          "uniqueRef": "ee.cooperative",
+          "description": "Ühistu"
+        },
+        {
+          "uniqueRef": "ee.other",
+          "description": "Muud liiki"
+        },
+        {
+          "uniqueRef": "ee.commercial_association",
+          "description": "Tulundusühistu"
+        }
+      ],
+      "addressRequirements": {
+        "requiredFields": ["street_address", "locality_level1", "post_code"],
+        "allowedFields": [
+          "street_address",
+          "post_code",
+          "locality_level1",
+          "administrative_unit_level1"
+        ],
+        "fieldNames": {
+          "administrative_unit_level1": "province"
+        }
+      }
+    },
+    {
+      "isoCode": "FI",
+      "displayName": "Finland",
+      "companyIdentifiers": [
+        {
+          "ref": "fi.alv",
+          "name": "Arvonlisäveronumero Mervärdesskattenummer"
+        },
+        {
+          "ref": "fi.yt",
+          "name": "Y-tunnus"
+        }
+      ],
+      "personIdentifiers": [
+        {
+          "ref": "fi.hetu",
+          "name": "Henkilötunnus"
+        }
+      ],
+      "legalTypes": [
+        {
+          "uniqueRef": "fi.general_partnership",
+          "description": "Avoin yhtiö"
+        },
+        {
+          "uniqueRef": "fi.limited_partnership",
+          "description": "Kommandiittiyhtiö"
+        },
+        {
+          "uniqueRef": "fi.private_limited_company",
+          "description": "Osakeyhtiö"
+        },
+        {
+          "uniqueRef": "fi.public_limited_company",
+          "description": "Julkinen osakeyhtiö"
+        },
+        {
+          "uniqueRef": "fi.cooperative",
+          "description": "Osuuskunta"
+        },
+        {
+          "uniqueRef": "fi.registered_association",
+          "description": "Rekisteröity yhdistys"
+        },
+        {
+          "uniqueRef": "fi.foundation",
+          "description": "Säätiö"
+        },
+        {
+          "uniqueRef": "fi.other",
+          "description": "Muut"
+        },
+        {
+          "uniqueRef": "fi.sole_trader",
+          "description": "Yksityinen elinkeinonharjoittaja"
+        }
+      ],
+      "addressRequirements": {
+        "requiredFields": ["street_address", "locality_level1", "post_code"],
+        "allowedFields": ["street_address", "post_code", "locality_level1"],
+        "fieldNames": {}
+      }
+    },
+    {
+      "isoCode": "FR",
+      "displayName": "France",
+      "companyIdentifiers": [
+        {
+          "ref": "fr.tva",
+          "name": "Numéro d'identification à la taxe sur la valeur ajoutée / Numéro de TVA intracommunautaire"
+        },
+        {
+          "ref": "fr.siren",
+          "name": "Système d'identification du répertoire des entreprises"
+        },
+        {
+          "ref": "fr.siret",
+          "name": "Système d’identification du répertoire des établissements"
+        },
+        {
+          "ref": "fr.rna",
+          "name": "Numéro Répertoire national des associations / Numéro RNA"
+        }
+      ],
+      "personIdentifiers": [],
+      "legalTypes": [
+        {
+          "uniqueRef": "fr.ei",
+          "description": "Entrepreneur Individuel is a sole trader legal type."
+        },
+        {
+          "uniqueRef": "fr.eurl",
+          "description": "EURL"
+        },
+        {
+          "uniqueRef": "fr.sarl",
+          "description": "SARL"
+        },
+        {
+          "uniqueRef": "fr.sa",
+          "description": "SA"
+        },
+        {
+          "uniqueRef": "fr.sas",
+          "description": "SAS"
+        },
+        {
+          "uniqueRef": "fr.sasu",
+          "description": "SASU"
+        },
+        {
+          "uniqueRef": "fr.snc",
+          "description": "SNC"
+        },
+        {
+          "uniqueRef": "fr.association",
+          "description": "Association"
+        },
+        {
+          "uniqueRef": "fr.autres",
+          "description": "Autres"
+        }
+      ],
+      "addressRequirements": {
+        "requiredFields": ["street_address", "locality_level1", "post_code"],
+        "allowedFields": ["street_address", "post_code", "locality_level1"],
+        "fieldNames": {}
+      }
+    },
+    {
+      "isoCode": "DE",
+      "displayName": "Germany",
+      "companyIdentifiers": [
+        {
+          "ref": "de.ust_idnr",
+          "name": "Umsatzsteuer-Identifikationsnummer"
+        },
+        {
+          "ref": "de.hra",
+          "name": "Handelsregister A Nummer"
+        },
+        {
+          "ref": "de.hrb",
+          "name": "Handelsregister B Nummer"
+        },
+        {
+          "ref": "de.vr",
+          "name": "Vereinsregenister Nummer"
+        },
+        {
+          "ref": "de.other",
+          "name": "Other registration numbers"
+        }
+      ],
+      "personIdentifiers": [],
+      "legalTypes": [
+        {
+          "uniqueRef": "de.freiberufler",
+          "description": "Alle nicht registrierten Einzelunternehmen und freien Berufe ohne andere Gesellschaftsform"
+        },
+        {
+          "uniqueRef": "de.ekfr",
+          "description": "Eingetragener Kaufmann / Eingetragene Kauffrau (e.K., e.Kfm. oder e.Kfr.)"
+        },
+        {
+          "uniqueRef": "de.gbr",
+          "description": "Gesellschaft bürgerlichen Rechts (GbR)"
+        },
+        {
+          "uniqueRef": "de.ohg",
+          "description": "Offene Handelsgesellschaft (OHG)"
+        },
+        {
+          "uniqueRef": "de.kg",
+          "description": "Kommanditgesellschaft (KG)"
+        },
+        {
+          "uniqueRef": "de.ug",
+          "description": "Unternehmergesellschaft (UG (haftungsbeschränkt))"
+        },
+        {
+          "uniqueRef": "de.gmbh",
+          "description": "Gesellschaft mit beschränkter Haftung (GmbH)"
+        },
+        {
+          "uniqueRef": "de.gmbhco",
+          "description": "GmbH & Co. KG"
+        },
+        {
+          "uniqueRef": "de.ag",
+          "description": "Aktiengesellschaft (AG)"
+        },
+        {
+          "uniqueRef": "de.ev",
+          "description": "Eingetragener Verein (e.V.)"
+        },
+        {
+          "uniqueRef": "de.andere",
+          "description": "Andere Rechtsformen"
+        },
+        {
+          "uniqueRef": "de.stiftung",
+          "description": "Stiftung"
+        },
+        {
+          "uniqueRef": "de.genossenschaft",
+          "description": "Genossenschaft (eG)"
+        },
+        {
+          "uniqueRef": "de.koerperschaft",
+          "description": "Körperschaft öffentlichen Rechts (KöR)"
+        }
+      ],
+      "addressRequirements": {
+        "requiredFields": ["street_address", "locality_level1", "post_code"],
+        "allowedFields": ["street_address", "post_code", "locality_level1"],
+        "fieldNames": {}
+      }
+    },
+    {
+      "isoCode": "GR",
+      "displayName": "Greece",
+      "companyIdentifiers": [
+        {
+          "ref": "gr.afm",
+          "name": "Arithmós Forologikou Mētrṓou - ΑΦΜ"
+        },
+        {
+          "ref": "gr.gemi",
+          "name": "General Commercial Registry number."
+        }
+      ],
+      "personIdentifiers": [],
+      "legalTypes": [
+        {
+          "uniqueRef": "gr.sole_trader",
+          "description": "Atomikí epicheírisi / ατομική επιχείρηση"
+        },
+        {
+          "uniqueRef": "gr.general_partnership",
+          "description": "Omórithmi Etaireía / Ομόρρυθμη Εταιρεία"
+        },
+        {
+          "uniqueRef": "gr.limited_partnership",
+          "description": "Eterórithmi Etaireía / Ετερόρρυθμη Εταιρία"
+        },
+        {
+          "uniqueRef": "gr.public_limited_company",
+          "description": "Anónimi Etaireía / Ανώνυμη Εταιρεία"
+        },
+        {
+          "uniqueRef": "gr.private_limited_company",
+          "description": "Etaireía Periorisménis Euthínis / Εταιρεία Περιορισμένης Ευθύνης"
+        },
+        {
+          "uniqueRef": "gr.ltd_with_a_single_member",
+          "description": "Monoprósopi Etaireía Periorisménis Euthínis / Μονοπρόσωπη"
+        },
+        {
+          "uniqueRef": "gr.other",
+          "description": "Άλλο"
+        },
+        {
+          "uniqueRef": "gr.association",
+          "description": "Συνεταιρισμός"
+        },
+        {
+          "uniqueRef": "gr.foundation",
+          "description": "Ίδρυμα"
+        }
+      ],
+      "addressRequirements": {
+        "requiredFields": ["street_address", "locality_level1", "post_code"],
+        "allowedFields": ["street_address", "post_code", "locality_level1"],
+        "fieldNames": {}
+      }
+    },
+    {
+      "isoCode": "HU",
+      "displayName": "Hungary",
+      "companyIdentifiers": [
+        {
+          "ref": "hu.anum",
+          "name": "Közösségi adószám"
+        },
+        {
+          "ref": "hu.cegjegyzekszam",
+          "name": "Cégjegyzékszám"
+        },
+        {
+          "ref": "hu.adoszam",
+          "name": "Adószám"
+        }
+      ],
+      "personIdentifiers": [
+        {
+          "ref": "hu.szemelyi",
+          "name": "Személyi igazolvány"
+        },
+        {
+          "ref": "hu.adoazonosito_jel",
+          "name": "Adóazonosító jel"
+        }
+      ],
+      "legalTypes": [
+        {
+          "uniqueRef": "hu.sole_trader",
+          "description": "Egyéni vállalkozó"
+        },
+        {
+          "uniqueRef": "hu.registered_sole_trader",
+          "description": "Egyéni cég"
+        },
+        {
+          "uniqueRef": "hu.limited_partnership",
+          "description": "Betéti társaság"
+        },
+        {
+          "uniqueRef": "hu.general_partnership",
+          "description": "Közkereseti társaság"
+        },
+        {
+          "uniqueRef": "hu.private_limited_company",
+          "description": "Korlátolt felelősségű társaság"
+        },
+        {
+          "uniqueRef": "hu.public_limited_company",
+          "description": "Nyilvánosan működő részvénytársaság"
+        },
+        {
+          "uniqueRef": "hu.privately_held_company",
+          "description": "Zártközűen működő részvénytársaság"
+        },
+        {
+          "uniqueRef": "hu.cooperative",
+          "description": "Társaság"
+        },
+        {
+          "uniqueRef": "hu.association",
+          "description": "Szövetség"
+        },
+        {
+          "uniqueRef": "hu.foundation",
+          "description": "Alapítvány"
+        },
+        {
+          "uniqueRef": "hu.other",
+          "description": "Más"
+        }
+      ],
+      "addressRequirements": {
+        "requiredFields": ["street_address", "locality_level1", "post_code"],
+        "allowedFields": ["locality_level1", "street_address", "post_code"],
+        "fieldNames": {}
+      }
+    },
+    {
+      "isoCode": "IE",
+      "displayName": "Ireland",
+      "companyIdentifiers": [
+        {
+          "ref": "ie.vat",
+          "name": "Value added tax identification no."
+        },
+        {
+          "ref": "ie.trn",
+          "name": "Tax Registration Number"
+        },
+        {
+          "ref": "ie.crn",
+          "name": "Value added tax identification no."
+        },
+        {
+          "ref": "ie.chy",
+          "name": "Tax identification number for charities"
+        }
+      ],
+      "personIdentifiers": [],
+      "legalTypes": [
+        {
+          "uniqueRef": "ie.sole_trader",
+          "description": "Sole proprietorship / sole trader"
+        },
+        {
+          "uniqueRef": "ie.society",
+          "description": "All clubs or societies"
+        },
+        {
+          "uniqueRef": "ie.edu",
+          "description": "All schools, colleges or universities"
+        },
+        {
+          "uniqueRef": "ie.other",
+          "description": "All other legal forms"
+        },
+        {
+          "uniqueRef": "ie.limited",
+          "description": "Private limited company"
+        },
+        {
+          "uniqueRef": "ie.partnership",
+          "description": "All partnerships"
+        }
+      ],
+      "addressRequirements": {
+        "requiredFields": [
+          "street_address",
+          "post_code",
+          "locality_level1",
+          "administrative_unit_level1"
+        ],
+        "allowedFields": [
+          "street_address",
+          "locality_level2",
+          "locality_level1",
+          "administrative_unit_level1",
+          "post_code"
+        ],
+        "fieldNames": {
+          "administrative_unit_level1": "county",
+          "locality_level2": "townland",
+          "post_code": "eircode"
+        }
+      }
+    },
+    {
+      "isoCode": "IT",
+      "displayName": "Italy",
+      "companyIdentifiers": [
+        {
+          "ref": "it.p_iva",
+          "name": "Partita IVA"
+        },
+        {
+          "ref": "it.rea_number",
+          "name": "REA Number"
+        }
+      ],
+      "personIdentifiers": [
+        {
+          "ref": "it.cie",
+          "name": "Carta d'identità"
+        },
+        {
+          "ref": "it.cf",
+          "name": "Codice fiscale"
+        },
+        {
+          "ref": "it.itax",
+          "name": "Codice fiscale"
+        }
+      ],
+      "legalTypes": [
+        {
+          "uniqueRef": "it.srls",
+          "description": "Società a responsabilità limitata semplificata (Srls)"
+        },
+        {
+          "uniqueRef": "it.srl_uni",
+          "description": "Società a responsabilità limitata unipersonale (Srl Uni)"
+        },
+        {
+          "uniqueRef": "it.ss",
+          "description": "Società Semplice (S.s.)"
+        },
+        {
+          "uniqueRef": "it.libero",
+          "description": "Libero Professionista"
+        },
+        {
+          "uniqueRef": "it.individuale",
+          "description": "Imprenditore individuale"
+        },
+        {
+          "uniqueRef": "it.snc",
+          "description": "Società in nome collettivo (S.n.c.)"
+        },
+        {
+          "uniqueRef": "it.sas",
+          "description": "Società in accomandita semplice (S.a.s)"
+        },
+        {
+          "uniqueRef": "it.societa_cooperative",
+          "description": "Società Cooperativa"
+        },
+        {
+          "uniqueRef": "it.spa",
+          "description": "Società per Azioni (Spa)"
+        },
+        {
+          "uniqueRef": "it.srl",
+          "description": "Società a responsabilità limitata (Srl)"
+        },
+        {
+          "uniqueRef": "it.società_di_capitali",
+          "description": "Società di capitali"
+        },
+        {
+          "uniqueRef": "it.società_di_persone",
+          "description": "Società di persone"
+        },
+        {
+          "uniqueRef": "it.siapa",
+          "description": "Società in accomandita per azioni"
+        },
+        {
+          "uniqueRef": "it.agenzia_statale",
+          "description": "Agenzia Statale"
+        },
+        {
+          "uniqueRef": "it.associazioni",
+          "description": "Associazioni"
+        }
+      ],
+      "addressRequirements": {
+        "requiredFields": [
+          "street_address",
+          "locality_level1",
+          "administrative_unit_level1",
+          "post_code"
+        ],
+        "allowedFields": [
+          "street_address",
+          "post_code",
+          "locality_level1",
+          "administrative_unit_level1"
+        ],
+        "fieldNames": {
+          "administrative_unit_level1": "province"
+        }
+      }
+    },
+    {
+      "isoCode": "LV",
+      "displayName": "Latvia",
+      "companyIdentifiers": [
+        {
+          "ref": "lv.pvn",
+          "name": "PVN reģistrācijas numurs"
+        },
+        {
+          "ref": "lv.registracijas_numur",
+          "name": "Reģistrācijas numur"
+        }
+      ],
+      "personIdentifiers": [
+        {
+          "ref": "lv.personas_kods",
+          "name": "Personas kods"
+        }
+      ],
+      "legalTypes": [
+        {
+          "uniqueRef": "lv.sole_trader",
+          "description": "Individuālais komersants"
+        },
+        {
+          "uniqueRef": "lv.limited_partnership",
+          "description": "Komandītsabiedrība"
+        },
+        {
+          "uniqueRef": "lv.general_partnership",
+          "description": "Pilnsabiedrība"
+        },
+        {
+          "uniqueRef": "lv.private_limited_company",
+          "description": "Sabiedrība ar ierobežotu atbildību"
+        },
+        {
+          "uniqueRef": "lv.public_limited_company",
+          "description": "Akciju sabiedrība"
+        },
+        {
+          "uniqueRef": "lv.association",
+          "description": "Asociācija"
+        },
+        {
+          "uniqueRef": "lv.foundation",
+          "description": "Fonds"
+        }
+      ],
+      "addressRequirements": {
+        "requiredFields": ["street_address", "locality_level1", "post_code"],
+        "allowedFields": [
+          "street_address",
+          "administrative_unit_level1",
+          "locality_level1",
+          "post_code"
+        ],
+        "fieldNames": {
+          "administrative_unit_level1": "province"
+        }
+      }
+    },
+    {
+      "isoCode": "LT",
+      "displayName": "Lithuania",
+      "companyIdentifiers": [
+        {
+          "ref": "lt.pvm_kodas",
+          "name": "PVM mokėtojo kodas"
+        },
+        {
+          "ref": "lt.imones_kodas",
+          "name": "Įmonės kodas"
+        }
+      ],
+      "personIdentifiers": [
+        {
+          "ref": "lt.asmens",
+          "name": "Asmens tapatybės kortelė"
+        }
+      ],
+      "legalTypes": [
+        {
+          "uniqueRef": "lt.sole_trader",
+          "description": "Individuali veikla"
+        },
+        {
+          "uniqueRef": "lt.individual_company",
+          "description": "Individuali įmonė"
+        },
+        {
+          "uniqueRef": "lt.general_partnership",
+          "description": "Tikroji ūkinė bendrija"
+        },
+        {
+          "uniqueRef": "lt.limited_partnership",
+          "description": "Komanditinė ūkinė bendrija"
+        },
+        {
+          "uniqueRef": "lt.small_partnership",
+          "description": "Mažoji bendrija"
+        },
+        {
+          "uniqueRef": "lt.private_limited_company",
+          "description": "Uždaroji akcinė bendrovė"
+        },
+        {
+          "uniqueRef": "lt.public_limited_company",
+          "description": "Akcinė bendrovė"
+        },
+        {
+          "uniqueRef": "lt.cooperative",
+          "description": "Kooperatinė bendrovė"
+        },
+        {
+          "uniqueRef": "lt.association",
+          "description": "Asociacija"
+        },
+        {
+          "uniqueRef": "lt.foundation",
+          "description": "Fondas"
+        },
+        {
+          "uniqueRef": "lt.other",
+          "description": "Kitas"
+        }
+      ],
+      "addressRequirements": {
+        "requiredFields": ["street_address", "locality_level1", "post_code"],
+        "allowedFields": [
+          "street_address",
+          "post_code",
+          "locality_level1",
+          "administrative_unit_level1"
+        ],
+        "fieldNames": {
+          "administrative_unit_level1": "province"
+        }
+      }
+    },
+    {
+      "isoCode": "LU",
+      "displayName": "Luxembourg",
+      "companyIdentifiers": [
+        {
+          "ref": "lu.tva",
+          "name": "Numéro d'identification à la taxe sur la valeur ajoutée"
+        },
+        {
+          "ref": "lu.matricule",
+          "name": "Matricule"
+        },
+        {
+          "ref": "lu.rcs",
+          "name": "Numéro d'identification unique"
+        }
+      ],
+      "personIdentifiers": [
+        {
+          "ref": "lu.matricule",
+          "name": "Matricule"
+        }
+      ],
+      "legalTypes": [
+        {
+          "uniqueRef": "lu.sole_trader",
+          "description": "Entrepreneur Individual"
+        },
+        {
+          "uniqueRef": "lu.limited_partnership",
+          "description": "Société en commandite simple"
+        },
+        {
+          "uniqueRef": "lu.general_partnership",
+          "description": "Sociéteé civil or sociéteé en nom collectif"
+        },
+        {
+          "uniqueRef": "lu.partnership_limited_by_shares",
+          "description": "Société en commandité par actions"
+        },
+        {
+          "uniqueRef": "lu.private_limited_company",
+          "description": "Société à responsabilitée limitée"
+        },
+        {
+          "uniqueRef": "lu.public_limited_company",
+          "description": "Société anonyme"
+        },
+        {
+          "uniqueRef": "lu.cooperative",
+          "description": "Société co-opérative"
+        },
+        {
+          "uniqueRef": "lu.association",
+          "description": "Association"
+        },
+        {
+          "uniqueRef": "lu.other",
+          "description": "Autres"
+        }
+      ],
+      "addressRequirements": {
+        "requiredFields": ["street_address", "locality_level1", "post_code"],
+        "allowedFields": ["street_address", "post_code", "locality_level1"],
+        "fieldNames": {}
+      }
+    },
+    {
+      "isoCode": "MT",
+      "displayName": "Malta",
+      "companyIdentifiers": [
+        {
+          "ref": "mt.vat_no",
+          "name": "Numru tal-VAT"
+        },
+        {
+          "ref": "mt.brn",
+          "name": "Business Registration Number"
+        }
+      ],
+      "personIdentifiers": [
+        {
+          "ref": "mt.karta_tal_identita",
+          "name": "Karta tal-Identità"
+        }
+      ],
+      "legalTypes": [
+        {
+          "uniqueRef": "mt.sole_trader",
+          "description": "Sole trader"
+        },
+        {
+          "uniqueRef": "mt.limited_partnership",
+          "description": "Limited partnership"
+        },
+        {
+          "uniqueRef": "mt.general_partnership",
+          "description": "General partnership"
+        },
+        {
+          "uniqueRef": "mt.private_limited_company",
+          "description": "Private limited company"
+        },
+        {
+          "uniqueRef": "mt.public_limited_company",
+          "description": "Public limited company"
+        },
+        {
+          "uniqueRef": "mt.associations",
+          "description": "Association"
+        },
+        {
+          "uniqueRef": "mt.foundation",
+          "description": "Foundation"
+        },
+        {
+          "uniqueRef": "mt.other",
+          "description": "Other"
+        }
+      ],
+      "addressRequirements": {
+        "requiredFields": ["street_address", "post_code", "locality_level1"],
+        "allowedFields": ["street_address", "locality_level1", "post_code"],
+        "fieldNames": {}
+      }
+    },
+    {
+      "isoCode": "MX",
+      "displayName": "Mexico",
+      "companyIdentifiers": [
+        {
+          "ref": "mx.rfc",
+          "name": "Registro Federal de Contribuyentes"
+        }
+      ],
+      "personIdentifiers": [
+        {
+          "ref": "mx.curp",
+          "name": "Clave Única de Registro de Población"
+        },
+        {
+          "ref": "mx.tax_regimen",
+          "name": "Régimen Fiscal"
+        }
+      ],
+      "legalTypes": [
+        {
+          "uniqueRef": "mx.persona_fisica",
+          "description": "Persona fisica"
+        },
+        {
+          "uniqueRef": "mx.persona_moral",
+          "description": "Persona moral"
+        },
+        {
+          "uniqueRef": "mx.empresa_sin_fin_de_lucro",
+          "description": "Empresa sin fin de lucro"
+        }
+      ],
+      "addressRequirements": {
+        "requiredFields": [
+          "street_address",
+          "post_code",
+          "locality_level1",
+          "administrative_unit_level1"
+        ],
+        "allowedFields": [
+          "street_address",
+          "post_code",
+          "locality_level1",
+          "locality_level3",
+          "administrative_unit_level1"
+        ],
+        "fieldNames": {
+          "administrative_unit_level1": "state",
+          "locality_level3": "neighborhood"
+        }
+      }
+    },
+    {
+      "isoCode": "NL",
+      "displayName": "Netherlands",
+      "companyIdentifiers": [
+        {
+          "ref": "nl.btw",
+          "name": "Btw-nummer"
+        },
+        {
+          "ref": "nl.kvk",
+          "name": "Kamer van Koophandel nummer"
+        }
+      ],
+      "personIdentifiers": [],
+      "legalTypes": [
+        {
+          "uniqueRef": "nl.zzp",
+          "description": "Zzp (Zelfstandige Zonder Personeel)"
+        },
+        {
+          "uniqueRef": "nl.kvk",
+          "description": "Eenmanszaak (KvK registratie)"
+        },
+        {
+          "uniqueRef": "nl.maatschap",
+          "description": "Maatschap"
+        },
+        {
+          "uniqueRef": "nl.vof",
+          "description": "Vennootschap Onder Firma (VOF)"
+        },
+        {
+          "uniqueRef": "nl.cv",
+          "description": "Commanditaire Vennootschap (CV)"
+        },
+        {
+          "uniqueRef": "nl.nv",
+          "description": "Naamloze Vennootschap (NV)"
+        },
+        {
+          "uniqueRef": "nl.bv",
+          "description": "Besloten Vennootschap (BV)"
+        },
+        {
+          "uniqueRef": "nl.stichting",
+          "description": "Stichting"
+        },
+        {
+          "uniqueRef": "nl.vvr",
+          "description": "Vereniging met volledige rechtsbevoegdheid"
+        },
+        {
+          "uniqueRef": "nl.vbr",
+          "description": "Vereniging met beperkte rechtsbevoegdheid"
+        },
+        {
+          "uniqueRef": "nl.cow",
+          "description": "Coöperatie en Onderlinge Waarborgmaatschappij"
+        },
+        {
+          "uniqueRef": "nl.overheidsinstelling",
+          "description": "Overheidsinstelling"
+        },
+        {
+          "uniqueRef": "nl.vereniging",
+          "description": "Vereniging"
+        }
+      ],
+      "addressRequirements": {
+        "requiredFields": ["street_address", "locality_level1", "post_code"],
+        "allowedFields": ["street_address", "post_code", "locality_level1"],
+        "fieldNames": {}
+      }
+    },
+    {
+      "isoCode": "NO",
+      "displayName": "Norway",
+      "companyIdentifiers": [
+        {
+          "ref": "no.mva",
+          "name": "MVA-nummer"
+        },
+        {
+          "ref": "no.orgnr",
+          "name": "Organisasjonsnummer"
+        }
+      ],
+      "personIdentifiers": [
+        {
+          "ref": "no.fodelsnummer",
+          "name": "Fødselsnummer"
+        }
+      ],
+      "legalTypes": [
+        {
+          "uniqueRef": "no.sole_trader",
+          "description": "Enkeltpersonforetak"
+        },
+        {
+          "uniqueRef": "no.limited_partnership",
+          "description": "Kommandittselsjap"
+        },
+        {
+          "uniqueRef": "no.general_partnership",
+          "description": "Ansvarlig Selskap"
+        },
+        {
+          "uniqueRef": "no.private_limited_company",
+          "description": "Aksjeselskap"
+        },
+        {
+          "uniqueRef": "no.public_limited_company",
+          "description": "Allmennaksjeselskap"
+        },
+        {
+          "uniqueRef": "no.cooperative",
+          "description": "Samvirkeforetak"
+        },
+        {
+          "uniqueRef": "no.foundation",
+          "description": "Stiftelse"
+        },
+        {
+          "uniqueRef": "no.association",
+          "description": "Forening"
+        },
+        {
+          "uniqueRef": "no.norwegian_registered_foreign_enterprise",
+          "description": "Norskregistrert Utenlandsk Foretak"
+        },
+        {
+          "uniqueRef": "no.other",
+          "description": "Annen"
+        }
+      ],
+      "addressRequirements": {
+        "requiredFields": ["street_address", "locality_level1", "post_code"],
+        "allowedFields": ["street_address", "post_code", "locality_level1"],
+        "fieldNames": {
+          "locality_level1": "post_town"
+        }
+      }
+    },
+    {
+      "isoCode": "PE",
+      "displayName": "Peru",
+      "companyIdentifiers": [],
+      "personIdentifiers": [
+        {
+          "ref": "pe.cui",
+          "name": "Cédula Única de Identidad"
+        }
+      ],
+      "legalTypes": [
+        {
+          "uniqueRef": "pe.pers",
+          "description": "Persona Natural"
+        },
+        {
+          "uniqueRef": "pe.eu",
+          "description": "Empresa Unipersonal (E.U.)"
+        },
+        {
+          "uniqueRef": "pe.eirl",
+          "description": "Empresa Individual de Responsabilidad Limitada (E.I.R.L.)"
+        },
+        {
+          "uniqueRef": "pe.sa",
+          "description": "Sociedad Anónima (S.A.)"
+        },
+        {
+          "uniqueRef": "pe.saa",
+          "description": "Sociedad Anónima Abierta (S.A.A.)"
+        },
+        {
+          "uniqueRef": "pe.sac",
+          "description": "Sociedad Anónima Cerrada (S.A.C.)"
+        },
+        {
+          "uniqueRef": "pe.srl",
+          "description": "Sociedad Comercial de Responsabilidad Limitada  (S.R.L.)"
+        },
+        {
+          "uniqueRef": "pe.sacs",
+          "description": "Sociedad por Acciones Cerrada Simplificada (S.A.C.S.)"
+        },
+        {
+          "uniqueRef": "pe.associación",
+          "description": "Associación"
+        },
+        {
+          "uniqueRef": "pe.fundación",
+          "description": "Fundación"
+        },
+        {
+          "uniqueRef": "pe.comité",
+          "description": "Comité"
+        }
+      ],
+      "addressRequirements": {
+        "requiredFields": [
+          "street_address",
+          "post_code",
+          "administrative_unit_level1",
+          "administrative_unit_level3"
+        ],
+        "allowedFields": [
+          "street_address",
+          "locality_level1",
+          "post_code",
+          "administrative_unit_level1",
+          "administrative_unit_level2",
+          "administrative_unit_level3"
+        ],
+        "fieldNames": {
+          "administrative_unit_level1": "department",
+          "administrative_unit_level2": "province",
+          "administrative_unit_level3": "district"
+        }
+      }
+    },
+    {
+      "isoCode": "PL",
+      "displayName": "Poland",
+      "companyIdentifiers": [
+        {
+          "ref": "pl.nip",
+          "name": "Numer identyfikacji podatkowej"
+        },
+        {
+          "ref": "pl.krs",
+          "name": "Numer Krajowego Rejestru Sądowego"
+        },
+        {
+          "ref": "pl.regon",
+          "name": "Numer Rejestr Gospodarki Narodowej"
+        }
+      ],
+      "personIdentifiers": [
+        {
+          "ref": "pl.pesel",
+          "name": "Powszechny Elektroniczny System Ewidencji Ludności"
+        }
+      ],
+      "legalTypes": [
+        {
+          "uniqueRef": "pl.cywilna",
+          "description": "Spółka Cywilna"
+        },
+        {
+          "uniqueRef": "pl.indywidualna",
+          "description": "Indywidualna działalność gospodarcza"
+        },
+        {
+          "uniqueRef": "pl.stowarzyszenie_fundacja",
+          "description": "Stowarzyszenie/Fundacja"
+        },
+        {
+          "uniqueRef": "pl.komandytowo-akcyjna",
+          "description": "spółka komandytowo-akcyjna"
+        },
+        {
+          "uniqueRef": "pl.komandytowa",
+          "description": "spółka komandytowa"
+        },
+        {
+          "uniqueRef": "pl.jawna",
+          "description": "spółka jawna"
+        },
+        {
+          "uniqueRef": "pl.akcyjna",
+          "description": "spółka akcyjna"
+        },
+        {
+          "uniqueRef": "pl.zoo",
+          "description": "spółka z o.o."
+        },
+        {
+          "uniqueRef": "pl.partnerska",
+          "description": "spółka partnerska"
+        }
+      ],
+      "addressRequirements": {
+        "requiredFields": ["street_address", "locality_level1", "post_code"],
+        "allowedFields": [
+          "street_address",
+          "post_code",
+          "locality_level1",
+          "administrative_unit_level1"
+        ],
+        "fieldNames": {
+          "administrative_unit_level1": "province"
+        }
+      }
+    },
+    {
+      "isoCode": "PT",
+      "displayName": "Portugal",
+      "companyIdentifiers": [
+        {
+          "ref": "pt.nif",
+          "name": "Número de Identificação Fiscal"
+        },
+        {
+          "ref": "pt.nipc",
+          "name": "Número de Identificação de Pessoa Coletiva"
+        },
+        {
+          "ref": "pt.codigo",
+          "name": "Código de acesso à certidão permanente"
+        }
+      ],
+      "personIdentifiers": [
+        {
+          "ref": "pt.cc",
+          "name": "Cartão de Cidadão"
+        }
+      ],
+      "legalTypes": [
+        {
+          "uniqueRef": "pt.eni",
+          "description": "Empresário em nome individual"
+        },
+        {
+          "uniqueRef": "pt.asfl",
+          "description": "Associação/Organização sem fins lucrativos"
+        },
+        {
+          "uniqueRef": "pt.sociedad",
+          "description": "Sociedade Civil"
+        },
+        {
+          "uniqueRef": "pt.sociedad_limitada",
+          "description": "Sociedade por Quotas"
+        },
+        {
+          "uniqueRef": "pt.sociedad_anonima",
+          "description": "Sociedade Anônima"
+        },
+        {
+          "uniqueRef": "pt.sociedad_comanditaria",
+          "description": "Sociedade em Comandita"
+        },
+        {
+          "uniqueRef": "pt.sociedad_colectiva",
+          "description": "Sociedade em Nome Colectivo"
+        },
+        {
+          "uniqueRef": "pt.sociedad_cooperativa",
+          "description": "Cooperativas"
+        },
+        {
+          "uniqueRef": "pt.state_agency",
+          "description": "Espresa Estatal"
+        },
+        {
+          "uniqueRef": "pt.pcdp",
+          "description": "Pessoas Colectivas de Direito Público"
+        }
+      ],
+      "addressRequirements": {
+        "requiredFields": ["street_address", "locality_level1", "post_code"],
+        "allowedFields": [
+          "street_address",
+          "post_code",
+          "locality_level1",
+          "administrative_unit_level1"
+        ],
+        "fieldNames": {
+          "administrative_unit_level1": "district"
+        }
+      }
+    },
+    {
+      "isoCode": "RO",
+      "displayName": "Romania",
+      "companyIdentifiers": [
+        {
+          "ref": "ro.cui",
+          "name": "Codul de TVA"
+        },
+        {
+          "ref": "ro.cui",
+          "name": "Codul Unic de Înregistrare"
+        },
+        {
+          "ref": "ro.cif",
+          "name": "Codul de identificare fiscală"
+        },
+        {
+          "ref": "ro.onrc",
+          "name": "Numărul de ordine în registrul comerţului"
+        }
+      ],
+      "personIdentifiers": [
+        {
+          "ref": "ro.cnp",
+          "name": "Codul numeric personal"
+        }
+      ],
+      "legalTypes": [
+        {
+          "uniqueRef": "ro.sole_trader",
+          "description": "Persoana fizica autorizata"
+        },
+        {
+          "uniqueRef": "ro.unregistered_partnership",
+          "description": "Asociere fără personalitate juridică"
+        },
+        {
+          "uniqueRef": "ro.general_partnership",
+          "description": "Societatea în nume colectiv"
+        },
+        {
+          "uniqueRef": "ro.limited_partnership",
+          "description": "Societatea în comandită simplă"
+        },
+        {
+          "uniqueRef": "ro.partnership_limited_by_shares",
+          "description": "Societatea în comandită pe acțiuni,"
+        },
+        {
+          "uniqueRef": "ro.public_limited_company",
+          "description": "Societatea pe acțiuni"
+        },
+        {
+          "uniqueRef": "ro.private_limited_company",
+          "description": "Societatea cu răspundere limitată"
+        },
+        {
+          "uniqueRef": "ro.private_limited_company_with_sole_owner",
+          "description": "Societatea cu răspundere limitată cu proprietar unic"
+        },
+        {
+          "uniqueRef": "ro.cooperative",
+          "description": "Cooperativă"
+        },
+        {
+          "uniqueRef": "ro.association",
+          "description": "Asociație"
+        },
+        {
+          "uniqueRef": "ro.foundation",
+          "description": "Fundație"
+        },
+        {
+          "uniqueRef": "ro.other",
+          "description": "Alt"
+        }
+      ],
+      "addressRequirements": {
+        "requiredFields": ["street_address", "locality_level1", "post_code"],
+        "allowedFields": [
+          "street_address",
+          "post_code",
+          "administrative_unit_level1",
+          "locality_level1"
+        ],
+        "fieldNames": {
+          "administrative_unit_level1": "county"
+        }
+      }
+    },
+    {
+      "isoCode": "SK",
+      "displayName": "Slovakia",
+      "companyIdentifiers": [
+        {
+          "ref": "sk.dph",
+          "name": "Identifikačné číslo pre daň z pridanej hodnoty"
+        },
+        {
+          "ref": "sk.ico",
+          "name": "Identifikačné číslo organizácie"
+        }
+      ],
+      "personIdentifiers": [
+        {
+          "ref": "sk.rc",
+          "name": "Rodné číslo"
+        }
+      ],
+      "legalTypes": [
+        {
+          "uniqueRef": "sk.public_limited_company",
+          "description": "akciová spoločnosť"
+        },
+        {
+          "uniqueRef": "sk.general_partnership",
+          "description": "verejná obchodná spoločnosť"
+        },
+        {
+          "uniqueRef": "sk.limited_partnership",
+          "description": "komanditná spoločnosť"
+        },
+        {
+          "uniqueRef": "sk.private_limited_company",
+          "description": "spoločnosť s ručením obmedzeným"
+        },
+        {
+          "uniqueRef": "sk.sole_trader",
+          "description": "živnostník"
+        },
+        {
+          "uniqueRef": "sk.unregistered_partnership",
+          "description": "Združenie bez právnej subjektivity"
+        },
+        {
+          "uniqueRef": "sk.association",
+          "description": "Združenie"
+        },
+        {
+          "uniqueRef": "sk.foundation",
+          "description": "Nadácia"
+        },
+        {
+          "uniqueRef": "sk.enterprise_or_foreign_company",
+          "description": "Podnik / Organizačná zložka podniku zahraničnej osob"
+        },
+        {
+          "uniqueRef": "sk.other",
+          "description": "Iný"
+        },
+        {
+          "uniqueRef": "sk.cooperative",
+          "description": "Družstvo"
+        }
+      ],
+      "addressRequirements": {
+        "requiredFields": ["street_address", "locality_level1", "post_code"],
+        "allowedFields": ["street_address", "post_code", "locality_level1"],
+        "fieldNames": {}
+      }
+    },
+    {
+      "isoCode": "SI",
+      "displayName": "Slovenia",
+      "companyIdentifiers": [
+        {
+          "ref": "si.ddv",
+          "name": "Identifikacijska številka za DDV"
+        },
+        {
+          "ref": "si.maticna",
+          "name": "Matična številka"
+        }
+      ],
+      "personIdentifiers": [
+        {
+          "ref": "si.emso",
+          "name": "Enotna matična številka občana (Unique Master Citizen Number)"
+        }
+      ],
+      "legalTypes": [
+        {
+          "uniqueRef": "si.partnership_limited_by_shares",
+          "description": "Komanditna delniška družba"
+        },
+        {
+          "uniqueRef": "si.foundation",
+          "description": "Združenje"
+        },
+        {
+          "uniqueRef": "si.sole_trader",
+          "description": "Samostojni podjetnik"
+        },
+        {
+          "uniqueRef": "si.limited_partnership",
+          "description": "Komanditna družba"
+        },
+        {
+          "uniqueRef": "si.private_unlimited_company",
+          "description": "Družba z neomejeno odgovornostjo"
+        },
+        {
+          "uniqueRef": "si.private_limited_company",
+          "description": "Družba z omejeno odgovornostjo"
+        },
+        {
+          "uniqueRef": "si.public_limited_company",
+          "description": "Delniška družba"
+        },
+        {
+          "uniqueRef": "si.cooperative",
+          "description": "Zadruga"
+        },
+        {
+          "uniqueRef": "si.other",
+          "description": "Druga"
+        },
+        {
+          "uniqueRef": "si.association",
+          "description": "Društvo, zveza društev"
+        }
+      ],
+      "addressRequirements": {
+        "requiredFields": ["street_address", "post_code", "locality_level1"],
+        "allowedFields": ["street_address", "post_code", "locality_level1"],
+        "fieldNames": {}
+      }
+    },
+    {
+      "isoCode": "ES",
+      "displayName": "Spain",
+      "companyIdentifiers": [
+        {
+          "ref": "es.nif",
+          "name": "Número de Identificación Fiscal"
+        },
+        {
+          "ref": "es.cif",
+          "name": "Certificado de Identificación Fiscal"
+        }
+      ],
+      "personIdentifiers": [
+        {
+          "ref": "es.nie",
+          "name": "Número de Identificación de Extranjero"
+        },
+        {
+          "ref": "es.dni",
+          "name": "Documento Nacional de Identidad"
+        }
+      ],
+      "legalTypes": [
+        {
+          "uniqueRef": "es.autonomo",
+          "description": "Empresario Individual/autónomo"
+        },
+        {
+          "uniqueRef": "es.comunidad",
+          "description": "Comunidad de Bienes"
+        },
+        {
+          "uniqueRef": "es.sociedad",
+          "description": "Sociedad Civil"
+        },
+        {
+          "uniqueRef": "es.asociaciones",
+          "description": "Asociaciones sin ánimo de lucro"
+        },
+        {
+          "uniqueRef": "es.sociedad_colectiva",
+          "description": "Sociedad Colectiva"
+        },
+        {
+          "uniqueRef": "es.sociedad_limitada",
+          "description": "Sociedad Limitada"
+        },
+        {
+          "uniqueRef": "es.sociedad_anonima",
+          "description": "Sociedad Anónima"
+        },
+        {
+          "uniqueRef": "es.sociedad_comanditaria",
+          "description": "Sociedad Comanditaria"
+        },
+        {
+          "uniqueRef": "es.sociedad_cooperativa",
+          "description": "Sociedad Cooperativa"
+        },
+        {
+          "uniqueRef": "es.state_agency",
+          "description": "Agencia Estatal"
+        }
+      ],
+      "addressRequirements": {
+        "requiredFields": [
+          "street_address",
+          "post_code",
+          "locality_level1",
+          "administrative_unit_level2"
+        ],
+        "allowedFields": [
+          "street_address",
+          "post_code",
+          "locality_level1",
+          "administrative_unit_level2"
+        ],
+        "fieldNames": {
+          "administrative_unit_level2": "province"
+        }
+      }
+    },
+    {
+      "isoCode": "SE",
+      "displayName": "Sweden",
+      "companyIdentifiers": [
+        {
+          "ref": "se.momsnr",
+          "name": "VAT-nummer"
+        },
+        {
+          "ref": "se.orgnr",
+          "name": "Organisationsnumret"
+        }
+      ],
+      "personIdentifiers": [
+        {
+          "ref": "se.pn",
+          "name": "Personnummer"
+        }
+      ],
+      "legalTypes": [
+        {
+          "uniqueRef": "se.sole_trader",
+          "description": "Enskildnärings - verksamhet"
+        },
+        {
+          "uniqueRef": "se.limited_partnership",
+          "description": "Kommanditbolag"
+        },
+        {
+          "uniqueRef": "se.limited",
+          "description": "Aktiebolag"
+        },
+        {
+          "uniqueRef": "se.trading_partnership",
+          "description": "Handelsbolag"
+        },
+        {
+          "uniqueRef": "se.economic_association",
+          "description": "Förening"
+        }
+      ],
+      "addressRequirements": {
+        "requiredFields": ["street_address", "locality_level1", "post_code"],
+        "allowedFields": ["street_address", "post_code", "locality_level1"],
+        "fieldNames": {
+          "locality_level1": "post_town"
+        }
+      }
+    },
+    {
+      "isoCode": "CH",
+      "displayName": "Switzerland",
+      "companyIdentifiers": [
+        {
+          "ref": "ch.mwst",
+          "name": "Mehrwertsteuernummer / Taxe sur la valeur ajoutée / Imposta sul valore aggiunto"
+        },
+        {
+          "ref": "ch.uid",
+          "name": "Unternehmens-Identifikationsnummer"
+        }
+      ],
+      "personIdentifiers": [],
+      "legalTypes": [
+        {
+          "uniqueRef": "ch.kollektivgesellschaft",
+          "description": "Kollektivgesellschaft"
+        },
+        {
+          "uniqueRef": "ch.kollektivgesellschaft",
+          "description": "Kollektivgesellschaft (OLD)"
+        },
+        {
+          "uniqueRef": "ch.einzelfirma",
+          "description": "Einzelfirma"
+        },
+        {
+          "uniqueRef": "ch.kommanditgesellschaft",
+          "description": "Kommanditgesellschaft"
+        },
+        {
+          "uniqueRef": "ch.gesellschaft_haftung",
+          "description": "Gesellschaft mit beschränkter Haftung"
+        },
+        {
+          "uniqueRef": "ch.aktiengesellschaft_societe",
+          "description": "Aktiengesellschaft/ Société anonyme"
+        },
+        {
+          "uniqueRef": "ch.ch_verein",
+          "description": "Verein"
+        },
+        {
+          "uniqueRef": "ch.einfachegesellschaft",
+          "description": "Einfache Gesellschaft"
+        }
+      ],
+      "addressRequirements": {
+        "requiredFields": ["street_address", "locality_level1", "post_code"],
+        "allowedFields": ["street_address", "post_code", "locality_level1"],
+        "fieldNames": {}
+      }
+    },
+    {
+      "isoCode": "GB",
+      "displayName": "United Kingdom",
+      "companyIdentifiers": [
+        {
+          "ref": "gb.vrn",
+          "name": "Value added tax registration number"
+        },
+        {
+          "ref": "gb.crn",
+          "name": "The company registration number for companies registered with Companies House"
+        }
+      ],
+      "personIdentifiers": [],
+      "legalTypes": [
+        {
+          "uniqueRef": "gb.partnership",
+          "description": "All partnerships"
+        },
+        {
+          "uniqueRef": "gb.sole_trader",
+          "description": "Sole proprietorship / sole trader"
+        },
+        {
+          "uniqueRef": "gb.society",
+          "description": "All clubs or societies"
+        },
+        {
+          "uniqueRef": "gb.edu",
+          "description": "All schools, colleges or universities"
+        },
+        {
+          "uniqueRef": "gb.other",
+          "description": "All other legal forms"
+        },
+        {
+          "uniqueRef": "gb.limited",
+          "description": "Private limited company"
+        }
+      ],
+      "addressRequirements": {
+        "requiredFields": ["street_address", "locality_level1", "post_code"],
+        "allowedFields": ["street_address", "locality_level1", "post_code"],
+        "fieldNames": {
+          "locality_level1": "post_town"
+        }
+      }
+    },
+    {
+      "isoCode": "US",
+      "displayName": "United States",
+      "companyIdentifiers": [
+        {
+          "ref": "us.ssn",
+          "name": "Social Security Number"
+        },
+        {
+          "ref": "us.ein",
+          "name": "Employer Identification Number"
+        },
+        {
+          "ref": "us.itin",
+          "name": "Social Security Number"
+        },
+        {
+          "ref": "us.ssn",
+          "name": "Social Security Number"
+        },
+        {
+          "ref": "us.ein",
+          "name": "Employer Identification Number"
+        },
+        {
+          "ref": "us.itin",
+          "name": "Social Security Number"
+        }
+      ],
+      "personIdentifiers": [
+        {
+          "ref": "us.ssn",
+          "name": "Social Security Number"
+        }
+      ],
+      "legalTypes": [
+        {
+          "uniqueRef": "us.partnership",
+          "description": "Limited Partnership"
+        },
+        {
+          "uniqueRef": "us.llp",
+          "description": "Limited Liability Partnership"
+        },
+        {
+          "uniqueRef": "us.lllp",
+          "description": "Limited Liability Limited Partnership"
+        },
+        {
+          "uniqueRef": "us.lc",
+          "description": "Limited Company"
+        },
+        {
+          "uniqueRef": "us.llc",
+          "description": "Limited Liability Company"
+        },
+        {
+          "uniqueRef": "us.pllc",
+          "description": "Professional Limited Liability Company"
+        },
+        {
+          "uniqueRef": "us.smllc",
+          "description": "Single Member Limited Liability Company"
+        },
+        {
+          "uniqueRef": "us.corp_inc",
+          "description": "Corporation Incorporated"
+        },
+        {
+          "uniqueRef": "us.pc",
+          "description": "Professional Corporation"
+        },
+        {
+          "uniqueRef": "us.uba_org",
+          "description": "Non-profit Organisation"
+        },
+        {
+          "uniqueRef": "us.sole_trader",
+          "description": "Sole proprietorship"
+        }
+      ],
+      "addressRequirements": {
+        "requiredFields": [
+          "street_address",
+          "locality_level1",
+          "administrative_unit_level1",
+          "post_code"
+        ],
+        "allowedFields": [
+          "street_address",
+          "locality_level1",
+          "administrative_unit_level1",
+          "post_code"
+        ],
+        "fieldNames": {
+          "administrative_unit_level1": "state",
+          "post_code": "zip_code"
+        }
+      }
+    }
+  ]
+}

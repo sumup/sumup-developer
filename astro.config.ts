@@ -180,7 +180,11 @@ export default defineConfig({
               }),
             ]
           : []),
-        starlightLlmsTxt(),
+        starlightLlmsTxt({
+          // We use MDX with components extensively which starlightLlmsTxt doesn't
+          // handle well otherwise
+          rawContent: true,
+        }),
         starlightImageZoom(),
       ],
       title: "SumUp Developer",

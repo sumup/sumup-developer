@@ -1,0 +1,75 @@
+---
+title: Address
+description: Address object format and country-specific requirements.
+sidebar:
+  order: 20
+---
+
+import AddressRequirementsTable from "@components/content/AddressRequirementsTable.astro";
+
+The Address object uses a comprehensive format that can handle addresses from
+around the world. The address fields used depend on the country conventions.
+For example, in Great Britain, `city` is `post_town`. In the United States, the
+top-level administrative unit used in addresses is `state`, whereas in Chile
+it's `region`.
+
+The address structure is based on
+[libaddressinput](https://github.com/google/libaddressinput) used by Android
+and Chromium.
+
+Whether an address is valid depends on whether the locally required fields are
+present. For example:
+
+- **Germany**: requires `street_address`, `post_code`, and `city`
+- **United States**: uses `state` for the top-level administrative unit
+- **Great Britain**: uses `post_town` instead of `city`
+- **Chile**: uses `region` for the top-level administrative unit
+- **Ireland**: uses `eircode` instead of `post_code`
+
+## Core Address Fields
+
+- **`country`**: The two letter country code formatted according to [ISO3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2). Example: `["DE", "GB"]`
+- **`street_address`**: The address lines, with each element representing one line. Example: `["Paul-Linke-Ufer 39-40", "2. Hinterhof"]`
+
+## Post Code
+
+A postal code included in a postal address for the purpose of sorting mail.
+
+The following fields are used for post code, depending on the country:
+
+- **`post_code`** (default): used by most countries. Example: `"10999"`
+- **`zip_code`**: used in the United States
+- **`eircode`**: used in Ireland
+
+## Administrative Areas
+
+The address supports up to 3 levels of administrative areas, `administrative_area_level_1` through `administrative_area_level_3`.
+
+The following fields are used for administrative divisions, depending on the country:
+
+- **`province`** (default): used in some countries for administrative divisions
+- **`state`**: used in countries like the United States for the top-level administrative unit
+- **`region`**: used in countries like Chile for administrative divisions
+- **`county`**: used in countries like Ireland and Romania
+- **`autonomous_community`**: used in Spain for the first sub-national level
+
+## Locality Levels
+
+The address supports up to 3 levels of locality levels, `locality_level_1`
+through `locality_level_3`.
+
+For more specific location information:
+
+- **`city`** (default): a city
+- **`post_town`**: used in Great Britain instead of city
+- **`district`**: a district within a city or region
+- **`neighborhood`**: a neighborhood or local area
+- **`suburb`**: a suburb or outlying area of a city
+- **`village`**: a village or small settlement
+- **`municipality`**: a municipality or local government area
+
+## Country-Specific Requirements
+
+Use the table below to search by country, field name, alias, and requirement.
+
+<AddressRequirementsTable />
