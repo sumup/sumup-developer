@@ -108,8 +108,8 @@ If you want to dive straight into implementation, carry out the following steps:
 
 ### Card Reader Flow
 
-1. [Install the SDK](#installing-and-setting-up-ios-sdk).
-2. [Import the SDK into your project file](#importing-the-sdk).
+1. [Install the SDK](#adding-sdk-framework-to-project).
+2. [Import the SDK into your project file](#importing-sdk).
 3. [Initialize the SDK with an Affiliate Key](#initialization).
 4. [Log the user in](#logging-the-user-in).
 5. [Prepare user's device for checkout](#prepare-for-checkout).
@@ -123,8 +123,8 @@ Please consider the following when building Tap-to-Pay solutions, as Apple revie
 * Follow the [Human Interface Guidelines](https://developer.apple.com/design/human-interface-guidelines/tap-to-pay-on-iphone) to save time when Apple reviews your app.
 * Also consider [Apple’s marketing guidelines](https://developer.apple.com/tap-to-pay/marketing-guidelines/) and use standard assets where possible.
 
-1. [Install the SDK](#installing-and-setting-up-ios-sdk).
-2. [Import the SDK into your project file](#importing-the-sdk).
+1. [Install the SDK](#adding-sdk-framework-to-project).
+2. [Import the SDK into your project file](#importing-sdk).
 3. [Initialize the SDK with an Affiliate Key](#initialization).
 4. [Log the user in](#logging-the-user-in).
 5. Follow steps under [Implementing Tap-to-Pay](#implementing-tap-to-pay).
@@ -343,7 +343,7 @@ SumUp { iossdkname } supports either the OAuth 2.0 Authorization Code Flow login
 
 ### Implementing Authentication with OAuth 2.0
 
-SumUp can issue Access Tokens in accordance with the OAuth 2.0 Authorization Code Flow, which is our recommended authorization approach (Client Credentials Flow is not supported by this SDK). See the [Authorization Documentation](/tools/authorization/oauth/#integration-via-oauth-20) for more details.
+SumUp can issue Access Tokens in accordance with the OAuth 2.0 Authorization Code Flow, which is our recommended authorization approach (Client Credentials Flow is not supported by this SDK). See the [Authorization Documentation](/tools/authorization/oauth/#authorization-code-flow) for more details.
 
 ### Implementing Authentication with View Controller
 
@@ -954,7 +954,7 @@ In this step, we implement the checkout.
 1. Verify that Merchant is logged in and using a valid currency code.
 2. Define total amount to be charged. Please note that you need to pass an `NSDecimalNumber` as the total value. While `NSDecimalNumber` is a subclass of `NSNumber` it is not advised to use the convenience method of `NSNumber` to create an `NSDecimalNumber`.
 3. Set up the request.
-4. Add a tip if selected ([see the section about tipping](#tipping)).
+4. Add a tip if selected ([see the section about tipping](#note-on-tipping)).
 5. Check if the option to skip receipt is enabled, if so, execute it.
 6. Check for `foreignTransactionID`.
 7. Execute the request with error handling and confirmation.
