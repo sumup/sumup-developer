@@ -188,7 +188,7 @@ export default defineConfig({
                   "/changelog",
                   "/changelog/**",
                 ],
-                errorOnInvalidHashes: false,
+                errorOnInvalidHashes: true,
               }),
             ]
           : []),

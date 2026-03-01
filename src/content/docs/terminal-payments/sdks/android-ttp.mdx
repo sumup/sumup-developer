@@ -88,7 +88,7 @@ interface AuthTokenProvider {
 
 There are several ways for a consumer app to provide the access token to the SDK.
 
-1. Using the OAuth 2.0 [flow](https://developer.sumup.com/tools/authorization/oauth/#integration-via-oauth-20):
+1. Using the OAuth 2.0 [flow](/tools/authorization/oauth/#authorization-code-flow):
    The consumer app can implement the OAuth 2.0 flow to get the access token and provide it to the SDK. The SDK provides the `AuthTokenProvider` interface that should be implemented by the consumer app. The implementation of the `getAccessToken` method should return the access token. This way is preferable and recommended because it provides a more secure way to authenticate the user.
 
 2. Using API Key:
@@ -115,11 +115,11 @@ The `TapToPay` interface has the following methods:
 suspend fun init(authTokenProvider: AuthTokenProvider): Result<Unit>
 ```
 
-The `init` method initializes the session. The `AuthTokenProvider` interface is responsible for providing the access token to the SDK (see [Authentication](#Authentication)).
+The `init` method initializes the session. The `AuthTokenProvider` interface is responsible for providing the access token to the SDK (see [Authentication](#authentication)).
 Please, note that the `init` method should be called only once during the app lifecycle. The `init` method should be called as soon as possible after the app starts.
 
 The `init` function returns a `Result` object that can be either a `Result.Success` if the initialization was successful.
-The function can also return `Result.Failure` with one exception from the list of exceptions mentioned [under Exceptions](#Exceptions).
+The function can also return `Result.Failure` with one exception from the list of exceptions mentioned [under Exceptions](#exceptions).
 
 #### 2. Start Payment
 
@@ -151,7 +151,7 @@ The list of possible events:
   )
   ```
 
-- `TransactionFailed(val paymentOutput: PaymentOutput?, val tapToPayException: TapToPayException?)` - transaction failed. It might happen due to many reasons, like attestation error, backend error, card reader error, and so on. The full list of errors is described in the [Exceptions](#Exceptions) section. `PaymentOutput` param might be null if the transaction failed before reaching the backend.
+- `TransactionFailed(val paymentOutput: PaymentOutput?, val tapToPayException: TapToPayException?)` - transaction failed. It might happen due to many reasons, like attestation error, backend error, card reader error, and so on. The full list of errors is described in the [Exceptions](#exceptions) section. `PaymentOutput` param might be null if the transaction failed before reaching the backend.
 - `TransactionCanceled(val paymentOutput: PaymentOutput?)` - transaction was cancelled by the user.
 - `TransactionResultUnknown(val paymentOutput: PaymentOutput?)` - transaction result is unknown. This might happen on remote calls, when there is no response due to timeout.
 - `PaymentFlowClosedSuccessfully(val paymentOutput: PaymentOutput?, val shouldDisplayReceipt: Boolean)` - after a successful transaction, users see the successful screen with two buttons: **Send receipt** and **Done**. Once the user clicks on any button, the screen closes and fires the `PaymentClosed` event.

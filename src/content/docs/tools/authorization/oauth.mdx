@@ -30,8 +30,8 @@ Choose the flow that matches how your application obtains access while keeping s
 
 SumUp manually verifies requests for the following scopes:
 
-* `payments` – required to create and process payments.
-* `payment_instruments` – required to store customer data and tokenize cards.
+- `payments` – required to create and process payments.
+- `payment_instruments` – required to store customer data and tokenize cards.
 
 [Contact us](/contact) to request those scopes for your application.
 
@@ -92,17 +92,17 @@ Refresh tokens are valid for six months. If you use a refresh token within 30 da
 
 Scopes restrict what your application may do on behalf of the merchant. Request only the scopes you need. When you omit scopes, SumUp grants the defaults listed below. To obtain additional scopes later, repeat the authorization code flow.
 
-| Scope name                       | Default | Access Level | Description |
-| -------------------------------- | ------- | ------------ | ----------- |
-| transactions.history             | yes     | merchant     | View transactions and transaction history for the merchant user. |
-| user.app-settings                | yes     | merchant     | View and modify SumUp mobile app settings for the merchant user. |
-| user.profile_readonly            | yes     | merchant     | View profile details of the merchant user. |
-| user.profile                     | no      | merchant     | Modify profile details of the merchant user. |
-| user.subaccounts                 | no      | merchant     | View and modify sub-account profiles for the merchant user. |
-| user.payout-settings             | no      | merchant     | View and modify payout settings for the merchant user. |
+| Scope name                       | Default | Access Level | Description                                                                               |
+| -------------------------------- | ------- | ------------ | ----------------------------------------------------------------------------------------- |
+| transactions.history             | yes     | merchant     | View transactions and transaction history for the merchant user.                          |
+| user.app-settings                | yes     | merchant     | View and modify SumUp mobile app settings for the merchant user.                          |
+| user.profile_readonly            | yes     | merchant     | View profile details of the merchant user.                                                |
+| user.profile                     | no      | merchant     | Modify profile details of the merchant user.                                              |
+| user.subaccounts                 | no      | merchant     | View and modify sub-account profiles for the merchant user.                               |
+| user.payout-settings             | no      | merchant     | View and modify payout settings for the merchant user.                                    |
 | products                         | no      | merchant     | View and modify products, shelves, prices, and VAT rates in the merchant's product store. |
-| `restricted` payments            | no      | feature      | Create and process payment checkouts. Requires manual verification by SumUp. |
-| `restricted` payment_instruments | no      | feature      | Save customers and tokenize their payment cards. Requires manual verification by SumUp. |
+| `restricted` payments            | no      | feature      | Create and process payment checkouts. Requires manual verification by SumUp.              |
+| `restricted` payment_instruments | no      | feature      | Save customers and tokenize their payment cards. Requires manual verification by SumUp.   |
 
 Restricted scopes must be enabled by SumUp for your application. [Contact us](/contact) to request them.
 
@@ -160,7 +160,7 @@ On the [OAuth Apps](https://me.sumup.com/developers/apps) page, open your applic
 Provide the following details:
 
 | Name | Required | Description |
-| -----| -------- | ----------  |
+| ----- | -------- | ---------- |
 | Client name | Yes | A descriptive name for your client application. |
 | Application type | Yes | The type of your client application. Options: Web, Android, iOS, Other. |
 | Authorized redirect URL | Yes | Redirect URL to register for your client application. Specify multiple URLs by separating them with commas. |
