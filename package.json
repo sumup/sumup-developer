@@ -34,10 +34,10 @@
     "prelint": "astro sync",
     "lint": "npm run lint:src",
     "lint:src": "npx eslint",
-    "lint:markdown": "chmod +x node_modules/@rumdl/cli-*/rumdl 2>/dev/null || true && rumdl check .",
+    "lint:markdown": "rumdl check .",
     "format": "npm run format:src && npm run format:astro && npm run format:markdown",
     "format:astro": "npx prettier --write \"**/*.astro\"",
-    "format:markdown": "chmod +x node_modules/@rumdl/cli-*/rumdl 2>/dev/null || true && rumdl fmt .",
+    "format:markdown": "rumdl fmt .",
     "format:src": "npx prettier --write \"**/*.{js,jsx,ts,tsx,mjs,css,json}\"",
     "linkcheck": "CHECK_LINKS=true astro build",
     "test": "vitest run"
