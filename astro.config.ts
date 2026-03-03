@@ -121,6 +121,13 @@ const head = (): HeadUserConfig => {
         href: "/changelog/rss.xml",
       },
     },
+    {
+      tag: "meta",
+      attrs: {
+        name: "google-site-verification",
+        content: "0mA7KPaajXK9CtZgu7A9lLDHeTEZ_SiHdmXz2vDej7Y",
+      },
+    },
   ];
 
   if (PUBLIC_ONETRUST_DOMAIN_ID) {
