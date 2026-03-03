@@ -259,7 +259,7 @@ export default defineConfig({
         {
           icon: "github",
           label: "GitHub",
-          href: "https://github.com/sumup/documentation",
+          href: "https://github.com/sumup/sumup-developer",
         },
       ],
       editLink: {
