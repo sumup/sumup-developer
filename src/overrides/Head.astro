@@ -11,11 +11,15 @@ const title = routeTitle.includes("SumUp")
   : `${routeTitle} | SumUp Developer`;
 const description = frontmatter.description;
 const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
+const siteName = "SumUp Developer";
 const markdownAlternateUrl = new URL(
   `${Astro.url.pathname.replace(/\/?$/, "/")}index.md`,
   Astro.site,
 ).toString();
-const shouldNoIndex = Boolean((frontmatter as Record<string, unknown>).noindex);
+const shouldNoIndex = Boolean(
+  (frontmatter as Record<string, unknown>).noindex ||
+  (frontmatter as Record<string, unknown>).draft,
+);
 
 function upsertMetaByName(name: string, content: string) {
   const existing = head.find(
@@ -86,8 +90,11 @@ if (existingTitle) {
 upsertMetaByProperty("og:title", title);
 upsertMetaByProperty("og:url", canonicalUrl);
 upsertMetaByProperty("og:type", entry.id === "" ? "website" : "article");
+upsertMetaByProperty("og:site_name", siteName);
+upsertMetaByProperty("og:locale", "en_GB");
 upsertMetaByName("twitter:title", title);
 upsertMetaByName("twitter:card", "summary_large_image");
+upsertMetaByName("twitter:site", "@SumUp");
 
 if (description) {
   upsertMetaByName("description", description);
@@ -99,9 +106,12 @@ if (lastUpdated) {
   upsertMetaByProperty("article:modified_time", lastUpdated.toISOString());
 }
 
-if (shouldNoIndex) {
-  upsertMetaByName("robots", "noindex");
-}
+upsertMetaByName(
+  "robots",
+  shouldNoIndex
+    ? "noindex"
+    : "index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1",
+);
 
 upsertCanonicalLink(canonicalUrl);
 ensureMarkdownAlternateLink(markdownAlternateUrl);

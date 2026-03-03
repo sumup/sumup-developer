@@ -52,6 +52,7 @@ const tagName = posts.at(0)?.data.tags.find((t) => slugify(t) === currentTag);
 const props = {
   frontmatter: {
     title: tagName ? `${tagName} Changelog` : `Changelog`,
+    noindex: Boolean(currentTag),
     template: "splash",
     tableOfContents: false,
   },
