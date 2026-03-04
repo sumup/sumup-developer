@@ -49,6 +49,18 @@ What to verify:
 
 <OnlinePaymentsTestCardsTable flow="Frictionless" />
 
+## Test Unsuccessful Payments
+
+Use this section to verify how your integration handles declined or failed payments.
+
+To simulate an unsuccessful payment, create a checkout for amount `42.01`, `42.76`, or `42.91` (depending on currency, for example `4201` in minor units[^minor_units]). These amounts result in a failed payment.
+
+What to verify:
+
+1. Your frontend displays a clear failure message and allows safe retry
+2. Your backend marks the payment as failed and avoids creating a successful order
+3. Your logs and monitoring capture the failure reason for troubleshooting
+
 ## Test 3D Secure Authentication
 
 3D Secure (3DS) adds an authentication step between payment submission and final authorization when issuer verification is required.
@@ -100,3 +112,5 @@ Once you've thoroughly tested your integration with your sandbox merchant accoun
   Remember to switch from your sandbox merchant account to your live merchant
   account before accepting real payments from customers.
 </Aside>
+
+[^minor_units]: [Minor unit fractions](https://en.wikipedia.org/wiki/ISO_4217#Minor_unit_fractions) refer to the smallest denomination of a currency, which is used for representing transaction amounts. For example, if a currency has two decimal places, like USD (dollars and cents), the minor unit is the cent, and an amount is represented as a whole number of cents
