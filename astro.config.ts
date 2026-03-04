@@ -164,7 +164,7 @@ const head = (): HeadUserConfig => {
 };
 
 export default defineConfig({
-  adapter: cloudflare(),
+  adapter: cloudflare({ imageService: "compile" }),
   site: "https://developer.sumup.com",
 
   experimental: {
