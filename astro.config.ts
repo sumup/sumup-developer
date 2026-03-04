@@ -6,6 +6,7 @@ import starlightLinksValidator from "starlight-links-validator";
 import mermaid from "astro-mermaid";
 import starlightLlmsTxt from "starlight-llms-txt";
 import { loadEnv } from "vite";
+import rehypeExternalLinks from "./src/plugins/rehype/external-links";
 
 import { defineConfig } from "astro/config";
 import type { HeadUserConfig } from "node_modules/@astrojs/starlight/schemas/head";
@@ -167,6 +168,7 @@ export default defineConfig({
   adapter: cloudflare({ imageService: "compile" }),
   site: "https://developer.sumup.com",
   markdown: {
+    rehypePlugins: [rehypeExternalLinks],
     remarkRehype: {
       // Use text-presentation symbol (U+21A9 + U+FE0E), not emoji.
       footnoteBackContent: "\u21A9\uFE0E",
