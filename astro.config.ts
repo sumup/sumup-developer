@@ -166,6 +166,12 @@ const head = (): HeadUserConfig => {
 export default defineConfig({
   adapter: cloudflare({ imageService: "compile" }),
   site: "https://developer.sumup.com",
+  markdown: {
+    remarkRehype: {
+      // Use text-presentation symbol (U+21A9 + U+FE0E), not emoji.
+      footnoteBackContent: "\u21A9\uFE0E",
+    },
+  },
 
   experimental: {
     contentIntellisense: true,
