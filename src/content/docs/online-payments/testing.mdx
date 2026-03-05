@@ -1,0 +1,116 @@
+---
+title: Testing
+description: Learn how to test online payments using a sandbox merchant account and test cards with different 3D Secure flows.
+sidebar:
+  order: 5
+---
+
+import { Aside, Steps } from "@astrojs/starlight/components";
+import OnlinePaymentsTestCardsTable from "@components/content/OnlinePaymentsTestCardsTable";
+
+Testing your online payments integration is crucial before going live. SumUp provides sandbox merchant accounts and a comprehensive set of test cards to simulate various payment scenarios, including different 3D Secure authentication flows.
+
+## Setting up a Sandbox Merchant Account
+
+Before you can test online payments, you need to create a sandbox merchant account in the SumUp Dashboard.
+
+<Steps>
+
+1. Log in to your SumUp account.
+
+2. Open the drop-down menu between Support and your user panel.
+
+3. Select **Sandbox merchant account**.
+
+</Steps>
+
+<Aside type="note">
+  Sandbox merchant accounts **do not** process transactions with real funds. All
+  transactions are simulated for testing purposes only.
+</Aside>
+
+## How to Use Test Cards
+
+When testing with card payments, you can use the following common details for all test cards:
+
+- **CVV**: Any 3 digits (e.g., `123`)
+- **Expiry Date**: Any future date (e.g., `12/25`)
+- **Cardholder Name**: Any name
+
+## Test Successful Payments
+
+Use this section as your primary end-to-end test path. It validates that a payment can be completed successfully without additional customer authentication steps.
+
+What to verify:
+
+1. Your checkout completes successfully without additional cardholder action
+2. You correctly handle frictionless authentication and continue order processing
+3. Your success path is robust across different card brands
+
+<OnlinePaymentsTestCardsTable flow="Frictionless" />
+
+## Test Unsuccessful Payments
+
+Use this section to verify how your integration handles declined or failed payments.
+
+To simulate an unsuccessful payment, create a checkout for amount `42.01`, `42.76`, or `42.91` (depending on currency, for example `4201` in minor units[^minor_units]). These amounts result in a failed payment.
+
+What to verify:
+
+1. Your frontend displays a clear failure message and allows safe retry
+2. Your backend marks the payment as failed and avoids creating a successful order
+3. Your logs and monitoring capture the failure reason for troubleshooting
+
+## Test 3D Secure Authentication
+
+3D Secure (3DS) adds an authentication step between payment submission and final authorization when issuer verification is required.
+
+Primary option: use the [Payment Widget](/online-payments/checkouts/card-widget/). It handles authentication screens and redirect behavior for you.
+
+Secondary option: direct Checkouts API integration. This path requires PCI compliance and explicit onboarding/approval from SumUp. After [processing a checkout](/api/checkouts/process), use the returned `next_step` object (`url`, `method`, optional `payload`, `redirect_url`, and `mechanism`) to continue the flow.
+
+### Successful 3D Secure Authentication Scenarios
+
+For Payment Widget integrations, `onResponse` can emit `auth-screen` when challenge authentication starts. After challenge completion, verify the final checkout result on your backend with [Retrieve a checkout](/api/checkouts/get).
+
+What to verify:
+
+1. Your frontend handles challenge redirects and return URLs correctly
+2. Your backend waits for the final authentication result before fulfillment
+3. Retry and timeout handling behaves correctly when users abandon the challenge
+
+<OnlinePaymentsTestCardsTable flow="Challenge" />
+
+### 3D Secure Failure Scenarios
+
+Use these cards to validate failed authentication and non-participation behavior.
+
+These cards simulate:
+
+- Technical authentication errors
+- Cardholder not enrolled for 3D Secure
+- Card/issuer not participating in 3D Secure
+
+What to verify:
+
+1. You display actionable error messaging for technical authentication failures
+2. You handle non-enrolled and non-participating cards without crashing
+3. Failed payments do not create successful order states in your system
+
+<OnlinePaymentsTestCardsTable flow="Error" />
+
+## Next Steps
+
+Once you've thoroughly tested your integration with your sandbox merchant account and test cards:
+
+1. Switch back to your live account in the Dashboard
+2. Ensure your production credentials are properly configured
+3. Process a small real transaction to verify everything works as expected
+4. Monitor your first transactions closely to ensure proper payment processing
+
+<Aside type="caution">
+  Remember to switch from your sandbox merchant account to your live merchant
+  account before accepting real payments from customers.
+</Aside>
+
+[^minor_units]: [Minor unit fractions](https://en.wikipedia.org/wiki/ISO_4217#Minor_unit_fractions) refer to the smallest denomination of a currency, which is used for representing transaction amounts. For example, if a currency has two decimal places, like USD (dollars and cents), the minor unit is the cent, and an amount is represented as a whole number of cents

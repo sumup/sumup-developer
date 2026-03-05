@@ -1,16 +1,10 @@
 import { Button, SearchInput } from "@sumup-oss/circuit-ui";
-import { type ReactNode, useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import styles from "./SearchableTable.module.css";
+import Table, { type TableColumn } from "./Table";
 
-export type SearchableTableColumn<T> = {
-  key: string;
-  label: string;
-  getValue: (row: T) => string | number | null | undefined;
-  render?: (row: T) => ReactNode;
-  width?: string;
-  wrap?: "anywhere" | "word" | "nowrap";
-};
+export type SearchableTableColumn<T> = TableColumn<T>;
 
 type Props<T> = {
   title?: string;
@@ -66,28 +60,6 @@ const SearchableTable = <T,>({
     setIsExpanded(false);
   }, [searchQuery]);
 
-  const getColumnStyle = (column: SearchableTableColumn<T>) => {
-    const wrapStyle =
-      column.wrap === "nowrap"
-        ? {
-            whiteSpace: "nowrap" as const,
-            overflowWrap: "normal" as const,
-            wordBreak: "normal" as const,
-          }
-        : column.wrap === "word"
-          ? {
-              whiteSpace: "normal" as const,
-              overflowWrap: "normal" as const,
-              wordBreak: "normal" as const,
-            }
-          : undefined;
-
-    return {
-      ...(column.width ? { width: column.width } : {}),
-      ...(wrapStyle ?? {}),
-    };
-  };
-
   return (
     <section className={`${styles.section} not-content`}>
       {title ? <h5>{title}</h5> : null}
@@ -106,30 +78,12 @@ const SearchableTable = <T,>({
           className={styles.tableContainer}
           style={{ maxHeight: isExpanded ? "none" : `${maxHeight}px` }}
         >
-          <table className={styles.table} style={{ tableLayout }}>
-            <thead>
-              <tr>
-                {columns.map((column) => (
-                  <th key={column.key} style={getColumnStyle(column)}>
-                    {column.label}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {filteredRows.map((row, index) => (
-                <tr key={getRowKey ? getRowKey(row, index) : String(index)}>
-                  {columns.map((column) => (
-                    <td key={column.key} style={getColumnStyle(column)}>
-                      {column.render
-                        ? column.render(row)
-                        : String(column.getValue(row) ?? "")}
-                    </td>
-                  ))}
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <Table
+            columns={columns}
+            rows={filteredRows}
+            getRowKey={getRowKey}
+            tableLayout={tableLayout}
+          />
         </div>
       </div>
 
