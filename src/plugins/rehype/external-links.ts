@@ -18,7 +18,6 @@ const isExternalHref = (href: string): boolean => {
       return false;
     }
 
-    console.info({ host: url.host, HOST, x: url.host === HOST });
     return url.host !== HOST;
   } catch {
     return false;
