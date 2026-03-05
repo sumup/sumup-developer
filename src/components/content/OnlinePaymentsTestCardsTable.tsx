@@ -1,6 +1,8 @@
 import type { TableColumn } from "./Table";
 import Table from "./Table";
 import styles from "./OnlinePaymentsTestCardsTable.module.css";
+import { ListItemGroup } from "@sumup-oss/circuit-ui";
+import { getIconURL, type IconName } from "@sumup-oss/icons";
 import {
   type OnlinePaymentsTestCard,
   onlinePaymentsTestCards,
@@ -39,27 +41,24 @@ const getExpectedBehavior = (row: OnlinePaymentsTestCard) => {
   return "Follow your standard 3D Secure handling.";
 };
 
-const brandLogoUrls: Record<string, string> = {
-  VISA: "https://sumup.docs.oppwa.com/sites/default/files/brands/VISA.png",
-  Mastercard:
-    "https://sumup.docs.oppwa.com/sites/default/files/brands/MASTER.png",
-  MAESTRO:
-    "https://sumup.docs.oppwa.com/sites/default/files/brands/MAESTRO.png",
-  "American Express":
-    "https://sumup.docs.oppwa.com/sites/default/files/brands/AMEX.png",
-  "Diners / Discover":
-    "https://sumup.docs.oppwa.com/sites/default/files/brands/DISCOVER.png",
-  JCB: "https://sumup.docs.oppwa.com/sites/default/files/brands/JCB.png",
-  "Cashlink Malta":
-    "https://sumup.docs.oppwa.com/sites/default/files/brands/CASHLINKMALTA.png",
-  Dankort:
-    "https://sumup.docs.oppwa.com/sites/default/files/brands/DANKORT.png",
-  "Carte Bancaire":
-    "https://sumup.docs.oppwa.com/sites/default/files/brands/CARTEBANCAIRE.png",
-  UnionPay:
-    "https://sumup.docs.oppwa.com/sites/default/files/brands/UNIONPAY.png",
-  "Bancontact Link":
-    "https://sumup.docs.oppwa.com/sites/default/files/brands/BANCONTACT_LINK.png",
+const brandIconNames: Partial<
+  Record<OnlinePaymentsTestCard["brand"], IconName>
+> = {
+  VISA: "visa",
+  Mastercard: "mastercard",
+  MAESTRO: "maestro",
+  "American Express": "american_express",
+  "Diners / Discover": "discover",
+  JCB: "jcb",
+  Dankort: "dankort",
+  UnionPay: "union_pay",
+  "Bancontact Link": "bancontact",
+};
+
+const getBrandIconUrl = (brand: string) => {
+  const iconName = brandIconNames[brand];
+
+  return iconName ? getIconURL(iconName, "24") : null;
 };
 
 const getColumns = () =>
@@ -70,7 +69,7 @@ const getColumns = () =>
       getValue: (row: OnlinePaymentsTestCard) => row.brand,
       wrap: "nowrap",
       render: (row: OnlinePaymentsTestCard) => {
-        const logoUrl = brandLogoUrls[row.brand];
+        const logoUrl = getBrandIconUrl(row.brand);
 
         return (
           <span className={styles.brandCell}>
@@ -100,29 +99,57 @@ const getColumns = () =>
     },
   ] satisfies TableColumn<OnlinePaymentsTestCard>[];
 
-type Props = {
-  flow: OnlinePaymentsTestCard["flow"];
-  title?: string;
+const getBrandLeadingComponent = (brand: string) => {
+  const logoUrl = getBrandIconUrl(brand);
+
+  if (!logoUrl) {
+    return undefined;
+  }
+
+  return function BrandIcon() {
+    return <img src={logoUrl} alt={brand} className={styles.brandLogo} />;
+  };
 };
 
-const OnlinePaymentsTestCardsTable = ({ flow, title }: Props) => {
-  const rows = onlinePaymentsTestCards.filter((row) => row.flow === flow);
+const excludedBrands = new Set<OnlinePaymentsTestCard["brand"]>([
+  "Cashlink Malta",
+  "Carte Bancaire",
+]);
+
+const OnlinePaymentsTestCardsTable = ({
+  flow,
+}: {
+  flow: OnlinePaymentsTestCard["flow"];
+}) => {
+  const rows = onlinePaymentsTestCards.filter(
+    (row) => row.flow === flow && !excludedBrands.has(row.brand),
+  );
+  const listItems = rows.map((row) => ({
+    key: `${row.brand}:${row.flow}:${row.number}`,
+    label: <code>{formatCardNumber(row.number)}</code>,
+    leadingComponent: getBrandLeadingComponent(row.brand),
+    details: getExpectedBehavior(row),
+  }));
 
   return (
     <section className={`${tableStyles.section} not-content ${styles.section}`}>
-      {title ? <h4>{title}</h4> : null}
-      <div className={tableStyles.tableFrame}>
-        <div
-          className={tableStyles.tableContainer}
-          style={{ maxHeight: "none" }}
-        >
-          <Table
-            columns={getColumns()}
-            rows={rows}
-            tableLayout="auto"
-            getRowKey={(row) => `${row.brand}:${row.flow}:${row.number}`}
-          />
+      <div className={styles.tableView}>
+        <div className={tableStyles.tableFrame}>
+          <div
+            className={tableStyles.tableContainer}
+            style={{ maxHeight: "none" }}
+          >
+            <Table
+              columns={getColumns()}
+              rows={rows}
+              tableLayout="auto"
+              getRowKey={(row) => `${row.brand}:${row.flow}:${row.number}`}
+            />
+          </div>
         </div>
+      </div>
+      <div className={styles.listView}>
+        <ListItemGroup label="Test cards" items={listItems} hideLabel />
       </div>
     </section>
   );

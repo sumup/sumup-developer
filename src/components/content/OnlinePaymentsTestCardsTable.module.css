@@ -16,3 +16,17 @@
   object-fit: contain;
   flex-shrink: 0;
 }
+
+.listView {
+  display: none;
+}
+
+@media (max-width: 800px) {
+  .tableView {
+    display: none;
+  }
+
+  .listView {
+    display: block;
+  }
+}
