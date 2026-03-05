@@ -1,0 +1,54 @@
+.tableFrame {
+  width: 100%;
+  box-sizing: border-box;
+  border: var(--cui-border-width-kilo) solid var(--cui-border-normal);
+  border-radius: var(--cui-border-radius-byte);
+  overflow: hidden;
+  margin-top: var(--cui-spacings-byte);
+}
+
+.tableContainer {
+  width: 100%;
+  overflow-y: auto;
+  overflow-x: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+.table {
+  width: 100%;
+  min-width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  table-layout: fixed;
+}
+
+.table th,
+.table td {
+  padding: var(--cui-spacings-byte) var(--cui-spacings-kilo);
+  border-bottom: var(--cui-border-width-kilo) solid var(--cui-border-subtle);
+  vertical-align: top;
+  text-align: left;
+  font-size: var(--cui-body-s-font-size);
+  line-height: var(--cui-body-s-line-height);
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.table th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: var(--sl-color-bg);
+}
+
+.table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.icon {
+  width: 24px;
+  height: 24px;
+  display: block;
+}

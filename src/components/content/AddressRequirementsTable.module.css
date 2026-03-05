@@ -1,8 +1,0 @@
-.fieldList {
-  margin: 0;
-  padding-left: var(--cui-spacings-kilo);
-}
-
-.fieldList li + li {
-  margin-top: var(--cui-spacings-bit);
-}

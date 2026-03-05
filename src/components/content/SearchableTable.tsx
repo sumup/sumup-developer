@@ -4,27 +4,23 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import styles from "./SearchableTable.module.css";
 import Table, { type TableColumn } from "./Table";
 
-export type SearchableTableColumn<T> = TableColumn<T>;
+export type SearchableTableColumn = TableColumn;
 
-type Props<T> = {
-  title?: string;
-  columns: SearchableTableColumn<T>[];
-  rows: T[];
-  getRowKey?: (row: T, index: number) => string;
+type Props = {
+  columns: SearchableTableColumn[];
+  rows: Record<string, unknown>[];
   searchPlaceholder?: string;
   maxHeight?: number;
   tableLayout?: "fixed" | "auto";
 };
 
-const SearchableTable = <T,>({
-  title,
+const SearchableTable = ({
   columns,
   rows,
-  getRowKey,
   searchPlaceholder = "Search",
-  maxHeight = 320,
+  maxHeight = 420,
   tableLayout = "fixed",
-}: Props<T>) => {
+}: Props) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [isExpanded, setIsExpanded] = useState(false);
   const [canExpand, setCanExpand] = useState(false);
@@ -32,18 +28,22 @@ const SearchableTable = <T,>({
 
   const normalizedQuery = searchQuery.trim().toLowerCase();
 
+  const getSearchableRowText = (row: Record<string, unknown>) => {
+    return columns
+      .map((column) => {
+        return String(row[column.key]);
+      })
+      .join(" ")
+      .toLowerCase();
+  };
+
   const filteredRows = useMemo(() => {
     if (!normalizedQuery) {
       return rows;
     }
 
     return rows.filter((row) =>
-      columns.some((column) => {
-        const value = column.getValue(row);
-        return String(value ?? "")
-          .toLowerCase()
-          .includes(normalizedQuery);
-      }),
+      getSearchableRowText(row).includes(normalizedQuery),
     );
   }, [columns, normalizedQuery, rows]);
 
@@ -62,8 +62,6 @@ const SearchableTable = <T,>({
 
   return (
     <section className={`${styles.section} not-content`}>
-      {title ? <h5>{title}</h5> : null}
-
       <SearchInput
         label="Search"
         value={searchQuery}
@@ -72,20 +70,13 @@ const SearchableTable = <T,>({
         hideLabel
       />
 
-      <div className={styles.tableFrame}>
-        <div
-          ref={wrapperRef}
-          className={styles.tableContainer}
-          style={{ maxHeight: isExpanded ? "none" : `${maxHeight}px` }}
-        >
-          <Table
-            columns={columns}
-            rows={filteredRows}
-            getRowKey={getRowKey}
-            tableLayout={tableLayout}
-          />
-        </div>
-      </div>
+      <Table
+        columns={columns}
+        rows={filteredRows}
+        tableLayout={tableLayout}
+        containerRef={wrapperRef}
+        maxHeight={isExpanded ? undefined : `${maxHeight}px`}
+      />
 
       {canExpand ? (
         <Button

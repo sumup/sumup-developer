@@ -5,7 +5,8 @@ sidebar:
   order: 20
 ---
 
-import AddressRequirementsTable from "@components/content/AddressRequirementsTable.astro";
+import SearchableTable from "@components/content/SearchableTable";
+
 
 The Address object uses a comprehensive format that can handle addresses from
 around the world. The address fields used depend on the country conventions.
@@ -72,4 +73,210 @@ For more specific location information:
 
 Use the table below to search by country, field name, alias, and requirement.
 
-<AddressRequirementsTable />
+<SearchableTable
+  client:load
+  searchPlaceholder="Search countries or address fields"
+  columns={[
+    { key: "icon", label: "" },
+    { key: "country", label: "Country", nowrap: true },
+    { key: "fields", label: "Fields", minWidth: "18rem" },
+  ]}
+  rows={[
+    {
+      icon: "flag_ar",
+      country: "Argentina (AR)",
+      fields: "street_address, post_code, city, province (Optional)",
+    },
+    {
+      icon: "flag_au",
+      country: "Australia (AU)",
+      fields: "street_address, city, state, post_code",
+    },
+    {
+      icon: "flag_at",
+      country: "Austria (AT)",
+      fields: "street_address, post_code, city",
+    },
+    {
+      icon: "flag_be",
+      country: "Belgium (BE)",
+      fields: "street_address, post_code, city",
+    },
+    {
+      icon: "flag_br",
+      country: "Brazil (BR)",
+      fields: "street_address, post_code, city, neighborhood, state",
+    },
+    {
+      icon: "flag_bg",
+      country: "Bulgaria (BG)",
+      fields: "street_address, post_code, city",
+    },
+    {
+      icon: "flag_ca",
+      country: "Canada (CA)",
+      fields: "street_address, city, province, post_code",
+    },
+    {
+      icon: "flag_cl",
+      country: "Chile (CL)",
+      fields: "street_address, post_code, city, region, province (Optional), commune",
+    },
+    {
+      icon: "flag_co",
+      country: "Colombia (CO)",
+      fields: "street_address, district (Optional), city, department, municipality, post_code (Optional)",
+    },
+    {
+      icon: "flag_hr",
+      country: "Croatia (HR)",
+      fields: "street_address, post_code, city",
+    },
+    {
+      icon: "flag_cy",
+      country: "Cyprus (CY)",
+      fields: "street_address, post_code, city",
+    },
+    {
+      icon: "flag_cz",
+      country: "Czech Republic (CZ)",
+      fields: "street_address, post_code, city",
+    },
+    {
+      icon: "flag_dk",
+      country: "Denmark (DK)",
+      fields: "street_address, post_code, city",
+    },
+    {
+      icon: "flag_ee",
+      country: "Estonia (EE)",
+      fields: "street_address, post_code, city, province (Optional)",
+    },
+    {
+      icon: "flag_fi",
+      country: "Finland (FI)",
+      fields: "street_address, post_code, city",
+    },
+    {
+      icon: "flag_fr",
+      country: "France (FR)",
+      fields: "street_address, post_code, city",
+    },
+    {
+      icon: "flag_de",
+      country: "Germany (DE)",
+      fields: "street_address, post_code, city",
+    },
+    {
+      icon: "flag_gr",
+      country: "Greece (GR)",
+      fields: "street_address, post_code, city",
+    },
+    {
+      icon: "flag_hu",
+      country: "Hungary (HU)",
+      fields: "city, street_address, post_code",
+    },
+    {
+      icon: "flag_ie",
+      country: "Ireland (IE)",
+      fields: "street_address, townland (Optional), city, county, eircode",
+    },
+    {
+      icon: "flag_it",
+      country: "Italy (IT)",
+      fields: "street_address, post_code, city, province",
+    },
+    {
+      icon: "flag_lv",
+      country: "Latvia (LV)",
+      fields: "street_address, province (Optional), city, post_code",
+    },
+    {
+      icon: "flag_lt",
+      country: "Lithuania (LT)",
+      fields: "street_address, post_code, city, province (Optional)",
+    },
+    {
+      icon: "flag_lu",
+      country: "Luxembourg (LU)",
+      fields: "street_address, post_code, city",
+    },
+    {
+      icon: "flag_mt",
+      country: "Malta (MT)",
+      fields: "street_address, city, post_code",
+    },
+    {
+      icon: "flag_mx",
+      country: "Mexico (MX)",
+      fields: "street_address, post_code, city, neighborhood (Optional), state",
+    },
+    {
+      icon: "flag_nl",
+      country: "Netherlands (NL)",
+      fields: "street_address, post_code, city",
+    },
+    {
+      icon: "flag_no",
+      country: "Norway (NO)",
+      fields: "street_address, post_code, post_town",
+    },
+    {
+      icon: "flag_pe",
+      country: "Peru (PE)",
+      fields: "street_address, city (Optional), post_code, department, province (Optional), district",
+    },
+    {
+      icon: "flag_pl",
+      country: "Poland (PL)",
+      fields: "street_address, post_code, city, province (Optional)",
+    },
+    {
+      icon: "flag_pt",
+      country: "Portugal (PT)",
+      fields: "street_address, post_code, city, district (Optional)",
+    },
+    {
+      icon: "flag_ro",
+      country: "Romania (RO)",
+      fields: "street_address, post_code, county (Optional), city",
+    },
+    {
+      icon: "flag_sk",
+      country: "Slovakia (SK)",
+      fields: "street_address, post_code, city",
+    },
+    {
+      icon: "flag_si",
+      country: "Slovenia (SI)",
+      fields: "street_address, post_code, city",
+    },
+    {
+      icon: "flag_es",
+      country: "Spain (ES)",
+      fields: "street_address, post_code, city, province",
+    },
+    {
+      icon: "flag_se",
+      country: "Sweden (SE)",
+      fields: "street_address, post_code, post_town",
+    },
+    {
+      icon: "flag_ch",
+      country: "Switzerland (CH)",
+      fields: "street_address, post_code, city",
+    },
+    {
+      icon: "flag_gb",
+      country: "United Kingdom (GB)",
+      fields: "street_address, post_town, post_code",
+    },
+    {
+      icon: "flag_us",
+      country: "United States (US)",
+      fields: "street_address, city, state, zip_code",
+    },
+  ]}
+  tableLayout="auto"
+/>
