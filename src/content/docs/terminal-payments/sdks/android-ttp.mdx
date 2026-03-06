@@ -308,6 +308,30 @@ The base types are listed below, and each of these is further divided into more 
 
 ### Testing the SDK
 
+With SDK v1.1.0 and later, you can use sandbox account for testing purposes.
+
+<Steps>
+
+1. Go to your developer dashboard https://me.sumup.com/en-gb/settings/developer and log in to your SumUp account.
+
+2. Create a Sandbox Account:
+
+<Image alt="Sandbox account" src="/img/guides/utopia-sandboxes.png" width="40%" />
+
+3. Open the drop-down menu between Support and your user panel.
+
+4. Select Sandbox Merchant Account. Your merchant account is now switched to sandbox mode.
+
+5. Use this new sandbox account to generate test API keys or configure OAuth2 for authentication.
+
+<Image alt="Authentication approaches" src="/img/guides/utopia-auth-keys.png" width="40%" />
+
+</Steps>
+
+Note: These test accounts run in the production environment and allows you debug mode to be enabled in the SDK. To process live transactions with a real account, you must disable debug mode, otherwise, payments will not be executed.
+
+When you’re done experimenting with the sandbox merchant account, switch back to a regular account for business purposes.
+
 Before testing in production, make sure of the following:
 
 1. The app is not debuggable. Making the build debuggable will cause the attestation to fail and the payments will not work.
