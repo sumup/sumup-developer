@@ -5,16 +5,15 @@ sidebar:
   order: 12
 ---
 
-import { androidttpsdkname } from "@lib/productnames.ts";
 import { Aside } from "@astrojs/starlight/components";
 import AndroidTapToPayInstallSnippets from "@components/content/AndroidTapToPayInstallSnippets.astro";
 
-The { androidttpsdkname } enables your mobile app to accept card-present contactless payments using only a smartphone, without any additional hardware. This guide explains how to integrate this functionality into your Android app.
+The Android Tap-to-Pay SDK enables your mobile app to accept card-present contactless payments using only a smartphone, without any additional hardware. This guide explains how to integrate this functionality into your Android app.
 
 - Intended for live, customer-facing use.
 - The SDK is not debuggable. Additionally, **Attestation & Monitoring** is enabled. If a device fails to meet our security policies (e.g., debug mode enabled or rooted device), payment operations will be disabled.
 - For testing purposes, use dedicated developer credentials to prevent actual card charges. You can request access by contacting integration@sumup.com.
-- For the latest updates, consult the [{ androidttpsdkname } Changelog](/changelog/android-tap-to-pay-sdk).
+- For the latest updates, consult the [Android Tap-to-Pay SDK Changelog](/changelog/android-tap-to-pay-sdk).
 
 ## Prerequisites
 
@@ -25,7 +24,7 @@ The { androidttpsdkname } enables your mobile app to accept card-present contact
 - Java 17 or later
 - maven repository credentials (to access the SDK repository, request by emailing integration@sumup.com).
 - A Secret API key, if not using OAuth2 authentication. You can generate a Secret API key in the [SumUp Dashboard](https://developer.sumup.com/online-payments/introduction/authorization#api-keys).
-- Access to the { androidttpsdkname } GitHub repository (request by emailing integration@sumup.com).
+- Access to the Android Tap-to-Pay SDK GitHub repository (request by emailing integration@sumup.com).
 
 ### Hardware Requirements
 
@@ -76,7 +75,7 @@ You can use the sample app provided in the GitHub repository as a reference.
 
 ### Authentication
 
-The { androidttpsdkname } uses a transparent authentication approach: authentication is handled by the consumer app, not the SDK.
+The Android Tap-to-Pay SDK uses a transparent authentication approach: authentication is handled by the consumer app, not the SDK.
 The SDK provides the `init` [method](#1-initialization) with the `AuthTokenProvider` interface as a parameter.
 The `AuthTokenProvider` interface is responsible for providing the access token to the SDK.
 
@@ -247,7 +246,7 @@ It returns a `Result` object that can be either a `Result.Success` if the teardo
 
 #### Exceptions
 
-The { androidttpsdkname } may return a `Result.Failure` containing an exception when one of its methods is called.
+The Android Tap-to-Pay SDK may return a `Result.Failure` containing an exception when one of its methods is called.
 Every exception belongs to one of the base types.
 The base types are listed below, and each of these is further divided into more specific exception types.
 
@@ -337,7 +336,7 @@ It is still possible to have a USB debugging enabled and Developer Mode disabled
 
 #### Brazil and Chile
 
-To test the { androidttpsdkname } in Brazil and Chile, you should set `processCardAs` for each transaction. For example:
+To test the Android Tap-to-Pay SDK in Brazil and Chile, you should set `processCardAs` for each transaction. For example:
 
 ```kotlin
 tapToPay.startPayment(

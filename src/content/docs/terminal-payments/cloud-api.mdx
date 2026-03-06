@@ -8,9 +8,8 @@ sidebar:
 import { Aside, Steps, Tabs, TabItem } from '@astrojs/starlight/components';
 import Video from '@components/content/Video.astro';
 import SoloScreen from '@components/content/SoloScreen.astro';
-import { cloudapiname } from '@lib/productnames.ts';
 
-The { cloudapiname } lets you start a transaction from a Point of Sale (POS) running on any platform (Windows, iOS, Linux, Android, Web-based, etc.) capable of sending HTTPS requests and complete that transaction via a Solo reader.
+The Cloud API lets you start a transaction from a Point of Sale (POS) running on any platform (Windows, iOS, Linux, Android, Web-based, etc.) capable of sending HTTPS requests and complete that transaction via a Solo reader.
 
 Key advantages include:
 
@@ -20,7 +19,7 @@ Key advantages include:
 - No Bluetooth connection required
 - PCI compliance, ensuring secure and compliant transactions
 
-The { cloudapiname } integration supports:
+The Cloud API integration supports:
 
 - Debit, credit, and installment transactions
 - Pairing multiple Solo card readers with any SumUp account
@@ -29,9 +28,9 @@ The { cloudapiname } integration supports:
 
 ## Prerequisites
 
-- Your device must be authorized to use the { cloudapiname }. [Refer to the authorization guide](/tools/authorization/) and implement the method that best fits your use case. An API key should be sufficient if you don’t plan to delegate access to third parties.
-- You must [create an Affiliate Key](/tools/authorization/affiliate-keys/) for your app, as SumUp { cloudapiname } requires this key in checkout requests.
-- We strongly recommend keeping the Solo terminal plugged in when using the { cloudapiname }.
+- Your device must be authorized to use the Cloud API. [Refer to the authorization guide](/tools/authorization/) and implement the method that best fits your use case. An API key should be sufficient if you don’t plan to delegate access to third parties.
+- You must [create an Affiliate Key](/tools/authorization/affiliate-keys/) for your app, as SumUp Cloud API requires this key in checkout requests.
+- We strongly recommend keeping the Solo terminal plugged in when using the Cloud API.
 - If you want to use mobile data, ensure you are not connected to Wi-Fi. Disconnect from Wi-Fi if necessary—when both mobile data and Wi-Fi are available, the Solo reader will always use Wi-Fi.
 
   To disconnect Wi-Fi, navigate to **Connections** > **Wi-Fi** and disable Wi-Fi using the on-screen slider.
@@ -52,7 +51,7 @@ Virtual Solo works like the real device but with some limitations. The following
 
 ## Pairing Solo Reader via Cloud API
 
-The { cloudapiname } acts as a bridge between your application and the Solo reader. It supports two main processes:
+The Cloud API acts as a bridge between your application and the Solo reader. It supports two main processes:
 
 - Pairing a Solo reader to your account
 - Taking in-person payments via Solo
@@ -77,7 +76,7 @@ sequenceDiagram
 
 ### Log out of Solo
 
-The { cloudapiname } pairing process is only available for logged-out users. If you're logged in to your merchant account, do the following:
+The Cloud API pairing process is only available for logged-out users. If you're logged in to your merchant account, do the following:
 
 1. Open the top-side menu on your Solo.
 2. Select **Settings**. The **Device settings** menu opens.
@@ -86,7 +85,7 @@ The { cloudapiname } pairing process is only available for logged-out users. If 
 
 ### Generate Pairing Code
 
-To initiate a payment on the Solo card reader, it must be enrolled with the merchant account. This enrollment, called reader pairing, starts on the card reader by generating a pairing code and finishes when your device completes a pairing request using the { cloudapiname } with that code. Both your application and Solo reader must be connected to the internet (not necessarily the same network).
+To initiate a payment on the Solo card reader, it must be enrolled with the merchant account. This enrollment, called reader pairing, starts on the card reader by generating a pairing code and finishes when your device completes a pairing request using the Cloud API with that code. Both your application and Solo reader must be connected to the internet (not necessarily the same network).
 
 <Aside type="note">
 
@@ -119,7 +118,7 @@ Solo card reader screen. You will need this code to pair your Solo reader with y
 
 ## Using Paired Reader
 
-{ cloudapiname } lets you manage transactions and readers connected to your account.
+Cloud API lets you manage transactions and readers connected to your account.
 
 ### Initiate Transaction
 
@@ -358,7 +357,7 @@ Check the [Update a Reader endpoint documentation](/api/readers/update) for deta
 
 ### Delete Reader
 
-Delete a reader from the { cloudapiname }. After doing this, you also need to physically disconnect the reader using its menu.
+Delete a reader from the Cloud API. After doing this, you also need to physically disconnect the reader using its menu.
 
 Check the [Delete a Reader endpoint documentation](/api/readers/delete) for details on the API request, examples, and parameter descriptions.
 

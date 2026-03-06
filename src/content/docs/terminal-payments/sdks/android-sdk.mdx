@@ -8,9 +8,8 @@ sidebar:
 import { Aside, Steps } from '@astrojs/starlight/components';
 import Image from '@components/content/Image.astro';
 import AndroidReaderSdkInstallSnippet from '@components/content/AndroidReaderSdkInstallSnippet.astro';
-import { androidreadersdkname } from '@lib/productnames.ts';
 
-This documentation provides a step-by-step guide for SumUp’s native { androidreadersdkname }, which enables you to integrate SumUp’s proprietary card terminals and payment platform to accept credit and debit card payments (including VISA, MasterCard, American Express, and more). The SDK communicates with card terminals via Bluetooth (BLE 4.0).
+This documentation provides a step-by-step guide for SumUp’s native Android Reader SDK, which enables you to integrate SumUp’s proprietary card terminals and payment platform to accept credit and debit card payments (including VISA, MasterCard, American Express, and more). The SDK communicates with card terminals via Bluetooth (BLE 4.0).
 
 During checkout, the SDK guides users through each payment step with appropriate screens. It also provides terminal setup and cardholder signature verification interfaces. The checkout result is returned with relevant transaction data for your records.
 
@@ -25,7 +24,7 @@ SumUp also provides the [Android Tap to Pay SDK](/terminal-payments/sdks/android
 - Registered for a merchant account via SumUp's [country websites](https://sumup.com/) (or [created a sandbox merchant account](#getting-a-sandbox-merchant-account))
 - Received SumUp card terminal: Solo, Air, Air Lite or PIN+ Terminal
 - [Generated an Affiliate Key](/tools/authorization/affiliate-keys) associated with your Application ID found in the `build.gradle` file.
-- Downloaded the [{ androidreadersdkname } Repository](https://github.com/sumup/sumup-android-sdk)
+- Downloaded the [Android Reader SDK Repository](https://github.com/sumup/sumup-android-sdk)
 - The SDK requires `minSdkVersion` 26 or later
 - The SDK ensures support for
   - `targetSDK` 31 or later
@@ -98,7 +97,7 @@ public class SampleApplication extends Application {
 
 ### Logging Merchant In and Out
 
-Before calling any features of the { androidreadersdkname }, a registered SumUp merchant account needs to be logged in. Log in by supplying your Affiliate Key ([create one](/tools/authorization/affiliate-keys) if necessary):
+Before calling any features of the Android Reader SDK, a registered SumUp merchant account needs to be logged in. Log in by supplying your Affiliate Key ([create one](/tools/authorization/affiliate-keys) if necessary):
 
 ```java
 SumUpLogin sumupLogin = SumUpLogin.builder(mAffiliateKey).build();
@@ -121,7 +120,7 @@ SumUpAPI.logout();
 
 After logging in, start accepting card payments. If no account is logged in, an error `ERROR_NOT_LOGGED_IN` is returned.
 
-Once logged in, you can start using the { androidreadersdkname } to accept card payments. If no account is logged in, `SumUpAPI.Response.ResultCode.ERROR_NOT_LOGGED_IN` will be returned.
+Once logged in, you can start using the Android Reader SDK to accept card payments. If no account is logged in, `SumUpAPI.Response.ResultCode.ERROR_NOT_LOGGED_IN` will be returned.
 
 ```java
     SumUpPayment payment = SumUpPayment.builder()
@@ -275,7 +274,7 @@ To skip the failed screen shown at the end of a failed transaction, the `skipFai
 
 ### Transparent Authentication
 
-To authenticate an account without the user typing in their SumUp credentials each time, you can generate an access token using OAuth2 Authorization Code Flow and use it to transparently log in to the { androidreadersdkname }.
+To authenticate an account without the user typing in their SumUp credentials each time, you can generate an access token using OAuth2 Authorization Code Flow and use it to transparently log in to the Android Reader SDK.
 
 ```java
 SumUpLogin sumupLogin = SumUpLogin.builder(mAffiliateKey).accessToken("MY_ACCESS_TOKEN").build();
@@ -320,7 +319,7 @@ In order to use it you need to add the dependency in `build.gradle` file
 implementation "com.google.android.gms:play-services-location:19.0.1"
 ```
 
-If the GLS dependency is not added to the project or Google Play Services are not installed on the mobile device, the { androidreadersdkname } will determine the location with the default Location Service provided by Android.
+If the GLS dependency is not added to the project or Google Play Services are not installed on the mobile device, the Android Reader SDK will determine the location with the default Location Service provided by Android.
 
 <Aside>
 Using GLS version 19.0.1 is recommended.
@@ -353,4 +352,4 @@ See the [SumUp Changelog](/changelog/) for updates.
 
 ## License
 
-See [SumUp { androidreadersdkname } License](https://github.com/sumup/Android-MerchantSDK/blob/master/LICENSE.md).
+See [SumUp Android Reader SDK License](https://github.com/sumup/Android-MerchantSDK/blob/master/LICENSE.md).
