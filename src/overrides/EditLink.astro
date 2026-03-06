@@ -1,0 +1,30 @@
+---
+import { Anchor } from "@sumup-oss/circuit-ui";
+import { Edit } from "@sumup-oss/icons";
+
+const { editUrl } = Astro.locals.starlightRoute;
+---
+
+{
+  editUrl && (
+    <Anchor
+      size="s"
+      href={editUrl.toString()}
+      className="edit-link print:hidden"
+      target="_blank"
+      externalLabel="Opens in a new tab."
+    >
+      <Edit aria-hidden="true" size="16" />
+      Edit page
+    </Anchor>
+  )
+}
+
+<style>
+  .edit-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--cui-spacings-byte);
+    color: var(--cui-fg-subtle);
+  }
+</style>

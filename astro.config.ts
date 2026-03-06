@@ -250,6 +250,7 @@ export default defineConfig({
       ],
       head: head(),
       components: {
+        EditLink: "./src/overrides/EditLink.astro",
         Footer: "./src/overrides/Footer.astro",
         TableOfContents: "./src/overrides/TableOfContents.astro",
         Head: "./src/overrides/Head.astro",
