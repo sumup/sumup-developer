@@ -45,7 +45,9 @@ jobs:
         run: npm run check
 
       - name: Run linter
-        run: npm run lint
+        # npm run lint includes lint:markdown which is already handled bby the rumdl
+        # step above
+        run: npm run lint:src
 
       - name: Run linkcheck
         run: npm run linkcheck
