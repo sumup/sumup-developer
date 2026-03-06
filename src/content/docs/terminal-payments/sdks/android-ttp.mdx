@@ -5,14 +5,15 @@ sidebar:
   order: 12
 ---
 
-import { Aside } from "@astrojs/starlight/components";
+import { Aside, Steps } from "@astrojs/starlight/components";
 import AndroidTapToPayInstallSnippets from "@components/content/AndroidTapToPayInstallSnippets.astro";
+import Image from '@components/content/Image.astro';
 
 The Android Tap-to-Pay SDK enables your mobile app to accept card-present contactless payments using only a smartphone, without any additional hardware. This guide explains how to integrate this functionality into your Android app.
 
 - Intended for live, customer-facing use.
 - The SDK is not debuggable. Additionally, **Attestation & Monitoring** is enabled. If a device fails to meet our security policies (e.g., debug mode enabled or rooted device), payment operations will be disabled.
-- For testing purposes, use dedicated developer credentials to prevent actual card charges. You can request access by contacting integration@sumup.com.
+- For testing purposes, use dedicated developer credentials to prevent actual card charges. The more information about testing can be found in the [Testing the SDK](#testing-the-sdk) section.
 - For the latest updates, consult the [Android Tap-to-Pay SDK Changelog](/changelog/android-tap-to-pay-sdk).
 
 ## Prerequisites
@@ -307,6 +308,26 @@ The base types are listed below, and each of these is further divided into more 
 | **TapToPayException**           | Unknown                     | 0              | An internal error that cannot be exposed externally       |
 
 ### Testing the SDK
+
+With SDK v1.1.0 and later, you can use sandbox account for testing purposes.
+
+<Steps>
+
+1. Go to the [Developer Settings](https://me.sumup.com/settings/developer) in the SumUp Dashboard.
+
+2. Create a Sandbox Account:
+
+   <Image alt="Sandbox account" src="/img/guides/utopia-sandboxes.png" width="70%" />
+
+3. In your new sandbox merchant account, create an [API key](https://me.sumup.com/settings/api-keys) or configure [OAuth2](https://me.sumup.com/settings/oauth2-applications) for authentication.
+
+   <Image alt="Authentication approaches" src="/img/guides/utopia-auth-keys.png" width="70%" />
+
+</Steps>
+
+_Note_: These test accounts run in the production environment and allows you debug mode to be enabled in the SDK. To process live transactions with a real account, you must disable debug mode, otherwise, payments will not be executed.
+
+When you’re done experimenting with the sandbox merchant account, switch back to a regular account for business purposes.
 
 Before testing in production, make sure of the following:
 
