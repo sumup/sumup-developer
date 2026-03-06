@@ -19,7 +19,6 @@ const countryOptions = [
   { value: "Austria", label: "Austria" },
   { value: "Australia", label: "Australia" },
   { value: "Belgium", label: "Belgium" },
-  { value: "Brazil", label: "Brazil" },
   { value: "Bulgaria", label: "Bulgaria" },
   { value: "Chile", label: "Chile" },
   { value: "Cyprus", label: "Cyprus" },
@@ -63,10 +62,6 @@ const supportCategoryOptions = [
     value: "Sales Enquiry",
   },
   {
-    label: "Sandbox Merchant Account Request",
-    value: "Sandbox Merchant Account Request",
-  },
-  {
     label: "Online Integration",
     value: "Online Integration",
   },
@@ -91,10 +86,10 @@ const onlineIntegrationOptions = [
     value: "Direct Integration - Card Widget",
   },
   { label: "General Information", value: "General Information" },
-  { label: "PHP SDK", value: "PHP SDK" },
   { label: "PrestaShop", value: "PrestaShop" },
   { label: "Wix", value: "Wix" },
   { label: "WooCommerce", value: "WooCommerce" },
+  { label: "SDK", value: "SDK" },
 ];
 
 const cardReaderIntegrationOptions = [
