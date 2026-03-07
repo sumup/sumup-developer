@@ -28,9 +28,9 @@ const isActive = (href: string) => currentPath.startsWith(href);
   <a
     href="https://me.sumup.com/settings/developer"
     target="__blank"
-    class="link"
+    class="link button"
   >
-    Settings <ArrowSlanted width="14" height="14" />
+    Dashboard <ArrowSlanted width="14" height="14" />
   </a>
 </div>
 
@@ -44,6 +44,7 @@ const isActive = (href: string) => currentPath.startsWith(href);
   .nav {
     display: flex;
     flex-direction: row;
+    gap: var(--cui-spacings-byte);
     align-items: center;
     font-size: var(--cui-body-s-font-size);
     line-height: var(--cui-body-s-line-height);
@@ -54,20 +55,36 @@ const isActive = (href: string) => currentPath.startsWith(href);
     padding: var(--cui-spacings-bit) var(--cui-spacings-byte);
     color: var(--cui-fg-normal);
     text-decoration: none;
-    transition: color 120ms ease-in-out;
+    transition: background-color 120ms ease-in-out;
     display: inline-flex;
     align-items: center;
     gap: var(--cui-spacings-bit);
+    border-radius: var(--cui-border-radius-byte);
   }
 
-  .link:hover {
-    color: var(--cui-fg-normal);
-    text-decoration: underline;
-  }
-
+  .link:hover,
   .link.active {
-    color: var(--cui-fg-accent);
-    text-decoration: underline;
-    font-weight: var(--cui-font-weight-bold);
+    color: var(--cui-fg-normal-hovered);
+    background-color: var(--cui-bg-normal-hovered);
+  }
+
+  .link:active {
+    color: var(--cui-fg-normal-pressed,);
+    background-color: var(--cui-bg-normal-pressed,);
+  }
+
+  .button {
+    background-color: var(--cui-bg-strong);
+    color: var(--cui-fg-on-strong);
+  }
+
+  .button:hover {
+    background-color: var(--cui-bg-strong-hovered);
+    color: var(--cui-fg-on-strong-hovered);
+  }
+
+  .button:active {
+    background-color: var(--cui-bg-strong-pressed);
+    color: var(--cui-fg-on-strong-pressed);
   }
 </style>
