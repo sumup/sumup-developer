@@ -3,7 +3,12 @@ import { Hamburger } from "@sumup-oss/circuit-ui";
 ---
 
 <starlight-menu-button class="print:hidden md:sl-hidden menu-button">
-  <Hamburger activeLabel="Close" inactiveLabel="Open" client:load />
+  <Hamburger
+    activeLabel="Close"
+    inactiveLabel="Open"
+    className="menu-button-toggle"
+    client:load
+  />
 </starlight-menu-button>
 
 <script>
@@ -55,7 +60,9 @@ import { Hamburger } from "@sumup-oss/circuit-ui";
     border: 0;
   }
 
-  .menu-button :global(button) {
-    padding: var(--cui-spacings-bit);
+  /* not the nicest thing ever but it makes our Hamburger worker with starlight */
+  .menu-button-toggle {
+    margin: -2px;
+    padding: 6px;
   }
 </style>
