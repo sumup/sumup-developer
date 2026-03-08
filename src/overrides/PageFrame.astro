@@ -2,34 +2,30 @@
 import MobileMenuToggle from "./MobileMenuToggle.astro";
 import { Help, Info } from "@sumup-oss/icons";
 
-const { hasSidebar } = Astro.locals.starlightRoute;
+const { template } = Astro.locals.starlightRoute.entry.data;
 ---
 
-<div class="page sl-flex">
+<div class:list={["page", "sl-flex", template === "splash" && "centered"]}>
   <header class="header"><slot name="header" /></header>
-  {
-    hasSidebar && (
-      <nav
-        class="sidebar print:hidden"
-        aria-label={Astro.locals.t("sidebarNav.accessibleLabel")}
-      >
-        <MobileMenuToggle />
-        <div class="sidebar-pane">
-          <div class="sidebar-content sl-flex" id="starlight__sidebar">
-            <slot name="sidebar" />
-          </div>
-          <div class="sidebar-footer">
-            <a href="/help">
-              <Help /> Help
-            </a>
-            <a href="https://status.sumup.com/">
-              <Info /> Status
-            </a>
-          </div>
-        </div>
-      </nav>
-    )
-  }
+  <nav
+    class:list={["sidebar", "print:hidden"]}
+    aria-label={Astro.locals.t("sidebarNav.accessibleLabel")}
+  >
+    <MobileMenuToggle />
+    <div class:list={["sidebar-pane"]}>
+      <div class="sidebar-content sl-flex" id="starlight__sidebar">
+        <slot name="sidebar" />
+      </div>
+      <div class="sidebar-footer">
+        <a href="/help">
+          <Help /> Help
+        </a>
+        <a href="https://status.sumup.com/">
+          <Info /> Status
+        </a>
+      </div>
+    </div>
+  </nav>
   <div class="main-frame"><slot /></div>
 </div>
 
@@ -99,6 +95,9 @@ const { hasSidebar } = Astro.locals.starlightRoute;
 
   .main-frame {
     padding-top: var(--sl-nav-height);
+  }
+
+  .page:not(.centered) .main-frame {
     padding-inline-start: var(--sl-content-inline-start);
   }
 
@@ -106,10 +105,12 @@ const { hasSidebar } = Astro.locals.starlightRoute;
     :global([data-has-sidebar]) .header {
       padding-inline-end: var(--sl-nav-pad-x);
     }
-    .sidebar-pane {
-      --sl-sidebar-visibility: visible;
-      width: var(--sl-sidebar-width);
-      background-color: var(--sl-color-bg-sidebar);
+    .page:not(.centered) {
+      .sidebar-pane {
+        --sl-sidebar-visibility: visible;
+        width: var(--sl-sidebar-width);
+        background-color: var(--sl-color-bg-sidebar);
+      }
     }
   }
 

@@ -224,12 +224,7 @@ export default defineConfig({
       sidebar: [
         {
           label: "Get Started",
-          items: [
-            {
-              label: "Home",
-              link: "/",
-            },
-          ],
+          link: "/getting-started",
         },
         {
           label: "In-person Payments",
@@ -252,17 +247,19 @@ export default defineConfig({
       components: {
         EditLink: "./src/overrides/EditLink.astro",
         Footer: "./src/overrides/Footer.astro",
-        TableOfContents: "./src/overrides/TableOfContents.astro",
         Head: "./src/overrides/Head.astro",
-        MobileMenuToggle: "./src/overrides/MobileMenuToggle.astro",
+        Header: "./src/overrides/Header.astro",
         Hero: "./src/overrides/Hero.astro",
         MarkdownContent: "./src/overrides/MarkdownContent.astro",
+        MobileMenuToggle: "./src/overrides/MobileMenuToggle.astro",
+        MobileTableOfContents: "./src/overrides/MobileTableOfContents.astro",
+        PageFrame: "./src/overrides/PageFrame.astro",
+        PageTitle: "./src/overrides/PageTitle.astro",
         Sidebar: "./src/overrides/Sidebar.astro",
         SiteTitle: "./src/overrides/SiteTitle.astro",
         SocialIcons: "./src/overrides/SocialIcons.astro",
-        PageFrame: "./src/overrides/PageFrame.astro",
-        PageTitle: "./src/overrides/PageTitle.astro",
-        MobileTableOfContents: "./src/overrides/MobileTableOfContents.astro",
+        TableOfContents: "./src/overrides/TableOfContents.astro",
+        ThemeSelect: "./src/overrides/ThemeSelect.astro",
       },
       social: [
         {

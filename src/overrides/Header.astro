@@ -1,0 +1,169 @@
+---
+import { ArrowSlanted } from "@sumup-oss/icons";
+import Search from "@astrojs/starlight/components/Search.astro";
+import SiteTitle from "./SiteTitle.astro";
+import ThemeSelect from "@astrojs/starlight/components/ThemeSelect.astro";
+
+// Overloaded version of Starlight's SocialIcons that adds
+// additional navigation items to the top navigation bar
+// such that we can structure the portal around main sections.
+const currentPath = Astro.url.pathname;
+const isActive = (href: string) => currentPath.startsWith(href);
+---
+
+<div class="header">
+  <div class="title-wrapper sl-flex">
+    <SiteTitle />
+  </div>
+  <nav class="md:sl-flex">
+    <a href="/" class:list={["link", currentPath === "/" && "active"]}>
+      Home
+    </a>
+    <a
+      href="/getting-started"
+      class:list={[
+        "link",
+        isActive("/getting-started") && "active",
+        isActive("/terminal-payments") && "active",
+        isActive("/online-payments") && "active",
+        isActive("/tools") && "active",
+        isActive("/resources") && "active",
+      ]}
+    >
+      Docs
+    </a>
+    <a href="/api/" class:list={["link", isActive("/api") && "active"]}>API</a>
+    <a
+      href="/changelog/"
+      class:list={["link", isActive("/changelog") && "active"]}
+    >
+      Changelog
+    </a>
+  </nav>
+  <div class="print:hidden right-group">
+    <Search class="search-button" />
+    <a
+      href="https://me.sumup.com/settings/developer"
+      target="__blank"
+      class="link button"
+    >
+      Dashboard <ArrowSlanted width="14" height="14" />
+    </a>
+    <div class="theme">
+      <ThemeSelect />
+    </div>
+  </div>
+</div>
+
+<style>
+  .header {
+    display: flex;
+    gap: var(--sl-nav-gap);
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+  }
+
+  .title-wrapper {
+    /* Prevent long titles overflowing and covering the search and menu buttons on narrow viewports. */
+    overflow: clip;
+    /* Avoid clipping focus ring around link inside title wrapper. */
+    padding: 0.25rem;
+    margin: -0.25rem;
+    min-width: 0;
+  }
+
+  @media (min-width: 50rem) {
+    .header {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+      align-content: center;
+    }
+  }
+
+  .right-group {
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+    align-items: center;
+    gap: var(--cui-spacings-byte);
+    font-size: var(--cui-body-s-font-size);
+    line-height: var(--cui-body-s-line-height);
+    font-weight: var(--cui-font-weight-semibold);
+  }
+
+  nav {
+    display: none;
+    font-size: var(--cui-body-s-font-size);
+    line-height: var(--cui-body-s-line-height);
+    font-weight: var(--cui-font-weight-semibold);
+  }
+
+  @media (min-width: 50rem) {
+    nav {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      gap: var(--cui-spacings-byte);
+      align-items: center;
+    }
+  }
+
+  .link {
+    padding: var(--cui-spacings-bit) var(--cui-spacings-byte);
+    color: var(--cui-fg-normal);
+    text-decoration: none;
+    transition: background-color 120ms ease-in-out;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--cui-spacings-bit);
+    border-radius: var(--cui-border-radius-byte);
+  }
+
+  .link:hover,
+  .link.active {
+    color: var(--cui-fg-normal-hovered);
+    background-color: var(--cui-bg-normal-hovered);
+  }
+
+  .link:active {
+    color: var(--cui-fg-normal-pressed,);
+    background-color: var(--cui-bg-normal-pressed,);
+  }
+
+  .button {
+    display: none;
+    background-color: var(--cui-bg-strong);
+    color: var(--cui-fg-on-strong);
+  }
+
+  @media (min-width: 50rem) {
+    .button {
+      display: inherit;
+    }
+  }
+
+  .button:hover {
+    background-color: var(--cui-bg-strong-hovered);
+    color: var(--cui-fg-on-strong-hovered);
+  }
+
+  .button:active {
+    background-color: var(--cui-bg-strong-pressed);
+    color: var(--cui-fg-on-strong-pressed);
+  }
+
+  .theme {
+    display: none;
+  }
+
+  @media (min-width: 50rem) {
+    .theme {
+      display: inherit;
+    }
+  }
+
+  :global(.search-button > button) {
+    max-width: 10rem;
+  }
+</style>

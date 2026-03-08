@@ -26,16 +26,17 @@ const props = {
     description:
       "Welcome to SumUp portal for developers. We’ve got everything you need to build your own payment acceptance solutions for your business.",
     tableOfContents: false,
+    template: "splash",
     hero: {
       title: "SumUp developer platform",
     },
   },
-  custom: true,
+  hasSidebar: true,
 } as StarlightPageProps;
 ---
 
 <StarlightPage {...props}>
-  <main>
+  <main class="not-content">
     <section>
       <section>
         <Headline as="h2" className="header">Card-present Solutions</Headline>
