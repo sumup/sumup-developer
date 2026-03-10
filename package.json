@@ -78,7 +78,7 @@
     "react-content-loader": "^7.1.2",
     "react-dom": "^19.2.4",
     "react-final-form": "^7.0.0",
-    "rumdl": "0.1.42",
+    "rumdl": "0.1.44",
     "sass": "^1.97.3",
     "starlight-image-zoom": "^0.13.0",
     "starlight-links-validator": "^0.19.2",
