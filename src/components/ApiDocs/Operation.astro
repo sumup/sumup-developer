@@ -36,6 +36,17 @@ const isRequestBody = (
     | undefined,
 ): object is OpenAPIV3_1.RequestBodyObject => !!object && !("$ref" in object);
 
+const responseContentTypes = [
+  "application/json",
+  "application/problem+json",
+] as const;
+
+const findResponseContent = (response: OpenAPIV3_1.ResponseObject) => {
+  return responseContentTypes
+    .map((contentType) => response.content?.[contentType])
+    .find(Boolean);
+};
+
 const findSuccessResponse = (responses?: OpenAPIV3_1.ResponsesObject) => {
   if (!responses) return undefined;
   let success =
@@ -45,8 +56,8 @@ const findSuccessResponse = (responses?: OpenAPIV3_1.ResponsesObject) => {
   if ("$ref" in success) {
     success = resolveReference<OpenAPIV3_1.ResponseObject>(success.$ref);
   }
-  if (!success || !success?.content) return undefined;
-  return success.content["application/json"];
+  if (!success) return undefined;
+  return findResponseContent(success);
 };
 
 const successResponse = findSuccessResponse(operation.responses);
@@ -168,17 +179,25 @@ const formattedPermissions = (operation["x-permissions"] || [])
       }
       {
         Object.entries(operation.responses || {}).map(([status, response]) => {
+          const responseObject =
+            "$ref" in response
+              ? (resolveReference(response.$ref) as
+                  | OpenAPIV3_1.ResponseObject
+                  | null)
+              : response;
+          const responseContent =
+            responseObject && findResponseContent(responseObject);
+
           if (
-            !("content" in response) ||
-            !response.content?.["application/json"]?.schema ||
-            !status.startsWith("2")
+            !responseContent?.schema ||
+            status.startsWith("2")
           ) {
             return null;
           }
           return (
             <Schema
               kind={`Response ${status}`}
-              schema={response.content["application/json"].schema}
+              schema={responseContent.schema}
             />
           );
         })
