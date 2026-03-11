@@ -5,7 +5,10 @@ import "@sumup-oss/design-tokens/dynamic.css";
 
 const { entry, head, lastUpdated } = Astro.locals.starlightRoute;
 const frontmatter = entry.data;
-const routeTitle = frontmatter.title || "SumUp Developer";
+const routeTitle =
+  (frontmatter as Record<string, unknown>).metaTitle ||
+  frontmatter.title ||
+  "SumUp Developer";
 const title = routeTitle.includes("SumUp")
   ? routeTitle
   : `${routeTitle} | SumUp Developer`;

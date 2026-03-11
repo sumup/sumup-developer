@@ -28,7 +28,7 @@ paths:
             example: MH4H92C7
         - name: amount
           in: query
-          description: 'The amount for which the payment methods should be eligible, in major units. Note that currency must also be provided when filtering by amount.'
+          description: 'The amount for which the payment methods should be eligible, in major units.'
           required: false
           schema:
             type: number
@@ -67,7 +67,7 @@ paths:
                       - id: apple_pay
                       - id: blik
         '400':
-          description: Bad Request
+          description: The request is invalid for the submitted query parameters.
           content:
             application/json:
               schema:
@@ -81,38 +81,14 @@ paths:
                         reference: currency
                     status: 400
                     title: Bad Request
-        '401':
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-              examples:
-                Invalid_Token:
-                  description: The access token is invalid or has expired.
-                  value:
-                    error_message: invalid access token
-                    error_code: NOT_AUTHORIZED
-                Not_Authorized_Token:
-                  description: The access token is valid but the application is not authorized.
-                  value:
-                    error_message: NOT_AUTHORIZED
-                    error_code: NOT_AUTHORIZED
-                Missing_Token:
-                  description: No access token is provided.
-                  value:
-                    message: access token required
-                    error_code: NOT_AUTHORIZED
       security:
         - apiKey: []
-        - oauth2:
-            - payments
+        - oauth2: []
       tags:
         - Checkouts
       x-codegen:
         method_name: list_available_payment_methods
-      x-scopes:
-        - payments
+      x-scopes: []
   /v0.1/checkouts:
     post:
       operationId: CreateCheckout
@@ -124,7 +100,7 @@ paths:
 
         Follow by processing a checkout to charge the provided payment instrument.
       requestBody:
-        description: ''
+        description: Details for creating a checkout resource.
         required: true
         content:
           application/json:
@@ -165,7 +141,7 @@ paths:
                   redirect_url: 'https://mysite.com/completed_purchase'
       responses:
         '201':
-          description: Created
+          description: Returns the created checkout resource.
           content:
             application/json:
               schema:
@@ -266,7 +242,7 @@ paths:
                         auth_code: '012345'
                         internal_id: 0
         '400':
-          description: Bad Request
+          description: The request body is invalid.
           content:
             application/json:
               schema:
@@ -279,29 +255,22 @@ paths:
                     error_code: MISSING
                     param: merchant_code
         '401':
-          description: Unauthorized
+          description: The request is not authorized.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Problem'
               examples:
-                Invalid_Token:
-                  description: The access token is invalid or has expired.
+                Problem_Details:
+                  description: Unauthorized response returned by API gateway.
                   value:
-                    error_message: invalid access token
-                    error_code: NOT_AUTHORIZED
-                Not_Authorized_Token:
-                  description: The access token is valid but the application is not authorized.
-                  value:
-                    error_message: NOT_AUTHORIZED
-                    error_code: NOT_AUTHORIZED
-                Missing_Token:
-                  description: No access token is provided.
-                  value:
-                    message: access token required
-                    error_code: NOT_AUTHORIZED
+                    detail: Unauthorized.
+                    status: 401
+                    title: Unauthorized
+                    trace_id: 3c77294349d3b5647ea2d990f0d8f017
+                    type: 'https://developer.sumup.com/problem/unauthorized'
         '403':
-          description: Forbidden
+          description: The request isn't sufficiently authorized to create a checkout.
           content:
             application/json:
               schema:
@@ -314,7 +283,7 @@ paths:
                     error_code: FORBIDDEN
                     status_code: '403'
         '409':
-          description: Conflict
+          description: A checkout already exists for the provided unique parameters.
           content:
             application/json:
               schema:
@@ -348,7 +317,7 @@ paths:
             type: string
       responses:
         '200':
-          description: OK
+          description: Returns a list of checkout resources.
           content:
             application/json:
               schema:
@@ -356,27 +325,20 @@ paths:
                 items:
                   $ref: '#/components/schemas/CheckoutSuccess'
         '401':
-          description: Unauthorized
+          description: The request is not authorized.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Problem'
               examples:
-                Invalid_Token:
-                  description: The access token is invalid or has expired.
+                Problem_Details:
+                  description: Unauthorized response returned by API gateway.
                   value:
-                    error_message: invalid access token
-                    error_code: NOT_AUTHORIZED
-                Not_Authorized_Token:
-                  description: The access token is valid but the application is not authorized.
-                  value:
-                    error_message: NOT_AUTHORIZED
-                    error_code: NOT_AUTHORIZED
-                Missing_Token:
-                  description: No access token is provided.
-                  value:
-                    message: access token required
-                    error_code: NOT_AUTHORIZED
+                    detail: Unauthorized.
+                    status: 401
+                    title: Unauthorized
+                    trace_id: 3c77294349d3b5647ea2d990f0d8f017
+                    type: 'https://developer.sumup.com/problem/unauthorized'
       security:
         - apiKey: []
         - oauth2:
@@ -401,35 +363,28 @@ paths:
       description: Retrieves an identified checkout resource. Use this request after processing a checkout to confirm its status and inform the end user respectively.
       responses:
         '200':
-          description: OK
+          description: Returns the requested checkout resource.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/CheckoutSuccess'
         '401':
-          description: Unauthorized
+          description: The request is not authorized.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Problem'
               examples:
-                Invalid_Token:
-                  description: The access token is invalid or has expired.
+                Problem_Details:
+                  description: Unauthorized response returned by API gateway.
                   value:
-                    error_message: invalid access token
-                    error_code: NOT_AUTHORIZED
-                Not_Authorized_Token:
-                  description: The access token is valid but the application is not authorized.
-                  value:
-                    error_message: NOT_AUTHORIZED
-                    error_code: NOT_AUTHORIZED
-                Missing_Token:
-                  description: No access token is provided.
-                  value:
-                    message: access token required
-                    error_code: NOT_AUTHORIZED
+                    detail: Unauthorized.
+                    status: 401
+                    title: Unauthorized
+                    trace_id: 3c77294349d3b5647ea2d990f0d8f017
+                    type: 'https://developer.sumup.com/problem/unauthorized'
         '404':
-          description: Not Found
+          description: The requested resource does not exist.
           content:
             application/json:
               schema:
@@ -527,7 +482,7 @@ paths:
                       country: BE
       responses:
         '200':
-          description: OK
+          description: Returns the checkout resource after a processing attempt.
           content:
             application/json:
               schema:
@@ -659,13 +614,13 @@ paths:
                       mechanism:
                         - browser
         '202':
-          description: Accepted
+          description: Returns the next required action for asynchronous checkout processing.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/CheckoutAccepted'
         '400':
-          description: Bad Request
+          description: The request body is invalid for processing the checkout.
           content:
             application/json:
               schema:
@@ -695,29 +650,22 @@ paths:
                       message: Validation error
                       param: card.expiry_year
         '401':
-          description: Unauthorized
+          description: The request is not authorized.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Problem'
               examples:
-                Invalid_Token:
-                  description: The access token is invalid or has expired.
+                Problem_Details:
+                  description: Unauthorized response returned by API gateway.
                   value:
-                    error_message: invalid access token
-                    error_code: NOT_AUTHORIZED
-                Not_Authorized_Token:
-                  description: The access token is valid but the application is not authorized.
-                  value:
-                    error_message: NOT_AUTHORIZED
-                    error_code: NOT_AUTHORIZED
-                Missing_Token:
-                  description: No access token is provided.
-                  value:
-                    message: access token required
-                    error_code: NOT_AUTHORIZED
+                    detail: Unauthorized.
+                    status: 401
+                    title: Unauthorized
+                    trace_id: 3c77294349d3b5647ea2d990f0d8f017
+                    type: 'https://developer.sumup.com/problem/unauthorized'
         '404':
-          description: Not Found
+          description: The requested resource does not exist.
           content:
             application/json:
               schema:
@@ -729,7 +677,7 @@ paths:
                     error_code: NOT_FOUND
                     message: Resource not found
         '409':
-          description: Conflict
+          description: The request conflicts with the current state of the resource.
           content:
             application/json:
               schema:
@@ -754,7 +702,7 @@ paths:
       description: Deactivates an identified checkout resource. If the checkout has already been processed it can not be deactivated.
       responses:
         '200':
-          description: OK
+          description: Returns the checkout object after successful deactivation.
           content:
             application/json:
               schema:
@@ -773,29 +721,22 @@ paths:
                 merchant_name: Sample Merchant
                 transactions: []
         '401':
-          description: Unauthorized
+          description: The request is not authorized.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Problem'
               examples:
-                Invalid_Token:
-                  description: The access token is invalid or has expired.
+                Problem_Details:
+                  description: Unauthorized response returned by API gateway.
                   value:
-                    error_message: invalid access token
-                    error_code: NOT_AUTHORIZED
-                Not_Authorized_Token:
-                  description: The access token is valid but the application is not authorized.
-                  value:
-                    error_message: NOT_AUTHORIZED
-                    error_code: NOT_AUTHORIZED
-                Missing_Token:
-                  description: No access token is provided.
-                  value:
-                    message: access token required
-                    error_code: NOT_AUTHORIZED
+                    detail: Unauthorized.
+                    status: 401
+                    title: Unauthorized
+                    trace_id: 3c77294349d3b5647ea2d990f0d8f017
+                    type: 'https://developer.sumup.com/problem/unauthorized'
         '404':
-          description: Not Found
+          description: The requested resource does not exist.
           content:
             application/json:
               schema:
@@ -807,7 +748,7 @@ paths:
                     error_code: NOT_FOUND
                     message: Resource not found
         '409':
-          description: Conflict
+          description: The request conflicts with the current state of the resource.
           content:
             application/json:
               schema:
@@ -842,35 +783,50 @@ paths:
               $ref: '#/components/schemas/Customer'
       responses:
         '201':
-          description: Created
+          description: Returns the customer resource.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Customer'
-        '401':
-          description: Unauthorized
+        '400':
+          description: The request body is invalid.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                oneOf:
+                  - $ref: '#/components/schemas/ErrorExtended'
+                  - type: object
+                    properties:
+                      instance:
+                        type: string
+                      error_code:
+                        type: string
+                      error_message:
+                        type: string
               examples:
-                Invalid_Token:
-                  description: The access token is invalid or has expired.
+                Missing_Customer_ID:
+                  description: The required customer identifier is missing.
                   value:
-                    error_message: invalid access token
-                    error_code: NOT_AUTHORIZED
-                Not_Authorized_Token:
-                  description: The access token is valid but the application is not authorized.
+                    instance: 32a44c6c-85d3-49e8-86bf-a5bba98c4621
+                    error_code: INVALID
+                    error_message: customer_id
+        '401':
+          description: The request is not authorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+              examples:
+                Problem_Details:
+                  description: Unauthorized response returned by API gateway.
                   value:
-                    error_message: NOT_AUTHORIZED
-                    error_code: NOT_AUTHORIZED
-                Missing_Token:
-                  description: No access token is provided.
-                  value:
-                    message: access token required
-                    error_code: NOT_AUTHORIZED
+                    detail: Unauthorized.
+                    status: 401
+                    title: Unauthorized
+                    trace_id: 3c77294349d3b5647ea2d990f0d8f017
+                    type: 'https://developer.sumup.com/problem/unauthorized'
         '403':
-          description: Forbidden
+          description: The request is authenticated but not permitted for this operation.
           content:
             application/json:
               schema:
@@ -883,7 +839,7 @@ paths:
                     error_code: FORBIDDEN
                     status_code: '403'
         '409':
-          description: Conflict
+          description: A customer with the provided identifier already exists.
           content:
             application/json:
               schema:
@@ -918,35 +874,28 @@ paths:
       description: 'Retrieves an identified saved customer resource through the unique `customer_id` parameter, generated upon customer creation.'
       responses:
         '200':
-          description: Created
+          description: Returns the customer resource.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Customer'
         '401':
-          description: Unauthorized
+          description: The request is not authorized.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Problem'
               examples:
-                Invalid_Token:
-                  description: The access token is invalid or has expired.
+                Problem_Details:
+                  description: Unauthorized response returned by API gateway.
                   value:
-                    error_message: invalid access token
-                    error_code: NOT_AUTHORIZED
-                Not_Authorized_Token:
-                  description: The access token is valid but the application is not authorized.
-                  value:
-                    error_message: NOT_AUTHORIZED
-                    error_code: NOT_AUTHORIZED
-                Missing_Token:
-                  description: No access token is provided.
-                  value:
-                    message: access token required
-                    error_code: NOT_AUTHORIZED
+                    detail: Unauthorized.
+                    status: 401
+                    title: Unauthorized
+                    trace_id: 3c77294349d3b5647ea2d990f0d8f017
+                    type: 'https://developer.sumup.com/problem/unauthorized'
         '403':
-          description: Forbidden
+          description: The request is authenticated but not permitted for this operation.
           content:
             application/json:
               schema:
@@ -959,7 +908,7 @@ paths:
                     error_code: FORBIDDEN
                     status_code: '403'
         '404':
-          description: Not Found
+          description: The requested resource does not exist.
           content:
             application/json:
               schema:
@@ -988,7 +937,7 @@ paths:
 
         The request only overwrites the parameters included in the request, all other parameters will remain with their initially assigned values.
       requestBody:
-        description: ''
+        description: Customer fields to update.
         required: true
         content:
           application/json:
@@ -999,35 +948,28 @@ paths:
                   $ref: '#/components/schemas/PersonalDetails'
       responses:
         '200':
-          description: Created
+          description: Returns the customer resource.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Customer'
         '401':
-          description: Unauthorized
+          description: The request is not authorized.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Problem'
               examples:
-                Invalid_Token:
-                  description: The access token is invalid or has expired.
+                Problem_Details:
+                  description: Unauthorized response returned by API gateway.
                   value:
-                    error_message: invalid access token
-                    error_code: NOT_AUTHORIZED
-                Not_Authorized_Token:
-                  description: The access token is valid but the application is not authorized.
-                  value:
-                    error_message: NOT_AUTHORIZED
-                    error_code: NOT_AUTHORIZED
-                Missing_Token:
-                  description: No access token is provided.
-                  value:
-                    message: access token required
-                    error_code: NOT_AUTHORIZED
+                    detail: Unauthorized.
+                    status: 401
+                    title: Unauthorized
+                    trace_id: 3c77294349d3b5647ea2d990f0d8f017
+                    type: 'https://developer.sumup.com/problem/unauthorized'
         '403':
-          description: Forbidden
+          description: The request is authenticated but not permitted for this operation.
           content:
             application/json:
               schema:
@@ -1040,7 +982,7 @@ paths:
                     error_code: FORBIDDEN
                     status_code: '403'
         '404':
-          description: Not Found
+          description: The requested resource does not exist.
           content:
             application/json:
               schema:
@@ -1075,7 +1017,7 @@ paths:
       description: Lists all payment instrument resources that are saved for an identified customer.
       responses:
         '200':
-          description: OK
+          description: Returns the list of saved payment instruments for the customer.
           content:
             application/json:
               schema:
@@ -1083,29 +1025,22 @@ paths:
                 items:
                   $ref: '#/components/schemas/PaymentInstrumentResponse'
         '401':
-          description: Unauthorized
+          description: The request is not authorized.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Problem'
               examples:
-                Invalid_Token:
-                  description: The access token is invalid or has expired.
+                Problem_Details:
+                  description: Unauthorized response returned by API gateway.
                   value:
-                    error_message: invalid access token
-                    error_code: NOT_AUTHORIZED
-                Not_Authorized_Token:
-                  description: The access token is valid but the application is not authorized.
-                  value:
-                    error_message: NOT_AUTHORIZED
-                    error_code: NOT_AUTHORIZED
-                Missing_Token:
-                  description: No access token is provided.
-                  value:
-                    message: access token required
-                    error_code: NOT_AUTHORIZED
+                    detail: Unauthorized.
+                    status: 401
+                    title: Unauthorized
+                    trace_id: 3c77294349d3b5647ea2d990f0d8f017
+                    type: 'https://developer.sumup.com/problem/unauthorized'
         '403':
-          description: Forbidden
+          description: The request is authenticated but not permitted for this operation.
           content:
             application/json:
               schema:
@@ -1118,7 +1053,7 @@ paths:
                     error_code: FORBIDDEN
                     status_code: '403'
         '404':
-          description: Not Found
+          description: The requested resource does not exist.
           content:
             application/json:
               schema:
@@ -1159,31 +1094,36 @@ paths:
       description: Deactivates an identified card payment instrument resource for a customer.
       responses:
         '204':
-          description: No Content
-        '401':
-          description: Unauthorized
+          description: Returns an empty response body when the operation succeeds.
+        '400':
+          description: The request is invalid.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
               examples:
-                Invalid_Token:
-                  description: The access token is invalid or has expired.
+                Invalid_Request:
+                  description: The request cannot be processed.
                   value:
-                    error_message: invalid access token
-                    error_code: NOT_AUTHORIZED
-                Not_Authorized_Token:
-                  description: The access token is valid but the application is not authorized.
+                    error_code: INVALID_REQUEST
+                    message: bad request
+        '401':
+          description: The request is not authorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+              examples:
+                Problem_Details:
+                  description: Unauthorized response returned by API gateway.
                   value:
-                    error_message: NOT_AUTHORIZED
-                    error_code: NOT_AUTHORIZED
-                Missing_Token:
-                  description: No access token is provided.
-                  value:
-                    message: access token required
-                    error_code: NOT_AUTHORIZED
+                    detail: Unauthorized.
+                    status: 401
+                    title: Unauthorized
+                    trace_id: 3c77294349d3b5647ea2d990f0d8f017
+                    type: 'https://developer.sumup.com/problem/unauthorized'
         '403':
-          description: Forbidden
+          description: The request is authenticated but not permitted for this operation.
           content:
             application/json:
               schema:
@@ -1196,7 +1136,7 @@ paths:
                     error_code: FORBIDDEN
                     status_code: '403'
         '404':
-          description: Not Found
+          description: The requested resource does not exist.
           content:
             application/json:
               schema:
@@ -1230,7 +1170,7 @@ paths:
       summary: Refund a transaction
       description: Refunds an identified transaction either in full or partially.
       requestBody:
-        description: ''
+        description: Optional amount for partial refunds.
         content:
           application/json:
             schema:
@@ -1243,9 +1183,9 @@ paths:
                   format: float
       responses:
         '204':
-          description: No Content
+          description: Returns an empty response body when the operation succeeds.
         '404':
-          description: Not Found
+          description: The requested resource does not exist.
           content:
             application/json:
               schema:
@@ -1257,7 +1197,7 @@ paths:
                     error_code: NOT_FOUND
                     message: Resource not found
         '409':
-          description: Conflict
+          description: The transaction cannot be refunded due to business constraints.
           content:
             application/json:
               schema:
@@ -1268,6 +1208,11 @@ paths:
                   value:
                     error_code: CONFLICT
                     message: The transaction is not refundable in its current state
+                Not_Enough_Balance:
+                  description: The merchant balance does not allow performing the refund.
+                  value:
+                    error_code: NOT_ENOUGH_BALANCE
+                    message: Not enough available balance to perform the operation at the moment
       security:
         - apiKey: []
         - oauth2:
@@ -1327,35 +1272,28 @@ paths:
             type: string
       responses:
         '200':
-          description: OK
+          description: Returns the requested transaction resource.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/TransactionFull'
         '401':
-          description: Unauthorized
+          description: The request is not authorized.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Problem'
               examples:
-                Invalid_Token:
-                  description: The access token is invalid or has expired.
+                Problem_Details:
+                  description: Unauthorized response returned by API gateway.
                   value:
-                    error_message: invalid access token
-                    error_code: NOT_AUTHORIZED
-                Not_Authorized_Token:
-                  description: The access token is valid but the application is not authorized.
-                  value:
-                    error_message: NOT_AUTHORIZED
-                    error_code: NOT_AUTHORIZED
-                Missing_Token:
-                  description: No access token is provided.
-                  value:
-                    message: access token required
-                    error_code: NOT_AUTHORIZED
+                    detail: Unauthorized.
+                    status: 401
+                    title: Unauthorized
+                    trace_id: 3c77294349d3b5647ea2d990f0d8f017
+                    type: 'https://developer.sumup.com/problem/unauthorized'
         '404':
-          description: Not Found
+          description: The requested resource does not exist.
           content:
             application/json:
               schema:
@@ -1409,35 +1347,28 @@ paths:
             type: string
       responses:
         '200':
-          description: OK
+          description: Returns the requested transaction resource.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/TransactionFull'
         '401':
-          description: Unauthorized
+          description: The request is not authorized.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Problem'
               examples:
-                Invalid_Token:
-                  description: The access token is invalid or has expired.
+                Problem_Details:
+                  description: Unauthorized response returned by API gateway.
                   value:
-                    error_message: invalid access token
-                    error_code: NOT_AUTHORIZED
-                Not_Authorized_Token:
-                  description: The access token is valid but the application is not authorized.
-                  value:
-                    error_message: NOT_AUTHORIZED
-                    error_code: NOT_AUTHORIZED
-                Missing_Token:
-                  description: No access token is provided.
-                  value:
-                    message: access token required
-                    error_code: NOT_AUTHORIZED
+                    detail: Unauthorized.
+                    status: 401
+                    title: Unauthorized
+                    trace_id: 3c77294349d3b5647ea2d990f0d8f017
+                    type: 'https://developer.sumup.com/problem/unauthorized'
         '404':
-          description: Not Found
+          description: The requested resource does not exist.
           content:
             application/json:
               schema:
@@ -1500,7 +1431,7 @@ paths:
             items:
               type: string
               format: email
-        - name: statuses
+        - name: 'statuses[]'
           in: query
           description: Filters the returned results by the specified list of final statuses of the transactions.
           required: false
@@ -1577,7 +1508,7 @@ paths:
             type: string
       responses:
         '200':
-          description: OK
+          description: Returns a page of transaction history items.
           content:
             application/json:
               schema:
@@ -1591,28 +1522,33 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/TransactionsHistoryLink'
-        '401':
-          description: Unauthorized
+        '400':
+          description: The request is invalid for the submitted query parameters.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
               examples:
-                Invalid_Token:
-                  description: The access token is invalid or has expired.
+                Invalid_Parameter:
+                  description: A request parameter has an invalid value.
                   value:
-                    error_message: invalid access token
-                    error_code: NOT_AUTHORIZED
-                Not_Authorized_Token:
-                  description: The access token is valid but the application is not authorized.
+                    message: Validation error
+                    error_code: INVALID
+        '401':
+          description: The request is not authorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+              examples:
+                Problem_Details:
+                  description: Unauthorized response returned by API gateway.
                   value:
-                    error_message: NOT_AUTHORIZED
-                    error_code: NOT_AUTHORIZED
-                Missing_Token:
-                  description: No access token is provided.
-                  value:
-                    message: access token required
-                    error_code: NOT_AUTHORIZED
+                    detail: Unauthorized.
+                    status: 401
+                    title: Unauthorized
+                    trace_id: 3c77294349d3b5647ea2d990f0d8f017
+                    type: 'https://developer.sumup.com/problem/unauthorized'
       security:
         - apiKey: []
         - oauth2:
@@ -1658,7 +1594,7 @@ paths:
             items:
               type: string
               format: email
-        - name: statuses
+        - name: 'statuses[]'
           in: query
           description: Filters the returned results by the specified list of final statuses of the transactions.
           required: false
@@ -1727,7 +1663,7 @@ paths:
             type: string
       responses:
         '200':
-          description: OK
+          description: Returns a page of transaction history items.
           content:
             application/json:
               schema:
@@ -1741,28 +1677,33 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/TransactionsHistoryLink'
-        '401':
-          description: Unauthorized
+        '400':
+          description: The request is invalid for the submitted query parameters.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
               examples:
-                Invalid_Token:
-                  description: The access token is invalid or has expired.
+                Invalid_Parameter:
+                  description: A request parameter has an invalid value.
                   value:
-                    error_message: invalid access token
-                    error_code: NOT_AUTHORIZED
-                Not_Authorized_Token:
-                  description: The access token is valid but the application is not authorized.
+                    message: Validation error
+                    error_code: INVALID
+        '401':
+          description: The request is not authorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+              examples:
+                Problem_Details:
+                  description: Unauthorized response returned by API gateway.
                   value:
-                    error_message: NOT_AUTHORIZED
-                    error_code: NOT_AUTHORIZED
-                Missing_Token:
-                  description: No access token is provided.
-                  value:
-                    message: access token required
-                    error_code: NOT_AUTHORIZED
+                    detail: Unauthorized.
+                    status: 401
+                    title: Unauthorized
+                    trace_id: 3c77294349d3b5647ea2d990f0d8f017
+                    type: 'https://developer.sumup.com/problem/unauthorized'
       deprecated: true
       security:
         - apiKey: []
@@ -1823,33 +1764,44 @@ paths:
               - asc
       responses:
         '200':
-          description: OK
+          description: Returns the list of payouts for the requested period.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/FinancialPayouts'
-        '401':
-          description: Unauthorized
+        '400':
+          description: The request is invalid for the submitted query parameters.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                type: array
+                items:
+                  $ref: '#/components/schemas/ErrorExtended'
               examples:
-                Invalid_Token:
-                  description: The access token is invalid or has expired.
+                Missing_Required_Dates:
+                  description: Required date filters are missing.
                   value:
-                    error_message: invalid access token
-                    error_code: NOT_AUTHORIZED
-                Not_Authorized_Token:
-                  description: The access token is valid but the application is not authorized.
+                    - error_code: MISSING
+                      message: 'Validation error: required'
+                      param: start_date
+                    - error_code: MISSING
+                      message: 'Validation error: required'
+                      param: end_date
+        '401':
+          description: The request is not authorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+              examples:
+                Problem_Details:
+                  description: Unauthorized response returned by API gateway.
                   value:
-                    error_message: NOT_AUTHORIZED
-                    error_code: NOT_AUTHORIZED
-                Missing_Token:
-                  description: No access token is provided.
-                  value:
-                    message: access token required
-                    error_code: NOT_AUTHORIZED
+                    detail: Unauthorized.
+                    status: 401
+                    title: Unauthorized
+                    trace_id: 3c77294349d3b5647ea2d990f0d8f017
+                    type: 'https://developer.sumup.com/problem/unauthorized'
       security:
         - apiKey: []
         - oauth2:
@@ -1905,33 +1857,44 @@ paths:
               - asc
       responses:
         '200':
-          description: OK
+          description: Returns the list of payouts for the requested period.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/FinancialPayouts'
-        '401':
-          description: Unauthorized
+        '400':
+          description: The request is invalid for the submitted query parameters.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                type: array
+                items:
+                  $ref: '#/components/schemas/ErrorExtended'
               examples:
-                Invalid_Token:
-                  description: The access token is invalid or has expired.
+                Missing_Required_Dates:
+                  description: Required date filters are missing.
                   value:
-                    error_message: invalid access token
-                    error_code: NOT_AUTHORIZED
-                Not_Authorized_Token:
-                  description: The access token is valid but the application is not authorized.
+                    - error_code: MISSING
+                      message: 'Validation error: required'
+                      param: start_date
+                    - error_code: MISSING
+                      message: 'Validation error: required'
+                      param: end_date
+        '401':
+          description: The request is not authorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+              examples:
+                Problem_Details:
+                  description: Unauthorized response returned by API gateway.
                   value:
-                    error_message: NOT_AUTHORIZED
-                    error_code: NOT_AUTHORIZED
-                Missing_Token:
-                  description: No access token is provided.
-                  value:
-                    message: access token required
-                    error_code: NOT_AUTHORIZED
+                    detail: Unauthorized.
+                    status: 401
+                    title: Unauthorized
+                    trace_id: 3c77294349d3b5647ea2d990f0d8f017
+                    type: 'https://developer.sumup.com/problem/unauthorized'
       deprecated: true
       security:
         - apiKey: []
@@ -1971,45 +1934,50 @@ paths:
             type: integer
       responses:
         '200':
-          description: OK
+          description: Returns receipt details for the requested transaction.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Receipt'
         '400':
-          description: Not Found
+          description: The request is invalid for the submitted parameters.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
               examples:
-                Not_Found:
-                  description: The identified resource is not found on the server.
+                Invalid_Merchant_Code:
+                  description: The provided merchant code is invalid.
                   value:
-                    error_code: NOT_FOUND
-                    message: Resource not found
+                    message: is not a valid merchant code
+                    error_code: INVALID
         '401':
-          description: Unauthorized
+          description: The request is not authorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+              examples:
+                Problem_Details:
+                  description: Unauthorized response returned by API gateway.
+                  value:
+                    detail: Unauthorized.
+                    status: 401
+                    title: Unauthorized
+                    trace_id: 3c77294349d3b5647ea2d990f0d8f017
+                    type: 'https://developer.sumup.com/problem/unauthorized'
+        '404':
+          description: The requested transaction event does not exist for the provided transaction.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
               examples:
-                Invalid_Token:
-                  description: The access token is invalid or has expired.
+                Event_Not_Found:
+                  description: The provided transaction event ID cannot be found for this transaction.
                   value:
-                    error_message: invalid access token
-                    error_code: NOT_AUTHORIZED
-                Not_Authorized_Token:
-                  description: The access token is valid but the application is not authorized.
-                  value:
-                    error_message: NOT_AUTHORIZED
-                    error_code: NOT_AUTHORIZED
-                Missing_Token:
-                  description: No access token is provided.
-                  value:
-                    message: access token required
-                    error_code: NOT_AUTHORIZED
+                    message: No such tx event (ID=9567461191) for transaction 4ffb8dfc-7f2b-413d-a497-2ad00766585e
+                    error_code: NOT_FOUND
       security:
         - apiKey: []
         - oauth2: []
@@ -2103,7 +2071,7 @@ paths:
         '403':
           description: Operator creation was forbidden.
           content:
-            application/json:
+            application/problem+json:
               schema:
                 $ref: '#/components/schemas/Problem'
       deprecated: true
@@ -2199,7 +2167,7 @@ paths:
         '400':
           description: Invalid Operators' email or password was already used.
           content:
-            application/json:
+            application/problem+json:
               schema:
                 $ref: '#/components/schemas/Problem'
       deprecated: true
@@ -2403,7 +2371,7 @@ paths:
         '404':
           description: Merchant not found.
           content:
-            application/json:
+            application/problem+json:
               schema:
                 $ref: '#/components/schemas/Problem'
       security:
@@ -2479,19 +2447,19 @@ paths:
         '400':
           description: Invalid request.
           content:
-            application/json:
+            application/problem+json:
               schema:
                 $ref: '#/components/schemas/Problem'
         '404':
           description: Merchant not found.
           content:
-            application/json:
+            application/problem+json:
               schema:
                 $ref: '#/components/schemas/Problem'
         '429':
           description: Too many invitations sent to that user. The limit is 10 requests per 5 minutes and the Retry-After header is set to the number of minutes until the reset of the limit.
           content:
-            application/json:
+            application/problem+json:
               schema:
                 $ref: '#/components/schemas/Problem'
       security:
@@ -2536,7 +2504,7 @@ paths:
         '404':
           description: Merchant or member not found.
           content:
-            application/json:
+            application/problem+json:
               schema:
                 $ref: '#/components/schemas/Problem'
       security:
@@ -2615,25 +2583,25 @@ paths:
         '400':
           description: Cannot set password or nickname for an invited user.
           content:
-            application/json:
+            application/problem+json:
               schema:
                 $ref: '#/components/schemas/Problem'
         '403':
           description: Cannot change password for managed user. Password was already used before.
           content:
-            application/json:
+            application/problem+json:
               schema:
                 $ref: '#/components/schemas/Problem'
         '404':
           description: Merchant or member not found.
           content:
-            application/json:
+            application/problem+json:
               schema:
                 $ref: '#/components/schemas/Problem'
         '409':
           description: Cannot update member as some data conflict with existing members.
           content:
-            application/json:
+            application/problem+json:
               schema:
                 $ref: '#/components/schemas/Problem'
       security:
@@ -2673,7 +2641,7 @@ paths:
         '404':
           description: Merchant or member not found.
           content:
-            application/json:
+            application/problem+json:
               schema:
                 $ref: '#/components/schemas/Problem'
       security:
@@ -2718,7 +2686,7 @@ paths:
         '404':
           description: Merchant not found.
           content:
-            application/json:
+            application/problem+json:
               schema:
                 $ref: '#/components/schemas/Problem'
       security:
@@ -2785,13 +2753,13 @@ paths:
         '400':
           description: Invalid request.
           content:
-            application/json:
+            application/problem+json:
               schema:
                 $ref: '#/components/schemas/Problem'
         '404':
           description: Merchant not found.
           content:
-            application/json:
+            application/problem+json:
               schema:
                 $ref: '#/components/schemas/Problem'
       security:
@@ -2836,7 +2804,7 @@ paths:
         '404':
           description: Merchant or role not found.
           content:
-            application/json:
+            application/problem+json:
               schema:
                 $ref: '#/components/schemas/Problem'
       security:
@@ -2876,13 +2844,13 @@ paths:
         '400':
           description: Invalid request.
           content:
-            application/json:
+            application/problem+json:
               schema:
                 $ref: '#/components/schemas/Problem'
         '404':
           description: Merchant not found.
           content:
-            application/json:
+            application/problem+json:
               schema:
                 $ref: '#/components/schemas/Problem'
       security:
@@ -2957,13 +2925,13 @@ paths:
         '400':
           description: Invalid request.
           content:
-            application/json:
+            application/problem+json:
               schema:
                 $ref: '#/components/schemas/Problem'
         '404':
           description: Merchant not found.
           content:
-            application/json:
+            application/problem+json:
               schema:
                 $ref: '#/components/schemas/Problem'
       security:
@@ -3257,19 +3225,19 @@ paths:
         '400':
           description: The request is invalid.
           content:
-            application/json:
+            application/problem+json:
               schema:
                 $ref: '#/components/schemas/Problem'
         '404':
           description: There's no pending reader for the submitted pairing code.
           content:
-            application/json:
+            application/problem+json:
               schema:
                 $ref: '#/components/schemas/Problem'
         '409':
           description: The Reader is not in a pending state.
           content:
-            application/json:
+            application/problem+json:
               schema:
                 $ref: '#/components/schemas/Problem'
       security:
@@ -3334,7 +3302,7 @@ paths:
         '404':
           description: The requested Reader resource does not exist.
           content:
-            application/json:
+            application/problem+json:
               schema:
                 $ref: '#/components/schemas/Problem'
       security:
@@ -3375,7 +3343,7 @@ paths:
         '404':
           description: The requested Reader resource does not exist.
           content:
-            application/json:
+            application/problem+json:
               schema:
                 $ref: '#/components/schemas/Problem'
       security:
@@ -3431,13 +3399,13 @@ paths:
         '403':
           description: The request isn't sufficiently authorized to modify the reader.
           content:
-            application/json:
+            application/problem+json:
               schema:
                 $ref: '#/components/schemas/Problem'
         '404':
           description: The requested Reader resource does not exist.
           content:
-            application/json:
+            application/problem+json:
               schema:
                 $ref: '#/components/schemas/Problem'
       security:
@@ -3505,36 +3473,36 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CreateReaderCheckoutError'
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
         '401':
           description: Unauthorized
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/CreateReaderCheckoutError'
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '404':
+          description: Response when given reader is not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
         '422':
           description: Response when given params (or one of them) are invalid
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/CreateReaderCheckoutUnprocessableEntity'
-        '500':
-          description: Internal Server Error
-          content:
-            application/json:
+            application/problem+json:
               schema:
-                $ref: '#/components/schemas/CreateReaderCheckoutError'
-        '502':
-          description: Bad Gateway
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CreateReaderCheckoutError'
-        '504':
-          description: Gateway Timeout
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CreateReaderCheckoutError'
+                $ref: '#/components/schemas/Problem'
       callbacks:
         ReaderCheckoutStatusChange:
           '{$request.body#/return_url}':
@@ -3615,36 +3583,27 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/BadRequest'
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
         '401':
           description: Response when given merchant's token is invalid
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Unauthorized'
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
         '404':
           description: Response when given reader is not found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/NotFound'
-        '500':
-          description: Generic error response for backend failure
-          content:
-            application/json:
+            application/problem+json:
               schema:
-                $ref: '#/components/schemas/InternalServerError'
-        '502':
-          description: Generic error response for an upstream service failure
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BadGateway'
-        '504':
-          description: Generic error response for an upstream service timeout
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GatewayTimeout'
+                $ref: '#/components/schemas/Problem'
       callbacks: {}
       security:
         - apiKey: []
@@ -3708,36 +3667,36 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CreateReaderTerminateError'
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
         '401':
           description: Unauthorized
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/CreateReaderTerminateError'
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '404':
+          description: Response when given reader is not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
         '422':
           description: Response when given params (or one of them) are invalid
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/CreateReaderTerminateUnprocessableEntity'
-        '500':
-          description: Internal Server Error
-          content:
-            application/json:
+            application/problem+json:
               schema:
-                $ref: '#/components/schemas/CreateReaderTerminateError'
-        '502':
-          description: Bad Gateway
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CreateReaderTerminateError'
-        '504':
-          description: Gateway Timeout
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CreateReaderTerminateError'
+                $ref: '#/components/schemas/Problem'
       callbacks: {}
       security:
         - apiKey: []
@@ -3854,7 +3813,7 @@ components:
         items:
           type: string
     StatusesFilter:
-      name: statuses
+      name: 'statuses[]'
       in: query
       description: Filters the returned results by the specified list of final statuses of the transactions.
       required: false
@@ -3948,6 +3907,7 @@ components:
           description: State name or abbreviation from the address.
           type: string
           example: Berlin
+      title: Address Legacy
     Card:
       description: __Required when payment type is `card`.__ Details of the payment card.
       type: object
@@ -4017,6 +3977,7 @@ components:
         - cvv
         - last_4_digits
         - type
+      title: Card
     CardResponse:
       description: Details of the payment card.
       type: object
@@ -4030,7 +3991,9 @@ components:
           readOnly: true
         type:
           $ref: '#/components/schemas/CardType'
+      title: Card Response
     Device:
+      description: Details of the device used to create the transaction.
       type: object
       properties:
         name:
@@ -4053,7 +4016,9 @@ components:
           description: Device UUID.
           type: string
           example: 3ae2a6b7-fb0d-3b50-adbf-cb7e2db30cd2
+      title: Device
     ElvCardAccount:
+      description: Details of the ELV card account associated with the transaction.
       type: object
       properties:
         sort_code:
@@ -4072,6 +4037,7 @@ components:
           description: ELV IBAN.
           type: string
           example: DE60870962140012345674
+      title: ELV Card Account
     Checkout:
       description: Details of the payment checkout.
       type: object
@@ -4214,6 +4180,7 @@ components:
         - amount
         - currency
         - merchant_code
+      title: Checkout Create Request
     ProcessCheckout:
       description: Details of the payment instrument for processing the checkout.
       type: object
@@ -4246,7 +4213,9 @@ components:
           $ref: '#/components/schemas/PersonalDetails'
       required:
         - payment_type
+      title: Process Checkout
     CheckoutSuccess:
+      description: Checkout response returned after a successful processing attempt.
       allOf:
         - $ref: '#/components/schemas/Checkout'
         - type: object
@@ -4277,6 +4246,7 @@ components:
                   description: Token value
                   type: string
                   example: e76d7e5c-9375-4fac-a7e7-b19dc5302fbc
+      title: Checkout Success
     CheckoutAccepted:
       description: 3DS Response
       type: object
@@ -4315,7 +4285,9 @@ components:
                   example: b1a536c0-29b9-11eb-adc1-0242ac120002
                 TermUrl:
                   example: 'https://api.sumup.com/v0.1/checkouts/e552de3b-1777-4c91-bdb8-756967678572/complete_payment'
+      title: Checkout Accepted
     Customer:
+      description: Saved customer details.
       type: object
       properties:
         customer_id:
@@ -4337,7 +4309,41 @@ components:
         error_code:
           description: Platform code for the error.
           type: string
+      title: Error
+    Problem:
+      description: |
+        A RFC 9457 problem details object.
+
+        Additional properties specific to the problem type may be present.
+      type: object
+      properties:
+        type:
+          description: A URI reference that identifies the problem type.
+          type: string
+          format: uri
+          example: 'https://developer.sumup.com/problem/not-found'
+        title:
+          description: 'A short, human-readable summary of the problem type.'
+          type: string
+          example: Requested resource couldn't be found.
+        status:
+          description: The HTTP status code generated by the origin server for this occurrence of the problem.
+          type: integer
+          example: 404
+        detail:
+          description: A human-readable explanation specific to this occurrence of the problem.
+          type: string
+          example: The requested resource doesn't exist or does not belong to you.
+        instance:
+          description: A URI reference that identifies the specific occurrence of the problem.
+          type: string
+          format: uri
+      additionalProperties: true
+      required:
+        - type
+      title: Problem
     ErrorExtended:
+      description: Error payload with the invalid parameter reference.
       allOf:
         - $ref: '#/components/schemas/Error'
         - type: object
@@ -4345,6 +4351,7 @@ components:
             param:
               description: 'Parameter name (with relative location) to which the error applies. Parameters from embedded resources are displayed using dot notation. For example, `card.name` refers to the `name` parameter embedded in the `card` object.'
               type: string
+      title: Error Extended
     ErrorForbidden:
       description: Error message for forbidden requests.
       type: object
@@ -4358,6 +4365,7 @@ components:
         status_code:
           description: HTTP status code for the error.
           type: string
+      title: Error Forbidden
     DetailsError:
       description: Error message structure.
       type: object
@@ -4372,6 +4380,7 @@ components:
           description: The status code.
           type: number
         failed_constraints:
+          description: List of violated validation constraints.
           type: array
           items:
             type: object
@@ -4380,7 +4389,9 @@ components:
                 type: string
               reference:
                 type: string
+      title: Details Error
     Event:
+      description: Transaction event details.
       type: object
       properties:
         id:
@@ -4414,7 +4425,9 @@ components:
           description: Amount of the fee deducted for the event.
           type: number
           format: float
+      title: Event
     FinancialPayouts:
+      description: List of payout summaries.
       type: array
       items:
         type: object
@@ -4464,7 +4477,9 @@ components:
         type:
           description: Specifies the media type of the related resource.
           type: string
+      title: Link
     TransactionsHistoryLink:
+      description: Hypermedia link used for transaction history pagination.
       type: object
       properties:
         rel:
@@ -4478,6 +4493,7 @@ components:
       required:
         - rel
         - href
+      title: Transactions History Link
     MandatePayload:
       description: Mandate is passed when a card is to be tokenized
       type: object
@@ -4500,6 +4516,7 @@ components:
       required:
         - type
         - user_agent
+      title: Mandate Payload
     MandateResponse:
       description: Created mandate
       type: object
@@ -4518,6 +4535,7 @@ components:
         type: recurrent
         status: active
         merchant_code: MH4H92C7
+      title: Mandate Response
     PaymentInstrumentResponse:
       description: Payment Instrument Response
       type: object
@@ -4567,6 +4585,7 @@ components:
           last_4_digits: '0001'
           type: VISA
         created_at: '2021-03-30T10:06:07.000+00:00'
+      title: Payment Instrument Response
     PersonalDetails:
       description: Personal details for the customer.
       type: object
@@ -4599,6 +4618,7 @@ components:
           maxLength: 255
         address:
           $ref: '#/components/schemas/AddressLegacy'
+      title: Personal Details
     Product:
       description: Purchase product.
       type: object
@@ -4644,7 +4664,9 @@ components:
           description: Total price incl. VAT.
           type: number
           format: decimal
+      title: Product
     Receipt:
+      description: Receipt details for a transaction.
       type: object
       properties:
         transaction_data:
@@ -4652,8 +4674,10 @@ components:
         merchant_data:
           $ref: '#/components/schemas/ReceiptMerchantData'
         emv_data:
+          description: EMV-specific metadata returned for card-present payments.
           type: object
         acquirer_data:
+          description: Acquirer-specific metadata related to the card authorization.
           type: object
           properties:
             tid:
@@ -4666,6 +4690,7 @@ components:
               type: string
       title: Receipt
     ReceiptEvent:
+      description: Transaction event details as rendered on the receipt.
       type: object
       properties:
         id:
@@ -4685,8 +4710,11 @@ components:
           type: string
           format: date-time
         receipt_no:
+          description: Receipt number associated with the event.
           type: string
+      title: Receipt Event
     ReceiptCard:
+      description: Payment card details displayed on the receipt.
       type: object
       properties:
         last_4_digits:
@@ -4695,11 +4723,13 @@ components:
         type:
           description: Card Scheme.
           type: string
+      title: Receipt Card
     ReceiptMerchantData:
       description: Receipt merchant data
       type: object
       properties:
         merchant_profile:
+          description: Merchant profile details displayed on the receipt.
           type: object
           properties:
             merchant_code:
@@ -4727,7 +4757,9 @@ components:
                 landline:
                   type: string
         locale:
+          description: Locale used for rendering localized receipt fields.
           type: string
+      title: Receipt Merchant Data
     ReceiptTransaction:
       description: Transaction information.
       type: object
@@ -4848,6 +4880,7 @@ components:
         receipt_no:
           description: Receipt number
           type: string
+      title: Receipt Transaction
     TransactionEvent:
       description: Details of a transaction event.
       type: object
@@ -4882,6 +4915,7 @@ components:
           type: string
           format: date-time
           example: '2020-05-25T10:49:42.784Z'
+      title: Transaction Event
     TransactionBase:
       description: Details of the transaction.
       type: object
@@ -4920,7 +4954,9 @@ components:
           description: Current number of the installment for deferred payments.
           type: integer
           minimum: 1
+      title: Transaction Base
     TransactionCheckoutInfo:
+      description: Checkout-specific fields associated with a transaction.
       type: object
       properties:
         merchant_code:
@@ -4948,7 +4984,9 @@ components:
           type: integer
           format: int64
           example: 1763892018
+      title: Transaction Checkout Info
     TransactionMixinHistory:
+      description: Additional transaction fields used by history and detailed views.
       type: object
       properties:
         product_summary:
@@ -4967,7 +5005,9 @@ components:
             - SINGLE_PAYMENT
             - TRUE_INSTALLMENT
             - ACCELERATED_INSTALLMENT
+      title: Transaction Mixin History
     TransactionHistory:
+      description: Transaction entry returned in history listing responses.
       allOf:
         - $ref: '#/components/schemas/TransactionBase'
         - $ref: '#/components/schemas/TransactionMixinHistory'
@@ -5008,6 +5048,7 @@ components:
               type: number
               format: decimal
               example: 0
+      title: Transaction History
     PaymentType:
       description: Payment type used for the transaction.
       type: string
@@ -5023,6 +5064,7 @@ components:
         - DIRECT_DEBIT
         - APM
         - UNKNOWN
+      title: Payment Type
     EntryMode:
       description: Entry mode of the payment details.
       type: string
@@ -5053,6 +5095,7 @@ components:
         - google pay
         - paypal
         - na
+      title: Entry Mode
     CardType:
       description: Issuing card network of the payment card used for the transaction.
       type: string
@@ -5081,7 +5124,9 @@ components:
         - VPAY
         - VR
         - UNKNOWN
+      title: Card Type
     TransactionFull:
+      description: 'Full transaction resource with checkout, payout, and event details.'
       allOf:
         - $ref: '#/components/schemas/TransactionBase'
         - $ref: '#/components/schemas/TransactionCheckoutInfo'
@@ -5245,6 +5290,7 @@ components:
             tax_enabled:
               description: Indicates whether tax deduction is enabled for the transaction.
               type: boolean
+      title: Transaction Full
     Currency:
       description: 'Three-letter [ISO4217](https://en.wikipedia.org/wiki/ISO_4217) code of the currency for the amount. Currently supported currency values are enumerated above.'
       type: string
@@ -5266,6 +5312,7 @@ components:
         - RON
         - SEK
         - USD
+      title: Currency
     EventType:
       description: Type of the transaction event.
       type: string
@@ -5274,6 +5321,7 @@ components:
         - CHARGE_BACK
         - REFUND
         - PAYOUT_DEDUCTION
+      title: Event Type
     EventStatus:
       description: Status of the transaction event.
       type: string
@@ -5284,29 +5332,35 @@ components:
         - REFUNDED
         - SUCCESSFUL
         - PAID_OUT
+      title: Event Status
     EventID:
       description: Unique ID of the transaction event.
       type: integer
       format: int64
+      title: Event ID
     HorizontalAccuracy:
       description: Indication of the precision of the geographical position received from the payment terminal.
       type: number
       format: float
+      title: Horizontal Accuracy
     Lat:
       description: Latitude value from the coordinates of the payment location (as received from the payment terminal reader).
       type: number
       format: float
       maximum: 90
       minimum: 0
+      title: Latitude
     Lon:
       description: Longitude value from the coordinates of the payment location (as received from the payment terminal reader).
       type: number
       format: float
       maximum: 180
       minimum: 0
+      title: Longitude
     TransactionID:
       description: Unique ID of the transaction.
       type: string
+      title: Transaction ID
     Permissions:
       description: Permissions assigned to an operator or user.
       type: object
@@ -5372,37 +5426,6 @@ components:
       type: object
       example: {}
       additionalProperties: true
-    Problem:
-      description: |
-        A RFC 9457 problem details object.
-
-        Additional properties specific to the problem type may be present.
-      type: object
-      properties:
-        type:
-          description: A URI reference that identifies the problem type.
-          type: string
-          format: uri
-          example: 'https://developer.sumup.com/problem/not-found'
-        title:
-          description: 'A short, human-readable summary of the problem type.'
-          type: string
-          example: Requested resource couldn't be found.
-        status:
-          description: The HTTP status code generated by the origin server for this occurrence of the problem.
-          type: integer
-          example: 404
-        detail:
-          description: A human-readable explanation specific to this occurrence of the problem.
-          type: string
-          example: The requested resource doesn't exist or does not belong to you.
-        instance:
-          description: A URI reference that identifies the specific occurrence of the problem.
-          type: string
-          format: uri
-      additionalProperties: true
-      required:
-        - type
     Address:
       description: |-
         An address somewhere in the world. The address fields used depend on the country conventions. For example, in Great Britain, `city` is `post_town`. In the United States, the top-level administrative unit used in addresses is `state`, whereas in Chile it's `region`.
@@ -6558,24 +6581,6 @@ components:
       required:
         - errors
       title: CreateReaderTerminateUnprocessableEntity
-    BadGateway:
-      description: 502 Bad Gateway
-      type: object
-      properties:
-        errors:
-          type: object
-          properties:
-            detail:
-              description: Fuller message giving context to error
-              type: string
-          required:
-            - detail
-      example:
-        errors:
-          detail: Bad Gateway
-      required:
-        - errors
-      title: BadGateway
     CreateReaderTerminateError:
       description: Error description
       type: object
@@ -6642,24 +6647,6 @@ components:
       required:
         - data
       title: CreateReaderCheckoutResponse
-    GatewayTimeout:
-      description: 504 Gateway Timeout
-      type: object
-      properties:
-        errors:
-          type: object
-          properties:
-            detail:
-              description: Fuller message giving context to error
-              type: string
-          required:
-            - detail
-      example:
-        errors:
-          detail: Gateway Timeout
-      required:
-        - errors
-      title: GatewayTimeout
     Unauthorized:
       description: 401 Unauthorized
       type: object
@@ -6671,38 +6658,19 @@ components:
               description: Fuller message giving context to error
               type: string
             type:
-              description: Key indicating type of error
+              description: 'Key indicating type of error. Present only for typed 401 responses (e.g. invalid token, invalid password). Absent for generic unauthorized responses.'
               type: string
               enum:
                 - INVALID_ACCESS_TOKEN
                 - INVALID_PASSWORD
           required:
-            - type
-      example:
-        errors:
-          detail: Invalid or expired access token
-          type: INVALID_ACCESS_TOKEN
-      required:
-        - errors
-      title: Unauthorized
-    InternalServerError:
-      description: 500 Internal Server Error
-      type: object
-      properties:
-        errors:
-          type: object
-          properties:
-            detail:
-              description: Fuller message giving context to error
-              type: string
-          required:
             - detail
       example:
         errors:
-          detail: Internal Server Error
+          detail: Unauthorized
       required:
         - errors
-      title: InternalServerError
+      title: Unauthorized
     CreateReaderCheckoutRequest:
       description: Reader Checkout
       type: object
@@ -6945,6 +6913,7 @@ components:
         native_name:
           description: Country native name
           type: string
+      title: Country Details
     TimeoffsetDetails:
       description: TimeOffset Details
       type: object
@@ -6958,6 +6927,7 @@ components:
         dst:
           description: Daylight Saving Time
           type: boolean
+      title: Time Offset Details
     AddressPayloadLegacy:
       description: Personal address
       type: object
@@ -7000,6 +6970,7 @@ components:
         - city
         - country
         - post_code
+      title: Address Payload Legacy
     BusinessOwners:
       description: Business owners information.
       type: array
@@ -7024,6 +6995,7 @@ components:
           ownership:
             description: Ownership percentage
             type: number
+      title: Business Owners
     AddressWithDetails:
       description: Details of the registered address.
       type: object
@@ -7071,7 +7043,9 @@ components:
         state_id:
           description: undefined
           type: string
+      title: Address With Details
     BankAccountPayload:
+      description: Bank account details used when creating or updating a payout account.
       type: object
       properties:
         bank_code:
@@ -7119,6 +7093,7 @@ components:
         - account_holder_name
         - iban
         - swift
+      title: Bank Account Payload
     DoingBusinessAsPayloadLegacy:
       description: Doing Business As information
       type: object
@@ -7140,6 +7115,7 @@ components:
           type: string
         address:
           $ref: '#/components/schemas/AddressPayloadLegacy'
+      title: Doing Business As Payload Legacy
     MerchantProfilePayload:
       description: Account's merchant profile
       type: object
@@ -7174,6 +7150,7 @@ components:
         address:
           $ref: '#/components/schemas/AddressPayloadLegacy'
         doing_business_as:
+          description: Doing-business-as details associated with the merchant profile.
           type: object
           properties:
             business_name:
@@ -7204,7 +7181,9 @@ components:
         - merchant_category_code
         - company_name
         - address
+      title: Merchant Profile Payload
     MerchantSettingsPayload:
+      description: Merchant payout and settlement configuration.
       type: object
       properties:
         payout_period:
@@ -7234,6 +7213,7 @@ components:
         gross_settlement:
           description: Gross settlement
           type: boolean
+      title: Merchant Settings Payload
     PaymentInstrumentCard:
       description: Details of the payment card that is saved as a payment instrument.
       type: object
@@ -7259,6 +7239,7 @@ components:
         - active
         - type
         - card
+      title: Payment Instrument Card
     PersonalProfilePayloadLegacy:
       description: Account's personal profile.
       type: object
@@ -7286,7 +7267,9 @@ components:
         - last_name
         - date_of_birth
         - address
+      title: Personal Profile Payload Legacy
     BankAccount:
+      description: Bank account details used for merchant payouts.
       type: object
       properties:
         bank_code:
@@ -7311,6 +7294,7 @@ components:
           description: Account category - business or personal
           type: string
         account_holder_name:
+          description: Name of the bank account holder.
           type: string
         status:
           description: Status in the verification process
@@ -7324,6 +7308,7 @@ components:
         bank_name:
           description: Bank name
           type: string
+      title: Bank Account
     PersonalProfileLegacy:
       description: Account's personal profile.
       type: object
@@ -7343,7 +7328,9 @@ components:
         address:
           $ref: '#/components/schemas/AddressWithDetails'
         complete:
+          description: Indicates whether the profile data is complete.
           type: boolean
+      title: Personal Profile Legacy
     EntryModeFilter:
       description: 'Entry mode value accepted by the `entry_modes[]` filter.'
       type: string
@@ -7374,6 +7361,7 @@ components:
         - MOTO
         - CONTACTLESS_MAGSTRIPE
         - N/A
+      title: Entry Mode Filter
   examples:
     CreatedReader:
       summary: A reader that waits for the physical device to acknowledge the pairing.
@@ -7399,14 +7387,14 @@ components:
       description: Delete the reader.
   requestBodies:
     BankAccounts:
-      description: ''
+      description: Bank account details to be created or updated.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/BankAccountPayload'
     CheckoutCreate:
       required: true
-      description: ''
+      description: Details for creating a checkout resource.
       content:
         application/json:
           schema:
@@ -7521,7 +7509,7 @@ components:
             $ref: '#/components/schemas/Customer'
     CustomerUpdate:
       required: true
-      description: ''
+      description: Customer fields to update.
       content:
         application/json:
           schema:
@@ -7530,37 +7518,37 @@ components:
               personal_details:
                 $ref: '#/components/schemas/PersonalDetails'
     DoingBusinessAsLegacy:
-      description: ''
+      description: Doing-business-as details for merchant profile updates.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/DoingBusinessAsPayloadLegacy'
     MerchantProfile:
-      description: ''
+      description: Merchant profile fields to create or update.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/MerchantProfilePayload'
     MerchantSettings:
-      description: ''
+      description: Merchant settings fields to create or update.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/MerchantSettingsPayload'
     PaymentInstrument:
-      description: ''
+      description: Payment instrument details.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/PaymentInstrumentCard'
     PersonalProfile:
-      description: ''
+      description: Personal profile details to create or update.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/PersonalProfilePayloadLegacy'
     Refund:
-      description: ''
+      description: Optional amount for partial refunds.
       content:
         application/json:
           schema:
@@ -7573,7 +7561,7 @@ components:
                 format: float
   responses:
     Checkout:
-      description: Created
+      description: Returns the created checkout resource.
       content:
         application/json:
           schema:
@@ -7674,7 +7662,7 @@ components:
                     auth_code: '012345'
                     internal_id: 0
     CheckoutList:
-      description: OK
+      description: Returns a list of checkout resources.
       content:
         application/json:
           schema:
@@ -7682,13 +7670,13 @@ components:
             items:
               $ref: '#/components/schemas/CheckoutSuccess'
     CheckoutRetrieve:
-      description: OK
+      description: Returns the requested checkout resource.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/CheckoutSuccess'
     CheckoutProcess:
-      description: OK
+      description: Returns the checkout resource after a processing attempt.
       content:
         application/json:
           schema:
@@ -7820,19 +7808,19 @@ components:
                   mechanism:
                     - browser
     CheckoutProcessAccepted:
-      description: Accepted
+      description: Returns the next required action for asynchronous checkout processing.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/CheckoutAccepted'
     Customer:
-      description: Created
+      description: Returns the customer resource.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Customer'
     PaymentInstrumentList:
-      description: OK
+      description: Returns the list of saved payment instruments for the customer.
       content:
         application/json:
           schema:
@@ -7840,37 +7828,30 @@ components:
             items:
               $ref: '#/components/schemas/PaymentInstrumentResponse'
     Transaction:
-      description: OK
+      description: Returns the requested transaction resource.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/TransactionFull'
     NoBodyResponse:
-      description: No Content
+      description: Returns an empty response body when the operation succeeds.
     ErrorNotAuthorized:
-      description: Unauthorized
+      description: The request is not authorized.
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/Error'
+            $ref: '#/components/schemas/Problem'
           examples:
-            Invalid_Token:
-              description: The access token is invalid or has expired.
+            Problem_Details:
+              description: Unauthorized response returned by API gateway.
               value:
-                error_message: invalid access token
-                error_code: NOT_AUTHORIZED
-            Not_Authorized_Token:
-              description: The access token is valid but the application is not authorized.
-              value:
-                error_message: NOT_AUTHORIZED
-                error_code: NOT_AUTHORIZED
-            Missing_Token:
-              description: No access token is provided.
-              value:
-                message: access token required
-                error_code: NOT_AUTHORIZED
+                detail: Unauthorized.
+                status: 401
+                title: Unauthorized
+                trace_id: 3c77294349d3b5647ea2d990f0d8f017
+                type: 'https://developer.sumup.com/problem/unauthorized'
     ErrorForbidden:
-      description: Forbidden
+      description: The request is authenticated but not permitted for this operation.
       content:
         application/json:
           schema:
@@ -7883,7 +7864,7 @@ components:
                 error_code: FORBIDDEN
                 status_code: '403'
     ErrorNotFound:
-      description: Not Found
+      description: The requested resource does not exist.
       content:
         application/json:
           schema:
@@ -7895,7 +7876,7 @@ components:
                 error_code: NOT_FOUND
                 message: Resource not found
     ErrorConflict:
-      description: Conflict
+      description: The request conflicts with the current state of the resource.
       content:
         application/json:
           schema:

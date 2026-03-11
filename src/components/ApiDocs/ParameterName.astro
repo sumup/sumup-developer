@@ -1,11 +1,24 @@
 ---
 import { resolveReference } from "@lib/openapi";
 import type { OpenAPIV3_1 } from "openapi-types";
+import Constraints from "./Constraints.astro";
 
-type Constraint = {
-  text: string;
-  href?: string;
-};
+type Constraint =
+  | {
+      text: string;
+    }
+  | {
+      text: string;
+      href: string;
+    }
+  | {
+      key: string;
+      value: string;
+    }
+  | {
+      key: string;
+      code: string;
+    };
 
 type Props = {
   name: string;
@@ -23,11 +36,6 @@ if (def && "$ref" in def) {
   def = resolveReference(def.$ref);
 }
 
-if (def && "items" in def && def.items && "$ref" in def.items) {
-  const resolved = resolveReference(def.items.$ref);
-  if (resolved) def.items = resolved;
-}
-
 const formatValue = (value: unknown): string => {
   if (value === undefined || value === null) return "";
   if (typeof value === "string") return value;
@@ -40,11 +48,11 @@ const formatValue = (value: unknown): string => {
 
 const addConstraint = (
   constraints: Constraint[],
-  label: string,
+  key: string,
   value: unknown,
 ) => {
   if (value === undefined || value === null || value === "") return;
-  constraints.push({ text: `${label}: ${formatValue(value)}` });
+  constraints.push({ key, value: formatValue(value) });
 };
 
 const schema = def && "type" in def ? def : undefined;
@@ -54,9 +62,11 @@ if (schema) {
   if (schema.type === "string") {
     addConstraint(constraints, "min length", schema.minLength);
     addConstraint(constraints, "max length", schema.maxLength);
-    addConstraint(constraints, "pattern", schema.pattern);
+    if (schema.pattern) {
+      constraints.push({ key: "pattern", code: schema.pattern });
+    }
     if (schema.format) {
-      constraints.push({ text: schema.format });
+      addConstraint(constraints, "format", schema.format);
     }
   }
 
@@ -80,7 +90,7 @@ if (schema) {
   addConstraint(constraints, "multiple of", schema.multipleOf);
 
   if (schema.default !== undefined) {
-    addConstraint(constraints, "default", schema.default);
+    constraints.push({ key: "default", code: formatValue(schema.default) });
   }
   if ("nullable" in schema && schema.nullable) {
     constraints.push({ text: "nullable" });
@@ -89,43 +99,52 @@ if (schema) {
     constraints.push({ text: "deprecated" });
   }
   if (schema.readOnly) {
-    constraints.push({ text: "read only" });
+    constraints.push({ text: "Read only" });
   }
   if (schema.writeOnly) {
-    constraints.push({ text: "write only" });
+    constraints.push({ text: "Write only" });
   }
   if (schema.externalDocs?.url) {
     constraints.push({ text: "docs", href: schema.externalDocs.url });
   }
 }
 
-const typeText =
-  def &&
-  ("items" in def && def.items
-    ? `[]${("type" in def.items && def.items.type) || "object"}`
-    : "type" in def && def.type);
+const toSchemaTypeText = (
+  value:
+    | OpenAPIV3_1.ReferenceObject
+    | OpenAPIV3_1.SchemaObject
+    | OpenAPIV3_1.ResponseObject
+    | undefined
+    | null,
+): string | undefined => {
+  if (!value) return undefined;
+  if ("$ref" in value) {
+    return value.$ref.split("/").pop() || "object";
+  }
+
+  if ("items" in value && value.items) {
+    return `[]${toSchemaTypeText(value.items) || "object"}`;
+  }
+
+  if ("title" in value && value.title) {
+    return value.title;
+  }
+
+  if ("type" in value && value.type) {
+    return Array.isArray(value.type) ? value.type.join(" | ") : value.type;
+  }
+
+  return undefined;
+};
+
+const typeText = toSchemaTypeText(def);
 ---
 
 <div class="parameter">
   <span class="name">{name}</span>
-  <span class="constraint">{typeText}</span>
-  {
-    constraints.map((constraint) =>
-      constraint.href ? (
-        <a
-          class="constraint link"
-          href={constraint.href}
-          target="_blank"
-          rel="noreferrer"
-        >
-          {constraint.text}
-        </a>
-      ) : (
-        <span class="constraint">{constraint.text}</span>
-      ),
-    )
-  }
+  <span class="type">{typeText}</span>
   {required && <span class="required">required</span>}
+  <Constraints constraints={constraints} />
 </div>
 
 <style>
@@ -140,20 +159,8 @@ const typeText =
 
   .name {
     font-family: var(--cui-font-stack-mono);
-    font-weight: var(--cui-font-weight-bold);
+    font-weight: 600;
     margin-right: var(--cui-spacings-bit);
-  }
-
-  .constraint {
-    color: var(--cui-fg-subtle);
-  }
-
-  .constraint:not(:last-child)::after {
-    content: ",";
-  }
-
-  .link {
-    text-decoration: underline;
   }
 
   .required {

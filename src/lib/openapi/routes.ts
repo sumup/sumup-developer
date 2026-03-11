@@ -1,10 +1,14 @@
 /** Top-level API pages that render sections from the root API reference page. */
-export const apiTopLevelPaths = ["sdks", "authentication"] as const;
+export const apiTopLevelPaths = ["sdks", "authentication", "errors"] as const;
 
 /** Literal union of supported top-level API path segments. */
 export type ApiTopLevelPath = (typeof apiTopLevelPaths)[number];
 /** Section IDs used by in-page scrolling/highlighting on top-level API pages. */
-export type ApiTopSection = "introduction" | "sdks" | "authentication";
+export type ApiTopSection =
+  | "introduction"
+  | "sdks"
+  | "authentication"
+  | "errors";
 
 /** Route classification used by sidebar scroll syncing. */
 export type ParsedApiPath =
@@ -36,7 +40,11 @@ export const getApiTopSection = (
     return "introduction";
   }
 
-  if (segment === "sdks" || segment === "authentication") {
+  if (
+    segment === "sdks" ||
+    segment === "authentication" ||
+    segment === "errors"
+  ) {
     return segment;
   }
 
@@ -73,7 +81,7 @@ export const getApiScrollTarget = (pathname: string): string | undefined => {
     return undefined;
   }
 
-  if (first === "sdks" || first === "authentication") {
+  if (first === "sdks" || first === "authentication" || first === "errors") {
     return first;
   }
 
