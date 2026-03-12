@@ -5,14 +5,19 @@ import "@sumup-oss/design-tokens/dynamic.css";
 
 const { entry, head, lastUpdated } = Astro.locals.starlightRoute;
 const frontmatter = entry.data;
+const frontmatterRecord = frontmatter as Record<string, unknown>;
+
+const asString = (value: unknown): string | undefined =>
+  typeof value === "string" ? value : undefined;
+
 const routeTitle =
-  (frontmatter as Record<string, unknown>).metaTitle ||
-  frontmatter.title ||
+  asString(frontmatterRecord.metaTitle) ||
+  asString(frontmatterRecord.title) ||
   "SumUp Developer";
 const title = routeTitle.includes("SumUp")
   ? routeTitle
   : `${routeTitle} | SumUp Developer`;
-const description = frontmatter.description;
+const description = asString(frontmatterRecord.description);
 const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
 const siteName = "SumUp Developer";
 const markdownAlternateUrl = new URL(
@@ -20,8 +25,7 @@ const markdownAlternateUrl = new URL(
   Astro.site,
 ).toString();
 const shouldNoIndex = Boolean(
-  (frontmatter as Record<string, unknown>).noindex ||
-  (frontmatter as Record<string, unknown>).draft,
+  frontmatterRecord.noindex || frontmatterRecord.draft,
 );
 
 function upsertMetaByName(name: string, content: string) {
