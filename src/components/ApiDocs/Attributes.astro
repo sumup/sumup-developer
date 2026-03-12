@@ -9,11 +9,6 @@ type Props = {
   kind?: string;
 } & HTMLAttributes<"div">;
 
-// const isNonArraySchemaObject = (
-//   object: OpenAPIV3_1.SchemaObject | OpenAPIV3_1.ReferenceObject | undefined
-// ): object is OpenAPIV3_1.NonArraySchemaObject =>
-//   !!object && !("items" in object);
-
 const { schema, kind = "Attributes", ...attrs } = Astro.props;
 ---
 

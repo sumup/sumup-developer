@@ -2,8 +2,9 @@
 import { resolveSchema } from "@lib/openapi";
 import Markdown from "@components/Markdown.astro";
 import type { OpenAPIV3_1 } from "openapi-types";
-import InlineCode from "../Highlight/InlineCode.astro";
 import ParameterName from "./ParameterName.astro";
+import SectionHeading from "./SectionHeading.astro";
+import { getSchemaEnumValues } from "./schemaUtils";
 
 type Props = {
   parameters: OpenAPIV3_1.ParameterObject[];
@@ -14,22 +15,12 @@ const { parameters = [], kind } = Astro.props;
 ---
 
 <div class="parameters" data-pagefind-ignore>
-  <h3>
-    {kind}
-  </h3>
+  <SectionHeading>{kind}</SectionHeading>
   <ul>
     {
       parameters.map((p) => {
         const schema = resolveSchema(p.schema!);
-        const enumValues =
-          "enum" in schema && Array.isArray(schema.enum)
-            ? schema.enum
-            : "items" in schema &&
-                schema.items &&
-                "enum" in schema.items &&
-                Array.isArray(schema.items.enum)
-              ? schema.items.enum
-              : null;
+        const enumValues = getSchemaEnumValues(schema);
         return (
           <li>
             <ParameterName
@@ -41,7 +32,7 @@ const { parameters = [], kind } = Astro.props;
               <div class="enum">
                 <span>Options:&nbsp;</span>
                 {enumValues.map((value) => (
-                  <InlineCode>{value}</InlineCode>
+                  <code dir="auto">{value}</code>
                 ))}
               </div>
             )}
@@ -49,7 +40,7 @@ const { parameters = [], kind } = Astro.props;
             {"example" in schema && (
               <div>
                 Example:{" "}
-                <InlineCode>{JSON.stringify(schema.example)}</InlineCode>
+                <code dir="auto">{JSON.stringify(schema.example)}</code>
               </div>
             )}
           </li>
@@ -61,13 +52,7 @@ const { parameters = [], kind } = Astro.props;
 
 <style>
   .parameters {
-    margin-bottom: 64px;
-  }
-  h3 {
-    margin-top: var(--cui-spacings-mega);
-    padding-bottom: var(--cui-spacings-kilo);
-    border-bottom: var(--cui-border-width-kilo) solid var(--cui-border-subtle);
-    font-size: 1rem;
+    margin-bottom: var(--cui-spacings-giga);
   }
   ul {
     list-style: none;
@@ -76,8 +61,7 @@ const { parameters = [], kind } = Astro.props;
     width: 100%;
   }
   ul li {
-    padding: var(--cui-spacings-mega) 0;
-    border-bottom: var(--cui-border-width-kilo) solid var(--cui-border-subtle);
+    padding: var(--cui-spacings-kilo) 0;
   }
   ul li:last-child {
     border-bottom: none;

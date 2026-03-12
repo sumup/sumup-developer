@@ -1,0 +1,72 @@
+---
+import { Anchor } from "@sumup-oss/circuit-ui";
+
+type Constraint =
+  | {
+      text: string;
+    }
+  | {
+      text: string;
+      href: string;
+    }
+  | {
+      key: string;
+      value: string;
+    }
+  | {
+      key: string;
+      code: string;
+    };
+
+type Props = {
+  constraints: Constraint[];
+};
+
+const { constraints } = Astro.props;
+---
+
+{
+  constraints.length > 0 && (
+    <span class="constraints">
+      {constraints.map((constraint, index) => (
+        <>
+          {"href" in constraint ? (
+            <Anchor
+              href={constraint.href}
+              target="_blank"
+              size="s"
+              externalLabel="Opens in a new tab"
+            >
+              {constraint.text}
+            </Anchor>
+          ) : "code" in constraint ? (
+            <span>
+              {constraint.key}: <code dir="auto">{constraint.code}</code>
+            </span>
+          ) : "key" in constraint ? (
+            <span>
+              {constraint.key}: {constraint.value}
+            </span>
+          ) : (
+            <span>{constraint.text}</span>
+          )}
+          {index < constraints.length - 1 && <span>, </span>}
+        </>
+      ))}
+    </span>
+  )
+}
+
+<style>
+  .constraints {
+    color: var(--cui-fg-subtle);
+  }
+
+  .constraints::before {
+    content: "(";
+  }
+
+  .constraints::after {
+    content: ")";
+  }
+</style>

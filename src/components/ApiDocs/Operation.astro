@@ -1,31 +1,32 @@
 ---
-import { Aside, Badge } from "@astrojs/starlight/components";
+import { Aside, Badge, Tabs, TabItem } from "@astrojs/starlight/components";
 import Markdown from "@components/Markdown.astro";
+import { formatSlug } from "@lib/helpers";
 import { resolveReference } from "@lib/openapi";
-import { Headline } from "@sumup-oss/circuit-ui";
+import { Headline, Body, Anchor } from "@sumup-oss/circuit-ui";
 import type { HTMLAttributes } from "astro/types";
 import type { OpenAPIV3_1 } from "openapi-types";
 import type {
   OperationObject,
   PermissionRequirements,
 } from "src/types/openapi";
-import InlineCode from "../Highlight/InlineCode.astro";
 import Example from "./Example.astro";
 import ExampleRequest from "./ExampleRequest.astro";
 import { CodeBlock, MultiCode } from "@components/Code";
 import LRGrid from "./LRGrid.astro";
+import OperationEndpoint from "./OperationEndpoint.astro";
 import Parameters from "./Parameters.astro";
 import Schema from "./Schema.astro";
-
-// import { OperationEndpoint } from "./OperationEndpoint";
+import SectionHeading from "./SectionHeading.astro";
 
 interface Props extends HTMLAttributes<"section"> {
   operation: OperationObject;
+  coreObjects?: (OpenAPIV3_1.SchemaObject | OpenAPIV3_1.ReferenceObject)[];
 }
 
-const { operation, ...props } = Astro.props;
+const { operation, coreObjects = [], ...props } = Astro.props;
 
-const isParamterObject = (
+const isParameterObject = (
   object: OpenAPIV3_1.ParameterObject | OpenAPIV3_1.ReferenceObject,
 ): object is OpenAPIV3_1.ParameterObject => "name" in object;
 
@@ -36,16 +37,84 @@ const isRequestBody = (
     | undefined,
 ): object is OpenAPIV3_1.RequestBodyObject => !!object && !("$ref" in object);
 
-const responseContentTypes = [
+const successResponseContentTypes: readonly string[] = [
   "application/json",
   "application/problem+json",
 ] as const;
 
-const findResponseContent = (response: OpenAPIV3_1.ResponseObject) => {
-  return responseContentTypes
-    .map((contentType) => response.content?.[contentType])
-    .find(Boolean);
+const errorResponseContentTypes: readonly string[] = [
+  "application/problem+json",
+  "application/json",
+] as const;
+
+const findResponseContent = (
+  response: OpenAPIV3_1.ResponseObject,
+  contentTypes = successResponseContentTypes,
+) => {
+  for (const contentType of contentTypes) {
+    const mediaType = response.content?.[contentType];
+    if (mediaType) {
+      return { contentType, mediaType };
+    }
+  }
+  return undefined;
 };
+
+const findSchemaReferences = (
+  schema: OpenAPIV3_1.SchemaObject | OpenAPIV3_1.ReferenceObject | undefined,
+): string[] => {
+  if (!schema) return [];
+  if ("$ref" in schema) return [schema.$ref];
+
+  const refs = new Set<string>();
+  const addRefs = (
+    child: OpenAPIV3_1.SchemaObject | OpenAPIV3_1.ReferenceObject | undefined,
+  ) => {
+    findSchemaReferences(child).forEach((ref) => refs.add(ref));
+  };
+
+  if ("items" in schema) {
+    addRefs(schema.items);
+  }
+  if ("properties" in schema && schema.properties) {
+    Object.values(schema.properties).forEach(addRefs);
+  }
+  if ("allOf" in schema && schema.allOf) {
+    schema.allOf.forEach(addRefs);
+  }
+  if ("anyOf" in schema && schema.anyOf) {
+    schema.anyOf.forEach(addRefs);
+  }
+  if ("oneOf" in schema && schema.oneOf) {
+    schema.oneOf.forEach(addRefs);
+  }
+  if ("additionalProperties" in schema && schema.additionalProperties) {
+    if (typeof schema.additionalProperties === "object") {
+      addRefs(schema.additionalProperties);
+    }
+  }
+
+  return Array.from(refs);
+};
+
+const getObjectNameFromRef = (ref: string): string =>
+  ref.split("/").pop() || "";
+
+const coreObjectByRef = new Map(
+  coreObjects
+    .filter((obj): obj is OpenAPIV3_1.ReferenceObject => "$ref" in obj)
+    .map((obj) => {
+      const objectName = getObjectNameFromRef(obj.$ref);
+
+      return [
+        obj.$ref,
+        {
+          name: objectName,
+          href: `#${operation.tagSlug}-object-${formatSlug(objectName)}`,
+        },
+      ] as const;
+    }),
+);
 
 const findSuccessResponse = (responses?: OpenAPIV3_1.ResponsesObject) => {
   if (!responses) return undefined;
@@ -57,17 +126,78 @@ const findSuccessResponse = (responses?: OpenAPIV3_1.ResponsesObject) => {
     success = resolveReference<OpenAPIV3_1.ResponseObject>(success.$ref);
   }
   if (!success) return undefined;
-  return findResponseContent(success);
+  const successContent = findResponseContent(success);
+  if (!successContent) return undefined;
+
+  return {
+    ...successContent.mediaType,
+    contentType: successContent.contentType,
+    description: success.description,
+  };
+};
+
+const getResponseObject = (
+  response: OpenAPIV3_1.ResponseObject | OpenAPIV3_1.ReferenceObject,
+) => {
+  if ("$ref" in response) {
+    return resolveReference<OpenAPIV3_1.ResponseObject>(response.$ref);
+  }
+  return response;
+};
+
+const getFirstExampleValue = (
+  content: OpenAPIV3_1.MediaTypeObject | undefined,
+): unknown => {
+  if (!content) return undefined;
+  if ("example" in content && content.example !== undefined) {
+    return content.example;
+  }
+
+  if (!content.examples) return undefined;
+  const firstExample = Object.values(content.examples)[0];
+  if (!firstExample) return undefined;
+  if ("$ref" in firstExample) return undefined;
+  if ("value" in firstExample) return firstExample.value;
+
+  return undefined;
 };
 
 const successResponse = findSuccessResponse(operation.responses);
+const successResponseCoreObjects = successResponse?.schema
+  ? findSchemaReferences(successResponse.schema).flatMap((ref) => {
+      const coreObject = coreObjectByRef.get(ref);
+      return coreObject ? [coreObject] : [];
+    })
+  : [];
+const errorResponses = Object.entries(operation.responses || {}).flatMap(
+  ([status, response]) => {
+    if (status.startsWith("2")) return [];
+
+    const responseObject = getResponseObject(response);
+    const responseContent =
+      responseObject &&
+      findResponseContent(responseObject, errorResponseContentTypes);
+
+    if (!responseContent?.mediaType?.schema) return [];
+
+    return [
+      {
+        status,
+        description: responseObject?.description,
+        contentType: responseContent.contentType,
+        schema: responseContent.mediaType.schema,
+        example: getFirstExampleValue(responseContent.mediaType),
+      },
+    ];
+  },
+);
 
 const pathParams = operation.parameters
-  ?.filter(isParamterObject)
+  ?.filter(isParameterObject)
   .filter((p) => p.in === "path");
 
 const queryParams = operation.parameters
-  ?.filter(isParamterObject)
+  ?.filter(isParameterObject)
   .filter((p) => p.in === "query");
 
 const formatPermission = (
@@ -92,14 +222,15 @@ const formattedPermissions = (operation["x-permissions"] || [])
         data-pagefind-operation={operation.summary}
         data-pagefind-meta="operation[data-pagefind-operation]"
       >
-        <a
+        <Anchor
           href={`/api/${operation.tagSlug}`}
           data-scroll-to={operation.tagSlug}
-          class="tag-link"
+          className="tag-link"
           data-pagefind-ignore
+          size="s"
         >
           {operation.tag}
-        </a>
+        </Anchor>
         <Headline
           as="h2"
           id={`${operation.tagSlug}-${operation.slug}-heading`}
@@ -119,7 +250,7 @@ const formattedPermissions = (operation["x-permissions"] || [])
             )
           }
         </Headline>
-        {/*<OperationEndpoint operation={operation} />*/}
+        <OperationEndpoint class="operation-endpoint" operation={operation} />
         {
           "x-deprecation-notice" in operation && (
             <div class="notice">
@@ -141,7 +272,7 @@ const formattedPermissions = (operation["x-permissions"] || [])
             <div class="scopes" data-pagefind-ignore>
               Required scopes:
               {operation["x-scopes"].map((scope) => (
-                <InlineCode>{scope}</InlineCode>
+                <code dir="auto">{scope}</code>
               ))}
             </div>
           )
@@ -151,7 +282,7 @@ const formattedPermissions = (operation["x-permissions"] || [])
             <div class="permissions" data-pagefind-ignore>
               Required permissions:
               {formattedPermissions.map((permission) => (
-                <InlineCode>{permission}</InlineCode>
+                <code dir="auto">{permission}</code>
               ))}
             </div>
           )
@@ -173,43 +304,59 @@ const formattedPermissions = (operation["x-permissions"] || [])
           !!operation.requestBody.content["application/json"].schema && (
             <Schema
               kind="Body Parameters"
+              title="Body Parameters"
               schema={operation.requestBody.content["application/json"].schema}
             />
           )
       }
+      <SectionHeading>Response</SectionHeading>
       {
-        Object.entries(operation.responses || {}).map(([status, response]) => {
-          const responseObject =
-            "$ref" in response
-              ? (resolveReference(response.$ref) as
-                  | OpenAPIV3_1.ResponseObject
-                  | null)
-              : response;
-          const responseContent =
-            responseObject && findResponseContent(responseObject);
-
-          if (
-            !responseContent?.schema ||
-            status.startsWith("2")
-          ) {
-            return null;
-          }
-          return (
-            <Schema
-              kind={`Response ${status}`}
-              schema={responseContent.schema}
-            />
-          );
-        })
+        successResponse?.schema ? (
+          <>
+            {(successResponse.description ||
+              successResponseCoreObjects.length > 0) && (
+              <Body size="s" className="response-description">
+                {successResponse.description}
+                {successResponse.description &&
+                  successResponseCoreObjects.length > 0 &&
+                  " "}
+                {successResponseCoreObjects.length > 0 && (
+                  <>
+                    See{" "}
+                    {successResponseCoreObjects.map((coreObject, index) => (
+                      <>
+                        {index > 0 && ", "}
+                        <Anchor
+                          size="s"
+                          weight="bold"
+                          href={coreObject.href}
+                          data-pagefind-ignore
+                        >
+                          {coreObject.name} object
+                        </Anchor>
+                      </>
+                    ))}
+                    .
+                  </>
+                )}
+              </Body>
+            )}
+            <Schema kind="Response" schema={successResponse.schema} />
+          </>
+        ) : (
+          <Body size="s" className="response-description">
+            Returns empty response.
+          </Body>
+        )
       }
     </div>
-    <div class="examples">
+    <div class="examples api-docs-stack-mega">
       <div class="example-request">
         <ExampleRequest operation={operation} />
       </div>
       {
         successResponse && (
-          <div class="example-response">
+          <div class="example-response api-docs-sticky">
             {successResponse.example && (
               <CodeBlock
                 data-pagefind-ignore="all"
@@ -249,6 +396,52 @@ const formattedPermissions = (operation["x-permissions"] || [])
       }
     </div>
   </LRGrid>
+  {
+    errorResponses.length > 0 && (
+      <LRGrid class="error-responses">
+        <div>
+          <Tabs syncKey="errors">
+            {errorResponses.map((errorResponse) => (
+              <TabItem label={`Error ${errorResponse.status}`}>
+                <Body size="s" className="content-type">
+                  Content-Type:{" "}
+                  <code dir="auto">{errorResponse.contentType}</code>
+                </Body>
+                {errorResponse.description && (
+                  <Body size="s">{errorResponse.description}</Body>
+                )}
+                <Schema
+                  kind={`Error ${errorResponse.status}`}
+                  schema={errorResponse.schema}
+                />
+              </TabItem>
+            ))}
+          </Tabs>
+        </div>
+        <div class="error-example error-example-panels api-docs-sticky">
+          <Tabs syncKey="errors">
+            {errorResponses.map((errorResponse) => (
+              <TabItem label={`Error ${errorResponse.status}`}>
+                {errorResponse.example !== undefined ? (
+                  <CodeBlock
+                    data-pagefind-ignore="all"
+                    title={`Error ${errorResponse.status}`}
+                    language="json"
+                    code={JSON.stringify(errorResponse.example, null, 2)}
+                  />
+                ) : (
+                  <Example
+                    name={`Error ${errorResponse.status}`}
+                    schema={errorResponse.schema}
+                  />
+                )}
+              </TabItem>
+            ))}
+          </Tabs>
+        </div>
+      </LRGrid>
+    )
+  }
 </section>
 
 <style>
@@ -279,10 +472,6 @@ const formattedPermissions = (operation["x-permissions"] || [])
     position: relative;
   }
 
-  .examples > div {
-    margin-bottom: var(--cui-spacings-mega);
-  }
-
   .tag-link {
     display: block;
     color: var(--cui-fg-subtle);
@@ -296,12 +485,46 @@ const formattedPermissions = (operation["x-permissions"] || [])
     text-decoration: underline;
   }
 
-  .example-response {
-    position: sticky;
-    top: calc(var(--sl-nav-height) + var(--cui-spacings-kilo));
+  .headline {
+    margin-bottom: var(--cui-spacings-kilo);
   }
 
-  .headline {
+  .operation-endpoint {
+    font-size: var(--cui-body-s-font-size);
+    line-height: var(--cui-body-s-line-height);
     margin-bottom: var(--cui-spacings-giga);
+  }
+
+  .error-responses {
+    margin-top: var(--cui-spacings-giga);
+  }
+
+  .error-responses :global(starlight-tabs [role="tablist"]) {
+    border-bottom-width: 1px;
+  }
+
+  .error-responses :global(starlight-tabs .tab > [role="tab"]) {
+    box-shadow: 0 1px 0 var(--sl-tab-color-border);
+  }
+
+  .content-type {
+    margin-bottom: var(--cui-spacings-mega);
+  }
+
+  .error-example {
+    align-self: start;
+  }
+
+  .error-example-panels :global(starlight-tabs > .tablist-wrapper),
+  .error-example-panels :global(starlight-tabs [role="tablist"]) {
+    display: none !important;
+  }
+
+  .error-example-panels :global(starlight-tabs > [role="tabpanel"]) {
+    margin-top: 0;
+  }
+
+  .response-description {
+    margin: var(--cui-spacings-mega) 0;
   }
 </style>

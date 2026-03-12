@@ -6,6 +6,9 @@ import { pathsByTag } from "./preprocess";
 const manualDownranked = new Set(
   ["Merchant", "Subaccounts"].map((name) => formatSlug(name)),
 );
+const manualUpranked = new Set(
+  ["Checkouts", "Readers"].map((name) => formatSlug(name)),
+);
 
 const getTag = (slug: string): TagObject | undefined =>
   doc.tags?.find((tag) => formatSlug(tag.name) === slug);
@@ -24,9 +27,22 @@ const isDownrankedTag = (tag?: TagObject): boolean => {
   return manualDownranked.has(formatSlug(tag.name)) || isDeprecatedTag(tag);
 };
 
+const isUprankedTag = (tag?: TagObject): boolean => {
+  if (!tag) {
+    return false;
+  }
+
+  return manualUpranked.has(formatSlug(tag.name));
+};
+
 const compareTags = (slugA: string, slugB: string): number => {
   const tagA = getTag(slugA);
   const tagB = getTag(slugB);
+  const aUpranked = isUprankedTag(tagA);
+  const bUpranked = isUprankedTag(tagB);
+
+  if (aUpranked && !bUpranked) return -1;
+  if (!aUpranked && bUpranked) return 1;
 
   const aDownranked = isDownrankedTag(tagA);
   const bDownranked = isDownrankedTag(tagB);

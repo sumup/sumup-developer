@@ -2,22 +2,24 @@
 import Markdown from "@components/Markdown.astro";
 import { resolveSchema } from "@lib/openapi";
 import { Headline } from "@sumup-oss/circuit-ui";
+import type { HTMLAttributes } from "astro/types";
 import type { OpenAPIV3_1 } from "openapi-types";
 import Example from "./Example.astro";
 import LRGrid from "./LRGrid.astro";
 import Schema from "./Schema.astro";
 
-export interface Props {
+export interface Props extends HTMLAttributes<"section"> {
   target?: string;
-  schema: OpenAPIV3_1.SchemaObject;
+  schema: OpenAPIV3_1.SchemaObject | OpenAPIV3_1.ReferenceObject;
+  sectionId?: string;
 }
 
-const { schema: obj } = Astro.props;
+const { schema: obj, sectionId, ...attrs } = Astro.props;
 
 const schema = resolveSchema(obj);
 ---
 
-<section>
+<section id={sectionId} {...attrs}>
   <LRGrid class="layout">
     <div>
       <Headline as="h3" size="m">
@@ -30,7 +32,7 @@ const schema = resolveSchema(obj);
       }
       <Schema kind="Attributes" schema={schema} />
     </div>
-    <div class="scheme">
+    <div class="scheme api-docs-sticky">
       {(<Example name={`The ${schema.title || ""} object`} schema={schema} />)}
     </div>
   </LRGrid>
@@ -47,10 +49,5 @@ const schema = resolveSchema(obj);
 
   .example {
     margin-top: var(--cui-spacings-kilo);
-  }
-
-  .scheme :global(.codeblock) {
-    position: sticky;
-    top: calc(var(--sl-nav-height) + var(--cui-spacings-kilo));
   }
 </style>

@@ -1,11 +1,9 @@
 ---
-import { Badge, Aside } from "@astrojs/starlight/components";
+import { Aside } from "@astrojs/starlight/components";
 import Markdown from "@components/Markdown.astro";
 import { formatSlug } from "@lib/helpers";
-import { Headline } from "@sumup-oss/circuit-ui";
 import type { HTMLAttributes } from "astro/types";
 import type { OperationObject, TagObject } from "src/types/openapi";
-import LRGrid from "./LRGrid.astro";
 import SchemaObject from "./Object.astro";
 import Operation from "./Operation.astro";
 
@@ -19,7 +17,6 @@ const {
   tag: {
     name,
     description,
-    "x-beta": beta,
     "x-core-objects": coreObjects = [],
     "x-deprecation-notice": deprecationNotice,
   },
@@ -31,6 +28,28 @@ const {
 const slug = formatSlug(name);
 const [targetTag, targetOp] = (target || "").split("/");
 const tagIsTarget = !targetOp && targetTag === slug;
+const objectPagefindAttributes = tagIsTarget
+  ? {
+      "data-pagefind-body": "",
+      "data-pagefind-tag": name,
+      "data-pagefind-kind": "object",
+      "data-pagefind-meta": "kind[data-pagefind-kind], tag[data-pagefind-tag]",
+    }
+  : {
+      "data-pagefind-ignore": "all",
+    };
+const coreObjectSections = coreObjects.map((schema, index) => {
+  const refName =
+    "$ref" in schema
+      ? (schema.$ref.split("/").pop() ?? `object-${String(index + 1)}`)
+      : `object-${String(index + 1)}`;
+  const objectSlug = formatSlug(refName);
+
+  return {
+    schema,
+    sectionId: `${slug}-object-${objectSlug}`,
+  };
+});
 ---
 
 <section
@@ -48,49 +67,30 @@ const tagIsTarget = !targetOp && targetTag === slug;
       }}
   {...attrs}
 >
-  <LRGrid class="tag">
-    <div class="tag-info">
-      <Headline as="h2" id={`${slug}-heading`} className="headline">
-        {name}
-        {
-          beta && (
-            <Badge variant="tip" text="Preview feature" data-pagefind-ignore />
-          )
-        }
-      </Headline>
-      {
-        deprecationNotice && (
-          <div class="notice">
-            <Aside type="caution">
-              <Markdown>{deprecationNotice}</Markdown>
-            </Aside>
-          </div>
-        )
-      }
-      <Markdown>{description}</Markdown>
-    </div>
-  </LRGrid>
+  <div class="tag-info">
+    {
+      deprecationNotice && (
+        <div class="notice">
+          <Aside type="caution">
+            <Markdown>{deprecationNotice}</Markdown>
+          </Aside>
+        </div>
+      )
+    }
+    <Markdown>{description}</Markdown>
+  </div>
 </section>
 {
   coreObjects?.length > 0 && (
-    <div
-      class="objects"
-      {...(tagIsTarget
-        ? {
-            "data-pagefind-body": "",
-            "data-pagefind-tag": name,
-            "data-pagefind-kind": "object",
-            "data-pagefind-meta":
-              "kind[data-pagefind-kind], tag[data-pagefind-tag]",
-          }
-        : {
-            "data-pagefind-ignore": "all",
-          })}
-    >
-      {coreObjects.map((schema) => (
-        <SchemaObject schema={schema} />
+    <>
+      {coreObjectSections.map(({ schema, sectionId }) => (
+        <SchemaObject
+          schema={schema}
+          sectionId={sectionId}
+          {...objectPagefindAttributes}
+        />
       ))}
-    </div>
+    </>
   )
 }
 {
@@ -106,6 +106,7 @@ const tagIsTarget = !targetOp && targetTag === slug;
       {operations.map((operation) => (
         <Operation
           operation={operation}
+          coreObjects={coreObjectSections.map(({ schema }) => schema)}
           {...(targetTag === slug && targetOp === operation.slug
             ? {
                 "data-pagefind-body": "",
@@ -124,20 +125,6 @@ const tagIsTarget = !targetOp && targetTag === slug;
 }
 
 <style>
-  h1 {
-    margin: var(--cui-spacings-giga) 0;
-  }
-  h1 > div {
-    margin-left: var(--cui-spacings-kilo);
-  }
-
-  .headline {
-    display: flex;
-    align-items: center;
-    gap: var(--cui-spacings-kilo);
-    margin-bottom: var(--cui-spacings-giga);
-  }
-
   .notice {
     margin-bottom: var(--cui-spacings-giga);
   }

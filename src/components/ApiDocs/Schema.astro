@@ -1,45 +1,31 @@
 ---
-import { Aside } from "@astrojs/starlight/components";
-import Markdown from "@components/Markdown.astro";
 import { resolveSchema } from "@lib/openapi";
 import { Headline } from "@sumup-oss/circuit-ui";
 import { ChevronDown, Close } from "@sumup-oss/icons";
 import type { OpenAPIV3_1 } from "openapi-types";
-import InlineCode from "../Highlight/InlineCode.astro";
 import Attributes from "./Attributes.astro";
 import ParameterName from "./ParameterName.astro";
-
-const isNonArraySchemaObject = (
-  object: OpenAPIV3_1.SchemaObject | OpenAPIV3_1.ReferenceObject | undefined,
-): object is OpenAPIV3_1.NonArraySchemaObject =>
-  !!object && !("items" in object);
-
-const getRenderableAttributesSchema = (
-  object: OpenAPIV3_1.SchemaObject | OpenAPIV3_1.ReferenceObject | undefined,
-): OpenAPIV3_1.SchemaObject | null => {
-  if (!object) return null;
-
-  const schema = resolveSchema(object);
-  const hasProperties = Object.keys(schema.properties || {}).length > 0;
-
-  if (hasProperties) return schema;
-
-  if (schema.type === "array" && "items" in schema) {
-    return getRenderableAttributesSchema(schema.items);
-  }
-
-  return null;
-};
+import SchemaPropertyRow from "./SchemaPropertyRow.astro";
+import SectionHeading from "./SectionHeading.astro";
+import { getRenderableAttributesSchema } from "./schemaUtils";
 
 export interface Props {
   kind: string;
-  schema: OpenAPIV3_1.SchemaObject;
+  title?: string;
+  schema: OpenAPIV3_1.SchemaObject | OpenAPIV3_1.ReferenceObject;
   nested?: boolean;
   collapsable?: boolean;
   collapsed?: boolean;
 }
 
-const { kind, schema: obj, nested, collapsable, collapsed } = Astro.props;
+const {
+  kind,
+  title,
+  schema: obj,
+  nested,
+  collapsable,
+  collapsed,
+} = Astro.props;
 
 const schema = resolveSchema(obj);
 ---
@@ -70,7 +56,7 @@ const schema = resolveSchema(obj);
       </div>
     )
   }
-  {!nested && !collapsable && <h3>{schema.title || kind}</h3>}
+  {title && <SectionHeading>{title}</SectionHeading>}
   {
     schema.type === "array" &&
       "items" in schema &&
@@ -90,73 +76,12 @@ const schema = resolveSchema(obj);
   <ul class:list={[{ nested }]}>
     {
       Object.entries(schema.properties || {}).map(([name, def]) => {
-        const propertySchema = resolveSchema(def);
         return (
-          <li>
-            <ParameterName
-              name={name}
-              def={propertySchema}
-              required={!!schema.required?.includes(name)}
-            />
-            {"enum" in def && !!propertySchema.enum && (
-              <div class="enum">
-                <span>Options:&nbsp;</span>
-                {propertySchema.enum.map((e) => (
-                  <InlineCode>{e}</InlineCode>
-                ))}
-              </div>
-            )}
-            {"x-deprecation-notice" in propertySchema && (
-              <div class="notice">
-                <Aside type="caution">
-                  <Markdown>{propertySchema["x-deprecation-notice"]}</Markdown>
-                </Aside>
-              </div>
-            )}
-            {propertySchema.description && (
-              <Markdown>{propertySchema.description}</Markdown>
-            )}
-            {propertySchema.type === "array" &&
-              !propertySchema.description &&
-              "items" in propertySchema &&
-              resolveSchema(propertySchema.items).description && (
-                <Markdown>
-                  {resolveSchema(propertySchema.items).description}
-                </Markdown>
-              )}
-            {propertySchema.type === "object" &&
-              getRenderableAttributesSchema(propertySchema) && (
-                <Attributes
-                  schema={propertySchema}
-                  kind={propertySchema.title || "Attributes"}
-                />
-              )}
-            {propertySchema.type === "array" &&
-              "items" in propertySchema &&
-              (() => {
-                const attributesSchema = getRenderableAttributesSchema(
-                  propertySchema.items,
-                );
-
-                return (
-                  attributesSchema && (
-                    <Attributes
-                      schema={attributesSchema}
-                      kind={propertySchema.title || "Attributes"}
-                    />
-                  )
-                );
-              })()}
-            {isNonArraySchemaObject(propertySchema) &&
-              propertySchema.example && (
-                <div class="example">
-                  Example:{" "}
-                  <InlineCode>
-                    {JSON.stringify(propertySchema.example)}
-                  </InlineCode>
-                </div>
-              )}
-          </li>
+          <SchemaPropertyRow
+            name={name}
+            def={def}
+            required={!!schema.required?.includes(name)}
+          />
         );
       })
     }
@@ -175,10 +100,6 @@ const schema = resolveSchema(obj);
     margin-bottom: 0;
   }
 
-  .notice {
-    margin: var(--cui-spacings-mega) 0;
-  }
-
   .collapsable > .header {
     display: flex;
     flex-direction: row;
@@ -195,7 +116,7 @@ const schema = resolveSchema(obj);
   .collapsable > .header .icon :global(svg) {
     transition: 0.1s ease-in-out;
   }
-  .collapsable > .header h3 {
+  .collapsable > .header :global(h3) {
     width: 100%;
   }
   .collapsable.collapsed {
@@ -204,7 +125,7 @@ const schema = resolveSchema(obj);
   .collapsable.collapsed ul {
     display: none;
   }
-  .collapsable.collapsed h3 {
+  .collapsable.collapsed > .header :global(h3) {
     border: none;
   }
   .collapsable.collapsed :global(.icon svg) {
@@ -240,14 +161,6 @@ const schema = resolveSchema(obj);
     color: var(--cui-fg-subtle-hovered);
   }
 
-  .enum {
-    margin-bottom: var(--cui-spacings-bit);
-    display: inline-flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: var(--cui-spacings-bit);
-  }
-
   .body {
     margin-bottom: var(--cui-spacings-kilo);
   }
@@ -262,21 +175,16 @@ const schema = resolveSchema(obj);
 
   ul li {
     width: 100%;
-    padding: var(--cui-spacings-mega) 0;
-    border-bottom: var(--cui-border-width-kilo) solid var(--cui-border-subtle);
+    padding: var(--cui-spacings-kilo) 0;
   }
   ul li:last-child {
     border-bottom: none;
   }
   h3 {
     margin-top: var(--cui-spacings-mega);
-    padding-bottom: var(--cui-spacings-kilo);
+    padding-bottom: var(--cui-spacings-byte);
     border-bottom: var(--cui-border-width-kilo) solid var(--cui-border-subtle);
     font-size: 1rem;
-  }
-
-  .example {
-    margin-top: var(--cui-spacings-byte);
   }
 </style>
 

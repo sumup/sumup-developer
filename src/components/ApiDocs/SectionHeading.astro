@@ -1,0 +1,26 @@
+---
+import { Headline } from "@sumup-oss/circuit-ui";
+
+interface Props {
+  as?: "h2" | "h3";
+  id?: string;
+  className?: string;
+}
+
+const { as = "h3", className = "", ...attrs } = Astro.props as Props;
+const size = as === "h2" ? "m" : "s";
+const classes = ["api-section-heading", className].filter(Boolean).join(" ");
+---
+
+<Headline as={as} size={size} className={classes} {...attrs}>
+  <slot />
+</Headline>
+
+<style>
+  :global(h3.api-section-heading) {
+    margin-top: var(--cui-spacings-mega);
+    padding-bottom: var(--cui-spacings-byte);
+    border-bottom: var(--cui-border-width-kilo) solid var(--cui-border-subtle);
+    font-size: 1rem;
+  }
+</style>

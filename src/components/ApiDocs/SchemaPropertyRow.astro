@@ -1,0 +1,116 @@
+---
+import { Aside } from "@astrojs/starlight/components";
+import Markdown from "@components/Markdown.astro";
+import { resolveSchema } from "@lib/openapi";
+import type { OpenAPIV3_1 } from "openapi-types";
+import Attributes from "./Attributes.astro";
+import ParameterName from "./ParameterName.astro";
+import {
+  getRenderableAttributesSchema,
+  getSchemaEnumValues,
+  isNonArraySchemaObject,
+} from "./schemaUtils";
+
+type Props = {
+  name: string;
+  def: OpenAPIV3_1.SchemaObject | OpenAPIV3_1.ReferenceObject;
+  required: boolean;
+};
+
+const { name, def, required } = Astro.props;
+const propertySchema = resolveSchema(def);
+const enumValues = getSchemaEnumValues(propertySchema);
+const attributeKind = propertySchema.title || "Attributes";
+const arrayItemSchema =
+  propertySchema.type === "array" && "items" in propertySchema
+    ? resolveSchema(propertySchema.items)
+    : null;
+const arrayItemDescription =
+  propertySchema.type === "array" &&
+  !propertySchema.description &&
+  arrayItemSchema?.description
+    ? arrayItemSchema.description
+    : undefined;
+const objectAttributesSchema =
+  propertySchema.type === "object"
+    ? getRenderableAttributesSchema(propertySchema)
+    : null;
+const arrayAttributesSchema =
+  propertySchema.type === "array" && "items" in propertySchema
+    ? getRenderableAttributesSchema(propertySchema.items)
+    : null;
+---
+
+<li>
+  <ParameterName name={name} def={propertySchema} required={required} />
+  {
+    enumValues && (
+      <div class="enum">
+        <span>Options:&nbsp;</span>
+        {enumValues.map((value) => (
+          <code dir="auto">{value}</code>
+        ))}
+      </div>
+    )
+  }
+  {
+    "x-deprecation-notice" in propertySchema && (
+      <div class="notice">
+        <Aside type="caution">
+          <Markdown>{propertySchema["x-deprecation-notice"]}</Markdown>
+        </Aside>
+      </div>
+    )
+  }
+  {
+    propertySchema.description && (
+      <Markdown>{propertySchema.description}</Markdown>
+    )
+  }
+  {arrayItemDescription && <Markdown>{arrayItemDescription}</Markdown>}
+  {
+    objectAttributesSchema && (
+      <Attributes schema={propertySchema} kind={attributeKind} />
+    )
+  }
+  {
+    arrayAttributesSchema && (
+      <Attributes schema={arrayAttributesSchema} kind={attributeKind} />
+    )
+  }
+  {
+    isNonArraySchemaObject(propertySchema) && propertySchema.example && (
+      <div class="example">
+        Example:{" "}
+        <code dir="auto">{JSON.stringify(propertySchema.example)}</code>
+      </div>
+    )
+  }
+</li>
+
+<style>
+  li {
+    width: 100%;
+    padding: var(--cui-spacings-kilo) 0;
+  }
+
+  li:last-child {
+    border-bottom: none;
+  }
+
+  .notice {
+    margin: var(--cui-spacings-mega) 0;
+  }
+
+  .enum {
+    margin-bottom: var(--cui-spacings-bit);
+    display: inline-flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: var(--cui-spacings-bit);
+  }
+
+  .example {
+    margin-top: var(--cui-spacings-byte);
+  }
+</style>

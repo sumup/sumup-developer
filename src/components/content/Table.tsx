@@ -8,6 +8,7 @@ type IconSize = "16" | "24" | "32" | "480";
 export type TableColumn = {
   key: string;
   label: string;
+  as?: "text" | "code";
   size?: IconSize | 16 | 24 | 32 | 480;
   minWidth?: string;
   nowrap?: boolean;
@@ -51,6 +52,10 @@ const renderCellValue = (
     return (
       <img className={styles.icon} src={iconUrl} alt="" aria-hidden="true" />
     );
+  }
+
+  if (column.as === "code") {
+    return <code dir="auto">{String(row[column.key])}</code>;
   }
 
   return String(row[column.key]);

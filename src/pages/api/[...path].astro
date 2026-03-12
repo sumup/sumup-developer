@@ -16,7 +16,7 @@ import {
 import type { StarlightUserConfig } from "@astrojs/starlight/types";
 
 // list of resources that are expanded by default
-const mainResources = ["Checkouts", "Customers"];
+const mainResources = ["Checkouts", "Readers"];
 
 export async function getStaticPaths() {
   return [
@@ -58,6 +58,13 @@ const sidebar: StarlightUserConfig["sidebar"] = [
           "data-scroll-to": "authentication",
         },
       },
+      {
+        label: "Errors",
+        link: "/api/errors",
+        attrs: {
+          "data-scroll-to": "errors",
+        },
+      },
       ...orderedTagEntriesCached.map(([tagName, operations]) => {
         const tag = getTagBySlug(tagName)!;
         return {
@@ -96,7 +103,8 @@ const currentOperation =
 
 const props = {
   frontmatter: {
-    title: currentOperation?.summary || currentTag?.name || "API Reference",
+    title: currentTag?.name || "API Reference",
+    metaTitle: currentOperation?.summary || currentTag?.name || "API Reference",
     description: "SumUp API reference and code samples.",
     tableOfContents: false,
   },

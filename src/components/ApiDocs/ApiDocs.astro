@@ -5,7 +5,7 @@ import TagDocs from "./TagDocs.astro";
 export interface Props {
   tagSlug?: string;
   operationSlug?: string;
-  topSection?: "introduction" | "sdks" | "authentication";
+  topSection?: "introduction" | "sdks" | "authentication" | "errors";
 }
 
 const { tagSlug, operationSlug, topSection } = Astro.props;
@@ -67,9 +67,26 @@ const target = tagSlug
     width: 100%;
   }
 
+  .specs :global(section:first-child) {
+    padding-top: 0;
+  }
+
   .specs :global(section:last-child) {
     border-bottom: none;
     padding-bottom: 0;
+  }
+
+  .specs :global(.api-docs-stack-mega > * + *) {
+    margin-top: var(--cui-spacings-mega);
+  }
+
+  .specs :global(.api-docs-codeblock-stack .codeblock + .codeblock) {
+    margin-top: var(--cui-spacings-mega);
+  }
+
+  .specs :global(.api-docs-sticky) {
+    position: sticky;
+    top: calc(var(--sl-nav-height) + var(--cui-spacings-kilo));
   }
 
   h1 {

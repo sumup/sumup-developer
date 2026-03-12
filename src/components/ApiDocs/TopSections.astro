@@ -2,12 +2,17 @@
 import { CodeBlock, MultiCode } from "@components/Code";
 import Markdown from "@components/Markdown.astro";
 import type { ApiTopSection } from "@lib/openapi/routes";
-import { doc } from "@lib/openapi";
+import { doc, resolveSchema } from "@lib/openapi";
+import type { OpenAPIV3_1 } from "openapi-types";
 import { ArrowSlanted } from "@sumup-oss/icons";
 import { Anchor, Body, Button, Card } from "@sumup-oss/circuit-ui";
 import { getJavaSdkVersion } from "@lib/sdks/javaSdkVersion";
+import Table from "@components/content/Table";
+import Example from "./Example.astro";
 import LRGrid from "./LRGrid.astro";
+import Schema from "./Schema.astro";
 import SDKList from "./SDKList";
+import SectionHeading from "./SectionHeading.astro";
 
 export interface Props {
   topSection?: ApiTopSection;
@@ -15,6 +20,14 @@ export interface Props {
 
 const { topSection = "introduction" } = Astro.props;
 const javaSdkVersion = await getJavaSdkVersion();
+const problemSchema = doc.components?.schemas?.Problem as
+  | OpenAPIV3_1.SchemaObject
+  | OpenAPIV3_1.ReferenceObject
+  | undefined;
+const resolvedProblemSchema = problemSchema
+  ? resolveSchema(problemSchema)
+  : undefined;
+
 const sectionAttrs = (id: ApiTopSection) =>
   topSection === id
     ? { "data-pagefind-body": "" }
@@ -48,7 +61,7 @@ const sectionAttrs = (id: ApiTopSection) =>
     </div>
     {
       doc.servers && (
-        <div class="servers">
+        <div class="servers api-docs-codeblock-stack">
           {doc.servers.map((server) => (
             <CodeBlock title="Base URL" language="bash" code={server.url} />
           ))}
@@ -62,7 +75,7 @@ const sectionAttrs = (id: ApiTopSection) =>
   <LRGrid class="sdks">
     <div>
       <div class="info sl-markdown-content">
-        <h2 id="sdks-heading">SDKs</h2>
+        <SectionHeading as="h2" id="sdks-heading">SDKs</SectionHeading>
         <p>
           The SumUp SDKs reduce the amount of work required to use our REST
           APIs. SumUp maintains SDKs for PHP, Node.js, Python, Java, Go, Rust,
@@ -132,7 +145,7 @@ uv add sumup`,
       </MultiCode>
       <Card style={{ marginTop: "var(--cui-spacings-mega)" }}>
         <Body size="s">
-          You can also explore out APIs in Postman using
+          You can also explore our APIs in Postman using
           <Anchor
             href="https://www.postman.com/sumupengineering/sumup-developers/overview"
             target="_blank"
@@ -151,7 +164,9 @@ uv add sumup`,
 <section id="authentication" {...sectionAttrs("authentication")}>
   <LRGrid>
     <div class="info sl-markdown-content">
-      <h2 id="authentication-heading">Authentication</h2>
+      <SectionHeading as="h2" id="authentication-heading">
+        Authentication
+      </SectionHeading>
       <p>
         The SumUp API uses API keys to authenticate requests. You can view,
         create, and manage your API keys in the{" "}
@@ -246,6 +261,143 @@ let client = Client::default().with_authorization("sup_sk_MvxmLOl0...");`,
       >
         <div slot="left">Authenticate</div>
       </MultiCode>
+    </div>
+  </LRGrid>
+</section>
+
+<section id="errors" {...sectionAttrs("errors")}>
+  <LRGrid>
+    <div class="info sl-markdown-content">
+      <SectionHeading as="h2" id="errors-heading"> Errors </SectionHeading>
+      <p>
+        Newer APIs use{" "}
+        <a
+          href="https://www.rfc-editor.org/rfc/rfc9457.html"
+          target="_blank"
+          rel="noreferrer noopener"
+        >
+          Problem Details (RFC 9457)
+        </a>{" "}
+        for error responses.
+      </p>
+      <p>
+        Some APIs support both <code>application/problem+json</code> and{" "}
+        <code>application/json</code> for backwards compatibility.
+      </p>
+      <p>
+        If you do not use our SDKs, send the header{" "}
+        <code>Accept: application/problem+json, application/json</code> to ensure
+        you receive the newer Problem Details error format.
+      </p>
+      <div class="not-content">
+        <Table
+          columns={[
+            {
+              key: "status",
+              label: "Status",
+              as: "code",
+              nowrap: true,
+              minWidth: "9rem",
+            },
+            { key: "name", label: "Type", nowrap: true, minWidth: "12rem" },
+            { key: "details", label: "When it is returned", minWidth: "24rem" },
+          ]}
+          rows={[
+            {
+              status: "200",
+              name: "OK",
+              details: "The request finished successfully.",
+            },
+            {
+              status: "400",
+              name: "Bad Request",
+              details:
+                "The payload is invalid, incomplete, or does not match the API contract.",
+            },
+            {
+              status: "401",
+              name: "Unauthorized",
+              details:
+                "Authentication is missing or the provided API key is invalid.",
+            },
+            {
+              status: "402",
+              name: "Request Failed",
+              details:
+                "The request format is valid, but it could not be completed.",
+            },
+            {
+              status: "403",
+              name: "Forbidden",
+              details:
+                "The authenticated key does not have permission for this operation.",
+            },
+            {
+              status: "404",
+              name: "Not Found",
+              details:
+                "The requested endpoint or resource could not be located.",
+            },
+            {
+              status: "409",
+              name: "Conflict",
+              details: "The request collides with the current resource state.",
+            },
+            {
+              status: "422",
+              name: "Unprocessable Entity",
+              details:
+                "The payload is syntactically valid, but semantic validation failed.",
+            },
+            {
+              status: "424",
+              name: "External Dependency Failed",
+              details:
+                "A required upstream service failed, so the request could not finish.",
+            },
+            {
+              status: "429",
+              name: "Too Many Requests",
+              details:
+                "Rate limits were exceeded. Retry with exponential backoff.",
+            },
+            {
+              status: "5XX",
+              name: "Server Errors",
+              details:
+                "An issue occurred on our side. These failures should be uncommon.",
+            },
+          ]}
+          tableLayout="auto"
+        />
+      </div>
+      {
+        problemSchema && (
+          <div class="not-content">
+            <Schema
+              kind="Problem"
+              title="Problem schema"
+              schema={problemSchema}
+            />
+          </div>
+        )
+      }
+    </div>
+    <div class="errors-panel api-docs-codeblock-stack">
+      <CodeBlock
+        data-pagefind-ignore="all"
+        title="Content-Type"
+        language="http"
+        code={`application/problem+json`}
+      />
+      {
+        resolvedProblemSchema && (
+          <Example
+            name="Example problem response"
+            schema={resolvedProblemSchema}
+          />
+        )
+      }
     </div>
   </LRGrid>
 </section>
