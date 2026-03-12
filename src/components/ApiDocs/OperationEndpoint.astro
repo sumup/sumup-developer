@@ -6,19 +6,40 @@ export type Props = HTMLAttributes<"div"> & {
   operation: OperationObject;
 };
 
-const { operation, ...props } = Astro.props;
+const { operation, class: className, ...props } = Astro.props;
 ---
 
-<div {...props}>
+<div
+  {...props}
+  class:list={["endpoint", className]}
+  title={`${operation.method.toUpperCase()} ${operation.path}`}
+>
   <span class:list={["method", operation.method]}
     >{operation.method.toUpperCase()}</span
   >
-  {operation.path}
+  <span class="path">{operation.path}</span>
 </div>
 
 <style>
+  .endpoint {
+    align-items: baseline;
+    display: flex;
+    gap: var(--cui-spacings-byte);
+    max-width: 100%;
+    min-width: 0;
+  }
+
   .method {
+    flex-shrink: 0;
     font-weight: var(--cui-font-weight-bold);
+  }
+
+  .path {
+    display: block;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .method.get {
