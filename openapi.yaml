@@ -2015,6 +2015,17 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Operator'
+        '401':
+          description: Authentication failed or missing required scope.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+              example:
+                type: 'https://developer.sumup.com/problem/unauthorized'
+                title: Unauthorized
+                status: 401
+                detail: Authentication credentials are missing or invalid.
       deprecated: true
       security:
         - apiKey: []
@@ -2074,6 +2085,11 @@ paths:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/Problem'
+              example:
+                type: 'https://developer.sumup.com/problem/forbidden'
+                title: Forbidden
+                status: 403
+                detail: You do not have permission to perform this action.
       deprecated: true
       security:
         - apiKey: []
@@ -2104,6 +2120,17 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Operator'
+        '401':
+          description: Authentication failed or missing required scope.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+              example:
+                type: 'https://developer.sumup.com/problem/unauthorized'
+                title: Unauthorized
+                status: 401
+                detail: Authentication credentials are missing or invalid.
       deprecated: true
       security:
         - apiKey: []
@@ -2170,6 +2197,11 @@ paths:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/Problem'
+              example:
+                type: 'https://developer.sumup.com/problem/bad-request'
+                title: Bad Request
+                status: 400
+                detail: Request validation failed.
       deprecated: true
       security:
         - apiKey: []
@@ -2275,6 +2307,28 @@ paths:
                 required:
                   - total_count
                   - items
+        '400':
+          description: Invalid query parameter combination.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+              example:
+                type: 'https://developer.sumup.com/problem/bad-request'
+                title: Bad Request
+                status: 400
+                detail: Request validation failed.
+        '401':
+          description: Authentication failed or missing required scope.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+              example:
+                type: 'https://developer.sumup.com/problem/unauthorized'
+                title: Unauthorized
+                status: 401
+                detail: Authentication credentials are missing or invalid.
       security:
         - apiKey: []
         - oauth2: []
@@ -2374,6 +2428,11 @@ paths:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/Problem'
+              example:
+                type: 'https://developer.sumup.com/problem/not-found'
+                title: Requested resource couldn't be found.
+                status: 404
+                detail: The requested resource doesn't exist or does not belong to you.
       security:
         - apiKey: []
         - oauth2: []
@@ -2450,18 +2509,33 @@ paths:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/Problem'
+              example:
+                type: 'https://developer.sumup.com/problem/bad-request'
+                title: Bad Request
+                status: 400
+                detail: Request validation failed.
         '404':
           description: Merchant not found.
           content:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/Problem'
+              example:
+                type: 'https://developer.sumup.com/problem/not-found'
+                title: Requested resource couldn't be found.
+                status: 404
+                detail: The requested resource doesn't exist or does not belong to you.
         '429':
           description: Too many invitations sent to that user. The limit is 10 requests per 5 minutes and the Retry-After header is set to the number of minutes until the reset of the limit.
           content:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/Problem'
+              example:
+                type: 'https://developer.sumup.com/problem/too-many-requests'
+                title: Too Many Requests
+                status: 429
+                detail: Too many requests were sent. Please try again later.
       security:
         - apiKey: []
         - oauth2: []
@@ -2507,6 +2581,11 @@ paths:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/Problem'
+              example:
+                type: 'https://developer.sumup.com/problem/not-found'
+                title: Requested resource couldn't be found.
+                status: 404
+                detail: The requested resource doesn't exist or does not belong to you.
       security:
         - apiKey: []
         - oauth2: []
@@ -2586,24 +2665,44 @@ paths:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/Problem'
+              example:
+                type: 'https://developer.sumup.com/problem/bad-request'
+                title: Bad Request
+                status: 400
+                detail: Request validation failed.
         '403':
           description: Cannot change password for managed user. Password was already used before.
           content:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/Problem'
+              example:
+                type: 'https://developer.sumup.com/problem/forbidden'
+                title: Forbidden
+                status: 403
+                detail: You do not have permission to perform this action.
         '404':
           description: Merchant or member not found.
           content:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/Problem'
+              example:
+                type: 'https://developer.sumup.com/problem/not-found'
+                title: Requested resource couldn't be found.
+                status: 404
+                detail: The requested resource doesn't exist or does not belong to you.
         '409':
           description: Cannot update member as some data conflict with existing members.
           content:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/Problem'
+              example:
+                type: 'https://developer.sumup.com/problem/conflict'
+                title: Conflict
+                status: 409
+                detail: The request conflicts with the current state of the resource.
       security:
         - apiKey: []
         - oauth2: []
@@ -2644,6 +2743,11 @@ paths:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/Problem'
+              example:
+                type: 'https://developer.sumup.com/problem/not-found'
+                title: Requested resource couldn't be found.
+                status: 404
+                detail: The requested resource doesn't exist or does not belong to you.
       security:
         - apiKey: []
         - oauth2: []
@@ -2689,6 +2793,11 @@ paths:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/Problem'
+              example:
+                type: 'https://developer.sumup.com/problem/not-found'
+                title: Requested resource couldn't be found.
+                status: 404
+                detail: The requested resource doesn't exist or does not belong to you.
       security:
         - apiKey: []
         - oauth2: []
@@ -2756,12 +2865,22 @@ paths:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/Problem'
+              example:
+                type: 'https://developer.sumup.com/problem/bad-request'
+                title: Bad Request
+                status: 400
+                detail: Request validation failed.
         '404':
           description: Merchant not found.
           content:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/Problem'
+              example:
+                type: 'https://developer.sumup.com/problem/not-found'
+                title: Requested resource couldn't be found.
+                status: 404
+                detail: The requested resource doesn't exist or does not belong to you.
       security:
         - apiKey: []
         - oauth2: []
@@ -2807,6 +2926,11 @@ paths:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/Problem'
+              example:
+                type: 'https://developer.sumup.com/problem/not-found'
+                title: Requested resource couldn't be found.
+                status: 404
+                detail: The requested resource doesn't exist or does not belong to you.
       security:
         - apiKey: []
         - oauth2: []
@@ -2847,12 +2971,22 @@ paths:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/Problem'
+              example:
+                type: 'https://developer.sumup.com/problem/bad-request'
+                title: Bad Request
+                status: 400
+                detail: Request validation failed.
         '404':
           description: Merchant not found.
           content:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/Problem'
+              example:
+                type: 'https://developer.sumup.com/problem/not-found'
+                title: Requested resource couldn't be found.
+                status: 404
+                detail: The requested resource doesn't exist or does not belong to you.
       security:
         - apiKey: []
         - oauth2: []
@@ -2928,12 +3062,22 @@ paths:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/Problem'
+              example:
+                type: 'https://developer.sumup.com/problem/bad-request'
+                title: Bad Request
+                status: 400
+                detail: Request validation failed.
         '404':
           description: Merchant not found.
           content:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/Problem'
+              example:
+                type: 'https://developer.sumup.com/problem/not-found'
+                title: Requested resource couldn't be found.
+                status: 404
+                detail: The requested resource doesn't exist or does not belong to you.
       security:
         - apiKey: []
         - oauth2: []
@@ -3150,6 +3294,17 @@ paths:
                       $ref: '#/components/schemas/Reader'
                 required:
                   - items
+        '401':
+          description: Authentication failed or missing required scope.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+              example:
+                type: 'https://developer.sumup.com/problem/unauthorized'
+                title: Unauthorized
+                status: 401
+                detail: Authentication credentials are missing or invalid.
       security:
         - apiKey: []
         - oauth2:
@@ -3228,18 +3383,33 @@ paths:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/Problem'
+              example:
+                type: 'https://developer.sumup.com/problem/bad-request'
+                title: Bad Request
+                status: 400
+                detail: Request validation failed.
         '404':
           description: There's no pending reader for the submitted pairing code.
           content:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/Problem'
+              example:
+                type: 'https://developer.sumup.com/problem/not-found'
+                title: Requested resource couldn't be found.
+                status: 404
+                detail: The requested resource doesn't exist or does not belong to you.
         '409':
           description: The Reader is not in a pending state.
           content:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/Problem'
+              example:
+                type: 'https://developer.sumup.com/problem/conflict'
+                title: Conflict
+                status: 409
+                detail: The request conflicts with the current state of the resource.
       security:
         - apiKey: []
         - oauth2:
@@ -3305,6 +3475,11 @@ paths:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/Problem'
+              example:
+                type: 'https://developer.sumup.com/problem/not-found'
+                title: Requested resource couldn't be found.
+                status: 404
+                detail: The requested resource doesn't exist or does not belong to you.
       security:
         - apiKey: []
         - oauth2:
@@ -3346,6 +3521,11 @@ paths:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/Problem'
+              example:
+                type: 'https://developer.sumup.com/problem/not-found'
+                title: Requested resource couldn't be found.
+                status: 404
+                detail: The requested resource doesn't exist or does not belong to you.
       security:
         - apiKey: []
         - oauth2:
@@ -3402,12 +3582,22 @@ paths:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/Problem'
+              example:
+                type: 'https://developer.sumup.com/problem/forbidden'
+                title: Forbidden
+                status: 403
+                detail: You do not have permission to perform this action.
         '404':
           description: The requested Reader resource does not exist.
           content:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/Problem'
+              example:
+                type: 'https://developer.sumup.com/problem/not-found'
+                title: Requested resource couldn't be found.
+                status: 404
+                detail: The requested resource doesn't exist or does not belong to you.
       security:
         - apiKey: []
         - oauth2:
