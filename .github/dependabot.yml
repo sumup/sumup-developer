@@ -16,6 +16,7 @@ updates:
         patterns:
           - "astro"
           - "@astrojs/*"
+          - "starlight-*"
       expressive-code:
         patterns:
           - "@expressive-code/*"
