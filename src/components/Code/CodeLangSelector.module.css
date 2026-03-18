@@ -1,12 +1,25 @@
+.selector {
+  flex: 0 0 auto;
+  width: max-content;
+  max-width: 100%;
+}
+
+.selector :global(> div) {
+  width: max-content;
+  max-width: 100%;
+}
+
+.selector :global(> div > svg) {
+  width: 26px;
+  height: 26px;
+  padding: 6px;
+}
+
 .selector select {
+  width: auto;
+  min-width: 0;
   padding: 2px 26px 2px var(--cui-spacings-byte);
   font-size: var(--cui-body-s-font-size);
   line-height: var(--cui-body-s-line-height);
   background-color: var(--cui-bg-subtle);
-}
-
-.selector svg {
-  padding: 6px;
-  width: 26px;
-  height: 26px;
 }
