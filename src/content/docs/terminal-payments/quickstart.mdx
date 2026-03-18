@@ -1,0 +1,88 @@
+---
+title: Quickstart
+description: Get your first in-person payment running with the right SumUp integration path and the prerequisites for testing.
+sidebar:
+  order: 2
+---
+
+import { Aside, Steps } from '@astrojs/starlight/components';
+import Image from '@components/content/Image.astro';
+
+Get your first in-person payment running quickly.
+
+## Prerequisites
+
+- A SumUp merchant account
+- A supported reader or Tap to Pay-capable device
+- The credentials required for your chosen integration:
+  - [Affiliate Key](/tools/authorization/affiliate-keys/) for Reader SDKs and Payment Switch
+  - [Authorization](/tools/authorization/) for Cloud API and Tap to Pay SDK flows
+
+## Sandbox Merchant Account
+
+To test without real money, create a sandbox merchant account from the SumUp Dashboard.
+
+<Steps>
+
+1. Log in to your SumUp account.
+2. Open the drop-down menu between **Support** and your user panel.
+3. Select **Sandbox Merchant Account**.
+
+</Steps>
+
+<Image alt="A screenshot of the account selection dropdown in the SumUp dashboard with the sandbox merchant account highlighted with red circle" src="/img/guides/test_acc.png" width="40%" />
+
+Sandbox accounts do not process real funds. They have a separate merchant ID, show a clear warning in the Dashboard, and requests with a value of `11` always fail by design so you can test failed transaction scenarios.
+
+<Image alt="A screenshot of the dashboard with sandbox merchant account selected" src="/img/guides/test-account-warning.png" width="100%" />
+
+## Choose Your Path
+
+### Reader SDKs
+
+Best for native Android and iOS apps that want more control over the payment experience.
+
+<Steps>
+
+1. Install the SDK for [Android SDK](/terminal-payments/sdks/android-sdk/), [iOS SDK](/terminal-payments/sdks/ios-sdk/), or [Android Tap-to-Pay SDK](/terminal-payments/sdks/android-ttp/).
+2. Authenticate the merchant.
+3. Pair a reader over Bluetooth, or initialize Tap to Pay on device.
+4. Start a payment and handle the result in your app.
+
+</Steps>
+
+### Cloud API
+
+Best for server-driven, web-based, or multi-platform systems using Solo readers.
+
+<Steps>
+
+1. Set up [authorization](/tools/authorization/) for API access.
+2. Pair or register a Solo reader through the [Cloud API](/terminal-payments/cloud-api/).
+3. Create a checkout for the paired reader.
+4. Let the reader complete the payment and track the result asynchronously.
+
+</Steps>
+
+### Payment Switch
+
+Best for lightweight legacy mobile integrations that hand off checkout to the SumUp app.
+
+<Steps>
+
+1. Install the SumUp app on the merchant device.
+2. Build a Payment Switch request with amount, currency, and a callback URL.
+3. Open the SumUp app and let it handle the checkout.
+4. Receive the payment result back in your app.
+
+</Steps>
+
+<Aside type="note">
+Use a unique transaction reference such as `foreignTransactionId` or `foreign-tx-id` for each payment. That prevents duplicate transaction conflicts and makes reconciliation easier.
+</Aside>
+
+## Next Steps
+
+- Need an embedded mobile flow? Continue with [Reader SDKs](/terminal-payments/sdks/).
+- Need remote Solo payments? Continue with [Cloud API](/terminal-payments/cloud-api/).
+- Need app handoff to SumUp? Continue with [Payment Switch](/terminal-payments/payment-switch/).

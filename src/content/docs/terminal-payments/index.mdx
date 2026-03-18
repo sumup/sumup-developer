@@ -1,74 +1,76 @@
 ---
 title: In-Person Payments
-description: Quickstart for terminal payments, covering prerequisites, hardware options, and affiliate key requirements.
+description: Understand SumUp's in-person payment integrations, supported readers, and how to choose between SDKs, Cloud API, and Payment Switch.
 sidebar:
-  label: Quickstart
+  label: Overview
   order: 1
 icon: card_in
 ---
 
-import { Aside, Steps } from '@astrojs/starlight/components';
-import Image from '@components/content/Image.astro';
+SumUp's in-person payment products let you accept card payments face-to-face using physical card readers or Tap to Pay on a mobile device. You can integrate them into your own app or system using our [Reader SDKs](/terminal-payments/sdks/), [Cloud API](/terminal-payments/cloud-api/), or, for legacy app handoff flows, [Payment Switch](/terminal-payments/payment-switch/).
 
-You can accept card payments using SumUp’s platform accompanied by our proprietary Card Terminals available in these [European countries](https://help.sumup.com/hc/en-gb/articles/360018586874-Accepting-card-payments-abroad), Brazil, Chile, and the USA. You can offer a complete user journey through the payment flow with our [SDK](/terminal-payments/sdks) or approach a lightweight integration with our [API](/terminal-payments/payment-switch), using the SumUp app to execute payments.
+This section helps you choose the right integration, understand reader compatibility, and get to your first payment quickly.
 
-## Prerequisites
+## How It Works
 
-- Before integrating either the [Native SDK](/terminal-payments/sdks/) or the [Payment API Switch](/terminal-payments/payment-switch), create a SumUp account in the [SumUp Dashboard](https://me.sumup.com). The dashboard offers [a sandbox merchant account](#getting-a-sandbox-merchant-account), allowing for integration tests without involving real money.
+Every in-person payment follows the same basic pattern:
 
-- Once you have an account, [create an Affiliate Key](/tools/authorization/affiliate-keys/) for your app and [provide authorization](/tools/authorization/).
+1. Your app or system initiates a payment with the amount, currency, and optional metadata.
+2. A reader, or the phone itself for Tap to Pay, presents the card interface to the customer.
+3. The customer taps, inserts, or swipes their card.
+4. SumUp processes the transaction and returns the result.
 
-<Aside type="caution">
+How the payment is initiated and where the UI runs depends on the integration path you choose.
 
-The Affiliate Key and Application ID coming from your app must match those obtained from the [Developers](https://me.sumup.com/developers) page.
+## Choose Your Integration
 
-</Aside>
+There are three ways to integrate SumUp in-person payments:
 
-The Card Terminals allow complete flexibility as they are not assigned to individual accounts. Once connected to a merchant account, the card terminals lock to specific countries and currencies. This applies to sandbox merchant accounts, which are for testing integrations and do not process transactions.
+|  | Cloud API | Reader SDKs | Payment Switch |
+| --- | --- | --- | --- |
+| **What it does** | Trigger and manage payments on Solo readers via HTTPS requests. | Embed payment acceptance directly in your Android or iOS app. Your app controls the reader over Bluetooth or uses Tap to Pay. | Hand off payment acceptance from your app to the SumUp app, then return to your app when the payment is done. |
+| **Best for** | Kiosk, POS, or web-based systems where the reader operates independently. | Mobile apps that need more control over the payment flow and user experience. | Quick integrations where you do not need to own the payment UI. |
+| **Platform** | Any server-capable platform | Android, iOS | Android, iOS |
+| **Reader connection** | Wi-Fi or cellular | Bluetooth from your app, or Tap to Pay on device | Bluetooth via the SumUp app |
 
-You are now ready to integrate SumUp payment capabilities into your app, provided you have a SumUp card terminal: SumUp Air, SumUp Air Lite, SumUp Top/PIN+, SumUp 3G, SumUp Total, SumUp Super, SumUp On, or SumUp Air Register.
+## Feature Support by Integration
 
-## Getting a Sandbox Merchant Account
+Different integration paths support different features:
 
-To test SumUp APIs and tools without involving real money, use a sandbox merchant account. Create one from your Dashboard account as follows.
+| Feature | Android SDK | iOS SDK | Android Tap-to-Pay SDK | Cloud API |
+| --- | --- | --- | --- | --- |
+| **Card payments** | NFC and chip | Reader payments with NFC and chip, plus Tap to Pay on iPhone | NFC only | NFC and chip |
+| **Tipping** | ✅ | ✅ | ✅ | ✅ |
+| **Refunds** | Via SumUp API | Via SumUp API | Contact SumUp for current support details | ✅ |
+| **Receipts** | Via SumUp API | Via SumUp API | Contact SumUp for current support details | Via SumUp API |
+| **Offline transactions** | ✅ | ✅ | — | — |
+| **Reader status via API** | ✅ | ✅ | ✅ | ✅ |
+| **Multiple readers on one account** | — | — | — | ✅ |
+| **Webhooks for transaction status** | — | — | — | ✅ |
 
-<Steps>
+## Reader Compatibility
 
-1. Log in to your SumUp account.
+Not every reader works with every integration:
 
-2. Open the drop-down menu between **Support** and your user panel.
+| Reader | Android SDK | iOS SDK | Android Tap-to-Pay SDK | Cloud API | Payment Switch |
+| --- | --- | --- | --- | --- | --- |
+| **Solo Lite** | ✅ | ✅ | — | — | ✅ |
+| **Solo** | ✅ | ✅ | — | ✅ | ✅ |
+| **Air** | ✅ | ✅ | — | — | ✅ |
+| **3G** | ✅ | ✅ | — | — | ✅ |
+| **PIN+** | ✅ | ✅ | — | — | ✅ |
+| **Tap to Pay on Android** | — | — | ✅ | — | — |
+| **Tap to Pay on iPhone** | — | ✅ | — | — | — |
 
-3. Select **Sandbox Merchant Account**. Your merchant account is now in sandbox mode.
+## Market Availability
 
-</Steps>
+Reader availability varies by region. Check the SumUp webshop in your country before planning a rollout.
 
-<Image alt="A screenshot of the account selection dropdown in the SumUp dashboard with the sandbox merchant account highlighted with red circle" src="/img/guides/test_acc.png" width="40%" />
+Once a reader processes its first transaction with a merchant account from a specific country, it is locked to that country. For example, if the first payment is processed with a French account, that reader can only be used with French accounts afterward.
 
-With your sandbox merchant account, begin making API calls with real data. Sandbox merchant accounts **do not** process transactions with real funds. The sandbox merchant account has a different ID and displays a clear warning. Requests with a value of 11 (in any currency) always fail by design, to test failed transaction scenarios.
+## Next Steps
 
-<Image alt="A screenshot of the dashboard with sandbox merchant account selected" src="/img/guides/test-account-warning.png" width="100%" />
-
-When finished experimenting with the sandbox merchant account, switch back to a regular account for business purposes.
-
-## Affiliate Keys
-
-All card-present integrations require an Affiliate Key. Read the [Affiliate Keys Guide](/tools/authorization/affiliate-keys/) for details.
-
-## Industry
-
-SumUp merchants operate in various industry segments, and our card terminals accommodate a wide range of use cases and business approaches. The following outlines the most common segments and the key benefits merchants report:
-
-- Retail businesses and services
-- The hospitality industry, specifically restaurants, cafés, and bars
-- Transportation and delivery services
-- Booking for Health, Beauty, and Wellness
-
-Integration options through the [Payment SDK](/terminal-payments/sdks) and [API](/terminal-payments/payment-switch), plus the full [API reference](/api), support other industries' needs.
-
-## Communication with the Terminal
-
-The SDK and API Switch handle all communication with SumUp’s Card Terminal(s) via Bluetooth (BLE 4.0).
-
-## Security
-
-No sensitive data passes through or stores on the merchant’s phone. The card terminal encrypts all data and holds certifications from relevant payment industry groups (PCI, EMV I & II, Visa, MasterCard, and Amex).
+- Ready to build? Start with the [Quickstart](/terminal-payments/quickstart/).
+- Building a native mobile app? Go to the [Reader SDKs](/terminal-payments/sdks/).
+- Building a server-driven or multi-platform POS? Use the [Cloud API](/terminal-payments/cloud-api/).
+- Only need an app-to-app handoff? Review [Payment Switch](/terminal-payments/payment-switch/).

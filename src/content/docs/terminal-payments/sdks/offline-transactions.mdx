@@ -1,0 +1,222 @@
+---
+title: Offline Transactions
+description: Use store-and-forward offline transactions with the Android and iOS Reader SDKs, including requirements, lifecycle, and platform-specific APIs.
+sidebar:
+  order: 14
+---
+
+import { Aside, Tabs, TabItem } from '@astrojs/starlight/components';
+
+<Aside type="note">
+Offline Transactions is not enabled by default. Your organization must complete an opt-in process with the SumUp Integrations team and accept the related terms before using it.
+</Aside>
+
+Offline Transactions let merchants continue accepting card payments when internet connectivity is unavailable or unreliable. In this store-and-forward flow, card data is captured and cached securely on the device, then uploaded later for processing and authorization.
+
+The feature is available for the [Android SDK](/terminal-payments/sdks/android-sdk/) and [iOS SDK](/terminal-payments/sdks/ios-sdk/). It is not available for Tap to Pay.
+
+<Aside type="caution">
+Offline transactions are provisionally approved on device without real-time authorization. The merchant bears the risk for transactions that are later declined during reconciliation.
+</Aside>
+
+## Before You Begin
+
+Make sure all of the following are true:
+
+- You already have an active Android or iOS Reader SDK integration.
+- The device and reader meet the minimum requirements below.
+- The merchant has completed at least one successful online transaction.
+- Your organization has completed the opt-in process for Offline Transactions.
+
+To request access, contact [integrations@sumup.com](mailto:integrations@sumup.com).
+
+## Platform Availability
+
+| Capability | Android SDK | iOS SDK |
+| --- | --- | --- |
+| Offline Transactions | ✅ Supported | ✅ Supported |
+| Tap to Pay | ❌ Not supported | ❌ Not supported |
+| Supported card schemes | Visa, Mastercard | Visa, Mastercard |
+| Solo firmware | 3.3.31.0 or higher | 3.3.31.0 or higher |
+| Solo Lite firmware | 2.2.1.25 or higher | 2.2.1.25 or higher |
+
+## Geographic Availability
+
+Offline Transactions are currently supported in Europe through Worldpay.
+
+## Minimum Requirements
+
+<Tabs syncKey="mobile_platform">
+  <TabItem label="Android">
+
+| Requirement | Minimum |
+| --- | --- |
+| Android OS | Android 8 |
+| Card reader (Solo) | Firmware 3.3.31.0 or higher |
+| Card reader (Solo Lite) | Firmware 2.2.1.25 or higher |
+| Supported card schemes | Visa, Mastercard |
+
+  </TabItem>
+  <TabItem label="iOS">
+
+| Requirement | Minimum |
+| --- | --- |
+| iOS version | 16.0 or higher |
+| Secure Enclave | Required |
+| Free storage | 10 MB recommended |
+| Card reader (Solo) | Firmware 3.3.31.0 or higher |
+| Card reader (Solo Lite) | Firmware 2.2.1.25 or higher |
+| Supported card schemes | Visa, Mastercard |
+
+  </TabItem>
+</Tabs>
+
+## Lifecycle
+
+Offline Transactions follow four phases: preparation, activation, offline payment acceptance, and reconciliation.
+
+| Phase | What happens |
+| --- | --- |
+| **Preparation** | The SDK downloads offline rules and merchant limits while the device is online. |
+| **Activation** | Your app starts an offline session. |
+| **Offline window** | Transactions are validated locally, signed, and stored securely on device. |
+| **Reconciliation** | Stored transactions are uploaded to SumUp when connectivity returns. |
+
+## Preparation
+
+Before going offline, sync the latest offline rules and limits while the device is online.
+
+<Tabs syncKey="mobile_platform">
+  <TabItem label="Android">
+- Method: `SumUpAPI.updateOfflineSecurityPatch(SecurityPatchUpdateCallback callback)`
+- Internet required: Yes
+
+If you skip this step, `startOfflineSession(...)` can fail with `OfflineLimitsAbsent`.
+  </TabItem>
+  <TabItem label="iOS">
+    - Method: `setupOfflineSession`
+    - Internet required: Yes
+  </TabItem>
+</Tabs>
+
+Best practice: run preparation after merchant login or when the merchant explicitly enables offline mode.
+
+## Activation
+
+Offline sessions are explicit on both platforms.
+
+<Tabs syncKey="mobile_platform">
+  <TabItem label="Android">
+    - Start: `SumUpAPI.startOfflineSession(StartOfflineSessionCallback callback)`
+    - Internet required: No
+  </TabItem>
+  <TabItem label="iOS">
+    - Start: `startOfflineSession`
+    - Internet required: No
+  </TabItem>
+</Tabs>
+
+Once an offline session starts, subsequent payments are attempted as offline transactions until the session is ended.
+
+<Aside type="note">
+The first offline transaction binds the session to the reader serial number. If the merchant switches readers mid-session, stop the session and start a new one with the new reader.
+</Aside>
+
+## Offline Window
+
+During an active offline session, transactions are validated locally and stored securely on the device. The SDK still returns an immediate result to your app.
+
+<Tabs syncKey="mobile_platform">
+  <TabItem label="Android">
+    - Method: `SumUpAPI.fetchCurrentOfflineSession(OfflineSessionCallback callback)`
+    - Internet required: No
+    - Returns session information such as remaining time, approved transaction count, failed transaction count, and total approved amount.
+  </TabItem>
+  <TabItem label="iOS">
+    - Methods: `getOfflineSessionDetails`, `getOfflineSessionRemainingTime`
+    - Internet required: No
+  </TabItem>
+</Tabs>
+
+Offline sessions are constrained by merchant limits, total stored volume, and session duration. Once those limits are reached or the session expires, new offline transactions are rejected.
+
+## Reconciliation
+
+When connectivity returns, upload stored transactions as soon as possible.
+
+<Tabs syncKey="mobile_platform">
+  <TabItem label="Android">
+- Manual upload: `SumUpAPI.uploadOfflineTransactions(UploadOfflineTransactionsStatusListener callback)`
+- End session: `SumUpAPI.stopOfflineSession(StopOfflineSessionCallback callback)`
+
+Stopping the session also triggers an upload attempt.
+  </TabItem>
+  <TabItem label="iOS">
+    - Manual upload: `uploadOfflineSession`
+    - End session: `endOfflineSession`
+  </TabItem>
+</Tabs>
+
+## Android API Summary
+
+| API | Purpose | Internet required |
+| --- | --- | --- |
+| `SumUpAPI.updateOfflineSecurityPatch(...)` | Download the latest offline rules and limits | Yes |
+| `SumUpAPI.startOfflineSession(...)` | Start an offline session | No |
+| `SumUpAPI.stopOfflineSession(...)` | Stop the session and trigger upload | No |
+| `SumUpAPI.uploadOfflineTransactions(...)` | Upload stored offline transactions manually | Yes |
+| `SumUpAPI.fetchCurrentOfflineSession(...)` | Inspect current session status | No |
+
+## Android Integration Example
+
+### Update Offline Security Patch
+
+```java
+SumUpAPI.updateOfflineSecurityPatch(new SecurityPatchUpdateCallback() {
+    @Override
+    public void onSuccess() {
+        // Security patch update successful
+    }
+
+    @Override
+    public void onFailure() {
+        // Security patch update failed
+    }
+});
+```
+
+### Start Offline Session
+
+```java
+SumUpAPI.startOfflineSession(new StartOfflineSessionCallback() {
+    @Override
+    public void onResult(@NonNull StartOfflineSessionResult result) {
+        // Handle the start result
+    }
+});
+```
+
+### Stop Offline Session
+
+```java
+SumUpAPI.stopOfflineSession(new StopOfflineSessionCallback() {
+    @Override
+    public void onResult(@NonNull StopOfflineSessionResult result) {
+        // Handle the stop result
+    }
+});
+```
+
+## Common Failure Modes
+
+| Scenario | Behavior |
+| --- | --- |
+| Preparation step skipped or failed | Session start can fail because offline limits are missing |
+| Reader switched mid-session | Offline processing is suspended until a new session is started |
+| Session expired | New offline transactions are rejected |
+| Cumulative limit reached | New offline transactions are rejected until stored transactions are uploaded |
+| Concurrent offline API calls | Not supported on Android; keep calls serial |
+
+## Testing
+
+For testing guidance, contact your SumUp technical contact or [integrations@sumup.com](mailto:integrations@sumup.com).

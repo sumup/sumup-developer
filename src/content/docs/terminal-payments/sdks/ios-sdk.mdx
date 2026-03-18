@@ -1,6 +1,6 @@
 ---
 title: iOS SDK
-description: Explains how the iOS Terminal SDK works, how to set it up, and how it delivers card-present and Tap to Pay experiences.
+description: Explains how the iOS SDK works, how to set it up, and how it delivers card-present and Tap to Pay experiences.
 sidebar:
   order: 13
 ---
@@ -9,7 +9,7 @@ import { Aside, Steps, Tabs, TabItem } from '@astrojs/starlight/components';
 import Image from '@components/content/Image.astro';
 
 
-SumUp provides a [native iOS Terminal SDK](https://github.com/sumup/sumup-ios-sdk) that enables you to integrate SumUp's proprietary
+SumUp provides a [native iOS SDK](https://github.com/sumup/sumup-ios-sdk) that enables you to integrate SumUp's proprietary
 card terminal(s) and its payment platform to accept credit and debit card payments
 (incl. VISA, MasterCard, American Express and more) as well as Tap-to-Pay payments on iPhones. SumUp's SDK communicates transparently
 to the card terminal(s) via Bluetooth. Upon initiating
@@ -22,41 +22,23 @@ No sensitive card data is ever passed through to or stored on the merchant’s p
 All data is encrypted by the card terminal, which has been fully certified to the highest
 industry standards (PCI, EMV I & II, Visa, MasterCard & Amex).
 
-SumUp iOS Terminal SDK is provided as an Objective C binary. However, when you use the SDK in Swift projects, Xcode uses automatic bridging to generate Swift-friendly interfaces from the Objective-C headers. For that reason, code samples in this guide are provided both in Swift and Objective C.
+SumUp iOS SDK is provided as an Objective C binary. However, when you use the SDK in Swift projects, Xcode uses automatic bridging to generate Swift-friendly interfaces from the Objective-C headers. For that reason, code samples in this guide are provided both in Swift and Objective C.
 
-The iOS Terminal SDK includes a [Sample App](https://github.com/sumup/sumup-ios-sdk/tree/master/SampleApp/SumUpSDKSampleApp), which you can run out-of-the-box to immediately test the implementation in practice.
+The iOS SDK includes a [Sample App](https://github.com/sumup/sumup-ios-sdk/tree/master/SampleApp/SumUpSDKSampleApp), which you can run out-of-the-box to immediately test the implementation in practice.
 
 ## Prerequisites
 
-* Registered for a merchant account via SumUp's [country websites](https://sumup.com/) (or created a sandbox merchant account).
+* Registered for a merchant account via SumUp's [country websites](https://sumup.com/) or use a [sandbox merchant account](/terminal-payments/quickstart/#sandbox-merchant-account).
 * Received SumUp card terminal: Solo Lite, Solo, Air, 3G, PIN+.
 * Requested an Affiliate (Access) Key via [SumUp Dashboard](https://me.sumup.com/developers) for Developers.
 * Deployment Target iOS 14.0 or later.
-* Recommended to use on Xcode 14.3.1 and iOS Terminal SDK 16 or later.
+* Recommended to use on Xcode 14.3.1 and iOS SDK 16 or later.
 * iPhone or iPad.
 * If your device is managed by an organization, make sure app installation is permitted.
 
-## Getting a Sandbox Merchant Account
+## Sandbox Merchant Account
 
-To start testing SumUp APIs and tools without involving real money, you need a sandbox merchant account. You can create one from your Dashboard account as shown below.
-
-<Steps>
-
-1. Log in to your SumUp account.
-
-2. Open the drop-down menu between Support and your user panel.
-
-3. Select Sandbox Merchant Account. Your merchant account is now switched to sandbox mode.
-
-</Steps>
-
-<Image alt="A screenshot of the account selection dropdown in the SumUp dashboard with the sandbox merchant account highlighted with red circle" src="/img/guides/test_acc.png" width="40%" />
-
-Once you have your sandbox merchant account you can begin making API calls with real data. Our sandbox merchant accounts **do not** process transactions with real funds. The sandbox merchant account has a different ID, and shows a clear warning. When you try to process a request with the value of 11 (in any currency), the sandbox merchant account will always fail - this is by design, to enable testing failed transactions.
-
-<Image alt="A screenshot of the dashboard with sandbox merchant account selected" src="/img/guides/test-account-warning.png" width="100%" />
-
-When you're done experimenting with the sandbox merchant account, switch back to a regular account for business purposes.
+Use the shared [Quickstart sandbox setup](/terminal-payments/quickstart/#sandbox-merchant-account) to create and test with a sandbox merchant account before integrating the iOS SDK.
 
 ### Compatibility
 
@@ -65,7 +47,7 @@ When you're done experimenting with the sandbox merchant account, switch back to
 
 ### Match Affiliate Key to App Bundle ID
 
-iOS Terminal SDK uses the Affiliate Key from your merchant account to authenticate your app.
+iOS SDK uses the Affiliate Key from your merchant account to authenticate your app.
 
 1. Log in to SumUp with your merchant account and open the [Affiliate Key page](https://developer.sumup.com/affiliate-keys).
 2. Create an Affiliate Key if you don't have one yet.
@@ -73,7 +55,7 @@ iOS Terminal SDK uses the Affiliate Key from your merchant account to authentica
 
 ### Add Property List Keys to Project
 
-The SumUp iOS Terminal SDK requires access to the user's location and Bluetooth peripherals. If your app has not asked for the user's permission, the SumUp iOS Terminal SDK will ask at the time of the first login or checkout attempt.
+The SumUp iOS SDK requires access to the user's location and Bluetooth peripherals. If your app has not asked for the user's permission, the SumUp iOS SDK will ask at the time of the first login or checkout attempt.
 Please add the following keys to your `info.plist` file and set some values:
 
 ```txt
@@ -128,11 +110,11 @@ Please consider the following when building Tap-to-Pay solutions, as Apple revie
 4. [Log the user in](#logging-the-user-in).
 5. Follow steps under [Implementing Tap-to-Pay](#implementing-tap-to-pay).
 
-## Integrating iOS Terminal SDK
+## Integrating iOS SDK
 
 ### Adding SDK Framework to Project
 
-The SumUp iOS Terminal SDK is provided as an XCFramework `SumUpSDK.xcframework` that contains
+The SumUp iOS SDK is provided as an XCFramework `SumUpSDK.xcframework` that contains
 the headers and bundles containing resources such as images and localizations. You can add the SDK binary manually or use a package manager such as Swift Package Manager, Cocoapods, or Carthage.
 Please follow the relevant instructions below to prepare your project:
 
@@ -147,7 +129,7 @@ If you're using Xcode 12.3 or later, this should work out of the box.
 
 Unfortunately, Xcode 12 releases before that had an issue, (https://bugs.swift.org/browse/SR-13343), that added the framework as a static library, not as an embedded dynamic framework.
 
-Follow this workaround to manage SumUp iOS Terminal SDK versions via Swift PM in those cases:
+Follow this workaround to manage SumUp iOS SDK versions via Swift PM in those cases:
 
 <Steps>
 1. Add the package dependency to the repository `https://github.com/sumup/sumup-ios-sdk` (*File > Swift Packages > Add Package Dependency...*) with the version `Up to Next Major: 4.0.0`
@@ -186,7 +168,7 @@ Distributing XCFrameworks with the latest Carthage version (0.35.0) is not yet a
 There is an open issue ([#2799](https://github.com/Carthage/Carthage/issues/2799)) to solve this.
 Once that issue is fixed, we expect Carthage to work again.
 
-The SumUp iOS Terminal SDK can be integrated with Carthage by following the steps below:
+The SumUp iOS SDK can be integrated with Carthage by following the steps below:
 
 <Steps>
 1. Add the following line to your `Cartfile`:
@@ -213,7 +195,7 @@ In Swift, use `import SumUpSDK`. You do not have to add any headers to your brid
 
 ### Initialization
 
-Before calling any additional feature of the SumUp iOS Terminal SDK, you are required to set up the SDK with your Affiliate Key. Call on the main thread. You may wish to defer calling `setupWithAPIKey:` until after app launch, as it requests the user's location permission.
+Before calling any additional feature of the SumUp iOS SDK, you are required to set up the SDK with your Affiliate Key. Call on the main thread. You may wish to defer calling `setupWithAPIKey:` until after app launch, as it requests the user's location permission.
 
 <Image alt="Login screen" src="/img/guides/use_location.png" width="40%" />
 
@@ -286,7 +268,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 ### Authentication - Component Definitions
 
-SumUp iOS Terminal SDK supports either the OAuth 2.0 Authorization Code Flow login with Access Token or a modally presented login from a View Controller (as you can see implemented in the Sample App). We strongly recommend the OAuth 2.0 approach for new integrations, due to support for MFA, better overall security, and possible deprecation of the View Controller in the future.
+SumUp iOS SDK supports either the OAuth 2.0 Authorization Code Flow login with Access Token or a modally presented login from a View Controller (as you can see implemented in the Sample App). We strongly recommend the OAuth 2.0 approach for new integrations, due to support for MFA, better overall security, and possible deprecation of the View Controller in the future.
 
 <Tabs>
 

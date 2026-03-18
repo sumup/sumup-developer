@@ -1,16 +1,34 @@
 ---
 title: SDKs
-description: An overview of the native Terminal Payment SDKs for iOS and Android and how they drive the checkout UI.
+description: Compare the mobile Terminal Payment SDKs for Android and iOS, then continue to the platform-specific guides and offline transaction documentation.
 icon: code
 sidebar:
   label: Overview
   order: 10
 ---
 
-SumUp's Terminal Payment Native SDK allows a smoother user experience and more control from the merchant app. The SDK supports [iOS](/terminal-payments/sdks/ios-sdk) and [Android](/terminal-payments/sdks/android-sdk), being directly integrated into your app which offers greater flexibility and customizations.
+The Reader SDKs let you embed SumUp in-person payment acceptance directly into your Android or iOS app. Your app can connect to a Bluetooth card reader or, depending on platform, use Tap to Pay on the device itself.
 
-## How Does It Work?
+## Available SDKs
 
-The SDK provides all user interface screens to guide merchants and customers through the checkout process within your app, including selecting a terminal, presenting a card, entering the PIN or providing a signature. The checkout process is triggered from within the merchant app, where the checkout result will be returned with all relevant data at the end of the transaction.
+| SDK | Platform | Readers supported | Tap to Pay |
+| --- | --- | --- | --- |
+| [Android SDK](/terminal-payments/sdks/android-sdk/) | Android | Solo Lite, Solo, Air, 3G, PIN+ | No |
+| [Android Tap-to-Pay SDK](/terminal-payments/sdks/android-ttp/) | Android | — | Yes |
+| [iOS SDK](/terminal-payments/sdks/ios-sdk/) | iOS | Solo Lite, Solo, Air, 3G, PIN+ | Yes |
 
-In addition to handling the payment and all communication with the terminal, you can update the checkout preferences, like adding a tip, and more.
+## How It Works
+
+The SDK provides the payment UI and handles communication with the card reader. Your app initiates checkout, the SDK guides the merchant and customer through the payment flow, and the transaction result is returned to your app at the end.
+
+## Shared Concepts
+
+- Start with the top-level [Quickstart](/terminal-payments/quickstart/) for a minimal first-payment flow.
+- Use [Offline Transactions](/terminal-payments/sdks/offline-transactions/) if you need store-and-forward card payments when connectivity is unavailable.
+- Use the platform-specific guides for setup, permissions, authentication, and full checkout implementation details.
+
+## Platform Guides
+
+- [Android SDK](/terminal-payments/sdks/android-sdk/)
+- [Android Tap-to-Pay SDK](/terminal-payments/sdks/android-ttp/)
+- [iOS SDK](/terminal-payments/sdks/ios-sdk/)
