@@ -1,5 +1,5 @@
 ---
-const { alt, src, srcset } = Astro.props;
+const { alt, src, srcset, width, height } = Astro.props;
 ---
 
 <div class="reader-hero">
@@ -8,6 +8,8 @@ const { alt, src, srcset } = Astro.props;
     srcset={srcset}
     sizes="(max-width: 50rem) 100vw, 50rem"
     alt={alt}
+    width={width}
+    height={height}
   />
 </div>
 
