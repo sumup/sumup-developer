@@ -1,0 +1,121 @@
+---
+const readers = [
+  {
+    alt: "Solo card reader",
+    href: "/terminal-payments/readers/solo/",
+    image: "/img/terminal-payments/readers/solo-1x.png",
+    srcset:
+      "/img/terminal-payments/readers/solo-1x.png 1x, /img/terminal-payments/readers/solo-2x.png 2x, /img/terminal-payments/readers/solo-3x.png 3x",
+    name: "Solo",
+  },
+  {
+    alt: "Solo Lite card reader",
+    href: "/terminal-payments/readers/solo-lite/",
+    image: "/img/terminal-payments/readers/solo-lite-1x.png",
+    srcset:
+      "/img/terminal-payments/readers/solo-lite-1x.png 1x, /img/terminal-payments/readers/solo-lite-2x.png 2x, /img/terminal-payments/readers/solo-lite-3x.png 3x",
+    name: "Solo Lite",
+  },
+  {
+    alt: "Tap to Pay acceptance on a mobile device",
+    href: "/terminal-payments/readers/tap-to-pay/",
+    image: "/img/terminal-payments/readers/tap-to-pay-1x.png",
+    srcset:
+      "/img/terminal-payments/readers/tap-to-pay-1x.png 1x, /img/terminal-payments/readers/tap-to-pay-2x.png 2x, /img/terminal-payments/readers/tap-to-pay-3x.png 3x",
+    name: "Tap to Pay",
+  },
+  {
+    alt: "Air card reader",
+    href: "/terminal-payments/readers/air/",
+    image: "/img/terminal-payments/readers/air-1x.png",
+    srcset:
+      "/img/terminal-payments/readers/air-1x.png 1x, /img/terminal-payments/readers/air-2x.png 2x, /img/terminal-payments/readers/air-3x.png 3x",
+    name: "Air",
+  },
+  {
+    alt: "3G card reader",
+    href: "/terminal-payments/readers/3g/",
+    image: "/img/terminal-payments/readers/3g-1x.png",
+    srcset:
+      "/img/terminal-payments/readers/3g-1x.png 1x, /img/terminal-payments/readers/3g-2x.png 2x, /img/terminal-payments/readers/3g-3x.png 3x",
+    name: "3G",
+  },
+  {
+    alt: "PIN+ card reader",
+    href: "/terminal-payments/readers/pin-plus/",
+    image: "/img/terminal-payments/readers/pin-plus-1x.png",
+    srcset:
+      "/img/terminal-payments/readers/pin-plus-1x.png 1x, /img/terminal-payments/readers/pin-plus-2x.png 2x, /img/terminal-payments/readers/pin-plus-3x.png 3x",
+    name: "PIN+",
+  },
+];
+---
+
+<div class="reader-gallery" aria-label="Supported card readers">
+  {
+    readers.map((reader) => (
+      <a class="reader-card" href={reader.href}>
+        <img
+          src={reader.image}
+          srcset={reader.srcset}
+          sizes="160px"
+          alt={reader.alt}
+          loading="lazy"
+        />
+        <span class="reader-name">{reader.name}</span>
+      </a>
+    ))
+  }
+</div>
+
+<style>
+  .reader-gallery {
+    display: flex;
+    gap: var(--cui-spacings-giga);
+    overflow-x: auto;
+    padding: 0 0 var(--cui-spacings-mega);
+    margin: var(--cui-spacings-giga) 0;
+    scrollbar-width: thin;
+  }
+
+  .reader-card {
+    flex: 0 0 10rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--cui-spacings-kilo);
+    margin: 0;
+    padding: var(--cui-spacings-mega);
+    border-radius: var(--cui-border-radius-byte);
+    background: var(--cui-bg-subtle);
+    text-align: center;
+    color: inherit;
+    text-decoration: none;
+    transition:
+      transform var(--cui-transitions-default),
+      box-shadow var(--cui-transitions-default),
+      background-color var(--cui-transitions-default);
+  }
+
+  .reader-card:hover {
+    background: var(--cui-bg-subtle-hovered);
+  }
+
+  .reader-card:focus {
+    background: var(--cui-bg-subtle-pressed);
+  }
+
+  .reader-card img {
+    width: auto;
+    max-width: 100%;
+    height: 9rem;
+    display: block;
+    object-fit: contain;
+  }
+
+  .reader-name {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--cui-fg-normal);
+  }
+</style>

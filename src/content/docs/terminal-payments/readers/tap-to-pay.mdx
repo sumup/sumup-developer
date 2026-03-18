@@ -1,0 +1,38 @@
+---
+title: Tap to Pay
+description: Tap to Pay compatibility and basic information for SumUp in-person payments.
+sidebar:
+  order: 33
+---
+
+import ReaderHero from '@components/content/ReaderHero.astro';
+
+<ReaderHero
+  alt="Tap to Pay on a mobile device"
+  src="/img/terminal-payments/readers/tap-to-pay-2x.png"
+  srcset="/img/terminal-payments/readers/tap-to-pay-1x.png 1x, /img/terminal-payments/readers/tap-to-pay-2x.png 2x, /img/terminal-payments/readers/tap-to-pay-3x.png 3x"
+/>
+
+Tap to Pay lets merchants accept in-person contactless payments directly on a compatible phone without carrying a separate card reader.
+
+## Basic Information
+
+| Category | Details |
+| --- | --- |
+| Device type | Software-based payment acceptance on the merchant's phone |
+| Hardware model | No separate reader required |
+| Compatible merchant devices | iPhone XS or newer on supported iOS versions, or Android devices with NFC running Android 11 or later |
+| Connection needs | The SumUp app or SDK flow plus internet access on the merchant device |
+| Accepted payment types | Contactless cards, Apple Pay, Google Pay, Samsung Pay, and similar digital wallets |
+| Good fit for | Merchants who want the fastest setup and the lightest hardware footprint |
+
+## Integration Compatibility
+
+- [iOS SDK](/terminal-payments/sdks/ios-sdk/)
+- [Android Tap-to-Pay SDK](/terminal-payments/sdks/android-ttp/)
+
+## What to Expect
+
+- There is no separate reader to pair, charge, or carry.
+- Tap to Pay is contactless-only. If you need chip insertion, use a physical reader such as Solo or Solo Lite.
+- Customers can enter their PIN directly on the merchant device when required.

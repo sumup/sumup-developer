@@ -1,0 +1,28 @@
+---
+const { alt, src, srcset } = Astro.props;
+---
+
+<div class="reader-hero">
+  <img
+    src={src}
+    srcset={srcset}
+    sizes="(max-width: 50rem) 100vw, 50rem"
+    alt={alt}
+  />
+</div>
+
+<style>
+  .reader-hero {
+    margin: 0 0 var(--cui-spacings-giga);
+    text-align: center;
+  }
+
+  .reader-hero img {
+    display: inline-block;
+    width: auto;
+    max-width: min(100%, 32rem);
+    max-height: 20rem;
+    height: auto;
+    margin: 0;
+  }
+</style>

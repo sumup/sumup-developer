@@ -4,12 +4,15 @@ description: Understand SumUp's in-person payment integrations, supported reader
 sidebar:
   label: Overview
   order: 1
-icon: card_in
 ---
+
+import ReaderGallery from '@components/content/ReaderGallery.astro';
 
 SumUp's in-person payment products let you accept card payments face-to-face using physical card readers or Tap to Pay on a mobile device. You can integrate them into your own app or system using our [Reader SDKs](/terminal-payments/sdks/), [Cloud API](/terminal-payments/cloud-api/), or, for legacy app handoff flows, [Payment Switch](/terminal-payments/payment-switch/).
 
 This section helps you choose the right integration, understand reader compatibility, and get to your first payment quickly.
+
+Need device-specific details? Browse the [reader guides](/terminal-payments/readers/).
 
 ## How It Works
 
@@ -23,6 +26,8 @@ Every in-person payment follows the same basic pattern:
 How the payment is initiated and where the UI runs depends on the integration path you choose.
 
 ## Choose Your Integration
+
+<ReaderGallery />
 
 There are three ways to integrate SumUp in-person payments:
 
@@ -54,13 +59,12 @@ Not every reader works with every integration:
 
 | Reader | Android SDK | iOS SDK | Android Tap-to-Pay SDK | Cloud API | Payment Switch |
 | --- | --- | --- | --- | --- | --- |
-| **Solo Lite** | ✅ | ✅ | — | — | ✅ |
-| **Solo** | ✅ | ✅ | — | ✅ | ✅ |
-| **Air** | ✅ | ✅ | — | — | ✅ |
-| **3G** | ✅ | ✅ | — | — | ✅ |
-| **PIN+** | ✅ | ✅ | — | — | ✅ |
-| **Tap to Pay on Android** | — | — | ✅ | — | — |
-| **Tap to Pay on iPhone** | — | ✅ | — | — | — |
+| [**Solo Lite**](/terminal-payments/readers/solo-lite/) | ✅ | ✅ | — | — | ✅ |
+| [**Solo**](/terminal-payments/readers/solo/) | ✅ | ✅ | — | ✅ | ✅ |
+| [**Air**](/terminal-payments/readers/air/) | ✅ | ✅ | — | — | ✅ |
+| [**3G**](/terminal-payments/readers/3g/) | ✅ | ✅ | — | — | ✅ |
+| [**PIN+**](/terminal-payments/readers/pin-plus/) | ✅ | ✅ | — | — | ✅ |
+| [**Tap to Pay**](/terminal-payments/readers/tap-to-pay/) | — | ✅ | ✅ | — | — |
 
 ## Market Availability
 

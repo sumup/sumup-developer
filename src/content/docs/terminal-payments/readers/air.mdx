@@ -1,0 +1,38 @@
+---
+title: Air
+description: Air reader compatibility and basic information for SumUp in-person payments.
+sidebar:
+  order: 34
+---
+
+import ReaderHero from '@components/content/ReaderHero.astro';
+
+<ReaderHero
+  alt="Air card reader"
+  src="/img/terminal-payments/readers/air-2x.png"
+  srcset="/img/terminal-payments/readers/air-1x.png 1x, /img/terminal-payments/readers/air-2x.png 2x, /img/terminal-payments/readers/air-3x.png 3x"
+/>
+
+Air is a Bluetooth reader for merchants who run checkout from a phone, tablet, or POS app.
+
+## Basic Information
+
+| Category | Details |
+| --- | --- |
+| Device type | App-paired card reader |
+| Main connection | Bluetooth to a mobile device or compatible POS device |
+| Hardware characteristics | Mobile reader designed for on-the-go use, with battery life advertised for more than 500 transactions on a charge in some markets |
+| Accepted payment types | Contactless, chip card payments, Apple Pay, and Google Pay |
+| Good fit for | Mobile sellers and existing tablet-based checkouts |
+
+## Integration Compatibility
+
+- [Android SDK](/terminal-payments/sdks/android-sdk/)
+- [iOS SDK](/terminal-payments/sdks/ios-sdk/)
+- [Payment Switch](/terminal-payments/payment-switch/)
+
+## What to Expect
+
+- Air depends on a paired device for checkout and network access.
+- It is better suited to app-led flows than to fully standalone operation.
+- Printer connectivity and device compatibility can vary by market and POS setup.

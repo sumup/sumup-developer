@@ -1,0 +1,38 @@
+---
+title: PIN+
+description: PIN+ reader compatibility and basic information for SumUp in-person payments.
+sidebar:
+  order: 35
+---
+
+import ReaderHero from '@components/content/ReaderHero.astro';
+
+<ReaderHero
+  alt="PIN+ card reader"
+  src="/img/terminal-payments/readers/pin-plus-2x.png"
+  srcset="/img/terminal-payments/readers/pin-plus-1x.png 1x, /img/terminal-payments/readers/pin-plus-2x.png 2x, /img/terminal-payments/readers/pin-plus-3x.png 3x"
+/>
+
+PIN+ is an older paired SumUp reader that connected to mobile devices for card-present payments.
+
+## Basic Information
+
+| Category | Details |
+| --- | --- |
+| Device type | App-paired card reader |
+| Main connections | Bluetooth Low Energy or cable connection to a phone or tablet |
+| Platform compatibility | iOS and Android devices |
+| Accepted payment types | Major debit and credit cards, including contactless-capable card-present flows in supported markets |
+| Good fit for | Existing estates that still need compatibility guidance for earlier SumUp hardware |
+
+## Integration Compatibility
+
+- [Android SDK](/terminal-payments/sdks/android-sdk/)
+- [iOS SDK](/terminal-payments/sdks/ios-sdk/)
+- [Payment Switch](/terminal-payments/payment-switch/)
+
+## What to Expect
+
+- PIN+ is not part of the current Cloud API path.
+- It was designed around phone- or tablet-connected checkout flows rather than standalone operation.
+- If you are choosing new hardware today, compare it against Solo or Solo Lite before standardising on it.
