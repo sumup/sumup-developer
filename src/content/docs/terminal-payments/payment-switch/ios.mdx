@@ -1,0 +1,116 @@
+---
+title: iOS
+description: Integrate the Payment Switch on iOS by opening the SumUp URL scheme and parsing the callback in your app.
+sidebar:
+  order: 22
+---
+
+import { Aside, Steps } from '@astrojs/starlight/components';
+
+The iOS Payment Switch starts a payment by opening the SumUp app with a URL scheme. After the checkout completes, the SumUp app redirects back to your app with the payment result.
+
+<Aside type="caution">
+
+Payment Switch is no longer actively being developed. Prefer the [iOS SDK](/terminal-payments/sdks/ios-sdk/) for native mobile integrations, and use Payment Switch only when the native SDK and the [Cloud API](/terminal-payments/cloud-api/) are not viable for your setup.
+
+</Aside>
+
+## Prerequisites
+
+- A valid [Affiliate Key](/tools/authorization/affiliate-keys/) associated with your iOS bundle identifier.
+- The SumUp app installed on the device.
+- A custom URL scheme registered by your app to receive callbacks.
+
+## Integration Steps
+
+<Steps>
+
+1. Register a callback URL scheme.
+
+   In Xcode, add a URL type for your app, for example `myapp`. That gives you a callback URL such as `myapp://sumup-callback`.
+
+2. Open the SumUp app.
+
+   Use `URLComponents` to build the Payment Switch request and open the SumUp app:
+
+   ```swift
+   let foreignTxId = UUID().uuidString
+
+   var components = URLComponents(string: "sumupmerchant://pay/1.0")!
+   components.queryItems = [
+       URLQueryItem(name: "amount", value: "12.34"),
+       URLQueryItem(name: "currency", value: "EUR"),
+       URLQueryItem(name: "affiliate-key", value: "YOUR_AFFILIATE_KEY"),
+       URLQueryItem(name: "title", value: "Coffee"),
+       URLQueryItem(name: "receipt-email", value: "customer@example.com"),
+       URLQueryItem(name: "receipt-mobilephone", value: "+49123456789"),
+       URLQueryItem(name: "foreign-tx-id", value: foreignTxId),
+       URLQueryItem(name: "callbacksuccess", value: "myapp://sumup-callback"),
+       URLQueryItem(name: "callbackfail", value: "myapp://sumup-callback"),
+       URLQueryItem(name: "skip-screen-success", value: "true"),
+   ]
+
+   if let paymentURL = components.url {
+       UIApplication.shared.open(paymentURL)
+   }
+   ```
+
+   The mandatory parameters are `amount`, `currency`, and `affiliate-key`. The callback URLs tell the SumUp app where to return after success or failure.
+
+3. Handle the callback.
+
+   Parse the callback URL and inspect the query parameters when your app is reopened:
+
+   ```swift
+   func scene(
+       _ scene: UIScene,
+       openURLContexts URLContexts: Set<UIOpenURLContext>
+   ) {
+       guard let url = URLContexts.first?.url,
+             let components = URLComponents(url: url, resolvingAgainstBaseURL: false) else {
+           return
+       }
+
+       let queryItems = Dictionary(
+           uniqueKeysWithValues: components.queryItems?.map { ($0.name, $0.value ?? "") } ?? []
+       )
+
+       let status = queryItems["smp-status"]
+       let transactionCode = queryItems["smp-tx-code"]
+       let foreignTxId = queryItems["foreign-tx-id"]
+
+       if status == "success" {
+           // Mark the order as paid and persist transactionCode / foreignTxId.
+       } else {
+           // Show the failure state and allow retry.
+       }
+   }
+   ```
+
+   When available, the callback can include:
+
+   - `smp-status`: `success`, `failed`, or `invalidstate`
+   - `smp-tx-code`: The SumUp transaction code
+   - `foreign-tx-id`: The external transaction ID you sent with the request
+
+</Steps>
+
+## Common Parameters
+
+- `title`: Optional label shown in transaction history and receipts.
+- `receipt-email`: Prefills the email receipt field in the SumUp app.
+- `receipt-mobilephone`: Prefills the SMS receipt field in the SumUp app.
+- `foreign-tx-id`: Your unique external transaction reference. Keep it unique per payment and under 128 characters.
+- `skip-screen-success=true`: Skips the success screen after a successful payment. Use this only if your app shows the final payment outcome itself.
+
+## Notes
+
+- The payment currency must match the currency of the merchant account logged in to the SumUp app.
+- Use the same callback URL for both success and failure if you want a single result handler in your app.
+- The official iOS repository also provides an `SMPPaymentRequest` helper if you prefer not to build the URL manually.
+
+## Related Links
+
+- [Cloud API](/terminal-payments/cloud-api/)
+- [Affiliate Keys](/tools/authorization/affiliate-keys/)
+- [Official iOS Payment Switch repository](https://github.com/sumup/sumup-ios-url-scheme)

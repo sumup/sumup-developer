@@ -1,0 +1,67 @@
+---
+title: Payment Switch
+description: Use the Payment Switch to hand off checkout to the SumUp app, with separate implementation guides for Android and iOS.
+sidebar:
+  label: Overview
+  order: 20
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+The SumUp API Payment Switch is a lightweight integration where your app opens the SumUp app to request and execute a payment.
+
+This approach is useful when you want a simpler mobile handoff instead of embedding the native SDK. Your app starts the transaction, the SumUp app handles the checkout flow, and then control returns to your app with the payment result.
+
+<Aside type="caution">
+
+Payment Switch is a legacy fallback integration and is no longer actively being developed.
+
+Use it only when you cannot use the native [Terminal SDKs](/terminal-payments/sdks/) or the [Cloud API](/terminal-payments/cloud-api/).
+
+</Aside>
+
+The Payment Switch supports the same core handoff on both platforms:
+
+- Prefill the amount, currency, title, and receipt contact details.
+- Attach a unique external transaction reference for reconciliation.
+- Receive a callback in your app when the payment succeeds or fails.
+
+## Choose the Right Integration
+
+- Use the [native Terminal SDKs](/terminal-payments/sdks/) when you are building a native iOS or Android app and want the best-supported in-app card-present experience.
+- Use the [Cloud API](/terminal-payments/cloud-api/) when your POS is server-driven, web-based, desktop-based, or otherwise cannot embed the mobile SDKs.
+- Use Payment Switch only when your app must hand off to the installed SumUp app and neither the native SDKs nor the Cloud API are viable for your setup.
+
+## When Payment Switch Is the Fallback
+
+Payment Switch can still be the right fallback when:
+
+- You already depend on the installed SumUp app and need a simple app-to-app handoff.
+- Your mobile integration cannot adopt the native SDK requirements.
+- Your setup cannot be reworked to a platform-agnostic [Cloud API](/terminal-payments/cloud-api/) flow.
+
+## Prerequisites
+
+- A SumUp merchant account or [sandbox merchant account](/terminal-payments/#getting-a-sandbox-merchant-account).
+- An [Affiliate Key](/tools/authorization/affiliate-keys/) configured for your app.
+- The [required OAuth scopes](/tools/authorization/oauth/#authorization-scopes) enabled for your client.
+- The SumUp app installed on the merchant device.
+
+## Platform Guides
+
+- [Android Payment Switch](/terminal-payments/payment-switch/android)
+- [iOS Payment Switch](/terminal-payments/payment-switch/ios)
+
+## Payment Flow
+
+1. Build a Payment Switch request in your app.
+2. Open the SumUp app with the payment details.
+3. Let the merchant and customer complete the checkout in the SumUp app.
+4. Receive the result back in your app through the callback URL.
+
+Use a unique `foreign-tx-id` for every payment request. This prevents duplicate transaction conflicts and makes it easier to match the callback with your own order or cart state.
+
+## Official Repositories
+
+- [Android URL scheme repository](https://github.com/sumup/sumup-android-url-scheme)
+- [iOS URL scheme repository](https://github.com/sumup/sumup-ios-url-scheme)

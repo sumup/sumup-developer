@@ -1,0 +1,128 @@
+---
+title: Android
+description: Integrate the Payment Switch on Android by launching the SumUp app with a payment URI and handling the callback result.
+sidebar:
+  order: 21
+---
+
+import { Aside, Steps } from '@astrojs/starlight/components';
+
+The Android Payment Switch opens the SumUp app from your Android app, lets the merchant complete the transaction there, and then routes the result back to your callback activity.
+
+<Aside type="caution">
+
+Payment Switch is no longer actively being developed. Prefer the [Android Reader SDK](/terminal-payments/sdks/android-sdk/) for native mobile integrations, and use Payment Switch only when the native SDK and the [Cloud API](/terminal-payments/cloud-api/) are not viable for your setup.
+
+</Aside>
+
+## Prerequisites
+
+- A valid [Affiliate Key](/tools/authorization/affiliate-keys/) for your Android application ID.
+- The SumUp app installed on the device.
+- A custom callback URI scheme that your app can receive.
+
+## Integration Steps
+
+<Steps>
+
+1. Register a callback activity.
+
+   Create an activity that can receive the callback URI from the SumUp app:
+
+   ```xml
+   <activity android:name=".PaymentResultActivity">
+     <intent-filter>
+       <action android:name="android.intent.action.VIEW" />
+       <category android:name="android.intent.category.DEFAULT" />
+       <category android:name="android.intent.category.BROWSABLE" />
+       <data
+         android:scheme="myapp"
+         android:host="sumup-callback" />
+     </intent-filter>
+   </activity>
+   ```
+
+   In this example, the callback URL is `myapp://sumup-callback`.
+
+2. Open the SumUp app.
+
+   Build the Payment Switch URI and launch it with an `ACTION_VIEW` intent:
+
+   ```java
+   String foreignTxId = UUID.randomUUID().toString();
+
+   Uri paymentUri = Uri.parse(
+       "sumupmerchant://pay/1.0"
+           + "?affiliate-key=YOUR_AFFILIATE_KEY"
+           + "&app-id=com.example.myapp"
+           + "&total=12.34"
+           + "&currency=EUR"
+           + "&title=Coffee"
+           + "&receipt-email=customer@example.com"
+           + "&receipt-mobilephone=%2B49123456789"
+           + "&foreign-tx-id=" + foreignTxId
+           + "&skip-screen-success=true"
+           + "&callback=myapp://sumup-callback"
+   );
+
+   Intent payIntent = new Intent(Intent.ACTION_VIEW, paymentUri);
+   startActivity(payIntent);
+   ```
+
+   `total`, `currency`, and `affiliate-key` define the checkout request. `app-id` must match the Android application ID configured for the Affiliate Key.
+
+3. Handle the callback result.
+
+   The SumUp app returns the payment result through the callback URI:
+
+   ```java
+   public class PaymentResultActivity extends Activity {
+     @Override
+     protected void onCreate(Bundle savedInstanceState) {
+       super.onCreate(savedInstanceState);
+
+       Uri result = getIntent().getData();
+       if (result == null) {
+         finish();
+         return;
+       }
+
+       String status = result.getQueryParameter("smp-status");
+       String message = result.getQueryParameter("smp-message");
+       String transactionCode = result.getQueryParameter("smp-tx-code");
+       String foreignTxId = result.getQueryParameter("foreign-tx-id");
+
+       if ("success".equals(status)) {
+         // Mark the order as paid and persist transactionCode / foreignTxId.
+       } else {
+         // Show the error state and allow retry.
+       }
+
+       finish();
+     }
+   }
+   ```
+
+   The callback includes `smp-status` and may also include `smp-message`, `smp-tx-code`, `smp-receipt-sent`, and `foreign-tx-id`.
+
+</Steps>
+
+## Common Parameters
+
+- `title`: Optional label shown in transaction history and receipts.
+- `receipt-email`: Prefills the email receipt field.
+- `receipt-mobilephone`: Prefills the SMS receipt field.
+- `foreign-tx-id`: Your unique external transaction reference. Keep it unique per payment and under 128 characters.
+- `skip-screen-success=true`: Skips the success screen after a successful payment. Use this only if your app shows the final state itself.
+
+## Notes
+
+- `total` is supported in newer SumUp app versions. If you still support older versions, keep compatibility with the older `amount` field as documented in the Android repository.
+- The payment currency must match the currency of the merchant account logged in to the SumUp app.
+- If you skip the SumUp success screen, your app becomes responsible for clearly presenting the final payment outcome to the merchant.
+
+## Related Links
+
+- [Cloud API](/terminal-payments/cloud-api/)
+- [Affiliate Keys](/tools/authorization/affiliate-keys/)
+- [Official Android Payment Switch repository](https://github.com/sumup/sumup-android-url-scheme)
