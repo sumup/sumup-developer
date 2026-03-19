@@ -27,3 +27,53 @@
   --sl-color-orange: var(--cui-border-warning);
   --sl-color-orange-low: var(--cui-bg-warning);
 }
+
+/* Bring Starlight LinkButton closer to Circuit UI button styling. */
+.sl-link-button {
+  border-radius: var(--cui-border-radius-byte);
+  font-weight: var(--cui-font-weight-semibold);
+  line-height: var(--cui-body-m-line-height);
+  padding: calc(var(--cui-spacings-kilo) - var(--cui-border-width-kilo))
+    calc(var(--cui-spacings-giga) - var(--cui-border-width-kilo));
+  transition:
+    opacity var(--cui-transitions-default),
+    color var(--cui-transitions-default),
+    background-color var(--cui-transitions-default),
+    border-color var(--cui-transitions-default);
+}
+
+.sl-link-button.primary {
+  color: var(--cui-fg-on-strong);
+  background-color: var(--cui-bg-accent-strong);
+  border-color: transparent;
+}
+
+.sl-link-button.primary:hover {
+  color: var(--cui-fg-on-strong-hovered);
+  background-color: var(--cui-bg-accent-strong-hovered);
+  border-color: transparent;
+}
+
+.sl-link-button.primary:active {
+  color: var(--cui-fg-on-strong-pressed);
+  background-color: var(--cui-bg-accent-strong-pressed);
+  border-color: transparent;
+}
+
+.sl-link-button.secondary {
+  color: var(--cui-fg-normal);
+  background-color: var(--cui-bg-normal);
+  border-color: var(--cui-border-normal);
+}
+
+.sl-link-button.secondary:hover {
+  color: var(--cui-fg-normal-hovered);
+  background-color: var(--cui-bg-subtle-hovered);
+  border-color: var(--cui-border-normal-hovered);
+}
+
+.sl-link-button.secondary:active {
+  color: var(--cui-fg-normal-pressed);
+  background-color: var(--cui-bg-subtle-pressed);
+  border-color: var(--cui-border-normal-pressed);
+}

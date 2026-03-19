@@ -5,12 +5,16 @@ sidebar:
   order: 60
 ---
 
-import { Aside } from '@astrojs/starlight/components';
-import Button from '@components/content/Button.astro';
+import { Aside, LinkButton } from '@astrojs/starlight/components';
 
 To use PrestaShop with SumUp, download the SumUp Payment module plugin, which requires configuration in your SumUp dashboard.
 
-<Button href="https://addons.prestashop.com/en/payment-card-wallet/44630-sumup-payment.html">Download PrestaShop Plugin</Button>
+<LinkButton
+  href="https://addons.prestashop.com/en/payment-card-wallet/44630-sumup-payment.html"
+  icon="external"
+>
+  Download PrestaShop Plugin
+</LinkButton>
 
 ## Prerequisites
 
