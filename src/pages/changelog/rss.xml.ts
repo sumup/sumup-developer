@@ -22,8 +22,8 @@ export async function GET(context: { site: URL | undefined }) {
     items: changelogEntries.map((entry) => ({
       title: entry.data.title,
       pubDate: entry.data.publishedDate,
-      description: toDescription(entry.body),
-      link: `/changelog/#entry-${entry.slug}`,
+      description: toDescription(entry.body ?? ""),
+      link: `/changelog/#entry-${entry.id}`,
     })),
   });
 }

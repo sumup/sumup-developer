@@ -1,10 +1,10 @@
 ---
+export const prerender = false;
+
 import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
 import ApiDocs from "@components/ApiDocs/ApiDocs.astro";
 import type { StarlightPageProps } from "@astrojs/starlight/props";
-import { pathsByTag } from "@lib/openapi";
 import {
-  apiTopLevelPaths,
   getApiTopSection,
   isApiTopLevelPath,
 } from "@lib/openapi/routes";
@@ -17,24 +17,6 @@ import type { StarlightUserConfig } from "@astrojs/starlight/types";
 
 // list of resources that are expanded by default
 const mainResources = ["Checkouts", "Readers"];
-
-export async function getStaticPaths() {
-  return [
-    // top-level pages
-    { params: { path: undefined }, props: {} },
-    ...apiTopLevelPaths.map((path) => ({ params: { path }, props: {} })),
-    // tags
-    ...orderedTagEntriesCached.map(([tag]) => ({
-      params: { path: tag },
-    })),
-    // operations
-    ...Object.entries(pathsByTag).flatMap(([tag, operations]) =>
-      operations.map((operation) => ({
-        params: { path: `${tag}/${operation.slug}` },
-      })),
-    ),
-  ];
-}
 
 const sidebar: StarlightUserConfig["sidebar"] = [
   {

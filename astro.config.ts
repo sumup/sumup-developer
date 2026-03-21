@@ -4,7 +4,6 @@ import starlightImageZoom from "starlight-image-zoom";
 import starlight from "@astrojs/starlight";
 import starlightLinksValidator from "starlight-links-validator";
 import mermaid from "astro-mermaid";
-import starlightLlmsTxt from "starlight-llms-txt";
 import { loadEnv } from "vite";
 import rehypeExternalLinks from "./src/plugins/rehype/external-links";
 
@@ -207,11 +206,6 @@ export default defineConfig({
               }),
             ]
           : []),
-        starlightLlmsTxt({
-          // We use MDX with components extensively which starlightLlmsTxt doesn't
-          // handle well otherwise
-          rawContent: true,
-        }),
         starlightImageZoom(),
       ],
       title: "SumUp Developer",

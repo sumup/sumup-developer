@@ -1,5 +1,7 @@
 ---
-import { getCollection } from "astro:content";
+export const prerender = false;
+
+import { getCollection, render } from "astro:content";
 import slugify from "@sindresorhus/slugify";
 import { Badge, Body, Button, Anchor } from "@sumup-oss/circuit-ui";
 import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
@@ -29,20 +31,9 @@ const collectionDocs = (
     ...entry,
   }));
 
-export async function getStaticPaths() {
-  const posts = (await getCollection("changelog")).flatMap(
-    ({ data }) => data.tags,
-  );
-  const tags = ["", ...new Set(posts)];
-
-  return tags.map((tag) => ({
-    params: { tag: slugify(tag) },
-  }));
-}
-
 const posts = await Promise.all(
   collectionDocs.map(async (page) => {
-    const { Content } = await page.render();
+    const { Content } = await render(page);
     return { Content, ...page };
   }),
 );
@@ -113,10 +104,10 @@ const props = {
   <main class="content" data-pagefind-body>
     {
       posts.map(
-        async ({ Content, slug, data: { title, tags, publishedDate } }) => {
+        async ({ Content, id, data: { title, tags, publishedDate } }) => {
           return (
             <>
-              <div class="post" id={`entry-${slug}`}>
+              <div class="post" id={`entry-${id}`}>
                 <Headline as="h2" size="s" className="title">
                   {title}
                 </Headline>

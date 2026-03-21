@@ -1,5 +1,7 @@
 import type { APIRoute } from "astro";
-import { getCollection, getEntry } from "astro:content";
+import { getEntry } from "astro:content";
+
+export const prerender = false;
 
 export const GET: APIRoute = async ({ params }) => {
   const { path } = params;
@@ -20,12 +22,3 @@ export const GET: APIRoute = async ({ params }) => {
     },
   });
 };
-
-export async function getStaticPaths() {
-  const docs = await getCollection("docs");
-  const paths = docs.map((doc) => ({
-    params: { path: doc.id },
-  }));
-
-  return paths;
-}
