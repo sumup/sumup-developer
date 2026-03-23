@@ -115,10 +115,7 @@ paths:
                   currency: EUR
                   merchant_code: MH4H92C7
                   description: Purchase
-                  id: 2b79757a-de87-4a2e-90e4-b17c947c730d
-                  status: PAID
-                  date: '2020-02-29T10:56:56+00:00'
-                  merchant_name: John Doe LTD
+                  valid_until: '2020-02-29T10:56:56+00:00'
                   redirect_url: 'https://sumup.com'
               Checkout3DS:
                 description: Create a 3DS checkout
@@ -437,7 +434,6 @@ paths:
                     expiry_month: '01'
                     cvv: '123'
                     zip_code: '12345'
-                    last_4_digits: '3456'
               ProcessToken:
                 description: Process a checkout with a token
                 value:
@@ -4150,13 +4146,6 @@ components:
           maxLength: 5
           minLength: 5
           writeOnly: true
-        last_4_digits:
-          description: Last 4 digits of the payment card number.
-          type: string
-          example: '3456'
-          maxLength: 4
-          minLength: 4
-          readOnly: true
         type:
           $ref: '#/components/schemas/CardType'
       required:
@@ -4165,7 +4154,6 @@ components:
         - expiry_month
         - expiry_year
         - cvv
-        - last_4_digits
         - type
       title: Card
     CardResponse:
@@ -4328,39 +4316,12 @@ components:
           enum:
             - CHECKOUT
             - SETUP_RECURRING_PAYMENT
-        id:
-          description: Unique ID of the checkout resource.
-          type: string
-          readOnly: true
-        status:
-          description: Current status of the checkout.
-          type: string
-          enum:
-            - PENDING
-            - FAILED
-            - PAID
-          readOnly: true
-        date:
-          description: 'Date and time of the creation of the payment checkout. Response format expressed according to [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) code.'
-          type: string
-          format: date-time
-          example: '2020-02-29T10:56:56+00:00'
-          readOnly: true
         valid_until:
           description: 'Date and time of the checkout expiration before which the client application needs to send a processing request. If no value is present, the checkout does not have an expiration time.'
           type: string
           format: date-time
           example: '2020-02-29T10:56:56+00:00'
           nullable: true
-        transactions:
-          description: List of transactions related to the payment.
-          type: array
-          items:
-            allOf:
-              - $ref: '#/components/schemas/TransactionBase'
-              - $ref: '#/components/schemas/TransactionCheckoutInfo'
-          readOnly: true
-          uniqueItems: true
         redirect_url:
           description: '__Required__ for [APMs](https://developer.sumup.com/online-payments/apm/introduction) and __recommended__ for card payments. Refers to a url where the end user is redirected once the payment processing completes. If not specified, the [Payment Widget](https://developer.sumup.com/online-payments/tools/card-widget) renders [3DS challenge](https://developer.sumup.com/online-payments/features/3ds) within an iframe instead of performing a full-page redirect.'
           type: string
@@ -5284,6 +5245,7 @@ components:
         - apple pay
         - google pay
         - paypal
+        - twint
         - na
       title: Entry Mode
     CardType:
@@ -5461,7 +5423,9 @@ components:
               description: List of hyperlinks for accessing related resources.
               type: array
               items:
-                $ref: '#/components/schemas/Link'
+                oneOf:
+                  - $ref: '#/components/schemas/Link'
+                  - $ref: '#/components/schemas/LinkRefund'
             events:
               description: List of events related to the transaction.
               type: array
@@ -5540,6 +5504,21 @@ components:
       maximum: 90
       minimum: 0
       title: Latitude
+    LinkRefund:
+      description: Hypermedia link including allowed minimum and maximum refund amounts.
+      allOf:
+        - $ref: '#/components/schemas/Link'
+        - type: object
+          properties:
+            min_amount:
+              description: Minimum allowed amount for the refund.
+              type: number
+              format: float
+            max_amount:
+              description: Maximum allowed amount for the refund.
+              type: number
+              format: float
+      title: Link Refund
     Lon:
       description: Longitude value from the coordinates of the payment location (as received from the payment terminal reader).
       type: number
@@ -7408,15 +7387,6 @@ components:
       description: Details of the payment card that is saved as a payment instrument.
       type: object
       properties:
-        token:
-          description: Unique token identifying the saved payment card for a customer.
-          type: string
-          readOnly: true
-        active:
-          description: 'Indicates whether the payment instrument is active and can be used for payments. To deactivate it, send a `DELETE` request to the resource endpoint.'
-          type: boolean
-          default: true
-          readOnly: true
         type:
           description: Type of the payment instrument.
           type: string
@@ -7425,8 +7395,6 @@ components:
         card:
           $ref: '#/components/schemas/Card'
       required:
-        - token
-        - active
         - type
         - card
       title: Payment Instrument Card
@@ -7540,6 +7508,7 @@ components:
         - APPLE_PAY
         - GOOGLE_PAY
         - PAYPAL
+        - TWINT
         - NONE
         - CHIP
         - MANUAL_ENTRY
@@ -7598,10 +7567,7 @@ components:
                 currency: EUR
                 merchant_code: MH4H92C7
                 description: Purchase
-                id: 2b79757a-de87-4a2e-90e4-b17c947c730d
-                status: PAID
-                date: '2020-02-29T10:56:56+00:00'
-                merchant_name: John Doe LTD
+                valid_until: '2020-02-29T10:56:56+00:00'
                 redirect_url: 'https://sumup.com'
             Checkout3DS:
               description: Create a 3DS checkout
@@ -7647,7 +7613,6 @@ components:
                   expiry_month: '01'
                   cvv: '123'
                   zip_code: '12345'
-                  last_4_digits: '3456'
             ProcessToken:
               description: Process a checkout with a token
               value:
