@@ -31,8 +31,8 @@ The iOS SDK includes a [Sample App](https://github.com/sumup/sumup-ios-sdk/tree/
 * Registered for a merchant account via SumUp's [country websites](https://sumup.com/) or use a [sandbox merchant account](/terminal-payments/quickstart/#sandbox-merchant-account).
 * Received SumUp card terminal: Solo Lite, Solo, Air, 3G, PIN+.
 * Requested an Affiliate (Access) Key via [SumUp Dashboard](https://me.sumup.com/developers) for Developers.
-* Deployment Target iOS 14.0 or later.
-* Recommended to use on Xcode 14.3.1 and iOS SDK 16 or later.
+* Deployment Target iOS 16.0 or later.
+* Recommended to use on Xcode 26.2 and iOS SDK 16 or later.
 * iPhone or iPad.
 * If your device is managed by an organization, make sure app installation is permitted.
 
@@ -42,7 +42,6 @@ Use the shared [Quickstart sandbox setup](/terminal-payments/quickstart/#sandbox
 
 ### Compatibility
 
-* From version 4.4.0 of the SDK, iOS 14 or later is required
 * The SDK supports all device orientations on iPad and portrait on iPhone. Feel free to support other orientations on iPhone but please keep in mind that the SDK's UI will be presented in portrait on iPhone. See `UISupportedInterfaceOrientations` in the sample app's `Info.plist` or the "General" tab in Xcode's Target Editor.
 
 ### Match Affiliate Key to App Bundle ID
@@ -81,6 +80,21 @@ You can provide localization by providing a localized [InfoPlist.strings](https:
 
 For further information, see the iOS Developer Library on [location usage on iOS 8 and later](https://developer.apple.com/library/ios/documentation/General/Reference/InfoPlistKeyReference/Articles/CocoaKeys.html#//apple_ref/doc/uid/TP40009251-SW26), [Bluetooth peripheral usage](https://developer.apple.com/library/ios/documentation/General/Reference/InfoPlistKeyReference/Articles/CocoaKeys.html#//apple_ref/doc/uid/TP40009251-SW20).
 
+</Aside>
+
+### Location Services Requirement
+
+<Aside type="danger">
+**Mandatory Location Access**
+
+For security, compliance, and fraud prevention, the SumUp SDK **requires active location services** to process any transaction.
+
+If a user denies location permissions (e.g., selecting "Never" in the iOS settings), the SDK will be unable to validate the payment environment. This often results in a generic and misleading **"Server Error"** message on the UI or a `SMPSumUpSDKErrorCheckoutGeneral` (Error Code 50) in the callback.
+
+**Integration Best Practices:**
+* **Explicit Description:** Ensure your `NSLocationWhenInUseUsageDescription` clearly states that location is mandatory for processing card payments.
+* **Pre-flight Check:** We recommend checking the `CLLocationManager.authorizationStatus()` before calling the checkout method. If access is denied, guide the user to the system settings to enable it.
+* **User Guidance:** If you receive a General Error (50), verify the location permissions before retrying the transaction.
 </Aside>
 
 ## Fast-Track Implementation
@@ -125,10 +139,6 @@ Please follow the relevant instructions below to prepare your project:
 
 The latest Swift Package Manager version added support to [distribute binary frameworks as Swift Packages](https://developer.apple.com/documentation/swift_packages/distributing_binary_frameworks_as_swift_packages).
 
-If you're using Xcode 12.3 or later, this should work out of the box.
-
-Unfortunately, Xcode 12 releases before that had an issue, (https://bugs.swift.org/browse/SR-13343), that added the framework as a static library, not as an embedded dynamic framework.
-
 Follow this workaround to manage SumUp iOS SDK versions via Swift PM in those cases:
 
 <Steps>
@@ -156,7 +166,7 @@ Libraries, and Embedded Content" on the project General Settings tab.
 
 ```ruby
 target '<Your Target Name>' do
-    pod 'SumUpSDK', '~> 6.0'
+    pod 'SumUpSDK', '~> 7.0.0'
 end
 ```
 
@@ -164,7 +174,7 @@ end
 
 <TabItem label="Carthage">
 
-Distributing XCFrameworks with the latest Carthage version (0.35.0) is not yet available.
+Distributing XCFrameworks with the latest Carthage version (0.40.0) is not yet available.
 There is an open issue ([#2799](https://github.com/Carthage/Carthage/issues/2799)) to solve this.
 Once that issue is fixed, we expect Carthage to work again.
 
@@ -669,6 +679,13 @@ typedef NS_ENUM(NSInteger, SMPSumUpSDKError) {
     SMPSumUpSDKErrorInvalidAccessToken             = 54,
     /// The amount entered contains invalid number of decimals.
     SMPSumUpSDKErrorInvalidAmountDecimals          = 55,
+    /// The processAs property of CheckoutRequest is not valid
+    SMPSumUpSDKErrorInvalidProcessAs               = 56,
+    /// The numberOfInstallments property of CheckoutRequest is not valid
+    SMPSumUpSDKErrorInvalidNumberOfInstallments    = 57,
+    /// Reader wake error during Prepare for Checkout process.
+    /// Includes when a reader has never been paired.
+    SMPSumUpSDKErrorPrepareCheckoutReaderWakeFailed = 60,
     /// Tap to Pay on iPhone payment method is not available for the current merchant. This may be
     /// because the payment method is not available in their country.
     SMPSumUpSDKErrorTapToPayNotAvailable           = 100,
@@ -692,7 +709,6 @@ typedef NS_ENUM(NSInteger, SMPSumUpSDKError) {
 
 ```swift
 public enum SumUpSDKError : Int, @unchecked Sendable {
-
     /// General error
     case general = 0
 
@@ -725,6 +741,16 @@ public enum SumUpSDKError : Int, @unchecked Sendable {
 
     /// The amount entered contains invalid number of decimals.
     case invalidAmountDecimals = 55
+
+    /// The processAs property of CheckoutRequest is not valid
+    case invalidProcessAs = 56
+
+    /// The numberOfInstallments property of CheckoutRequest is not valid
+    case invalidNumberOfInstallments = 57
+
+    /// Reader wake error during Prepare for Checkout process.
+    /// Includes when a reader has never been paired.
+    case prepareCheckoutReaderWakeFailed = 60
 
     /// Tap to Pay on iPhone payment method is not available for the current merchant. This may be
     /// because the payment method is not available in their country.
