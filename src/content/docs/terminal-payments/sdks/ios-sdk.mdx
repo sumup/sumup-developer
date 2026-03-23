@@ -82,6 +82,21 @@ For further information, see the iOS Developer Library on [location usage on iOS
 
 </Aside>
 
+### Location Services Requirement
+
+<Aside type="danger">
+**Mandatory Location Access**
+
+For security, compliance, and fraud prevention, the SumUp SDK **requires active location services** to process any transaction. 
+
+If a user denies location permissions (e.g., selecting "Never" in the iOS settings), the SDK will be unable to validate the payment environment. This often results in a generic and misleading **"Server Error"** message on the UI or a `SMPSumUpSDKErrorCheckoutGeneral` (Error Code 50) in the callback.
+
+**Integration Best Practices:**
+* **Explicit Description:** Ensure your `NSLocationWhenInUseUsageDescription` clearly states that location is mandatory for processing card payments.
+* **Pre-flight Check:** We recommend checking the `CLLocationManager.authorizationStatus()` before calling the checkout method. If access is denied, guide the user to the system settings to enable it.
+* **User Guidance:** If you receive a General Error (50), verify the location permissions before retrying the transaction.
+</Aside>
+
 ## Fast-Track Implementation
 
 If you want to dive straight into implementation, carry out the following steps:
