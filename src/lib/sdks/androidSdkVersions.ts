@@ -1,4 +1,4 @@
-const ANDROID_READER_SDK_FALLBACK = "5.0.3";
+const ANDROID_READER_SDK_FALLBACK = "7.0.0";
 const ANDROID_TAP_TO_PAY_SDK_VERSION = "1.0.6";
 const githubToken = process.env.GITHUB_TOKEN;
 
