@@ -696,64 +696,64 @@ typedef NS_ENUM(NSInteger, SMPSumUpSDKError) {
 public enum SumUpSDKError : Int, @unchecked Sendable {
     /// General error
     case general = 0
-    
+
     /// The merchant's account is not activated
     case activationNeeded = 1
-    
+
     /// General error with the merchant's account
     case accountGeneral = 20
-    
+
     /// The merchant is not logged in to their account
     case accountNotLoggedIn = 21
-    
+
     /// A merchant is logged in already. Call logout before logging in again.
     case accountIsLoggedIn = 22
 
     /// General checkout error
     case checkoutGeneral = 50
-    
+
     /// Another checkout process is currently in progress.
     case checkoutInProgress = 51
-    
+
     /// The currency code specified in the checkout request does not match that of the current merchant.
     case checkoutCurrencyCodeMismatch = 52
-    
+
     /// The foreign transaction ID specified in the checkout request has already been used.
     case duplicateForeignID = 53
-    
+
     /// The access token is invalid. Login to get a valid access token.
     case invalidAccessToken = 54
-    
+
     /// The amount entered contains invalid number of decimals.
     case invalidAmountDecimals = 55
-    
+
     /// The processAs property of CheckoutRequest is not valid
     case invalidProcessAs = 56
-    
+
     /// The numberOfInstallments property of CheckoutRequest is not valid
     case invalidNumberOfInstallments = 57
-    
+
     /// Reader wake error during Prepare for Checkout process.
     /// Includes when a reader has never been paired.
     case prepareCheckoutReaderWakeFailed = 60
-    
+
     /// Tap to Pay on iPhone payment method is not available for the current merchant. This may be
     /// because the payment method is not available in their country.
     case tapToPayNotAvailable = 100
-    
+
     /// Tap to Pay on iPhone: activation is required. Call `presentTapToPayActivationFromViewController:animated:completionBlock:`.
     case tapToPayActivationNeeded = 101
-    
+
     /// Tap to Pay on iPhone: an unspecified error occurred
     case tapToPayInternalError = 102
-    
+
     /// Tap to Pay on iPhone requires an iPhone XS or later and does not work on iPads.
     case tapToPayMinHardwareNotMet = 103
-    
+
     /// Tap to Pay on iPhone requires a newer version of iOS; please check the documentation for the
     /// minimum supported version.
     case tapToPayiOSVersionTooOld = 104
-    
+
     /// Tap to Pay on iPhone has some other (unspecified) requirement(s) that are not met.
     case tapToPayRequirementsNotMet = 105
 }
