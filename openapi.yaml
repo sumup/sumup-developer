@@ -4628,6 +4628,14 @@ components:
         type:
           description: Specifies the media type of the related resource.
           type: string
+        min_amount:
+          description: Minimum allowed amount for the refund.
+          type: number
+          format: float
+        max_amount:
+          description: Maximum allowed amount for the refund.
+          type: number
+          format: float
       title: Link
     TransactionsHistoryLink:
       description: Hypermedia link used for transaction history pagination.
@@ -5423,9 +5431,7 @@ components:
               description: List of hyperlinks for accessing related resources.
               type: array
               items:
-                oneOf:
-                  - $ref: '#/components/schemas/Link'
-                  - $ref: '#/components/schemas/LinkRefund'
+                $ref: '#/components/schemas/Link'
             events:
               description: List of events related to the transaction.
               type: array
@@ -5504,21 +5510,6 @@ components:
       maximum: 90
       minimum: 0
       title: Latitude
-    LinkRefund:
-      description: Hypermedia link including allowed minimum and maximum refund amounts.
-      allOf:
-        - $ref: '#/components/schemas/Link'
-        - type: object
-          properties:
-            min_amount:
-              description: Minimum allowed amount for the refund.
-              type: number
-              format: float
-            max_amount:
-              description: Maximum allowed amount for the refund.
-              type: number
-              format: float
-      title: Link Refund
     Lon:
       description: Longitude value from the coordinates of the payment location (as received from the payment terminal reader).
       type: number
