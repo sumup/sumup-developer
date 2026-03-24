@@ -7,7 +7,6 @@ sidebar:
 
 import { Aside } from '@astrojs/starlight/components';
 import Image from '@components/content/Image.astro';
-import AndroidReaderSdkInstallSnippet from '@components/content/AndroidReaderSdkInstallSnippet.astro';
 
 This documentation provides a step-by-step guide for SumUp's native Android SDK, which enables you to integrate SumUp's proprietary card terminals and payment platform to accept credit and debit card payments (including VISA, MasterCard, American Express, and more). The SDK communicates with card terminals via Bluetooth (BLE 4.0).
 
@@ -74,7 +73,9 @@ You can use the sample app provided in the repository as a reference.
 
 2. Add the SDK dependency to your app module build file:
 
-    <AndroidReaderSdkInstallSnippet />
+    ```groovy
+    implementation 'com.sumup:merchant-sdk:7.0.0'
+    ```
 
 3. Sync your project.
 

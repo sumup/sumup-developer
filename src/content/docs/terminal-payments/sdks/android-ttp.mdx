@@ -6,7 +6,6 @@ sidebar:
 ---
 
 import { Aside, Steps } from "@astrojs/starlight/components";
-import AndroidTapToPayInstallSnippets from "@components/content/AndroidTapToPayInstallSnippets.astro";
 import Image from '@components/content/Image.astro';
 
 The Android Tap-to-Pay SDK enables your mobile app to accept card-present contactless payments using only a smartphone, without any additional hardware. This guide explains how to integrate this functionality into your Android app.
@@ -66,7 +65,9 @@ You can use the sample app provided in the GitHub repository as a reference.
 
 2. Add the dependency to a module `build.gradle`:
 
-   <AndroidTapToPayInstallSnippets />
+   ```kotlin
+   implementation("com.sumup.tap-to-pay:utopia-sdk:1.0.6")
+   ```
 
 ### Authentication
 

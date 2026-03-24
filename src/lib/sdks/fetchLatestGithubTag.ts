@@ -1,10 +1,6 @@
-const ANDROID_READER_SDK_FALLBACK = "7.0.0";
-const ANDROID_TAP_TO_PAY_SDK_VERSION = "1.0.6";
 const githubToken = process.env.GITHUB_TOKEN;
 
-let androidReaderSdkVersionPromise: Promise<string> | undefined;
-
-const fetchLatestGithubTag = async (
+export const fetchLatestGithubTag = async (
   owner: string,
   repo: string,
   fallback: string,
@@ -37,18 +33,3 @@ const fetchLatestGithubTag = async (
     return fallback;
   }
 };
-
-export const getAndroidReaderSdkVersion = async (): Promise<string> => {
-  if (!androidReaderSdkVersionPromise) {
-    androidReaderSdkVersionPromise = fetchLatestGithubTag(
-      "sumup",
-      "sumup-android-sdk",
-      ANDROID_READER_SDK_FALLBACK,
-    );
-  }
-
-  return androidReaderSdkVersionPromise;
-};
-
-export const getAndroidTapToPaySdkVersion = async (): Promise<string> =>
-  ANDROID_TAP_TO_PAY_SDK_VERSION;
