@@ -3615,7 +3615,7 @@ paths:
       description: |
         Creates a Checkout for a Reader.
 
-        This process is asynchronous and the actual transaction may take some time to be stared on the device.
+        This process is asynchronous and the actual transaction may take some time to be started on the device.
 
 
         There are some caveats when using this endpoint:
@@ -3660,6 +3660,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/CreateReaderCheckoutError'
             application/problem+json:
+              example:
+                detail: Bad Request
+                status: 400
+                title: Bad Request
+                type: 'https://developer.sumup.com/problem/bad-request'
               schema:
                 $ref: '#/components/schemas/Problem'
         '401':
@@ -3669,6 +3674,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/CreateReaderCheckoutError'
             application/problem+json:
+              example:
+                detail: Unauthorized
+                status: 401
+                title: Unauthorized
+                type: 'https://developer.sumup.com/problem/unauthorized'
               schema:
                 $ref: '#/components/schemas/Problem'
         '404':
@@ -3678,6 +3688,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/NotFound'
             application/problem+json:
+              example:
+                detail: The requested resource doesn't exist or does not belong to you.
+                status: 404
+                title: Requested resource couldn't be found.
+                type: 'https://developer.sumup.com/problem/not-found'
               schema:
                 $ref: '#/components/schemas/Problem'
         '422':
@@ -3687,6 +3702,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/CreateReaderCheckoutUnprocessableEntity'
             application/problem+json:
+              example:
+                detail: Validation failed
+                status: 422
+                title: Unprocessable Entity
+                type: 'https://developer.sumup.com/problem/validation-error'
               schema:
                 $ref: '#/components/schemas/Problem'
       callbacks:
@@ -3770,6 +3790,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/BadRequest'
             application/problem+json:
+              example:
+                detail: Bad Request
+                status: 400
+                title: Bad Request
+                type: 'https://developer.sumup.com/problem/bad-request'
               schema:
                 $ref: '#/components/schemas/Problem'
         '401':
@@ -3779,6 +3804,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/Unauthorized'
             application/problem+json:
+              example:
+                detail: Unauthorized
+                status: 401
+                title: Unauthorized
+                type: 'https://developer.sumup.com/problem/unauthorized'
               schema:
                 $ref: '#/components/schemas/Problem'
         '404':
@@ -3788,6 +3818,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/NotFound'
             application/problem+json:
+              example:
+                detail: The requested resource doesn't exist or does not belong to you.
+                status: 404
+                title: Requested resource couldn't be found.
+                type: 'https://developer.sumup.com/problem/not-found'
               schema:
                 $ref: '#/components/schemas/Problem'
       callbacks: {}
@@ -3854,6 +3889,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/CreateReaderTerminateError'
             application/problem+json:
+              example:
+                detail: Bad Request
+                status: 400
+                title: Bad Request
+                type: 'https://developer.sumup.com/problem/bad-request'
               schema:
                 $ref: '#/components/schemas/Problem'
         '401':
@@ -3863,6 +3903,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/CreateReaderTerminateError'
             application/problem+json:
+              example:
+                detail: Unauthorized
+                status: 401
+                title: Unauthorized
+                type: 'https://developer.sumup.com/problem/unauthorized'
               schema:
                 $ref: '#/components/schemas/Problem'
         '404':
@@ -3872,6 +3917,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/NotFound'
             application/problem+json:
+              example:
+                detail: The requested resource doesn't exist or does not belong to you.
+                status: 404
+                title: Requested resource couldn't be found.
+                type: 'https://developer.sumup.com/problem/not-found'
               schema:
                 $ref: '#/components/schemas/Problem'
         '422':
@@ -3881,6 +3931,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/CreateReaderTerminateUnprocessableEntity'
             application/problem+json:
+              example:
+                detail: The device is offline.
+                status: 422
+                title: Reader Offline
+                type: 'https://developer.sumup.com/problem/reader-offline'
               schema:
                 $ref: '#/components/schemas/Problem'
       callbacks: {}
