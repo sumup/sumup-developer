@@ -14,6 +14,7 @@ The Android Tap-to-Pay SDK enables your mobile app to accept card-present contac
 - The SDK is not debuggable. Additionally, **Attestation & Monitoring** is enabled. If a device fails to meet our security policies (e.g., debug mode enabled or rooted device), payment operations will be disabled.
 - For testing purposes, use dedicated developer credentials to prevent actual card charges. The more information about testing can be found in the [Testing the SDK](#testing-the-sdk) section.
 - For the latest updates, consult the [Android Tap-to-Pay SDK Changelog](/changelog/android-tap-to-pay-sdk).
+- See our [Android Tap-to-Pay SDK sample app](https://github.com/sumup/android-tap-to-pay) to get started. As noted below, credentials to access and use the SDK is restricted pending review and must be requested via our Integration team.
 
 ## Prerequisites
 
@@ -24,7 +25,6 @@ The Android Tap-to-Pay SDK enables your mobile app to accept card-present contac
 - Java 17 or later
 - maven repository credentials (to access the SDK repository, request by emailing integration@sumup.com).
 - A Secret API key, if not using OAuth2 authentication. You can generate a Secret API key in the [SumUp Dashboard](https://developer.sumup.com/online-payments/introduction/authorization#api-keys).
-- Access to the Android Tap-to-Pay SDK GitHub repository (request by emailing integration@sumup.com).
 
 ### Hardware Requirements
 
@@ -33,7 +33,7 @@ The Android Tap-to-Pay SDK enables your mobile app to accept card-present contac
 
 ## Integration
 
-You can use the sample app provided in the GitHub repository as a reference.
+You can use the sample app provided in the [GitHub repository](https://github.com/sumup/android-tap-to-pay) as a reference.
 
 <Aside type="note">
   If your app shuts down immediately upon start, try disconnecting your phone
