@@ -21,6 +21,7 @@ Install with the plugin marketplace:
 
 ```bash
 /plugin marketplace add sumup/sumup-skills
+/plugin install sumup@sumup
 ```
 
 ### Cursor
@@ -31,6 +32,14 @@ Install from the Cursor Marketplace, or add it manually in:
 
 ```txt
 sumup/sumup-skills
+```
+
+### Gemini CLI
+
+Install the extension from GitHub:
+
+```bash
+gemini extensions install https://github.com/sumup/sumup-skills --ref=main
 ```
 
 ### npx skills
@@ -49,6 +58,7 @@ Clone the repository and copy the skill folders into your agent's skill director
 | ------------ | ---------------------------- |
 | Claude Code  | `~/.claude/skills/`          |
 | Cursor       | `~/.cursor/skills/`          |
+| Gemini CLI   | `~/.gemini/extensions/`      |
 | OpenCode     | `~/.config/opencode/skills/` |
 | OpenAI Codex | `~/.codex/skills/`           |
 | Pi           | `~/.pi/agent/skills/`        |
