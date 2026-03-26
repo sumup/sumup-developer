@@ -24,7 +24,7 @@ The Android Tap-to-Pay SDK enables your mobile app to accept card-present contac
 - Android Gradle Plugin: 7.3.0 or later
 - Java 17 or later
 - maven repository credentials (to access the SDK repository, request by emailing integration@sumup.com).
-- A Secret API key, if not using OAuth 2.0 authentication. You can generate a Secret API key in the [SumUp Dashboard](https://developer.sumup.com/online-payments/introduction/authorization#api-keys).
+- A Secret API key, if not using OAuth 2.0 authentication. You can generate a Secret API key on the [API keys page](https://me.sumup.com/settings/api-keys) in the SumUp Dashboard.
 
 ### Hardware Requirements
 
@@ -87,7 +87,7 @@ There are several ways for a consumer app to provide the access token to the SDK
    The consumer app can implement the OAuth 2.0 flow to get the access token and provide it to the SDK. The SDK provides the `AuthTokenProvider` interface that should be implemented by the consumer app. The implementation of the `getAccessToken` method should return the access token. This way is preferable and recommended because it provides a more secure way to authenticate the user.
 
 2. Using API Key:
-   You can use an API Key as an auth token. Generate the key in the [SumUp Dashboard](https://developer.sumup.com/tools/authorization/#create-api-key) and provide it to the SDK through `AuthTokenProvider.getAccessToken()` method.
+   You can use an API key as an auth token. Generate the key on the [API keys page](https://me.sumup.com/settings/api-keys) in the SumUp Dashboard and provide it to the SDK through `AuthTokenProvider.getAccessToken()` method.
 
 > ⚠️ **Important:**
 > The API keys should be stored securely and should not be hardcoded in the app. Instead, they should be stored in the secure storage and provided to the SDK when needed. Do not share your secret API keys in publicly accessible places such as GitHub repositories, client-side code, etc.
