@@ -22,6 +22,12 @@ SumUp supports two OAuth 2.0 flows:
 - The [authorization code flow](#authorization-code-flow) when an end user grants your application access.
 - The [client credentials flow](#client-credentials-flow) when your application authenticates as itself.
 
+<Aside>
+
+SumUp strongly recommends that you rely on [reputable existing libraries](https://oauth.net/code/) when implementing OAuth 2.0 authorization.
+
+</Aside>
+
 ## Authorization Flows
 
 Choose the flow that matches how your application obtains access while keeping scope verification requirements in mind.
@@ -34,8 +40,6 @@ SumUp manually verifies requests for the following scopes:
 - `payment_instruments` – required to store customer data and tokenize cards.
 
 [Contact us](/contact) to request those scopes for your application.
-
-Use a reputable OAuth 2.0 client implementation instead of handling the protocol manually.
 
 </Aside>
 
@@ -94,13 +98,13 @@ Scopes restrict what your application may do on behalf of the merchant. Request 
 
 | Scope name                       | Default | Access Level | Description                                                                               |
 | -------------------------------- | ------- | ------------ | ----------------------------------------------------------------------------------------- |
-| transactions.history             | yes     | merchant     | View transactions and transaction history for the merchant user.                          |
-| user.app-settings                | yes     | merchant     | View and modify SumUp mobile app settings for the merchant user.                          |
-| user.profile_readonly            | yes     | merchant     | View profile details of the merchant user.                                                |
-| user.profile                     | no      | merchant     | Modify profile details of the merchant user.                                              |
-| user.subaccounts                 | no      | merchant     | View and modify sub-account profiles for the merchant user.                               |
-| user.payout-settings             | no      | merchant     | View and modify payout settings for the merchant user.                                    |
-| products                         | no      | merchant     | View and modify products, shelves, prices, and VAT rates in the merchant's product store. |
+| `transactions.history`           | yes     | merchant     | View transactions and transaction history for the merchant user.                          |
+| `user.app-settings`              | yes     | merchant     | View and modify SumUp mobile app settings for the merchant user.                          |
+| `user.profile_readonly`          | yes     | merchant     | View profile details of the merchant user.                                                |
+| `user.profile`                   | no      | merchant     | Modify profile details of the merchant user.                                              |
+| `user.subaccounts`               | no      | merchant     | View and modify sub-account profiles for the merchant user.                               |
+| `user.payout-settings`           | no      | merchant     | View and modify payout settings for the merchant user.                                    |
+| `products`                       | no      | merchant     | View and modify products, shelves, prices, and VAT rates in the merchant's product store. |
 | `restricted` payments            | no      | feature      | Create and process payment checkouts. Requires manual verification by SumUp.              |
 | `restricted` payment_instruments | no      | feature      | Save customers and tokenize their payment cards. Requires manual verification by SumUp.   |
 
@@ -179,10 +183,6 @@ You can register as many client credentials as you need. Repeat this step to cre
 After creation, credentials appear in the **Client credentials** section of your OAuth application (see screenshot).
 
 <Image alt="OAuth client credentials section" src="/img/guides/client-credentials-list.png" width="80%" />
-
-<Aside type="note">
-For security reasons, the client secrets are not displayed.
-</Aside>
 
 Use the download button to receive a JSON file with the full credential details, for example:
 
