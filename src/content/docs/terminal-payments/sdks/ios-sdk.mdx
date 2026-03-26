@@ -30,7 +30,7 @@ The iOS SDK includes a [Sample App](https://github.com/sumup/sumup-ios-sdk/tree/
 
 * Registered for a merchant account via SumUp's [country websites](https://sumup.com/) or use a [sandbox merchant account](/terminal-payments/quickstart/#sandbox-merchant-account).
 * Received SumUp card terminal: Solo Lite, Solo, Air, 3G, PIN+.
-* Requested an Affiliate (Access) Key via [SumUp Dashboard](https://me.sumup.com/developers) for Developers.
+* Requested an Affiliate (Access) Key in the [Developer Settings](https://me.sumup.com/settings/developer) of the SumUp Dashboard.
 * Deployment Target iOS 16.0 or later.
 * Recommended to use on Xcode 26.2 and iOS SDK 16 or later.
 * iPhone or iPad.
@@ -48,7 +48,7 @@ Use the shared [Quickstart sandbox setup](/terminal-payments/quickstart/#sandbox
 
 iOS SDK uses the Affiliate Key from your merchant account to authenticate your app.
 
-1. Log in to SumUp with your merchant account and open the [Affiliate Key page](https://developer.sumup.com/affiliate-keys).
+1. Log in to SumUp with your merchant account and open the [Developer Settings](https://me.sumup.com/settings/developer) page.
 2. Create an Affiliate Key if you don't have one yet.
 3. Add your app's _Bundle ID_ in the SumUp portal's _Application ID_ field. This way, your app will be able to call SumUp APIs, which require the Affiliate Key.
 
@@ -285,7 +285,7 @@ SumUp iOS SDK supports either the OAuth 2.0 Authorization Code Flow login with A
 <TabItem label="Login Access Token (OAuth 2.0)">
 ```objc
 /**
- *  Logs in a merchant with an access token acquired via https://developer.sumup.com/docs/authorization/.
+ *  Logs in a merchant with an access token acquired via /tools/authorization/oauth/.
  *  You must implement the "Authorization code flow", the "Client credentials flow" is not supported.
  *  Make sure that no user is logged in already when calling this method.
  *
