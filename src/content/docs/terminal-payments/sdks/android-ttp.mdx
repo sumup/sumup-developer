@@ -6,7 +6,7 @@ sidebar:
 ---
 
 import { Aside, Steps } from "@astrojs/starlight/components";
-import Image from '@components/content/Image.astro';
+import Image from "@components/content/Image.astro";
 
 The Android Tap-to-Pay SDK enables your mobile app to accept card-present contactless payments using only a smartphone, without any additional hardware. This guide explains how to integrate this functionality into your Android app.
 
@@ -24,7 +24,7 @@ The Android Tap-to-Pay SDK enables your mobile app to accept card-present contac
 - Android Gradle Plugin: 7.3.0 or later
 - Java 17 or later
 - maven repository credentials (to access the SDK repository, request by emailing integration@sumup.com).
-- A Secret API key, if not using OAuth2 authentication. You can generate a Secret API key in the [SumUp Dashboard](https://developer.sumup.com/online-payments/introduction/authorization#api-keys).
+- A Secret API key, if not using OAuth 2.0 authentication. You can generate a Secret API key in the [SumUp Dashboard](https://developer.sumup.com/online-payments/introduction/authorization#api-keys).
 
 ### Hardware Requirements
 
@@ -318,11 +318,19 @@ With SDK v1.1.0 and later, you can use sandbox account for testing purposes.
 
 2. Create a Sandbox Account:
 
-   <Image alt="Sandbox account" src="/img/guides/utopia-sandboxes.png" width="70%" />
+   <Image
+     alt="Sandbox account"
+     src="/img/guides/utopia-sandboxes.png"
+     width="70%"
+   />
 
-3. In your new sandbox merchant account, create an [API key](https://me.sumup.com/settings/api-keys) or configure [OAuth2](https://me.sumup.com/settings/oauth2-applications) for authentication.
+3. In your new sandbox merchant account, create an [API key](https://me.sumup.com/settings/api-keys) or configure [OAuth 2.0](https://me.sumup.com/settings/oauth2-applications) for authentication.
 
-   <Image alt="Authentication approaches" src="/img/guides/utopia-auth-keys.png" width="70%" />
+   <Image
+     alt="Authentication approaches"
+     src="/img/guides/utopia-auth-keys.png"
+     width="70%"
+   />
 
 </Steps>
 
