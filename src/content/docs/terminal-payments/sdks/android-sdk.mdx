@@ -5,8 +5,8 @@ sidebar:
   order: 11
 ---
 
-import { Aside } from '@astrojs/starlight/components';
-import Image from '@components/content/Image.astro';
+import { Aside } from "@astrojs/starlight/components";
+import Image from "@components/content/Image.astro";
 
 This documentation provides a step-by-step guide for SumUp's native Android SDK, which enables you to integrate SumUp's proprietary card terminals and payment platform to accept credit and debit card payments (including VISA, MasterCard, American Express, and more). The SDK communicates with card terminals via Bluetooth (BLE 4.0).
 
@@ -15,7 +15,7 @@ During checkout, the SDK guides users through each payment step with appropriate
 Sensitive card data is never passed to or stored on the merchant's phone. All data is encrypted by the card terminal, which complies with top industry standards (PCI, EMV I & II, Visa, MasterCard, Amex).
 
 <Aside>
-SumUp also provides the [Android Tap to Pay SDK](/terminal-payments/sdks/android-ttp) as a separate package for handling tap-to-pay payments via smartphone.
+  SumUp also provides the [Android Tap to Pay SDK](/terminal-payments/sdks/android-ttp) as a separate package for handling tap-to-pay payments via smartphone.
 </Aside>
 
 ## At a Glance
@@ -63,19 +63,19 @@ You can use the sample app provided in the repository as a reference.
 
 1. Add the SumUp maven repository to your Gradle project dependencies build file:
 
-    ```groovy
-    allprojects {
-      repositories {
-          maven { url 'https://maven.sumup.com/releases' }
-      }
-    }
-    ```
+   ```groovy
+   allprojects {
+     repositories {
+         maven { url 'https://maven.sumup.com/releases' }
+     }
+   }
+   ```
 
 2. Add the SDK dependency to your app module build file:
 
-    ```groovy
-    implementation 'com.sumup:merchant-sdk:7.0.0'
-    ```
+   ```groovy
+   implementation 'com.sumup:merchant-sdk:7.0.0'
+   ```
 
 3. Sync your project.
 
@@ -106,7 +106,7 @@ SumUpAPI.openLoginActivity(MainActivity.this, sumupLogin, 1);
 <Image alt="Login screen" src="/img/guides/android_sdk_login.png" width="40%" />
 
 <Aside>
-It is also possible to login an account with a token, without the user entering their SumUp login credentials in the SDK. Please refer to section [Transparent Authentication](#transparent-authentication)
+  It is also possible to login an account with a token, without the user entering their SumUp login credentials in the SDK. Please refer to section [Transparent Authentication](#transparent-authentication)
 </Aside>
 
 To log Merchant out, call:
@@ -151,7 +151,11 @@ Once logged in, you can start using the Android SDK to accept card payments. If 
     SumUpAPI.checkout(MainActivity.this, payment, 2);
 ```
 
-<Image alt="Payment screen" src="/img/guides/android_sdk_payment.png" width="40%" />
+<Image
+  alt="Payment screen"
+  src="/img/guides/android_sdk_payment.png"
+  width="40%"
+/>
 
 ### Handling Payment Result
 
@@ -188,23 +192,27 @@ The response flags are provided within the Bundle that is passed back to the cal
 
 ```java
  	int resultCode = getIntent().getExtras().getInt(SumUpAPI.Response.RESULT_CODE);
- ```
+```
 
 ### Card Reader Page
 
 When a merchant is logged in, you can open this activity to access all the settings and options related to the card reader.
 
-   - Connect to new readers.
-   - View the reader attributes when previously connected i.e. Battery percentage, Serial number, Last three digits of serial number, Software version.
-   - Connect to the last saved reader if it is inactive.
-   - Update firmware of the reader if available.
-   - Visual illustration of the saved reader with its current connectivity status and name.
+- Connect to new readers.
+- View the reader attributes when previously connected i.e. Battery percentage, Serial number, Last three digits of serial number, Software version.
+- Connect to the last saved reader if it is inactive.
+- Update firmware of the reader if available.
+- Visual illustration of the saved reader with its current connectivity status and name.
 
 ```java
  	SumUpAPI.openCardReaderPage(MainActivity.this, 4);
- ```
+```
 
- <Image alt="Card Reader Page" src="/img/guides/android_sdk_reader_view.png" width="40%" />
+<Image
+  alt="Card Reader Page"
+  src="/img/guides/android_sdk_reader_view.png"
+  width="40%"
+/>
 
 ### Preparing the SumUp Card Terminal for Checkout
 
@@ -233,10 +241,9 @@ This allows the customer to add a tip directly on the card reader, rather than p
 A tip amount can be prompted directly in the card reader by using `tipOnCardReader` parameter, if the card reader supports tipping. See the [tipOnCardReader payment example](https://github.com/sumup/sumup-android-sdk#4-make-a-payment) for this field.
 
 <Aside>
-
 Not all card readers support this feature. To find out if the feature is supported for the last-saved card reader, you should always check `SumUpApi.isTipOnCardReaderAvailable()`. You must handle this case yourself in order to avoid no tip from being prompted.
-Please also note that if both `tip` and `tipOnCardReader` are called then only `tipOnCardReader` amount will be considered during checkout if available.
 
+Please also note that if both `tip` and `tipOnCardReader` are called then only `tipOnCardReader` amount will be considered during checkout if available.
 </Aside>
 
 #### Timeout on Success Screen
@@ -281,7 +288,7 @@ To skip the failed screen shown at the end of a failed transaction, the `skipFai
 
 ### Transparent Authentication
 
-To authenticate an account without the user typing in their SumUp credentials each time, you can generate an access token using OAuth2 Authorization Code Flow and use it to transparently log in to the Android SDK.
+To authenticate an account without the user typing in their SumUp credentials each time, you can generate an access token using the OAuth 2.0 authorization code flow and use it to transparently log in to the Android SDK.
 
 ```java
 SumUpLogin sumupLogin = SumUpLogin.builder(mAffiliateKey).accessToken("MY_ACCESS_TOKEN").build();
@@ -323,7 +330,7 @@ The reader type returned by `getSavedCardReaderDetails()` will be one of the fol
 - `UNKNOWN` — returned only if the SDK encounters an issue and cannot identify the reader type.
 
 <Aside>
-The `lastKnownBatteryPercentage` is **not** real-time. It reflects the battery level recorded during the last transaction. As a result, this value may not match the current battery level exactly if the reader has been idle or charged since the last payment.
+  The `lastKnownBatteryPercentage` is **not** real-time. It reflects the battery level recorded during the last transaction. As a result, this value may not match the current battery level exactly if the reader has been idle or charged since the last payment.
 </Aside>
 
 ### Enable ProGuard
@@ -351,7 +358,7 @@ implementation "com.google.android.gms:play-services-location:19.0.1"
 If the GLS dependency is not added to the project or Google Play Services are not installed on the mobile device, the Android SDK will determine the location with the default Location Service provided by Android.
 
 <Aside>
-Using GLS version 19.0.1 is recommended.
+  Using GLS version 19.0.1 is recommended.
 </Aside>
 
 ## Sample App
@@ -371,9 +378,9 @@ The following functions are handled by the [SumUp APIs](/api/):
 ## Community
 
 - **Questions?** Get in contact with our integration team by sending an email to
-<a href="mailto:integration@sumup.com">integration@sumup.com</a>.
+  <a href="mailto:integration@sumup.com">integration@sumup.com</a>.
 - **Found a bug?** [Open an issue](https://github.com/sumup/sumup-android-sdk/issues/new).
-Please provide as much information as possible.
+  Please provide as much information as possible.
 
 ## Changelog
 
