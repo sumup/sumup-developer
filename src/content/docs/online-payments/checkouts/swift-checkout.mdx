@@ -5,7 +5,7 @@ sidebar:
   order: 12
 ---
 
-import { Aside } from '@astrojs/starlight/components';
+import { Aside } from "@astrojs/starlight/components";
 
 The Swift Checkout SDK enables you to offer a complete and fast checkout experience to your end users, allowing you to collect payment, address, and contact information with a click of a button. Swift Checkout SDK allows for Google Pay and Apple Pay setup.
 
@@ -17,14 +17,14 @@ The Swift Checkout SDK enables you to offer a complete and fast checkout experie
 Currently available payment methods through Swift Checkout SDK:
 
 <Aside type="caution">
-For pages that have a strict Content Security Policy (CSP) visit the [Handling CSP](/online-payments/checkouts/card-widget/#handling-strict-content-security-policies) instructions.
+  For pages that have a strict Content Security Policy (CSP) visit the [Handling CSP](/online-payments/checkouts/card-widget/#handling-strict-content-security-policies) instructions.
 </Aside>
 
 - [Apple Pay](#apple-pay-setup)
 - [Google Pay](#google-pay-setup)
 
 <Aside type="note">
-Please note, that Swift Checkout SDK is in Alpha version, expect changes to be communicated in the future. For any feedbacks or questions, you can reach out to us through our [contact form](/contact).
+  Please note that the Swift Checkout SDK is currently in alpha, and changes may be introduced in future updates. If you have feedback or questions, reach out through our [contact form](/contact).
 </Aside>
 
 ## SumUp Swift Checkout SDK Setup
@@ -44,12 +44,12 @@ Or with JavaScript:
 ```javascript
 function injectScript() {
   return new Promise((resolve) => {
-    var script = document.createElement('script');
-    script.type = 'text/javascript';
+    var script = document.createElement("script");
+    script.type = "text/javascript";
     script.onload = function () {
       resolve(window.SumUp);
     };
-    script.src = 'https://js.sumup.com/swift-checkout/v1/sdk.js';
+    script.src = "https://js.sumup.com/swift-checkout/v1/sdk.js";
     document.body.appendChild(script);
   });
 }
@@ -64,7 +64,9 @@ To obtain a public API key navigate to your [Developer Settings Portal](https://
 ## SumUp Swift Checkout Client
 
 ```javascript
-const swiftCheckoutClient = new window.SumUp.SwiftCheckout('sup_pk_0x98lsJhJAs...u5kvg');
+const swiftCheckoutClient = new window.SumUp.SwiftCheckout(
+  "sup_pk_0x98lsJhJAs...u5kvg",
+);
 ```
 
 The client contains a set of objects to render a payment element UI, request payment authorization and process a payment using SumUp’s API.
@@ -76,8 +78,7 @@ The payment request object requests payment authorizations made with various pay
 Payment request object arguments consist of:
 
 - `countryCode`: Represents the country or region of the merchant’s principle place of business.
-- `total`: Represents what is about to be paid by the user, E.g. a summary of an order. It requires a `label` and an `amount`. The `amount` value must be provided as a string in major unit and should use a period (`.`) as a decimal separator.\
-More specifically, the `amount` value should match the following regex: `^[0-9]+(\.[0-9][0-9])?$`
+- `total`: Represents what is about to be paid by the user, E.g. a summary of an order. It requires a `label` and an `amount`. The `amount` value must be provided as a string in major unit and should use a period (`.`) as a decimal separator. More specifically, the `amount` value should match the following regex: `^[0-9]+(\.[0-9][0-9])?$`
 
 Optional:
 
@@ -85,11 +86,11 @@ Optional:
 
 ```js
 const paymentRequest = swiftCheckoutClient.paymentRequest({
-  countryCode: 'DE',
-  locale: 'de-DE',
+  countryCode: "DE",
+  locale: "de-DE",
   total: {
-    label: 'My goods',
-    amount: { currency: 'EUR', value: '65.00' },
+    label: "My goods",
+    amount: { currency: "EUR", value: "65.00" },
   },
 });
 ```
@@ -100,10 +101,10 @@ const paymentRequest = swiftCheckoutClient.paymentRequest({
 const paymentRequest = swiftCheckoutClient.paymentRequest({
   shippingOptions: [
     {
-      id: 'post',
-      label: 'postal service',
-      amount: { currency: 'EUR', value: '0.00' },
-      description: 'free post',
+      id: "post",
+      label: "postal service",
+      amount: { currency: "EUR", value: "0.00" },
+      description: "free post",
     },
   ],
 });
@@ -135,14 +136,14 @@ A `PaymentRequestCancelledError` will be thrown when the user rejects or cancels
 
 ```js
 paymentRequest
-  .show({ paymentMethod: 'apple_pay' })
+  .show({ paymentMethod: "apple_pay" })
   .then(processCheckoutAttempt)
   .then(handleResponse)
   .catch((error) => {
     if (
       error instanceof SumUp.SwiftCheckout.Errors.PaymentRequestCancelledError
     ) {
-      console.log('Cancelled by the user');
+      console.log("Cancelled by the user");
     } else {
       throw error;
     }
@@ -157,17 +158,17 @@ Terminates a payment request before it is processed. Once a payment request has 
 if (someCustomCheck()) {
   try {
     await paymentRequest.abort(); // will throw an error.
-    console.log('Payment request aborted due to my custom reason.')
-  } catch(e) {
+    console.log("Payment request aborted due to my custom reason.");
+  } catch (e) {
     console.error(
-      'Unable to abort, because the user is currently in the process of paying.'
+      "Unable to abort, because the user is currently in the process of paying.",
     );
   }
 }
 ```
 
 <Aside type="note">
-The `abort` method should only be used if the payment request has not yet been processed. Attempting to cancel a payment request after it has been processed may result in unexpected behavior.
+  The `abort` method should only be used if the payment request has not yet been processed. Attempting to cancel a payment request after it has been processed may result in unexpected behavior.
 </Aside>
 
 #### `onShippingAddressChange`
@@ -179,9 +180,8 @@ Allows adding an event handler which will be triggered every time the user chang
 
 ```js
 paymentRequest.onShippingAddressChange(async (newShippingAddress) => {
-  const { total, shippingOptions } = await someAsyncOperation(
-    newShippingAddress,
-  );
+  const { total, shippingOptions } =
+    await someAsyncOperation(newShippingAddress);
 
   return {
     total,
@@ -192,8 +192,8 @@ paymentRequest.onShippingAddressChange(async (newShippingAddress) => {
 
 <Aside type="note">
 To protect user privacy, browsers might hide non-essential and sensitive details from the shipping address, and only provide data required for shipping cost estimation.
-The extent of information provided can vary based on the chosen browser and payment method, leading to certain fields being absent.
-For example, the displayed shipping address might be limited to the city, state, country, and ZIP code.
+
+The extent of information provided can vary based on the chosen browser and payment method, leading to certain fields being absent. For example, the displayed shipping address might be limited to the city, state, country, and ZIP code.
 
 The full shipping address is disclosed only in the `PaymentResponse` object after the payment is authorized by the account holder.
 </Aside>
@@ -235,16 +235,16 @@ buttons
   .onSubmit((paymentEvent) => console.log(paymentEvent))
   .mount({
     paymentMethods: [
-      { id: 'apple_pay' },
-      { id: 'google_pay' }
+      { id: "apple_pay" },
+      { id: "google_pay" },
       // See `paymentRequest.availablePaymentMethods()` for all available payment methods
     ],
-    container: document.querySelector('#express-checkout-container'),
+    container: document.querySelector("#express-checkout-container"),
   });
 ```
 
 <Aside type="note">
-You can create your own custom buttons, but we recommend using the built-in PaymentElement UI builder.
+  You can create your own custom buttons, but we recommend using the built-in PaymentElement UI builder.
 </Aside>
 
 #### Rendering Buttons for Available Payment Methods
@@ -265,11 +265,11 @@ paymentRequest.canMakePayment().then((isAvailable) => {
     paymentRequest.availablePaymentMethods().then((paymentMethods) => {
       buttons.mount({
         paymentMethods,
-        container: document.querySelector('#express-checkout-container'),
+        container: document.querySelector("#express-checkout-container"),
       });
     });
   } else {
-    console.error('No payment method available!');
+    console.error("No payment method available!");
   }
 });
 ```
@@ -302,7 +302,7 @@ paymentRequest
   .then((paymentResponse) => {
     console.log(paymentResponse.details); // contactInfo, shippingAddress, etc.
     // here you create your order and a sumup checkout
-    const checkoutId = 'c463bf5e-d397-4bca-9d2e-a4e04f668b1c';
+    const checkoutId = "c463bf5e-d397-4bca-9d2e-a4e04f668b1c";
 
     return swiftCheckoutClient.processCheckout(checkoutId, paymentResponse);
   })
@@ -314,22 +314,22 @@ paymentRequest
 
 ```js
 const swiftCheckoutClient = new window.SumUp.SwiftCheckout(
-  'fOcmczrYtYMJ7Li5GjMLLcUeC9dN',
+  "fOcmczrYtYMJ7Li5GjMLLcUeC9dN",
 );
 
 const paymentRequest = swiftCheckoutClient.paymentRequest({
   total: {
-    label: 'One Shoe',
+    label: "One Shoe",
     amount: {
-      value: '100.0',
+      value: "100.0",
     },
   },
   shippingOptions: [
     {
-      id: 'post',
-      label: 'postal service',
-      amount: { currency: 'EUR', value: '0.00' },
-      description: 'free post',
+      id: "post",
+      label: "postal service",
+      amount: { currency: "EUR", value: "0.00" },
+      description: "free post",
     },
   ],
 });
@@ -342,16 +342,16 @@ buttons.onSubmit((paymentMethodEvent) => {
       console.log(paymentResponse.details);
 
       // Create your order and a checkout
-      const checkoutId = 'c463bf5e-d397-4bca-9d2e-a4e04f668b1c';
+      const checkoutId = "c463bf5e-d397-4bca-9d2e-a4e04f668b1c";
 
       return swiftCheckoutClient.processCheckout(checkoutId, paymentResponse);
     })
     .then((result) => {
-      if (result.status === 'PAID') {
-        window.location.href = '/thankyou';
+      if (result.status === "PAID") {
+        window.location.href = "/thankyou";
       } else {
         console.error(
-          'It was not possible to process the checkout',
+          "It was not possible to process the checkout",
           result.message,
         );
       }
@@ -360,7 +360,7 @@ buttons.onSubmit((paymentMethodEvent) => {
       if (
         error instanceof SumUp.SwiftCheckout.Errors.PaymentRequestCancelledError
       ) {
-        console.error('Cancelled by the user');
+        console.error("Cancelled by the user");
       } else {
         throw error;
       }
@@ -372,11 +372,11 @@ paymentRequest.canMakePayment().then((isAvailable) => {
     paymentRequest.availablePaymentMethods().then((paymentMethods) => {
       buttons.mount({
         paymentMethods,
-        container: document.querySelector('#express-checkout-container'),
+        container: document.querySelector("#express-checkout-container"),
       });
     });
   } else {
-    console.error('No payment method is available.');
+    console.error("No payment method is available.");
   }
 });
 ```
@@ -436,11 +436,11 @@ Google Pay’s base payment request object requires a few unique parameters:
   const paymentRequest = sumUpClient.paymentRequest({
     methodData: [
       {
-        supportedMethods: 'google_pay',
+        supportedMethods: "google_pay",
         data: {
           merchantInfo: {
-            merchantId: '123456789123456789',
-            merchantName: 'Example Merchant',
+            merchantId: "123456789123456789",
+            merchantName: "Example Merchant",
           },
         },
       },
