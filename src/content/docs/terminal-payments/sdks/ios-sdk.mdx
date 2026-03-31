@@ -130,6 +130,15 @@ Please consider the following when building Tap-to-Pay solutions, as Apple revie
 
 The SumUp iOS SDK is provided as an XCFramework `SumUpSDK.xcframework` that contains
 the headers and bundles containing resources such as images and localizations. You can add the SDK binary manually or use a package manager such as Swift Package Manager, Cocoapods, or Carthage.
+
+<Aside type="danger">
+**Cocoapods support ending**
+
+Cocoapods will be making their registry service read-only after November 2026; because of this new releases of the SDK will not be published via Cocoapods after October 31st 2026.
+
+We encourage you to migrate your app to use Swift Package Manager before this deadline in order to be able to update to new versions as needed. Existing SDK versions on Cocoapods should not be affected.
+</Aside>
+
 Please follow the relevant instructions below to prepare your project:
 
 
