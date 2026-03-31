@@ -30,7 +30,7 @@ Considering you've adhered to the prerequisites, the following steps will enable
   - `gateway`- always equal to "sumup"
   - `gatewayMerchantId`- your SumUp merchant code
 - [`merchantInfo` object](https://developers.google.com/pay/api/web/reference/request-objects#MerchantInfo) with the following keys:
-  - `merchantId`- unique identifier provided to you by Google once you register your domain with them
+  - `merchantId`- unique identifier provided to you by Google once you register your domain with them. This is required for `PRODUCTION`.
   - `merchantName`- your merchant name
 
 ```js
@@ -38,7 +38,7 @@ const baseRequest = {
   apiVersion: 2,
   apiVersionMinor: 0,
   merchantInfo: {
-    merchantId: '123456789123456789'
+    merchantId: '123456789123456789',
     merchantName: 'Example Merchant',
   },
   allowedPaymentMethods: [
@@ -71,14 +71,22 @@ const paymentsClient = new google.payments.api.PaymentsClient({
 
 4. [Check readiness to pay](https://developers.google.com/pay/api/web/guides/tutorial#isreadytopay) with Google Pay API
 5. [Launch the Google Pay button](https://developers.google.com/pay/api/web/guides/tutorial#add-button)
-6. [Create a PaymentDataRequest](https://developers.google.com/pay/api/web/guides/tutorial#paymentdatarequest) using the `baseRequest` object and append the `transactionInfo` and `merchantInfo` objects. Your `PaymentDataRequest` should look like this:
+6. [Create a PaymentDataRequest](https://developers.google.com/pay/api/web/guides/tutorial#paymentdatarequest) using the `baseRequest` object and append the top-level `transactionInfo` and `merchantInfo` objects. Your `PaymentDataRequest` should look like this:
 
 ```js
 const paymentDataRequest = {
   apiVersion: 2,
   apiVersionMinor: 0,
   merchantInfo: {
+    merchantId: '123456789123456789',
     merchantName: 'Example Merchant',
+  },
+  transactionInfo: {
+    totalPriceStatus: 'FINAL',
+    totalPriceLabel: 'Total',
+    totalPrice: `${checkoutInfo.amount}`,
+    currencyCode: checkoutInfo.currency || 'EUR',
+    countryCode: 'DE',
   },
   allowedPaymentMethods: [
     {
@@ -93,17 +101,6 @@ const paymentDataRequest = {
           gateway: 'sumup',
           gatewayMerchantId: 'exampleGatewayMerchantId',
         },
-      },
-      merchantInfo: {
-        merchantId: 'your_merchant_id',
-        merchantName: 'your_merchant_name',
-      },
-      transactionInfo: {
-        totalPriceStatus: 'FINAL',
-        totalPriceLabel: 'Total',
-        totalPrice: `${checkoutInfo.amount}`,
-        currencyCode: checkoutInfo.currency || 'EUR',
-        countryCode: 'DE',
       },
     },
   ],
@@ -155,7 +152,7 @@ This is not possible at the moment. You need to use a staging environment and va
 
 ### Error Decrypting Google Pay Token
 
-Internal Server Error with a message pointing to Google Pay token decryption error is most likely caused by the wrong `environment` value in the `paymentsClient` object. Make sure it's set to `PRODUCTION` as below.
+An Internal Server Error that points to Google Pay token decryption can be caused by an environment mismatch. Make sure the `PaymentsClient` `environment` matches the Google Pay configuration used to create the payment data: use `TEST` for test flows and `PRODUCTION` for live payments.
 
 ```js
 const paymentsClient = new google.payments.api.PaymentsClient({
