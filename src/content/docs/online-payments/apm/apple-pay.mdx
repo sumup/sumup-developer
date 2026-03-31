@@ -47,7 +47,7 @@ const applePaymentRequest = {
 ```
 
 3. Initiate an [Apple Pay session](https://developer.apple.com/documentation/apple_pay_on_the_web/applepaysession/2320659-applepaysession) and call the [begin method](https://developer.apple.com/documentation/apple_pay_on_the_web/applepaysession/1778001-begin)
-4. Listen for the `onvalidatemerchant` callback and collect the `validateUrl` property. Create the following payload
+4. Listen for the `onvalidatemerchant` callback and collect the validation URL from the event. Create the following payload and pass the validation URL you received from Apple as the `target` value:
 
 ```json
 {
@@ -62,9 +62,9 @@ and initiate a merchant session by calling
 PUT https://api.sumup.com/v0.1/checkouts/${checkoutId}/apple-pay-session
 ```
 
-5. The response from the previous step is needed to complete the merchant validation with the [`completeMerchantValidation`](https://developer.apple.com/documentation/apple_pay_on_the_web/applepaysession/1778015-completemerchantvalidation/) method
+5. Use the response from the previous step to complete merchant validation with the [`completeMerchantValidation`](https://developer.apple.com/documentation/apple_pay_on_the_web/applepaysession/1778015-completemerchantvalidation/) method.
 
-6. Submitting the payment dialogue triggers the `onpaymentauthorized` callback, this is when you need to [process the checkout](https://developer.sumup.com/api/checkouts/process#process-a-checkout). The process checkout request body needs to include a `payment_type` of `apple_pay` and an `apple_pay` object, containing the response from step 7
+6. Submitting the payment sheet triggers the `onpaymentauthorized` callback. At that point, [process the checkout](https://developer.sumup.com/api/checkouts/process#process-a-checkout). The process-checkout request body needs to include a `payment_type` of `apple_pay` and an `apple_pay` object containing the Apple Pay payment token returned by the callback.
 
 ```json
 {
