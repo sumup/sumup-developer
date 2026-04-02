@@ -1,0 +1,37 @@
+---
+import { getIconURL, type IconName } from "@sumup-oss/icons";
+
+interface Props {
+  icon: IconName;
+  iconSize?: "24" | "32";
+  title: string;
+}
+
+const { icon, iconSize = "32", title } = Astro.props;
+---
+
+<h3 class="payment-method-title">
+  <img
+    class="payment-method-icon"
+    src={getIconURL(icon, iconSize)}
+    alt=""
+    aria-hidden="true"
+  />
+  <span>{title}</span>
+</h3>
+
+<style>
+  .payment-method-title {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+  }
+
+  .payment-method-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    display: block;
+    flex: 0 0 auto;
+  }
+</style>
