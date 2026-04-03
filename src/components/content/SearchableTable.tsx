@@ -1,5 +1,5 @@
-import { Button, SearchInput } from "@sumup-oss/circuit-ui";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { SearchInput } from "@sumup-oss/circuit-ui";
+import { useMemo, useRef, useState } from "react";
 
 import styles from "./SearchableTable.module.css";
 import Table, { type TableColumn } from "./Table";
@@ -10,7 +10,6 @@ type Props = {
   columns: SearchableTableColumn[];
   rows: Record<string, unknown>[];
   searchPlaceholder?: string;
-  maxHeight?: number;
   tableLayout?: "fixed" | "auto";
 };
 
@@ -18,12 +17,9 @@ const SearchableTable = ({
   columns,
   rows,
   searchPlaceholder = "Search",
-  maxHeight = 420,
   tableLayout = "fixed",
 }: Props) => {
   const [searchQuery, setSearchQuery] = useState("");
-  const [isExpanded, setIsExpanded] = useState(false);
-  const [canExpand, setCanExpand] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   const normalizedQuery = searchQuery.trim().toLowerCase();
@@ -47,19 +43,6 @@ const SearchableTable = ({
     );
   }, [columns, normalizedQuery, rows]);
 
-  useEffect(() => {
-    const container = wrapperRef.current;
-    if (!container) {
-      return;
-    }
-
-    setCanExpand(container.scrollHeight > maxHeight);
-  }, [filteredRows, maxHeight]);
-
-  useEffect(() => {
-    setIsExpanded(false);
-  }, [searchQuery]);
-
   return (
     <section className={`${styles.section} not-content`}>
       <SearchInput
@@ -75,20 +58,8 @@ const SearchableTable = ({
         rows={filteredRows}
         tableLayout={tableLayout}
         containerRef={wrapperRef}
-        maxHeight={isExpanded ? undefined : `${maxHeight}px`}
+        maxHeight="420px"
       />
-
-      {canExpand ? (
-        <Button
-          type="button"
-          variant="tertiary"
-          size="s"
-          onClick={() => setIsExpanded((value) => !value)}
-          className={styles.button}
-        >
-          {isExpanded ? "Collapse" : "Expand to view all"}
-        </Button>
-      ) : null}
     </section>
   );
 };
