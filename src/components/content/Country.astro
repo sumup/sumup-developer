@@ -1,0 +1,38 @@
+---
+import { getIconURL, type IconName } from "@sumup-oss/icons";
+
+interface Props {
+  code: string;
+  name: string;
+}
+
+const { code, name } = Astro.props;
+const icon = `flag_${code.toLowerCase()}` as IconName;
+---
+
+<span class="country">
+  <img
+    class="country-flag"
+    src={getIconURL(icon)}
+    height="15"
+    width="20"
+    alt={name}
+    loading="lazy"
+  />
+</span>
+
+<style>
+  .country {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    vertical-align: middle;
+  }
+
+  .country-flag {
+    display: inline-block;
+    border-radius: var(--cui-border-radius-bit);
+    object-fit: cover;
+    margin: 0;
+  }
+</style>
