@@ -1,0 +1,224 @@
+---
+title: Payment Methods
+description: Learn which SumUp online payment methods you can offer, how availability works, and which integration path to start with.
+sidebar:
+  order: 5
+---
+
+import { Aside } from "@astrojs/starlight/components";
+import Country from "@components/content/Country.astro";
+import PaymentMethodTitle from "@components/content/PaymentMethodTitle.astro";
+
+SumUp supports cards, wallets, bank redirects, bank debits, real-time payment methods, vouchers, and buy now, pay later payment methods. Use this page to understand which payment methods SumUp can offer, how they behave in a checkout, and where to start your integration.
+
+If you're deciding what to build first, start with [Payment Widget](/online-payments/checkouts/card-widget/) for an embedded checkout experience.
+
+Payment method families:
+
+- [Cards](#cards)
+- [Wallets](#wallets)
+- [Bank redirects](#bank-redirects)
+- [Bank debits](#bank-debits)
+- [Real-time payments](#real-time-payments)
+- [Vouchers](#vouchers)
+
+## Before You Start
+
+The payment methods you can offer depend on more than the payment method itself. In practice, availability depends on your merchant setup and on the specific checkout you create.
+
+- Merchant country and onboarding status determine which methods can be enabled for your account.
+- Checkout currency, amount, and product can change the set of methods returned for a specific checkout.
+- Some methods redirect the customer away from your site or return payment artifacts such as QR codes or vouchers instead of completing immediately.
+
+Treat the payment methods returned for a checkout as the source of truth for that checkout.
+
+## Cards
+
+Cards are the baseline online payment option. For Europe, the United Kingdom, and Chile, SumUp supports the following card schemes. Brazil also supports Elo and some additional niche local card schemes.
+
+Cards are the simplest place to start if you want broad coverage with a single integration. For most websites, use the [Payment Widget](/online-payments/checkouts/card-widget/) or [Swift Checkout](/online-payments/checkouts/swift-checkout/).
+
+<PaymentMethodTitle icon="visa" title="Visa" />
+
+**Availability:** <Country code="EU" name="Europe" /> <Country code="AU" name="Australia" /> <Country code="BR" name="Brazil" /> <Country code="CL" name="Chile" /> <Country code="CO" name="Colombia" /> <Country code="PE" name="Peru" /> <Country code="US" name="United States" />
+
+[Visa](https://www.visa.com/) is one of the most widely accepted global card networks for online debit and credit card payments.
+
+<PaymentMethodTitle icon="visa_electron" title="Visa Electron" />
+
+**Availability:** <Country code="EU" name="Europe" /> <Country code="AU" name="Australia" /> <Country code="BR" name="Brazil" /> <Country code="CL" name="Chile" /> <Country code="CO" name="Colombia" /> <Country code="PE" name="Peru" /> <Country code="US" name="United States" />
+
+[Visa Electron](https://www.visa.com/) is a Visa debit card product commonly used for consumer card payments in supported markets.
+
+<PaymentMethodTitle icon="vpay" title="V Pay" />
+
+**Availability:** <Country code="EU" name="Europe" />
+
+[V Pay](https://www.visa.co.uk/pay-with-visa/find-a-card/v-pay.html) is Visa's European debit card scheme designed for regional card acceptance.
+
+<PaymentMethodTitle icon="mastercard" title="Mastercard" />
+
+**Availability:** <Country code="EU" name="Europe" /> <Country code="AU" name="Australia" /> <Country code="BR" name="Brazil" /> <Country code="CL" name="Chile" /> <Country code="CO" name="Colombia" /> <Country code="PE" name="Peru" /> <Country code="US" name="United States" />
+
+[Mastercard](https://www.mastercard.com/) is a global card network used for both credit and debit card payments.
+
+<PaymentMethodTitle icon="maestro" title="Maestro" />
+
+**Availability:** <Country code="EU" name="Europe" /> <Country code="BR" name="Brazil" /> <Country code="CL" name="Chile" /> <Country code="CO" name="Colombia" /> <Country code="PE" name="Peru" /> <Country code="US" name="United States" />
+
+[Maestro](https://www.mastercard.com/) is Mastercard's debit card brand for everyday consumer payments.
+
+<PaymentMethodTitle icon="american_express" title="American Express" />
+
+**Availability:** <Country code="EU" name="Europe" /> <Country code="AU" name="Australia" /> <Country code="BR" name="Brazil" /> <Country code="CL" name="Chile" /> <Country code="CO" name="Colombia" /> <Country code="US" name="United States" />
+
+[American Express](https://www.americanexpress.com/) is a global card network widely used for consumer and business card payments.
+
+<PaymentMethodTitle icon="discover" title="Discover" />
+
+**Availability:** <Country code="EU" name="Europe" /> <Country code="CO" name="Colombia" /> <Country code="US" name="United States" />
+
+[Discover](https://www.discover.com/) is an international card network that can be used for online card payments in supported markets.
+
+<PaymentMethodTitle icon="jcb" title="JCB" />
+
+**Availability:** <Country code="EU" name="Europe" /> <Country code="AU" name="Australia" /> <Country code="US" name="United States" />
+
+[JCB](https://www.global.jcb/en/) is a global card network originating in Japan and accepted for online payments in supported regions.
+
+<PaymentMethodTitle icon="elo" title="Elo" />
+
+**Availability:** <Country code="BR" name="Brazil" />
+
+[Elo](https://www.elo.com.br/) is a Brazilian card scheme supported for online payments in Brazil. Additional niche local card schemes may also be supported.
+
+## Wallets
+
+Wallets provide a faster checkout experience by reusing saved payment details or wallet balances.
+
+Wallets are useful when you want faster checkout on mobile and supported browsers. Apple Pay and Google Pay can be offered through [Payment Widget](/online-payments/checkouts/card-widget/), through the [Swift Checkout SDK](/online-payments/checkouts/swift-checkout/), or through their dedicated direct integration guides.
+
+<PaymentMethodTitle icon="apple_pay" title="Apple Pay" />
+
+**Availability:** <Country code="EU" name="Europe" /> <Country code="BR" name="Brazil" /> <Country code="CL" name="Chile" />
+
+[Apple Pay](https://www.apple.com/apple-pay/) is Apple's wallet-based checkout experience for Safari and Apple devices.
+
+<PaymentMethodTitle icon="google_pay" title="Google Pay" />
+
+**Availability:** <Country code="EU" name="Europe" /> <Country code="CL" name="Chile" />
+
+[Google Pay](https://pay.google.com/about/) is Google's wallet checkout option for supported browsers, devices, and Android surfaces.
+
+<PaymentMethodTitle icon="pay_pal" title="PayPal" />
+
+**Availability:** <Country code="BG" name="Bulgaria" /> <Country code="CH" name="Switzerland" /> <Country code="DE" name="Germany" /> <Country code="ES" name="Spain" /> <Country code="FR" name="France" /> <Country code="GB" name="United Kingdom" /> <Country code="IE" name="Ireland" /> <Country code="IT" name="Italy" /> <Country code="NL" name="Netherlands" /> <Country code="SE" name="Sweden" /> <Country code="US" name="United States" />
+
+[PayPal](https://www.paypal.com/) lets customers authorize payments using their PayPal account instead of entering card details directly.
+
+<PaymentMethodTitle icon="sumup_pay" title="SumUp Pay" />
+
+**Availability:** <Country code="FR" name="France" /> <Country code="DE" name="Germany" /> <Country code="IE" name="Ireland" /> <Country code="IT" name="Italy" /> <Country code="ES" name="Spain" /> <Country code="GB" name="United Kingdom" />
+
+[SumUp Pay](https://www.sumup.com/) is SumUp's own payment experience for returning customers within the SumUp ecosystem.
+
+<PaymentMethodTitle icon="alternative_payment_method" title="BANCOMAT Pay" />
+
+**Availability:** <Country code="IT" name="Italy" />
+
+[BANCOMAT Pay](https://www.bancomat.it/en/bancomat-pay/) is an Italian account-linked mobile payment method operated by BANCOMAT.
+
+## Bank Redirects
+
+Bank redirect methods send the customer to their bank or local payment network to approve the payment.
+
+These methods usually require you to handle a pending status and send the customer through an additional authorization step. Payment Widget handles this checkout experience for the customer.
+
+<PaymentMethodTitle icon="bancontact" title="Bancontact" />
+
+**Availability:** <Country code="BE" name="Belgium" />
+
+[Bancontact](https://bancontact.com/en) is Belgium's domestic online payment method for redirect-based checkout.
+
+<PaymentMethodTitle icon="blik" iconSize="24" title="Blik" />
+
+**Availability:** <Country code="PL" name="Poland" />
+
+[Blik](https://blik.com/en) is a Polish payment method that lets customers confirm payments through their banking app.
+
+<PaymentMethodTitle icon="eps" iconSize="24" title="EPS" />
+
+**Availability:** <Country code="AT" name="Austria" />
+
+[EPS](https://www.eps-ueberweisung.at/) is an Austrian online bank redirect method commonly used for domestic ecommerce payments.
+
+<PaymentMethodTitle icon="ideal" title="iDeal" />
+
+**Availability:** <Country code="NL" name="Netherlands" />
+
+[iDeal](https://www.ideal.nl/en/) is the Netherlands' most widely used online banking payment method for ecommerce.
+
+<PaymentMethodTitle icon="mybank" iconSize="24" title="MyBank" />
+
+**Availability:** <Country code="ES" name="Spain" /> <Country code="GR" name="Greece" /> <Country code="IT" name="Italy" />
+
+[MyBank](https://www.mybank.eu/) is a European online bank payment scheme that redirects customers to authorize the transaction with their bank.
+
+<PaymentMethodTitle icon="przelewy24" iconSize="24" title="Przelewy24" />
+
+**Availability:** <Country code="PL" name="Poland" />
+
+[Przelewy24](https://www.przelewy24.pl/en) is a Polish online bank redirect method and payment network for local ecommerce checkout.
+
+<PaymentMethodTitle
+  icon="alternative_payment_method"
+  title="TWINT"
+/>
+
+**Availability:** <Country code="CH" name="Switzerland" />
+
+[TWINT](https://www.twint.ch/en/) is a Swiss mobile payment method that supports wallet-style and bank-linked payments.
+
+## Bank Debits
+
+Bank debit methods collect funds directly from the customer's bank account.
+
+Bank debit methods can require additional customer details depending on the checkout flow.
+
+## Real-Time Payments
+
+Real-time payment methods confirm funds immediately and are commonly used for local account-to-account payment flows.
+
+Some real-time methods return payment artifacts such as QR codes instead of using a browser redirect.
+
+<PaymentMethodTitle icon="pix" title="PIX" />
+
+**Availability:** <Country code="BR" name="Brazil" />
+
+[PIX](https://www.bcb.gov.br/estabilidadefinanceira/pix) is Brazil's instant payment system for real-time account-to-account transfers.
+
+<PaymentMethodTitle
+  icon="pix_full"
+  iconSize="24"
+  title="QR Code powered by PIX"
+/>
+
+**Availability:** <Country code="BR" name="Brazil" />
+
+[QR Code powered by PIX](https://www.bcb.gov.br/estabilidadefinanceira/pix) lets customers complete a PIX payment by scanning a generated QR code.
+
+## Vouchers
+
+Voucher-based methods generate a payment artifact that the customer uses to complete the purchase.
+
+Voucher methods are asynchronous by nature and rely on a payment artifact that the customer uses to complete the payment.
+
+<PaymentMethodTitle icon="boleto" title="Boleto" />
+
+**Availability:** <Country code="BR" name="Brazil" />
+
+[Boleto](https://portal.febraban.org.br/pagina/3166/33/en/) is a Brazilian voucher-based payment method where the customer pays using a generated boleto document or barcode.
+
+<Aside type="tip">
+Availability still depends on merchant setup, checkout product, and account configuration. For implementation details, see [Alternative Payment Methods](/online-payments/apm/) and the [Card Widget](/online-payments/checkouts/card-widget/).
+</Aside>
