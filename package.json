@@ -57,7 +57,7 @@
     "@sumup-oss/circuit-ui": "^10.15.2",
     "@sumup-oss/design-tokens": "^9.0.0",
     "@sumup-oss/icons": "^5.23.0",
-    "@types/node": "^25.5.0",
+    "@types/node": "^25.5.2",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@typescript-eslint/parser": "^8.57.2",
