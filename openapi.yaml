@@ -6307,7 +6307,7 @@ components:
         - $ref: '#/components/schemas/Timestamps'
       externalDocs:
         description: Merchant documentation
-        url: 'https://developer.sumup.com/tools/models/merchant'
+        url: 'https://developer.sumup.com/tools/glossary/merchant'
       title: Merchant
     Company:
       description: |
@@ -6349,7 +6349,7 @@ components:
           $ref: '#/components/schemas/Attributes'
       externalDocs:
         description: Company documentation
-        url: 'https://developer.sumup.com/tools/models/merchant#company'
+        url: 'https://developer.sumup.com/tools/glossary/merchant#company'
     Meta:
       description: |-
         A set of key-value pairs that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
@@ -6476,7 +6476,7 @@ components:
         - bg.private_limited_company
       externalDocs:
         description: The country SDK documentation for legal types.
-        url: 'https://developer.sumup.com/tools/models/merchant#legal-types'
+        url: 'https://developer.sumup.com/tools/glossary/merchant#legal-types'
       maxLength: 64
       minLength: 4
     CompanyIdentifiers:
@@ -6506,7 +6506,7 @@ components:
           value: HRB 123456
       externalDocs:
         description: Company identifier documentation
-        url: 'https://developer.sumup.com/tools/models/merchant#company-identifiers'
+        url: 'https://developer.sumup.com/tools/glossary/merchant#company-identifiers'
       required:
         - ref
         - value
@@ -6624,7 +6624,7 @@ components:
           $ref: '#/components/schemas/ChangeStatus'
       externalDocs:
         description: Person documentation
-        url: 'https://developer.sumup.com/tools/models/merchant#persons'
+        url: 'https://developer.sumup.com/tools/glossary/merchant#persons'
       required:
         - id
     ClassicMerchantIdentifiers:
