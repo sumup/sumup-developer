@@ -180,7 +180,6 @@ paths:
                         tip_amount: 3
                         entry_mode: CUSTOMER_ENTRY
                         auth_code: '012345'
-                        internal_id: 0
                 Checkout3DS:
                   description: Response body for a successfully created 3DS checkout
                   value:
@@ -209,7 +208,6 @@ paths:
                         tip_amount: 3
                         entry_mode: CUSTOMER_ENTRY
                         auth_code: '012345'
-                        internal_id: 0
                 CheckoutAPM:
                   description: Response body for APMs, including Blik, iDeal, ...
                   value:
@@ -240,7 +238,6 @@ paths:
                         tip_amount: 3
                         entry_mode: CUSTOMER_ENTRY
                         auth_code: '012345'
-                        internal_id: 0
         '400':
           description: The request body is invalid.
           content:
@@ -539,7 +536,6 @@ paths:
                         tip_amount: 3
                         entry_mode: CUSTOMER_ENTRY
                         auth_code: '053201'
-                        internal_id: 1763892018
                     transaction_code: TEENSK4W2K
                     transaction_id: 410fc44a-5956-44e1-b5cc-19c6f8d727a4
                 CheckoutSuccessToken:
@@ -574,7 +570,6 @@ paths:
                         tip_amount: 3
                         entry_mode: CUSTOMER_ENTRY
                         auth_code: '053201'
-                        internal_id: 1763892018
                 CheckoutSuccessBoleto:
                   description: Successfully processed checkout with Boleto
                   value:
@@ -605,7 +600,6 @@ paths:
                         payment_type: BOLETO
                         entry_mode: BOLETO
                         installments_count: 1
-                        internal_id: 1763892018
                 CheckoutSuccessiDeal:
                   description: Successfully processed checkout with iDeal
                   value:
@@ -1350,7 +1344,6 @@ paths:
       description: |-
         Retrieves the full details of an identified transaction. The transaction resource is identified by a query parameter and *one* of following parameters is required:
         - `id`
-        - `internal_id`
         - `transaction_code`
         - `foreign_transaction_id`
         - `client_transaction_id`
@@ -1365,12 +1358,6 @@ paths:
         - name: id
           in: query
           description: Retrieves the transaction resource with the specified transaction ID (the `id` parameter in the transaction resource).
-          required: false
-          schema:
-            type: string
-        - name: internal_id
-          in: query
-          description: Retrieves the transaction resource with the specified internal transaction ID (the `internal_id` parameter in the transaction resource).
           required: false
           schema:
             type: string
@@ -1411,7 +1398,6 @@ paths:
                 tip_amount: 3
                 entry_mode: CUSTOMER_ENTRY
                 auth_code: '053201'
-                internal_id: 1763892018
         '401':
           description: The request is not authorized.
           content:
@@ -1456,7 +1442,6 @@ paths:
       description: |-
         Retrieves the full details of an identified transaction. The transaction resource is identified by a query parameter and *one* of following parameters is required:
         - `id`
-        - `internal_id`
         - `transaction_code`
         - `foreign_transaction_id`
         - `client_transaction_id`
@@ -1464,12 +1449,6 @@ paths:
         - name: id
           in: query
           description: Retrieves the transaction resource with the specified transaction ID (the `id` parameter in the transaction resource).
-          required: false
-          schema:
-            type: string
-        - name: internal_id
-          in: query
-          description: Retrieves the transaction resource with the specified internal transaction ID (the `internal_id` parameter in the transaction resource).
           required: false
           schema:
             type: string
@@ -1500,7 +1479,6 @@ paths:
                 tip_amount: 3
                 entry_mode: CUSTOMER_ENTRY
                 auth_code: '053201'
-                internal_id: 1763892018
         '401':
           description: The request is not authorized.
           content:
@@ -4601,7 +4579,6 @@ components:
               tip_amount: 3
               entry_mode: CUSTOMER_ENTRY
               auth_code: '012345'
-              internal_id: 0
           uniqueItems: true
       title: Checkout
     CheckoutCreateRequest:
@@ -5580,11 +5557,6 @@ components:
           description: Authorization code for the transaction sent by the payment card issuer or bank. Applicable only to card payments.
           type: string
           example: '053201'
-        internal_id:
-          description: Internal unique ID of the transaction on the SumUp platform.
-          type: integer
-          format: int64
-          example: 1763892018
       title: Transaction Checkout Info
     TransactionMixinHistory:
       description: Additional transaction fields used by history and detailed views.
@@ -7755,7 +7727,6 @@ components:
                     tip_amount: 3
                     entry_mode: CUSTOMER_ENTRY
                     auth_code: '012345'
-                    internal_id: 0
             Checkout3DS:
               description: Response body for a successfully created 3DS checkout
               value:
@@ -7784,7 +7755,6 @@ components:
                     tip_amount: 3
                     entry_mode: CUSTOMER_ENTRY
                     auth_code: '012345'
-                    internal_id: 0
             CheckoutAPM:
               description: Response body for APMs, including Blik, iDeal, ...
               value:
@@ -7815,7 +7785,6 @@ components:
                     tip_amount: 3
                     entry_mode: CUSTOMER_ENTRY
                     auth_code: '012345'
-                    internal_id: 0
     CheckoutList:
       description: Returns a list of checkout resources.
       content:
@@ -7889,7 +7858,6 @@ components:
                     tip_amount: 3
                     entry_mode: CUSTOMER_ENTRY
                     auth_code: '053201'
-                    internal_id: 1763892018
                 transaction_code: TEENSK4W2K
                 transaction_id: 410fc44a-5956-44e1-b5cc-19c6f8d727a4
             CheckoutSuccessToken:
@@ -7924,7 +7892,6 @@ components:
                     tip_amount: 3
                     entry_mode: CUSTOMER_ENTRY
                     auth_code: '053201'
-                    internal_id: 1763892018
             CheckoutSuccessBoleto:
               description: Successfully processed checkout with Boleto
               value:
@@ -7955,7 +7922,6 @@ components:
                     payment_type: BOLETO
                     entry_mode: BOLETO
                     installments_count: 1
-                    internal_id: 1763892018
             CheckoutSuccessiDeal:
               description: Successfully processed checkout with iDeal
               value:
@@ -8022,7 +7988,6 @@ components:
             tip_amount: 3
             entry_mode: CUSTOMER_ENTRY
             auth_code: '053201'
-            internal_id: 1763892018
     NoBodyResponse:
       description: Returns an empty response body when the operation succeeds.
     ErrorNotAuthorized:
