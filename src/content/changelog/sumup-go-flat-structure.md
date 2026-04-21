@@ -1,6 +1,6 @@
 ---
 title: "Go SDK flat structure refactor"
-tags: ["SDK", "Go", "Breaking change"]
+tags: ["SDK", "Go"]
 publishedDate: 2026-01-29
 ---
 

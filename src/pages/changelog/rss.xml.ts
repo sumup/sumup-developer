@@ -23,7 +23,7 @@ export async function GET(context: { site: URL | undefined }) {
       title: entry.data.title,
       pubDate: entry.data.publishedDate,
       description: toDescription(entry.body),
-      link: `/changelog/#entry-${entry.slug}`,
+      link: `/changelog/${entry.slug}/`,
     })),
   });
 }

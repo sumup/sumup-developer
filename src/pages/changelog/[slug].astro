@@ -1,0 +1,83 @@
+---
+import { getCollection } from "astro:content";
+import slugify from "@sindresorhus/slugify";
+import { Anchor, Body } from "@sumup-oss/circuit-ui";
+import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
+import MarkdownContent from "@astrojs/starlight/components/MarkdownContent.astro";
+import type { StarlightPageProps } from "@astrojs/starlight/props";
+
+export async function getStaticPaths() {
+  const changelogEntries = await getCollection("changelog");
+
+  return changelogEntries.map((entry) => ({
+    params: { slug: entry.slug },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+
+const props = {
+  frontmatter: {
+    title: entry.data.title,
+    template: "splash",
+    tableOfContents: false,
+  },
+  custom: true,
+} as StarlightPageProps;
+---
+
+<StarlightPage {...props}>
+  <main data-pagefind-body>
+    <article class="post">
+      <MarkdownContent>
+        <Content />
+      </MarkdownContent>
+    </article>
+    <Body size="s" color="subtle" className="meta">
+      <span class="metaItem">
+        <time
+          data-pagefind-meta="datetime"
+          datetime={entry.data.publishedDate.toISOString()}
+        >
+          {entry.data.publishedDate.toISOString().split("T")[0]}
+        </time>
+      </span>
+      {
+        entry.data.tags.map((tag: string) => (
+          <span class="metaItem">
+            <Anchor size="s" href={`/changelog/tags/${slugify(tag)}/`}>
+              {tag}
+            </Anchor>
+          </span>
+        ))
+      }
+    </Body>
+  </main>
+</StarlightPage>
+
+<style lang="scss">
+  .meta {
+    margin-top: var(--cui-spacings-giga);
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .metaItem {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .metaItem:not(:last-child)::after {
+    content: "\00B7";
+    margin: 0 var(--cui-spacings-byte);
+  }
+
+  :global(.expressive-code .frame pre) {
+    overflow: auto;
+    scrollbar-width: thin;
+  }
+</style>

@@ -1,13 +1,10 @@
 ---
 import { getCollection } from "astro:content";
 import slugify from "@sindresorhus/slugify";
-import { Badge, Body, Button, Anchor } from "@sumup-oss/circuit-ui";
+import { Badge, Body, Button, Anchor, Headline } from "@sumup-oss/circuit-ui";
 import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
-import type { StarlightPageProps } from "@astrojs/starlight/props";
-import { Headline } from "@sumup-oss/circuit-ui";
 import MarkdownContent from "@astrojs/starlight/components/MarkdownContent.astro";
-
-const { tag: currentTag } = Astro.params;
+import type { StarlightPageProps } from "@astrojs/starlight/props";
 
 const changelogDocs = await getCollection("changelog");
 
@@ -15,30 +12,12 @@ const allTags = [
   ...new Set(changelogDocs.flatMap(({ data: { tags } }) => tags)),
 ];
 
-const collectionDocs = (
-  await getCollection(
-    "changelog",
-    ({ data: { tags } }) =>
-      !currentTag || tags.map((tag) => slugify(tag)).includes(currentTag),
-  )
-)
-  .sort(
-    (a, b) => b.data.publishedDate.valueOf() - a.data.publishedDate.valueOf(),
-  )
-  .map((entry) => ({
-    ...entry,
-  }));
+const getEntryHref = (slug: string) => `/changelog/${slug}/`;
+const getTagHref = (tag: string) => `/changelog/tags/${slugify(tag)}/`;
 
-export async function getStaticPaths() {
-  const posts = (await getCollection("changelog")).flatMap(
-    ({ data }) => data.tags,
-  );
-  const tags = ["", ...new Set(posts)];
-
-  return tags.map((tag) => ({
-    params: { tag: slugify(tag) },
-  }));
-}
+const collectionDocs = changelogDocs.sort(
+  (a, b) => b.data.publishedDate.valueOf() - a.data.publishedDate.valueOf(),
+);
 
 const posts = await Promise.all(
   collectionDocs.map(async (page) => {
@@ -47,12 +26,9 @@ const posts = await Promise.all(
   }),
 );
 
-const tagName = posts.at(0)?.data.tags.find((t) => slugify(t) === currentTag);
-
 const props = {
   frontmatter: {
-    title: tagName ? `${tagName} Changelog` : `Changelog`,
-    noindex: Boolean(currentTag),
+    title: "Changelog",
     template: "splash",
     tableOfContents: false,
   },
@@ -71,7 +47,7 @@ const props = {
       {
         allTags.map((tag) => (
           <li>
-            <a href={`/changelog/${slugify(tag)}`}>
+            <a href={getTagHref(tag)}>
               <Badge>{tag}</Badge>
             </a>
           </li>
@@ -113,38 +89,41 @@ const props = {
   <main class="content" data-pagefind-body>
     {
       posts.map(
-        async ({ Content, slug, data: { title, tags, publishedDate } }) => {
-          return (
-            <>
-              <div class="post" id={`entry-${slug}`}>
-                <Headline as="h2" size="s" className="title">
-                  {title}
-                </Headline>
-                <Body size="s" color="subtle" className="meta">
+        async ({ Content, slug, data: { title, tags, publishedDate } }) => (
+          <div class="post" id={`entry-${slug}`}>
+            <Headline as="h2" size="s" className="title">
+              <a class="titleLink" href={getEntryHref(slug)}>
+                {title}
+              </a>
+            </Headline>
+            <Body size="s" color="subtle" className="meta">
+              <span class="metaItem">
+                <time
+                  data-pagefind-meta="datetime"
+                  datetime={publishedDate.toISOString()}
+                >
+                  {publishedDate.toISOString().split("T")[0]}
+                </time>
+              </span>
+              {tags &&
+                tags.map((tag) => (
                   <span class="metaItem">
-                    <time
-                      data-pagefind-meta="datetime"
-                      datetime={publishedDate.toISOString()}
-                    >
-                      {publishedDate.toISOString().split("T")[0]}
-                    </time>
+                    <Anchor size="s" href={getTagHref(tag)}>
+                      {tag}
+                    </Anchor>
                   </span>
-                  {tags &&
-                    tags.map((tag) => (
-                      <span class="metaItem">
-                        <Anchor size="s" href={`./${slugify(tag)}`}>
-                          {tag}
-                        </Anchor>
-                      </span>
-                    ))}
-                </Body>
-                <MarkdownContent>
-                  <Content />
-                </MarkdownContent>
-              </div>
-            </>
-          );
-        },
+                ))}
+              <span class="metaItem">
+                <Anchor size="s" href={getEntryHref(slug)}>
+                  Permalink
+                </Anchor>
+              </span>
+            </Body>
+            <MarkdownContent>
+              <Content />
+            </MarkdownContent>
+          </div>
+        ),
       )
     }
   </main>
@@ -183,6 +162,16 @@ const props = {
 
   .title {
     margin-bottom: var(--cui-spacings-bit);
+  }
+
+  .titleLink {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .titleLink:hover,
+  .titleLink:focus-visible {
+    text-decoration: underline;
   }
 
   .post {

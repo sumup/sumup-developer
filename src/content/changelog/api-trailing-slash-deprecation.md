@@ -1,6 +1,6 @@
 ---
 title: "Deprecation of Trailing Slashes in URLs"
-tags: ["API", "Deprecation", "Breaking-Change"]
+tags: ["API", "Deprecation"]
 publishedDate: 2025-11-17
 ---
 

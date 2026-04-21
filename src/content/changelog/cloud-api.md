@@ -1,6 +1,6 @@
 ---
 title: "Cloud API"
-tags: ["API", "REST"]
+tags: ["Cloud API", "API"]
 publishedDate: 2025-12-22
 ---
 
