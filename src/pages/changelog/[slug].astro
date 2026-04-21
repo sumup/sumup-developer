@@ -47,7 +47,7 @@ const props = {
       {
         entry.data.tags.map((tag: string) => (
           <span class="metaItem">
-            <Anchor size="s" href={`/changelog/tag/${slugify(tag)}/`}>
+            <Anchor size="s" href={`/changelog/?tag=${slugify(tag)}`}>
               {tag}
             </Anchor>
           </span>
