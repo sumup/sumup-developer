@@ -4,20 +4,21 @@ import type { StarlightPageProps } from "@astrojs/starlight/props";
 import Brands from "@components/Landing/Brands.astro";
 import { Headline, ListItem } from "@sumup-oss/circuit-ui";
 import {
-  InterestOnBalance,
-  NoCosts,
-  SecurePayments,
+  AlternativePaymentMethod,
+  Apps,
+  BrowserSecure,
+  CardIn,
   CardReaderSolo,
   Code,
-  BrowserSecure,
   Customize,
-  CardIn,
-  AlternativePaymentMethod,
-  Sparkles,
   File,
-  Apps,
+  InterestOnBalance,
   Key,
+  NoCosts,
   Play,
+  SecurePayments,
+  Sparkles,
+  Webspace,
 } from "@sumup-oss/icons";
 
 const props = {
@@ -72,6 +73,13 @@ const props = {
             href="/online-payments/"
             label="Quickstart"
             details="Start using Online Payments"
+          />
+          <ListItem
+            variant="navigation"
+            leadingComponent={Webspace}
+            href="/online-payments/checkouts/hosted-checkout/"
+            label="Hosted Checkout"
+            details="Use a SumUp-hosted payment page with minimal integration effort."
           />
           <ListItem
             variant="navigation"
