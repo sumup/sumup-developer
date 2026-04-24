@@ -47,9 +47,15 @@ All online payment products use SumUp APIs, which require authorization via an A
 
 SumUp provides a range of checkout products for seamless integration with your website.
 
-### SumUp Card Widget
+### Hosted Checkout
 
-For a quick and seamless integration, we've developed a sleek payment widget. Incorporating the [SumUp Card Widget](/online-payments/checkouts/card-widget/) only requires adding a single script to your payment page!
+Hosted Checkout is the fastest path to launch. SumUp hosts the payment page, while your integration creates the checkout and redirects the customer to the returned URL.
+
+See the [Hosted Checkout documentation](/online-payments/checkouts/hosted-checkout/) for details.
+
+### Payment Widget
+
+For an embedded checkout on your own site, use the [Payment Widget](/online-payments/checkouts/card-widget/). It only requires adding a single script to your payment page.
 
 #### Alternative Payment Methods
 
@@ -78,7 +84,7 @@ See the [Payment Methods overview](/online-payments/payment-methods/) for the
 full list of supported methods grouped by payment method family.
 </Aside>
 
-### SumUp Swift Checkout SDK
+### Swift Checkout SDK
 
 The Swift Checkout SDK provides a complete and fast checkout experience to your end users, collecting payment, address, and contact information with a click of a button.
 
@@ -108,8 +114,9 @@ A checkout can be completed in a browser only from a domain that is present as a
 
 SumUp offers the following checkout completion options:
 
+- You could use [Hosted Checkout](/online-payments/checkouts/hosted-checkout/) and redirect the customer to a SumUp-hosted payment page
 - You could build a [custom card form](/online-payments/guides/single-payment/#2-complete-a-checkout) that you must submit to the SumUp servers for processing
-- You could use the [SumUp Card Widget](/online-payments/checkouts/card-widget/)
+- You could use the [Payment Widget](/online-payments/checkouts/card-widget/)
 - You could process payments with [Alternative Payment Methods](/online-payments/apm), like Boleto, Bancontact & iDeal
 - You could process [recurring payments](/online-payments/guides/tokenization-with-payment-sdk)
 
