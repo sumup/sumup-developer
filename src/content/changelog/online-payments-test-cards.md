@@ -1,6 +1,6 @@
 ---
 title: "Online Payments Test Cards"
-tags: ["API"]
+tags: ["API", "Online Payments"]
 publishedDate: 2026-03-10
 ---
 
