@@ -6,6 +6,7 @@ sidebar:
 ---
 
 import { Aside, Tabs, TabItem } from '@astrojs/starlight/components';
+import Confirm from '@components/content/Confirm.astro';
 
 <Aside type="note">
 Offline Transactions is not enabled by default. Your organization must complete an opt-in process with the SumUp Integrations team and accept the related terms before using it.
@@ -34,7 +35,7 @@ To request access, contact [integrations@sumup.com](mailto:integrations@sumup.co
 
 | Capability | Android SDK | iOS SDK |
 | --- | --- | --- |
-| Offline Transactions | ✅ Supported | ✅ Supported |
+| Offline Transactions | <Confirm /> Supported | <Confirm /> Supported |
 | Tap to Pay | ❌ Not supported | ❌ Not supported |
 | Supported card schemes | Visa, Mastercard | Visa, Mastercard |
 | Solo firmware | 3.3.31.0 or higher | 3.3.31.0 or higher |

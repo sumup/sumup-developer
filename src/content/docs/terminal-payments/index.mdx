@@ -7,6 +7,7 @@ sidebar:
 ---
 
 import ReaderGallery from '@components/content/ReaderGallery.astro';
+import Confirm from '@components/content/Confirm.astro';
 
 SumUp's in-person payment products let you accept card payments face-to-face using physical card readers or Tap to Pay on a mobile device. You can integrate them into your own app or system using our [Reader SDKs](/terminal-payments/sdks/), [Cloud API](/terminal-payments/cloud-api/), or, for legacy app handoff flows, [Payment Switch](/terminal-payments/payment-switch/).
 
@@ -45,13 +46,13 @@ Different integration paths support different features:
 | Feature | Android SDK | iOS SDK | Android Tap-to-Pay SDK | Cloud API |
 | --- | --- | --- | --- | --- |
 | **Card payments** | NFC and chip | Reader payments with NFC and chip, plus Tap to Pay on iPhone | NFC only | NFC and chip |
-| **Tipping** | ✅ | ✅ | ✅ | ✅ |
-| **Refunds** | Via SumUp API | Via SumUp API | Contact SumUp for current support details | ✅ |
+| **Tipping** | <Confirm /> | <Confirm /> | <Confirm /> | <Confirm /> |
+| **Refunds** | Via SumUp API | Via SumUp API | Contact SumUp for current support details | <Confirm /> |
 | **Receipts** | Via SumUp API | Via SumUp API | Contact SumUp for current support details | Via SumUp API |
-| **Offline transactions** | ✅ | ✅ | — | — |
-| **Reader status via API** | ✅ | ✅ | ✅ | ✅ |
-| **Multiple readers on one account** | — | — | — | ✅ |
-| **Webhooks for transaction status** | — | — | — | ✅ |
+| **Offline transactions** | <Confirm /> | <Confirm /> | — | — |
+| **Reader status via API** | <Confirm /> | <Confirm /> | <Confirm /> | <Confirm /> |
+| **Multiple readers on one account** | — | — | — | <Confirm /> |
+| **Webhooks for transaction status** | — | — | — | <Confirm /> |
 
 ## Reader Compatibility
 
@@ -59,12 +60,12 @@ Not every reader works with every integration:
 
 | Reader | Android SDK | iOS SDK | Android Tap-to-Pay SDK | Cloud API | Payment Switch |
 | --- | --- | --- | --- | --- | --- |
-| [**Solo Lite**](/terminal-payments/readers/solo-lite/) | ✅ | ✅ | — | — | ✅ |
-| [**Solo**](/terminal-payments/readers/solo/) | ✅ | ✅ | — | ✅ | ✅ |
-| [**Air**](/terminal-payments/readers/air/) | ✅ | ✅ | — | — | ✅ |
-| [**3G**](/terminal-payments/readers/3g/) | ✅ | ✅ | — | — | ✅ |
-| [**PIN+**](/terminal-payments/readers/pin-plus/) | ✅ | ✅ | — | — | ✅ |
-| [**Tap to Pay**](/terminal-payments/readers/tap-to-pay/) | — | ✅ | ✅ | — | — |
+| [**Solo Lite**](/terminal-payments/readers/solo-lite/) | <Confirm /> | <Confirm /> | — | — | <Confirm /> |
+| [**Solo**](/terminal-payments/readers/solo/) | <Confirm /> | <Confirm /> | — | <Confirm /> | <Confirm /> |
+| [**Air**](/terminal-payments/readers/air/) | <Confirm /> | <Confirm /> | — | — | <Confirm /> |
+| [**3G**](/terminal-payments/readers/3g/) | <Confirm /> | <Confirm /> | — | — | <Confirm /> |
+| [**PIN+**](/terminal-payments/readers/pin-plus/) | <Confirm /> | <Confirm /> | — | — | <Confirm /> |
+| [**Tap to Pay**](/terminal-payments/readers/tap-to-pay/) | — | <Confirm /> | <Confirm /> | — | — |
 
 ## Market Availability
 
