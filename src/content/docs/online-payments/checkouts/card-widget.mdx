@@ -271,4 +271,8 @@ To allow Apple Pay functionality on third party browsers, make sure to allow App
 default-src 'self' applepay.cdn-apple.com ...; script-src 'self' applepay.cdn-apple.com ...
 ```
 
-This is an optional feature, not including these policies will simply prevent Apple Pay from extended availability on unsupported browsers. Note that this feature is only available on the Swift Checkout SDK.
+This is an optional feature, not including these policies will simply prevent Apple Pay from extended availability on unsupported browsers.
+
+<Aside type="caution">
+  Note that Apple Pay is available on all SDKs, but only Swift Checkout SDK extends this feature to third party browsers.
+</Aside>
