@@ -262,3 +262,17 @@ server.listen(port, () => {
 ```
 
 If you continue to experience issues with rendering the Payment Widget, reach out to our support through this [contact form](/contact).
+
+### Apple Pay specific policies
+
+To allow Apple Pay functionality on third party browsers, make sure to allow Apple Pay SDK domain in your CSP:
+
+```text
+default-src 'self' applepay.cdn-apple.com ...; script-src 'self' applepay.cdn-apple.com ...
+```
+
+This is an optional feature, not including these policies will simply prevent Apple Pay from extended availability on unsupported browsers.
+
+<Aside type="caution">
+  Note that Apple Pay is available on all SDKs, but only Swift Checkout SDK extends this feature to third party browsers.
+</Aside>
