@@ -4,13 +4,12 @@ import type { StarlightPageProps } from "@astrojs/starlight/props";
 import Brands from "@components/Landing/Brands.astro";
 import { Headline, ListItem } from "@sumup-oss/circuit-ui";
 import {
-  AlternativePaymentMethod,
+  Globe,
   Apps,
-  BrowserSecure,
   CardIn,
-  CardReaderSolo,
+  VirtualTerminal,
   Code,
-  Customize,
+  Customise,
   File,
   InterestOnBalance,
   Key,
@@ -46,7 +45,7 @@ const props = {
             variant="navigation"
             label="Quickstart"
             details="Integrate with SumUp Solo card reader to accept in-person payments."
-            leadingComponent={CardReaderSolo}
+            leadingComponent={Play}
           />
           <ListItem
             variant="navigation"
@@ -57,7 +56,7 @@ const props = {
           />
           <ListItem
             variant="navigation"
-            leadingComponent={BrowserSecure}
+            leadingComponent={VirtualTerminal}
             href="/terminal-payments/cloud-api"
             label="Cloud API"
             details="Integrate card payments from any platform using Cloud API."
@@ -90,7 +89,7 @@ const props = {
           />
           <ListItem
             variant="navigation"
-            leadingComponent={AlternativePaymentMethod}
+            leadingComponent={Globe}
             href="/online-payments/apm"
             label="Alternative payment options"
             details="Allow your customers to pay with Apple or Google pay."
@@ -104,7 +103,7 @@ const props = {
           />
           <ListItem
             variant="navigation"
-            leadingComponent={Customize}
+            leadingComponent={Customise}
             href="/online-payments/guides/"
             label="Customization"
             details="Build a fully customized payment experience"
