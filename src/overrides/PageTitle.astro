@@ -1,5 +1,5 @@
 ---
-import { Headline, Body, Button } from "@sumup-oss/circuit-ui";
+import { Display, Body, Button } from "@sumup-oss/circuit-ui";
 import { ArrowSlanted } from "@sumup-oss/icons";
 
 const {
@@ -10,9 +10,16 @@ const linkItems = Array.isArray(links) ? links : [];
 ---
 
 <div class="page-title">
-  <Headline as="h1" size="l" id={"_top"} className="title" data-page-title>
+  <Display
+    as="h1"
+    weight="black"
+    size="s"
+    id={"_top"}
+    className="title"
+    data-page-title
+  >
     {title}
-  </Headline>
+  </Display>
   {
     description && (
       <Body color="subtle" className="subtitle" size="l">
