@@ -17,6 +17,8 @@ const { PUBLIC_ONETRUST_DOMAIN_ID, PUBLIC_GA_TAG_ID } = loadEnv(
   "",
 );
 
+const faviconBaseURL = "https://static.sumup.com";
+
 const head = (): HeadUserConfig => {
   const head: HeadUserConfig = [
     {
@@ -34,7 +36,15 @@ const head = (): HeadUserConfig => {
       attrs: {
         rel: "apple-touch-icon",
         sizes: "180x180",
-        href: "https://static.sumup.com/favicons/apple-touch-icon.png",
+        href: new URL("/favicons/apple-touch-icon.png", faviconBaseURL).toString(),
+      },
+    },
+    {
+      tag: "link",
+      attrs: {
+        rel: "icon",
+        type: "image/svg+xml",
+        href: new URL("/favicons/favicon.svg", faviconBaseURL).toString(),
       },
     },
     {
@@ -43,7 +53,7 @@ const head = (): HeadUserConfig => {
         rel: "icon",
         type: "image/png",
         sizes: "32x32",
-        href: "https://static.sumup.com/favicons/favicon-32x32.png",
+        href: new URL("/favicons/favicon-32x32.png", faviconBaseURL).toString(),
       },
     },
     {
@@ -52,21 +62,21 @@ const head = (): HeadUserConfig => {
         rel: "icon",
         type: "image/png",
         sizes: "16x16",
-        href: "https://static.sumup.com/favicons/favicon-16x16.png",
+        href: new URL("/favicons/favicon-16x16.png", faviconBaseURL).toString(),
       },
     },
     {
       tag: "link",
       attrs: {
         rel: "manifest",
-        href: "https://static.sumup.com/favicons/site.webmanifest",
+        href: new URL("/favicons/site.webmanifest", faviconBaseURL).toString(),
       },
     },
     {
       tag: "link",
       attrs: {
         rel: "mask-icon",
-        href: "https://static.sumup.com/favicons/safari-pinned-tab.svg",
+        href: new URL("/favicons/safari-pinned-tab.svg", faviconBaseURL).toString(),
         color: "#ffffff",
       },
     },
@@ -74,7 +84,7 @@ const head = (): HeadUserConfig => {
       tag: "link",
       attrs: {
         rel: "shortcut icon",
-        href: "https://static.sumup.com/favicons/favicon.ico",
+        href: new URL("/favicons/favicon.ico", faviconBaseURL).toString(),
       },
     },
     {
@@ -93,7 +103,7 @@ const head = (): HeadUserConfig => {
       tag: "meta",
       attrs: {
         name: "msapplication-config",
-        content: "https://static.sumup.com/favicons/browserconfig.xml",
+        content: new URL("/favicons/browserconfig.xml", faviconBaseURL).toString(),
       },
     },
     {
@@ -215,7 +225,7 @@ export default defineConfig({
         starlightImageZoom(),
       ],
       title: "SumUp Developer",
-      favicon: "favicon.png",
+      favicon: new URL("/favicons/favicon.svg", faviconBaseURL).toString(),
       disable404Route: true,
       tableOfContents: {
         minHeadingLevel: 2,
