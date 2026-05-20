@@ -5026,13 +5026,7 @@ components:
           format: date-time
           example: 2020-02-29T10:56:56.876Z
         status:
-          description: Current status of the transaction.
-          type: string
-          enum:
-            - SUCCESSFUL
-            - CANCELLED
-            - FAILED
-            - PENDING
+          $ref: '#/components/schemas/TransactionStatus'
         payment_type:
           $ref: '#/components/schemas/PaymentType'
         installments_count:
@@ -5406,6 +5400,23 @@ components:
         - SEK
         - USD
       title: Currency
+    TransactionStatus:
+      description: |-
+        Current status of the transaction.
+
+        - `PENDING`: The transaction has been created but its final outcome is not known yet.
+        - `SUCCESSFUL`: The transaction completed successfully.
+        - `CANCELLED`: The transaction was cancelled or otherwise reversed before completion.
+        - `FAILED`: The transaction attempt did not complete successfully.
+        - `REFUNDED`: The transaction was refunded in full or in part.
+      type: string
+      enum:
+        - SUCCESSFUL
+        - CANCELLED
+        - FAILED
+        - PENDING
+        - REFUNDED
+      title: Transaction Status
     EventType:
       description: Type of the transaction event.
       type: string
