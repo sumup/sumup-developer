@@ -9,7 +9,7 @@ publishedDate: 2025-11-03
 **Offline payments**
 
 - Introduces Offline payments with Solo lite, please refer to the dedicated section in [OFFLINE_PAYMENTS.md](https://github.com/sumup/sumup-android-sdk/blob/master/OFFLINE_PAYMENTS.md) for more information.
-  - Please contact integration@sumup.com for enabling offline payments on your SumUp merchant account.
+  - Please contact us through the [contact form](/contact) to enable offline payments on your SumUp merchant account.
 
 **Added:**
 

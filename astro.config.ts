@@ -36,7 +36,10 @@ const head = (): HeadUserConfig => {
       attrs: {
         rel: "apple-touch-icon",
         sizes: "180x180",
-        href: new URL("/favicons/apple-touch-icon.png", faviconBaseURL).toString(),
+        href: new URL(
+          "/favicons/apple-touch-icon.png",
+          faviconBaseURL,
+        ).toString(),
       },
     },
     {
@@ -76,7 +79,10 @@ const head = (): HeadUserConfig => {
       tag: "link",
       attrs: {
         rel: "mask-icon",
-        href: new URL("/favicons/safari-pinned-tab.svg", faviconBaseURL).toString(),
+        href: new URL(
+          "/favicons/safari-pinned-tab.svg",
+          faviconBaseURL,
+        ).toString(),
         color: "#ffffff",
       },
     },
@@ -103,7 +109,10 @@ const head = (): HeadUserConfig => {
       tag: "meta",
       attrs: {
         name: "msapplication-config",
-        content: new URL("/favicons/browserconfig.xml", faviconBaseURL).toString(),
+        content: new URL(
+          "/favicons/browserconfig.xml",
+          faviconBaseURL,
+        ).toString(),
       },
     },
     {
