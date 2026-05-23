@@ -119,11 +119,11 @@ const head = (): HeadUserConfig => {
       tag: "meta",
       attrs: {
         name: "theme-color",
-        content: "#171d24",
+        content: "#000000",
         media: "(prefers-color-scheme: dark)",
       },
     },
-    { tag: "meta", attrs: { name: "theme-color", content: "#fff" } },
+    { tag: "meta", attrs: { name: "theme-color", content: "#fbfbf9" } },
     {
       tag: "script",
       attrs: {
