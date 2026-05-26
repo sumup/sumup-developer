@@ -21,14 +21,40 @@ const faviconBaseURL = "https://static.sumup.com";
 
 const head = (): HeadUserConfig => {
   const head: HeadUserConfig = [
+    // font preload
     {
       tag: "link",
       attrs: {
         rel: "preload",
-        href: "https://static.sumup.com/fonts/Inter/Inter-normal-latin.woff2",
+        href: "https://static.sumup.com/fonts/sumup/sumup-narrow-latin-s.woff2",
         as: "font",
         type: "font/woff2",
         crossorigin: true,
+      },
+    },
+    // icons
+    {
+      tag: "link",
+      attrs: {
+        rel: "icon",
+        type: "image/svg+xml",
+        href: new URL("/favicons/favicon.svg", faviconBaseURL).toString(),
+      },
+    },
+    {
+      tag: "link",
+      attrs: {
+        rel: "icon",
+        sizes: "96x96",
+        type: "image/png",
+        href: new URL("/favicons/favicon-96x96.png", faviconBaseURL).toString(),
+      },
+    },
+    {
+      tag: "link",
+      attrs: {
+        rel: "shortcut icon",
+        href: new URL("favicons/favicon.ico", faviconBaseURL).toString(),
       },
     },
     {
@@ -45,36 +71,11 @@ const head = (): HeadUserConfig => {
     {
       tag: "link",
       attrs: {
-        rel: "icon",
-        type: "image/svg+xml",
-        href: new URL("/favicons/favicon.svg", faviconBaseURL).toString(),
-      },
-    },
-    {
-      tag: "link",
-      attrs: {
-        rel: "icon",
-        type: "image/png",
-        sizes: "32x32",
-        href: new URL("/favicons/favicon-32x32.png", faviconBaseURL).toString(),
-      },
-    },
-    {
-      tag: "link",
-      attrs: {
-        rel: "icon",
-        type: "image/png",
-        sizes: "16x16",
-        href: new URL("/favicons/favicon-16x16.png", faviconBaseURL).toString(),
-      },
-    },
-    {
-      tag: "link",
-      attrs: {
         rel: "manifest",
         href: new URL("/favicons/site.webmanifest", faviconBaseURL).toString(),
       },
     },
+    // Theme
     {
       tag: "link",
       attrs: {
@@ -91,28 +92,6 @@ const head = (): HeadUserConfig => {
       attrs: {
         rel: "shortcut icon",
         href: new URL("/favicons/favicon.ico", faviconBaseURL).toString(),
-      },
-    },
-    {
-      tag: "meta",
-      attrs: {
-        name: "msapplication-TileColor",
-        content: "#171d24",
-        media: "(prefers-color-scheme: dark)",
-      },
-    },
-    {
-      tag: "meta",
-      attrs: { name: "msapplication-TileColor", content: "#fff" },
-    },
-    {
-      tag: "meta",
-      attrs: {
-        name: "msapplication-config",
-        content: new URL(
-          "/favicons/browserconfig.xml",
-          faviconBaseURL,
-        ).toString(),
       },
     },
     {
