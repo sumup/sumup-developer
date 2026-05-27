@@ -1,0 +1,315 @@
+import { getCollection } from "astro:content";
+import { createElement } from "react";
+import { ImageResponse } from "workers-og";
+
+// @ts-expect-error Custom Vite loader resolves ?bytes imports to Uint8Array.
+import SkyBackgroundData from "../../assets/sky.png?bytes";
+import SumUpBlackData from "../../assets/fonts/sumup-black-latin-s.ttf";
+import SumUpNarrowMediumData from "../../assets/fonts/sumup-narrow-latin-s-medium.ttf";
+import SumUpNarrowRegularData from "../../assets/fonts/sumup-narrow-latin-s-regular.ttf";
+
+interface Props {
+  params: { slog?: string };
+}
+
+export const prerender = false;
+
+// Overrides for pages that are not backend by content collections.
+const staticPageMetadata = new Map<
+  string,
+  {
+    title: string;
+    description: string;
+  }
+>([
+  [
+    "",
+    {
+      title: "SumUp Developer",
+      description:
+        "Developer documentation, guides, and APIs for building with SumUp.",
+    },
+  ],
+  [
+    "contact",
+    {
+      title: "Contact",
+      description: "Get in touch with the SumUp Developer support team.",
+    },
+  ],
+  [
+    "help",
+    {
+      title: "FAQ",
+      description:
+        "Frequently asked questions about SumUp developer products and integrations.",
+    },
+  ],
+  [
+    "changelog",
+    {
+      title: "Changelog",
+      description:
+        "Product and API updates across the SumUp developer platform.",
+    },
+  ],
+]);
+
+function getOpenTypeSignature(data: Uint8Array) {
+  return String.fromCharCode(...data.subarray(0, 4));
+}
+
+function toSupportedFontData(data: Uint8Array | string, label: string) {
+  if (typeof data === "string") {
+    console.warn(
+      `[og] ${label} resolved to an asset URL instead of raw font bytes. Falling back to the default font.`,
+    );
+    return null;
+  }
+
+  if (getOpenTypeSignature(data) === "wOF2") {
+    console.warn(
+      `[og] ${label} uses WOFF2, which Satori/workers-og does not support. Falling back to the default font.`,
+    );
+    return null;
+  }
+
+  return data;
+}
+
+function createFontStack(primary: string | null) {
+  return primary
+    ? `'${primary}', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif`
+    : "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
+}
+
+function toBase64(bytes: Uint8Array) {
+  let binary = "";
+  for (const byte of bytes) {
+    binary += String.fromCharCode(byte);
+  }
+  return btoa(binary);
+}
+
+async function resolvePageMetadata(path: string) {
+  const normalizedPath = path.replace(/^\/+|\/+$/g, "");
+  const defaultMetadata = staticPageMetadata.get("")!;
+  const changelogMetadata = staticPageMetadata.get("changelog")!;
+
+  const docs = await getCollection("docs");
+  const doc = docs.find((entry) => entry.id === (normalizedPath || "index"));
+  if (doc) {
+    return {
+      title: doc.data.title,
+      description: doc.data.description ?? null,
+    };
+  }
+
+  if (
+    normalizedPath === "changelog" ||
+    normalizedPath.startsWith("changelog/")
+  ) {
+    return changelogMetadata;
+  }
+
+  const staticData = staticPageMetadata.get(normalizedPath);
+  if (staticData) {
+    return staticData;
+  }
+
+  return defaultMetadata;
+}
+
+export async function GET({ params }: Props) {
+  const { title, description } = await resolvePageMetadata(params.slog ?? "");
+
+  const sumUpBlack = toSupportedFontData(SumUpBlackData, "SumUp Black");
+  const sumUpNarrowMedium = toSupportedFontData(
+    SumUpNarrowMediumData,
+    "SumUp Narrow Medium",
+  );
+  const sumUpNarrowRegular = toSupportedFontData(
+    SumUpNarrowRegularData,
+    "SumUp Narrow Regular",
+  );
+  const blackFontFamily = createFontStack(sumUpBlack ? "SumUp Black" : null);
+  const narrowFontFamily = createFontStack(
+    sumUpNarrowRegular || sumUpNarrowMedium ? "SumUp Narrow" : null,
+  );
+  const backgroundImageUrl = `data:image/png;base64,${toBase64(SkyBackgroundData)}`;
+
+  const card = createElement(
+    "div",
+    {
+      style: {
+        display: "flex",
+        position: "relative",
+        width: "1200px",
+        height: "600px",
+        backgroundColor: "#000000",
+        boxSizing: "border-box",
+        alignItems: "center",
+        justifyContent: "center",
+        fontFamily: narrowFontFamily,
+      },
+    },
+    createElement(
+      "div",
+      {
+        style: {
+          display: "flex",
+          flexDirection: "column",
+          width: "100%",
+          height: "100%",
+          justifyContent: "space-between",
+          alignItems: "flex-start",
+        },
+      },
+      createElement(
+        "div",
+        {
+          style: {
+            display: "flex",
+            width: "100%",
+            alignItems: "center",
+            justifyContent: "space-between",
+            padding: "60px",
+          },
+        },
+        createElement(
+          "div",
+          {
+            style: {
+              display: "flex",
+              fontSize: "32px",
+              color: "#f0eee7",
+              fontFamily: narrowFontFamily,
+              fontWeight: 500,
+              letterSpacing: "0.01em",
+            },
+          },
+          "SumUp Developer",
+        ),
+        createElement(
+          "svg",
+          {
+            xmlns: "http://www.w3.org/2000/svg",
+            width: "48",
+            height: "48",
+            fill: "none",
+            viewBox: "0 0 32 32",
+            style: {
+              display: "flex",
+              color: "#f0eee7",
+              flexShrink: 0,
+            },
+          },
+          createElement("path", {
+            fill: "currentColor",
+            d: "M25.984 0A6.016 6.016 0 0 1 32 6.016v19.968A6.016 6.016 0 0 1 25.984 32H6.016A6.016 6.016 0 0 1 0 25.984V6.016A6.016 6.016 0 0 1 6.016 0zM9.744 23.806a7.2 7.2 0 0 0 10.198 0 7.23 7.23 0 0 0 0-10.216zM22.256 8.194a7.2 7.2 0 0 0-10.198 0 7.23 7.23 0 0 0 0 10.216z",
+          }),
+        ),
+      ),
+      createElement(
+        "div",
+        {
+          style: {
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "flex-start",
+            justifyContent: "center",
+            flex: 1,
+            width: "100%",
+            padding: "60px",
+          },
+        },
+        createElement(
+          "div",
+          {
+            style: {
+              display: "flex",
+              fontFamily: blackFontFamily,
+              fontSize: "64px",
+              fontWeight: 700,
+              lineHeight: 1,
+              color: "#f0eee7",
+              margin: 0,
+              maxWidth: "100%",
+              wordWrap: "break-word",
+            },
+          },
+          title,
+        ),
+        ...(description
+          ? [
+              createElement(
+                "div",
+                {
+                  style: {
+                    display: "flex",
+                    marginTop: "20px",
+                    fontSize: "32px",
+                    lineHeight: 1.25,
+                    color: "#f0eee7",
+                    fontFamily: narrowFontFamily,
+                    fontWeight: 400,
+                    maxWidth: "960px",
+                    wordWrap: "break-word",
+                  },
+                },
+                description,
+              ),
+            ]
+          : []),
+      ),
+      createElement("div", {
+        style: {
+          width: "1200px",
+          height: "120px",
+          backgroundImage: `url(${backgroundImageUrl})`,
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "cover",
+        },
+      }),
+    ),
+  );
+
+  return new ImageResponse(card, {
+    width: 1200,
+    height: 600,
+    debug: false,
+    fonts: [
+      ...(sumUpBlack
+        ? [
+            {
+              name: "SumUp Black",
+              data: sumUpBlack,
+              style: "normal" as const,
+              weight: 700,
+            },
+          ]
+        : []),
+      ...(sumUpNarrowRegular
+        ? [
+            {
+              name: "SumUp Narrow",
+              data: sumUpNarrowRegular,
+              style: "normal" as const,
+              weight: 400,
+            },
+          ]
+        : []),
+      ...(sumUpNarrowMedium
+        ? [
+            {
+              name: "SumUp Narrow",
+              data: sumUpNarrowMedium,
+              style: "normal" as const,
+              weight: 500,
+            },
+          ]
+        : []),
+    ],
+  });
+}

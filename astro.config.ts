@@ -6,10 +6,12 @@ import starlightLinksValidator from "starlight-links-validator";
 import mermaid from "astro-mermaid";
 import starlightLlmsTxt from "starlight-llms-txt";
 import { loadEnv } from "vite";
+import { readFile } from "node:fs/promises";
 import rehypeExternalLinks from "./src/plugins/rehype/external-links";
 
 import { defineConfig } from "astro/config";
 import type { HeadUserConfig } from "node_modules/@astrojs/starlight/schemas/head";
+import type { Plugin } from "vite";
 
 const { PUBLIC_ONETRUST_DOMAIN_ID, PUBLIC_GA_TAG_ID } = loadEnv(
   process.env.NODE_ENV || "",
@@ -18,6 +20,43 @@ const { PUBLIC_ONETRUST_DOMAIN_ID, PUBLIC_GA_TAG_ID } = loadEnv(
 );
 
 const faviconBaseURL = "https://static.sumup.com";
+
+function rawFonts(extensions: string[]): Plugin {
+  const pattern = new RegExp(
+    `\\.(${extensions.map((extension) => extension.replace(/^\./, "")).join("|")})$`,
+  );
+
+  return {
+    name: "raw-fonts",
+    enforce: "pre",
+    async load(id) {
+      if (!pattern.test(id)) {
+        return null;
+      }
+
+      const source = await readFile(id);
+      const bytes = Array.from(source);
+      return `export default new Uint8Array([${bytes.join(",")}]);`;
+    },
+  };
+}
+
+function rawAssetBytes(): Plugin {
+  return {
+    name: "raw-asset-bytes",
+    enforce: "pre",
+    async load(id) {
+      const [filename, query = ""] = id.split("?", 2);
+      if (!query.includes("bytes")) {
+        return null;
+      }
+
+      const source = await readFile(filename);
+      const bytes = Array.from(source);
+      return `export default new Uint8Array([${bytes.join(",")}]);`;
+    },
+  };
+}
 
 const head = (): HeadUserConfig => {
   const head: HeadUserConfig = [
@@ -175,6 +214,15 @@ export default defineConfig({
 
   experimental: {
     contentIntellisense: true,
+  },
+
+  vite: {
+    plugins: [rawFonts([".woff2", ".woff", ".ttf", ".otf"]), rawAssetBytes()],
+    assetsInclude: ["**/*.wasm"], // Treat WASM files as assets (but not font files used by OG)
+    ssr: {
+      external: ["buffer", "path", "fs"].map((i) => `node:${i}`),
+      noExternal: ["workers-og"],
+    },
   },
 
   integrations: [

@@ -20,6 +20,15 @@ const title = routeTitle.includes("SumUp")
 const description = asString(frontmatterRecord.description);
 const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
 const siteName = "SumUp Developer";
+// stripe leading/trailing slash(es), convert `/` to `index`
+const normalizedOgPath =
+  Astro.url.pathname === "/"
+    ? "index"
+    : Astro.url.pathname.replace(/^\/+|\/+$/g, "");
+const ogImageUrl = new URL(
+  `/og/${normalizedOgPath}.png`,
+  Astro.site,
+).toString();
 const markdownAlternateUrl = new URL(
   `${Astro.url.pathname.replace(/\/?$/, "/")}index.md`,
   Astro.site,
@@ -99,8 +108,13 @@ upsertMetaByProperty("og:url", canonicalUrl);
 upsertMetaByProperty("og:type", entry.id === "" ? "website" : "article");
 upsertMetaByProperty("og:site_name", siteName);
 upsertMetaByProperty("og:locale", "en_GB");
+upsertMetaByProperty("og:image", ogImageUrl);
+upsertMetaByProperty("og:image:secure_url", ogImageUrl);
+upsertMetaByProperty("og:image:width", "1200");
+upsertMetaByProperty("og:image:height", "600");
 upsertMetaByName("twitter:title", title);
 upsertMetaByName("twitter:card", "summary_large_image");
+upsertMetaByName("twitter:image", ogImageUrl);
 upsertMetaByName("twitter:site", "@SumUp");
 
 if (description) {
