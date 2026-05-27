@@ -2,8 +2,6 @@ import { getCollection } from "astro:content";
 import { createElement } from "react";
 import { ImageResponse } from "workers-og";
 
-// @ts-expect-error Custom Vite loader resolves ?bytes imports to Uint8Array.
-import SkyBackgroundData from "../../assets/sky.png?bytes";
 import SumUpBlackData from "../../assets/fonts/sumup-black-latin-s.ttf";
 import SumUpNarrowMediumData from "../../assets/fonts/sumup-narrow-latin-s-medium.ttf";
 import SumUpNarrowRegularData from "../../assets/fonts/sumup-narrow-latin-s-regular.ttf";
@@ -83,14 +81,6 @@ function createFontStack(primary: string | null) {
     : "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
 }
 
-function toBase64(bytes: Uint8Array) {
-  let binary = "";
-  for (const byte of bytes) {
-    binary += String.fromCharCode(byte);
-  }
-  return btoa(binary);
-}
-
 async function resolvePageMetadata(path: string) {
   const normalizedPath = path.replace(/^\/+|\/+$/g, "");
   const defaultMetadata = staticPageMetadata.get("")!;
@@ -136,7 +126,6 @@ export async function GET({ params }: Props) {
   const narrowFontFamily = createFontStack(
     sumUpNarrowRegular || sumUpNarrowMedium ? "SumUp Narrow" : null,
   );
-  const backgroundImageUrl = `data:image/png;base64,${toBase64(SkyBackgroundData)}`;
 
   const card = createElement(
     "div",
@@ -163,6 +152,7 @@ export async function GET({ params }: Props) {
           height: "100%",
           justifyContent: "space-between",
           alignItems: "flex-start",
+          padding: "60px",
         },
       },
       createElement(
@@ -173,7 +163,6 @@ export async function GET({ params }: Props) {
             width: "100%",
             alignItems: "center",
             justifyContent: "space-between",
-            padding: "60px",
           },
         },
         createElement(
@@ -181,7 +170,7 @@ export async function GET({ params }: Props) {
           {
             style: {
               display: "flex",
-              fontSize: "32px",
+              fontSize: "42px",
               color: "#f0eee7",
               fontFamily: narrowFontFamily,
               fontWeight: 500,
@@ -220,7 +209,6 @@ export async function GET({ params }: Props) {
             justifyContent: "center",
             flex: 1,
             width: "100%",
-            padding: "60px",
           },
         },
         createElement(
@@ -229,7 +217,7 @@ export async function GET({ params }: Props) {
             style: {
               display: "flex",
               fontFamily: blackFontFamily,
-              fontSize: "64px",
+              fontSize: "72px",
               fontWeight: 700,
               lineHeight: 1,
               color: "#f0eee7",
@@ -248,7 +236,7 @@ export async function GET({ params }: Props) {
                   style: {
                     display: "flex",
                     marginTop: "20px",
-                    fontSize: "32px",
+                    fontSize: "42px",
                     lineHeight: 1.25,
                     color: "#f0eee7",
                     fontFamily: narrowFontFamily,
@@ -262,16 +250,6 @@ export async function GET({ params }: Props) {
             ]
           : []),
       ),
-      createElement("div", {
-        style: {
-          width: "1200px",
-          height: "120px",
-          backgroundImage: `url(${backgroundImageUrl})`,
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-          backgroundSize: "cover",
-        },
-      }),
     ),
   );
 
