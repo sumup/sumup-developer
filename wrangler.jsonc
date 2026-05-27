@@ -15,7 +15,8 @@
     "html_handling": "drop-trailing-slash",
     "run_worker_first": [
       "/contact",
-      "/subscribe"
+      "/subscribe",
+      "/og/*"
     ],
   },
   "observability": {
