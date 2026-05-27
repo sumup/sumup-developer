@@ -25,7 +25,10 @@ const normalizedOgPath =
   Astro.url.pathname === "/"
     ? "index"
     : Astro.url.pathname.replace(/^\/+|\/+$/g, "");
-const ogImageUrl = new URL(`/og/${normalizedOgPath}.png`, Astro.site).toString();
+const ogImageUrl = new URL(
+  `/og/${normalizedOgPath}.png`,
+  Astro.site,
+).toString();
 const markdownAlternateUrl = new URL(
   `${Astro.url.pathname.replace(/\/?$/, "/")}index.md`,
   Astro.site,

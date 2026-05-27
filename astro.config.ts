@@ -41,6 +41,23 @@ function rawFonts(extensions: string[]): Plugin {
   };
 }
 
+function rawAssetBytes(): Plugin {
+  return {
+    name: "raw-asset-bytes",
+    enforce: "pre",
+    async load(id) {
+      const [filename, query = ""] = id.split("?", 2);
+      if (!query.includes("bytes")) {
+        return null;
+      }
+
+      const source = await readFile(filename);
+      const bytes = Array.from(source);
+      return `export default new Uint8Array([${bytes.join(",")}]);`;
+    },
+  };
+}
+
 const head = (): HeadUserConfig => {
   const head: HeadUserConfig = [
     // font preload
@@ -200,7 +217,7 @@ export default defineConfig({
   },
 
   vite: {
-    plugins: [rawFonts([".woff2", ".woff", ".ttf", ".otf"])],
+    plugins: [rawFonts([".woff2", ".woff", ".ttf", ".otf"]), rawAssetBytes()],
     assetsInclude: ["**/*.wasm"], // Treat WASM files as assets (but not font files used by OG)
     ssr: {
       external: ["buffer", "path", "fs"].map((i) => `node:${i}`),

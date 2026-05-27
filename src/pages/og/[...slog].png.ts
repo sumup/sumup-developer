@@ -1,8 +1,9 @@
 import { getCollection } from "astro:content";
 import { createElement } from "react";
-import slugify from "@sindresorhus/slugify";
 import { ImageResponse } from "workers-og";
 
+// @ts-expect-error Custom Vite loader resolves ?bytes imports to Uint8Array.
+import SkyBackgroundData from "../../assets/sky.png?bytes";
 import SumUpBlackData from "../../assets/fonts/sumup-black-latin-s.ttf";
 import SumUpNarrowMediumData from "../../assets/fonts/sumup-narrow-latin-s-medium.ttf";
 import SumUpNarrowRegularData from "../../assets/fonts/sumup-narrow-latin-s-regular.ttf";
@@ -13,48 +14,46 @@ interface Props {
 
 export const prerender = false;
 
-const staticPageTitles = new Map<string, string>([
-  ["", "SumUp Developer"],
-  ["contact", "Contact"],
-  ["help", "FAQ"],
-  ["changelog", "Changelog"],
-  ["changelog/rss.xml", "Changelog RSS Feed"],
-  ["llms.txt", "LLMs.txt"],
-  ["llms-full.txt", "LLMs Full"],
-  ["llms-small.txt", "LLMs Small"],
-]);
-
-const staticPageDescriptions = new Map<string, string>([
-  ["", "Developer documentation, guides, and APIs for building with SumUp."],
-  ["contact", "Get in touch with the SumUp Developer support team."],
+// Overrides for pages that are not backend by content collections.
+const staticPageMetadata = new Map<
+  string,
+  {
+    title: string;
+    description: string;
+  }
+>([
+  [
+    "",
+    {
+      title: "SumUp Developer",
+      description:
+        "Developer documentation, guides, and APIs for building with SumUp.",
+    },
+  ],
+  [
+    "contact",
+    {
+      title: "Contact",
+      description: "Get in touch with the SumUp Developer support team.",
+    },
+  ],
   [
     "help",
-    "Frequently asked questions about SumUp developer products and integrations.",
-  ],
-  ["changelog", "Product and API updates across the SumUp developer platform."],
-  ["changelog/rss.xml", "RSS feed for SumUp Developer changelog updates."],
-  [
-    "llms.txt",
-    "Structured guidance for language models using the SumUp Developer portal.",
+    {
+      title: "FAQ",
+      description:
+        "Frequently asked questions about SumUp developer products and integrations.",
+    },
   ],
   [
-    "llms-full.txt",
-    "Full language model guidance for the SumUp Developer portal.",
-  ],
-  [
-    "llms-small.txt",
-    "Compact language model guidance for the SumUp Developer portal.",
+    "changelog",
+    {
+      title: "Changelog",
+      description:
+        "Product and API updates across the SumUp developer platform.",
+    },
   ],
 ]);
-
-function toDisplayTitle(path: string) {
-  const slug = path.split("/").filter(Boolean).at(-1) ?? "";
-  return slug
-    .split("-")
-    .filter(Boolean)
-    .map((segment) => segment[0]?.toUpperCase() + segment.slice(1))
-    .join(" ");
-}
 
 function getOpenTypeSignature(data: Uint8Array) {
   return String.fromCharCode(...data.subarray(0, 4));
@@ -84,15 +83,18 @@ function createFontStack(primary: string | null) {
     : "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
 }
 
-function getFirstParagraph(markdown: string) {
-  return markdown
-    .split(/\n\s*\n/)
-    .map((paragraph) => paragraph.replace(/\n/g, " ").trim())
-    .find((paragraph) => paragraph && !paragraph.startsWith("#"));
+function toBase64(bytes: Uint8Array) {
+  let binary = "";
+  for (const byte of bytes) {
+    binary += String.fromCharCode(byte);
+  }
+  return btoa(binary);
 }
 
 async function resolvePageMetadata(path: string) {
   const normalizedPath = path.replace(/^\/+|\/+$/g, "");
+  const defaultMetadata = staticPageMetadata.get("")!;
+  const changelogMetadata = staticPageMetadata.get("changelog")!;
 
   const docs = await getCollection("docs");
   const doc = docs.find((entry) => entry.id === (normalizedPath || "index"));
@@ -103,46 +105,19 @@ async function resolvePageMetadata(path: string) {
     };
   }
 
-  if (normalizedPath.startsWith("changelog/tags/")) {
-    const currentTag = normalizedPath.slice("changelog/tags/".length);
-    const changelogEntries = await getCollection("changelog");
-    const matchingTag = [
-      ...new Set(changelogEntries.flatMap(({ data: { tags } }) => tags)),
-    ].find((tag) => slugify(tag) === currentTag);
-
-    if (matchingTag) {
-      return {
-        title: `${matchingTag} Changelog`,
-        description: "Product and API updates filtered by changelog tag.",
-      };
-    }
+  if (
+    normalizedPath === "changelog" ||
+    normalizedPath.startsWith("changelog/")
+  ) {
+    return changelogMetadata;
   }
 
-  if (normalizedPath.startsWith("changelog/")) {
-    const changelogSlug = normalizedPath.slice("changelog/".length);
-    const changelogEntries = await getCollection("changelog");
-    const entry = changelogEntries.find((item) => item.slug === changelogSlug);
-
-    if (entry) {
-      return {
-        title: entry.data.title,
-        description: getFirstParagraph(entry.body) ?? null,
-      };
-    }
+  const staticData = staticPageMetadata.get(normalizedPath);
+  if (staticData) {
+    return staticData;
   }
 
-  const staticTitle = staticPageTitles.get(normalizedPath);
-  if (staticTitle) {
-    return {
-      title: staticTitle,
-      description: staticPageDescriptions.get(normalizedPath) ?? null,
-    };
-  }
-
-  return {
-    title: toDisplayTitle(normalizedPath) || "SumUp Developer",
-    description: null,
-  };
+  return defaultMetadata;
 }
 
 export async function GET({ params }: Props) {
@@ -161,16 +136,17 @@ export async function GET({ params }: Props) {
   const narrowFontFamily = createFontStack(
     sumUpNarrowRegular || sumUpNarrowMedium ? "SumUp Narrow" : null,
   );
+  const backgroundImageUrl = `data:image/png;base64,${toBase64(SkyBackgroundData)}`;
 
   const card = createElement(
     "div",
     {
       style: {
         display: "flex",
+        position: "relative",
         width: "1200px",
         height: "600px",
-        background: "#000000",
-        padding: "60px",
+        backgroundColor: "#000000",
         boxSizing: "border-box",
         alignItems: "center",
         justifyContent: "center",
@@ -197,6 +173,7 @@ export async function GET({ params }: Props) {
             width: "100%",
             alignItems: "center",
             justifyContent: "space-between",
+            padding: "60px",
           },
         },
         createElement(
@@ -243,6 +220,7 @@ export async function GET({ params }: Props) {
             justifyContent: "center",
             flex: 1,
             width: "100%",
+            padding: "60px",
           },
         },
         createElement(
@@ -284,6 +262,16 @@ export async function GET({ params }: Props) {
             ]
           : []),
       ),
+      createElement("div", {
+        style: {
+          width: "1200px",
+          height: "120px",
+          backgroundImage: `url(${backgroundImageUrl})`,
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "cover",
+        },
+      }),
     ),
   );
 

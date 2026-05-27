@@ -25,4 +25,9 @@ declare module "*.otf" {
   export default data;
 }
 
+declare module "*.png?bytes" {
+  const data: Uint8Array;
+  export default data;
+}
+
 export {};
