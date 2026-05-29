@@ -1,12 +1,16 @@
 import {
   Anchor,
   Body,
-  Button,
+  ButtonGroup,
+  Flag,
   ToastProvider,
   useNotificationToast,
+  type FlagProps,
+  type SelectOption,
 } from "@sumup-oss/circuit-ui";
 import type { FC, ReactNode } from "react";
 import { Field, Form } from "react-final-form";
+import { Send } from "@sumup-oss/icons";
 
 import {
   CheckboxField,
@@ -15,36 +19,40 @@ import {
   TextAreaField,
 } from "@components/Forms/Forms/Input";
 
-const countryOptions = [
-  { value: "Austria", label: "Austria" },
-  { value: "Australia", label: "Australia" },
-  { value: "Belgium", label: "Belgium" },
-  { value: "Bulgaria", label: "Bulgaria" },
-  { value: "Chile", label: "Chile" },
-  { value: "Cyprus", label: "Cyprus" },
-  { value: "Czech Republic", label: "Czech Republic" },
-  { value: "Denmark", label: "Denmark" },
-  { value: "Estonia", label: "Estonia" },
-  { value: "Finland", label: "Finland" },
-  { value: "France", label: "France" },
-  { value: "Germany", label: "Germany" },
-  { value: "Hungary", label: "Hungary" },
-  { value: "Ireland", label: "Ireland" },
-  { value: "Italy", label: "Italy" },
-  { value: "Latvia", label: "Latvia" },
-  { value: "Lithuania", label: "Lithuania" },
-  { value: "Luxembourg", label: "Luxembourg" },
-  { value: "Malta", label: "Malta" },
-  { value: "Netherlands", label: "Netherlands" },
-  { value: "Norway", label: "Norway" },
-  { value: "Poland", label: "Poland" },
-  { value: "Romania", label: "Romania" },
-  { value: "Slovakia", label: "Slovakia" },
-  { value: "Slovenia", label: "Slovenia" },
-  { value: "Spain", label: "Spain" },
-  { value: "Switzerland", label: "Switzerland" },
-  { value: "United Kingdom", label: "United Kingdom" },
-  { value: "United States", label: "United States" },
+type CountryOption = SelectOption & {
+  countryCode?: FlagProps["countryCode"];
+};
+
+const countryOptions: CountryOption[] = [
+  { value: "Austria", label: "Austria", countryCode: "AT" },
+  { value: "Australia", label: "Australia", countryCode: "AU" },
+  { value: "Belgium", label: "Belgium", countryCode: "BE" },
+  { value: "Bulgaria", label: "Bulgaria", countryCode: "BG" },
+  { value: "Chile", label: "Chile", countryCode: "CL" },
+  { value: "Cyprus", label: "Cyprus", countryCode: "CY" },
+  { value: "Czech Republic", label: "Czech Republic", countryCode: "CZ" },
+  { value: "Denmark", label: "Denmark", countryCode: "DK" },
+  { value: "Estonia", label: "Estonia", countryCode: "EE" },
+  { value: "Finland", label: "Finland", countryCode: "FI" },
+  { value: "France", label: "France", countryCode: "FR" },
+  { value: "Germany", label: "Germany", countryCode: "DE" },
+  { value: "Hungary", label: "Hungary", countryCode: "HU" },
+  { value: "Ireland", label: "Ireland", countryCode: "IE" },
+  { value: "Italy", label: "Italy", countryCode: "IT" },
+  { value: "Latvia", label: "Latvia", countryCode: "LV" },
+  { value: "Lithuania", label: "Lithuania", countryCode: "LT" },
+  { value: "Luxembourg", label: "Luxembourg", countryCode: "LU" },
+  { value: "Malta", label: "Malta", countryCode: "MT" },
+  { value: "Netherlands", label: "Netherlands", countryCode: "NL" },
+  { value: "Norway", label: "Norway", countryCode: "NO" },
+  { value: "Poland", label: "Poland", countryCode: "PL" },
+  { value: "Romania", label: "Romania", countryCode: "RO" },
+  { value: "Slovakia", label: "Slovakia", countryCode: "SK" },
+  { value: "Slovenia", label: "Slovenia", countryCode: "SI" },
+  { value: "Spain", label: "Spain", countryCode: "ES" },
+  { value: "Switzerland", label: "Switzerland", countryCode: "CH" },
+  { value: "United Kingdom", label: "United Kingdom", countryCode: "GB" },
+  { value: "United States", label: "United States", countryCode: "US" },
   { value: "Other", label: "Other" },
 ];
 
@@ -98,6 +106,33 @@ const cardReaderIntegrationOptions = [
   { label: "SDK", value: "SDK" },
 ];
 
+function CountryFlagPrefix({
+  value,
+  className,
+}: {
+  value?: string | number;
+  className?: string;
+}) {
+  if (typeof value !== "string") {
+    return null;
+  }
+
+  const countryCode = countryOptions.find(
+    (option) => option.value === value,
+  )?.countryCode;
+  if (!countryCode) {
+    return null;
+  }
+
+  return (
+    <Flag
+      className={className}
+      countryCode={countryCode}
+      alt={`${value} flag`}
+    />
+  );
+}
+
 type ContactParams = {
   status?: "success" | "error";
 };
@@ -126,6 +161,7 @@ const Contact: FC<ContactParams> = ({ status }) => {
             name="country"
             label="Operating country"
             options={countryOptions}
+            renderPrefix={CountryFlagPrefix}
             required
           />
 
@@ -218,14 +254,18 @@ const Contact: FC<ContactParams> = ({ status }) => {
             />
           </div>
 
-          <Button
-            type="submit"
-            variant="primary"
-            isLoading={submitting}
-            loadingLabel="Submitting"
-          >
-            Send
-          </Button>
+          <ButtonGroup
+            align="right"
+            actions={{
+              primary: {
+                children: "Send",
+                type: "submit",
+                isLoading: submitting,
+                loadingLabel: "Submitting",
+                icon: Send,
+              },
+            }}
+          />
         </form>
       )}
     />
