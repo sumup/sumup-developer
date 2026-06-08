@@ -1,8 +1,7 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "developer-sumup-com",
-  "compatibility_date": "2025-08-15",
-  "main": "./dist/_worker.js/index.js",
+  "compatibility_date": "2026-05-26",
   "compatibility_flags": [
     "nodejs_compat"
   ],

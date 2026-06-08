@@ -1,16 +1,17 @@
-import { defineCollection, z } from "astro:content";
 import { docsLoader } from "@astrojs/starlight/loaders";
 import { docsSchema } from "@astrojs/starlight/schema";
+import { glob } from "astro/loaders";
+import { defineCollection, z } from "astro:content";
 
 const help = defineCollection({
-  type: "content",
+  loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/help" }),
   schema: z.object({
     title: z.string(),
   }),
 });
 
 const changelog = defineCollection({
-  type: "content",
+  loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/changelog" }),
   schema: z.object({
     title: z.string(),
     tags: z.array(z.string()),

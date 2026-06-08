@@ -1,5 +1,5 @@
 ---
-import { getCollection } from "astro:content";
+import { getCollection, render } from "astro:content";
 import slugify from "@sindresorhus/slugify";
 import { Badge, Body, Button, Anchor, Headline } from "@sumup-oss/circuit-ui";
 import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
@@ -20,9 +20,9 @@ const collectionDocs = changelogDocs.sort(
 );
 
 const posts = await Promise.all(
-  collectionDocs.map(async (page) => {
-    const { Content } = await page.render();
-    return { Content, ...page };
+  collectionDocs.map(async (entry) => {
+    const { Content } = await render(entry);
+    return { Content, ...entry };
   }),
 );
 
@@ -89,10 +89,10 @@ const props = {
   <main class="content" data-pagefind-body>
     {
       posts.map(
-        async ({ Content, slug, data: { title, tags, publishedDate } }) => (
-          <div class="post" id={`entry-${slug}`}>
+        async ({ Content, id, data: { title, tags, publishedDate } }) => (
+          <div class="post" id={`entry-${id}`}>
             <Headline as="h2" size="s" className="title">
-              <a class="titleLink" href={getEntryHref(slug)}>
+              <a class="titleLink" href={getEntryHref(id)}>
                 {title}
               </a>
             </Headline>
@@ -114,7 +114,7 @@ const props = {
                   </span>
                 ))}
               <span class="metaItem">
-                <Anchor size="s" href={getEntryHref(slug)}>
+                <Anchor size="s" href={getEntryHref(id)}>
                   Permalink
                 </Anchor>
               </span>
