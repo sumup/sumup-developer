@@ -70,10 +70,10 @@ Example request:
   <TabItem label="Node.js" icon="seti:javascript">
     ```ts
     const checkout = await client.checkouts.create({
-    	merchant_code: merchantCode,
+        merchant_code: merchantCode,
       amount: 15.0,
       currency: "EUR",
-    	checkout_reference: "unique-checkout-ref-123"
+        checkout_reference: "unique-checkout-ref-123"
     });
     ```
   </TabItem>
@@ -103,10 +103,10 @@ Example request:
   <TabItem label="Go" icon="seti:go">
     ```go
     checkout, err := client.Checkouts.Create(ctx, sumup.CheckoutsCreateParams{
-    	MerchantCode:      merchantCode,
-    	Amount:            15.0,
-    	Currency:          sumup.CurrencyEUR,
-    	CheckoutReference: "unique-checkout-ref-123",
+        MerchantCode:      merchantCode,
+        Amount:            15.0,
+        Currency:          sumup.CurrencyEUR,
+        CheckoutReference: "unique-checkout-ref-123",
     })
     ```
   </TabItem>
@@ -261,14 +261,14 @@ Example request for [Step 1 checkout](#1-create-a-checkout):
   <TabItem label="Go" icon="seti:go">
     ```go
     checkoutSuccess, err := client.Checkouts.Process(ctx, "f14425c6-8bc1-4d02-957c-47573f762828", sumup.CheckoutsProcessParams{
-    	Card: &sumup.Card{
-    		Cvv:         "123",
-    		ExpiryMonth: "12",
-    		ExpiryYear:  "23",
-    		Name:        "Boaty McBoatface",
-    		Number:      "4200000000000042",
-    	},
-    	PaymentType: sumup.ProcessCheckoutPaymentTypeCard,
+        Card: &sumup.Card{
+            Cvv:         "123",
+            ExpiryMonth: "12",
+            ExpiryYear:  "23",
+            Name:        "Boaty McBoatface",
+            Number:      "4200000000000042",
+        },
+        PaymentType: sumup.ProcessCheckoutPaymentTypeCard,
     })
     ```
   </TabItem>

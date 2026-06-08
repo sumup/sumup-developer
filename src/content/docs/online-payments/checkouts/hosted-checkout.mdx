@@ -108,15 +108,15 @@ Send a request to the [Create a checkout endpoint](/api/checkouts/create) with `
   <TabItem label="Go" icon="seti:go">
     ```go
     checkout, err := client.Checkouts.Create(ctx, sumup.CheckoutsCreateParams{
-    	MerchantCode:      merchantCode,
-    	Amount:            12.0,
-    	Currency:          sumup.CurrencyEUR,
-    	CheckoutReference: "b50pr914-6k0e-3091-a592-890010285b3d",
-    	Description:       "A sample checkout",
-    	RedirectURL:       "https://example.com/orders/123/complete",
-    	HostedCheckout: &sumup.CheckoutHostedCheckout{
-    		Enabled: true,
-    	},
+        MerchantCode:      merchantCode,
+        Amount:            12.0,
+        Currency:          sumup.CurrencyEUR,
+        CheckoutReference: "b50pr914-6k0e-3091-a592-890010285b3d",
+        Description:       "A sample checkout",
+        RedirectURL:       "https://example.com/orders/123/complete",
+        HostedCheckout: &sumup.CheckoutHostedCheckout{
+            Enabled: true,
+        },
     })
     ```
   </TabItem>
