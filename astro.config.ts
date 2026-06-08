@@ -5,6 +5,7 @@ import starlight from "@astrojs/starlight";
 import starlightLinksValidator from "starlight-links-validator";
 import mermaid from "astro-mermaid";
 import starlightLlmsTxt from "starlight-llms-txt";
+import { unified } from "@astrojs/markdown-remark";
 import { loadEnv } from "vite";
 import { readFile } from "node:fs/promises";
 import rehypeExternalLinks from "./src/plugins/rehype/external-links";
@@ -185,14 +186,21 @@ const head = (): HeadUserConfig => {
 };
 
 export default defineConfig({
-  adapter: cloudflare({ imageService: "compile" }),
+  adapter: cloudflare({
+    imageService: "compile",
+    prerenderEnvironment: "node",
+  }),
   site: "https://developer.sumup.com",
   markdown: {
-    rehypePlugins: [rehypeExternalLinks],
-    remarkRehype: {
-      // Use text-presentation symbol (U+21A9 + U+FE0E), not emoji.
-      footnoteBackContent: "\u21A9\uFE0E",
-    },
+    processor: unified({
+      gfm: true,
+      rehypePlugins: [rehypeExternalLinks],
+      remarkRehype: {
+        // Use text-presentation symbol (U+21A9 + U+FE0E), not emoji.
+        footnoteBackContent: "\u21A9\uFE0E",
+      },
+      smartypants: true,
+    }),
   },
 
   experimental: {
@@ -262,19 +270,35 @@ export default defineConfig({
         },
         {
           label: "In-person Payments",
-          autogenerate: { directory: "terminal-payments", collapsed: true },
+          items: [
+            {
+              autogenerate: { directory: "terminal-payments", collapsed: true },
+            },
+          ],
         },
         {
           label: "Online Payments",
-          autogenerate: { directory: "online-payments", collapsed: true },
+          items: [
+            {
+              autogenerate: { directory: "online-payments", collapsed: true },
+            },
+          ],
         },
         {
           label: "Developer Resources",
-          autogenerate: { directory: "tools", collapsed: true },
+          items: [
+            {
+              autogenerate: { directory: "tools", collapsed: true },
+            },
+          ],
         },
         {
           label: "Resources",
-          autogenerate: { directory: "resources", collapsed: true },
+          items: [
+            {
+              autogenerate: { directory: "resources", collapsed: true },
+            },
+          ],
         },
       ],
       head: head(),

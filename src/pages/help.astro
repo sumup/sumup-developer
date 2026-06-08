@@ -1,6 +1,6 @@
 ---
 import type { StarlightPageProps } from "@astrojs/starlight/props";
-import { getCollection } from "astro:content";
+import { getCollection, render } from "astro:content";
 import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
 
 const props = {
@@ -18,7 +18,7 @@ const posts = await getCollection("help");
   <div>
     {
       posts.map(async (post) => {
-        const { Content } = await post.render();
+        const { Content } = await render(post);
         return (
           <details>
             <summary>{post.data.title}</summary>
