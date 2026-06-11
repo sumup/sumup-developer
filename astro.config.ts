@@ -1,4 +1,5 @@
 import cloudflare from "@astrojs/cloudflare";
+import mdx from "@astrojs/mdx";
 import react from "@astrojs/react";
 import starlightImageZoom from "starlight-image-zoom";
 import starlight from "@astrojs/starlight";
@@ -336,6 +337,11 @@ export default defineConfig({
       ],
       pagination: false,
       lastUpdated: true,
+    }),
+    mdx({
+      optimize: true,
+      gfm: true,
+      smartypants: true,
     }),
   ],
   server: {
