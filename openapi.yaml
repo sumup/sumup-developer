@@ -1505,7 +1505,7 @@ paths:
           description: Specifies the maximum number of results per page. Value must be a positive integer and if not specified, will return 10 results.
           schema:
             type: integer
-        - name: users
+        - name: users[]
           in: query
           description: Filters the returned results by user email.
           required: false
@@ -1532,7 +1532,7 @@ paths:
                 - FAILED
                 - REFUNDED
                 - CHARGE_BACK
-        - name: payment_types
+        - name: payment_types[]
           in: query
           description: Filters the returned results by the specified list of payment types used for the transactions.
           required: false
@@ -1548,7 +1548,7 @@ paths:
             type: array
             items:
               $ref: '#/components/schemas/EntryMode'
-        - name: types
+        - name: types[]
           in: query
           description: Filters the returned results by the specified list of transaction types.
           required: false
@@ -3719,7 +3719,7 @@ components:
           - ascending
           - descending
     PaymentTypesFilter:
-      name: payment_types
+      name: payment_types[]
       in: query
       description: Filters the returned results by the specified list of payment types used for the transactions.
       required: false
@@ -3764,7 +3764,7 @@ components:
       schema:
         type: string
     TypesFilter:
-      name: types
+      name: types[]
       in: query
       description: Filters the returned results by the specified list of transaction types.
       required: false
@@ -3777,7 +3777,7 @@ components:
             - REFUND
             - CHARGE_BACK
     UsersFilter:
-      name: users
+      name: users[]
       in: query
       description: Filters the returned results by user email.
       required: false
@@ -5744,7 +5744,8 @@ components:
       properties:
         user_id:
           type: integer
-          format: int32
+          maximum: 2147483647
+          minimum: 0
       deprecated: true
       required:
         - user_id
