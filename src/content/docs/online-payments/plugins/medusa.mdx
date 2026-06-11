@@ -1,0 +1,163 @@
+---
+title: Medusa
+description: Accept SumUp payments in Medusa with the SumUp plugin for Medusa v2.
+sidebar:
+  order: 54
+---
+
+import { Aside, LinkButton } from "@astrojs/starlight/components";
+
+The [SumUp plugin for Medusa](https://github.com/sumup/sumup-plugin-medusa) adds SumUp as a payment provider for [Medusa v2](https://medusajs.com/). It lets your Medusa backend create and manage SumUp online checkouts while keeping your SumUp credentials on the server side.
+
+The plugin supports:
+
+- Hosted Checkout, where the customer is redirected to a SumUp-hosted payment page
+- Payment Widget, where your storefront mounts the SumUp card widget using a checkout created by Medusa
+- Refunds through SumUp transactions
+- Medusa payment webhooks for asynchronous status updates
+
+<Aside type="note">
+  The plugin supports SumUp online payment flows only. It does not support
+  terminal or other card-present integrations.
+</Aside>
+
+<LinkButton
+  href="https://github.com/sumup/sumup-plugin-medusa"
+  icon="external"
+>
+  View Medusa Plugin Repository
+</LinkButton>
+
+## Prerequisites
+
+- Active [SumUp account](https://me.sumup.com)
+- SumUp [API key](/tools/authorization/api-keys/#create-an-api-key)
+- SumUp merchant code
+- Medusa `v2.15.x`
+- A Medusa backend with the payment module enabled
+
+Before going live, make sure your SumUp account is fully verified and your business model is supported according to our [allowed businesses article](https://help.sumup.com/en-GB/articles/3G8ZHjdgFZjmKWOmDWS52m).
+
+## Install the Plugin
+
+Install the package in your Medusa project:
+
+```bash
+yarn add @sumup/medusa-plugin
+```
+
+## Configure Medusa
+
+Register the plugin and payment provider in `medusa-config.ts`:
+
+```ts
+import { defineConfig } from "@medusajs/framework/utils";
+
+export default defineConfig({
+  plugins: [
+    {
+      resolve: "@sumup/medusa-plugin",
+      options: {},
+    },
+  ],
+  modules: [
+    {
+      resolve: "@medusajs/medusa/payment",
+      options: {
+        providers: [
+          {
+            resolve: "@sumup/medusa-plugin/providers/sumup",
+            id: "sumup",
+            options: {
+              apiKey: process.env.SUMUP_API_KEY,
+              merchantCode: process.env.SUMUP_MERCHANT_CODE,
+              checkoutMode: "hosted",
+              returnUrl: `${process.env.MEDUSA_BACKEND_URL}/hooks/payment/sumup_sumup`,
+              redirectUrl: `${process.env.STOREFRONT_URL}/checkout/sumup/return`,
+            },
+          },
+        ],
+      },
+    },
+  ],
+});
+```
+
+After your application starts, enable the provider for the relevant region in Medusa Admin.
+
+For the service identifier `sumup` and provider `id` `sumup`, the resulting Medusa payment provider identifier is `pp_sumup_sumup`.
+
+## Configuration Options
+
+The plugin accepts the following provider options:
+
+| Option | Required | Description |
+| --- | --- | --- |
+| `apiKey` | Yes | SumUp API key or access token. Keep it server-side. |
+| `merchantCode` | Yes | SumUp merchant code that receives the payment. |
+| `checkoutMode` | No | Checkout mode: `hosted` or `widget`. Defaults to `hosted`. |
+| `returnUrl` | No | Backend webhook URL. For provider `id: "sumup"`, use `/hooks/payment/sumup_sumup`. |
+| `redirectUrl` | No | Storefront URL used after redirect or Strong Customer Authentication flows. |
+| `paymentDescription` | No | Default SumUp checkout description. |
+| `timeout` | No | SumUp SDK request timeout in milliseconds. |
+| `maxRetries` | No | SumUp SDK retry count. |
+
+You can also override `checkout_mode`, `description`, `return_url`, `redirect_url`, and `checkout_reference` per payment session through provider data.
+
+## Choose a Checkout Flow
+
+### Hosted Checkout
+
+With `checkoutMode: "hosted"`, the plugin creates a SumUp checkout with Hosted Checkout enabled and stores the returned `hosted_checkout_url` in the Medusa payment session. Your storefront should redirect the customer to that URL to complete the payment.
+
+Use your backend state as the source of truth. The redirect alone should not be treated as proof of a successful payment.
+
+### Payment Widget
+
+With `checkoutMode: "widget"`, the plugin creates a SumUp checkout and stores the returned `checkout_id` in the payment-session data. Your storefront is then responsible for loading and mounting the SumUp widget and asking the backend to re-check the payment state after a successful widget response.
+
+If you need a lower-level widget implementation reference, see the [Payment Widget guide](/online-payments/checkouts/card-widget/).
+
+## Webhooks
+
+Medusa provides a built-in webhook listener route for payment providers at:
+
+```text
+/hooks/payment/[identifier]_[provider]
+```
+
+For this plugin, with service identifier `sumup` and provider `id` `sumup`, the webhook URL is:
+
+```text
+https://your-medusa-backend.com/hooks/payment/sumup_sumup
+```
+
+The plugin receives the webhook payload, retrieves the checkout from SumUp, maps the result to a Medusa payment action, and returns the payment session reference back to Medusa.
+
+## What the Plugin Stores
+
+The payment-session data returned by the provider includes:
+
+- `checkout_id`
+- `checkout_reference`
+- `checkout_mode`
+- `hosted_checkout_url` for hosted flows
+- `transaction_id` and `transaction_code` when available
+- `merchant_code`
+- `amount` and `currency`
+
+## Sandbox Checklist
+
+Before enabling the plugin in production, verify the following in a sandbox environment:
+
+- One successful Hosted Checkout payment
+- One successful Payment Widget payment
+- At least one webhook-driven payment update
+- One full refund and one partial refund
+- SumUp's deliberate failure path with amount `11`
+- Expired or canceled checkouts mapping cleanly back into Medusa session state
+
+<Aside type="note">
+  Minimal storefront and Docker example projects are available in the plugin
+  repository if you want a working reference implementation.
+</Aside>

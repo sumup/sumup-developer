@@ -1,6 +1,6 @@
 ---
 title: "WooCommerce Plugin Update"
-tags: ["WooCommerce", "Plugin"]
+tags: ["Plugin"]
 publishedDate: 2023-09-12
 ---
 
