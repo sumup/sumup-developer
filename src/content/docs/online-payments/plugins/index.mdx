@@ -7,21 +7,8 @@ sidebar:
   order: 50
 ---
 
-import CardLink from '@components/CardLink.astro';
-import CardStack from '@components/CardStack.astro';
+import PluginsList from '@components/OnlinePayments/PluginsList';
 
 These plugins enable quick SumUp payment integration on PrestaShop, Wix, WooCommerce, Medusa, and Vendure requiring only your API key and merchant information to start. Select a plugin of interest for further, detailed instructions.
 
-<CardStack>
-
-<CardLink href="/online-payments/plugins/medusa/" title="Medusa" description="Medusa" image="/img/ecom-plugins.png" />
-
-<CardLink href="/online-payments/plugins/vendure/" title="Vendure" description="Vendure" image="/img/ecom-plugins.png" />
-
-<CardLink href="/online-payments/plugins/prestashop/" title="Prestashop" description="Prestashop" image="/img/ecom-plugins.png" />
-
-<CardLink href="/online-payments/plugins/wix/" title="Wix" description="Wix" image="/img/ecom-plugins.png" />
-
-<CardLink href="/online-payments/plugins/woocommerce/" title="Woocommerce" description="Woocommerce" image="/img/ecom-plugins.png" />
-
-</CardStack>
+<PluginsList />
