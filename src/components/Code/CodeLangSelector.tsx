@@ -42,6 +42,7 @@ const CodeLangSelector = ({ options, slot, ...rest }: Props) => {
     <div slot={slot}>
       <Select
         {...rest}
+        size="s"
         ref={selectRef}
         label="Language"
         hideLabel
