@@ -1,7 +1,7 @@
 ---
 import { getCollection, render } from "astro:content";
 import slugify from "@sindresorhus/slugify";
-import { Badge, Body, Button, Anchor, Headline } from "@sumup-oss/circuit-ui";
+import { Status, Body, Button, Anchor, Headline } from "@sumup-oss/circuit-ui";
 import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
 import MarkdownContent from "@astrojs/starlight/components/MarkdownContent.astro";
 import type { StarlightPageProps } from "@astrojs/starlight/props";
@@ -41,14 +41,16 @@ const props = {
     <ul class="tags">
       <li>
         <a href="/changelog">
-          <Badge>All</Badge>
+          <Status variant="badge" as="span">All</Status>
         </a>
       </li>
       {
         allTags.map((tag) => (
           <li>
             <a href={getTagHref(tag)}>
-              <Badge>{tag}</Badge>
+              <Status variant="badge" as="span">
+                {tag}
+              </Status>
             </a>
           </li>
         ))
