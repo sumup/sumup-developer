@@ -227,10 +227,12 @@ In order to request a payment, you need to create a UI element. The SDK provides
 
 _Each payment button can be rendered individually as well._
 
-The Swift Elements Builder allows you to attach an `onSubmit` handler, which will be called once the user clicks on one of the buttons rendered by it. The `mount` method accepts a `paymentMethods` array, enabling you to filter the payment methods you want to offer. The arguments passed during `mount`, will render one or more buttons:
+The Swift Elements Builder allows you to attach an `onSubmit` handler, which will be called once the user clicks on one of the buttons rendered by it. You can pass a `label` option to `elements()` to control the wallet button text, and the `mount` method accepts a `paymentMethods` array to filter the payment methods you want to offer. The arguments passed during `mount`, will render one or more buttons:
 
 ```js
-const buttons = swiftCheckoutClient.elements();
+const buttons = swiftCheckoutClient.elements({
+  label: "book",
+});
 buttons
   .onSubmit((paymentEvent) => console.log(paymentEvent))
   .mount({
@@ -243,8 +245,25 @@ buttons
   });
 ```
 
-<Aside type="note">
-  You can create your own custom buttons, but we recommend using the built-in PaymentElement UI builder.
+#### `label`
+
+Sets the action text used by the rendered Apple Pay and Google Pay buttons. The supported values are `book`, `buy`, `checkout`, `donate`, `order`, `pay`, `plain`, and `subscribe`.
+
+Use the following labels depending on the checkout context:
+
+- `book` for reservations, appointments, and other booking flows
+- `buy` for standard ecommerce purchases
+- `checkout` when you want the wallet button to match a broader checkout step
+- `donate` for donation and contribution flows
+- `order` for order-placement flows such as food ordering or fulfillment
+- `pay` for paying an existing amount due, such as an invoice or bill
+- `plain` for a minimal wallet-branded button without extra action text
+- `subscribe` for subscription and recurring purchase flows
+
+Label rendering depends on wallet and browser support. For example, `label: "book"` can be used to show booking-oriented Apple Pay and Google Pay buttons where supported. On Google Pay, `buy`, `pay`, and `plain` can also show the card brand and last four digits when the user's payment method is an eligible card.
+
+<Aside type="caution">
+  Apple Pay has additional requirements for donation flows. Before using `label: "donate"` with Apple Pay, make sure your organization is approved to accept donations with Apple Pay and use the donation-specific Apple Pay setup described in Apple’s [Apple Pay for Donations](https://developer.apple.com/apple-pay/nonprofits/) guide.
 </Aside>
 
 #### Rendering Buttons for Available Payment Methods
@@ -334,7 +353,9 @@ const paymentRequest = swiftCheckoutClient.paymentRequest({
   ],
 });
 
-const buttons = swiftCheckoutClient.elements();
+const buttons = swiftCheckoutClient.elements({
+  label: "book",
+});
 buttons.onSubmit((paymentMethodEvent) => {
   paymentRequest
     .show(paymentMethodEvent)
