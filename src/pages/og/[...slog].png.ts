@@ -2,12 +2,14 @@ import { getCollection } from "astro:content";
 import { createElement } from "react";
 import { ImageResponse } from "workers-og";
 
+import backgroundImageUrl from "../../assets/og/background.png";
 import SumUpBlackData from "../../assets/fonts/sumup-black-latin-s.ttf";
 import SumUpNarrowMediumData from "../../assets/fonts/sumup-narrow-latin-s-medium.ttf";
 import SumUpNarrowRegularData from "../../assets/fonts/sumup-narrow-latin-s-regular.ttf";
 
 interface Props {
   params: { slog?: string };
+  request: Request;
 }
 
 export const prerender = false;
@@ -110,8 +112,9 @@ async function resolvePageMetadata(path: string) {
   return defaultMetadata;
 }
 
-export async function GET({ params }: Props) {
+export async function GET({ params, request }: Props) {
   const { title, description } = await resolvePageMetadata(params.slog ?? "");
+  const backgroundSrc = new URL(backgroundImageUrl.src, request.url).toString();
 
   const sumUpBlack = toSupportedFontData(SumUpBlackData, "SumUp Black");
   const sumUpNarrowMedium = toSupportedFontData(
@@ -140,13 +143,28 @@ export async function GET({ params }: Props) {
         alignItems: "center",
         justifyContent: "center",
         fontFamily: narrowFontFamily,
+        overflow: "hidden",
       },
     },
+    createElement("img", {
+      src: backgroundSrc,
+      alt: "",
+      width: "1200",
+      height: "600",
+      style: {
+        position: "absolute",
+        inset: 0,
+        width: "100%",
+        height: "100%",
+        objectFit: "cover",
+      },
+    }),
     createElement(
       "div",
       {
         style: {
           display: "flex",
+          position: "relative",
           flexDirection: "column",
           width: "100%",
           height: "100%",
@@ -173,7 +191,7 @@ export async function GET({ params }: Props) {
               fontSize: "42px",
               color: "#f0eee7",
               fontFamily: narrowFontFamily,
-              fontWeight: 500,
+              fontWeight: 550,
               letterSpacing: "0.01em",
             },
           },
@@ -218,7 +236,7 @@ export async function GET({ params }: Props) {
               display: "flex",
               fontFamily: blackFontFamily,
               fontSize: "72px",
-              fontWeight: 700,
+              fontWeight: 650,
               lineHeight: 1,
               color: "#f0eee7",
               margin: 0,
@@ -240,7 +258,7 @@ export async function GET({ params }: Props) {
                     lineHeight: 1.25,
                     color: "#f0eee7",
                     fontFamily: narrowFontFamily,
-                    fontWeight: 400,
+                    fontWeight: 550,
                     maxWidth: "960px",
                     wordWrap: "break-word",
                   },
