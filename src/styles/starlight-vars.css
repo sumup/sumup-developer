@@ -7,6 +7,7 @@
   /* Custom colors for page elements */
   --sl-color-hairline-shade: var(--cui-border-subtle);
   --sl-color-bg: var(--cui-bg-normal);
+  --sl-color-bg-inline-code: var(--cui-bg-subtle);
 
   /* Typography */
   --sl-text-h1: var(--cui-headline-l-font-size);
@@ -33,8 +34,7 @@
   border-radius: var(--cui-border-radius-byte);
   font-weight: var(--cui-font-weight-semibold);
   line-height: var(--cui-body-m-line-height);
-  padding: calc(var(--cui-spacings-kilo) - var(--cui-border-width-kilo))
-    calc(var(--cui-spacings-giga) - var(--cui-border-width-kilo));
+  padding: calc(var(--cui-spacings-kilo) - var(--cui-border-width-kilo)) calc(var(--cui-spacings-giga) - var(--cui-border-width-kilo));
   transition:
     opacity var(--cui-transitions-default),
     color var(--cui-transitions-default),
