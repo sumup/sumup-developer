@@ -40,9 +40,9 @@ Sensitive card data is never passed to or stored on the merchant's phone. All da
 | Requirement           | Minimum |
 | --------------------- | ------- |
 | `minSdkVersion`       | 26      |
-| `targetSdkVersion`    | 35      |
-| Android Gradle Plugin | 8.8.0   |
-| Kotlin                | 1.9.0   |
+| `targetSdkVersion`    | 36      |
+| Android Gradle Plugin | 9.2.1   |
+| Kotlin                | 2.4.0   |
 | Java                  | 17      |
 
 ## Sandbox Merchant Account
@@ -74,7 +74,7 @@ You can use the sample app provided in the repository as a reference.
 2. Add the SDK dependency to your app module build file:
 
    ```groovy
-   implementation 'com.sumup:merchant-sdk:7.0.0'
+   implementation 'com.sumup:merchant-sdk:7.1.0'
    ```
 
 3. Sync your project.
@@ -101,6 +101,15 @@ Before calling any features of the Android SDK, a registered SumUp merchant acco
 ```java
 SumUpLogin sumupLogin = SumUpLogin.builder(mAffiliateKey).build();
 SumUpAPI.openLoginActivity(MainActivity.this, sumupLogin, 1);
+```
+
+To integrate with the Activity Result API, use `SumUpLoginContract`:
+
+```kotlin
+val loginLauncher = registerForActivityResult(SumUpLoginContract()) { result ->
+        // Login result
+    }
+loginLauncher.launch(sumupLogin)
 ```
 
 <Image alt="Login screen" src="/img/guides/android_sdk_login.png" width="40%" />
@@ -170,6 +179,15 @@ Override `onActivityResult` to handle payment results:
    }
 ```
 
+To integrate with the Activity Result API, use `SumUpCheckoutContract`:
+
+```kotlin
+val checkoutLauncher = registerForActivityResult(SumUpCheckoutContract()) { result ->
+        // Checkout result
+    }
+checkoutLauncher.launch(payment)
+```
+
 ### Connecting Reader
 
 ## Additional Features
@@ -206,6 +224,15 @@ When a merchant is logged in, you can open this activity to access all the setti
 
 ```java
  	SumUpAPI.openCardReaderPage(MainActivity.this, 4);
+```
+
+To integrate with the Activity Result API, use `SumUpCardReaderPageContract`:
+
+```kotlin
+val cardReaderPageLauncher = registerForActivityResult(SumUpCardReaderPageContract()) { result ->
+        // Card reader page result
+    }
+cardReaderPageLauncher.launch(null)
 ```
 
 <Image
