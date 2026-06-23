@@ -243,11 +243,13 @@ You should expect a standard `201 Created` response, with the customer details y
 Now, we need to tokenize the customer's card, and we will need a checkout for this. The checkout resource is a representation of a payment being made by the previously created customer.
 It contains information such as the amount, currency, and a unique `checkout_reference` identifier that is relevant to your business logic.
 
-The flow is initiated with the `create a checkout` endpoint. It is important to pass the `customer_id` parameter in this step, for future linking to a payment instrument. Critically, a `purpose` parameter is passed to indicate the payment type as **recurring payment** and process an authorization charge of the checkout amount indicated, **which is instantly reimbursed**. Note that this doesn't automatically imply further payments from this customer - at this point, we're just tokenizing the card.
+For card tokenization, create a checkout with `amount: 0`. This creates a verification-only authorisation without capturing any funds.
+
+The flow is initiated with the [`create a checkout`](/api/checkouts/create) endpoint. It is important to pass the `customer_id` parameter in this step, for future linking to a payment instrument. Critically, a `purpose` parameter is passed to indicate the payment type as **recurring payment**. Note that this doesn't automatically imply further payments from this customer - at this point, we're just tokenizing the card.
 
 1. To create a new checkout resource, make a POST request to the `https://api.sumup.com/v0.1/checkouts` endpoint.
 
-Example of such request:
+Example request using a `0` amount authorisation:
 
 <Tabs syncKey="backend_lang">
   <TabItem label="cURL" icon="seti:powershell">
@@ -258,10 +260,10 @@ Example of such request:
       -H 'Content-Type: application/json' \
       -d '{
             "checkout_reference": "MYCHECKOUT",
-            "amount": 1,
+            "amount": 0,
             "currency": "EUR",
             "merchant_code": "MDEERENR",
-            "description": "My checkout",
+            "description": "0 amount verification",
             "customer_id": "MYCUSTOMERID-123",
             "purpose": "SETUP_RECURRING_PAYMENT"
           }'
@@ -271,10 +273,10 @@ Example of such request:
     ```ts
     const checkout = await client.checkouts.create({
       checkout_reference: "MYCHECKOUT",
-      amount: 1,
+      amount: 0,
       currency: "EUR",
       merchant_code: "MDEERENR",
-      description: "My checkout",
+      description: "0 amount verification",
       customer_id: "MYCUSTOMERID-123",
       purpose: "SETUP_RECURRING_PAYMENT",
     });
@@ -285,10 +287,10 @@ Example of such request:
     var checkout = await client.Checkouts.CreateAsync(new CheckoutCreateRequest
     {
         CheckoutReference = "MYCHECKOUT",
-        Amount = 1.0f,
+        Amount = 0.0f,
         Currency = Currency.Eur,
         MerchantCode = "MDEERENR",
-        Description = "My checkout",
+        Description = "0 amount verification",
         CustomerId = "MYCUSTOMERID-123",
         Purpose = "SETUP_RECURRING_PAYMENT",
     });
@@ -299,10 +301,10 @@ Example of such request:
     var checkout = client.checkouts().createCheckout(
         CheckoutCreateRequest.builder()
             .checkoutReference("MYCHECKOUT")
-            .amount(1.0f)
+            .amount(0.0f)
             .currency(Currency.EUR)
             .merchantCode("MDEERENR")
-            .description("My checkout")
+            .description("0 amount verification")
             .customerId("MYCUSTOMERID-123")
             .purpose(CheckoutCreateRequestPurpose.SETUP_RECURRING_PAYMENT)
             .build()
@@ -313,11 +315,11 @@ Example of such request:
     ```go
     customerID := "MYCUSTOMERID-123"
     purpose := sumup.CheckoutCreateRequestPurposeSetupRecurringPayment
-    description := "My checkout"
+    description := "0 amount verification"
 
     checkout, err := client.Checkouts.Create(ctx, sumup.CheckoutsCreateParams{
     	CheckoutReference: "MYCHECKOUT",
-    	Amount:            1,
+    	Amount:            0,
     	Currency:          sumup.CurrencyEUR,
     	MerchantCode:      "MDEERENR",
     	Description:       &description,
@@ -333,10 +335,10 @@ Example of such request:
     checkout = client.checkouts.create(
         CreateCheckoutBody(
             checkout_reference="MYCHECKOUT",
-            amount=1,
+            amount=0,
             currency="EUR",
             merchant_code="MDEERENR",
-            description="My checkout",
+            description="0 amount verification",
             customer_id="MYCUSTOMERID-123",
             purpose="SETUP_RECURRING_PAYMENT",
         )
@@ -349,10 +351,10 @@ Example of such request:
         .checkouts()
         .create(Some(sumup::resources::checkouts::CheckoutCreateRequest {
             checkout_reference: "MYCHECKOUT".into(),
-            amount: 1.0,
+            amount: 0.0,
             currency: sumup::resources::checkouts::Currency::EUR,
             merchant_code: "MDEERENR".into(),
-            description: Some("My checkout".into()),
+            description: Some("0 amount verification".into()),
             customer_id: Some("MYCUSTOMERID-123".into()),
             purpose: Some("SETUP_RECURRING_PAYMENT".into()),
             id: None,
@@ -370,10 +372,10 @@ Example of such request:
     ```php
     $checkout = $sumup->checkouts->create([
         'checkout_reference' => 'MYCHECKOUT',
-        'amount' => 1,
+        'amount' => 0,
         'currency' => 'EUR',
         'merchant_code' => 'MDEERENR',
-        'description' => 'My checkout',
+        'description' => '0 amount verification',
         'customer_id' => 'MYCUSTOMERID-123',
         'purpose' => 'SETUP_RECURRING_PAYMENT',
     ]);
@@ -385,13 +387,13 @@ You should expect a standard `201 Created` response, with the checkout reference
 
 ```json
 {
-    "amount": 1,
+    "amount": 0,
     "checkout_reference": "MYCHECKOUT",
     "checkout_type": "checkout",
     "currency": "EUR",
     "customer_id": "MYCUSTOMERID-123",
     "date": "2025-10-29T15:09:11.550+00:00",
-    "description": "My checkout",
+    "description": "0 amount verification",
     "id": "7164c99b-13cb-42a1-8ba1-3c2c46a29de7",
     "merchant_code": "MDEERENR",
     "merchant_country": "PL",
@@ -403,7 +405,7 @@ You should expect a standard `201 Created` response, with the checkout reference
 }
 ```
 
-For more information, see the [create a checkout](/api/checkouts/create) endpoint.
+If you are maintaining an older integration, nominal amounts such as `1` are still supported for card verification. Those authorisations are refunded and the cardholder will not be charged.
 
 ## Processing Request with Payment Widget
 
