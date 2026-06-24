@@ -47,6 +47,7 @@ const tagName = allTags.find((tag) => slugify(tag) === currentTag);
 const props = {
   frontmatter: {
     title: tagName ? `${tagName} Changelog` : "Changelog",
+    pagefind: false,
     noindex: true,
     template: "splash",
     tableOfContents: false,
@@ -110,7 +111,7 @@ const props = {
       </span>
     </Button>
   </div>
-  <main class="content" data-pagefind-body>
+  <main class="content">
     {
       posts.map(
         async ({ Content, id, data: { title, tags, publishedDate } }) => (

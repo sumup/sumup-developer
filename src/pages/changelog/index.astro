@@ -29,6 +29,7 @@ const posts = await Promise.all(
 const props = {
   frontmatter: {
     title: "Changelog",
+    pagefind: false,
     template: "splash",
     tableOfContents: false,
   },
@@ -88,7 +89,7 @@ const props = {
       </span>
     </Button>
   </div>
-  <main class="content" data-pagefind-body>
+  <main class="content">
     {
       posts.map(
         async ({ Content, id, data: { title, tags, publishedDate } }) => (
