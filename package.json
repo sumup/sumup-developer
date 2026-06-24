@@ -79,7 +79,7 @@
     "react-dom": "^19.2.7",
     "react-final-form": "^7.0.1",
     "rumdl": "^0.2.9",
-    "sass": "^1.100.0",
+    "sass": "^1.101.0",
     "starlight-image-zoom": "^0.14.2",
     "starlight-links-validator": "^0.24.0",
     "starlight-llms-txt": "0.10.0",
