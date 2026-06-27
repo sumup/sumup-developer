@@ -1,0 +1,63 @@
+---
+title: Plugins
+description: Install SumUp plugins, extensions, and powers for AI coding assistants.
+sidebar:
+  order: 52
+---
+
+SumUp publishes packaged integrations for AI coding assistants in the [`sumup/sumup-skills`](https://github.com/sumup/sumup-skills) repository. These packages include SumUp skill instructions and, where supported by the host application, SumUp MCP configuration.
+
+Use the repository URL when an application asks for a GitHub source:
+
+```txt
+https://github.com/sumup/sumup-skills
+```
+
+## Claude Code
+
+Install the SumUp plugin from the Claude Code plugin marketplace:
+
+```bash
+/plugin marketplace add sumup/sumup-skills
+/plugin install sumup@sumup
+```
+
+## Cursor
+
+Install from the Cursor Marketplace, or add it manually in:
+
+`Settings` -> `Rules` -> `Add Rule` -> `Remote Rule (Github)` with:
+
+```txt
+sumup/sumup-skills
+```
+
+## Gemini CLI
+
+Install the SumUp Gemini extension from GitHub:
+
+```bash
+gemini extensions install https://github.com/sumup/sumup-skills --ref=main
+```
+
+## OpenAI Codex
+
+Install the SumUp plugin with the Codex plugin marketplace:
+
+```bash
+codex plugin marketplace add sumup/sumup-skills
+```
+
+## Kiro
+
+Import the repository as a custom Kiro power:
+
+1. Open `Powers`.
+2. Select `Add Custom Power`.
+3. Select `Import power from GitHub`.
+4. Use `https://github.com/sumup/sumup-skills`.
+
+## Related
+
+- [Agent Skills](/tools/llms/agent-skills/)
+- [MCP Server](/tools/llms/mcp-server/)
