@@ -1,0 +1,25 @@
+---
+title: Request Blocked
+id: request-blocked
+description: Understand the SumUp API Request Blocked response, common causes, and example payload for requests blocked by security policy.
+---
+
+Indicates that the request was blocked before it reached the SumUp API service. This can happen when a security policy, firewall rule, or traffic protection rule rejects the request.
+
+## Common Causes
+
+- The request matched a security or firewall rule.
+- The request came from a blocked IP address, country, or network.
+- The request pattern looked automated, abusive, or otherwise unsafe.
+
+```json
+{
+  "type": "https://developer.sumup.com/problem/request-blocked",
+  "title": "Request blocked.",
+  "status": 403,
+  "detail": "The request was blocked by security policy.",
+  "trace_id": "8cb5b380896b"
+}
+```
+
+When contacting support, include the `trace_id` or `ray_id` value from the response, whichever is available, so we can trace the failed request.

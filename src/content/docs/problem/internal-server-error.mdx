@@ -15,8 +15,11 @@ Indicates that an unexpected server error occurred. Retry the request, if this p
 ```json
 {
   "type": "https://developer.sumup.com/problem/internal-server-error",
-  "title": "Internal Server Error",
+  "title": "Internal server error.",
   "status": 500,
-  "instance": "8cb5b380896b"
+  "detail": "The service is temporarily unavailable.",
+  "trace_id": "8cb5b380896b"
 }
 ```
+
+When contacting support, include the `trace_id` or `ray_id` value from the response, whichever is available, so we can trace the failed request.
