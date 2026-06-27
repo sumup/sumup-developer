@@ -1,0 +1,47 @@
+{
+  "$schema": "https://schemas.agentskills.io/discovery/0.2.0/schema.json",
+  "skills": [
+    {
+      "name": "sumup",
+      "description": "Implement SumUp checkout flows end-to-end. Use when writing or reviewing SumUp Checkouts API calls, Card Widget mounts, Hosted Checkout setup, recurring tokenization, Terminal SDK / Cloud API reader checkouts, or 3DS / webhook handling.",
+      "type": "archive",
+      "url": "https://developer.sumup.com/.well-known/agent-skills/sumup.zip",
+      "digest": "sha256:6db063cb5c8bca17a33b38197b061fe35c87888dc10c521a1f64b0522e4355c4"
+    },
+    {
+      "name": "sumup-best-practices",
+      "description": "Pick the right SumUp integration path and apply security best practices. Use when deciding between Hosted Checkout, Card Widget, Checkouts API, mobile SDKs, terminal SDKs, or Cloud API; choosing API key vs OAuth vs restricted keys; or reviewing SumUp integration security.",
+      "type": "archive",
+      "url": "https://developer.sumup.com/.well-known/agent-skills/sumup-best-practices.zip",
+      "digest": "sha256:4025bfa24556712dd30fb76818a3339aeb13d680b5fa3d5e1f4d4f976fbf8a90"
+    },
+    {
+      "name": "sumup-debug",
+      "description": "Troubleshoot common SumUp integration failures. Use when SumUp HMAC signature checks fail, checkout sessions expire, scopes aren't activated, widget mount is blocked, affiliate keys don't match, or `checkout_reference` collides.",
+      "type": "archive",
+      "url": "https://developer.sumup.com/.well-known/agent-skills/sumup-debug.zip",
+      "digest": "sha256:ef9270fe9c92182e602d81cf59e52fb0063c10aa0f6e84d0fd902290f941bdbb"
+    },
+    {
+      "name": "sumup-mcp",
+      "description": "Use the SumUp MCP server (https://mcp.sumup.com/mcp) from Cursor, Claude Code, Codex, or any MCP-capable client. Use when the user mentions SumUp MCP, needs to wire mcp.sumup.com, or wants tool-based access to SumUp APIs.",
+      "type": "archive",
+      "url": "https://developer.sumup.com/.well-known/agent-skills/sumup-mcp.zip",
+      "digest": "sha256:7efa49491ad42a36f9467d196bdfadc2a9122aade11b83e2d2260f6e02964fec"
+    },
+    {
+      "name": "sumup-testing",
+      "description": "Set up and run SumUp sandbox tests. Use when configuring a SumUp test merchant, picking test cards, triggering deliberate failure (`amount = 11`), or building a SumUp end-to-end test harness.",
+      "type": "archive",
+      "url": "https://developer.sumup.com/.well-known/agent-skills/sumup-testing.zip",
+      "digest": "sha256:0caf566febcf78d56677bd4963b135ddf25c12f6befdd19a25c852497cea4ae1"
+    },
+    {
+      "name": "upgrade-sumup",
+      "description": "Guide for upgrading SumUp API versions and server/mobile SDKs (@sumup/sdk, sumup-go, sumup Python, PHP, Java, Rust, .NET, iOS Terminal, Android Reader, Swift Checkout, React Native). Use when bumping SumUp SDK versions or migrating off deprecated endpoints.",
+      "type": "archive",
+      "url": "https://developer.sumup.com/.well-known/agent-skills/upgrade-sumup.zip",
+      "digest": "sha256:4fd2d198e76b71fb55d38171afd8132b6cbcf32470fc7023eace55f75f31552a"
+    }
+  ]
+}
