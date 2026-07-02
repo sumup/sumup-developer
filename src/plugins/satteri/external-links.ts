@@ -1,7 +1,8 @@
-import type { Element, ElementContent, Root } from "hast";
-import { visit } from "unist-util-visit";
+import { defineHastPlugin } from "satteri";
+import type { Element, ElementContent } from "hast";
 
 const EXTERNAL_LINK_ANNOUNCEMENT = "(Opens in a new tab)";
+const FOOTNOTE_BACK_CONTENT = "\u21A9\uFE0E";
 const HOST = "developer.sumup.com";
 
 const hasImgChild = (node: Element): boolean => {
@@ -71,10 +72,39 @@ const addClassName = (
   return [...classNames];
 };
 
-export default function rehypeExternalLinks() {
-  return (tree: Root) => {
-    visit(tree, "element", (node) => {
-      if (node.tagName !== "a") {
+const isFootnoteBackref = (node: Element): boolean => {
+  return "data-footnote-backref" in node.properties;
+};
+
+const createVisuallyHiddenAnnouncement = (): ElementContent => ({
+  type: "element",
+  tagName: "span",
+  properties: {
+    className: ["visually-hidden"],
+  },
+  children: [{ type: "text", value: EXTERNAL_LINK_ANNOUNCEMENT }],
+});
+
+const createFootnoteBackContent = (): ElementContent => ({
+  type: "text",
+  value: FOOTNOTE_BACK_CONTENT,
+});
+
+export default defineHastPlugin({
+  name: "sumup-external-links",
+  element: {
+    filter: ["a"],
+    visit(node, ctx) {
+      if (isFootnoteBackref(node)) {
+        const textIndex = node.children.findIndex(
+          (child) => child.type === "text",
+        );
+
+        if (textIndex >= 0) {
+          ctx.removeChildAt(node, textIndex);
+          ctx.insertChildAt(node, textIndex, createFootnoteBackContent());
+        }
+
         return;
       }
 
@@ -84,29 +114,17 @@ export default function rehypeExternalLinks() {
         return;
       }
 
-      node.properties = {
-        ...node.properties,
-        target: "_blank",
-        rel: mergeRel(node.properties?.rel),
-      };
+      ctx.setProperty(node, "target", "_blank");
+      ctx.setProperty(node, "rel", mergeRel(node.properties?.rel));
 
       if (!hasImgChild(node)) {
-        node.properties.className = addClassName(
-          node.properties.className,
-          "external-link",
+        ctx.setProperty(
+          node,
+          "className",
+          addClassName(node.properties.className, "external-link"),
         );
-
-        const announcementNode: ElementContent = {
-          type: "element",
-          tagName: "span",
-          properties: {
-            className: ["visually-hidden"],
-          },
-          children: [{ type: "text", value: EXTERNAL_LINK_ANNOUNCEMENT }],
-        };
-
-        node.children.push(announcementNode);
+        ctx.appendChild(node, createVisuallyHiddenAnnouncement());
       }
-    });
-  };
-}
+    },
+  },
+});
