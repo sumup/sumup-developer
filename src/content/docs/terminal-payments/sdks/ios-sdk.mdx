@@ -129,7 +129,7 @@ Please consider the following when building Tap-to-Pay solutions, as Apple revie
 ### Adding SDK Framework to Project
 
 The SumUp iOS SDK is provided as an XCFramework `SumUpSDK.xcframework` that contains
-the headers and bundles containing resources such as images and localizations. You can add the SDK binary manually or use a package manager such as Swift Package Manager, Cocoapods, or Carthage.
+the headers and bundles containing resources such as images and localizations. You can add the SDK binary manually or use a package manager such as Swift Package Manager or Cocoapods.
 
 <Aside type="danger">
 **Cocoapods support ending**
@@ -181,28 +181,6 @@ end
 
 </TabItem>
 
-<TabItem label="Carthage">
-
-Distributing XCFrameworks with the latest Carthage version (0.40.0) is not yet available.
-There is an open issue ([#2799](https://github.com/Carthage/Carthage/issues/2799)) to solve this.
-Once that issue is fixed, we expect Carthage to work again.
-
-The SumUp iOS SDK can be integrated with Carthage by following the steps below:
-
-<Steps>
-1. Add the following line to your `Cartfile`:
-    ```txt
-    github "sumup/sumup-ios-sdk"
-    ```
-2. Run `carthage update sumup-ios-sdk`
-3. Drag and drop the `Carthage/Build/iOS/SumUpSDK.xcframework` to your Xcode project's "Frameworks,
-Libraries, and Embedded Content" on the General settings tab.
-4. Make sure the [required Info.plist keys](#add-property-list-keys-to-project) are present.
-</Steps>
-
-To learn more about setting up your project for Carthage, please refer to the [official documentation](https://github.com/Carthage/Carthage#if-youre-building-for-ios-tvos-or-watchos).
-
-</TabItem>
 </Tabs>
 
 ### Importing SDK
@@ -1440,7 +1418,6 @@ SumUp provides a sample app which implements main SDK components in a sample App
 
 * In Tap-to-Pay solutions, if entitlements are not correctly set up in your app, `presentTapToPayActivation` may show an error Alert with `Failed to show Terms of Service`.
 * Businesses using SumUp sub-accounts must first activate the feature on their main account before using it on devices logged in with sub-accounts, otherwise an error message will appear during activation for the sub-account user.
-* Distributing XCFrameworks with the latest Carthage version (0.35.0) is not yet available. There is an open issue ([#2799](https://github.com/Carthage/Carthage/issues/2799)) to solve this.
 
 ## Community
 
