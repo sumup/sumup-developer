@@ -1,15 +1,14 @@
 import cloudflare from "@astrojs/cloudflare";
 import mdx from "@astrojs/mdx";
 import react from "@astrojs/react";
-import starlightImageZoom from "starlight-image-zoom";
+import { satteri } from "@astrojs/markdown-satteri";
 import starlight from "@astrojs/starlight";
 import starlightLinksValidator from "starlight-links-validator";
 import mermaid from "astro-mermaid";
 import starlightLlmsTxt from "starlight-llms-txt";
-import { unified } from "@astrojs/markdown-remark";
 import { loadEnv } from "vite";
 import { readFile } from "node:fs/promises";
-import rehypeExternalLinks from "./src/plugins/rehype/external-links";
+import satteriExternalLinks from "./src/plugins/satteri/external-links";
 
 import { defineConfig } from "astro/config";
 import type { HeadUserConfig } from "node_modules/@astrojs/starlight/schemas/head";
@@ -193,14 +192,12 @@ export default defineConfig({
   }),
   site: "https://developer.sumup.com",
   markdown: {
-    processor: unified({
-      gfm: true,
-      rehypePlugins: [rehypeExternalLinks],
-      remarkRehype: {
-        // Use text-presentation symbol (U+21A9 + U+FE0E), not emoji.
-        footnoteBackContent: "\u21A9\uFE0E",
+    processor: satteri({
+      features: {
+        gfm: true,
+        smartPunctuation: true,
       },
-      smartypants: true,
+      hastPlugins: [satteriExternalLinks],
     }),
   },
 
@@ -250,7 +247,6 @@ export default defineConfig({
           // handle well otherwise
           rawContent: true,
         }),
-        starlightImageZoom(),
       ],
       title: "SumUp Developer",
       favicon: new URL("/favicons/favicon.svg", faviconBaseURL).toString(),
@@ -340,8 +336,6 @@ export default defineConfig({
     }),
     mdx({
       optimize: true,
-      gfm: true,
-      smartypants: true,
     }),
   ],
   server: {
