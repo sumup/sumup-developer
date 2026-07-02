@@ -108,7 +108,7 @@ If you want to dive straight into implementation, carry out the following steps:
 3. [Initialize the SDK with an Affiliate Key](#initialization).
 4. [Log the user in](#logging-the-user-in).
 5. [Prepare user's device for checkout](#prepare-for-checkout).
-6. [Allow the user to select a card reader](#present-checkout-preferences).
+6. [Allow the user to select a card reader](#present-card-reader-settings).
 7. Finally, [implement the full checkout](#implement-full-checkout).
 
 ### Tap-to-Pay Flow
@@ -438,7 +438,7 @@ fileprivate func requestLogout() {
 * In order to prepare a SumUp card terminal for checkout, `prepareForCheckout` can be called in advance. A registered SumUp merchant account needs to be logged in, and the card terminal must already be setup.
   You should use this method to let the SDK know that the user is most
   likely starting a checkout attempt soon; for example when entering an amount or adding products to a shopping cart. This allows the SDK to take appropriate measures, like attempting to wake a connected card terminal.
-* When logged in you can let merchants check and update their checkout preferences. Merchants can select their preferred card terminal and set up a
+* When logged in you can let merchants check and update their card reader settings. Merchants can select their preferred card terminal and set up a
   new one if needed. The preferences available to a merchant depend on their
   respective account settings.
 * Present Checkout View is the main checkout request definition.
@@ -461,23 +461,22 @@ Check these methods and included comments before moving on to implementation bel
 
 </TabItem>
 
-<TabItem label="Present Checkout Preferences">
+<TabItem label="Present Card Reader Settings">
 ```objc
 /**
- *  Presenting checkout preferences allows the current merchant to configure the checkout options and
- *  change the card terminal. Merchants can also set up the terminal when applicable.
+ *  Presenting card reader settings allows the current merchant to switch to a different
+ *  card reader, view general information about the current card reader, and connect to it.
  *  Can only be called when a merchant is logged in and checkout is not in progress.
- *  The completion block will be executed once the preferences have been dismissed.
- *  The success parameter indicates whether the preferences have been presented.
+ *  The completion block will be executed once the screen has been dismissed.
  *  If not successful an error will be provided, see SMPSumUpSDKError.
  *
  *  @param fromViewController The UIViewController instance from which the checkout should be presented modally.
  *  @param animated           Pass YES to animate the transition.
  *  @param block              The completion block is called after the view controller has been dismissed.
  */
-+ (void)presentCheckoutPreferencesFromViewController:(UIViewController *)fromViewController
-                                            animated:(BOOL)animated
-                                          completion:(nullable SMPCompletionBlock)block;
++ (void)presentCardReaderSettingsFromViewController:(UIViewController *)fromViewController
+                                           animated:(BOOL)animated
+                                         completion:(nullable SMPCompletionBlock)block;
 ```
 
 
@@ -557,7 +556,7 @@ extension ViewController: UITextFieldDelegate {
 
 </Tabs>
 
-#### Present Checkout Preferences
+#### Present Card Reader Settings
 
 Provides the user a way to search for nearby Bluetooth card readers and select one to be used. The selected card reader will be saved to `UserDefaults` and used for subsequent checkouts. Using this screen is optional. If a checkout is started but no card reader has been saved, the checkout itself will automatically present the screen to search for and select a card reader, and this will be saved for next time.
 
@@ -570,8 +569,8 @@ Provides the user a way to search for nearby Bluetooth card readers and select o
 <TabItem label="Swift">
 
 ```swift
-private func presentCheckoutPreferences() {
-    SumUpSDK.presentCheckoutPreferences(from: self, animated: true) { [weak self] (success: Bool, presentationError: Error?) in
+private func presentCardReaderSettings() {
+    SumUpSDK.presentCardReaderSettings(from: self, animated: true) { [weak self] (success: Bool, presentationError: Error?) in
         print("Did present checkout preferences with success: \(success). Error: \(String(describing: presentationError))")
 
         guard let safeError = presentationError as NSError? else {
@@ -604,7 +603,7 @@ private func presentCheckoutPreferences() {
 
 ```objc
 - (IBAction)buttonOpenPreferencesTapped:(id)sender {
-    [SMPSumUpSDK presentCheckoutPreferencesFromViewController:self
+    [SMPSumUpSDK presentCardReaderSettingsFromViewController:self
                                                      animated:YES
                                                    completion:^(BOOL success, NSError *_Nullable error) {
                                                        if (!success || error) {
