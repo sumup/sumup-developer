@@ -1262,8 +1262,11 @@ To tell if the current country requires `processAs` to be set to a value other t
 
 If needed, your app should set the `processAs` property of `SMPCheckoutRequest` to `SMPProcessAsCredit` or `SMPProcessAsDebit` after showing its own UI that prompts the customer to select Credit or Debit.
 
-SDK 6.0 and earlier presented two screens during the checkout that prompted the user to select Credit or Debit, and if Credit, to also choose the number of installments.
-This functionality is now deprecated. However, it is still available if you need more time to migrate your app to use the above programmatic method. To keep the old behaviour, set `processAs` to `SMPProcessAsPromptUser`.
+SDK 6.0 and earlier presented two screens during the checkout that prompted the user to select Credit or Debit, and if Credit, to also choose the number of installments. This behavior was previously available via `SMPProcessAsPromptUser`.
+
+<Aside type="caution">
+`SMPProcessAsPromptUser` is deprecated. A future SDK version will treat it as `SMPProcessAsNotSet`, causing the transaction to fail if the merchant's country requires credit/debit selection. It is not supported for Tap to Pay on iPhone payments and will produce an error. Migrate to the programmatic approach above (`SMPProcessAsCredit` / `SMPProcessAsDebit`).
+</Aside>
 
 #### Installments
 
