@@ -431,6 +431,17 @@ Check these methods and included comments before moving on to implementation bel
  *  This allows the SDK to take appropriate measures, like attempting to wake a connected card terminal.
  */
 + (void)prepareForCheckout;
+
+/**
+ *  Call in advance when you know that checkout will occur for the logged-in user.
+ *
+ *  Functionally the same as prepareForCheckout.
+ *  This version provides the option of supplying a SMPCompletionBlock where you can
+ *  dismiss custom UI, check the reader status or perform a checkout.
+ *
+ *  @param block The block is called at the end of the preparation after asking the reader to wake.
+ */
++ (void)prepareForCheckout:(nullable SMPCompletionBlock)block;
 ```
 
 
@@ -531,6 +542,42 @@ extension ViewController: UITextFieldDelegate {
 
 </Tabs>
 
+A variant of `prepareForCheckout` accepts a completion block, called after the SDK has asked the reader to wake. Use it to check reader status or proceed straight to checkout:
+
+<Tabs>
+
+<TabItem label="Swift">
+```swift
+SumUpSDK.prepareForCheckout { (success: Bool, error: Error?) in
+    guard success, let status = SumUpSDK.lastReaderStatus, status.isActive else {
+        // reader did not wake — handle accordingly
+        return
+    }
+    // reader is active, proceed to checkout
+}
+```
+
+</TabItem>
+
+<TabItem label="Objective C">
+```objc
+[SMPSumUpSDK prepareForCheckout:^(BOOL success, NSError * _Nullable error) {
+    if (!success) {
+        // reader did not wake — handle accordingly
+        return;
+    }
+
+    SMPReaderStatus *status = SMPSumUpSDK.lastReaderStatus;
+    if (status.isActive) {
+        // reader is active, proceed to checkout
+    }
+}];
+```
+
+</TabItem>
+
+</Tabs>
+
 #### Present Card Reader Settings
 
 Provides the user a way to search for nearby Bluetooth card readers and select one to be used. The selected card reader will be saved to `UserDefaults` and used for subsequent checkouts. Using this screen is optional. If a checkout is started but no card reader has been saved, the checkout itself will automatically present the screen to search for and select a card reader, and this will be saved for next time.
@@ -585,6 +632,40 @@ private func presentCardReaderSettings() {
                                                            [self showResultsString:@"not logged in"];
                                                        }
                                                    }];
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+#### Reader Status
+
+The `lastReaderStatus` class property returns the most recently reported information about a saved or connected card reader. It returns `nil` if the merchant is not logged in or no reader has been connected and saved.
+
+The returned `SMPReaderStatus` object exposes:
+
+- `batteryLevel` — last reported battery level (updated during pairing or transaction processing; freshness varies with reader usage).
+- `serialNumber` — the serial number printed on the back of the physical reader.
+- `readerType` — the reader model (`SMPReaderType` / `ReaderType`): Air, Air Lite, 3G, Solo, Solo Lite.
+- `isActive` — `YES` when the reader is currently active or becoming active (e.g. after calling `prepareForCheckout:`). Returns `NO` if no reader has been connected or the saved reader is currently disconnected.
+
+<Tabs>
+
+<TabItem label="Swift">
+```swift
+if let status = SumUpSDK.lastReaderStatus {
+    print("Reader: \(status.serialNumber), active: \(status.isActive), battery: \(status.batteryLevel)%")
+}
+```
+
+</TabItem>
+
+<TabItem label="Objective C">
+```objc
+SMPReaderStatus *status = SMPSumUpSDK.lastReaderStatus;
+if (status) {
+    NSLog(@"Reader: %@, active: %d, battery: %lu%%", status.serialNumber, status.isActive, (unsigned long)status.batteryLevel);
 }
 ```
 
@@ -1372,6 +1453,30 @@ open class func presentTapToPayActivation(from fromViewController: UIViewControl
                                     completionBlock:(nullable SMPCompletionBlock)block;
 ```
 
+
+</TabItem>
+
+</Tabs>
+
+#### Product Name
+
+`tapToPayProductName` returns the localized "Tap To Pay on iPhone" string. It is localized in all languages supported by the SDK and exposed as a convenience for use in your app's UI — use it instead of hardcoding the product name, as Apple may update the branding.
+
+<Tabs>
+
+<TabItem label="Swift">
+```swift
+let productName = SumUpSDK.tapToPayProductName()
+// e.g. "Tap To Pay on iPhone"
+```
+
+</TabItem>
+
+<TabItem label="Objective C">
+```objc
+NSString *productName = [SMPSumUpSDK tapToPayProductName];
+// e.g. @"Tap To Pay on iPhone"
+```
 
 </TabItem>
 
