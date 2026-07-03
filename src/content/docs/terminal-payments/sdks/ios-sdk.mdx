@@ -75,7 +75,7 @@ You can provide localization by providing a localized [InfoPlist.strings](https:
 "NSBluetoothAlwaysUsageDescription" = "The app needs to connect to Bluetooth peripherals to detect the SumUp Card Terminal correctly. Please confirm with \"OK\" as you cannot use your card reader otherwise.";
 ```
 
-For further information, see the iOS Developer Library on [location usage on iOS 8 and later](https://developer.apple.com/library/ios/documentation/General/Reference/InfoPlistKeyReference/Articles/CocoaKeys.html#//apple_ref/doc/uid/TP40009251-SW26), [Bluetooth peripheral usage](https://developer.apple.com/library/ios/documentation/General/Reference/InfoPlistKeyReference/Articles/CocoaKeys.html#//apple_ref/doc/uid/TP40009251-SW20).
+For further information, see Apple's documentation on [NSLocationWhenInUseUsageDescription](https://developer.apple.com/documentation/bundleresources/information-property-list/nslocationwheninuseusagedescription) and [NSBluetoothAlwaysUsageDescription](https://developer.apple.com/documentation/bundleresources/information-property-list/nsbluetoothalwaysusagedescription).
 
 </Aside>
 
@@ -143,7 +143,7 @@ Please follow the relevant instructions below to prepare your project:
 
 <TabItem label="Swift Package Manager">
 
-The latest Swift Package Manager version added support to [distribute binary frameworks as Swift Packages](https://developer.apple.com/documentation/swift_packages/distributing_binary_frameworks_as_swift_packages).
+The latest Swift Package Manager version added support to [distribute binary frameworks as Swift Packages](https://developer.apple.com/documentation/xcode/distributing-binary-frameworks-as-swift-packages).
 
 Follow this workaround to manage SumUp iOS SDK versions via Swift PM in those cases:
 
@@ -154,7 +154,7 @@ Follow this workaround to manage SumUp iOS SDK versions via Swift PM in those ca
 4. Make sure the [required Info.plist keys](#add-property-list-keys-to-project) are present.
 </Steps>
 
-To learn more about adding Swift Package dependencies, please refer to the [official documentation](https://developer.apple.com/documentation/xcode/adding_package_dependencies_to_your_app).
+To learn more about adding Swift Package dependencies, please refer to the [official documentation](https://developer.apple.com/documentation/xcode/adding-package-dependencies-to-your-app).
 
 </TabItem>
 
