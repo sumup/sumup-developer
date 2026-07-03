@@ -191,7 +191,7 @@ In Swift, use `import SumUpSDK`. You do not have to add any headers to your brid
 
 Before calling any additional feature of the SumUp iOS SDK, you are required to set up the SDK with your Affiliate Key. Call on the main thread. You may wish to defer calling `setupWithAffiliateKey:` until after app launch, as it requests the user's location permission.
 
-<Image alt="Login screen" src="/img/guides/use_location.png" width="40%" />
+<Image alt="Location permission required" src="/img/guides/ios-sdk_location-permission.png" width="40%" />
 
 <Tabs>
 
@@ -328,7 +328,7 @@ If you want to use the View Controller embedded in the SDK, this section explain
 
 Following app authentication, a registered SumUp merchant account needs to be logged in. Present a login screen from your UIViewController:
 
-<Image alt="Login screen" src="/img/guides/login.png" width="40%" />
+<Image alt="Login screen" src="/img/guides/ios-sdk_login.png" width="40%" />
 
 <Tabs>
 
@@ -582,9 +582,9 @@ SumUpSDK.prepareForCheckout { (success: Bool, error: Error?) in
 
 Provides the user a way to search for nearby Bluetooth card readers and select one to be used. The selected card reader will be saved to `UserDefaults` and used for subsequent checkouts. Using this screen is optional. If a checkout is started but no card reader has been saved, the checkout itself will automatically present the screen to search for and select a card reader, and this will be saved for next time.
 
-<Image alt="Search Bluetooth" src="/img/guides/find_bluetooth.png" width="40%" />
+<Image alt="Search Bluetooth" src="/img/guides/ios-sdk_bluetooth-permission.png" width="40%" />
 
-<Image alt="Terminal selection" src="/img/guides/Multiple_terminals.png" width="40%" />
+<Image alt="Terminal selection" src="/img/guides/ios-sdk_terminals-found.png" width="40%" />
 
 <Tabs>
 
@@ -677,7 +677,7 @@ if (status) {
 
 Prepare a checkout request that encapsulates the information regarding the transaction.
 
-<Image alt="Checkout screen" src="/img/guides/checkout.png" width="40%" />
+<Image alt="Checkout screen" src="/img/guides/ios-sdk_checkout.png" width="40%" />
 
 <Tabs>
 
@@ -1570,8 +1570,11 @@ The SDK uses Objective C header files, but XCode can also display its public typ
 
 ## Sample App
 
-SumUp provides a sample app which implements main SDK components in a sample App Delegate and View Controller. Check the examples below for highlights provided in both Swift and Objective C.
-[Clone the provided repository](https://github.com/sumup/sumup-ios-sdk) and check the SampleApp directory to use it.
+A [sample app](https://github.com/sumup/sumup-ios-sdk/tree/master/SampleApp) is provided in the SDK repository. It demonstrates SDK setup, login, checkout, and card reader settings in a minimal Swift project.
+
+To run it, clone the [repository](https://github.com/sumup/sumup-ios-sdk) and open `SampleApp/SumUpSDKSampleApp.xcodeproj` in Xcode.
+
+<Image alt="Sample app transaction" src="/img/guides/ios-sdk_sample-app-transaction.gif" width="40%" />
 
 
 ## Known Issues
