@@ -60,7 +60,6 @@ Please add the following keys to your `info.plist` file and set some values:
 ```txt
 NSLocationWhenInUseUsageDescription
 NSBluetoothAlwaysUsageDescription
-NSBluetoothPeripheralUsageDescription (unless your deployment target is at least iOS 13)
 ```
 
 Check the [Sample App property list](https://github.com/sumup/sumup-ios-sdk/tree/master/SampleApp/SumUpSDKSampleApp/SumUpSDKSampleApp-Info.plist) for reference.
@@ -72,8 +71,6 @@ You can provide localization by providing a localized [InfoPlist.strings](https:
 /* Localized versions of Info.plist keys */
 
 "NSLocationWhenInUseUsageDescription" = "To provide a secure payment service, we need to know your location.\nWithout location information, you cannot accept payments using this app.";
-
-"NSBluetoothPeripheralUsageDescription" = "The app needs to connect to Bluetooth peripherals to detect the SumUp Card Terminal correctly. Please confirm with \"OK\" as you cannot use your card reader otherwise.";
 
 "NSBluetoothAlwaysUsageDescription" = "The app needs to connect to Bluetooth peripherals to detect the SumUp Card Terminal correctly. Please confirm with \"OK\" as you cannot use your card reader otherwise.";
 ```
@@ -1457,6 +1454,9 @@ The SDK uses Objective C header files, but XCode can also display its public typ
 | SMPCheckoutResult.h (CheckoutResult) | Handles checkout result structure, including status and transaction code |
 | SMPCurrencyCodes.h | Defines available currency codes |
 | SMPMerchant.h (Merchant) | Describes a Merchant, including Merchant Code (identifier) and currency used by merchant |
+| SMPReaderStatus.h | Reader information: battery level, serial number, model type, and active state |
+| SMPReaderType.h (ReaderType) | Enumeration of card reader models: Pin Plus, 3G, Air, Solo, Solo Lite |
+| SMPOfflineSessionDetails.h | Offline session state: remaining time, transaction counts, total approved amount |
 | SMPSkipScreenOptions.h (SkipScreenOptions) | Describes options allowing to skip transaction confirmation screen |
 | SumUpSDK.h | Declares project version  |
 
