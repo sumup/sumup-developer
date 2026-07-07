@@ -39,7 +39,7 @@
           b < e;
           b++
         ) {
-          for (var d = c[b]; " " == d.charAt(0); ) d = d.substring(1, d.length);
+          for (var d = c[b]; " " == d.charAt(0);) d = d.substring(1, d.length);
           if (0 == d.indexOf(a)) return d.substring(a.length, d.length);
         }
         return null;

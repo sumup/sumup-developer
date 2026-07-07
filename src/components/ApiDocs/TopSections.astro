@@ -21,9 +21,7 @@ export interface Props {
 const { topSection = "introduction" } = Astro.props;
 const javaSdkVersion = await getJavaSdkVersion();
 const problemSchema = doc.components?.schemas?.Problem as
-  | OpenAPIV3_1.SchemaObject
-  | OpenAPIV3_1.ReferenceObject
-  | undefined;
+  OpenAPIV3_1.SchemaObject | OpenAPIV3_1.ReferenceObject | undefined;
 const resolvedProblemSchema = problemSchema
   ? resolveSchema(problemSchema)
   : undefined;

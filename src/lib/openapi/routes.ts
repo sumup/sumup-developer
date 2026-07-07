@@ -5,10 +5,7 @@ export const apiTopLevelPaths = ["sdks", "authentication", "errors"] as const;
 export type ApiTopLevelPath = (typeof apiTopLevelPaths)[number];
 /** Section IDs used by in-page scrolling/highlighting on top-level API pages. */
 export type ApiTopSection =
-  | "introduction"
-  | "sdks"
-  | "authentication"
-  | "errors";
+  "introduction" | "sdks" | "authentication" | "errors";
 
 /** Route classification used by sidebar scroll syncing. */
 export type ParsedApiPath =

@@ -125,9 +125,7 @@ export const resolveSchema = (
 /** Type guard used where request bodies may still be `$ref` objects. */
 export const isRequestBody = (
   object:
-    | OpenAPIV3_1.RequestBodyObject
-    | OpenAPIV3_1.ReferenceObject
-    | undefined,
+    OpenAPIV3_1.RequestBodyObject | OpenAPIV3_1.ReferenceObject | undefined,
 ): object is OpenAPIV3_1.RequestBodyObject => !!object && !("$ref" in object);
 
 /**

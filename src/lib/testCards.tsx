@@ -1,11 +1,6 @@
 export const testCards: {
   brand:
-    | "visa"
-    | "mastercard"
-    | "maestro"
-    | "american_express"
-    | "discover"
-    | "jcb";
+    "visa" | "mastercard" | "maestro" | "american_express" | "discover" | "jcb";
   number: string;
   name: string;
   description: string;
