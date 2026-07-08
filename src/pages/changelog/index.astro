@@ -42,16 +42,14 @@ const props = {
     <ul class="tags">
       <li>
         <a href="/changelog">
-          <Status variant="badge" as="span">All</Status>
+          <Status as="span">All</Status>
         </a>
       </li>
       {
         allTags.map((tag) => (
           <li>
             <a href={getTagHref(tag)}>
-              <Status variant="badge" as="span">
-                {tag}
-              </Status>
+              <Status as="span">{tag}</Status>
             </a>
           </li>
         ))
