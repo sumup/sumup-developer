@@ -33,7 +33,13 @@ export default [
       "no-var": "error",
       "@typescript-eslint/no-unused-vars": [
         "error",
-        { ignoreRestSiblings: true },
+        {
+          ignoreRestSiblings: true,
+          argsIgnorePattern: "^_",
+          varsIgnorePattern: "^_",
+          caughtErrorsIgnorePattern: "^_",
+          destructuredArrayIgnorePattern: "^_",
+        },
       ],
     },
   },
