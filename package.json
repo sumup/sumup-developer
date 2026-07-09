@@ -22,7 +22,14 @@
     "node": "24.x",
     "npm": "11.x"
   },
-  "packageManager": "npm@10.9.4",
+  "packageManager": "npm@11.18.0",
+  "devEngines": {
+    "runtime": {
+      "name": "node",
+      "version": "24.x",
+      "onFail": "error"
+    }
+  },
   "scripts": {
     "info": "astro info",
     "dev": "astro dev",
