@@ -325,12 +325,14 @@ paths:
         - apiKey: []
         - oauth2:
             - payments
+            - checkouts.write
       tags:
         - Checkouts
       x-codegen:
         method_name: create
       x-scopes:
         - payments
+        - checkouts.write
     get:
       operationId: ListCheckouts
       summary: List checkouts
@@ -379,12 +381,14 @@ paths:
         - apiKey: []
         - oauth2:
             - payments
+            - checkouts.read
       tags:
         - Checkouts
       x-codegen:
         method_name: list
       x-scopes:
         - payments
+        - checkouts.read
   /v0.1/checkouts/{checkout_id}:
     parameters:
       - name: checkout_id
@@ -446,12 +450,91 @@ paths:
         - apiKey: []
         - oauth2:
             - payments
+            - checkouts.read
       tags:
         - Checkouts
       x-codegen:
         method_name: get
       x-scopes:
         - payments
+        - checkouts.read
+    patch:
+      operationId: UpdateCheckout
+      summary: Update a checkout
+      description: Updates an identified checkout resource.
+      requestBody:
+        description: Details for updating a checkout resource.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CheckoutUpdateRequest'
+            example:
+              amount: 12.5
+              currency: EUR
+              description: Updated purchase
+              checkout_reference: f00a8f74-b05d-4605-bd73-2a901bae5802
+              valid_until: 2020-02-29T10:56:56+00:00
+              customer_id: 831ff8d4cd5958ab5670
+      responses:
+        '200':
+          description: Returns the updated checkout resource.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Checkout'
+              example:
+                checkout_reference: f00a8f74-b05d-4605-bd73-2a901bae5802
+                amount: 12.5
+                currency: EUR
+                merchant_code: MH4H92C7
+                merchant_country: DE
+                description: Updated purchase
+                id: 88fcf8de-304d-4820-8f1c-ec880290eb92
+                status: PENDING
+                date: 2020-02-29T10:56:56+00:00
+                valid_until: 2020-02-29T10:56:56+00:00
+                customer_id: 831ff8d4cd5958ab5670
+                transactions: []
+        '401':
+          description: The request is not authorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+              examples:
+                Problem_Details:
+                  description: Unauthorized response returned by API gateway.
+                  value:
+                    detail: Unauthorized.
+                    status: 401
+                    title: Unauthorized
+                    trace_id: 3c77294349d3b5647ea2d990f0d8f017
+                    type: https://developer.sumup.com/problem/unauthorized
+        '404':
+          description: The requested resource does not exist.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Not_Found:
+                  description: The identified resource is not found on the server.
+                  value:
+                    error_code: NOT_FOUND
+                    message: Resource not found
+      security:
+        - apiKey: []
+        - oauth2:
+            - payments
+            - checkouts.write
+      tags:
+        - Checkouts
+      x-codegen:
+        method_name: update
+      x-scopes:
+        - payments
+        - checkouts.write
     put:
       operationId: ProcessCheckout
       summary: Process a checkout
@@ -733,12 +816,16 @@ paths:
                     message: Checkout is already processed
       security:
         - apiKey: []
-        - oauth2: []
+        - oauth2:
+            - payments
+            - checkouts.write
       tags:
         - Checkouts
       x-codegen:
         method_name: process
-      x-scopes: []
+      x-scopes:
+        - payments
+        - checkouts.write
     delete:
       operationId: DeactivateCheckout
       summary: Deactivate a checkout
@@ -806,12 +893,14 @@ paths:
         - apiKey: []
         - oauth2:
             - payments
+            - checkouts.write
       tags:
         - Checkouts
       x-codegen:
         method_name: deactivate
       x-scopes:
         - payments
+        - checkouts.write
   /v0.2/checkouts/{checkout_id}/apple-pay-session:
     put:
       operationId: CreateApplePaySession
@@ -995,12 +1084,14 @@ paths:
         - apiKey: []
         - oauth2:
             - payment_instruments
+            - customers.write
       tags:
         - Customers
       x-codegen:
         method_name: create
       x-scopes:
         - payment_instruments
+        - customers.write
   /v0.1/customers/{customer_id}:
     parameters:
       - name: customer_id
@@ -1064,12 +1155,14 @@ paths:
         - apiKey: []
         - oauth2:
             - payment_instruments
+            - customers.read
       tags:
         - Customers
       x-codegen:
         method_name: get
       x-scopes:
         - payment_instruments
+        - customers.read
     put:
       operationId: UpdateCustomer
       summary: Update a customer
@@ -1138,12 +1231,14 @@ paths:
         - apiKey: []
         - oauth2:
             - payment_instruments
+            - customers.write
       tags:
         - Customers
       x-codegen:
         method_name: update
       x-scopes:
         - payment_instruments
+        - customers.write
   /v0.1/customers/{customer_id}/payment-instruments:
     parameters:
       - name: customer_id
@@ -1209,12 +1304,14 @@ paths:
         - apiKey: []
         - oauth2:
             - payment_instruments
+            - customers.read
       tags:
         - Customers
       x-codegen:
         method_name: list_payment_instruments
       x-scopes:
         - payment_instruments
+        - customers.read
   /v0.1/customers/{customer_id}/payment-instruments/{token}:
     parameters:
       - name: customer_id
@@ -1292,12 +1389,14 @@ paths:
         - apiKey: []
         - oauth2:
             - payment_instruments
+            - customers.write
       tags:
         - Customers
       x-codegen:
         method_name: deactivate_payment_instrument
       x-scopes:
         - payment_instruments
+        - customers.write
   /v1.0/merchants/{merchant_code}/payments/{transaction_id}/refunds:
     parameters:
       - name: merchant_code
@@ -1368,12 +1467,14 @@ paths:
         - apiKey: []
         - oauth2:
             - payments
+            - refunds.write
       tags:
         - Transactions
       x-codegen:
         method_name: refund
       x-scopes:
         - payments
+        - refunds.write
   /v2.1/merchants/{merchant_code}/transactions:
     get:
       operationId: GetTransactionV2.1
@@ -1466,12 +1567,14 @@ paths:
         - apiKey: []
         - oauth2:
             - transactions.history
+            - transactions.read
       tags:
         - Transactions
       x-codegen:
         method_name: get
       x-scopes:
         - transactions.history
+        - transactions.read
   /v2.1/merchants/{merchant_code}/transactions/history:
     get:
       operationId: ListTransactionsV2.1
@@ -1673,12 +1776,14 @@ paths:
         - apiKey: []
         - oauth2:
             - transactions.history
+            - transactions.read
       tags:
         - Transactions
       x-codegen:
         method_name: list
       x-scopes:
         - transactions.history
+        - transactions.read
   /v1.0/merchants/{merchant_code}/payouts:
     get:
       operationId: ListPayoutsV1
@@ -1813,6 +1918,7 @@ paths:
         - oauth2:
             - user.profile
             - user.profile_readonly
+            - payouts.read
       tags:
         - Payouts
       x-codegen:
@@ -1820,6 +1926,7 @@ paths:
       x-scopes:
         - user.profile
         - user.profile_readonly
+        - payouts.read
   /v1.1/receipts/{transaction_id}:
     get:
       operationId: GetReceipt
@@ -1912,12 +2019,14 @@ paths:
                     error_code: NOT_FOUND
       security:
         - apiKey: []
-        - oauth2: []
+        - oauth2:
+            - receipts.read
       tags:
         - Receipts
       x-codegen:
         method_name: get
-      x-scopes: []
+      x-scopes:
+        - receipts.read
   /v0.1/memberships:
     get:
       operationId: ListMemberships
@@ -2037,12 +2146,16 @@ paths:
                 detail: Authentication credentials are missing or invalid.
       security:
         - apiKey: []
-        - oauth2: []
+        - oauth2:
+            - user.profile
+            - user.profile_readonly
       tags:
         - Memberships
       x-codegen:
         method_name: list
-      x-scopes: []
+      x-scopes:
+        - user.profile
+        - user.profile_readonly
   /v0.1/merchants/{merchant_code}/members:
     get:
       operationId: ListMerchantMembers
@@ -2141,7 +2254,9 @@ paths:
                 detail: The requested resource doesn't exist or does not belong to you.
       security:
         - apiKey: []
-        - oauth2: []
+        - oauth2:
+            - user.subaccounts
+            - members.read
       tags:
         - Members
       x-codegen:
@@ -2150,7 +2265,9 @@ paths:
         - relation: merchant_read
           object_type: merchant
           object_id_param: merchant_code
-      x-scopes: []
+      x-scopes:
+        - user.subaccounts
+        - members.read
     post:
       operationId: CreateMerchantMember
       summary: Create a member
@@ -2177,6 +2294,7 @@ paths:
                   description: Email address of the member to add.
                   type: string
                   format: email
+                  maxLength: 256
                 password:
                   description: Password of the member to add. Only used if `is_managed_user` is true. In the case of service accounts, the password is not used and can not be defined by the caller.
                   type: string
@@ -2186,11 +2304,14 @@ paths:
                   description: Nickname of the member to add. Only used if `is_managed_user` is true. Used for display purposes only.
                   type: string
                   example: Test User
+                  maxLength: 64
                 roles:
                   description: List of roles to assign to the new member.
                   type: array
                   items:
                     type: string
+                    maxLength: 64
+                  maxItems: 124
                 metadata:
                   $ref: '#/components/schemas/Metadata'
                 attributes:
@@ -2244,7 +2365,9 @@ paths:
                 detail: Too many requests were sent. Please try again later.
       security:
         - apiKey: []
-        - oauth2: []
+        - oauth2:
+            - user.subaccounts
+            - members.write
       tags:
         - Members
       x-codegen:
@@ -2253,7 +2376,9 @@ paths:
         - relation: members_create
           object_type: merchant
           object_id_param: merchant_code
-      x-scopes: []
+      x-scopes:
+        - user.subaccounts
+        - members.write
   /v0.1/merchants/{merchant_code}/members/{member_id}:
     get:
       operationId: GetMerchantMember
@@ -2294,7 +2419,9 @@ paths:
                 detail: The requested resource doesn't exist or does not belong to you.
       security:
         - apiKey: []
-        - oauth2: []
+        - oauth2:
+            - user.subaccounts
+            - members.read
       tags:
         - Members
       x-codegen:
@@ -2303,7 +2430,9 @@ paths:
         - relation: members_view
           object_type: merchant
           object_id_param: merchant_code
-      x-scopes: []
+      x-scopes:
+        - user.subaccounts
+        - members.read
     put:
       operationId: UpdateMerchantMember
       summary: Update a member
@@ -2334,6 +2463,8 @@ paths:
                   type: array
                   items:
                     type: string
+                    maxLength: 64
+                  maxItems: 124
                 metadata:
                   $ref: '#/components/schemas/Metadata'
                 attributes:
@@ -2346,6 +2477,7 @@ paths:
                       description: User's nickname. Used for display purposes only.
                       type: string
                       example: Test User
+                      maxLength: 64
                     password:
                       description: Password of the member to add. Only used if `is_managed_user` is true.
                       type: string
@@ -2411,7 +2543,9 @@ paths:
                 detail: The request conflicts with the current state of the resource.
       security:
         - apiKey: []
-        - oauth2: []
+        - oauth2:
+            - user.subaccounts
+            - members.write
       tags:
         - Members
       x-codegen:
@@ -2420,7 +2554,9 @@ paths:
         - relation: members_update
           object_type: merchant
           object_id_param: merchant_code
-      x-scopes: []
+      x-scopes:
+        - user.subaccounts
+        - members.write
     delete:
       operationId: DeleteMerchantMember
       summary: Delete a member
@@ -2467,7 +2603,9 @@ paths:
                 detail: The requested resource doesn't exist or does not belong to you.
       security:
         - apiKey: []
-        - oauth2: []
+        - oauth2:
+            - user.subaccounts
+            - members.write
       tags:
         - Members
       x-codegen:
@@ -2476,7 +2614,9 @@ paths:
         - relation: members_delete
           object_type: merchant
           object_id_param: merchant_code
-      x-scopes: []
+      x-scopes:
+        - user.subaccounts
+        - members.write
   /v0.1/merchants/{merchant_code}/roles:
     get:
       operationId: ListMerchantRoles
@@ -2517,7 +2657,9 @@ paths:
                 detail: The requested resource doesn't exist or does not belong to you.
       security:
         - apiKey: []
-        - oauth2: []
+        - oauth2:
+            - user.subaccounts
+            - roles.read
       tags:
         - Roles
       x-codegen:
@@ -2526,7 +2668,9 @@ paths:
         - relation: roles_list
           object_type: merchant
           object_id_param: merchant_code
-      x-scopes: []
+      x-scopes:
+        - user.subaccounts
+        - roles.read
     post:
       operationId: CreateMerchantRole
       summary: Create a role
@@ -2600,7 +2744,9 @@ paths:
                 detail: The requested resource doesn't exist or does not belong to you.
       security:
         - apiKey: []
-        - oauth2: []
+        - oauth2:
+            - user.subaccounts
+            - roles.write
       tags:
         - Roles
       x-codegen:
@@ -2609,7 +2755,9 @@ paths:
         - relation: roles_create
           object_type: merchant
           object_id_param: merchant_code
-      x-scopes: []
+      x-scopes:
+        - user.subaccounts
+        - roles.write
   /v0.1/merchants/{merchant_code}/roles/{role_id}:
     get:
       operationId: GetMerchantRole
@@ -2650,7 +2798,9 @@ paths:
                 detail: The requested resource doesn't exist or does not belong to you.
       security:
         - apiKey: []
-        - oauth2: []
+        - oauth2:
+            - user.subaccounts
+            - roles.read
       tags:
         - Roles
       x-codegen:
@@ -2659,7 +2809,9 @@ paths:
         - relation: roles_view
           object_type: merchant
           object_id_param: merchant_code
-      x-scopes: []
+      x-scopes:
+        - user.subaccounts
+        - roles.read
     delete:
       operationId: DeleteMerchantRole
       summary: Delete a role
@@ -2706,7 +2858,9 @@ paths:
                 detail: The requested resource doesn't exist or does not belong to you.
       security:
         - apiKey: []
-        - oauth2: []
+        - oauth2:
+            - user.subaccounts
+            - roles.write
       tags:
         - Roles
       x-codegen:
@@ -2715,7 +2869,9 @@ paths:
         - relation: roles_delete
           object_type: merchant
           object_id_param: merchant_code
-      x-scopes: []
+      x-scopes:
+        - user.subaccounts
+        - roles.write
     patch:
       operationId: UpdateMerchantRole
       summary: Update a role
@@ -2797,7 +2953,9 @@ paths:
                 detail: The requested resource doesn't exist or does not belong to you.
       security:
         - apiKey: []
-        - oauth2: []
+        - oauth2:
+            - user.subaccounts
+            - roles.write
       tags:
         - Roles
       x-codegen:
@@ -2806,12 +2964,14 @@ paths:
         - relation: roles_update
           object_type: merchant
           object_id_param: merchant_code
-      x-scopes: []
+      x-scopes:
+        - user.subaccounts
+        - roles.write
   /v1/merchants/{merchant_code}:
     get:
       operationId: GetMerchant
-      summary: Retrieve a Merchant
-      description: Retrieve a merchant.
+      summary: Get Merchant
+      description: Returns a Merchant for a valid Merchant code.
       parameters:
         - name: version
           in: query
@@ -2862,7 +3022,7 @@ paths:
     get:
       operationId: ListPersons
       summary: List Persons
-      description: Returns a list of persons related to the merchant.
+      description: Returns the Persons related to a Merchant.
       parameters:
         - name: version
           in: query
@@ -2881,7 +3041,7 @@ paths:
             example: MK10CL2A
       responses:
         '200':
-          description: Returns a list of persons for a valid merchant identifier.
+          description: Returns a list of Persons for a valid Merchant identifier.
           content:
             application/json:
               schema:
@@ -2912,8 +3072,8 @@ paths:
   /v1/merchants/{merchant_code}/persons/{person_id}:
     get:
       operationId: GetPerson
-      summary: Retrieve a Person
-      description: Returns a single person related to the merchant.
+      summary: Get Person
+      description: Returns a single Person related to a Merchant.
       parameters:
         - name: version
           in: query
@@ -3012,6 +3172,7 @@ paths:
         - apiKey: []
         - oauth2:
             - readers.read
+            - terminals.read
       tags:
         - Readers
       x-codegen:
@@ -3022,6 +3183,7 @@ paths:
           object_id_param: merchant_code
       x-scopes:
         - readers.read
+        - terminals.read
     post:
       operationId: CreateReader
       summary: Create a Reader
@@ -3117,6 +3279,7 @@ paths:
         - apiKey: []
         - oauth2:
             - readers.write
+            - terminals.write
       tags:
         - Readers
       x-codegen:
@@ -3127,6 +3290,7 @@ paths:
           object_id_param: merchant_code
       x-scopes:
         - readers.write
+        - terminals.write
   /v0.1/merchants/{merchant_code}/readers/{reader_id}:
     get:
       operationId: GetReader
@@ -3187,6 +3351,7 @@ paths:
         - apiKey: []
         - oauth2:
             - readers.read
+            - terminals.read
       tags:
         - Readers
       x-codegen:
@@ -3197,6 +3362,7 @@ paths:
           object_id_param: merchant_code
       x-scopes:
         - readers.read
+        - terminals.read
     delete:
       operationId: DeleteReader
       summary: Delete a reader
@@ -3233,6 +3399,7 @@ paths:
         - apiKey: []
         - oauth2:
             - readers.write
+            - terminals.write
       tags:
         - Readers
       x-codegen:
@@ -3243,6 +3410,7 @@ paths:
           object_id_param: merchant_code
       x-scopes:
         - readers.write
+        - terminals.write
     patch:
       operationId: UpdateReader
       summary: Update a Reader
@@ -3305,6 +3473,7 @@ paths:
         - apiKey: []
         - oauth2:
             - readers.write
+            - terminals.write
       tags:
         - Readers
       x-codegen:
@@ -3315,6 +3484,7 @@ paths:
           object_id_param: merchant_code
       x-scopes:
         - readers.write
+        - terminals.write
   /v0.1/merchants/{merchant_code}/readers/{reader_id}/checkout:
     post:
       operationId: CreateReaderCheckout
@@ -4111,6 +4281,37 @@ components:
         - currency
         - merchant_code
       title: Checkout Create Request
+    CheckoutUpdateRequest:
+      description: Request body for updating an existing checkout. Include only the fields that should be changed.
+      type: object
+      properties:
+        amount:
+          description: Updated amount to be charged to the payer, expressed in major units.
+          type: number
+          format: float
+          example: 12.5
+        currency:
+          $ref: '#/components/schemas/Currency'
+        description:
+          description: Updated short merchant-defined description shown in SumUp tools and reporting.
+          type: string
+          example: Updated purchase
+        checkout_reference:
+          description: Updated merchant-defined reference for the checkout.
+          type: string
+          example: f00a8f74-b05d-4605-bd73-2a901bae5802
+          maxLength: 90
+        valid_until:
+          description: Updated expiration timestamp. The checkout must be processed before this moment, otherwise it becomes unusable.
+          type: string
+          format: date-time
+          example: 2020-02-29T10:56:56+00:00
+          nullable: true
+        customer_id:
+          description: Updated merchant-scoped customer identifier associated with the checkout.
+          type: string
+          example: 831ff8d4cd5958ab5670
+      title: Checkout Update Request
     ProcessCheckout:
       description: Request body for attempting payment on an existing checkout. The required companion fields depend on the selected `payment_type`, for example card details, saved-card data, or payer information required by a specific payment method.
       type: object
@@ -4374,13 +4575,13 @@ components:
       type: object
       properties:
         id:
-          $ref: '#/components/schemas/EventID'
+          $ref: '#/components/schemas/TransactionEventID'
         transaction_id:
           $ref: '#/components/schemas/TransactionID'
         type:
-          $ref: '#/components/schemas/EventType'
+          $ref: '#/components/schemas/TransactionEventType'
         status:
-          $ref: '#/components/schemas/EventStatus'
+          $ref: '#/components/schemas/TransactionEventStatus'
         amount:
           description: Amount of the event.
           type: number
@@ -4729,13 +4930,13 @@ components:
       type: object
       properties:
         id:
-          $ref: '#/components/schemas/EventID'
+          $ref: '#/components/schemas/TransactionEventID'
         transaction_id:
           $ref: '#/components/schemas/TransactionID'
         type:
-          $ref: '#/components/schemas/EventType'
+          $ref: '#/components/schemas/TransactionEventType'
         status:
-          $ref: '#/components/schemas/EventStatus'
+          $ref: '#/components/schemas/TransactionEventStatus'
         amount:
           description: Amount of the event.
           type: string
@@ -4975,11 +5176,11 @@ components:
       type: object
       properties:
         id:
-          $ref: '#/components/schemas/EventID'
+          $ref: '#/components/schemas/TransactionEventID'
         event_type:
-          $ref: '#/components/schemas/EventType'
+          $ref: '#/components/schemas/TransactionEventType'
         status:
-          $ref: '#/components/schemas/EventStatus'
+          $ref: '#/components/schemas/TransactionEventStatus'
         amount:
           description: Amount of the event.
           type: number
@@ -5421,7 +5622,7 @@ components:
         - PENDING
         - REFUNDED
       title: Transaction Status
-    EventType:
+    TransactionEventType:
       description: Type of the transaction event.
       type: string
       enum:
@@ -5429,8 +5630,8 @@ components:
         - CHARGE_BACK
         - REFUND
         - PAYOUT_DEDUCTION
-      title: Event Type
-    EventStatus:
+      title: Transaction Event Type
+    TransactionEventStatus:
       description: |-
         Status of the transaction event.
 
@@ -5452,12 +5653,12 @@ components:
         - REFUNDED
         - SCHEDULED
         - SUCCESSFUL
-      title: Event Status
-    EventID:
+      title: Transaction Event Status
+    TransactionEventID:
       description: Unique ID of the transaction event.
       type: integer
       format: int64
-      title: Event ID
+      title: Transaction Event ID
     HorizontalAccuracy:
       description: Indication of the precision of the geographical position received from the payment terminal.
       type: number
@@ -6136,6 +6337,14 @@ components:
       description: Settings used to apply the Merchant's branding to email receipts, invoices, checkouts, and other products.
       type: object
       properties:
+        footer_text:
+          description: |
+            Footer text rendered on receipts and other customer-facing products.
+          type: string
+          examples:
+            - Thanks for shopping with us.
+          maxLength: 500
+          minLength: 1
         icon:
           description: |
             An icon for the merchant. Must be square.
@@ -6241,7 +6450,7 @@ components:
       properties:
         share:
           description: |
-            The percent of ownership shares held by the person expressed in percent mille (1/100000). Only persons with the relationship `owner` can have ownership.
+            The percent of ownership shares held by the Person expressed in percent mille (1/100000). Only Persons with the relationship `owner` can have ownership.
           type: integer
           format: int32
           example: 50000
@@ -6257,25 +6466,25 @@ components:
         - chng_01HS0KG3MPVEVWW85E3KNXH55J
     ChangeStatus:
       description: |
-        Reflects the status of changes submitted through the `PATCH` endpoints for the merchant or persons. If some changes have not been applied yet, the status will be `pending`. If all changes have been applied, the status `done`.
+        Reflects the status of changes submitted through the `PATCH` endpoints for the Merchant or Persons. If some changes have not been applied yet, the status will be `pending`. If all changes have been applied, the status `done`.
         The status is only returned after write operations or on read endpoints when the `version` query parameter is provided.
       type: string
       readOnly: true
     BasePerson:
       description: |
-        Base schema for a person associated with a merchant. This can be a legal representative, business owner (ultimate beneficial owner), or an officer. A legal representative is the person who registered the merchant with SumUp. They should always have a `user_id`.
+        Base schema for a Person associated with a Merchant. This can be a legal representative, business owner (ultimate beneficial owner), or an officer. A legal representative is the Person who registered the Merchant with SumUp. They should always have a `user_id`.
       type: object
       properties:
         id:
           description: |
-            The unique identifier for the person. This is a [typeid](https://github.com/sumup/typeid).
+            The unique identifier for the Person. This is a [typeid](https://github.com/sumup/typeid).
           type: string
           examples:
             - pers_2EGQ057R6C8J791RVCG5NWAEAB
           readOnly: true
         user_id:
           description: |
-            A corresponding identity user ID for the person, if they have a user account.
+            A corresponding identity user ID for the Person, if they have a user account.
           type: string
           examples:
             - ef263f37-8701-4181-9758-acddbb778ee9
@@ -6305,14 +6514,14 @@ components:
           $ref: '#/components/schemas/PhoneNumber'
         relationships:
           description: |
-            A list of roles the person has in the merchant or towards SumUp. A merchant must have at least one person with the relationship `representative`.
+            A list of roles the Person has in the Merchant or towards SumUp. A Merchant must have at least one Person with the relationship `representative`.
           type: array
           items:
             type: string
             description: |
-              * `representative`: The person is the primary contact for SumUp and has full administrative power over the merchant account.
-              * `owner`: The person is a business owner. If this value is set, the `ownership_percent` should be set as well.
-              * `officer`: The person is an officer at the company.
+              * `representative`: The Person is the primary contact for SumUp and has full administrative power over the merchant account.
+              * `owner`: The Person is a business owner. If this value is set, the `ownership_percent` should be set as well.
+              * `officer`: The Person is an officer at the company.
             examples:
               - representative
               - owner
@@ -6329,12 +6538,12 @@ components:
           $ref: '#/components/schemas/CountryCode'
         nationality:
           description: |
-            The persons nationality. May be an [ISO3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) country code, but legacy data may not conform to this standard.
+            The Person's nationality. May be an [ISO3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) country code, but legacy data may not conform to this standard.
           type: string
           nullable: true
         country_of_residence:
           description: |
-            An [ISO3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) country code representing the country where the person resides.
+            An [ISO3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) country code representing the country where the Person resides.
           type: string
           maxLength: 2
           minLength: 2
@@ -7078,6 +7287,20 @@ components:
                 description: A sample checkout
                 hosted_checkout:
                   enabled: true
+    CheckoutUpdate:
+      required: true
+      description: Details for updating a checkout resource.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CheckoutUpdateRequest'
+          example:
+            amount: 12.5
+            currency: EUR
+            description: Updated purchase
+            checkout_reference: f00a8f74-b05d-4605-bd73-2a901bae5802
+            valid_until: 2020-02-29T10:56:56+00:00
+            customer_id: 831ff8d4cd5958ab5670
     CheckoutProcess:
       required: true
       description: Details of the payment instrument for processing the checkout.
@@ -7294,6 +7517,25 @@ components:
                   enabled: true
                 hosted_checkout_url: https://checkout.sumup.com/pay/8f9316a3-cda9-42a9-9771-54d534315676
                 transactions: []
+    CheckoutUpdate:
+      description: Returns the updated checkout resource.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Checkout'
+          example:
+            checkout_reference: f00a8f74-b05d-4605-bd73-2a901bae5802
+            amount: 12.5
+            currency: EUR
+            merchant_code: MH4H92C7
+            merchant_country: DE
+            description: Updated purchase
+            id: 88fcf8de-304d-4820-8f1c-ec880290eb92
+            status: PENDING
+            date: 2020-02-29T10:56:56+00:00
+            valid_until: 2020-02-29T10:56:56+00:00
+            customer_id: 831ff8d4cd5958ab5670
+            transactions: []
     CheckoutList:
       description: Returns a list of checkout resources.
       content:
@@ -7617,23 +7859,39 @@ components:
           refreshUrl: https://api.sumup.com/token
           scopes:
             payments: Make payments by creating and processing checkouts.
+            checkouts.read: View checkouts.
+            checkouts.write: Create, process, and deactivate checkouts.
             transactions.history: View transactions and transaction history.
+            transactions.read: View transactions and transaction history.
+            refunds.write: Refund transactions.
+            receipts.read: View receipts.
             user.profile_readonly: View user profile details.
             user.profile: View and manage your user profile.
             user.app-settings: View and manage the SumUp mobile application settings.
             payment_instruments: Manage customers and their payment instruments.
+            customers.read: View customers and their payment instruments.
+            customers.write: Create and manage customers and their payment instruments.
             user.payout-settings: View and manage your payout settings.
+            payouts.read: View payouts.
             user.subaccounts: View and manage the user profile details of your employees.
         clientCredentials:
           tokenUrl: https://api.sumup.com/token
           scopes:
             payments: Make payments by creating and processing checkouts.
+            checkouts.read: View checkouts.
+            checkouts.write: Create, process, and deactivate checkouts.
             transactions.history: View transactions and transaction history.
+            transactions.read: View transactions and transaction history.
+            refunds.write: Refund transactions.
+            receipts.read: View receipts.
             user.profile_readonly: View user profile details.
             user.profile: View and manage your user profile.
             user.app-settings: View and manage the SumUp mobile application settings.
             payment_instruments: Manage customers and their payment instruments.
+            customers.read: View customers and their payment instruments.
+            customers.write: Create and manage customers and their payment instruments.
             user.payout-settings: View and manage your payout settings.
+            payouts.read: View payouts.
             user.subaccounts: View and manage the user profile details of your employee.
 tags:
   - name: Checkouts
@@ -7710,7 +7968,7 @@ tags:
       - $ref: '#/components/schemas/Role'
     x-beta: true
   - name: Merchants
-    description: Merchant account represents a single business entity at SumUp.
+    description: A Merchant represents a single business which can use SumUp products like payment processing.
     x-core-objects:
       - $ref: '#/components/schemas/Merchant'
   - name: Readers
