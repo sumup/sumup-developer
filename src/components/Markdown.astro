@@ -1,5 +1,5 @@
 ---
-import { marked } from "marked";
+import { markdownToHtml } from "satteri";
 
 interface Props {
   class?: string;
@@ -9,7 +9,7 @@ interface Props {
 
 const { class: className } = Astro.props;
 const slot = await Astro.slots.render("default");
-const html = marked.parse(slot);
+const { html } = markdownToHtml(slot);
 ---
 
 <div class:list={["sl-markdown-content", className]}>
