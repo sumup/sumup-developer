@@ -21,6 +21,13 @@ updates:
         patterns:
           - "@expressive-code/*"
           - "*expressive-code*"
+      eslint:
+        patterns:
+          - "eslint"
+          - "@eslint/*"
+          - "@typescript-eslint/*"
+          - "typescript-eslint"
+          - "eslint-*"
       react:
         patterns:
           - "react"
