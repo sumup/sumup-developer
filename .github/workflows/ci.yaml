@@ -32,7 +32,7 @@ jobs:
           cache: npm
 
       - name: Run rumdl
-        uses: rvben/rumdl@460ba739bf72499fcc237a99c571a9116f23b205 # v0.2.34
+        uses: rvben/rumdl@87a6758b35de4639ebc4e9fe9948a853553d8048 # v0.2.35
         with:
           version: 0.2.9
           path: "."
