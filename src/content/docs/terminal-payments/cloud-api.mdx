@@ -146,7 +146,7 @@ This is an asynchronous process; starting the transaction on the device may take
           }'
     ```
   </TabItem>
-  <TabItem label="Node.js" icon="seti:javascript">
+  <TabItem label="JavaScript" icon="seti:javascript">
     ```ts
     const checkout = await client.readers.createCheckout(merchantCode, readerId, {
       total_amount: {
@@ -257,7 +257,7 @@ This process is asynchronous, and the actual termination may take some time to b
       -H "Authorization: Bearer $SUMUP_API_KEY"
     ```
   </TabItem>
-  <TabItem label="Node.js" icon="seti:javascript">
+  <TabItem label="JavaScript" icon="seti:javascript">
     ```ts
     await client.readers.terminateCheckout(merchantCode, readerId)
     ```
@@ -309,7 +309,7 @@ List all readers connected to your merchant account.
       -H "Authorization: Bearer $SUMUP_API_KEY"
     ```
   </TabItem>
-  <TabItem label="Node.js" icon="seti:javascript">
+  <TabItem label="JavaScript" icon="seti:javascript">
     ```ts
     const readers = await client.readers.list(merchantCode)
     ```

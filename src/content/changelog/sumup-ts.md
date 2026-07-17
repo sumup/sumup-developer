@@ -1,6 +1,6 @@
 ---
 title: "TypeScript / JavaScript SDK"
-tags: ["SDK", "Node.js"]
+tags: ["SDK", "JavaScript"]
 publishedDate: 2025-06-22
 ---
 

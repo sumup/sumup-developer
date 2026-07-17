@@ -62,7 +62,7 @@ curl -X POST \
 }'
 ```
 </TabItem>
-  <TabItem label="Node.js" icon="seti:javascript">
+  <TabItem label="JavaScript" icon="seti:javascript">
     ```ts
     const customer = await client.customers.create({
       customer_id: "MYCUSTOMERID-123",
@@ -267,7 +267,7 @@ Example of such request:
           }'
     ```
   </TabItem>
-  <TabItem label="Node.js" icon="seti:javascript">
+  <TabItem label="JavaScript" icon="seti:javascript">
     ```ts
     const checkout = await client.checkouts.create({
       checkout_reference: "MYCHECKOUT",
@@ -455,7 +455,7 @@ requesting them via [the list payment instruments](/api/customers/list-payment-i
       -H "Content-Type: application/json;charset=UTF-8"
     ```
   </TabItem>
-  <TabItem label="Node.js" icon="seti:javascript">
+  <TabItem label="JavaScript" icon="seti:javascript">
     ```ts
     const instruments = await client.customers.listPaymentInstruments("MYCUSTOMERID-123");
     ```

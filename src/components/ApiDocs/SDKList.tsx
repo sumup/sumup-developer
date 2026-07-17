@@ -2,7 +2,7 @@ import { ListItemGroup } from "@sumup-oss/circuit-ui";
 import dotnetIcon from "@assets/languages/dotnet.svg";
 import goIcon from "@assets/languages/go.svg";
 import javaIcon from "@assets/languages/java.svg";
-import nodejsIcon from "@assets/languages/nodejs.svg";
+import javascriptIcon from "@assets/languages/javascript.svg";
 import phpIcon from "@assets/languages/php.svg";
 import pythonIcon from "@assets/languages/python.svg";
 import rustIcon from "@assets/languages/rust.svg";
@@ -23,12 +23,12 @@ export default () => {
       label="SDKs"
       items={[
         {
-          key: "node.js",
+          key: "javascript",
           leadingComponent: () => (
-            <SDKIcon src={nodejsIcon.src} alt="Node.js logo" />
+            <SDKIcon src={javascriptIcon.src} alt="JavaScript logo" />
           ),
-          label: "Node.js",
-          href: "/tools/sdks/nodejs/",
+          label: "JavaScript",
+          href: "/online-payments/sdks/javascript/",
           variant: "navigation",
         },
         {

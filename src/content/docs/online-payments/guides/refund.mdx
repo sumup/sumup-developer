@@ -55,7 +55,7 @@ Example request:
       -H "Authorization: Bearer $SUMUP_API_KEY"
     ```
   </TabItem>
-  <TabItem label="Node.js" icon="seti:javascript">
+  <TabItem label="JavaScript" icon="seti:javascript">
     ```ts
     const checkout = await client.checkouts.get("4ebc2ed7-bb8c-4d4d-a110-08fd31301bf2");
     ```
@@ -136,7 +136,7 @@ Example request for the transaction with identifier `664200af-2b62-4142-9c73-a2a
       -H "Authorization: Bearer $SUMUP_API_KEY"
     ```
   </TabItem>
-  <TabItem label="Node.js" icon="seti:javascript">
+  <TabItem label="JavaScript" icon="seti:javascript">
     ```ts
     await client.transactions.refund("19aa3cca-89f6-42d2-b462-463b0b53e959");
     ```
@@ -207,7 +207,7 @@ Example request for a partial refund for the amount of 24.42 EUR:
       -d '{"amount": 24.42}'
     ```
   </TabItem>
-  <TabItem label="Node.js" icon="seti:javascript">
+  <TabItem label="JavaScript" icon="seti:javascript">
     ```ts
     await client.transactions.refund("19aa3cca-89f6-42d2-b462-463b0b53e959", {
       amount: 24.42,

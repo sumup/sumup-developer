@@ -76,7 +76,7 @@ const sectionAttrs = (id: ApiTopSection) =>
         <SectionHeading as="h2" id="sdks-heading">SDKs</SectionHeading>
         <p>
           The SumUp SDKs reduce the amount of work required to use our REST
-          APIs. SumUp maintains SDKs for PHP, Node.js, Python, Java, Go, Rust,
+          APIs. SumUp maintains SDKs for PHP, JavaScript, Python, Java, Go, Rust,
           and .NET.
         </p>
       </div>
@@ -92,8 +92,14 @@ const sectionAttrs = (id: ApiTopSection) =>
             lang: "bash",
           },
           {
-            label: "Node.js",
-            code: "npm install --save @sumup/sdk",
+            label: "JavaScript",
+            code: `npm install --save @sumup/sdk
+# or
+yarn add @sumup/sdk
+# or
+pnpm add @sumup/sdk
+# or
+ant i land:@sumup/sdk`,
             lang: "bash",
           },
           {
@@ -196,7 +202,7 @@ uv add sumup`,
             lang: "bash",
           },
           {
-            label: "Node.js",
+            label: "JavaScript",
             code: `import { SumUp } from '@sumup/sdk';
 
 const sumup = new SumUp({ apiKey: 'sup_sk_MvxmLOl0...' });`,

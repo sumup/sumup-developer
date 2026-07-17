@@ -21,7 +21,8 @@
 # Online Payments - Tools & SDKs
 /tools/sdks/                                                                 /online-payments/sdks
 /docs/tools/sdks/                                                            /online-payments/sdks
-/tools/sdks/nodejs/                                                          /online-payments/sdks/nodejs
+/tools/sdks/nodejs/                                                          /online-payments/sdks/javascript
+/online-payments/sdks/nodejs/                                                /online-payments/sdks/javascript
 /tools/sdks/go/                                                              /online-payments/sdks/go
 /tools/sdks/python/                                                          /online-payments/sdks/python
 /tools/sdks/java/                                                            /online-payments/sdks/java
