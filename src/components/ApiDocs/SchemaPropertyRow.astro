@@ -1,5 +1,5 @@
 ---
-import { Aside } from "@astrojs/starlight/components";
+import Callout from "@components/content/Callout";
 import Markdown from "@components/Markdown.astro";
 import { resolveSchema } from "@lib/openapi";
 import type { OpenAPIV3_1 } from "openapi-types";
@@ -56,9 +56,9 @@ const arrayAttributesSchema =
   {
     "x-deprecation-notice" in propertySchema && (
       <div class="notice">
-        <Aside type="caution">
+        <Callout type="caution">
           <Markdown>{propertySchema["x-deprecation-notice"]}</Markdown>
-        </Aside>
+        </Callout>
       </div>
     )
   }

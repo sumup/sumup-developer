@@ -5,23 +5,23 @@ sidebar:
   order: 6
 ---
 
-import { Aside } from '@astrojs/starlight/components';
+import Callout from '@components/content/Callout';
 
-<Aside type="caution">
+<Callout type="caution">
 
 Affects all electronic payments accepted by merchants operating within the European Union.
 
-</Aside>
+</Callout>
 
 SumUp supports 3-D Secure payments for added security in online transactions.
 
 EMVCo developed 3D Secure 2, a payment card authentication protocol that meets Strong Customer Authentication (SCA) requirements. It reduces fraud through additional layers such as biometrics.
 
-<Aside type="note">
+<Callout type="note">
 
 The final deadline for implementing the SCA requirements was 31 December 2020.
 
-</Aside>
+</Callout>
 
 [SCA (Strong Customer Authentication)](https://en.wikipedia.org/wiki/Strong_customer_authentication#cite_note-2) is an obligatory security measure, requiring two-factor authentication to verify consumer identity in payment transactions, using at least two independent, consumer-based factors:
 
@@ -53,11 +53,11 @@ Both the merchant account and card issuer must support 3-D Secure. The flow adds
 | `mechanism`    | `iframe` or `browser`                                                         |
 | `payload`      | `object`                                                                      |
 
-<Aside type="caution">
+<Callout type="caution">
 
 The **payload** object can contain zero or more key-value pairs, defining the payload request to be made. All provided parameters must be passed when redirecting the user.
 
-</Aside>
+</Callout>
 
 Example `payload`:
 

@@ -1,0 +1,20 @@
+.callout {
+  max-width: 100%;
+}
+
+.callout :global(.cui-callout-content-kcln) {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.callout :global(.expressive-code),
+.callout :global(.expressive-code .frame),
+.callout :global(.expressive-code .frame pre),
+.callout :global(pre) {
+  max-width: 100%;
+}
+
+.callout :global(.expressive-code .frame pre),
+.callout :global(pre) {
+  overflow-x: auto;
+}

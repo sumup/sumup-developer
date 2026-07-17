@@ -6,7 +6,8 @@ sidebar:
   order: 1
 ---
 
-import { Aside, Steps } from '@astrojs/starlight/components';
+import { Steps } from '@astrojs/starlight/components';
+import Callout from '@components/content/Callout';
 import Image from '@components/content/Image.astro';
 
 Online payments form an integral part of the SumUp product portfolio. SumUp supports online payments through multiple approaches to address every merchant use case. Use one of the out-of-the-box integrations or build a complete custom payments flow with the APIs. Your app communicates with SumUp via HTTP requests defined in the [API Reference](/api).​
@@ -27,9 +28,9 @@ To test SumUp APIs and tools without involving real money, use a sandbox merchan
 
 </Steps>
 
-<Aside type="note">
+<Callout type="note">
 If you don't have a sandbox account yet, [sign up for a developer account](https://me.sumup.com/signup?signup_intent=developer). This starts you with a sandbox merchant account.
-</Aside>
+</Callout>
 
 <Image alt="A screenshot of the account selection dropdown in the SumUp dashboard with the sandbox merchant account highlighted with red circle" src="/img/guides/test_acc.png" width="40%" />
 
@@ -75,14 +76,14 @@ Available APMs include:
 - Przelewy24
 - Satispay
 
-<Aside type="tip">
+<Callout type="tip">
 The APMs you can offer depend on the location your business is registered and operates in.
-</Aside>
+</Callout>
 
-<Aside type="note">
+<Callout type="note">
 See the [Payment Methods overview](/online-payments/payment-methods/) for the
 full list of supported methods grouped by payment method family.
-</Aside>
+</Callout>
 
 ### Swift Checkout SDK
 
@@ -108,9 +109,9 @@ To receive payments, [create a checkout](/online-payments/guides/single-payment/
 
 [Completing checkouts](/online-payments/guides/single-payment/#2-complete-a-checkout) via web browser or mobile app to avoid handling sensitive data like card details on your servers, eliminating PCI DSS compliance needs.
 
-<Aside type="tip">
+<Callout type="tip">
 A checkout can be completed in a browser only from a domain that is present as an authorized JavaScript origin when [creating your client credentials](/tools/authorization/oauth/#register-an-oauth-application).
-</Aside>
+</Callout>
 
 SumUp offers the following checkout completion options:
 
@@ -124,6 +125,6 @@ Successful checkout completion processes payment to the merchant's SumUp account
 
 ## Contact SumUp
 
-<Aside type="note">
+<Callout type="note">
 Do you have specific questions? Check out our [help page](/help) for the most frequently asked questions or [contact us here](/contact).
-</Aside>
+</Callout>

@@ -5,7 +5,7 @@ sidebar:
   order: 6
 ---
 
-import { Aside } from '@astrojs/starlight/components';
+import Callout from '@components/content/Callout';
 
 Webhooks are a convenient approach to notify an application about relevant events that have taken place within another application.
 
@@ -23,11 +23,11 @@ Webhooks are delivered in the form of a HTTP POST request, to which your applica
 
 Your application should return a valid, empty response with any `2xx` status code. Any response other than a `2xx` is treated as erroneous.
 
-<Aside type="note">
+<Callout type="note">
 
 After receiving a webhook call, your application must **always** verify if the event really took place, by calling a relevant SumUp's API.
 
-</Aside>
+</Callout>
 
 Here's a sample of the webhook payload:
 

@@ -5,13 +5,14 @@ sidebar:
   order: 51
 ---
 
-import { Aside, LinkButton } from "@astrojs/starlight/components";
+import { LinkButton } from "@astrojs/starlight/components";
+import Callout from "@components/content/Callout";
 
 The [SumUp Payment Gateway for WooCommerce](https://wordpress.org/plugins/sumup-payment-gateway-for-woocommerce/) enables payments on WordPress sites without coding, enabling your customizations and providing your customers the convenience of securely buying products from your website without being redirected to other pages. The plugin supports major cards (Visa, Mastercard, Amex, Diners, Discover, JCB) via embedded forms. Transactions are processed through the SumUp payment platform with [transaction history provided in the SumUp Dashboard](https://me.sumup.com/sales/transactions).
 
-<Aside type="note">
+<Callout type="note">
   The SumUp WooCommerce plugin is SCA ready and compliant with PCI standards.
-</Aside>
+</Callout>
 
 <LinkButton
   href="https://wordpress.org/plugins/sumup-payment-gateway-for-woocommerce/"
@@ -61,11 +62,11 @@ Available for plugin versions above `2.5`.
 
    At this point, you can start accepting payments through SumUp on your WordPress shop.
 
-<Aside type="note">
+<Callout type="note">
   The [Online Payments settings
   page](https://me.sumup.com/settings/online-payments) in the SumUp Dashboard,
   allows you to view your plugin connections and manage payment method settings.
-</Aside>
+</Callout>
 
 ![SumUp Payment Gateway for WooCommerce plugin settings](/img/guides/woocommerce_plugin.png)
 
@@ -96,11 +97,11 @@ Before accepting payments through SumUp, your website should display the followi
 - Privacy policy
 - Security policy
 
-<Aside type="note">
+<Callout type="note">
   We recommend configuring a "Thank You" page for successful checkouts,
   according to [WooCommerce official
   standards](https://docs.woocommerce.com/document/woocommerce-custom-thank-you-pages/).
-</Aside>
+</Callout>
 
 ## Configuration for Legacy Plugin (Version Older than 2.5)
 
@@ -108,10 +109,10 @@ Before accepting payments through SumUp, your website should display the followi
 
 To create client credentials you must have an active [SumUp account](https://me.sumup.com) with completed [account details](https://me.sumup.com/account). Your account has successfully completed the onboarding process, and you have received the `payments` scope activation. If you don't have the `payments` scope activated yet, [contact us](/contact) for assistance.
 
-<Aside type="caution">
+<Callout type="caution">
   SumUp aims to respond to all [contact queries](/contact) within 24 hours,
   Monday through Friday.
-</Aside>
+</Callout>
 
 Once you ensure you've met the above requirements, you can proceed with our [Register application guide](/tools/authorization/oauth/#register-an-oauth-application) to set up your client credentials.
 

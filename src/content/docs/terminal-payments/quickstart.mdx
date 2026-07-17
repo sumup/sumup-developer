@@ -5,7 +5,8 @@ sidebar:
   order: 2
 ---
 
-import { Aside, Steps } from '@astrojs/starlight/components';
+import { Steps } from '@astrojs/starlight/components';
+import Callout from '@components/content/Callout';
 import Image from '@components/content/Image.astro';
 
 Get your first in-person payment running quickly.
@@ -31,9 +32,9 @@ To test without real money, create a sandbox merchant account from the SumUp Das
 
 </Steps>
 
-<Aside type="note">
+<Callout type="note">
 If you don't have a sandbox account yet, [sign up for a developer account](https://me.sumup.com/signup?signup_intent=developer). This starts you with a sandbox merchant account.
-</Aside>
+</Callout>
 
 <Image alt="A screenshot of the account selection dropdown in the SumUp dashboard with the sandbox merchant account highlighted with red circle" src="/img/guides/test_acc.png" width="40%" />
 
@@ -82,9 +83,9 @@ Best for lightweight legacy mobile integrations that hand off checkout to the Su
 
 </Steps>
 
-<Aside type="note">
+<Callout type="note">
 Use a unique transaction reference such as `foreignTransactionId` or `foreign-tx-id` for each payment. That prevents duplicate transaction conflicts and makes reconciliation easier.
-</Aside>
+</Callout>
 
 ## Next Steps
 

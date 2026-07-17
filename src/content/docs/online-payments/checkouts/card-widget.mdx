@@ -5,7 +5,8 @@ sidebar:
   order: 11
 ---
 
-import { Aside, Steps } from "@astrojs/starlight/components";
+import { Steps } from "@astrojs/starlight/components";
+import Callout from "@components/content/Callout";
 import CardWidget from "@components/content/CardWidget.astro";
 
 The Payment Widget, available to all SumUp merchants, simplifies website checkouts while handling PCI and PSD2 compliance with flexible customization options. It collects card and alternative payment method details. For card payments, it dynamically recognizes the brand and shows the relevant brand icon.
@@ -115,9 +116,9 @@ Depending on the country a merchant is registered in, [Alternative Payment Metho
 
 You can begin offering APMs to your customers, once you are onboarded as a merchant. Request assistance with getting onboarded for APMs through our [contact form](/contact).
 
-<Aside type="note">
+<Callout type="note">
   Installments are not applicable to Alternative Payment Methods.
-</Aside>
+</Callout>
 
 ## Custom Styling
 
@@ -273,6 +274,6 @@ default-src 'self' applepay.cdn-apple.com ...; script-src 'self' applepay.cdn-ap
 
 This is an optional feature, not including these policies will simply prevent Apple Pay from extended availability on unsupported browsers.
 
-<Aside type="caution">
+<Callout type="caution">
   Note that Apple Pay is available on all SDKs, but only Swift Checkout SDK extends this feature to third party browsers.
-</Aside>
+</Callout>

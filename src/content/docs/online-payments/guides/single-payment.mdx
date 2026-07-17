@@ -5,7 +5,8 @@ sidebar:
   order: 91
 ---
 
-import { Aside, Tabs, TabItem } from '@astrojs/starlight/components';
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+import Callout from '@components/content/Callout';
 
 ## Overview
 
@@ -31,17 +32,17 @@ When you complete these steps, you will have processed a payment with a payment 
 
 To create a new checkout resource, make a POST request to the `https://api.sumup.com/v0.1/checkouts` endpoint.
 
-<Aside type="caution">
+<Callout type="caution">
 
 Checkout request must be made in a server-to-server communication between your server and SumUp API.
 
-</Aside>
+</Callout>
 
-<Aside type="note">
+<Callout type="note">
 
 The table below lists only the **required** parameters for the request. For a full list, see the [API Reference](/api/checkouts/create).
 
-</Aside>
+</Callout>
 
 | Attribute name     | Description                                                                                                                                                                              |
 | ------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -176,11 +177,11 @@ The resource identifier is returned in the `id` attribute, or `f14425c6-8bc1-4d0
 
 To process the checkout and trigger the payment, make a PUT request to the `https://api.sumup.com/v0.1/checkouts/{id}` endpoint, where the value of the `{id}` path parameter is the identifier of the checkout resource.
 
-<Aside type="caution">
+<Callout type="caution">
 
 This request must be made from your client, _not_ from your server.
 
-</Aside>
+</Callout>
 
 The request body should be a JSON object with the payment type (`card`) and the payment card details. For more information about the request, see the [API Reference](/api/checkouts/process).
 

@@ -5,7 +5,7 @@ sidebar:
   order: 5
 ---
 
-import { Aside } from "@astrojs/starlight/components";
+import Callout from "@components/content/Callout";
 import Country from "@components/content/Country.astro";
 import PaymentMethodTitle from "@components/content/PaymentMethodTitle.astro";
 
@@ -216,6 +216,6 @@ Voucher methods are asynchronous by nature and rely on a payment artifact that t
 
 [Boleto](https://portal.febraban.org.br/pagina/3166/33/en/) is a Brazilian voucher-based payment method where the customer pays using a generated boleto document or barcode.
 
-<Aside type="tip">
+<Callout type="tip">
 Availability still depends on merchant setup, checkout product, and account configuration. For implementation details, see [Alternative Payment Methods](/online-payments/apm/) and the [Card Widget](/online-payments/checkouts/card-widget/).
-</Aside>
+</Callout>

@@ -1,5 +1,6 @@
 ---
-import { Aside, Badge, Tabs, TabItem } from "@astrojs/starlight/components";
+import { Badge, Tabs, TabItem } from "@astrojs/starlight/components";
+import Callout from "@components/content/Callout";
 import Markdown from "@components/Markdown.astro";
 import { formatSlug } from "@lib/helpers";
 import { resolveReference } from "@lib/openapi";
@@ -252,9 +253,9 @@ const formattedPermissions = (operation["x-permissions"] || [])
         {
           "x-deprecation-notice" in operation && (
             <div class="notice">
-              <Aside type="caution">
+              <Callout type="caution">
                 <Markdown>{operation["x-deprecation-notice"]}</Markdown>
-              </Aside>
+              </Callout>
             </div>
           )
         }

@@ -1,5 +1,5 @@
 ---
-import { Aside } from "@astrojs/starlight/components";
+import Callout from "@components/content/Callout";
 import Markdown from "@components/Markdown.astro";
 import { formatSlug } from "@lib/helpers";
 import type { HTMLAttributes } from "astro/types";
@@ -71,9 +71,9 @@ const coreObjectSections = coreObjects.map((schema, index) => {
     {
       deprecationNotice && (
         <div class="notice">
-          <Aside type="caution">
+          <Callout type="caution">
             <Markdown>{deprecationNotice}</Markdown>
-          </Aside>
+          </Callout>
         </div>
       )
     }

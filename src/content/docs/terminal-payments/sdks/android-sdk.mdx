@@ -5,7 +5,7 @@ sidebar:
   order: 11
 ---
 
-import { Aside } from "@astrojs/starlight/components";
+import Callout from "@components/content/Callout";
 import Image from "@components/content/Image.astro";
 
 This documentation provides a step-by-step guide for SumUp's native Android SDK, which enables you to integrate SumUp's proprietary card terminals and payment platform to accept credit and debit card payments (including VISA, MasterCard, American Express, and more). The SDK communicates with card terminals via Bluetooth (BLE 4.0).
@@ -14,9 +14,9 @@ During checkout, the SDK guides users through each payment step with appropriate
 
 Sensitive card data is never passed to or stored on the merchant's phone. All data is encrypted by the card terminal, which complies with top industry standards (PCI, EMV I & II, Visa, MasterCard, Amex).
 
-<Aside>
+<Callout>
   SumUp also provides the [Android Tap to Pay SDK](/terminal-payments/sdks/android-ttp) as a separate package for handling tap-to-pay payments via smartphone.
-</Aside>
+</Callout>
 
 ## At a Glance
 
@@ -114,9 +114,9 @@ loginLauncher.launch(sumupLogin)
 
 <Image alt="Login screen" src="/img/guides/android_sdk_login.png" width="40%" />
 
-<Aside>
+<Callout>
   It is also possible to login an account with a token, without the user entering their SumUp login credentials in the SDK. Please refer to section [Transparent Authentication](#transparent-authentication)
-</Aside>
+</Callout>
 
 To log Merchant out, call:
 
@@ -267,11 +267,11 @@ This allows the customer to add a tip directly on the card reader, rather than p
 
 A tip amount can be prompted directly in the card reader by using `tipOnCardReader` parameter, if the card reader supports tipping. See the [tipOnCardReader payment example](https://github.com/sumup/sumup-android-sdk#4-make-a-payment) for this field.
 
-<Aside>
+<Callout>
 Not all card readers support this feature. To find out if the feature is supported for the last-saved card reader, you should always check `SumUpApi.isTipOnCardReaderAvailable()`. You must handle this case yourself in order to avoid no tip from being prompted.
 
 Please also note that if both `tip` and `tipOnCardReader` are called then only `tipOnCardReader` amount will be considered during checkout if available.
-</Aside>
+</Callout>
 
 #### Timeout on Success Screen
 
@@ -356,9 +356,9 @@ The reader type returned by `getSavedCardReaderDetails()` will be one of the fol
 - `PIN_PLUS`
 - `UNKNOWN` — returned only if the SDK encounters an issue and cannot identify the reader type.
 
-<Aside>
+<Callout>
   The `lastKnownBatteryPercentage` is **not** real-time. It reflects the battery level recorded during the last transaction. As a result, this value may not match the current battery level exactly if the reader has been idle or charged since the last payment.
-</Aside>
+</Callout>
 
 ### Enable ProGuard
 
@@ -384,9 +384,9 @@ implementation "com.google.android.gms:play-services-location:19.0.1"
 
 If the GLS dependency is not added to the project or Google Play Services are not installed on the mobile device, the Android SDK will determine the location with the default Location Service provided by Android.
 
-<Aside>
+<Callout>
   Using GLS version 19.0.1 is recommended.
-</Aside>
+</Callout>
 
 ## Sample App
 

@@ -5,15 +5,16 @@ sidebar:
   order: 22
 ---
 
-import { Aside, Steps } from '@astrojs/starlight/components';
+import { Steps } from '@astrojs/starlight/components';
+import Callout from '@components/content/Callout';
 
 The iOS Payment Switch starts a payment by opening the SumUp app with a URL scheme. After the checkout completes, the SumUp app redirects back to your app with the payment result.
 
-<Aside type="caution">
+<Callout type="caution">
 
 Payment Switch is no longer actively being developed. Prefer the [iOS SDK](/terminal-payments/sdks/ios-sdk/) for native mobile integrations, and use Payment Switch only when the native SDK and the [Cloud API](/terminal-payments/cloud-api/) are not viable for your setup.
 
-</Aside>
+</Callout>
 
 ## Prerequisites
 

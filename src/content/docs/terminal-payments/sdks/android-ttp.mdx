@@ -5,7 +5,8 @@ sidebar:
   order: 12
 ---
 
-import { Aside, Steps } from "@astrojs/starlight/components";
+import { Steps } from "@astrojs/starlight/components";
+import Callout from "@components/content/Callout";
 import Image from "@components/content/Image.astro";
 
 The Android Tap-to-Pay SDK enables your mobile app to accept card-present contactless payments using only a smartphone, without any additional hardware. This guide explains how to integrate this functionality into your Android app.
@@ -36,10 +37,10 @@ The Android Tap-to-Pay SDK enables your mobile app to accept card-present contac
 
 You can use the sample app provided in the [GitHub repository](https://github.com/sumup/android-tap-to-pay) as a reference.
 
-<Aside type="note">
+<Callout type="note">
   If your app shuts down immediately upon start, try disconnecting your phone
   and launching the app from your phone and not your IDE.
-</Aside>
+</Callout>
 
 ### Dependencies
 
