@@ -68,6 +68,7 @@ const { hasSidebar } = Astro.locals.starlightRoute;
     width: 100%;
     background-color: var(--cui-bg-normal);
     overflow-y: auto;
+    scrollbar-gutter: stable;
     display: flex;
     flex-direction: column;
   }
@@ -84,6 +85,7 @@ const { hasSidebar } = Astro.locals.starlightRoute;
     /* Changes here to keep the sidebar footer always visible */
     flex: 1;
     overflow: auto;
+    min-height: max-content;
     /* End of customization */
     padding: 1rem var(--sl-sidebar-pad-x) 0;
     flex-direction: column;
@@ -110,6 +112,7 @@ const { hasSidebar } = Astro.locals.starlightRoute;
       --sl-sidebar-visibility: visible;
       width: var(--sl-sidebar-width);
       background-color: var(--sl-color-bg-sidebar);
+      border-inline-end: 1px solid var(--sl-color-hairline-shade);
     }
   }
 

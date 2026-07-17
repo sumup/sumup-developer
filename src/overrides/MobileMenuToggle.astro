@@ -34,6 +34,12 @@ import { Hamburger } from "@sumup-oss/circuit-ui";
       this.setAttribute("aria-pressed", String(expanded));
 
       document.body.toggleAttribute("data-mobile-menu-expanded", expanded);
+      // Trap keyboard focus inside the header and menu when the menu is expanded.
+      document
+        .querySelectorAll<HTMLElement>(".main-frame, .sl-skip-link")
+        .forEach((el) => {
+          el.toggleAttribute("inert", expanded);
+        });
     }
 
     toggleExpanded() {
@@ -49,6 +55,13 @@ import { Hamburger } from "@sumup-oss/circuit-ui";
   }
 
   customElements.define("starlight-menu-button", StarlightMenuButton);
+
+  // Reset menu state when the viewport toggles between mobile and desktop sizes.
+  matchMedia("(min-width: 50em)").addEventListener("change", () => {
+    document
+      .querySelector<StarlightMenuButton>("starlight-menu-button")
+      ?.setExpanded(false);
+  });
 </script>
 
 <style is:global>
@@ -64,5 +77,15 @@ import { Hamburger } from "@sumup-oss/circuit-ui";
   .menu-button-toggle {
     margin: -2px;
     padding: 6px;
+  }
+
+  [data-mobile-menu-expanded] {
+    overflow: hidden;
+  }
+
+  @media (min-width: 50rem) {
+    [data-mobile-menu-expanded] {
+      overflow: auto;
+    }
   }
 </style>
