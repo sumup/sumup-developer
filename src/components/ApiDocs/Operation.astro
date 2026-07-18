@@ -269,7 +269,7 @@ const formattedPermissions = (operation["x-permissions"] || [])
         {
           operation["x-scopes"] && operation["x-scopes"].length > 0 && (
             <div class="scopes" data-pagefind-ignore>
-              Required scopes:
+              Requires one of scopes:
               {operation["x-scopes"].map((scope) => (
                 <code dir="auto">{scope}</code>
               ))}
@@ -464,6 +464,9 @@ const formattedPermissions = (operation["x-permissions"] || [])
   .permissions {
     font-size: var(--cui-body-s-font-size);
     line-height: var(--cui-body-s-line-height);
+    display: flex;
+    gap: 0 var(--cui-spacings-byte);
+    flex-wrap: wrap;
   }
 
   .examples {
@@ -471,7 +474,7 @@ const formattedPermissions = (operation["x-permissions"] || [])
     position: relative;
   }
 
-  .tag-link {
+  :global(.tag-link) {
     display: block;
     color: var(--cui-fg-subtle);
     font-size: var(--cui-body-s-font-size);
@@ -491,7 +494,7 @@ const formattedPermissions = (operation["x-permissions"] || [])
   .operation-endpoint {
     font-size: var(--cui-body-s-font-size);
     line-height: var(--cui-body-s-line-height);
-    margin-bottom: var(--cui-spacings-giga);
+    margin: var(--cui-spacings-byte) 0 var(--cui-spacings-giga);
   }
 
   .error-responses {
