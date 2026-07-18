@@ -122,6 +122,7 @@ const canonicalPath = path ? `/api/${path}` : "/api";
 />
 <StarlightPage {...props}>
   <ApiDocs
+    class="api-docs"
     tagSlug={isTopLevelPage ? undefined : segment}
     operationSlug={isTopLevelPage ? undefined : section}
     topSection={topSection}
@@ -135,9 +136,9 @@ const canonicalPath = path ? `/api/${path}` : "/api";
   document.addEventListener("astro:page-load", initApiSidebarNavigation);
 </script>
 
-<style is:global>
+<style>
   /* Wider content */
-  .sl-container {
-    max-width: 80rem !important;
+  :global(.content-panel:has(.api-docs) > .sl-container) {
+    max-width: 80rem;
   }
 </style>
