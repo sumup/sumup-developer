@@ -3,12 +3,13 @@ import TopSections from "./TopSections.astro";
 import TagDocs from "./TagDocs.astro";
 
 export interface Props {
+  class?: string;
   tagSlug?: string;
   operationSlug?: string;
   topSection?: "introduction" | "sdks" | "authentication" | "errors";
 }
 
-const { tagSlug, operationSlug, topSection } = Astro.props;
+const { class: className, tagSlug, operationSlug, topSection } = Astro.props;
 const target = tagSlug
   ? operationSlug
     ? `${tagSlug}/${operationSlug}`
@@ -16,7 +17,7 @@ const target = tagSlug
   : topSection;
 ---
 
-<article data-selected-operation={target}>
+<article class={className} data-selected-operation={target}>
   <div class="specs">
     {!tagSlug && <TopSections topSection={topSection} />}
     {tagSlug && <TagDocs tagSlug={tagSlug} operationSlug={operationSlug} />}
