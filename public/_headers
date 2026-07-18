@@ -1,6 +1,32 @@
+/*
+  Access-Control-Allow-Origin: *
+
+/
+  Link: </api/>; rel="service-doc"
+
+/_astro/*
+  Cache-Control: public, max-age=604800, immutable
+
 /*.md
   X-Robots-Tag: noindex
 
 /*.txt
   X-Robots-Tag: noindex
 
+/*/index.md
+  Content-Type: text/markdown; charset=utf-8
+
+/llms.txt
+  Content-Type: text/plain; charset=utf-8
+
+/llms-full.txt
+  Content-Type: text/plain; charset=utf-8
+
+/llms-small.txt
+  Content-Type: text/plain; charset=utf-8
+
+/.well-known/agent-skills/index.json
+  Content-Type: application/json; charset=utf-8
+
+/.well-known/mcp/server-card.json
+  Content-Type: application/json; charset=utf-8

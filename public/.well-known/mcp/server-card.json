@@ -1,0 +1,26 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/v1/server-card.schema.json",
+  "name": "com.sumup/mcp",
+  "version": "0.1.0",
+  "title": "SumUp MCP Server",
+  "description": "MCP server for SumUp payment integrations, API operations, checkout workflows, and developer documentation.",
+  "websiteUrl": "https://developer.sumup.com/tools/llms/mcp-server/",
+  "repository": {
+    "url": "https://github.com/sumup/sumup-mcp",
+    "source": "github"
+  },
+  "remotes": [
+    {
+      "url": "https://mcp.sumup.com/mcp",
+      "type": "streamable-http",
+      "headers": [
+        {
+          "name": "Authorization",
+          "description": "SumUp API key as a Bearer token.",
+          "isRequired": true,
+          "isSecret": true
+        }
+      ]
+    }
+  ]
+}
