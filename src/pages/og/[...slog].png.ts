@@ -1,10 +1,10 @@
 import { getCollection } from "astro:content";
 import { createElement } from "react";
-import { ImageResponse } from "workers-og";
 
 import SumUpBlackData from "../../assets/fonts/sumup-black-latin-s.ttf";
 import SumUpNarrowMediumData from "../../assets/fonts/sumup-narrow-latin-s-medium.ttf";
 import SumUpNarrowRegularData from "../../assets/fonts/sumup-narrow-latin-s-regular.ttf";
+import { createOgImageResponse } from "../../utils/ogImageResponse";
 
 interface Props {
   params: { slog?: string };
@@ -57,6 +57,13 @@ function getOpenTypeSignature(data: Uint8Array) {
   return String.fromCharCode(...data.subarray(0, 4));
 }
 
+function toArrayBuffer(data: Uint8Array) {
+  return data.buffer.slice(
+    data.byteOffset,
+    data.byteOffset + data.byteLength,
+  ) as ArrayBuffer;
+}
+
 function toSupportedFontData(data: Uint8Array | string, label: string) {
   if (typeof data === "string") {
     console.warn(
@@ -67,12 +74,12 @@ function toSupportedFontData(data: Uint8Array | string, label: string) {
 
   if (getOpenTypeSignature(data) === "wOF2") {
     console.warn(
-      `[og] ${label} uses WOFF2, which Satori/workers-og does not support. Falling back to the default font.`,
+      `[og] ${label} uses WOFF2, which Satori does not support. Falling back to the default font.`,
     );
     return null;
   }
 
-  return data;
+  return toArrayBuffer(data);
 }
 
 function createFontStack(primary: string | null) {
@@ -253,7 +260,7 @@ export async function GET({ params }: Props) {
     ),
   );
 
-  return new ImageResponse(card, {
+  return createOgImageResponse(card, {
     width: 1200,
     height: 600,
     debug: false,
@@ -264,7 +271,7 @@ export async function GET({ params }: Props) {
               name: "SumUp Black",
               data: sumUpBlack,
               style: "normal" as const,
-              weight: 700,
+              weight: 700 as const,
             },
           ]
         : []),
@@ -274,7 +281,7 @@ export async function GET({ params }: Props) {
               name: "SumUp Narrow",
               data: sumUpNarrowRegular,
               style: "normal" as const,
-              weight: 400,
+              weight: 400 as const,
             },
           ]
         : []),
@@ -284,7 +291,7 @@ export async function GET({ params }: Props) {
               name: "SumUp Narrow",
               data: sumUpNarrowMedium,
               style: "normal" as const,
-              weight: 500,
+              weight: 500 as const,
             },
           ]
         : []),
