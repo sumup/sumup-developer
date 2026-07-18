@@ -14,7 +14,6 @@
     "html_handling": "drop-trailing-slash",
     "run_worker_first": [
       "/contact",
-      "/subscribe",
       "/og/*"
     ],
   },
@@ -23,12 +22,6 @@
     "logs": {
       "enabled": true,
       "invocation_logs": true
-    },
-    "traces": {
-      "enabled": true,
-      "destinations": [
-        "otel-live-collector"
-      ]
     }
   },
   "routes": [
