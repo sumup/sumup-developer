@@ -136,9 +136,10 @@ const canonicalPath = path ? `/api/${path}` : "/api";
   document.addEventListener("astro:page-load", initApiSidebarNavigation);
 </script>
 
-<style>
+<style is:inline>
   /* Wider content */
-  :global(.content-panel > .sl-container) {
-    max-width: 80rem;
+  :root,
+  :root[data-theme="light"] {
+    --sl-content-width: 80rem;
   }
 </style>
