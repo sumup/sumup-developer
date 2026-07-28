@@ -8,12 +8,12 @@ info:
     You can experiment and work on your integration in a sandbox that doesn't affect your regular data and doesn't process real transactions. To create a sandbox merchant account visit the [dashboard](https://me.sumup.com/settings/developer). To use the sandbox when interacting with SumUp APIs [create an API](https://me.sumup.com/settings/api-keys) key and use it for [authentication](https://developer.sumup.com/api/authentication).
   license:
     name: Apache 2.0
-    url: 'https://www.apache.org/licenses/LICENSE-2.0.html'
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
 servers:
-  - url: 'https://api.sumup.com'
+  - url: https://api.sumup.com
     description: Production server
 paths:
-  '/v0.1/merchants/{merchant_code}/payment-methods':
+  /v0.1/merchants/{merchant_code}/payment-methods:
     get:
       operationId: GetPaymentMethods
       summary: Get available payment methods
@@ -28,7 +28,7 @@ paths:
             example: MH4H92C7
         - name: amount
           in: query
-          description: 'The amount for which the payment methods should be eligible, in major units.'
+          description: The amount for which the payment methods should be eligible, in major units.
           required: false
           schema:
             type: number
@@ -119,8 +119,8 @@ paths:
                   currency: EUR
                   merchant_code: MH4H92C7
                   description: Purchase
-                  valid_until: '2020-02-29T10:56:56+00:00'
-                  redirect_url: 'https://sumup.com'
+                  valid_until: 2020-02-29T10:56:56+00:00
+                  redirect_url: https://sumup.com
               Checkout3DS:
                 description: Create a 3DS checkout
                 value:
@@ -129,9 +129,9 @@ paths:
                   currency: EUR
                   merchant_code: MH4H92C7
                   description: Purchase
-                  return_url: 'http://example.com/'
+                  return_url: http://example.com/
                   customer_id: 831ff8d4cd5958ab5670
-                  redirect_url: 'https://mysite.com/completed_purchase'
+                  redirect_url: https://mysite.com/completed_purchase
               CheckoutAPM:
                 description: Create an Alternative Payment Method checkout
                 value:
@@ -139,7 +139,7 @@ paths:
                   amount: 10.1
                   currency: EUR
                   merchant_code: MH4H92C7
-                  redirect_url: 'https://mysite.com/completed_purchase'
+                  redirect_url: https://mysite.com/completed_purchase
               HostedCheckout:
                 description: Create a checkout with a SumUp-hosted payment page
                 x-beta: true
@@ -168,11 +168,11 @@ paths:
                     merchant_code: MH4H92C7
                     merchant_country: DE
                     description: My Checkout
-                    return_url: 'http://example.com'
+                    return_url: http://example.com
                     id: 88fcf8de-304d-4820-8f1c-ec880290eb92
                     status: PENDING
-                    date: '2020-02-29T10:56:56+00:00'
-                    valid_until: '2020-02-29T10:56:56+00:00'
+                    date: 2020-02-29T10:56:56+00:00
+                    valid_until: 2020-02-29T10:56:56+00:00
                     customer_id: 831ff8d4cd5958ab5670
                     mandate:
                       type: recurrent
@@ -183,7 +183,7 @@ paths:
                         transaction_code: TEENSK4W2K
                         amount: 10.1
                         currency: EUR
-                        timestamp: '2020-02-29T10:56:56.876Z'
+                        timestamp: 2020-02-29T10:56:56.876Z
                         status: SUCCESSFUL
                         payment_type: ECOM
                         installments_count: 1
@@ -199,19 +199,19 @@ paths:
                     amount: 10.1
                     currency: EUR
                     description: My Checkout
-                    return_url: 'http://example.com'
+                    return_url: http://example.com
                     id: 88fcf8de-304d-4820-8f1c-ec880290eb92
                     status: PENDING
-                    date: '2020-02-29T10:56:56+00:00'
-                    valid_until: '2020-02-29T10:56:56+00:00'
+                    date: 2020-02-29T10:56:56+00:00
+                    valid_until: 2020-02-29T10:56:56+00:00
                     customer_id: 831ff8d4cd5958ab5670
-                    redirect_url: 'https://mysite.com/completed_purchase'
+                    redirect_url: https://mysite.com/completed_purchase
                     transactions:
                       - id: 410fc44a-5956-44e1-b5cc-19c6f8d727a4
                         transaction_code: TEENSK4W2K
                         amount: 10.1
                         currency: EUR
-                        timestamp: '2020-02-29T10:56:56.876Z'
+                        timestamp: 2020-02-29T10:56:56.876Z
                         status: SUCCESSFUL
                         payment_type: ECOM
                         installments_count: 1
@@ -221,27 +221,27 @@ paths:
                         entry_mode: CUSTOMER_ENTRY
                         auth_code: '012345'
                 CheckoutAPM:
-                  description: 'Response body for APMs, including Blik, iDeal, ...'
+                  description: Response body for APMs, including Blik, iDeal, ...
                   value:
                     checkout_reference: 8ea25ec3-3293-40e9-a165-6d7f3b3073c5
                     amount: 10.1
                     currency: EUR
                     merchant_code: MH4H92C7
                     description: My Checkout
-                    return_url: 'http://example.com'
+                    return_url: http://example.com
                     id: 88fcf8de-304d-4820-8f1c-ec880290eb92
                     status: PENDING
-                    date: '2021-06-29T11:08:36.000+00:00'
+                    date: 2021-06-29T11:08:36.000+00:00
                     merchant_name: My company
                     merchant_country: DE
-                    redirect_url: 'https://sumup.com'
+                    redirect_url: https://sumup.com
                     purpose: CHECKOUT
                     transactions:
                       - id: 410fc44a-5956-44e1-b5cc-19c6f8d727a4
                         transaction_code: TEENSK4W2K
                         amount: 10.1
                         currency: EUR
-                        timestamp: '2020-02-29T10:56:56.876Z'
+                        timestamp: 2020-02-29T10:56:56.876Z
                         status: SUCCESSFUL
                         payment_type: ECOM
                         installments_count: 1
@@ -262,11 +262,11 @@ paths:
                     description: A sample checkout
                     id: 64553e20-3f0e-49e4-8af3-fd0eca86ce91
                     status: PENDING
-                    date: '2000-01-01T12:49:24.899+00:00'
+                    date: 2000-01-01T12:49:24.899+00:00
                     purpose: CHECKOUT
                     hosted_checkout:
                       enabled: true
-                    hosted_checkout_url: 'https://checkout.sumup.com/pay/8f9316a3-cda9-42a9-9771-54d534315676'
+                    hosted_checkout_url: https://checkout.sumup.com/pay/8f9316a3-cda9-42a9-9771-54d534315676
                     transactions: []
         '400':
           description: The request body is invalid.
@@ -295,7 +295,7 @@ paths:
                     status: 401
                     title: Unauthorized
                     trace_id: 3c77294349d3b5647ea2d990f0d8f017
-                    type: 'https://developer.sumup.com/problem/unauthorized'
+                    type: https://developer.sumup.com/problem/unauthorized
         '403':
           description: The request isn't sufficiently authorized to create a checkout.
           content:
@@ -361,7 +361,7 @@ paths:
                   description: Purchase
                   id: 4e425463-3e1b-431d-83fa-1e51c2925e99
                   status: PENDING
-                  date: '2020-02-29T10:56:56+00:00'
+                  date: 2020-02-29T10:56:56+00:00
         '401':
           description: The request is not authorized.
           content:
@@ -376,7 +376,7 @@ paths:
                     status: 401
                     title: Unauthorized
                     trace_id: 3c77294349d3b5647ea2d990f0d8f017
-                    type: 'https://developer.sumup.com/problem/unauthorized'
+                    type: https://developer.sumup.com/problem/unauthorized
       security:
         - apiKey: []
         - oauth2:
@@ -389,7 +389,7 @@ paths:
       x-scopes:
         - payments
         - checkouts.read
-  '/v0.1/checkouts/{checkout_id}':
+  /v0.1/checkouts/{checkout_id}:
     parameters:
       - name: checkout_id
         in: path
@@ -416,7 +416,7 @@ paths:
                 description: Purchase
                 id: 4e425463-3e1b-431d-83fa-1e51c2925e99
                 status: PENDING
-                date: '2020-02-29T10:56:56+00:00'
+                date: 2020-02-29T10:56:56+00:00
                 transaction_code: TEENSK4W2K
                 transaction_id: 410fc44a-5956-44e1-b5cc-19c6f8d727a4
         '401':
@@ -433,7 +433,7 @@ paths:
                     status: 401
                     title: Unauthorized
                     trace_id: 3c77294349d3b5647ea2d990f0d8f017
-                    type: 'https://developer.sumup.com/problem/unauthorized'
+                    type: https://developer.sumup.com/problem/unauthorized
         '404':
           description: The requested resource does not exist.
           content:
@@ -474,7 +474,7 @@ paths:
               currency: EUR
               description: Updated purchase
               checkout_reference: f00a8f74-b05d-4605-bd73-2a901bae5802
-              valid_until: '2020-02-29T10:56:56+00:00'
+              valid_until: 2020-02-29T10:56:56+00:00
               customer_id: 831ff8d4cd5958ab5670
       responses:
         '200':
@@ -492,8 +492,8 @@ paths:
                 description: Updated purchase
                 id: 88fcf8de-304d-4820-8f1c-ec880290eb92
                 status: PENDING
-                date: '2020-02-29T10:56:56+00:00'
-                valid_until: '2020-02-29T10:56:56+00:00'
+                date: 2020-02-29T10:56:56+00:00
+                valid_until: 2020-02-29T10:56:56+00:00
                 customer_id: 831ff8d4cd5958ab5670
                 transactions: []
         '401':
@@ -510,7 +510,7 @@ paths:
                     status: 401
                     title: Unauthorized
                     trace_id: 3c77294349d3b5647ea2d990f0d8f017
-                    type: 'https://developer.sumup.com/problem/unauthorized'
+                    type: https://developer.sumup.com/problem/unauthorized
         '404':
           description: The requested resource does not exist.
           content:
@@ -557,7 +557,7 @@ paths:
                   installments: 1
                   mandate:
                     type: recurrent
-                    user_agent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.104 Safari/537.36'
+                    user_agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.104 Safari/537.36
                     user_ip: 172.217.169.174
                   card:
                     type: VISA
@@ -586,7 +586,7 @@ paths:
                     address:
                       country: BR
                       city: São Paulo
-                      line1: 'Rua Gilberto Sabino, 215'
+                      line1: Rua Gilberto Sabino, 215
                       state: SP
                       postal_code: 05425-020
               ProcessiDeal:
@@ -625,11 +625,11 @@ paths:
                     currency: EUR
                     merchant_code: MH4H92C7
                     description: Purchase
-                    return_url: 'http://example.com'
+                    return_url: http://example.com
                     id: 4e425463-3e1b-431d-83fa-1e51c2925e99
                     status: PENDING
-                    date: '2020-02-29T10:56:56+00:00'
-                    valid_until: '2020-02-29T10:56:56+00:00'
+                    date: 2020-02-29T10:56:56+00:00
+                    valid_until: 2020-02-29T10:56:56+00:00
                     customer_id: 831ff8d4cd5958ab5670
                     mandate:
                       type: recurrent
@@ -640,7 +640,7 @@ paths:
                         transaction_code: TEENSK4W2K
                         amount: 10.1
                         currency: EUR
-                        timestamp: '2020-02-29T10:56:56.876Z'
+                        timestamp: 2020-02-29T10:56:56.876Z
                         status: SUCCESSFUL
                         payment_type: ECOM
                         installments_count: 1
@@ -661,11 +661,11 @@ paths:
                     description: Purchase with token
                     id: 4e425463-3e1b-431d-83fa-1e51c2925e99
                     status: PENDING
-                    date: '2020-02-29T10:56:56+00:00'
+                    date: 2020-02-29T10:56:56+00:00
                     transaction_code: TEENSK4W2K
                     transaction_id: 410fc44a-5956-44e1-b5cc-19c6f8d727a4
                     merchant_name: Sample Merchant
-                    redirect_url: 'https://mysite.com/completed_purchase'
+                    redirect_url: https://mysite.com/completed_purchase
                     customer_id: 831ff8d4cd5958ab5670
                     payment_instrument:
                       token: e76d7e5c-9375-4fac-a7e7-b19dc5302fbc
@@ -674,7 +674,7 @@ paths:
                         transaction_code: TEENSK4W2K
                         amount: 10.1
                         currency: EUR
-                        timestamp: '2020-02-29T10:56:56.876Z'
+                        timestamp: 2020-02-29T10:56:56.876Z
                         status: SUCCESSFUL
                         payment_type: ECOM
                         installments_count: 1
@@ -693,12 +693,12 @@ paths:
                     description: Boleto checkout
                     id: 4e425463-3e1b-431d-83fa-1e51c2925e99
                     status: PENDING
-                    date: '2021-07-06T12:34:02.000+00:00'
+                    date: 2021-07-06T12:34:02.000+00:00
                     merchant_name: Sample shop
                     boleto:
                       barcode: '34191090081790614310603072340007886840000000200'
-                      url: 'https://checkouts.sample.com/v0.1/checkouts/2e7a36cc-7897-446b-a966-952ab5f049ea/boleto'
-                    redirect_url: 'https://website.com'
+                      url: https://checkouts.sample.com/v0.1/checkouts/2e7a36cc-7897-446b-a966-952ab5f049ea/boleto
+                    redirect_url: https://website.com
                     purpose: CHECKOUT
                     transactions:
                       - id: debd2986-9852-4e86-8a8e-7ea9c87dd679
@@ -708,7 +708,7 @@ paths:
                         vat_amount: 6
                         tip_amount: 3
                         currency: BRL
-                        timestamp: '2021-07-06T12:34:16.460+00:00'
+                        timestamp: 2021-07-06T12:34:16.460+00:00
                         status: PENDING
                         payment_type: BOLETO
                         entry_mode: BOLETO
@@ -717,26 +717,26 @@ paths:
                   description: Successfully processed checkout with iDeal
                   value:
                     next_step:
-                      url: 'https://r3.girogate.de/ti/simideal'
+                      url: https://r3.girogate.de/ti/simideal
                       method: GET
                       payload:
                         tx: '961473700'
                         rs: ILnaUeQTKJ184fVrjGILrLjePX9E4rmz
                         cs: c8bc0ea231f8372431ca22d6f8319f8de0263d0b1705759ed27155f245f193c5
-                      full: 'https://r3.girogate.de/ti/simideal?tx=961473700&rs=ILnaUeQTKJ184fVrjGILrLjePX9E4rmz&cs=c8bc0ea231f8372431ca22d6f8319f8de0263d0b1705759ed27155f245f193c5'
+                      full: https://r3.girogate.de/ti/simideal?tx=961473700&rs=ILnaUeQTKJ184fVrjGILrLjePX9E4rmz&cs=c8bc0ea231f8372431ca22d6f8319f8de0263d0b1705759ed27155f245f193c5
                       mechanism:
                         - browser
                 CheckoutSuccessBancontact:
                   description: Successfully processed checkout with Bancontact
                   value:
                     next_step:
-                      url: 'https://r3.girogate.de/ti/simbcmc'
+                      url: https://r3.girogate.de/ti/simbcmc
                       method: GET
                       payload:
                         tx: '624788471'
                         rs: 5MioXoKt2Gwj9dLgqAX1bMRBuT5xTSdB
                         cs: 697edacdd9175f3f99542500fa0ff08280b66aaff3c2641a2e212e4b039473cc
-                      full: 'https://r3.girogate.de/ti/simbcmc?tx=624788471&rs=5MioXoKt2Gwj9dLgqAX1bMRBuT5xTSdB&cs=697edacdd9175f3f99542500fa0ff08280b66aaff3c2641a2e212e4b039473cc'
+                      full: https://r3.girogate.de/ti/simbcmc?tx=624788471&rs=5MioXoKt2Gwj9dLgqAX1bMRBuT5xTSdB&cs=697edacdd9175f3f99542500fa0ff08280b66aaff3c2641a2e212e4b039473cc
                       mechanism:
                         - browser
         '202':
@@ -789,7 +789,7 @@ paths:
                     status: 401
                     title: Unauthorized
                     trace_id: 3c77294349d3b5647ea2d990f0d8f017
-                    type: 'https://developer.sumup.com/problem/unauthorized'
+                    type: https://developer.sumup.com/problem/unauthorized
         '404':
           description: The requested resource does not exist.
           content:
@@ -846,8 +846,8 @@ paths:
                 description: Deletion example
                 purpose: CHECKOUT
                 status: EXPIRED
-                date: '2020-02-29T10:56:56+00:00'
-                valid_until: '2020-02-29T10:56:56+00:00'
+                date: 2020-02-29T10:56:56+00:00
+                valid_until: 2020-02-29T10:56:56+00:00
                 merchant_name: Sample Merchant
                 transactions: []
         '401':
@@ -864,7 +864,7 @@ paths:
                     status: 401
                     title: Unauthorized
                     trace_id: 3c77294349d3b5647ea2d990f0d8f017
-                    type: 'https://developer.sumup.com/problem/unauthorized'
+                    type: https://developer.sumup.com/problem/unauthorized
         '404':
           description: The requested resource does not exist.
           content:
@@ -901,7 +901,7 @@ paths:
       x-scopes:
         - payments
         - checkouts.write
-  '/v0.2/checkouts/{checkout_id}/apple-pay-session':
+  /v0.2/checkouts/{checkout_id}/apple-pay-session:
     put:
       operationId: CreateApplePaySession
       summary: Create an Apple Pay session
@@ -935,7 +935,7 @@ paths:
                   description: The target url to create this apple pay session.
                   type: string
                   format: uri
-                  example: 'https://apple-pay-gateway-cert.apple.com/paymentservices/startSession'
+                  example: https://apple-pay-gateway-cert.apple.com/paymentservices/startSession
               required:
                 - context
                 - target
@@ -957,7 +957,7 @@ paths:
                 merchantIdentifier: 7801D328E6637EFC1ADE6CE01C671D2CD318E32CA4ED1F9FC390D170D827D9AB
                 merchantSessionIdentifier: SSH92CC412E5FCF4FAB88684914C953C0D4_916523AAED1343F5BC5815E12BEE9250AFFDC1A17C46B0DE5A943F0F94927C24
                 nonce: a968a2bf
-                operationalAnalyticsIdentifier: 'Test Account:7801D328E6637EFC1ADE6CE01C671D2CD318E32CA4ED1F9FC390D170D827D9AB'
+                operationalAnalyticsIdentifier: Test Account:7801D328E6637EFC1ADE6CE01C671D2CD318E32CA4ED1F9FC390D170D827D9AB
                 pspId: 7801D328E6637EFC1ADE6CE01C671D2CD318E32CA4ED1F9FC390D170D827D9AB
                 retries: 0
                 signature: <apple-pay-signature>
@@ -1054,7 +1054,7 @@ paths:
                     status: 401
                     title: Unauthorized
                     trace_id: 3c77294349d3b5647ea2d990f0d8f017
-                    type: 'https://developer.sumup.com/problem/unauthorized'
+                    type: https://developer.sumup.com/problem/unauthorized
         '403':
           description: The request is authenticated but not permitted for this operation.
           content:
@@ -1092,7 +1092,7 @@ paths:
       x-scopes:
         - payment_instruments
         - customers.write
-  '/v0.1/customers/{customer_id}':
+  /v0.1/customers/{customer_id}:
     parameters:
       - name: customer_id
         in: path
@@ -1103,7 +1103,7 @@ paths:
     get:
       operationId: GetCustomer
       summary: Retrieve a customer
-      description: 'Retrieves an identified saved customer resource through the unique `customer_id` parameter, generated upon customer creation.'
+      description: Retrieves an identified saved customer resource through the unique `customer_id` parameter, generated upon customer creation.
       responses:
         '200':
           description: Returns the customer resource.
@@ -1125,7 +1125,7 @@ paths:
                     status: 401
                     title: Unauthorized
                     trace_id: 3c77294349d3b5647ea2d990f0d8f017
-                    type: 'https://developer.sumup.com/problem/unauthorized'
+                    type: https://developer.sumup.com/problem/unauthorized
         '403':
           description: The request is authenticated but not permitted for this operation.
           content:
@@ -1201,7 +1201,7 @@ paths:
                     status: 401
                     title: Unauthorized
                     trace_id: 3c77294349d3b5647ea2d990f0d8f017
-                    type: 'https://developer.sumup.com/problem/unauthorized'
+                    type: https://developer.sumup.com/problem/unauthorized
         '403':
           description: The request is authenticated but not permitted for this operation.
           content:
@@ -1239,7 +1239,7 @@ paths:
       x-scopes:
         - payment_instruments
         - customers.write
-  '/v0.1/customers/{customer_id}/payment-instruments':
+  /v0.1/customers/{customer_id}/payment-instruments:
     parameters:
       - name: customer_id
         in: path
@@ -1274,7 +1274,7 @@ paths:
                     status: 401
                     title: Unauthorized
                     trace_id: 3c77294349d3b5647ea2d990f0d8f017
-                    type: 'https://developer.sumup.com/problem/unauthorized'
+                    type: https://developer.sumup.com/problem/unauthorized
         '403':
           description: The request is authenticated but not permitted for this operation.
           content:
@@ -1312,7 +1312,7 @@ paths:
       x-scopes:
         - payment_instruments
         - customers.read
-  '/v0.1/customers/{customer_id}/payment-instruments/{token}':
+  /v0.1/customers/{customer_id}/payment-instruments/{token}:
     parameters:
       - name: customer_id
         in: path
@@ -1359,7 +1359,7 @@ paths:
                     status: 401
                     title: Unauthorized
                     trace_id: 3c77294349d3b5647ea2d990f0d8f017
-                    type: 'https://developer.sumup.com/problem/unauthorized'
+                    type: https://developer.sumup.com/problem/unauthorized
         '403':
           description: The request is authenticated but not permitted for this operation.
           content:
@@ -1397,7 +1397,7 @@ paths:
       x-scopes:
         - payment_instruments
         - customers.write
-  '/v1.0/merchants/{merchant_code}/payments/{transaction_id}/refunds':
+  /v1.0/merchants/{merchant_code}/payments/{transaction_id}/refunds:
     parameters:
       - name: merchant_code
         in: path
@@ -1427,7 +1427,7 @@ paths:
               type: object
               properties:
                 amount:
-                  description: 'Amount to be refunded. Eligible amount can''t exceed the amount of the transaction and varies based on country and currency. If you do not specify a value, the system performs a full refund of the transaction.'
+                  description: Amount to be refunded. Eligible amount can't exceed the amount of the transaction and varies based on country and currency. If you do not specify a value, the system performs a full refund of the transaction.
                   type: number
                   format: float
                   example: 5
@@ -1449,7 +1449,7 @@ paths:
                 Invalid_Amount:
                   description: The refund amount is invalid.
                   value:
-                    type: 'https://developer.sumup.com/problem/bad-request'
+                    type: https://developer.sumup.com/problem/bad-request
                     title: Bad Request
                     status: 400
                     detail: amount must be greater than zero
@@ -1463,7 +1463,7 @@ paths:
                 Forbidden:
                   description: The authenticated user is not allowed to refund this transaction.
                   value:
-                    type: 'https://developer.sumup.com/problem/forbidden'
+                    type: https://developer.sumup.com/problem/forbidden
                     title: Forbidden
                     status: 403
                     detail: users is not allowed to make a refund
@@ -1477,7 +1477,7 @@ paths:
                 Transaction_Not_Found:
                   description: The identified transaction was not found.
                   value:
-                    type: 'https://developer.sumup.com/problem/not-found'
+                    type: https://developer.sumup.com/problem/not-found
                     title: Not Found
                     status: 404
                     detail: Transaction not found
@@ -1491,7 +1491,7 @@ paths:
                 Transaction_Not_Refundable:
                   description: The state of the identified transaction resource does not permit the requested operation.
                   value:
-                    type: 'https://developer.sumup.com/problem/conflict'
+                    type: https://developer.sumup.com/problem/conflict
                     title: Conflict
                     status: 409
                     detail: The transaction is not refundable in its current state
@@ -1505,7 +1505,7 @@ paths:
                 Refund_Failed:
                   description: The payment processor rejected the refund.
                   value:
-                    type: 'https://developer.sumup.com/problem/unprocessable-entity'
+                    type: https://developer.sumup.com/problem/unprocessable-entity
                     title: Unprocessable Entity
                     status: 422
                     detail: Refund failed.
@@ -1526,7 +1526,7 @@ paths:
       x-scopes:
         - payments
         - refunds.write
-  '/v2.1/merchants/{merchant_code}/transactions':
+  /v2.1/merchants/{merchant_code}/transactions:
     get:
       operationId: GetTransactionV2.1
       summary: Retrieve a transaction
@@ -1578,7 +1578,7 @@ paths:
                 transaction_code: TEENSK4W2K
                 amount: 10.1
                 currency: EUR
-                timestamp: '2020-02-29T10:56:56.876Z'
+                timestamp: 2020-02-29T10:56:56.876Z
                 status: SUCCESSFUL
                 payment_type: ECOM
                 installments_count: 1
@@ -1601,7 +1601,7 @@ paths:
                     status: 401
                     title: Unauthorized
                     trace_id: 3c77294349d3b5647ea2d990f0d8f017
-                    type: 'https://developer.sumup.com/problem/unauthorized'
+                    type: https://developer.sumup.com/problem/unauthorized
         '404':
           description: The requested resource does not exist.
           content:
@@ -1626,7 +1626,7 @@ paths:
       x-scopes:
         - transactions.history
         - transactions.read
-  '/v2.1/merchants/{merchant_code}/transactions/history':
+  /v2.1/merchants/{merchant_code}/transactions/history:
     get:
       operationId: ListTransactionsV2.1
       summary: List transactions
@@ -1656,10 +1656,10 @@ paths:
               - descending
         - name: limit
           in: query
-          description: 'Specifies the maximum number of results per page. Value must be a positive integer and if not specified, will return 10 results.'
+          description: Specifies the maximum number of results per page. Value must be a positive integer and if not specified, will return 10 results.
           schema:
             type: integer
-        - name: 'users[]'
+        - name: users[]
           in: query
           description: Filters the returned results by user email.
           required: false
@@ -1672,7 +1672,7 @@ paths:
               - merchant@example.com
           example:
             - merchant@example.com
-        - name: 'statuses[]'
+        - name: statuses[]
           in: query
           description: Filters the returned results by the specified list of final statuses of the transactions.
           required: false
@@ -1686,7 +1686,7 @@ paths:
                 - FAILED
                 - REFUNDED
                 - CHARGE_BACK
-        - name: 'payment_types[]'
+        - name: payment_types[]
           in: query
           description: Filters the returned results by the specified list of payment types used for the transactions.
           required: false
@@ -1694,7 +1694,7 @@ paths:
             type: array
             items:
               $ref: '#/components/schemas/PaymentType'
-        - name: 'entry_modes[]'
+        - name: entry_modes[]
           in: query
           description: Filters the returned results by the specified list of entry modes.
           required: false
@@ -1702,7 +1702,7 @@ paths:
             type: array
             items:
               $ref: '#/components/schemas/EntryMode'
-        - name: 'types[]'
+        - name: types[]
           in: query
           description: Filters the returned results by the specified list of transaction types.
           required: false
@@ -1716,14 +1716,14 @@ paths:
                 - CHARGE_BACK
         - name: changes_since
           in: query
-          description: 'Filters the results by the latest modification time of resources and returns only transactions that are modified *at or after* the specified timestamp (in [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) format).'
+          description: Filters the results by the latest modification time of resources and returns only transactions that are modified *at or after* the specified timestamp (in [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) format).
           required: false
           schema:
             type: string
             format: date-time
         - name: newest_time
           in: query
-          description: 'Filters the results by the creation time of resources and returns only transactions that are created *before* the specified timestamp (in [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) format).'
+          description: Filters the results by the creation time of resources and returns only transactions that are created *before* the specified timestamp (in [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) format).
           required: false
           schema:
             type: string
@@ -1736,7 +1736,7 @@ paths:
             type: string
         - name: oldest_time
           in: query
-          description: 'Filters the results by the creation time of resources and returns only transactions that are created *at or after* the specified timestamp (in [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) format).'
+          description: Filters the results by the creation time of resources and returns only transactions that are created *at or after* the specified timestamp (in [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) format).
           required: false
           schema:
             type: string
@@ -1763,7 +1763,7 @@ paths:
                       - transaction_code: TEENSK4W2K
                         amount: 10.1
                         currency: EUR
-                        timestamp: '2020-02-29T10:56:56.876Z'
+                        timestamp: 2020-02-29T10:56:56.876Z
                         status: SUCCESSFUL
                         payment_type: ECOM
                         installments_count: 1
@@ -1771,7 +1771,7 @@ paths:
                         transaction_id: 410fc44a-5956-44e1-b5cc-19c6f8d727a4
                         user: merchant@example.com
                         type: PAYMENT
-                        payout_date: '2019-08-28'
+                        payout_date: 2019-08-28
                         payout_type: BANK_ACCOUNT
                         refunded_amount: 0
                   links:
@@ -1784,7 +1784,7 @@ paths:
                   - transaction_code: TEENSK4W2K
                     amount: 10.1
                     currency: EUR
-                    timestamp: '2020-02-29T10:56:56.876Z'
+                    timestamp: 2020-02-29T10:56:56.876Z
                     status: SUCCESSFUL
                     payment_type: ECOM
                     installments_count: 1
@@ -1792,7 +1792,7 @@ paths:
                     transaction_id: 410fc44a-5956-44e1-b5cc-19c6f8d727a4
                     user: merchant@example.com
                     type: PAYMENT
-                    payout_date: '2019-08-28'
+                    payout_date: 2019-08-28
                     payout_type: BANK_ACCOUNT
                     refunded_amount: 0
                 links: []
@@ -1822,7 +1822,7 @@ paths:
                     status: 401
                     title: Unauthorized
                     trace_id: 3c77294349d3b5647ea2d990f0d8f017
-                    type: 'https://developer.sumup.com/problem/unauthorized'
+                    type: https://developer.sumup.com/problem/unauthorized
       security:
         - apiKey: []
         - oauth2:
@@ -1835,7 +1835,7 @@ paths:
       x-scopes:
         - transactions.history
         - transactions.read
-  '/v1.0/merchants/{merchant_code}/payouts':
+  /v1.0/merchants/{merchant_code}/payouts:
     get:
       operationId: ListPayoutsV1
       summary: List payouts
@@ -1857,20 +1857,20 @@ paths:
             example: MH4H92C7
         - name: start_date
           in: query
-          description: 'Start date of the payout period filter, inclusive, in [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) `date` format (`YYYY-MM-DD`).'
+          description: Start date of the payout period filter, inclusive, in [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) `date` format (`YYYY-MM-DD`).
           required: true
           schema:
             type: string
             format: date
-            example: '2024-02-01'
+            example: 2024-02-01
         - name: end_date
           in: query
-          description: 'End date of the payout period filter, inclusive, in [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) `date` format (`YYYY-MM-DD`). Must be greater than or equal to `start_date`.'
+          description: End date of the payout period filter, inclusive, in [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) `date` format (`YYYY-MM-DD`). Must be greater than or equal to `start_date`.
           required: true
           schema:
             type: string
             format: date
-            example: '2024-02-29'
+            example: 2024-02-29
         - name: format
           in: query
           description: Response format for the payout list.
@@ -1912,7 +1912,7 @@ paths:
               example:
                 - amount: 132.45
                   currency: EUR
-                  date: '2024-02-29'
+                  date: 2024-02-29
                   fee: 3.12
                   id: 123456789
                   reference: payout-2024-02-29
@@ -1963,7 +1963,7 @@ paths:
                     status: 401
                     title: Unauthorized
                     trace_id: 3c77294349d3b5647ea2d990f0d8f017
-                    type: 'https://developer.sumup.com/problem/unauthorized'
+                    type: https://developer.sumup.com/problem/unauthorized
       security:
         - apiKey: []
         - oauth2:
@@ -1978,7 +1978,7 @@ paths:
         - user.profile
         - user.profile_readonly
         - payouts.read
-  '/v1.1/receipts/{transaction_id}':
+  /v1.1/receipts/{transaction_id}:
     get:
       operationId: GetReceipt
       summary: Retrieve receipt details
@@ -1986,7 +1986,7 @@ paths:
       parameters:
         - name: transaction_id
           in: path
-          description: 'SumUp unique transaction ID or transaction code, e.g. TS7HDYLSKD.'
+          description: SumUp unique transaction ID or transaction code, e.g. TS7HDYLSKD.
           required: true
           schema:
             type: string
@@ -2018,7 +2018,7 @@ paths:
                   vat_amount: '6.00'
                   tip_amount: '3.00'
                   currency: EUR
-                  timestamp: '2020-02-29T10:56:56.876Z'
+                  timestamp: 2020-02-29T10:56:56.876Z
                   status: SUCCESSFUL
                   payment_type: ECOM
                   entry_mode: CUSTOMER_ENTRY
@@ -2055,7 +2055,7 @@ paths:
                     status: 401
                     title: Unauthorized
                     trace_id: 3c77294349d3b5647ea2d990f0d8f017
-                    type: 'https://developer.sumup.com/problem/unauthorized'
+                    type: https://developer.sumup.com/problem/unauthorized
         '404':
           description: The requested transaction event does not exist for the provided transaction.
           content:
@@ -2078,6 +2078,118 @@ paths:
         method_name: get
       x-scopes:
         - receipts.read
+  /v0/merchants/{merchant_code}/readers/{reader_id}/go-checkout:
+    post:
+      operationId: CreateGoReaderCheckout
+      summary: Create a Go Reader Payment
+      description: |-
+        Initiates a payment on the SumUp Go terminal identified by the reader ID.
+
+        Use `client_transaction_id` as an idempotency key: retrying the request with the same value returns the result of the original payment instead of creating a duplicate.
+      parameters:
+        - name: Authorization
+          in: header
+          description: Access token in the format 'Bearer {token}'.
+          required: true
+          schema:
+            type: string
+        - name: merchant_code
+          in: path
+          description: Short unique identifier for the merchant.
+          required: true
+          schema:
+            type: string
+            example: MK10CL2A
+        - name: reader_id
+          in: path
+          description: The unique identifier of the reader.
+          required: true
+          schema:
+            $ref: '#/components/schemas/ReaderID'
+      requestBody:
+        description: Payment details to initiate on the reader.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReaderPaymentRequestParams'
+      responses:
+        '200':
+          description: Returns the result of the payment initiated on the reader.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReaderPaymentResponse'
+        '400':
+          description: The request is invalid.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+              example:
+                type: https://developer.sumup.com/problem/bad-request
+                title: Bad Request
+                status: 400
+                detail: Request validation failed.
+        '401':
+          description: Authentication failed or missing required scope.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+              example:
+                type: https://developer.sumup.com/problem/unauthorized
+                title: Unauthorized
+                status: 401
+                detail: Authentication credentials are missing or invalid.
+        '404':
+          description: The requested Reader resource does not exist.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+              example:
+                type: https://developer.sumup.com/problem/not-found
+                title: Requested resource couldn't be found.
+                status: 404
+                detail: The requested resource doesn't exist or does not belong to you.
+        '422':
+          description: The request could not be processed as it violates a business rule.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+              example:
+                type: https://developer.sumup.com/problem/validation-error
+                title: Unprocessable Entity
+                status: 422
+                detail: Validation failed.
+        '500':
+          description: An unexpected error occurred while processing the request.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+              example:
+                type: https://developer.sumup.com/problem/internal-server-error
+                title: Internal Server Error
+                status: 500
+                detail: An unexpected error occurred while processing the request.
+      security:
+        - apiKey: []
+        - oauth2:
+            - payments
+            - readers.write
+      tags:
+        - Readers
+      x-codegen:
+        method_name: create_go_checkout
+        ignore: true
+      x-permissions:
+        - readers_checkout_create
+      x-scopes:
+        - payments
+        - readers.write
   /v0.1/memberships:
     get:
       operationId: ListMemberships
@@ -2180,7 +2292,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Problem'
               example:
-                type: 'https://developer.sumup.com/problem/bad-request'
+                type: https://developer.sumup.com/problem/bad-request
                 title: Bad Request
                 status: 400
                 detail: Request validation failed.
@@ -2191,7 +2303,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Problem'
               example:
-                type: 'https://developer.sumup.com/problem/unauthorized'
+                type: https://developer.sumup.com/problem/unauthorized
                 title: Unauthorized
                 status: 401
                 detail: Authentication credentials are missing or invalid.
@@ -2207,7 +2319,7 @@ paths:
       x-scopes:
         - user.profile
         - user.profile_readonly
-  '/v0.1/merchants/{merchant_code}/members':
+  /v0.1/merchants/{merchant_code}/members:
     get:
       operationId: ListMerchantMembers
       summary: List members
@@ -2299,7 +2411,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Problem'
               example:
-                type: 'https://developer.sumup.com/problem/not-found'
+                type: https://developer.sumup.com/problem/not-found
                 title: Requested resource couldn't be found.
                 status: 404
                 detail: The requested resource doesn't exist or does not belong to you.
@@ -2339,7 +2451,7 @@ paths:
               type: object
               properties:
                 is_managed_user:
-                  description: 'True if the user is managed by the merchant. In this case, we''ll created a virtual user with the provided password and nickname.'
+                  description: True if the user is managed by the merchant. In this case, we'll created a virtual user with the provided password and nickname.
                   type: boolean
                 email:
                   description: Email address of the member to add.
@@ -2347,7 +2459,7 @@ paths:
                   format: email
                   maxLength: 256
                 password:
-                  description: 'Password of the member to add. Only used if `is_managed_user` is true. In the case of service accounts, the password is not used and can not be defined by the caller.'
+                  description: Password of the member to add. Only used if `is_managed_user` is true. In the case of service accounts, the password is not used and can not be defined by the caller.
                   type: string
                   format: password
                   minLength: 8
@@ -2388,7 +2500,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Problem'
               example:
-                type: 'https://developer.sumup.com/problem/bad-request'
+                type: https://developer.sumup.com/problem/bad-request
                 title: Bad Request
                 status: 400
                 detail: Request validation failed.
@@ -2399,7 +2511,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Problem'
               example:
-                type: 'https://developer.sumup.com/problem/not-found'
+                type: https://developer.sumup.com/problem/not-found
                 title: Requested resource couldn't be found.
                 status: 404
                 detail: The requested resource doesn't exist or does not belong to you.
@@ -2410,7 +2522,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Problem'
               example:
-                type: 'https://developer.sumup.com/problem/too-many-requests'
+                type: https://developer.sumup.com/problem/too-many-requests
                 title: Too Many Requests
                 status: 429
                 detail: Too many requests were sent. Please try again later.
@@ -2430,7 +2542,7 @@ paths:
       x-scopes:
         - user.subaccounts
         - members.write
-  '/v0.1/merchants/{merchant_code}/members/{member_id}':
+  /v0.1/merchants/{merchant_code}/members/{member_id}:
     get:
       operationId: GetMerchantMember
       summary: Retrieve a member
@@ -2464,7 +2576,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Problem'
               example:
-                type: 'https://developer.sumup.com/problem/not-found'
+                type: https://developer.sumup.com/problem/not-found
                 title: Requested resource couldn't be found.
                 status: 404
                 detail: The requested resource doesn't exist or does not belong to you.
@@ -2555,7 +2667,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Problem'
               example:
-                type: 'https://developer.sumup.com/problem/bad-request'
+                type: https://developer.sumup.com/problem/bad-request
                 title: Bad Request
                 status: 400
                 detail: Request validation failed.
@@ -2566,7 +2678,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Problem'
               example:
-                type: 'https://developer.sumup.com/problem/forbidden'
+                type: https://developer.sumup.com/problem/forbidden
                 title: Forbidden
                 status: 403
                 detail: You do not have permission to perform this action.
@@ -2577,7 +2689,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Problem'
               example:
-                type: 'https://developer.sumup.com/problem/not-found'
+                type: https://developer.sumup.com/problem/not-found
                 title: Requested resource couldn't be found.
                 status: 404
                 detail: The requested resource doesn't exist or does not belong to you.
@@ -2588,7 +2700,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Problem'
               example:
-                type: 'https://developer.sumup.com/problem/conflict'
+                type: https://developer.sumup.com/problem/conflict
                 title: Conflict
                 status: 409
                 detail: The request conflicts with the current state of the resource.
@@ -2637,7 +2749,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Problem'
               example:
-                type: 'https://developer.sumup.com/problem/forbidden'
+                type: https://developer.sumup.com/problem/forbidden
                 title: Forbidden
                 status: 403
                 detail: You do not have permission to perform this action.
@@ -2648,7 +2760,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Problem'
               example:
-                type: 'https://developer.sumup.com/problem/not-found'
+                type: https://developer.sumup.com/problem/not-found
                 title: Requested resource couldn't be found.
                 status: 404
                 detail: The requested resource doesn't exist or does not belong to you.
@@ -2668,7 +2780,7 @@ paths:
       x-scopes:
         - user.subaccounts
         - members.write
-  '/v0.1/merchants/{merchant_code}/roles':
+  /v0.1/merchants/{merchant_code}/roles:
     get:
       operationId: ListMerchantRoles
       summary: List roles
@@ -2702,7 +2814,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Problem'
               example:
-                type: 'https://developer.sumup.com/problem/not-found'
+                type: https://developer.sumup.com/problem/not-found
                 title: Requested resource couldn't be found.
                 status: 404
                 detail: The requested resource doesn't exist or does not belong to you.
@@ -2778,7 +2890,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Problem'
               example:
-                type: 'https://developer.sumup.com/problem/bad-request'
+                type: https://developer.sumup.com/problem/bad-request
                 title: Bad Request
                 status: 400
                 detail: Request validation failed.
@@ -2789,7 +2901,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Problem'
               example:
-                type: 'https://developer.sumup.com/problem/not-found'
+                type: https://developer.sumup.com/problem/not-found
                 title: Requested resource couldn't be found.
                 status: 404
                 detail: The requested resource doesn't exist or does not belong to you.
@@ -2809,7 +2921,7 @@ paths:
       x-scopes:
         - user.subaccounts
         - roles.write
-  '/v0.1/merchants/{merchant_code}/roles/{role_id}':
+  /v0.1/merchants/{merchant_code}/roles/{role_id}:
     get:
       operationId: GetMerchantRole
       summary: Retrieve a role
@@ -2843,7 +2955,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Problem'
               example:
-                type: 'https://developer.sumup.com/problem/not-found'
+                type: https://developer.sumup.com/problem/not-found
                 title: Requested resource couldn't be found.
                 status: 404
                 detail: The requested resource doesn't exist or does not belong to you.
@@ -2892,7 +3004,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Problem'
               example:
-                type: 'https://developer.sumup.com/problem/bad-request'
+                type: https://developer.sumup.com/problem/bad-request
                 title: Bad Request
                 status: 400
                 detail: Request validation failed.
@@ -2903,7 +3015,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Problem'
               example:
-                type: 'https://developer.sumup.com/problem/not-found'
+                type: https://developer.sumup.com/problem/not-found
                 title: Requested resource couldn't be found.
                 status: 404
                 detail: The requested resource doesn't exist or does not belong to you.
@@ -2987,7 +3099,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Problem'
               example:
-                type: 'https://developer.sumup.com/problem/bad-request'
+                type: https://developer.sumup.com/problem/bad-request
                 title: Bad Request
                 status: 400
                 detail: Request validation failed.
@@ -2998,7 +3110,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Problem'
               example:
-                type: 'https://developer.sumup.com/problem/not-found'
+                type: https://developer.sumup.com/problem/not-found
                 title: Requested resource couldn't be found.
                 status: 404
                 detail: The requested resource doesn't exist or does not belong to you.
@@ -3018,7 +3130,7 @@ paths:
       x-scopes:
         - user.subaccounts
         - roles.write
-  '/v1/merchants/{merchant_code}':
+  /v1/merchants/{merchant_code}:
     get:
       operationId: GetMerchant
       summary: Get Merchant
@@ -3054,7 +3166,7 @@ paths:
                 $ref: '#/components/schemas/Problem'
       externalDocs:
         description: Merchant documentation
-        url: 'https://developer.sumup.com/tools/models/merchant'
+        url: https://developer.sumup.com/tools/models/merchant
       security:
         - apiKey: []
         - oauth2:
@@ -3069,7 +3181,7 @@ paths:
       x-scopes:
         - user.profile
         - user.profile_readonly
-  '/v1/merchants/{merchant_code}/persons':
+  /v1/merchants/{merchant_code}/persons:
     get:
       operationId: ListPersons
       summary: List Persons
@@ -3105,7 +3217,7 @@ paths:
                 $ref: '#/components/schemas/Problem'
       externalDocs:
         description: Persons documentation
-        url: 'https://developer.sumup.com/tools/models/merchant#persons'
+        url: https://developer.sumup.com/tools/models/merchant#persons
       security:
         - apiKey: []
         - oauth2:
@@ -3120,7 +3232,7 @@ paths:
       x-scopes:
         - user.profile
         - user.profile_readonly
-  '/v1/merchants/{merchant_code}/persons/{person_id}':
+  /v1/merchants/{merchant_code}/persons/{person_id}:
     get:
       operationId: GetPerson
       summary: Get Person
@@ -3166,7 +3278,7 @@ paths:
                 $ref: '#/components/schemas/Problem'
       externalDocs:
         description: Persons documentation
-        url: 'https://developer.sumup.com/tools/models/merchant#persons'
+        url: https://developer.sumup.com/tools/models/merchant#persons
       security:
         - apiKey: []
         - oauth2:
@@ -3181,7 +3293,7 @@ paths:
       x-scopes:
         - user.profile
         - user.profile_readonly
-  '/v0.1/merchants/{merchant_code}/readers':
+  /v0.1/merchants/{merchant_code}/readers:
     get:
       operationId: ListReaders
       summary: List Readers
@@ -3215,7 +3327,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Problem'
               example:
-                type: 'https://developer.sumup.com/problem/unauthorized'
+                type: https://developer.sumup.com/problem/unauthorized
                 title: Unauthorized
                 status: 401
                 detail: Authentication credentials are missing or invalid.
@@ -3280,8 +3392,8 @@ paths:
                     device:
                       identifier: U1DT3NA00-CN
                       model: solo
-                    created_at: '2023-05-09T14:50:20.214Z'
-                    updated_at: '2023-05-09T14:52:58.714Z'
+                    created_at: 2023-05-09T14:50:20.214Z
+                    updated_at: 2023-05-09T14:52:58.714Z
           links:
             UpdateReaderByID:
               operationId: UpdateReader
@@ -3300,7 +3412,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Problem'
               example:
-                type: 'https://developer.sumup.com/problem/bad-request'
+                type: https://developer.sumup.com/problem/bad-request
                 title: Bad Request
                 status: 400
                 detail: Request validation failed.
@@ -3311,7 +3423,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Problem'
               example:
-                type: 'https://developer.sumup.com/problem/not-found'
+                type: https://developer.sumup.com/problem/not-found
                 title: Requested resource couldn't be found.
                 status: 404
                 detail: The requested resource doesn't exist or does not belong to you.
@@ -3322,7 +3434,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Problem'
               example:
-                type: 'https://developer.sumup.com/problem/conflict'
+                type: https://developer.sumup.com/problem/conflict
                 title: Conflict
                 status: 409
                 detail: The request conflicts with the current state of the resource.
@@ -3342,7 +3454,7 @@ paths:
       x-scopes:
         - readers.write
         - terminals.write
-  '/v0.1/merchants/{merchant_code}/readers/{reader_id}':
+  /v0.1/merchants/{merchant_code}/readers/{reader_id}:
     get:
       operationId: GetReader
       summary: Retrieve a Reader
@@ -3363,10 +3475,10 @@ paths:
             oneOf:
               - format: httpdate
                 type: string
-                example: 'Tue, 03 May 2022 14:46:44 GMT'
+                example: Tue, 03 May 2022 14:46:44 GMT
               - format: date-time
                 type: string
-                example: '2023-05-30T10:38:01+00:00'
+                example: 2023-05-30T10:38:01+00:00
         - name: merchant_code
           in: path
           description: Short unique identifier for the merchant.
@@ -3394,7 +3506,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Problem'
               example:
-                type: 'https://developer.sumup.com/problem/not-found'
+                type: https://developer.sumup.com/problem/not-found
                 title: Requested resource couldn't be found.
                 status: 404
                 detail: The requested resource doesn't exist or does not belong to you.
@@ -3442,7 +3554,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Problem'
               example:
-                type: 'https://developer.sumup.com/problem/not-found'
+                type: https://developer.sumup.com/problem/not-found
                 title: Requested resource couldn't be found.
                 status: 404
                 detail: The requested resource doesn't exist or does not belong to you.
@@ -3505,7 +3617,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Problem'
               example:
-                type: 'https://developer.sumup.com/problem/forbidden'
+                type: https://developer.sumup.com/problem/forbidden
                 title: Forbidden
                 status: 403
                 detail: You do not have permission to perform this action.
@@ -3516,7 +3628,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Problem'
               example:
-                type: 'https://developer.sumup.com/problem/not-found'
+                type: https://developer.sumup.com/problem/not-found
                 title: Requested resource couldn't be found.
                 status: 404
                 detail: The requested resource doesn't exist or does not belong to you.
@@ -3536,7 +3648,7 @@ paths:
       x-scopes:
         - readers.write
         - terminals.write
-  '/v0.1/merchants/{merchant_code}/readers/{reader_id}/checkout':
+  /v0.1/merchants/{merchant_code}/readers/{reader_id}/checkout:
     post:
       operationId: CreateReaderCheckout
       summary: Create a Reader Checkout
@@ -3592,7 +3704,7 @@ paths:
                 detail: Bad Request
                 status: 400
                 title: Bad Request
-                type: 'https://developer.sumup.com/problem/bad-request'
+                type: https://developer.sumup.com/problem/bad-request
               schema:
                 $ref: '#/components/schemas/Problem'
         '401':
@@ -3606,7 +3718,7 @@ paths:
                 detail: Unauthorized
                 status: 401
                 title: Unauthorized
-                type: 'https://developer.sumup.com/problem/unauthorized'
+                type: https://developer.sumup.com/problem/unauthorized
               schema:
                 $ref: '#/components/schemas/Problem'
         '404':
@@ -3620,7 +3732,7 @@ paths:
                 detail: The requested resource doesn't exist or does not belong to you.
                 status: 404
                 title: Requested resource couldn't be found.
-                type: 'https://developer.sumup.com/problem/not-found'
+                type: https://developer.sumup.com/problem/not-found
               schema:
                 $ref: '#/components/schemas/Problem'
         '422':
@@ -3634,7 +3746,7 @@ paths:
                 detail: Validation failed
                 status: 422
                 title: Unprocessable Entity
-                type: 'https://developer.sumup.com/problem/validation-error'
+                type: https://developer.sumup.com/problem/validation-error
               schema:
                 $ref: '#/components/schemas/Problem'
       callbacks:
@@ -3665,7 +3777,7 @@ paths:
         - readers_checkout_create
       x-scopes:
         - readers.write
-  '/v0.1/merchants/{merchant_code}/readers/{reader_id}/status':
+  /v0.1/merchants/{merchant_code}/readers/{reader_id}/status:
     get:
       operationId: GetReaderStatus
       summary: Get a Reader Status
@@ -3722,7 +3834,7 @@ paths:
                 detail: Bad Request
                 status: 400
                 title: Bad Request
-                type: 'https://developer.sumup.com/problem/bad-request'
+                type: https://developer.sumup.com/problem/bad-request
               schema:
                 $ref: '#/components/schemas/Problem'
         '401':
@@ -3736,7 +3848,7 @@ paths:
                 detail: Unauthorized
                 status: 401
                 title: Unauthorized
-                type: 'https://developer.sumup.com/problem/unauthorized'
+                type: https://developer.sumup.com/problem/unauthorized
               schema:
                 $ref: '#/components/schemas/Problem'
         '404':
@@ -3750,7 +3862,7 @@ paths:
                 detail: The requested resource doesn't exist or does not belong to you.
                 status: 404
                 title: Requested resource couldn't be found.
-                type: 'https://developer.sumup.com/problem/not-found'
+                type: https://developer.sumup.com/problem/not-found
               schema:
                 $ref: '#/components/schemas/Problem'
       callbacks: {}
@@ -3766,7 +3878,7 @@ paths:
         - readers_view
       x-scopes:
         - readers.read
-  '/v0.1/merchants/{merchant_code}/readers/{reader_id}/terminate':
+  /v0.1/merchants/{merchant_code}/readers/{reader_id}/terminate:
     post:
       operationId: CreateReaderTerminate
       summary: Terminate a Reader Checkout
@@ -3821,7 +3933,7 @@ paths:
                 detail: Bad Request
                 status: 400
                 title: Bad Request
-                type: 'https://developer.sumup.com/problem/bad-request'
+                type: https://developer.sumup.com/problem/bad-request
               schema:
                 $ref: '#/components/schemas/Problem'
         '401':
@@ -3835,7 +3947,7 @@ paths:
                 detail: Unauthorized
                 status: 401
                 title: Unauthorized
-                type: 'https://developer.sumup.com/problem/unauthorized'
+                type: https://developer.sumup.com/problem/unauthorized
               schema:
                 $ref: '#/components/schemas/Problem'
         '404':
@@ -3849,7 +3961,7 @@ paths:
                 detail: The requested resource doesn't exist or does not belong to you.
                 status: 404
                 title: Requested resource couldn't be found.
-                type: 'https://developer.sumup.com/problem/not-found'
+                type: https://developer.sumup.com/problem/not-found
               schema:
                 $ref: '#/components/schemas/Problem'
         '422':
@@ -3863,7 +3975,7 @@ paths:
                 detail: The device is offline.
                 status: 422
                 title: Reader Offline
-                type: 'https://developer.sumup.com/problem/reader-offline'
+                type: https://developer.sumup.com/problem/reader-offline
               schema:
                 $ref: '#/components/schemas/Problem'
       callbacks: {}
@@ -3879,12 +3991,88 @@ paths:
         - readers_checkout_create
       x-scopes:
         - readers.write
+  /v0.1/merchants/{merchant_code}/readers/{reader_id}/checkout/{checkout_id}:
+    get:
+      operationId: GetReaderCheckout
+      summary: Get a Reader Checkout
+      description: |
+        Get a Checkout for a Reader.
+      parameters:
+        - name: merchant_code
+          in: path
+          description: Merchant Code
+          required: true
+          schema:
+            type: string
+          example: MC0X0ABC
+        - name: reader_id
+          in: path
+          description: The unique identifier of the Reader
+          required: true
+          schema:
+            type: string
+          example: rdr_3MSAFM23CK82VSTT4BN6RWSQ65
+        - name: checkout_id
+          in: path
+          description: The unique identifier of the Checkout
+          required: true
+          schema:
+            type: string
+          example: 74ecff66-1655-43ed-8ce3-193f49fa602f
+      responses:
+        '200':
+          description: The Checkout got successfully retrieved for the given reader.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetReaderCheckoutResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateReaderCheckoutError'
+            application/problem+json:
+              example:
+                detail: Unauthorized
+                status: 401
+                title: Unauthorized
+                type: https://developer.sumup.com/problem/unauthorized
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '404':
+          description: Response when given reader or checkout is not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+            application/problem+json:
+              example:
+                detail: The requested resource doesn't exist or does not belong to you.
+                status: 404
+                title: Requested resource couldn't be found.
+                type: https://developer.sumup.com/problem/not-found
+              schema:
+                $ref: '#/components/schemas/Problem'
+      callbacks: {}
+      security:
+        - apiKey: []
+        - oauth2:
+            - readers.read
+      tags:
+        - Readers
+      x-codegen:
+        method_name: get_checkout
+      x-permissions:
+        - readers_checkout_view
+      x-scopes:
+        - readers.read
 components:
   parameters:
     ChangesSinceFilter:
       name: changes_since
       in: query
-      description: 'Filters the results by the latest modification time of resources and returns only transactions that are modified *at or after* the specified timestamp (in [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) format).'
+      description: Filters the results by the latest modification time of resources and returns only transactions that are modified *at or after* the specified timestamp (in [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) format).
       required: false
       schema:
         type: string
@@ -3911,7 +4099,7 @@ components:
       schema:
         type: string
     EntryModesFilter:
-      name: 'entry_modes[]'
+      name: entry_modes[]
       in: query
       description: Filters the returned results by the specified list of entry modes.
       required: false
@@ -3922,7 +4110,7 @@ components:
     LimitFilter:
       name: limit
       in: query
-      description: 'Specifies the maximum number of results per page. Value must be a positive integer and if not specified, will return 10 results.'
+      description: Specifies the maximum number of results per page. Value must be a positive integer and if not specified, will return 10 results.
       schema:
         type: integer
     NewestRefFilter:
@@ -3935,7 +4123,7 @@ components:
     NewestTimeFilter:
       name: newest_time
       in: query
-      description: 'Filters the results by the creation time of resources and returns only transactions that are created *before* the specified timestamp (in [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) format).'
+      description: Filters the results by the creation time of resources and returns only transactions that are created *before* the specified timestamp (in [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) format).
       required: false
       schema:
         type: string
@@ -3951,7 +4139,7 @@ components:
           - ascending
           - descending
     PaymentTypesFilter:
-      name: 'payment_types[]'
+      name: payment_types[]
       in: query
       description: Filters the returned results by the specified list of payment types used for the transactions.
       required: false
@@ -3960,7 +4148,7 @@ components:
         items:
           $ref: '#/components/schemas/PaymentType'
     StatusesFilter:
-      name: 'statuses[]'
+      name: statuses[]
       in: query
       description: Filters the returned results by the specified list of final statuses of the transactions.
       required: false
@@ -3996,7 +4184,7 @@ components:
       schema:
         type: string
     TypesFilter:
-      name: 'types[]'
+      name: types[]
       in: query
       description: Filters the returned results by the specified list of transaction types.
       required: false
@@ -4009,7 +4197,7 @@ components:
             - REFUND
             - CHARGE_BACK
     UsersFilter:
-      name: 'users[]'
+      name: users[]
       in: query
       description: Filters the returned results by user email.
       required: false
@@ -4032,7 +4220,7 @@ components:
           type: string
           example: Berlin
         country:
-          description: 'Two letter country code formatted according to [ISO3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2).'
+          description: Two letter country code formatted according to [ISO3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2).
           type: string
           example: DE
         line_1:
@@ -4040,7 +4228,7 @@ components:
           type: string
           example: Sample street
         line_2:
-          description: 'Second line of the address with details of the building, unit, apartment, and floor numbers.'
+          description: Second line of the address with details of the building, unit, apartment, and floor numbers.
           type: string
           example: ap. 5
         postal_code:
@@ -4186,16 +4374,16 @@ components:
         - enabled
       title: Hosted Checkout
     Checkout:
-      description: 'Core checkout resource returned by the Checkouts API. A checkout is created before payment processing and then updated as payment attempts, redirects, and resulting transactions are attached to it.'
+      description: Core checkout resource returned by the Checkouts API. A checkout is created before payment processing and then updated as payment attempts, redirects, and resulting transactions are attached to it.
       type: object
       properties:
         checkout_reference:
-          description: 'Merchant-defined reference for the checkout. Use it to correlate the SumUp checkout with your own order, cart, subscription, or payment attempt in your systems.'
+          description: Merchant-defined reference for the checkout. Use it to correlate the SumUp checkout with your own order, cart, subscription, or payment attempt in your systems.
           type: string
           example: f00a8f74-b05d-4605-bd73-2a901bae5802
           maxLength: 90
         amount:
-          description: 'Amount to be charged to the payer, expressed in major units.'
+          description: Amount to be charged to the payer, expressed in major units.
           type: number
           format: float
           example: 10.1
@@ -4206,21 +4394,21 @@ components:
           type: string
           example: MH4H92C7
         description:
-          description: 'Short merchant-defined description shown in SumUp tools and reporting. Use it to make the checkout easier to recognize in dashboards, support workflows, and reconciliation.'
+          description: Short merchant-defined description shown in SumUp tools and reporting. Use it to make the checkout easier to recognize in dashboards, support workflows, and reconciliation.
           type: string
           example: Purchase
         return_url:
           description: Optional backend callback URL used by SumUp to notify your platform about processing updates for the checkout.
           type: string
           format: uri
-          example: 'http://example.com'
+          example: http://example.com
         id:
           description: Unique SumUp identifier of the checkout resource.
           type: string
           example: 4e425463-3e1b-431d-83fa-1e51c2925e99
           readOnly: true
         status:
-          description: 'Current high-level state of the checkout. `PENDING` means the checkout exists but is not yet completed, `PAID` means a payment succeeded, `FAILED` means the latest processing attempt failed, and `EXPIRED` means the checkout can no longer be processed.'
+          description: Current high-level state of the checkout. `PENDING` means the checkout exists but is not yet completed, `PAID` means a payment succeeded, `FAILED` means the latest processing attempt failed, and `EXPIRED` means the checkout can no longer be processed.
           type: string
           example: PENDING
           enum:
@@ -4229,15 +4417,15 @@ components:
             - PAID
             - EXPIRED
         date:
-          description: 'Date and time of the creation of the payment checkout. Response format expressed according to [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) code.'
+          description: Date and time of the creation of the payment checkout. Response format expressed according to [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) code.
           type: string
           format: date-time
-          example: '2020-02-29T10:56:56+00:00'
+          example: 2020-02-29T10:56:56+00:00
         valid_until:
-          description: 'Optional expiration timestamp. The checkout must be processed before this moment, otherwise it becomes unusable. If omitted, the checkout does not have an explicit expiry time.'
+          description: Optional expiration timestamp. The checkout must be processed before this moment, otherwise it becomes unusable. If omitted, the checkout does not have an explicit expiry time.
           type: string
           format: date-time
-          example: '2020-02-29T10:56:56+00:00'
+          example: 2020-02-29T10:56:56+00:00
           nullable: true
         customer_id:
           description: Merchant-scoped identifier of the customer associated with the checkout. Use it when storing payment instruments or reusing saved customer context for recurring and returning-payer flows.
@@ -4249,7 +4437,7 @@ components:
           description: URL of the SumUp-hosted payment page that handles the payment flow. Returned when Hosted Checkout is enabled for the checkout.
           type: string
           format: uri
-          example: 'https://checkout.sumup.com/pay/8f9316a3-cda9-42a9-9771-54d534315676'
+          example: https://checkout.sumup.com/pay/8f9316a3-cda9-42a9-9771-54d534315676
           readOnly: true
         transactions:
           description: Payment attempts and resulting transaction records linked to this checkout. Use the Transactions endpoints when you need the authoritative payment result and event history.
@@ -4263,7 +4451,7 @@ components:
               transaction_code: TEENSK4W2K
               amount: 10.1
               currency: EUR
-              timestamp: '2020-02-29T10:56:56.876Z'
+              timestamp: 2020-02-29T10:56:56.876Z
               status: SUCCESSFUL
               payment_type: ECOM
               installments_count: 1
@@ -4275,7 +4463,7 @@ components:
           uniqueItems: true
       title: Checkout
     CheckoutCreateRequest:
-      description: 'Request body for creating a checkout before processing payment. Define the payment amount, currency, merchant, and optional customer or redirect behavior here.'
+      description: Request body for creating a checkout before processing payment. Define the payment amount, currency, merchant, and optional customer or redirect behavior here.
       type: object
       properties:
         checkout_reference:
@@ -4284,7 +4472,7 @@ components:
           example: f00a8f74-b05d-4605-bd73-2a901bae5802
           maxLength: 90
         amount:
-          description: 'Amount to be charged to the payer, expressed in major units.'
+          description: Amount to be charged to the payer, expressed in major units.
           type: number
           format: float
           example: 10.1
@@ -4302,7 +4490,7 @@ components:
           description: Optional backend callback URL used by SumUp to notify your platform about processing updates for the checkout.
           type: string
           format: uri
-          example: 'http://example.com/'
+          example: http://example.com/
         customer_id:
           description: Merchant-scoped customer identifier. Required when setting up recurring payments and useful when the checkout should be linked to a returning payer.
           type: string
@@ -4315,15 +4503,15 @@ components:
             - CHECKOUT
             - SETUP_RECURRING_PAYMENT
         valid_until:
-          description: 'Optional expiration timestamp. The checkout must be processed before this moment, otherwise it becomes unusable. If omitted, the checkout does not have an explicit expiry time.'
+          description: Optional expiration timestamp. The checkout must be processed before this moment, otherwise it becomes unusable. If omitted, the checkout does not have an explicit expiry time.
           type: string
           format: date-time
-          example: '2020-02-29T10:56:56+00:00'
+          example: 2020-02-29T10:56:56+00:00
           nullable: true
         redirect_url:
-          description: 'URL where the payer should be sent after a redirect-based payment or SCA flow completes. This is required for [APMs](https://developer.sumup.com/online-payments/apm/introduction) and recommended for card checkouts that may require [3DS](https://developer.sumup.com/online-payments/features/3ds). If it is omitted, the [Payment Widget](https://developer.sumup.com/online-payments/checkouts) can render the challenge in an iframe instead of using a full-page redirect.'
+          description: URL where the payer should be sent after a redirect-based payment or SCA flow completes. This is required for [APMs](https://developer.sumup.com/online-payments/apm/introduction) and recommended for card checkouts that may require [3DS](https://developer.sumup.com/online-payments/features/3ds). If it is omitted, the [Payment Widget](https://developer.sumup.com/online-payments/checkouts) can render the challenge in an iframe instead of using a full-page redirect.
           type: string
-          example: 'https://mysite.com/completed_purchase'
+          example: https://mysite.com/completed_purchase
         hosted_checkout:
           $ref: '#/components/schemas/HostedCheckout'
       required:
@@ -4337,7 +4525,7 @@ components:
       type: object
       properties:
         amount:
-          description: 'Updated amount to be charged to the payer, expressed in major units.'
+          description: Updated amount to be charged to the payer, expressed in major units.
           type: number
           format: float
           example: 12.5
@@ -4353,10 +4541,10 @@ components:
           example: f00a8f74-b05d-4605-bd73-2a901bae5802
           maxLength: 90
         valid_until:
-          description: 'Updated expiration timestamp. The checkout must be processed before this moment, otherwise it becomes unusable.'
+          description: Updated expiration timestamp. The checkout must be processed before this moment, otherwise it becomes unusable.
           type: string
           format: date-time
-          example: '2020-02-29T10:56:56+00:00'
+          example: 2020-02-29T10:56:56+00:00
           nullable: true
         customer_id:
           description: Updated merchant-scoped customer identifier associated with the checkout.
@@ -4364,7 +4552,7 @@ components:
           example: 831ff8d4cd5958ab5670
       title: Checkout Update Request
     ProcessCheckout:
-      description: 'Request body for attempting payment on an existing checkout. The required companion fields depend on the selected `payment_type`, for example card details, saved-card data, or payer information required by a specific payment method.'
+      description: Request body for attempting payment on an existing checkout. The required companion fields depend on the selected `payment_type`, for example card details, saved-card data, or payer information required by a specific payment method.
       type: object
       properties:
         payment_type:
@@ -4436,7 +4624,7 @@ components:
         - payment_type
       title: Process Checkout
     CheckoutSuccess:
-      description: 'Checkout resource returned after a synchronous processing attempt. In addition to the base checkout fields, it can include the resulting transaction identifiers and any newly created payment instrument token.'
+      description: Checkout resource returned after a synchronous processing attempt. In addition to the base checkout fields, it can include the resulting transaction identifiers and any newly created payment instrument token.
       allOf:
         - $ref: '#/components/schemas/Checkout'
         - type: object
@@ -4458,7 +4646,7 @@ components:
             redirect_url:
               description: URL where the payer is redirected after a redirect-based payment or SCA flow completes.
               type: string
-              example: 'https://mysite.com/completed_purchase'
+              example: https://mysite.com/completed_purchase
             payment_instrument:
               description: Details of the saved payment instrument created or reused during checkout processing.
               type: object
@@ -4469,7 +4657,7 @@ components:
                   example: e76d7e5c-9375-4fac-a7e7-b19dc5302fbc
       title: Checkout Success
     CheckoutAccepted:
-      description: 'Response returned when checkout processing requires an additional payer action, such as a 3DS challenge or a redirect to an external payment method page.'
+      description: Response returned when checkout processing requires an additional payer action, such as a 3DS challenge or a redirect to an external payment method page.
       type: object
       properties:
         next_step:
@@ -4479,7 +4667,7 @@ components:
             url:
               description: URL to open or submit in order to continue processing.
               type: string
-              example: 'https://dummy-3ds-gateway.com/cap?RID=1233&VAA=A'
+              example: https://dummy-3ds-gateway.com/cap?RID=1233&VAA=A
             method:
               description: HTTP method to use when following the next step.
               type: string
@@ -4487,9 +4675,9 @@ components:
             redirect_url:
               description: Merchant URL where the payer returns after the external flow finishes.
               type: string
-              example: 'https://mysite.com/completed_purchase'
+              example: https://mysite.com/completed_purchase
             mechanism:
-              description: 'Allowed presentation mechanisms for the next step. `iframe` means the flow can be embedded, while `browser` means it can be completed through a full-page redirect.'
+              description: Allowed presentation mechanisms for the next step. `iframe` means the flow can be embedded, while `browser` means it can be completed through a full-page redirect.
               type: array
               items:
                 type: string
@@ -4502,7 +4690,7 @@ components:
               example:
                 PaReq: eJxVUttu2zAM/RXDr4MjyY5dO6BVuE27FZuDZHGG9VGRmMSFb/Wljff1k9KkF0APPCR1eHQouD6WhfWCbZfXVWyzCbUtrGSt8mof25vs3gltq+tFpURRVxjbI3b2NYfs0CLO1yiHFjmk2HVij1auYrsRW1+F0U4qZxfKwJlur4QTYcQcJoIdc+XO2/poc1gmv/GZw3k216MnLpAL1JytPIiq5yDk883Dgk+DwPV9IGcIJbYPc84o1Ye6lHqu5wVA3tJQiRL5eiiHxlqKscSq76xfeZn3qICciiDroerbkYeuvnYBMLQFP/R9MyOkM9cnCoGYJJAPScvBRJ0mOeaKr/6l08XT6jXN7tx0vvHSbOMtsj1dzB9jIKYDlOiRu1omYyy0WDCj0YxFQE55EKWZzj2f6ee9xdCYEcmnwucEaN9bvaeRR1ehFn9BgMdGr0l3aCvfYyAfem9/GENlrz36ufpTBPTv07r8lm3qpPiOo1y/7u+SJImNzacmw5hrX1wt/kRpABBDQ84bJOf16+jLt/gPhUvGGw==
                 MD: b1a536c0-29b9-11eb-adc1-0242ac120002
-                TermUrl: 'https://api.sumup.com/v0.1/checkouts/e552de3b-1777-4c91-bdb8-756967678572/complete_payment'
+                TermUrl: https://api.sumup.com/v0.1/checkouts/e552de3b-1777-4c91-bdb8-756967678572/complete_payment
               additionalProperties:
                 type: string
       title: Checkout Accepted
@@ -4543,9 +4731,9 @@ components:
           description: A URI reference that identifies the problem type.
           type: string
           format: uri
-          example: 'https://developer.sumup.com/problem/not-found'
+          example: https://developer.sumup.com/problem/not-found
         title:
-          description: 'A short, human-readable summary of the problem type.'
+          description: A short, human-readable summary of the problem type.
           type: string
           example: Requested resource couldn't be found.
         status:
@@ -4571,7 +4759,7 @@ components:
         - type: object
           properties:
             param:
-              description: 'Parameter name (with relative location) to which the error applies. Parameters from embedded resources are displayed using dot notation. For example, `card.name` refers to the `name` parameter embedded in the `card` object.'
+              description: Parameter name (with relative location) to which the error applies. Parameters from embedded resources are displayed using dot notation. For example, `card.name` refers to the `name` parameter embedded in the `card` object.
               type: string
       title: Error Extended
     ErrorForbidden:
@@ -4692,16 +4880,16 @@ components:
           format: float
           example: 132.45
         date:
-          description: 'Payout date associated with the record, in `YYYY-MM-DD` format.'
+          description: Payout date associated with the record, in `YYYY-MM-DD` format.
           type: string
           format: date
-          example: '2024-02-29'
+          example: 2024-02-29
         currency:
           description: Three-letter ISO 4217 currency code of the payout.
           type: string
           example: EUR
         fee:
-          description: 'Fee amount associated with the payout record, in major units.'
+          description: Fee amount associated with the payout record, in major units.
           type: number
           format: float
           example: 3.12
@@ -4783,14 +4971,14 @@ components:
         user_agent:
           description: Browser or client user agent observed when consent was collected.
           type: string
-          example: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.104 Safari/537.36'
+          example: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.104 Safari/537.36
         user_ip:
           description: IP address of the payer when the mandate was accepted.
           type: string
           example: 172.217.169.174
       example:
         type: recurrent
-        user_agent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.104 Safari/537.36'
+        user_agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.104 Safari/537.36
         user_ip: 172.217.169.174
       required:
         - type
@@ -4828,7 +5016,7 @@ components:
           type: string
           readOnly: true
         active:
-          description: 'Indicates whether the payment instrument is active and can be used for payments. To deactivate it, send a `DELETE` request to the resource endpoint.'
+          description: Indicates whether the payment instrument is active and can be used for payments. To deactivate it, send a `DELETE` request to the resource endpoint.
           type: boolean
           default: true
           readOnly: true
@@ -4853,7 +5041,7 @@ components:
         mandate:
           $ref: '#/components/schemas/MandateResponse'
         created_at:
-          description: 'Creation date of payment instrument. Response format expressed according to [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) code.'
+          description: Creation date of payment instrument. Response format expressed according to [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) code.
           type: string
           format: date-time
       example:
@@ -4867,7 +5055,7 @@ components:
         card:
           last_4_digits: '0001'
           type: VISA
-        created_at: '2021-03-30T10:06:07.000+00:00'
+        created_at: 2021-03-30T10:06:07.000+00:00
       title: Payment Instrument Response
     PersonalDetails:
       description: Personal details for the customer.
@@ -4893,7 +5081,7 @@ components:
           description: Date of birth of the customer.
           type: string
           format: date
-          example: '1993-12-31'
+          example: 1993-12-31
         tax_id:
           description: An identification number user for tax purposes (e.g. CPF)
           type: string
@@ -5215,7 +5403,7 @@ components:
         vat_amount: '6.00'
         tip_amount: '3.00'
         currency: EUR
-        timestamp: '2020-02-29T10:56:56.876Z'
+        timestamp: 2020-02-29T10:56:56.876Z
         status: SUCCESSFUL
         payment_type: ECOM
         entry_mode: CUSTOMER_ENTRY
@@ -5241,21 +5429,21 @@ components:
           description: Date when the transaction event is due to occur.
           type: string
           format: date
-          example: '2020-05-25'
+          example: 2020-05-25
         date:
           description: Date when the transaction event occurred.
           type: string
           format: date
-          example: '2020-05-25'
+          example: 2020-05-25
         installment_number:
-          description: 'Consecutive number of the installment that is paid. Applicable only payout events, i.e. `event_type = PAYOUT`.'
+          description: Consecutive number of the installment that is paid. Applicable only payout events, i.e. `event_type = PAYOUT`.
           type: integer
           example: 1
         timestamp:
           description: Date and time of the transaction event.
           type: string
           format: date-time
-          example: '2020-05-25T10:49:42.784Z'
+          example: 2020-05-25T10:49:42.784Z
       title: Transaction Event
     TransactionBase:
       description: Details of the transaction.
@@ -5277,10 +5465,10 @@ components:
         currency:
           $ref: '#/components/schemas/Currency'
         timestamp:
-          description: 'Date and time of the creation of the transaction. Response format expressed according to [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) code.'
+          description: Date and time of the creation of the transaction. Response format expressed according to [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) code.
           type: string
           format: date-time
-          example: '2020-02-29T10:56:56.876Z'
+          example: 2020-02-29T10:56:56.876Z
         status:
           $ref: '#/components/schemas/TransactionStatus'
         payment_type:
@@ -5365,7 +5553,7 @@ components:
               description: Payout date (if paid out at once).
               type: string
               format: date
-              example: '2019-08-28'
+              example: 2019-08-28
             payout_type:
               description: Payout type.
               type: string
@@ -5457,7 +5645,7 @@ components:
         - UNKNOWN
       title: Card Type
     TransactionFull:
-      description: 'Full transaction resource with checkout, payout, and event details.'
+      description: Full transaction resource with checkout, payout, and event details.
       allOf:
         - $ref: '#/components/schemas/TransactionBase'
         - $ref: '#/components/schemas/TransactionCheckoutInfo'
@@ -5471,7 +5659,7 @@ components:
             client_transaction_id:
               description: Client transaction id.
               type: string
-              example: 'urn:sumup:pos:sale:MNKKNGST:1D4E3B2D-111D-48D7-9AF0-832DAEF63DD7;2'
+              example: urn:sumup:pos:sale:MNKKNGST:1D4E3B2D-111D-48D7-9AF0-832DAEF63DD7;2
             username:
               description: Email address of the registered user (merchant) to whom the payment is made.
               type: string
@@ -5534,7 +5722,7 @@ components:
               description: The date of the payout.
               type: string
               format: date
-              example: '2019-08-28'
+              example: 2019-08-28
             payout_type:
               description: Payout type for the transaction.
               type: string
@@ -5635,7 +5823,7 @@ components:
               type: boolean
       title: Transaction Full
     Currency:
-      description: 'Three-letter [ISO4217](https://en.wikipedia.org/wiki/ISO_4217) code of the currency for the amount. Currently supported currency values are enumerated above.'
+      description: Three-letter [ISO4217](https://en.wikipedia.org/wiki/ISO_4217) code of the currency for the amount. Currently supported currency values are enumerated above.
       type: string
       example: EUR
       enum:
@@ -5733,6 +5921,72 @@ components:
       description: Unique ID of the transaction.
       type: string
       title: Transaction ID
+    Affiliate:
+      type: object
+      properties:
+        app_id:
+          type: string
+          example: com.example.app
+        key:
+          type: string
+          example: 123e4567-e89b-12d3-a456-426614174000
+      required:
+        - app_id
+        - key
+    Amount:
+      type: object
+      properties:
+        currency:
+          description: Currency ISO 4217 code
+          type: string
+          example: MXN
+        value:
+          description: Amount in minor units (e.g. cents).
+          type: integer
+          example: 1000
+      required:
+        - currency
+        - value
+    ReaderID:
+      description: Unique identifier of the reader that the payment is initiated on.
+      type: string
+      example: rdr_3MSAFM23CK82VSTT4BN6RWSQ65
+      maxLength: 30
+      minLength: 30
+    ReaderPaymentRequestParams:
+      type: object
+      properties:
+        affiliate:
+          $ref: '#/components/schemas/Affiliate'
+        client_transaction_id:
+          description: Caller-supplied correlation identifier, used as the idempotency key.
+          type: string
+          example: 19e12390-72cf-4f9f-80b5-b0c8a67fa43f
+        tip_amount:
+          description: Optional tip amount in minor units, added on top of total_amount.
+          type: integer
+          example: 100
+        total_amount:
+          $ref: '#/components/schemas/Amount'
+      required:
+        - total_amount
+        - client_transaction_id
+    ReaderPaymentResponse:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/ReaderPaymentResponseData'
+    ReaderPaymentResponseData:
+      type: object
+      properties:
+        client_transaction_id:
+          description: Caller-supplied correlation identifier that was provided in the request.
+          type: string
+          example: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+        transaction_code:
+          description: Transaction code returned by the acquirer/processing entity after processing the transaction.
+          type: string
+          example: TEENSK4W2K
     MembershipStatus:
       description: The status of the membership.
       type: string
@@ -5751,7 +6005,7 @@ components:
       type: string
       example: merchant
     Membership:
-      description: 'A membership associates a user with a resource, memberships is defined by user, resource, resource type, and associated roles.'
+      description: A membership associates a user with a resource, memberships is defined by user, resource, resource type, and associated roles.
       type: object
       properties:
         id:
@@ -5786,17 +6040,17 @@ components:
             - developer_settings_edit
             - developer_settings_access
           deprecated: true
-          x-deprecation-notice: 'Permissions include only legacy permissions, please use roles instead. Member access is based on their roles within a given resource and the permissions these roles grant.'
+          x-deprecation-notice: Permissions include only legacy permissions, please use roles instead. Member access is based on their roles within a given resource and the permissions these roles grant.
         created_at:
           description: The timestamp of when the membership was created.
           type: string
           format: date-time
-          example: '2023-01-20T15:16:17Z'
+          example: 2023-01-20T15:16:17Z
         updated_at:
           description: The timestamp of when the membership was last updated.
           type: string
           format: date-time
-          example: '2023-01-20T15:16:17Z'
+          example: 2023-01-20T15:16:17Z
         invite:
           $ref: '#/components/schemas/Invite'
         status:
@@ -5836,18 +6090,18 @@ components:
           description: Logo fo the resource.
           type: string
           format: uri
-          example: 'https://images.sumup.com/img_2x4y6z8a0b1c2d3e4f5g6h7j8k.png'
+          example: https://images.sumup.com/img_2x4y6z8a0b1c2d3e4f5g6h7j8k.png
           maxLength: 256
         created_at:
           description: The timestamp of when the membership resource was created.
           type: string
           format: date-time
-          example: '2023-01-20T15:16:17Z'
+          example: 2023-01-20T15:16:17Z
         updated_at:
           description: The timestamp of when the membership resource was last updated.
           type: string
           format: date-time
-          example: '2023-01-20T15:16:17Z'
+          example: 2023-01-20T15:16:17Z
         attributes:
           $ref: '#/components/schemas/Attributes'
       required:
@@ -5858,7 +6112,7 @@ components:
         - updated_at
       title: Resource
     Member:
-      description: 'A member is user within specific resource identified by resource id, resource type, and associated roles.'
+      description: A member is user within specific resource identified by resource id, resource type, and associated roles.
       type: object
       properties:
         id:
@@ -5887,17 +6141,17 @@ components:
             - developer_settings_edit
             - developer_settings_access
           deprecated: true
-          x-deprecation-notice: 'Permissions include only legacy permissions, please use roles instead. Member access is based on roles within a given resource and the permissions these roles grant.'
+          x-deprecation-notice: Permissions include only legacy permissions, please use roles instead. Member access is based on roles within a given resource and the permissions these roles grant.
         created_at:
           description: The timestamp of when the member was created.
           type: string
           format: date-time
-          example: '2023-01-20T15:16:17Z'
+          example: 2023-01-20T15:16:17Z
         updated_at:
           description: The timestamp of when the member was last updated.
           type: string
           format: date-time
-          example: '2023-01-20T15:16:17Z'
+          example: 2023-01-20T15:16:17Z
         user:
           $ref: '#/components/schemas/MembershipUser'
         invite:
@@ -5922,8 +6176,8 @@ components:
           - create_referral
           - developer_settings_edit
           - developer_settings_access
-        created_at: '2023-01-20T15:16:17Z'
-        updated_at: '2023-02-20T15:16:17Z'
+        created_at: 2023-01-20T15:16:17Z
+        updated_at: 2023-02-20T15:16:17Z
         user:
           id: 44ca0f5b-813b-46e1-aee7-e6242010662e
           email: example@sumup.com
@@ -5951,7 +6205,7 @@ components:
         expires_at:
           type: string
           format: date-time
-          example: '2023-01-20T15:16:17Z'
+          example: 2023-01-20T15:16:17Z
       required:
         - email
         - expires_at
@@ -5967,7 +6221,7 @@ components:
         type:
           $ref: '#/components/schemas/UserType'
         email:
-          description: 'End-User''s preferred e-mail address. Its value MUST conform to the RFC 5322 [RFC5322] addr-spec syntax. The RP MUST NOT rely upon this value being unique, for unique identification use ID instead.'
+          description: End-User's preferred e-mail address. Its value MUST conform to the RFC 5322 [RFC5322] addr-spec syntax. The RP MUST NOT rely upon this value being unique, for unique identification use ID instead.
           type: string
           example: example@sumup.com
         mfa_on_login_enabled:
@@ -5995,10 +6249,10 @@ components:
           type: string
           example: Test User
         picture:
-          description: 'URL of the End-User''s profile picture. This URL refers to an image file (for example, a PNG, JPEG, or GIF image file), rather than to a Web page containing an image.'
+          description: URL of the End-User's profile picture. This URL refers to an image file (for example, a PNG, JPEG, or GIF image file), rather than to a Web page containing an image.
           type: string
           format: uri
-          example: 'https://usercontent.sumup.com/44ca0f5b-813b-46e1-aee7-e6242010662e.png'
+          example: https://usercontent.sumup.com/44ca0f5b-813b-46e1-aee7-e6242010662e.png
         classic:
           $ref: '#/components/schemas/MembershipUserClassic'
       required:
@@ -6052,12 +6306,12 @@ components:
           description: The timestamp of when the role was created.
           type: string
           format: date-time
-          example: '2023-01-20T15:16:17Z'
+          example: 2023-01-20T15:16:17Z
         updated_at:
           description: The timestamp of when the role was last updated.
           type: string
           format: date-time
-          example: '2023-01-20T15:16:17Z'
+          example: 2023-01-20T15:16:17Z
       required:
         - id
         - name
@@ -6067,7 +6321,7 @@ components:
         - updated_at
       title: Role
     Metadata:
-      description: 'Set of user-defined key-value pairs attached to the object. Partial updates are not supported. When updating, always submit whole metadata. Maximum of 64 parameters are allowed in the object.'
+      description: Set of user-defined key-value pairs attached to the object. Partial updates are not supported. When updating, always submit whole metadata. Maximum of 64 parameters are allowed in the object.
       type: object
       example: {}
       additionalProperties: true
@@ -6204,7 +6458,7 @@ components:
         country: DE
       externalDocs:
         description: Address documentation
-        url: 'https://developer.sumup.com/tools/glossary/address'
+        url: https://developer.sumup.com/tools/glossary/address
       required:
         - country
     CountryCode:
@@ -6216,7 +6470,7 @@ components:
       example: BR
       maxLength: 2
       minLength: 2
-      pattern: '^[A-Z]{2}$'
+      pattern: ^[A-Z]{2}$
     PersonalIdentifiers:
       description: A list of country-specific personal identifiers.
       type: array
@@ -6327,7 +6581,7 @@ components:
         - $ref: '#/components/schemas/Timestamps'
       externalDocs:
         description: Merchant documentation
-        url: 'https://developer.sumup.com/tools/glossary/merchant'
+        url: https://developer.sumup.com/tools/glossary/merchant
       title: Merchant
     Meta:
       description: |-
@@ -6358,11 +6612,11 @@ components:
           example: Example Coffee
           maxLength: 30
           minLength: 1
-          pattern: '^[a-zA-Z0-9 \-+\''_.]{0,30}$'
+          pattern: ^[a-zA-Z0-9 \-+\'_.]{0,30}$
         website:
           description: The business's publicly available website.
           type: string
-          example: 'https://example.com'
+          example: https://example.com
           maxLength: 255
         email:
           description: A publicly available email address.
@@ -6385,7 +6639,7 @@ components:
       example: '+420123456789'
       maxLength: 16
     Branding:
-      description: 'Settings used to apply the Merchant''s branding to email receipts, invoices, checkouts, and other products.'
+      description: Settings used to apply the Merchant's branding to email receipts, invoices, checkouts, and other products.
       type: object
       properties:
         footer_text:
@@ -6462,7 +6716,7 @@ components:
         - bg.private_limited_company
       externalDocs:
         description: The country SDK documentation for legal types.
-        url: 'https://developer.sumup.com/tools/glossary/merchant#legal-types'
+        url: https://developer.sumup.com/tools/glossary/merchant#legal-types
       maxLength: 64
       minLength: 4
     CompanyIdentifiers:
@@ -6492,7 +6746,7 @@ components:
           value: HRB 123456
       externalDocs:
         description: Company identifier documentation
-        url: 'https://developer.sumup.com/tools/glossary/merchant#company-identifiers'
+        url: https://developer.sumup.com/tools/glossary/merchant#company-identifiers
       required:
         - ref
         - value
@@ -6544,7 +6798,7 @@ components:
             The date of birth of the individual, represented as an ISO 8601:2004 [ISO8601‑2004] YYYY-MM-DD format.
           type: string
           format: date
-          example: '1980-01-12'
+          example: 1980-01-12
         given_name:
           description: The first name(s) of the individual.
           type: string
@@ -6605,7 +6859,7 @@ components:
           $ref: '#/components/schemas/ChangeStatus'
       externalDocs:
         description: Person documentation
-        url: 'https://developer.sumup.com/tools/glossary/merchant#persons'
+        url: https://developer.sumup.com/tools/glossary/merchant#persons
       required:
         - id
     Company:
@@ -6624,7 +6878,7 @@ components:
             The merchant category code for the account as specified by [ISO18245](https://www.iso.org/standard/33365.html). MCCs are used to classify businesses based on the goods or services they provide.
           type: string
           example: '1532'
-          pattern: '^[0-9]{4}$'
+          pattern: ^[0-9]{4}$
         legal_type:
           $ref: '#/components/schemas/LegalType'
         address:
@@ -6640,13 +6894,13 @@ components:
             HTTP(S) URL of the company's website.
           type: string
           examples:
-            - 'https://www.sumup.com'
+            - https://www.sumup.com
           maxLength: 255
         attributes:
           $ref: '#/components/schemas/Attributes'
       externalDocs:
         description: Company documentation
-        url: 'https://developer.sumup.com/tools/glossary/merchant#company'
+        url: https://developer.sumup.com/tools/glossary/merchant#company
     ClassicMerchantIdentifiers:
       type: object
       properties:
@@ -6667,7 +6921,7 @@ components:
           type: string
           format: date-time
           examples:
-            - '2021-08-31T12:00:00Z'
+            - 2021-08-31T12:00:00Z
           readOnly: true
         updated_at:
           description: |
@@ -6675,7 +6929,7 @@ components:
           type: string
           format: date-time
           examples:
-            - '2021-08-31T12:00:00Z'
+            - 2021-08-31T12:00:00Z
           readOnly: true
       required:
         - created_at
@@ -6706,12 +6960,12 @@ components:
           description: The timestamp of when the reader was created.
           type: string
           format: date-time
-          example: '2023-01-18T15:16:17Z'
+          example: 2023-01-18T15:16:17Z
         updated_at:
           description: The timestamp of when the reader was last updated.
           type: string
           format: date-time
-          example: '2023-01-20T15:16:17Z'
+          example: 2023-01-20T15:16:17Z
       required:
         - id
         - name
@@ -6720,17 +6974,8 @@ components:
         - created_at
         - updated_at
       title: Reader
-    ReaderID:
-      description: |-
-        Unique identifier of the object.
-
-        Note that this identifies the instance of the physical devices pairing with your SumUp account. If you [delete](https://developer.sumup.com/api/readers/delete-reader) a reader, and pair the device again, the ID will be different. Do not use this ID to refer to a physical device.
-      type: string
-      example: rdr_3MSAFM23CK82VSTT4BN6RWSQ65
-      maxLength: 30
-      minLength: 30
     ReaderName:
-      description: 'Custom human-readable, user-defined name for easier identification of the reader.'
+      description: Custom human-readable, user-defined name for easier identification of the reader.
       type: string
       example: Frontdesk
       maxLength: 500
@@ -6836,6 +7081,140 @@ components:
       required:
         - errors
       title: CreateReaderCheckoutError
+    GetReaderCheckoutResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            card_type:
+              description: Type of the card. Required for some countries
+              type: string
+              enum:
+                - credit
+                - debit
+              nullable: true
+            checkout_id:
+              description: Unique identifier for the checkout
+              type: string
+              format: uuid
+            client_transaction_id:
+              description: Client transaction identifier associated with the checkout
+              type: string
+            created_at:
+              description: Checkout creation timestamp
+              type: string
+              format: date-time
+            installments:
+              description: Number of installments for the transaction. Required for some countries.
+              type: integer
+              nullable: true
+            payment_failure_reason:
+              description: Payment failure reason
+              type: string
+              nullable: true
+            payment_status:
+              description: Payment status from payments v2 event
+              type: string
+              nullable: true
+            payment_type:
+              description: Type of the payment. Required for some countries
+              type: string
+              enum:
+                - card
+                - pix
+            reader_firmware_version:
+              description: Reader firmware version
+              type: string
+            reader_serial_number:
+              description: Device serial number
+              type: string
+            status:
+              description: Current status of the checkout
+              type: string
+              enum:
+                - pending
+                - successful
+                - failed
+                - cancelled
+            total_amount:
+              description: |
+                Amount structure.
+
+                The amount is represented as an integer value altogether with the currency and the minor unit.
+
+                For example, EUR 1.00 is represented as value 100 with minor unit of 2.
+              type: object
+              example:
+                currency: EUR
+                minor_unit: 2
+                value: 1000
+              properties:
+                currency:
+                  description: Currency ISO 4217 code
+                  type: string
+                  example: EUR
+                minor_unit:
+                  description: |
+                    The minor units of the currency.
+                    It represents the number of decimals of the currency. For the currencies CLP, COP and HUF, the minor unit is 0.
+                  type: integer
+                  example: 2
+                  minimum: 0
+                value:
+                  description: Integer value of the amount.
+                  type: integer
+                  example: 1000
+                  minimum: 0
+              required:
+                - currency
+                - minor_unit
+                - value
+              title: Money
+            updated_at:
+              description: Checkout last update timestamp
+              type: string
+              format: date-time
+            valid_until:
+              description: Checkout expiration timestamp. After this time, the checkout will be automatically cancelled.
+              type: string
+              format: date-time
+              nullable: true
+          required:
+            - checkout_id
+            - client_transaction_id
+            - reader_serial_number
+            - payment_type
+            - card_type
+            - reader_firmware_version
+            - installments
+            - payment_status
+            - valid_until
+            - created_at
+            - updated_at
+            - status
+            - total_amount
+      example:
+        data:
+          card_type: credit
+          checkout_id: 00e33a36-c99b-4cb2-b635-b90c1455c9c8
+          client_transaction_id: 00e33a36-c99b-4cb2-b635-b90c1455c9c8
+          created_at: 2026-07-07T20:41:16.315434Z
+          installments: 1
+          payment_status: pending
+          payment_type: card
+          reader_firmware_version: 3.3.3.21
+          reader_serial_number: '1234567890'
+          status: pending
+          total_amount:
+            currency: EUR
+            minor_unit: 2
+            value: 10000
+          updated_at: 2026-07-07T20:42:18.117244Z
+          valid_until: 2026-07-07T20:41:16.315434Z
+      required:
+        - data
+      title: GetReaderCheckoutResponse
     StatusResponse:
       description: Status of a device
       type: object
@@ -6874,7 +7253,7 @@ components:
               description: Timestamp of the last activity from the device
               type: string
               format: date-time
-              example: '2025-09-25T15:20:00Z'
+              example: 2025-09-25T15:20:00Z
             state:
               description: Latest state of the device
               type: string
@@ -6901,7 +7280,7 @@ components:
           battery_temperature: 35
           connection_type: Wi-Fi
           firmware_version: 3.3.3.21
-          last_activity: '2025-09-25T15:20:00Z'
+          last_activity: 2025-09-25T15:20:00Z
           state: IDLE
           status: ONLINE
       required:
@@ -6975,6 +7354,11 @@ components:
         data:
           type: object
           properties:
+            checkout_id:
+              description: |
+                The checkout ID is a unique identifier for the checkout.
+              type: string
+              example: 3fa85f64-5717-4562-b3fc-2c963f66afa6
             client_transaction_id:
               description: |
                 The client transaction ID is a unique identifier for the transaction that is generated for the client.
@@ -6986,6 +7370,7 @@ components:
             - client_transaction_id
       example:
         data:
+          checkout_id: 3fa85f64-5717-4562-b3fc-2c963f66afa6
           client_transaction_id: 3fa85f64-5717-4562-b3fc-2c963f66afa6
       required:
         - data
@@ -7001,7 +7386,7 @@ components:
               description: Fuller message giving context to error
               type: string
             type:
-              description: 'Key indicating type of error. Present only for typed 401 responses (e.g. invalid token, invalid password). Absent for generic unauthorized responses.'
+              description: Key indicating type of error. Present only for typed 401 responses (e.g. invalid token, invalid password). Absent for generic unauthorized responses.
               type: string
               enum:
                 - INVALID_ACCESS_TOKEN
@@ -7110,7 +7495,7 @@ components:
             It must be a HTTPS url.
           type: string
           format: uri
-          example: 'https://www.example.com'
+          example: https://www.example.com
         tip_rates:
           description: |
             List of tipping rates to be displayed to the cardholder.
@@ -7181,7 +7566,7 @@ components:
         card_type: debit
         description: This is a description...
         installments: 1
-        return_url: 'https://webhook.site/e21ddbb0-42c4-4358-a981-f5a95cd86fb5'
+        return_url: https://webhook.site/e21ddbb0-42c4-4358-a981-f5a95cd86fb5
         tip_rates:
           - 0.05
           - 0.1
@@ -7241,7 +7626,7 @@ components:
           description: Timestamp of the event.
           type: string
           format: date-time
-          example: '2023-10-05T14:48:00Z'
+          example: 2023-10-05T14:48:00Z
       required:
         - id
         - event_type
@@ -7276,8 +7661,8 @@ components:
         device:
           identifier: U1DT3NA00-CN
           model: solo
-        created_at: '2023-05-09T14:50:20.214Z'
-        updated_at: '2023-05-09T14:52:58.714Z'
+        created_at: 2023-05-09T14:50:20.214Z
+        updated_at: 2023-05-09T14:52:58.714Z
   links:
     UpdateReaderByID:
       operationId: UpdateReader
@@ -7306,8 +7691,8 @@ components:
                 currency: EUR
                 merchant_code: MH4H92C7
                 description: Purchase
-                valid_until: '2020-02-29T10:56:56+00:00'
-                redirect_url: 'https://sumup.com'
+                valid_until: 2020-02-29T10:56:56+00:00
+                redirect_url: https://sumup.com
             Checkout3DS:
               description: Create a 3DS checkout
               value:
@@ -7316,9 +7701,9 @@ components:
                 currency: EUR
                 merchant_code: MH4H92C7
                 description: Purchase
-                return_url: 'http://example.com/'
+                return_url: http://example.com/
                 customer_id: 831ff8d4cd5958ab5670
-                redirect_url: 'https://mysite.com/completed_purchase'
+                redirect_url: https://mysite.com/completed_purchase
             CheckoutAPM:
               description: Create an Alternative Payment Method checkout
               value:
@@ -7326,7 +7711,7 @@ components:
                 amount: 10.1
                 currency: EUR
                 merchant_code: MH4H92C7
-                redirect_url: 'https://mysite.com/completed_purchase'
+                redirect_url: https://mysite.com/completed_purchase
             HostedCheckout:
               description: Create a checkout with a SumUp-hosted payment page
               x-beta: true
@@ -7350,7 +7735,7 @@ components:
             currency: EUR
             description: Updated purchase
             checkout_reference: f00a8f74-b05d-4605-bd73-2a901bae5802
-            valid_until: '2020-02-29T10:56:56+00:00'
+            valid_until: 2020-02-29T10:56:56+00:00
             customer_id: 831ff8d4cd5958ab5670
     CheckoutProcess:
       required: true
@@ -7367,7 +7752,7 @@ components:
                 installments: 1
                 mandate:
                   type: recurrent
-                  user_agent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.104 Safari/537.36'
+                  user_agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.104 Safari/537.36
                   user_ip: 172.217.169.174
                 card:
                   type: VISA
@@ -7396,7 +7781,7 @@ components:
                   address:
                     country: BR
                     city: São Paulo
-                    line1: 'Rua Gilberto Sabino, 215'
+                    line1: Rua Gilberto Sabino, 215
                     state: SP
                     postal_code: 05425-020
             ProcessiDeal:
@@ -7447,7 +7832,7 @@ components:
             type: object
             properties:
               amount:
-                description: 'Amount to be refunded. Eligible amount can''t exceed the amount of the transaction and varies based on country and currency. If you do not specify a value, the system performs a full refund of the transaction.'
+                description: Amount to be refunded. Eligible amount can't exceed the amount of the transaction and varies based on country and currency. If you do not specify a value, the system performs a full refund of the transaction.
                 type: number
                 format: float
                 example: 5
@@ -7468,11 +7853,11 @@ components:
                 merchant_code: MH4H92C7
                 merchant_country: DE
                 description: My Checkout
-                return_url: 'http://example.com'
+                return_url: http://example.com
                 id: 88fcf8de-304d-4820-8f1c-ec880290eb92
                 status: PENDING
-                date: '2020-02-29T10:56:56+00:00'
-                valid_until: '2020-02-29T10:56:56+00:00'
+                date: 2020-02-29T10:56:56+00:00
+                valid_until: 2020-02-29T10:56:56+00:00
                 customer_id: 831ff8d4cd5958ab5670
                 mandate:
                   type: recurrent
@@ -7483,7 +7868,7 @@ components:
                     transaction_code: TEENSK4W2K
                     amount: 10.1
                     currency: EUR
-                    timestamp: '2020-02-29T10:56:56.876Z'
+                    timestamp: 2020-02-29T10:56:56.876Z
                     status: SUCCESSFUL
                     payment_type: ECOM
                     installments_count: 1
@@ -7499,19 +7884,19 @@ components:
                 amount: 10.1
                 currency: EUR
                 description: My Checkout
-                return_url: 'http://example.com'
+                return_url: http://example.com
                 id: 88fcf8de-304d-4820-8f1c-ec880290eb92
                 status: PENDING
-                date: '2020-02-29T10:56:56+00:00'
-                valid_until: '2020-02-29T10:56:56+00:00'
+                date: 2020-02-29T10:56:56+00:00
+                valid_until: 2020-02-29T10:56:56+00:00
                 customer_id: 831ff8d4cd5958ab5670
-                redirect_url: 'https://mysite.com/completed_purchase'
+                redirect_url: https://mysite.com/completed_purchase
                 transactions:
                   - id: 410fc44a-5956-44e1-b5cc-19c6f8d727a4
                     transaction_code: TEENSK4W2K
                     amount: 10.1
                     currency: EUR
-                    timestamp: '2020-02-29T10:56:56.876Z'
+                    timestamp: 2020-02-29T10:56:56.876Z
                     status: SUCCESSFUL
                     payment_type: ECOM
                     installments_count: 1
@@ -7521,27 +7906,27 @@ components:
                     entry_mode: CUSTOMER_ENTRY
                     auth_code: '012345'
             CheckoutAPM:
-              description: 'Response body for APMs, including Blik, iDeal, ...'
+              description: Response body for APMs, including Blik, iDeal, ...
               value:
                 checkout_reference: 8ea25ec3-3293-40e9-a165-6d7f3b3073c5
                 amount: 10.1
                 currency: EUR
                 merchant_code: MH4H92C7
                 description: My Checkout
-                return_url: 'http://example.com'
+                return_url: http://example.com
                 id: 88fcf8de-304d-4820-8f1c-ec880290eb92
                 status: PENDING
-                date: '2021-06-29T11:08:36.000+00:00'
+                date: 2021-06-29T11:08:36.000+00:00
                 merchant_name: My company
                 merchant_country: DE
-                redirect_url: 'https://sumup.com'
+                redirect_url: https://sumup.com
                 purpose: CHECKOUT
                 transactions:
                   - id: 410fc44a-5956-44e1-b5cc-19c6f8d727a4
                     transaction_code: TEENSK4W2K
                     amount: 10.1
                     currency: EUR
-                    timestamp: '2020-02-29T10:56:56.876Z'
+                    timestamp: 2020-02-29T10:56:56.876Z
                     status: SUCCESSFUL
                     payment_type: ECOM
                     installments_count: 1
@@ -7562,11 +7947,11 @@ components:
                 description: A sample checkout
                 id: 64553e20-3f0e-49e4-8af3-fd0eca86ce91
                 status: PENDING
-                date: '2000-01-01T12:49:24.899+00:00'
+                date: 2000-01-01T12:49:24.899+00:00
                 purpose: CHECKOUT
                 hosted_checkout:
                   enabled: true
-                hosted_checkout_url: 'https://checkout.sumup.com/pay/8f9316a3-cda9-42a9-9771-54d534315676'
+                hosted_checkout_url: https://checkout.sumup.com/pay/8f9316a3-cda9-42a9-9771-54d534315676
                 transactions: []
     CheckoutUpdate:
       description: Returns the updated checkout resource.
@@ -7583,8 +7968,8 @@ components:
             description: Updated purchase
             id: 88fcf8de-304d-4820-8f1c-ec880290eb92
             status: PENDING
-            date: '2020-02-29T10:56:56+00:00'
-            valid_until: '2020-02-29T10:56:56+00:00'
+            date: 2020-02-29T10:56:56+00:00
+            valid_until: 2020-02-29T10:56:56+00:00
             customer_id: 831ff8d4cd5958ab5670
             transactions: []
     CheckoutList:
@@ -7603,7 +7988,7 @@ components:
               description: Purchase
               id: 4e425463-3e1b-431d-83fa-1e51c2925e99
               status: PENDING
-              date: '2020-02-29T10:56:56+00:00'
+              date: 2020-02-29T10:56:56+00:00
     CheckoutRetrieve:
       description: Returns the requested checkout resource.
       content:
@@ -7618,7 +8003,7 @@ components:
             description: Purchase
             id: 4e425463-3e1b-431d-83fa-1e51c2925e99
             status: PENDING
-            date: '2020-02-29T10:56:56+00:00'
+            date: 2020-02-29T10:56:56+00:00
             transaction_code: TEENSK4W2K
             transaction_id: 410fc44a-5956-44e1-b5cc-19c6f8d727a4
     CheckoutProcess:
@@ -7636,11 +8021,11 @@ components:
                 currency: EUR
                 merchant_code: MH4H92C7
                 description: Purchase
-                return_url: 'http://example.com'
+                return_url: http://example.com
                 id: 4e425463-3e1b-431d-83fa-1e51c2925e99
                 status: PENDING
-                date: '2020-02-29T10:56:56+00:00'
-                valid_until: '2020-02-29T10:56:56+00:00'
+                date: 2020-02-29T10:56:56+00:00
+                valid_until: 2020-02-29T10:56:56+00:00
                 customer_id: 831ff8d4cd5958ab5670
                 mandate:
                   type: recurrent
@@ -7651,7 +8036,7 @@ components:
                     transaction_code: TEENSK4W2K
                     amount: 10.1
                     currency: EUR
-                    timestamp: '2020-02-29T10:56:56.876Z'
+                    timestamp: 2020-02-29T10:56:56.876Z
                     status: SUCCESSFUL
                     payment_type: ECOM
                     installments_count: 1
@@ -7672,11 +8057,11 @@ components:
                 description: Purchase with token
                 id: 4e425463-3e1b-431d-83fa-1e51c2925e99
                 status: PENDING
-                date: '2020-02-29T10:56:56+00:00'
+                date: 2020-02-29T10:56:56+00:00
                 transaction_code: TEENSK4W2K
                 transaction_id: 410fc44a-5956-44e1-b5cc-19c6f8d727a4
                 merchant_name: Sample Merchant
-                redirect_url: 'https://mysite.com/completed_purchase'
+                redirect_url: https://mysite.com/completed_purchase
                 customer_id: 831ff8d4cd5958ab5670
                 payment_instrument:
                   token: e76d7e5c-9375-4fac-a7e7-b19dc5302fbc
@@ -7685,7 +8070,7 @@ components:
                     transaction_code: TEENSK4W2K
                     amount: 10.1
                     currency: EUR
-                    timestamp: '2020-02-29T10:56:56.876Z'
+                    timestamp: 2020-02-29T10:56:56.876Z
                     status: SUCCESSFUL
                     payment_type: ECOM
                     installments_count: 1
@@ -7704,12 +8089,12 @@ components:
                 description: Boleto checkout
                 id: 4e425463-3e1b-431d-83fa-1e51c2925e99
                 status: PENDING
-                date: '2021-07-06T12:34:02.000+00:00'
+                date: 2021-07-06T12:34:02.000+00:00
                 merchant_name: Sample shop
                 boleto:
                   barcode: '34191090081790614310603072340007886840000000200'
-                  url: 'https://checkouts.sample.com/v0.1/checkouts/2e7a36cc-7897-446b-a966-952ab5f049ea/boleto'
-                redirect_url: 'https://website.com'
+                  url: https://checkouts.sample.com/v0.1/checkouts/2e7a36cc-7897-446b-a966-952ab5f049ea/boleto
+                redirect_url: https://website.com
                 purpose: CHECKOUT
                 transactions:
                   - id: debd2986-9852-4e86-8a8e-7ea9c87dd679
@@ -7719,7 +8104,7 @@ components:
                     vat_amount: 6
                     tip_amount: 3
                     currency: BRL
-                    timestamp: '2021-07-06T12:34:16.460+00:00'
+                    timestamp: 2021-07-06T12:34:16.460+00:00
                     status: PENDING
                     payment_type: BOLETO
                     entry_mode: BOLETO
@@ -7728,26 +8113,26 @@ components:
               description: Successfully processed checkout with iDeal
               value:
                 next_step:
-                  url: 'https://r3.girogate.de/ti/simideal'
+                  url: https://r3.girogate.de/ti/simideal
                   method: GET
                   payload:
                     tx: '961473700'
                     rs: ILnaUeQTKJ184fVrjGILrLjePX9E4rmz
                     cs: c8bc0ea231f8372431ca22d6f8319f8de0263d0b1705759ed27155f245f193c5
-                  full: 'https://r3.girogate.de/ti/simideal?tx=961473700&rs=ILnaUeQTKJ184fVrjGILrLjePX9E4rmz&cs=c8bc0ea231f8372431ca22d6f8319f8de0263d0b1705759ed27155f245f193c5'
+                  full: https://r3.girogate.de/ti/simideal?tx=961473700&rs=ILnaUeQTKJ184fVrjGILrLjePX9E4rmz&cs=c8bc0ea231f8372431ca22d6f8319f8de0263d0b1705759ed27155f245f193c5
                   mechanism:
                     - browser
             CheckoutSuccessBancontact:
               description: Successfully processed checkout with Bancontact
               value:
                 next_step:
-                  url: 'https://r3.girogate.de/ti/simbcmc'
+                  url: https://r3.girogate.de/ti/simbcmc
                   method: GET
                   payload:
                     tx: '624788471'
                     rs: 5MioXoKt2Gwj9dLgqAX1bMRBuT5xTSdB
                     cs: 697edacdd9175f3f99542500fa0ff08280b66aaff3c2641a2e212e4b039473cc
-                  full: 'https://r3.girogate.de/ti/simbcmc?tx=624788471&rs=5MioXoKt2Gwj9dLgqAX1bMRBuT5xTSdB&cs=697edacdd9175f3f99542500fa0ff08280b66aaff3c2641a2e212e4b039473cc'
+                  full: https://r3.girogate.de/ti/simbcmc?tx=624788471&rs=5MioXoKt2Gwj9dLgqAX1bMRBuT5xTSdB&cs=697edacdd9175f3f99542500fa0ff08280b66aaff3c2641a2e212e4b039473cc
                   mechanism:
                     - browser
     CheckoutProcessAccepted:
@@ -7781,7 +8166,7 @@ components:
             transaction_code: TEENSK4W2K
             amount: 10.1
             currency: EUR
-            timestamp: '2020-02-29T10:56:56.876Z'
+            timestamp: 2020-02-29T10:56:56.876Z
             status: SUCCESSFUL
             payment_type: ECOM
             installments_count: 1
@@ -7806,7 +8191,7 @@ components:
                 status: 401
                 title: Unauthorized
                 trace_id: 3c77294349d3b5647ea2d990f0d8f017
-                type: 'https://developer.sumup.com/problem/unauthorized'
+                type: https://developer.sumup.com/problem/unauthorized
     ErrorForbidden:
       description: The request is authenticated but not permitted for this operation.
       content:
@@ -7844,6 +8229,50 @@ components:
               value:
                 error_code: CHECKOUT_PROCESSED
                 message: Checkout is already processed
+    BadRequest:
+      description: The request is invalid.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+          example:
+            type: https://developer.sumup.com/problem/bad-request
+            title: Bad Request
+            status: 400
+            detail: Request validation failed.
+    Unauthorized:
+      description: Authentication failed or missing required scope.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+          example:
+            type: https://developer.sumup.com/problem/unauthorized
+            title: Unauthorized
+            status: 401
+            detail: Authentication credentials are missing or invalid.
+    NotFound:
+      description: The requested Reader resource does not exist.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+          example:
+            type: https://developer.sumup.com/problem/not-found
+            title: Requested resource couldn't be found.
+            status: 404
+            detail: The requested resource doesn't exist or does not belong to you.
+    InternalError:
+      description: An unexpected error occurred while processing the request.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+          example:
+            type: https://developer.sumup.com/problem/internal-server-error
+            title: Internal Server Error
+            status: 500
+            detail: An unexpected error occurred while processing the request.
     ListMemberships:
       description: Returns a list of Membership objects.
       content:
@@ -7892,7 +8321,7 @@ components:
               - items
   securitySchemes:
     apiKey:
-      description: 'API keys allow you easily interact with SumUp APIs. API keys are static tokens. You can create API keys from the [Dashboard](https://me.sumup.com/settings/api-keys)'
+      description: API keys allow you easily interact with SumUp APIs. API keys are static tokens. You can create API keys from the [Dashboard](https://me.sumup.com/settings/api-keys)
       type: http
       scheme: Bearer
     oauth2:
@@ -7905,13 +8334,13 @@ components:
         To maintain security of our users, we highly recommend that you use one of the [recommended OAuth 2.0 libraries](https://oauth.net/code/) for authentication.
       flows:
         authorizationCode:
-          authorizationUrl: 'https://api.sumup.com/authorize'
-          tokenUrl: 'https://api.sumup.com/token'
-          refreshUrl: 'https://api.sumup.com/token'
+          authorizationUrl: https://api.sumup.com/authorize
+          tokenUrl: https://api.sumup.com/token
+          refreshUrl: https://api.sumup.com/token
           scopes:
             payments: Make payments by creating and processing checkouts.
             checkouts.read: View checkouts.
-            checkouts.write: 'Create, process, and deactivate checkouts.'
+            checkouts.write: Create, process, and deactivate checkouts.
             transactions.history: View transactions and transaction history.
             transactions.read: View transactions and transaction history.
             refunds.write: Refund transactions.
@@ -7926,11 +8355,11 @@ components:
             payouts.read: View payouts.
             user.subaccounts: View and manage the user profile details of your employees.
         clientCredentials:
-          tokenUrl: 'https://api.sumup.com/token'
+          tokenUrl: https://api.sumup.com/token
           scopes:
             payments: Make payments by creating and processing checkouts.
             checkouts.read: View checkouts.
-            checkouts.write: 'Create, process, and deactivate checkouts.'
+            checkouts.write: Create, process, and deactivate checkouts.
             transactions.history: View transactions and transaction history.
             transactions.read: View transactions and transaction history.
             refunds.write: Refund transactions.
@@ -8003,6 +8432,7 @@ tags:
     description: The Receipts model obtains receipt-like details for specific transactions.
     x-core-objects:
       - $ref: '#/components/schemas/Receipt'
+  - name: Readers
   - name: Members
     description: Endpoints to manage account members. Members are users that have membership within merchant accounts.
     x-core-objects:
@@ -8014,7 +8444,7 @@ tags:
       - $ref: '#/components/schemas/Membership'
     x-beta: true
   - name: Roles
-    description: 'Endpoints to manage custom roles. Custom roles allow you to tailor roles from individual permissions to match your needs. Once created, you can assign your custom roles to your merchant account members using the memberships.'
+    description: Endpoints to manage custom roles. Custom roles allow you to tailor roles from individual permissions to match your needs. Once created, you can assign your custom roles to your merchant account members using the memberships.
     x-core-objects:
       - $ref: '#/components/schemas/Role'
     x-beta: true
@@ -8022,7 +8452,3 @@ tags:
     description: A Merchant represents a single business which can use SumUp products like payment processing.
     x-core-objects:
       - $ref: '#/components/schemas/Merchant'
-  - name: Readers
-    description: A reader represents a device that accepts payments. You can use the SumUp Solo to accept in-person payments.
-    x-core-objects:
-      - $ref: '#/components/schemas/Reader'
