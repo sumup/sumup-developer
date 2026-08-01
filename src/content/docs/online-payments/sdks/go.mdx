@@ -45,7 +45,7 @@ func main() {
 	client := sumup.NewClient()
 
 	merchantCode := os.Getenv("SUMUP_MERCHANT_CODE")
-	desc := "Online payment via card widget"
+	desc := "Online payment via Payment Widget"
 
 	checkout, err := client.Checkouts.Create(ctx, sumup.CheckoutsCreateParams{
 		Amount:            25.00,
@@ -59,7 +59,7 @@ func main() {
 	}
 
 	fmt.Println(*checkout.ID)
-	// Return checkout ID to your webpage so the SumUp card widget can complete the payment.
+	// Return checkout ID to your webpage so the SumUp Payment Widget can complete the payment.
 }
 ```
 

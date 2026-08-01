@@ -18,7 +18,7 @@ You will go through the following steps:
 
 1. [Create a customer](#creating-customer).
 2. [Create checkout intended for card tokenization](#creating-checkout-to-save-card), where we specify it's for tokenization purpose. This is where 3DS verification takes place. The transaction amount is instantly reimbursed.
-3. [Process payment with the payment widget](#processing-request-with-payment-widget) or [process payment directly with SumUp API](#processing-request-directly).
+3. [Process payment with the Payment Widget](#processing-request-with-payment-widget) or [process payment directly with SumUp API](#processing-request-directly).
 4. [Retrieve the tokenized card](#retrieving-tokenized-card).
 5. [Make subsequent payments with the tokenized card](#processing-recurring-payments).
 
@@ -408,9 +408,9 @@ For more information, see the [create a checkout](/api/checkouts/create) endpoin
 
 ## Processing Request with Payment Widget
 
-The [SumUp's Payment Widget](/online-payments/checkouts/card-widget/) is a JavaScript library that allows you to securely process checkouts and collect card details securely, handling consent collection and 3DS verification. These steps are mandatory due to legal requirements, which is why we recommend processing the checkout with our widget.
+The [SumUp Payment Widget](/online-payments/checkouts/card-widget/) is a JavaScript library that securely collects card details and processes checkouts while handling consent collection and 3D Secure authentication. We recommend the Payment Widget because it handles these steps within the embedded checkout.
 
-Once you have a checkout reference from the step above, you can mount the payment widget into your website and collect the card details. Pass the `checkout_reference` from above as the `checkoutId` here.
+Once you have a checkout reference from the step above, you can mount the Payment Widget on your website and collect the card details. Pass the `checkout_reference` from above as the `checkoutId` here.
 
 ```html
 <div id="sumup-card"></div>
@@ -432,7 +432,7 @@ Once you have a checkout reference from the step above, you can mount the paymen
 
 Upon mounting the Payment Widget with a recurring purpose checkout, you should see the following screen:
 
-<Image alt="Card on file with payment widget" src="/img/guides/cof-payment-sdk.png" width="40%" />
+<Image alt="Card on file with Payment Widget" src="/img/guides/cof-payment-sdk.png" width="40%" />
 
 The user is prompted to enter their card details, give consent to store their card details and complete the checkout. The widget uses the [Process Checkout endpoint](/api/checkouts/process) to securely process the checkout. We strongly recommend using the widget over direct integration, as the widget correctly handles all legal requirements for payments.
 
