@@ -227,7 +227,8 @@ export default defineConfig({
                 components: [["Anchor", "url"]],
                 exclude: [
                   // API reference pages are generated through a dynamic route and
-                  // don't map to static Starlight doc entries.
+                  // don't map to static Starlight doc entries. Their rendered links
+                  // are validated after the build by scripts/check-rendered-links.mjs.
                   "/api/**",
                   // Custom Astro page outside docs content collection.
                   "/contact",

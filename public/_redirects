@@ -18,18 +18,19 @@
 /docs/integration-enterprise/                                                /terminal-payments
 /docs/integration-bookings/                                                  /terminal-payments
 
-# Online Payments - Tools & SDKs
-/tools/sdks/                                                                 /online-payments/sdks
-/docs/tools/sdks/                                                            /online-payments/sdks
-/tools/sdks/nodejs/                                                          /online-payments/sdks/javascript
-/online-payments/sdks/nodejs/                                                /online-payments/sdks/javascript
-/tools/sdks/go/                                                              /online-payments/sdks/go
-/tools/sdks/python/                                                          /online-payments/sdks/python
-/tools/sdks/java/                                                            /online-payments/sdks/java
-/tools/sdks/php/                                                             /online-payments/sdks/php
-/tools/sdks/php-sdk/                                                         /online-payments/sdks/php
-/tools/sdks/dotnet/                                                          /online-payments/sdks/dotnet
-/tools/sdks/rust/                                                            /online-payments/sdks/rust
+# Server SDKs
+/docs/tools/sdks/                                                            /tools/sdks
+/tools/sdks/nodejs/                                                          /tools/sdks/javascript
+/tools/sdks/php-sdk/                                                         /tools/sdks/php
+/online-payments/sdks/                                                       /tools/sdks
+/online-payments/sdks/javascript/                                            /tools/sdks/javascript
+/online-payments/sdks/nodejs/                                                /tools/sdks/javascript
+/online-payments/sdks/go/                                                    /tools/sdks/go
+/online-payments/sdks/python/                                                /tools/sdks/python
+/online-payments/sdks/java/                                                  /tools/sdks/java
+/online-payments/sdks/php/                                                   /tools/sdks/php
+/online-payments/sdks/dotnet/                                                /tools/sdks/dotnet
+/online-payments/sdks/rust/                                                  /tools/sdks/rust
 /online-payments/sdks/react-native-sdk/                                      /online-payments/sdks/react-native
 /docs/online-payments/sdks/react-native-sdk/                                 /online-payments/sdks/react-native
 /online-payments/sdks/swift-checkout/                                        /online-payments/checkouts/swift-checkout
@@ -43,11 +44,11 @@
 /online-payments/tools/react-native-sdk/                                     /online-payments/sdks/react-native
 /online-payments/tools/hosted-checkout/                                      /online-payments/checkouts/hosted-checkout
 /docs/online-payments/tools/swift-checkout/                                  /online-payments/checkouts/swift-checkout
-/docs/online-payments/tools/php-sdk/                                         /online-payments/sdks/php
+/docs/online-payments/tools/php-sdk/                                         /tools/sdks/php
 /docs/online-payments/tools/card-widget/                                     /online-payments/checkouts/card-widget
-/docs/php-sdk/                                                               /online-payments/sdks/php
-/online-payments/sdks/php-sdk/                                               /online-payments/sdks/php
-/docs/online-payments/sdks/php-sdk/                                          /online-payments/sdks/php
+/docs/php-sdk/                                                               /tools/sdks/php
+/online-payments/sdks/php-sdk/                                               /tools/sdks/php
+/docs/online-payments/sdks/php-sdk/                                          /tools/sdks/php
 
 # Online Payments - Plugins
 /docs/sumup-woocommerce-plugin/                                              /online-payments/plugins/woocommerce
@@ -92,7 +93,7 @@
 /docs/category/guides/                                                       /online-payments/guides
 /docs/category/alternative-payment-methods/                                  /online-payments/apm
 /docs/category/tools-1/                                                      /terminal-payments/sdks
-/docs/category/tools/                                                        /online-payments/sdks
+/docs/category/tools/                                                        /tools/sdks
 /docs/category/introduction-1/                                               /terminal-payments
 /docs/category/features/                                                     /online-payments
 

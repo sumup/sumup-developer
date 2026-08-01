@@ -96,13 +96,6 @@ const props = {
           />
           <ListItem
             variant="navigation"
-            leadingComponent={Apps}
-            href="/online-payments/sdks"
-            label="Integrations"
-            details="Build integrations for your customers."
-          />
-          <ListItem
-            variant="navigation"
             leadingComponent={Customise}
             href="/online-payments/guides/"
             label="Customization"
@@ -113,6 +106,13 @@ const props = {
       <section>
         <Headline as="h2" className="header">Common Topics</Headline>
         <div class="button-links">
+          <ListItem
+            variant="navigation"
+            leadingComponent={Apps}
+            href="/tools/sdks/"
+            label="Server SDKs"
+            details="Build online-payment and Cloud API integrations."
+          />
           <ListItem
             variant="navigation"
             href="/tools/authorization/"
