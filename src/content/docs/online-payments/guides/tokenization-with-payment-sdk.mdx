@@ -11,14 +11,14 @@ import Image from '@components/content/Image.astro';
 
 ## About Card Tokenization
 
-In this guide, you will learn how to use the Payment Widget to store card details for future use, and how to set up recurring payments, as SumUp handles the UI/UX and consent collection for you. Alternatively, you can process payments with your own UI, following the API guidelines also provided in this document.
+In this guide, you will learn how to use the Payment Widget to save a customer's card as a tokenized payment instrument and set up recurring payments. The Payment Widget handles the payment interface, consent collection, and 3D Secure authentication.
 This feature is also known as **card on file** or **tokenization**.
 
 You will go through the following steps:
 
 1. [Create a customer](#creating-customer).
-2. [Create checkout intended for card tokenization](#creating-checkout-to-save-card), where we specify it's for tokenization purpose. This is where 3DS verification takes place. The transaction amount is instantly reimbursed.
-3. [Process payment with the Payment Widget](#processing-request-with-payment-widget) or [process payment directly with SumUp API](#processing-request-directly).
+2. [Create a checkout for card tokenization](#creating-checkout-to-save-card). This is where 3D Secure authentication takes place. The transaction amount is instantly reimbursed.
+3. [Process the payment with the Payment Widget](#processing-request-with-payment-widget).
 4. [Retrieve the tokenized card](#retrieving-tokenized-card).
 5. [Make subsequent payments with the tokenized card](#processing-recurring-payments).
 
@@ -408,9 +408,9 @@ For more information, see the [create a checkout](/api/checkouts/create) endpoin
 
 ## Processing Request with Payment Widget
 
-The [SumUp Payment Widget](/online-payments/checkouts/card-widget/) is a JavaScript library that securely collects card details and processes checkouts while handling consent collection and 3D Secure authentication. We recommend the Payment Widget because it handles these steps within the embedded checkout.
+The [SumUp Payment Widget](/online-payments/checkouts/card-widget/) securely collects card details and processes checkouts while handling consent collection and 3D Secure authentication.
 
-Once you have a checkout reference from the step above, you can mount the Payment Widget on your website and collect the card details. Pass the `checkout_reference` from above as the `checkoutId` here.
+Once you have the checkout ID from the previous step, mount the Payment Widget on your website and pass the ID as `checkoutId`.
 
 ```html
 <div id="sumup-card"></div>
@@ -434,7 +434,7 @@ Upon mounting the Payment Widget with a recurring purpose checkout, you should s
 
 <Image alt="Card on file with Payment Widget" src="/img/guides/cof-payment-sdk.png" width="40%" />
 
-The user is prompted to enter their card details, give consent to store their card details and complete the checkout. The widget uses the [Process Checkout endpoint](/api/checkouts/process) to securely process the checkout. We strongly recommend using the widget over direct integration, as the widget correctly handles all legal requirements for payments.
+The customer enters their card details, consents to storing them, and completes the checkout in the Payment Widget. The card details are sent directly to SumUp and do not pass through your server.
 
 If the previous operation is successful, and the card is stored with the **Save for future payments option**, a `payment_instrument` object containing a `token` representing the card is created (AKA tokenized card) for this customer.
 
@@ -495,48 +495,6 @@ requesting them via [the list payment instruments](/api/customers/list-payment-i
     ```
   </TabItem>
 </Tabs>
-
-## Processing Request Directly
-
-If you want to provide a fully customized experience, you can process the request using [SumUp API directly](/api/checkouts/process). In this case, you need to make sure to handle all legal requirements yourself. Critically, SumUp API expects the `mandate` object in the request. By providing the `mandate` object, **you are stating that you have obtained the consent of the customer**. The `mandate` object establishes the authorization framework for storing and reusing card details. It defines what the card token will be used for (only recurring payments for the time being), while capturing the technical details of the tokenization request for security and compliance purposes.
-
-```json
-{
-  "payment_type": "card",
-  "installments": 1,
-  "card": {
-    "name": "FIRSTNAME LASTNAME",
-    "number": "4111111111111111",
-    "expiry_year": "2023",
-    "expiry_month": "01",
-    "cvv": "123",
-    "zip_code": "12345"
-  },
-  "mandate": {
-    "type": "recurrent",
-    "user_agent": "Chrome: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Safari/537.36.",
-    "user_ip": "2001:0db8:85a3:0000:0a00:8a2e:0370:7300"
-  }
-}
-```
-
-Again, a `payment_instrument` object containing a `token` representing the card is created (AKA tokenized card) for this customer.
-
-```json
-"payment_instrument": {
-    "token": "6878cb7f-6515-47bf-bdd9-1408d270fdce"
-}
-```
-
-At any time, you can fetch the list of tokenized cards of a customer by
-requesting them via [the list payment instruments](/api/customers/list-payment-instruments) endpoint.
-
-```bash
-curl -X GET \
-  "https://api.sumup.com/v0.1/customers/${CUSTOMER_ID}/payment-instruments" \
-  -H "Authorization: Bearer $SUMUP_API_KEY" \
-  -H "Content-Type: application/json;charset=UTF-8"
-```
 
 ## Retrieving Tokenized Card
 

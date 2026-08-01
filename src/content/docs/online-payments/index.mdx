@@ -99,29 +99,23 @@ For Prestashop, Wix, or WooCommerce, use SumUp plugins for seamless payments. Se
 
 ### SumUp APIs
 
-SumUp provides REST APIs for services such as creating and executing payments, storing cards, and issuing refunds. SumUp APIs use API keys or [OAuth 2.0](http://tools.ietf.org/html/rfc6749) for authentication. They also support Cross-Origin Resource Sharing (CORS) for secure browser access from different domains.
+SumUp provides REST APIs for creating and retrieving checkouts, managing transactions, storing tokenized payment instruments, and issuing refunds. SumUp APIs use API keys or [OAuth 2.0](https://www.rfc-editor.org/rfc/rfc6749) for authentication.
 
-The API handles requests and responses primarily in JSON format, except when requests contain form-encoded data. Typically, requests consist of name/value pairs sent to SumUp API URI: `api.sumup.com`.
+Call authenticated API endpoints from your server. Keep API keys and client secrets out of browsers and mobile apps.
 
 ### Receiving Payments
 
-To receive payments, [create a checkout](/online-payments/guides/single-payment/#1-create-a-checkout). Use merchant-direct payments or initiate on a merchant's behalf based on your [authorization type](/tools/authorization/). Checkouts are created via server-to-server communication to keep access tokens and credentials secret and prevent changes to sensitive details like transaction amount or recipient.
+Start by [choosing a checkout integration](/online-payments/checkouts/). Your server creates a checkout with the amount, currency, merchant code, and a unique checkout reference. The selected checkout integration then collects the customer's payment details and completes the payment without sending raw card details through your server.
 
-[Completing checkouts](/online-payments/guides/single-payment/#2-complete-a-checkout) via web browser or mobile app to avoid handling sensitive data like card details on your servers, eliminating PCI DSS compliance needs.
+SumUp supports the following payment paths:
 
-<Callout type="tip">
-A checkout can be completed in a browser only from a domain that is present as an authorized JavaScript origin when [creating your client credentials](/tools/authorization/oauth/#register-an-oauth-application).
-</Callout>
+- [Hosted Checkout](/online-payments/checkouts/hosted-checkout/) redirects the customer to a SumUp-hosted payment page.
+- [Payment Widget](/online-payments/checkouts/card-widget/) embeds the SumUp payment form in your website.
+- [Swift Checkout SDK](/online-payments/checkouts/swift-checkout/) and the [React Native SDK](/online-payments/sdks/react-native/) provide checkout experiences for supported mobile use cases.
+- [Alternative Payment Methods](/online-payments/apm/) support wallets, bank-based methods, vouchers, and other locally available options.
+- [Tokenization and recurring payments](/online-payments/guides/tokenization-with-payment-sdk/) use a saved payment instrument rather than raw card details.
 
-SumUp offers the following checkout completion options:
-
-- You could use [Hosted Checkout](/online-payments/checkouts/hosted-checkout/) and redirect the customer to a SumUp-hosted payment page
-- You could build a [custom card form](/online-payments/guides/single-payment/#2-complete-a-checkout) that you must submit to the SumUp servers for processing
-- You could use the [Payment Widget](/online-payments/checkouts/card-widget/)
-- You could process payments with [Alternative Payment Methods](/online-payments/apm), like Boleto, Bancontact & iDeal
-- You could process [recurring payments](/online-payments/guides/tokenization-with-payment-sdk)
-
-Successful checkout completion processes payment to the merchant's SumUp account.​
+Do not build a payment form that sends raw card details to the Checkouts API. Use one of the checkout integrations above to collect payment details.
 
 ## Contact SumUp
 

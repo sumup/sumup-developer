@@ -69,10 +69,13 @@
 /docs/online-payments/features/3ds/                                          /online-payments/3ds
 
 # Online Payments - Guides
-/docs/single-payment/                                                        /online-payments/guides/single-payment
+/online-payments/guides/single-payment                                      /online-payments/checkouts
+/online-payments/guides/single-payment/                                     /online-payments/checkouts
+/online-payments/guides/single-payment/index.md                             /online-payments/checkouts
+/docs/single-payment/                                                        /online-payments/checkouts
 /docs/refund/                                                                /online-payments/guides/refund
 /docs/recurring-payments/                                                    /online-payments/guides/recurring-payments
-/docs/online-payments/guides/single-payment/                                 /online-payments/guides/single-payment
+/docs/online-payments/guides/single-payment/                                 /online-payments/checkouts
 
 # Online Payments - APM
 /docs/online-payments/google-pay-integration/                                /online-payments/apm/google-pay

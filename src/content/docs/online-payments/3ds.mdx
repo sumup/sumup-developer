@@ -38,14 +38,13 @@ SCA applies to many customer-initiated electronic payments in the European Econo
 | -------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [Hosted Checkout](/online-payments/checkouts/hosted-checkout/) | SumUp presents the payment and authentication flow on the hosted page. Your backend verifies the final checkout status.                                                 |
 | [Payment Widget](/online-payments/checkouts/card-widget/)      | The widget presents the authentication flow. Its `onResponse` callback can emit `auth-screen` when a challenge starts. Your backend verifies the final checkout status. |
-| Direct Checkouts API                                           | Your client must follow the returned `next_step` instructions. This path requires PCI compliance and explicit onboarding and approval from SumUp.                       |
 
-Hosted Checkout or the Payment Widget is the recommended path unless you have been approved for a direct Checkouts API integration.
+Choose Hosted Checkout for a SumUp-hosted payment page or the Payment Widget for an embedded checkout.
 
 ## How the payment flow works
 
 1. Your backend [creates a checkout](/api/checkouts/create) with a unique `checkout_reference` and a `redirect_url`.
-2. The customer submits their payment through Hosted Checkout, the Payment Widget, or an approved direct integration.
+2. The customer submits their payment through Hosted Checkout or the Payment Widget.
 3. SumUp and the issuer determine whether the payment can proceed without customer interaction or requires a challenge.
 4. For a challenge, the customer authenticates directly with their issuer.
 5. The customer returns to your `redirect_url` after the external flow finishes.
@@ -56,34 +55,6 @@ Hosted Checkout or the Payment Widget is the recommended path unless you have be
 Reaching the `redirect_url`, receiving a frontend callback, or completing a challenge does not prove that the payment succeeded. Fulfill the order only after your backend retrieves the checkout and confirms that its status is `PAID`.
 
 </Callout>
-
-### Handle `next_step` in a direct integration
-
-When more customer action is required, processing a checkout can return a `next_step` object:
-
-```json
-{
-  "next_step": {
-    "method": "POST",
-    "url": "https://issuer.example/authenticate",
-    "redirect_url": "https://merchant.example/payments/complete",
-    "mechanism": ["iframe", "browser"],
-    "payload": {
-      "provider_defined_key": "provider-defined-value"
-    }
-  }
-}
-```
-
-To continue the flow:
-
-1. Use the HTTP method in `next_step.method`.
-2. Submit the request to the exact URL in `next_step.url`.
-3. Include every key-value pair from `next_step.payload`. The keys vary by provider and transaction, so do not hard-code or rename them.
-4. Use one of the presentation options returned in `next_step.mechanism`.
-5. After the customer returns, ask your backend to retrieve the checkout and confirm its final status.
-
-Do not expose your SumUp API key to the client or log the full `next_step.payload`.
 
 ## Frictionless and challenge flows
 
