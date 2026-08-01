@@ -59,11 +59,11 @@ async function createOnlineCheckout() {
     currency: "EUR",
     merchant_code: process.env.SUMUP_MERCHANT_CODE ?? "",
     pay_to_email: process.env.SUMUP_PAY_TO_EMAIL ?? "",
-    description: "Online payment via card widget",
+    description: "Online payment via Payment Widget",
   });
 
   console.log(checkout.id);
-  // Return checkout.id to your webpage so the SumUp card widget can complete the payment.
+  // Return checkout.id to your webpage so the SumUp Payment Widget can complete the payment.
 }
 
 createOnlineCheckout().catch((error) => {

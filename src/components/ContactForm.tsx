@@ -90,7 +90,8 @@ const onlineIntegrationOptions = [
   },
   { label: "Direct Integration - APIs", value: "Direct Integration - APIs" },
   {
-    label: "Direct Integration - Card Widget",
+    label: "Direct Integration - Payment Widget",
+    // Keep the legacy value for compatibility with the Marketing Cloud form.
     value: "Direct Integration - Card Widget",
   },
   { label: "General Information", value: "General Information" },

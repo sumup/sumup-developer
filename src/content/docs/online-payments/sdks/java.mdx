@@ -51,7 +51,7 @@ CheckoutCreateRequest request =
         .currency(Currency.EUR)
         .checkoutReference("ORDER-1001")
         .merchantCode(System.getenv("SUMUP_MERCHANT_CODE"))
-        .description("Online payment via card widget")
+        .description("Online payment via Payment Widget")
         .build();
 
 var checkout = client.checkouts().createCheckout(request);

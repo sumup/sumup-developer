@@ -42,12 +42,12 @@ checkout = client.checkouts.create(
         amount=25.00,
         checkout_reference="ORDER-1001",
         currency="EUR",
-        description="Online payment via card widget",
+        description="Online payment via Payment Widget",
     )
 )
 
 print(checkout.id)
-# Return checkout.id to your webpage so the SumUp card widget can complete the payment.
+# Return checkout.id to your webpage so the SumUp Payment Widget can complete the payment.
 ```
 
 ### Cloud API Checkout
