@@ -28,7 +28,7 @@ export default () => {
             <SDKIcon src={javascriptIcon.src} alt="JavaScript logo" />
           ),
           label: "JavaScript",
-          href: "/online-payments/sdks/javascript/",
+          href: "/tools/sdks/javascript/",
           variant: "navigation",
         },
         {

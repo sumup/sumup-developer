@@ -51,7 +51,8 @@
     "lint:src:fix": "npx eslint --fix",
     "lint:markdown": "rumdl check .",
     "lint:markdown:fix": "rumdl fmt .",
-    "linkcheck": "CHECK_LINKS=true astro build",
+    "linkcheck": "CHECK_LINKS=true astro build && npm run linkcheck:rendered",
+    "linkcheck:rendered": "node scripts/check-rendered-links.mjs",
     "test": "vitest run"
   },
   "devDependencies": {
