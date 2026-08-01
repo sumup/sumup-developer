@@ -115,9 +115,7 @@ What to verify:
 
 3D Secure (3DS) adds an authentication step between payment submission and final authorization when issuer verification is required.
 
-Primary option: use the [Payment Widget](/online-payments/checkouts/card-widget/). It handles authentication screens and redirect behavior for you.
-
-Secondary option: direct Checkouts API integration. This path requires PCI compliance and explicit onboarding/approval from SumUp. After [processing a checkout](/api/checkouts/process), use the returned `next_step` object (`url`, `method`, optional `payload`, `redirect_url`, and `mechanism`) to continue the flow.
+Use the [Payment Widget](/online-payments/checkouts/card-widget/) to test card payments. It handles authentication screens and redirect behavior for you.
 
 ### Successful 3D Secure Authentication Scenarios
 
