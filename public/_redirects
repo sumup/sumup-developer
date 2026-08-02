@@ -110,7 +110,8 @@
 /tools/models/merchant/                                                      /tools/glossary/merchant
 
 # Resources
-/extdev/                                                                     /getting-started
+/getting-started/                                                            /
+/extdev/                                                                     /
 /rest-api/                                                                   /api
 /docs/online-payments/features/open-banking/                                 /resources/open-banking
 
