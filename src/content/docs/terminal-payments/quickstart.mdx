@@ -1,94 +1,249 @@
 ---
-title: Quickstart
-description: Get your first in-person payment running with the right SumUp integration path and the prerequisites for testing.
+title: In-Person Payments Quickstart
+description: Pair Virtual Solo, start a sandbox Cloud API checkout, and verify your first in-person payment.
 sidebar:
+  label: Quickstart
   order: 2
 ---
 
-import { Steps } from '@astrojs/starlight/components';
-import Callout from '@components/content/Callout';
-import Image from '@components/content/Image.astro';
+import Callout from "@components/content/Callout";
 
-Get your first in-person payment running quickly.
+Complete your first in-person payment with the Cloud API and [Virtual Solo](https://virtual-solo.sumup.com). This path exercises the same reader APIs as a physical Solo without requiring hardware or a native mobile application.
+
+**Expected time:** 15–20 minutes after you can access the SumUp Dashboard.
+
+<Callout type="note">
+
+You are finished when Virtual Solo completes the simulated payment and Get Reader Checkout returns `successful`.
+
+</Callout>
+
+## What runs where
+
+| Surface                       | Responsibility                                                                                                               |
+| ----------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| Your POS backend or terminal  | Pairs the reader, creates the checkout, stores identifiers, and verifies the final result. API and Affiliate Keys stay here. |
+| Virtual Solo or physical Solo | Presents the amount and cardholder flow. Card data never passes through your POS backend.                                    |
+| SumUp                         | Connects the checkout to the reader, processes the simulated payment, and records its status.                                |
 
 ## Prerequisites
 
-- A SumUp merchant account
-- A supported reader or Tap to Pay-capable device
-- The credentials required for your chosen integration:
-  - [Affiliate Key](/tools/authorization/affiliate-keys/) for Reader SDKs and Payment Switch
-  - [Authorization](/tools/authorization/) for Cloud API and Tap to Pay SDK flows
+- A SumUp developer account and sandbox merchant account.
+- The sandbox merchant's merchant code, currency, and API key.
+- An Affiliate Key and its matching application ID.
+- A terminal with `curl` and `jq`.
+- A browser in which to run Virtual Solo.
 
-## Sandbox Merchant Account
+## Sandbox merchant account
 
-To test without real money, create a sandbox merchant account from the SumUp Dashboard.
-
-<Steps>
-
-1. Log in to your SumUp account.
+1. Log in to the [SumUp Dashboard](https://me.sumup.com).
 2. Open [Developer Settings](https://me.sumup.com/settings/developer?tab=sandboxes).
-3. In the **Sandbox environment** section, create a sandbox merchant account if you do not have one yet.
-4. Open the account switcher in the Dashboard and select **Sandbox Merchant Account**.
+3. Create a sandbox merchant account, then select it in the Dashboard account switcher.
+4. With the sandbox merchant selected, go to **Settings** > **For Developers** > **Toolkit**.
+5. Under **API Keys**, create and copy an API key. Do not use the SumUp Public Key.
+6. Under **Affiliate Keys**, create a key for an application ID you control, such as `com.example.quickstart`.
+7. Copy the sandbox merchant code and note its account currency.
 
-</Steps>
+If you do not have a SumUp account, [create a developer account](https://me.sumup.com/signup?signup_intent=developer). New developer accounts start with a sandbox merchant account.
 
-<Callout type="note">
-If you don't have a sandbox account yet, [sign up for a developer account](https://me.sumup.com/signup?signup_intent=developer). This starts you with a sandbox merchant account.
+Sandbox transactions are simulations and do not move real funds.
+
+## 1. Configure your terminal
+
+Replace the values below. `SUMUP_APP_ID` must exactly match an application ID assigned to the Affiliate Key, and the currency must match the sandbox merchant account.
+
+```bash
+export SUMUP_API_KEY="sk_test_replace_me"
+export SUMUP_MERCHANT_CODE="replace_me"
+export SUMUP_AFFILIATE_KEY="replace_me"
+export SUMUP_APP_ID="com.example.quickstart"
+export SUMUP_CURRENCY="EUR"
+```
+
+<Callout type="caution">
+
+API keys authorize account access; Affiliate Keys identify the card-present integration. Keep both on your backend and send the full `affiliate` object in every reader checkout.
+
 </Callout>
 
-<Image alt="A screenshot of the account selection dropdown in the SumUp dashboard with the sandbox merchant account highlighted with red circle" src="/img/guides/test_acc.png" width="40%" />
+## 2. Pair Virtual Solo
 
-Sandbox accounts do not process real funds. They have a separate merchant ID, show a clear warning in the Dashboard, and requests with a value of `11` always fail by design so you can test failed transaction scenarios.
+1. Open [Virtual Solo](https://virtual-solo.sumup.com) and select the sandbox environment.
+2. In the simulated reader, open **Connections** > **API** > **Connect**.
+3. Copy the displayed pairing code. It expires after five minutes.
+4. Export the code, then create the reader:
 
-<Image alt="A screenshot of the dashboard with sandbox merchant account selected" src="/img/guides/test-account-warning.png" width="100%" />
+```bash
+export SUMUP_PAIRING_CODE="replace_me"
 
-## Choose Your Path
+SUMUP_READER_RESPONSE="$(
+  curl --fail-with-body --silent --show-error \
+    --request POST "https://api.sumup.com/v0.1/merchants/$SUMUP_MERCHANT_CODE/readers" \
+    --header "Authorization: Bearer $SUMUP_API_KEY" \
+    --header "Content-Type: application/json" \
+    --data @- <<JSON
+{
+  "pairing_code": "$SUMUP_PAIRING_CODE",
+  "name": "Quickstart Virtual Solo"
+}
+JSON
+)"
 
-### Reader SDKs
+echo "$SUMUP_READER_RESPONSE" | jq
+export SUMUP_READER_ID="$(echo "$SUMUP_READER_RESPONSE" | jq -r '.id')"
+```
 
-Best for native Android and iOS apps that want more control over the payment experience.
+The initial response identifies the reader:
 
-<Steps>
+```json
+{
+  "id": "rdr_3MSAFM23CK82VSTT4BN6RWSQ65",
+  "name": "Quickstart Virtual Solo",
+  "status": "processing",
+  "device": {
+    "identifier": "VIRTUAL-SOLO-01",
+    "model": "virtual-solo"
+  }
+}
+```
 
-1. Install the SDK for [Android SDK](/terminal-payments/sdks/android-sdk/), [iOS SDK](/terminal-payments/sdks/ios-sdk/), or [Android Tap-to-Pay SDK](/terminal-payments/sdks/android-ttp/).
-2. Authenticate the merchant.
-3. Pair a reader over Bluetooth, or initialize Tap to Pay on device.
-4. Start a payment and handle the result in your app.
+Wait for the pairing confirmation in Virtual Solo, then retrieve the reader:
 
-</Steps>
+```bash
+curl --fail-with-body --silent --show-error \
+  "https://api.sumup.com/v0.1/merchants/$SUMUP_MERCHANT_CODE/readers/$SUMUP_READER_ID" \
+  --header "Authorization: Bearer $SUMUP_API_KEY" | jq
+```
 
-### Cloud API
+Continue when the reader status is `paired`. If it remains `processing`, wait briefly and retrieve it again. If it becomes `expired`, generate a new pairing code and repeat this step.
 
-Best for server-driven, web-based, or multi-platform systems using Solo readers.
+## 3. Start the reader checkout
 
-<Steps>
+Use a unique foreign transaction ID for every attempt. For currencies with two decimal places, `value: 1200` and `minor_unit: 2` represent 12.00.
 
-1. Set up [authorization](/tools/authorization/) for API access.
-2. Pair or register a Solo reader through the [Cloud API](/terminal-payments/cloud-api/).
-3. Create a checkout for the paired reader.
-4. Let the reader complete the payment and track the result asynchronously.
+```bash
+export SUMUP_AMOUNT_VALUE="1200"
+export SUMUP_FOREIGN_TRANSACTION_ID="quickstart-$(date +%s)"
 
-</Steps>
+SUMUP_READER_CHECKOUT_RESPONSE="$(
+  curl --fail-with-body --silent --show-error \
+    --request POST "https://api.sumup.com/v0.1/merchants/$SUMUP_MERCHANT_CODE/readers/$SUMUP_READER_ID/checkout" \
+    --header "Authorization: Bearer $SUMUP_API_KEY" \
+    --header "Content-Type: application/json" \
+    --data @- <<JSON
+{
+  "total_amount": {
+    "currency": "$SUMUP_CURRENCY",
+    "minor_unit": 2,
+    "value": $SUMUP_AMOUNT_VALUE
+  },
+  "description": "Quickstart payment",
+  "affiliate": {
+    "app_id": "$SUMUP_APP_ID",
+    "key": "$SUMUP_AFFILIATE_KEY",
+    "foreign_transaction_id": "$SUMUP_FOREIGN_TRANSACTION_ID"
+  }
+}
+JSON
+)"
 
-### Payment Switch
+echo "$SUMUP_READER_CHECKOUT_RESPONSE" | jq
+export SUMUP_READER_CHECKOUT_ID="$(echo "$SUMUP_READER_CHECKOUT_RESPONSE" | jq -r '.data.checkout_id')"
+```
 
-Best for lightweight legacy mobile integrations that hand off checkout to the SumUp app.
+The accepted response contains identifiers for reconciliation:
 
-<Steps>
+```json
+{
+  "data": {
+    "checkout_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    "client_transaction_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+  }
+}
+```
 
-1. Install the SumUp app on the merchant device.
-2. Build a Payment Switch request with amount, currency, and a callback URL.
-3. Open the SumUp app and let it handle the checkout.
-4. Receive the payment result back in your app.
+If `checkout_id` is empty or `null`, stop and inspect the complete response.
 
-</Steps>
+## 4. Complete the payment on Virtual Solo
 
-<Callout type="note">
-Use a unique transaction reference such as `foreignTransactionId` or `foreign-tx-id` for each payment. That prevents duplicate transaction conflicts and makes reconciliation easier.
-</Callout>
+The checkout should appear on Virtual Solo within 60 seconds.
 
-## Next Steps
+1. Confirm the amount and start the simulated payment.
+2. Follow the on-screen flow. No real card is needed; Virtual Solo simulates the reader interaction and auto-approves simulated PIN entry.
+3. Wait until the device returns to its idle screen.
 
-- Need an embedded mobile flow? Continue with [Reader SDKs](/terminal-payments/sdks/).
-- Need remote Solo payments? Continue with [Cloud API](/terminal-payments/cloud-api/).
-- Need app handoff to SumUp? Continue with [Payment Switch](/terminal-payments/payment-switch/).
+Do not start another checkout on the same reader while this checkout is active.
+
+## 5. Verify the result
+
+Retrieve the reader checkout from your backend or terminal:
+
+```bash
+SUMUP_READER_VERIFICATION_RESPONSE="$(
+  curl --fail-with-body --silent --show-error \
+    "https://api.sumup.com/v0.1/merchants/$SUMUP_MERCHANT_CODE/readers/$SUMUP_READER_ID/checkout/$SUMUP_READER_CHECKOUT_ID" \
+    --header "Authorization: Bearer $SUMUP_API_KEY"
+)"
+
+echo "$SUMUP_READER_VERIFICATION_RESPONSE" | jq
+```
+
+After the successful simulation, the relevant fields look like this:
+
+```json
+{
+  "data": {
+    "checkout_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    "client_transaction_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    "status": "successful",
+    "payment_type": "card",
+    "total_amount": {
+      "currency": "EUR",
+      "minor_unit": 2,
+      "value": 1200
+    }
+  }
+}
+```
+
+- `successful`: record the payment exactly once.
+- `pending`: wait and retrieve the checkout again.
+- `failed`: keep the order unpaid and inspect `payment_failure_reason`.
+- `cancelled`: keep the order unpaid and start a new checkout only if the merchant wants to retry.
+
+Treat a callback as a notification only. Get Reader Checkout is the authoritative result for the POS order state.
+
+## 6. Test a failed payment
+
+Set the deliberate failure amount and a new foreign transaction ID:
+
+```bash
+export SUMUP_AMOUNT_VALUE="1100"
+export SUMUP_FOREIGN_TRANSACTION_ID="quickstart-failure-$(date +%s)"
+```
+
+Repeat steps 3–5. Virtual Solo should complete the simulated attempt, and Get Reader Checkout should return `failed`. Never reuse the successful `foreign_transaction_id` or checkout ID.
+
+## Troubleshooting
+
+| Symptom                       | What to check                                                                                                                         |
+| ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| Pairing code is rejected      | Pair within five minutes and make sure the code came from the selected sandbox Virtual Solo session.                                  |
+| Reader stays `processing`     | Confirm pairing on Virtual Solo, then retrieve the reader again. Re-pair if the reader becomes `expired`.                             |
+| Checkout is rejected          | Confirm the reader is `paired` and online, the currency matches the merchant account, and the complete `affiliate` object is present. |
+| Nothing appears on the reader | The checkout must start on the device within 60 seconds. Retrieve the checkout before creating another attempt.                       |
+| Duplicate transaction error   | Generate a new `foreign_transaction_id` for the new attempt.                                                                          |
+| Callback and API disagree     | Keep the POS order pending until Get Reader Checkout returns a final status.                                                          |
+
+## Move to production
+
+Before accepting real card-present payments:
+
+1. Pair a physical Solo with the live merchant and validate reader connectivity.
+2. Use separate production API and Affiliate Keys with the correct application ID.
+3. Store the reader ID, checkout ID, client transaction ID, foreign transaction ID, merchant code, amount, and final status.
+4. Add an HTTPS `return_url` and process callbacks idempotently, then verify every result with Get Reader Checkout.
+5. Handle reader-offline, active-checkout, timeout, cancellation, and duplicate-reference scenarios.
+6. Run a small live transaction and reconcile it in the SumUp Dashboard before launch.
+
+Building a native mobile app instead? Choose the [Android or iOS Reader SDK](/terminal-payments/sdks/). Use [Payment Switch](/terminal-payments/payment-switch/) only when your app must hand off to the installed SumUp app.
