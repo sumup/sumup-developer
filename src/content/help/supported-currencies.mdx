@@ -1,19 +1,9 @@
 ---
-title: Which currencies are supported by SumUp?
+title: Which currency should I use for a payment?
 ---
 
-We provide support coverage on three continents and in the following currencies:
+Use the default currency of the merchant account receiving the payment. The currency in a checkout or reader-payment request must match that merchant account; it is not a per-transaction settlement-currency choice.
 
-- EUR
-- GBP
-- USD
-- BRL
-- CLP
-- PLN
-- CHF
-- SEK
-- CZK
-- NOK
-- DKK
-- HUF
-- BGN
+Currency availability depends on the merchant's registered country and the product or payment method being used. For online payments, use a value accepted by the [`currency` field in Create a Checkout](/api/checkouts/create/) and check [payment-method availability](/online-payments/payment-methods/) for the merchant and checkout. For in-person payments, use the merchant account currency and confirm that the selected reader and integration are available in that market.
+
+For a country-by-country reference, see [Countries and Currencies](/tools/glossary/countries-and-currencies/). When building a payment request, do not derive the value from that table. Read the merchant account's `default_currency` through the [Retrieve a Merchant endpoint](/api/merchants/get/) or from the SumUp Dashboard, and use that value.

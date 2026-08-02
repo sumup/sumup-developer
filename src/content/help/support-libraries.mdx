@@ -9,13 +9,13 @@ SumUp maintains multiple SDKs and APIs to simplify your integration work across 
 - [JavaScript / TypeScript, Go, Python, Java, PHP, .NET, and Rust SDK guides](/tools/sdks/) cover server-to-SumUp API calls for online payments and remote Solo reader management through the Cloud API.
 - Use these when you’re building checkout pages, recurring billing, or card-present integrations from a backend or platform that can make API requests.
 
-## Card-present SDKs
+## Card-Present Integrations
 
 - [Android SDK](https://github.com/sumup/sumup-android-sdk) and [iOS SDK](https://github.com/sumup/sumup-ios-sdk) let you embed our reader experience inside native apps.
-- [Android URL scheme](https://github.com/sumup/sumup-android-url-scheme) and [iOS URL scheme](https://github.com/sumup/sumup-ios-url-scheme) are lightweight options for launching the SumUp app to take a payment.
-- See the [terminal payments docs](/terminal-payments/) for installation and certification requirements.
+- [Payment Switch](/terminal-payments/payment-switch/) provides Android and iOS URL schemes for launching the SumUp app. It is a legacy fallback for integrations that cannot use the native SDKs or Cloud API.
+- See the [terminal payments comparison](/terminal-payments/#choose-your-integration) before choosing an integration, then follow its canonical implementation guide.
 
-## Cloud API for Solo readers
+## Cloud API for Supported Readers
 
-- The [Cloud API](/terminal-payments/cloud-api/) triggers card-present transactions on Solo readers from any backend or platform that can make HTTPS calls.
+- The [Cloud API](/terminal-payments/cloud-api/) triggers card-present transactions on supported readers from any backend or platform that can make HTTPS calls.
 - Use it when your POS runs on web, desktop, or another environment that can’t embed the native Android/iOS SDKs but still needs in-person payments.
