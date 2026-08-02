@@ -2,4 +2,6 @@
 title: Can my web app communicate with SumUp devices?
 ---
 
-Yes. For web applications running on mobile devices where the SumUp app is installed, you can call the SumUp app via URL. Read more on this preferred merchant approach in our [API Payment Switch](/terminal-payments/payment-switch/) guide.
+Yes. For a web-based or server-driven point of sale, use the [Cloud API](/terminal-payments/cloud-api/). Your backend makes authenticated HTTPS requests to start a payment on a supported reader, so the integration can run on any server-capable platform. Keep secret API keys out of browser code.
+
+If a mobile web application must hand off the payment to the installed SumUp app, [Payment Switch](/terminal-payments/payment-switch/) remains available as a legacy fallback. It is not the preferred path for new web integrations.
