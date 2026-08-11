@@ -2,7 +2,7 @@
 import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
 import type { StarlightPageProps } from "@astrojs/starlight/props";
 import { Anchor, Body, Headline } from "@sumup-oss/circuit-ui";
-import Problem from "@assets/problem.svg";
+import { Illustration } from "@sumup-oss/illustrations";
 
 const props = {
   frontmatter: {
@@ -17,7 +17,7 @@ const props = {
 <StarlightPage {...props}>
   <div class="wrap">
     <div class="img">
-      <Problem />
+      <Illustration name="problems" />
     </div>
     <Headline as="h1">Page not found</Headline>
     <Body className="subtitle">
