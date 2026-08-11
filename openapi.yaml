@@ -3412,7 +3412,7 @@ paths:
       x-codegen:
         method_name: list
       x-permissions:
-        - relation: readers_list
+        - relation: readers.list
           object_type: merchant
           object_id_param: merchant_code
       x-scopes: [readers.read, terminals.read]
@@ -3463,7 +3463,7 @@ paths:
       x-codegen:
         method_name: create
       x-permissions:
-        - relation: readers_create
+        - relation: readers.create
           object_type: merchant
           object_id_param: merchant_code
       x-scopes: [readers.write, terminals.write]
@@ -3571,7 +3571,7 @@ paths:
       x-codegen:
         method_name: get
       x-permissions:
-        - relation: readers_view
+        - relation: readers.view
           object_type: merchant
           object_id_param: merchant_code
       x-scopes: [readers.read, terminals.read]
@@ -3640,7 +3640,7 @@ paths:
       x-codegen:
         method_name: delete
       x-permissions:
-        - relation: readers_delete
+        - relation: readers.delete
           object_type: merchant
           object_id_param: merchant_code
       x-scopes: [readers.write, terminals.write]
@@ -3686,7 +3686,7 @@ paths:
       x-codegen:
         method_name: update
       x-permissions:
-        - relation: readers_update
+        - relation: readers.update
           object_type: merchant
           object_id_param: merchant_code
       x-scopes: [readers.write, terminals.write]
@@ -3875,7 +3875,7 @@ paths:
       x-codegen:
         method_name: create_checkout
       x-permissions:
-        - readers_checkout_create
+        - readers.checkouts.create
       x-scopes:
         - readers.write
   /v0.1/merchants/{merchant_code}/readers/{reader_id}/status:
@@ -3976,7 +3976,7 @@ paths:
       x-codegen:
         method_name: get_status
       x-permissions:
-        - readers_view
+        - readers.view
       x-scopes:
         - readers.read
   /v0.1/merchants/{merchant_code}/readers/{reader_id}/terminate:
@@ -4089,7 +4089,7 @@ paths:
       x-codegen:
         method_name: terminate_checkout
       x-permissions:
-        - readers_checkout_create
+        - readers.checkouts.delete
       x-scopes:
         - readers.write
   /v0.1/merchants/{merchant_code}/readers/{reader_id}/checkout/{checkout_id}:
@@ -4165,7 +4165,7 @@ paths:
       x-codegen:
         method_name: get_checkout
       x-permissions:
-        - readers_checkout_view
+        - readers.checkouts.view
       x-scopes:
         - readers.read
 components:
