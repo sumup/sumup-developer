@@ -1,0 +1,461 @@
+{
+  "schemaVersion": 1,
+  "language": "csharp",
+  "sdk": {
+    "module": "SumUp",
+    "version": "0.0.18"
+  },
+  "openAPIVersion": "1.0.0",
+  "samples": [
+    {
+      "id": "CreateApplePaySession",
+      "operationId": "CreateApplePaySession",
+      "summary": "Create an Apple Pay session",
+      "description": "Creates an Apple Pay merchant session for the specified checkout. Use this endpoint after the customer selects Apple Pay and before calling ApplePaySession.completeMerchantValidation(...) in the browser. SumUp validates the merchant session request and returns the Apple Pay session object that your frontend should pass to Apple's JavaScript API.",
+      "httpMethod": "PUT",
+      "path": "/v0.2/checkouts/{checkout_id}/apple-pay-session",
+      "sample": "using System;\nusing System.Collections.Generic;\nusing System.Text.Json;\nusing System.Threading.Tasks;\nusing SumUp;\n\npublic static class Program\n{\n    public static async Task Main()\n    {\n        using var client = new SumUpClient();\n        var response = await client.Checkouts.CreateApplePaySessionAsync(\n            \"example-id\",\n            JsonSerializer.Deserialize\u003cCheckoutsCreateApplePaySessionRequest\u003e(@\"{\"\"context\"\":\"\"example.com\"\",\"\"target\"\":\"\"https://apple-pay-gateway-cert.apple.com/paymentservices/startSession\"\"}\")!);\n\n        Console.WriteLine(response.StatusCode);\n    }\n}\n"
+    },
+    {
+      "id": "CreateCheckout.Checkout",
+      "operationId": "CreateCheckout",
+      "example": "Checkout",
+      "summary": "Create a checkout",
+      "description": "Standard request body for creating a checkout",
+      "httpMethod": "POST",
+      "path": "/v0.1/checkouts",
+      "sample": "using System;\nusing System.Collections.Generic;\nusing System.Text.Json;\nusing System.Threading.Tasks;\nusing SumUp;\n\npublic static class Program\n{\n    public static async Task Main()\n    {\n        using var client = new SumUpClient();\n        var response = await client.Checkouts.CreateAsync(\n            JsonSerializer.Deserialize\u003cCheckoutCreateRequest\u003e(@\"{\"\"amount\"\":10.1,\"\"checkout_reference\"\":\"\"f00a8f74-b05d-4605-bd73-2a901bae5802\"\",\"\"currency\"\":\"\"EUR\"\",\"\"description\"\":\"\"Purchase\"\",\"\"merchant_code\"\":\"\"MH4H92C7\"\",\"\"redirect_url\"\":\"\"https://sumup.com\"\",\"\"valid_until\"\":\"\"2020-02-29T10:56:56+00:00\"\"}\")!);\n\n        Console.WriteLine(response.StatusCode);\n    }\n}\n"
+    },
+    {
+      "id": "CreateCheckout.Checkout3DS",
+      "operationId": "CreateCheckout",
+      "example": "Checkout3DS",
+      "summary": "Create a checkout",
+      "description": "Create a 3DS checkout",
+      "httpMethod": "POST",
+      "path": "/v0.1/checkouts",
+      "sample": "using System;\nusing System.Collections.Generic;\nusing System.Text.Json;\nusing System.Threading.Tasks;\nusing SumUp;\n\npublic static class Program\n{\n    public static async Task Main()\n    {\n        using var client = new SumUpClient();\n        var response = await client.Checkouts.CreateAsync(\n            JsonSerializer.Deserialize\u003cCheckoutCreateRequest\u003e(@\"{\"\"amount\"\":10.1,\"\"checkout_reference\"\":\"\"f00a8f74-b05d-4605-bd73-2a901bae5802\"\",\"\"currency\"\":\"\"EUR\"\",\"\"customer_id\"\":\"\"831ff8d4cd5958ab5670\"\",\"\"description\"\":\"\"Purchase\"\",\"\"merchant_code\"\":\"\"MH4H92C7\"\",\"\"redirect_url\"\":\"\"https://mysite.com/completed_purchase\"\",\"\"return_url\"\":\"\"http://example.com/\"\"}\")!);\n\n        Console.WriteLine(response.StatusCode);\n    }\n}\n"
+    },
+    {
+      "id": "CreateCheckout.CheckoutAPM",
+      "operationId": "CreateCheckout",
+      "example": "CheckoutAPM",
+      "summary": "Create a checkout",
+      "description": "Create an Alternative Payment Method checkout",
+      "httpMethod": "POST",
+      "path": "/v0.1/checkouts",
+      "sample": "using System;\nusing System.Collections.Generic;\nusing System.Text.Json;\nusing System.Threading.Tasks;\nusing SumUp;\n\npublic static class Program\n{\n    public static async Task Main()\n    {\n        using var client = new SumUpClient();\n        var response = await client.Checkouts.CreateAsync(\n            JsonSerializer.Deserialize\u003cCheckoutCreateRequest\u003e(@\"{\"\"amount\"\":10.1,\"\"checkout_reference\"\":\"\"f00a8f74-b05d-4605-bd73-2a901bae5802\"\",\"\"currency\"\":\"\"EUR\"\",\"\"merchant_code\"\":\"\"MH4H92C7\"\",\"\"redirect_url\"\":\"\"https://mysite.com/completed_purchase\"\"}\")!);\n\n        Console.WriteLine(response.StatusCode);\n    }\n}\n"
+    },
+    {
+      "id": "CreateCheckout.HostedCheckout",
+      "operationId": "CreateCheckout",
+      "example": "HostedCheckout",
+      "summary": "Create a checkout",
+      "description": "Create a checkout with a SumUp-hosted payment page",
+      "httpMethod": "POST",
+      "path": "/v0.1/checkouts",
+      "sample": "using System;\nusing System.Collections.Generic;\nusing System.Text.Json;\nusing System.Threading.Tasks;\nusing SumUp;\n\npublic static class Program\n{\n    public static async Task Main()\n    {\n        using var client = new SumUpClient();\n        var response = await client.Checkouts.CreateAsync(\n            JsonSerializer.Deserialize\u003cCheckoutCreateRequest\u003e(@\"{\"\"amount\"\":12,\"\"checkout_reference\"\":\"\"b50pr914-6k0e-3091-a592-890010285b3d\"\",\"\"currency\"\":\"\"EUR\"\",\"\"description\"\":\"\"A sample checkout\"\",\"\"hosted_checkout\"\":{\"\"enabled\"\":true},\"\"merchant_code\"\":\"\"MCXXXXXX\"\"}\")!);\n\n        Console.WriteLine(response.StatusCode);\n    }\n}\n"
+    },
+    {
+      "id": "CreateCustomer",
+      "operationId": "CreateCustomer",
+      "summary": "Create a customer",
+      "description": "Creates a new saved customer resource which you can later manipulate and save payment instruments to.",
+      "httpMethod": "POST",
+      "path": "/v0.1/customers",
+      "sample": "using System;\nusing System.Collections.Generic;\nusing System.Text.Json;\nusing System.Threading.Tasks;\nusing SumUp;\n\npublic static class Program\n{\n    public static async Task Main()\n    {\n        using var client = new SumUpClient();\n        var response = await client.Customers.CreateAsync(\n            JsonSerializer.Deserialize\u003cCustomer\u003e(@\"{\"\"customer_id\"\":\"\"831ff8d4cd5958ab5670\"\"}\")!);\n\n        Console.WriteLine(response.StatusCode);\n    }\n}\n"
+    },
+    {
+      "id": "CreateGoReaderCheckout",
+      "operationId": "CreateGoReaderCheckout",
+      "summary": "Create a Go Reader Payment",
+      "description": "Initiates a payment on the SumUp Go terminal identified by the reader ID. Use client_transaction_id as an idempotency key: retrying the request with the same value returns the result of the original payment instead of creating a duplicate.",
+      "httpMethod": "POST",
+      "path": "/v0/merchants/{merchant_code}/readers/{reader_id}/go-checkout",
+      "sample": "using System;\nusing System.Collections.Generic;\nusing System.Text.Json;\nusing System.Threading.Tasks;\nusing SumUp;\n\npublic static class Program\n{\n    public static async Task Main()\n    {\n        using var client = new SumUpClient();\n        var response = await client.Readers.CreateGoCheckoutAsync(\n            \"your-merchant-code\",\n            \"your-reader-id\",\n            JsonSerializer.Deserialize\u003cReaderPaymentRequestParams\u003e(@\"{\"\"client_transaction_id\"\":\"\"19e12390-72cf-4f9f-80b5-b0c8a67fa43f\"\",\"\"tip_amount\"\":100,\"\"total_amount\"\":{\"\"currency\"\":\"\"MXN\"\",\"\"value\"\":1000}}\")!);\n\n        Console.WriteLine(response.StatusCode);\n    }\n}\n"
+    },
+    {
+      "id": "CreateMerchantMember",
+      "operationId": "CreateMerchantMember",
+      "summary": "Create a member",
+      "description": "Create a merchant member.",
+      "httpMethod": "POST",
+      "path": "/v0.1/merchants/{merchant_code}/members",
+      "sample": "using System;\nusing System.Collections.Generic;\nusing System.Text.Json;\nusing System.Threading.Tasks;\nusing SumUp;\n\npublic static class Program\n{\n    public static async Task Main()\n    {\n        using var client = new SumUpClient();\n        var response = await client.Members.CreateAsync(\n            \"your-merchant-code\",\n            JsonSerializer.Deserialize\u003cMembersCreateRequest\u003e(@\"{\"\"email\"\":\"\"karl.berg@example.com\"\",\"\"roles\"\":[\"\"role_employee\"\"]}\")!);\n\n        Console.WriteLine(response.StatusCode);\n    }\n}\n"
+    },
+    {
+      "id": "CreateMerchantRole",
+      "operationId": "CreateMerchantRole",
+      "summary": "Create a role",
+      "description": "Create a custom role for the merchant. Roles are defined by the set of permissions that they grant to the members that they are assigned to.",
+      "httpMethod": "POST",
+      "path": "/v0.1/merchants/{merchant_code}/roles",
+      "sample": "using System;\nusing System.Collections.Generic;\nusing System.Text.Json;\nusing System.Threading.Tasks;\nusing SumUp;\n\npublic static class Program\n{\n    public static async Task Main()\n    {\n        using var client = new SumUpClient();\n        var response = await client.Roles.CreateAsync(\n            \"your-merchant-code\",\n            JsonSerializer.Deserialize\u003cRolesCreateRequest\u003e(@\"{\"\"description\"\":\"\"Manges the shop and the employees.\"\",\"\"metadata\"\":{},\"\"name\"\":\"\"Senior Shop Manager II\"\",\"\"permissions\"\":[\"\"catalog_access\"\",\"\"taxes_access\"\",\"\"members_access\"\"]}\")!);\n\n        Console.WriteLine(response.StatusCode);\n    }\n}\n"
+    },
+    {
+      "id": "CreateReader",
+      "operationId": "CreateReader",
+      "summary": "Create a Reader",
+      "description": "Create a new Reader for the merchant account.",
+      "httpMethod": "POST",
+      "path": "/v0.1/merchants/{merchant_code}/readers",
+      "sample": "using System;\nusing System.Collections.Generic;\nusing System.Text.Json;\nusing System.Threading.Tasks;\nusing SumUp;\n\npublic static class Program\n{\n    public static async Task Main()\n    {\n        using var client = new SumUpClient();\n        var response = await client.Readers.CreateAsync(\n            \"your-merchant-code\",\n            JsonSerializer.Deserialize\u003cReadersCreateRequest\u003e(@\"{\"\"metadata\"\":{},\"\"name\"\":\"\"Frontdesk\"\",\"\"pairing_code\"\":\"\"4WLFDSBF\"\"}\")!);\n\n        Console.WriteLine(response.StatusCode);\n    }\n}\n"
+    },
+    {
+      "id": "CreateReaderCheckout",
+      "operationId": "CreateReaderCheckout",
+      "summary": "Create a Reader Checkout",
+      "description": "Creates a Checkout for a Reader. This process is asynchronous and the actual transaction may take some time to be started on the device. There are some caveats when using this endpoint: * The target device must be online, otherwise checkout won't be accepted * After the checkout is accepted, the system has 60 seconds to start the payment on the target device. During this time, any other checkout for the same device will be rejected. Note: If the target device is a Solo, it must be in version 3.3.24.3 or higher.",
+      "httpMethod": "POST",
+      "path": "/v0.1/merchants/{merchant_code}/readers/{reader_id}/checkout",
+      "sample": "using System;\nusing System.Collections.Generic;\nusing System.Text.Json;\nusing System.Threading.Tasks;\nusing SumUp;\n\npublic static class Program\n{\n    public static async Task Main()\n    {\n        using var client = new SumUpClient();\n        var response = await client.Readers.CreateCheckoutAsync(\n            \"your-merchant-code\",\n            \"your-reader-id\",\n            JsonSerializer.Deserialize\u003cCreateReaderCheckoutRequest\u003e(@\"{\"\"aade\"\":{\"\"provider_id\"\":\"\"123\"\",\"\"signature\"\":\"\"QjcxRDdBNTU1MDcyRTNFRTREMkZEM0Y0NTdBMjkxMTU4MzBFNkNCQTs7MjAyNTExMTIyMTQ3MTM7Nzk2OzEwNDs5MDA7OTAwOzU0ODg5MDM5\"\",\"\"signature_data\"\":\"\"B71D7A555072E3EE4D2FD3F457A29115830E6CBA;;20251112214713;796;104;900;900;54889039\"\"},\"\"affiliate\"\":{\"\"app_id\"\":\"\"com.example.app\"\",\"\"foreign_transaction_id\"\":\"\"123456\"\",\"\"key\"\":\"\"ef7b684a-d6f4-4e93-9b1b-6acdd6564a8e\"\",\"\"tags\"\":{}},\"\"card_type\"\":\"\"debit\"\",\"\"description\"\":\"\"This is a description...\"\",\"\"installments\"\":1,\"\"return_url\"\":\"\"https://webhook.site/e21ddbb0-42c4-4358-a981-f5a95cd86fb5\"\",\"\"tip_rates\"\":[0.05,0.1,0.15],\"\"tip_timeout\"\":60,\"\"total_amount\"\":{\"\"currency\"\":\"\"EUR\"\",\"\"minor_unit\"\":2,\"\"value\"\":5033}}\")!);\n\n        Console.WriteLine(response.StatusCode);\n    }\n}\n"
+    },
+    {
+      "id": "CreateReaderTerminate",
+      "operationId": "CreateReaderTerminate",
+      "summary": "Terminate a Reader Checkout",
+      "description": "Terminate a Reader Checkout stops the current transaction on the target device. This process is asynchronous and the actual termination may take some time to be performed on the device. There are some caveats when using this endpoint: * The target device must be online, otherwise terminate won't be accepted * The action will succeed only if the device is waiting for cardholder action: e.g: waiting for card, waiting for PIN, etc. * There is no confirmation of the termination. If a transaction is successfully terminated and return_url was provided on Checkout, the transaction status will be sent as failed to the provided URL. Note: If the target device is a Solo, it must be in version 3.3.28.0 or higher.",
+      "httpMethod": "POST",
+      "path": "/v0.1/merchants/{merchant_code}/readers/{reader_id}/terminate",
+      "sample": "using System;\nusing System.Collections.Generic;\nusing System.Text.Json;\nusing System.Threading.Tasks;\nusing SumUp;\n\npublic static class Program\n{\n    public static async Task Main()\n    {\n        using var client = new SumUpClient();\n        var response = await client.Readers.TerminateCheckoutAsync(\n            \"your-merchant-code\",\n            \"your-reader-id\");\n\n        Console.WriteLine(response.StatusCode);\n    }\n}\n"
+    },
+    {
+      "id": "DeactivateCheckout",
+      "operationId": "DeactivateCheckout",
+      "summary": "Deactivate a checkout",
+      "description": "Deactivates an identified checkout resource. If the checkout has already been processed it can not be deactivated.",
+      "httpMethod": "DELETE",
+      "path": "/v0.1/checkouts/{checkout_id}",
+      "sample": "using System;\nusing System.Collections.Generic;\nusing System.Text.Json;\nusing System.Threading.Tasks;\nusing SumUp;\n\npublic static class Program\n{\n    public static async Task Main()\n    {\n        using var client = new SumUpClient();\n        var response = await client.Checkouts.DeactivateAsync(\n            \"example-id\");\n\n        Console.WriteLine(response.StatusCode);\n    }\n}\n"
+    },
+    {
+      "id": "DeactivatePaymentInstrument",
+      "operationId": "DeactivatePaymentInstrument",
+      "summary": "Deactivate a payment instrument",
+      "description": "Deactivates an identified card payment instrument resource for a customer.",
+      "httpMethod": "DELETE",
+      "path": "/v0.1/customers/{customer_id}/payment-instruments/{token}",
+      "sample": "using System;\nusing System.Collections.Generic;\nusing System.Text.Json;\nusing System.Threading.Tasks;\nusing SumUp;\n\npublic static class Program\n{\n    public static async Task Main()\n    {\n        using var client = new SumUpClient();\n        var response = await client.Customers.DeactivatePaymentInstrumentAsync(\n            \"example-id\",\n            \"example\");\n\n        Console.WriteLine(response.StatusCode);\n    }\n}\n"
+    },
+    {
+      "id": "DeleteMerchantMember",
+      "operationId": "DeleteMerchantMember",
+      "summary": "Delete a member",
+      "description": "Deletes a merchant member.",
+      "httpMethod": "DELETE",
+      "path": "/v0.1/merchants/{merchant_code}/members/{member_id}",
+      "sample": "using System;\nusing System.Collections.Generic;\nusing System.Text.Json;\nusing System.Threading.Tasks;\nusing SumUp;\n\npublic static class Program\n{\n    public static async Task Main()\n    {\n        using var client = new SumUpClient();\n        var response = await client.Members.DeleteAsync(\n            \"your-merchant-code\",\n            \"example-id\");\n\n        Console.WriteLine(response.StatusCode);\n    }\n}\n"
+    },
+    {
+      "id": "DeleteMerchantRole",
+      "operationId": "DeleteMerchantRole",
+      "summary": "Delete a role",
+      "description": "Delete a custom role.",
+      "httpMethod": "DELETE",
+      "path": "/v0.1/merchants/{merchant_code}/roles/{role_id}",
+      "sample": "using System;\nusing System.Collections.Generic;\nusing System.Text.Json;\nusing System.Threading.Tasks;\nusing SumUp;\n\npublic static class Program\n{\n    public static async Task Main()\n    {\n        using var client = new SumUpClient();\n        var response = await client.Roles.DeleteAsync(\n            \"your-merchant-code\",\n            \"example-id\");\n\n        Console.WriteLine(response.StatusCode);\n    }\n}\n"
+    },
+    {
+      "id": "DeleteReader",
+      "operationId": "DeleteReader",
+      "summary": "Delete a reader",
+      "description": "Delete a reader.",
+      "httpMethod": "DELETE",
+      "path": "/v0.1/merchants/{merchant_code}/readers/{reader_id}",
+      "sample": "using System;\nusing System.Collections.Generic;\nusing System.Text.Json;\nusing System.Threading.Tasks;\nusing SumUp;\n\npublic static class Program\n{\n    public static async Task Main()\n    {\n        using var client = new SumUpClient();\n        var response = await client.Readers.DeleteAsync(\n            \"your-merchant-code\",\n            \"your-reader-id\");\n\n        Console.WriteLine(response.StatusCode);\n    }\n}\n"
+    },
+    {
+      "id": "GetCheckout",
+      "operationId": "GetCheckout",
+      "summary": "Retrieve a checkout",
+      "description": "Retrieves an identified checkout resource. Use this request after processing a checkout to confirm its status and inform the end user respectively.",
+      "httpMethod": "GET",
+      "path": "/v0.1/checkouts/{checkout_id}",
+      "sample": "using System;\nusing System.Collections.Generic;\nusing System.Text.Json;\nusing System.Threading.Tasks;\nusing SumUp;\n\npublic static class Program\n{\n    public static async Task Main()\n    {\n        using var client = new SumUpClient();\n        var response = await client.Checkouts.GetAsync(\n            \"example-id\");\n\n        Console.WriteLine(response.StatusCode);\n    }\n}\n"
+    },
+    {
+      "id": "GetCustomer",
+      "operationId": "GetCustomer",
+      "summary": "Retrieve a customer",
+      "description": "Retrieves an identified saved customer resource through the unique customer_id parameter, generated upon customer creation.",
+      "httpMethod": "GET",
+      "path": "/v0.1/customers/{customer_id}",
+      "sample": "using System;\nusing System.Collections.Generic;\nusing System.Text.Json;\nusing System.Threading.Tasks;\nusing SumUp;\n\npublic static class Program\n{\n    public static async Task Main()\n    {\n        using var client = new SumUpClient();\n        var response = await client.Customers.GetAsync(\n            \"example-id\");\n\n        Console.WriteLine(response.StatusCode);\n    }\n}\n"
+    },
+    {
+      "id": "GetMerchant",
+      "operationId": "GetMerchant",
+      "summary": "Get Merchant",
+      "description": "Returns a Merchant for a valid Merchant code.",
+      "httpMethod": "GET",
+      "path": "/v1/merchants/{merchant_code}",
+      "sample": "using System;\nusing System.Collections.Generic;\nusing System.Text.Json;\nusing System.Threading.Tasks;\nusing SumUp;\n\npublic static class Program\n{\n    public static async Task Main()\n    {\n        using var client = new SumUpClient();\n        var response = await client.Merchants.GetAsync(\n            \"your-merchant-code\",\n            new MerchantsGetOptions\n            {\n                Version = \"example\",\n            });\n\n        Console.WriteLine(response.StatusCode);\n    }\n}\n"
+    },
+    {
+      "id": "GetMerchantMember",
+      "operationId": "GetMerchantMember",
+      "summary": "Retrieve a member",
+      "description": "Retrieve a merchant member.",
+      "httpMethod": "GET",
+      "path": "/v0.1/merchants/{merchant_code}/members/{member_id}",
+      "sample": "using System;\nusing System.Collections.Generic;\nusing System.Text.Json;\nusing System.Threading.Tasks;\nusing SumUp;\n\npublic static class Program\n{\n    public static async Task Main()\n    {\n        using var client = new SumUpClient();\n        var response = await client.Members.GetAsync(\n            \"your-merchant-code\",\n            \"example-id\");\n\n        Console.WriteLine(response.StatusCode);\n    }\n}\n"
+    },
+    {
+      "id": "GetMerchantRole",
+      "operationId": "GetMerchantRole",
+      "summary": "Retrieve a role",
+      "description": "Retrieve a custom role by ID.",
+      "httpMethod": "GET",
+      "path": "/v0.1/merchants/{merchant_code}/roles/{role_id}",
+      "sample": "using System;\nusing System.Collections.Generic;\nusing System.Text.Json;\nusing System.Threading.Tasks;\nusing SumUp;\n\npublic static class Program\n{\n    public static async Task Main()\n    {\n        using var client = new SumUpClient();\n        var response = await client.Roles.GetAsync(\n            \"your-merchant-code\",\n            \"example-id\");\n\n        Console.WriteLine(response.StatusCode);\n    }\n}\n"
+    },
+    {
+      "id": "GetPaymentMethods",
+      "operationId": "GetPaymentMethods",
+      "summary": "Get available payment methods",
+      "description": "Get payment methods available for the given merchant to use with a checkout.",
+      "httpMethod": "GET",
+      "path": "/v0.1/merchants/{merchant_code}/payment-methods",
+      "sample": "using System;\nusing System.Collections.Generic;\nusing System.Text.Json;\nusing System.Threading.Tasks;\nusing SumUp;\n\npublic static class Program\n{\n    public static async Task Main()\n    {\n        using var client = new SumUpClient();\n        var response = await client.Checkouts.ListAvailablePaymentMethodsAsync(\n            \"your-merchant-code\",\n            new CheckoutsListAvailablePaymentMethodsOptions\n            {\n                Amount = 10.00m,\n                Currency = \"example\",\n            });\n\n        Console.WriteLine(response.StatusCode);\n    }\n}\n"
+    },
+    {
+      "id": "GetPerson",
+      "operationId": "GetPerson",
+      "summary": "Get Person",
+      "description": "Returns a single Person related to a Merchant.",
+      "httpMethod": "GET",
+      "path": "/v1/merchants/{merchant_code}/persons/{person_id}",
+      "sample": "using System;\nusing System.Collections.Generic;\nusing System.Text.Json;\nusing System.Threading.Tasks;\nusing SumUp;\n\npublic static class Program\n{\n    public static async Task Main()\n    {\n        using var client = new SumUpClient();\n        var response = await client.Merchants.GetPersonAsync(\n            \"your-merchant-code\",\n            \"example-id\",\n            new MerchantsGetPersonOptions\n            {\n                Version = \"example\",\n            });\n\n        Console.WriteLine(response.StatusCode);\n    }\n}\n"
+    },
+    {
+      "id": "GetReader",
+      "operationId": "GetReader",
+      "summary": "Retrieve a Reader",
+      "description": "Retrieve a Reader.",
+      "httpMethod": "GET",
+      "path": "/v0.1/merchants/{merchant_code}/readers/{reader_id}",
+      "sample": "using System;\nusing System.Collections.Generic;\nusing System.Text.Json;\nusing System.Threading.Tasks;\nusing SumUp;\n\npublic static class Program\n{\n    public static async Task Main()\n    {\n        using var client = new SumUpClient();\n        var response = await client.Readers.GetAsync(\n            \"your-merchant-code\",\n            \"your-reader-id\",\n            new ReadersGetOptions\n            {\n                IfModifiedSince = \"example\",\n            });\n\n        Console.WriteLine(response.StatusCode);\n    }\n}\n"
+    },
+    {
+      "id": "GetReaderCheckout",
+      "operationId": "GetReaderCheckout",
+      "summary": "Get a Reader Checkout",
+      "description": "Get a Checkout for a Reader.",
+      "httpMethod": "GET",
+      "path": "/v0.1/merchants/{merchant_code}/readers/{reader_id}/checkout/{checkout_id}",
+      "sample": "using System;\nusing System.Collections.Generic;\nusing System.Text.Json;\nusing System.Threading.Tasks;\nusing SumUp;\n\npublic static class Program\n{\n    public static async Task Main()\n    {\n        using var client = new SumUpClient();\n        var response = await client.Readers.GetCheckoutAsync(\n            \"your-merchant-code\",\n            \"your-reader-id\",\n            \"example-id\");\n\n        Console.WriteLine(response.StatusCode);\n    }\n}\n"
+    },
+    {
+      "id": "GetReaderStatus",
+      "operationId": "GetReaderStatus",
+      "summary": "Get a Reader Status",
+      "description": "Provides the last known status for a Reader. This endpoint allows you to retrieve updates from the connected card reader, including the current screen being displayed during the payment process and the device status (battery level, connectivity, and update state). Supported States * IDLE – Reader ready for next transaction * SELECTING_TIP – Waiting for tip input * WAITING_FOR_CARD – Awaiting card insert/tap * WAITING_FOR_PIN – Waiting for PIN entry * WAITING_FOR_SIGNATURE – Waiting for customer signature * UPDATING_FIRMWARE – Firmware update in progress Device Status * ONLINE – Device connected and operational * OFFLINE – Device disconnected (last state persisted) Note: If the target device is a Solo, it must be in version 3.3.39.0 or higher.",
+      "httpMethod": "GET",
+      "path": "/v0.1/merchants/{merchant_code}/readers/{reader_id}/status",
+      "sample": "using System;\nusing System.Collections.Generic;\nusing System.Text.Json;\nusing System.Threading.Tasks;\nusing SumUp;\n\npublic static class Program\n{\n    public static async Task Main()\n    {\n        using var client = new SumUpClient();\n        var response = await client.Readers.GetStatusAsync(\n            \"your-merchant-code\",\n            \"your-reader-id\");\n\n        Console.WriteLine(response.StatusCode);\n    }\n}\n"
+    },
+    {
+      "id": "GetReceipt",
+      "operationId": "GetReceipt",
+      "summary": "Retrieve receipt details",
+      "description": "Retrieves receipt specific data for a transaction.",
+      "httpMethod": "GET",
+      "path": "/v1.1/receipts/{transaction_id}",
+      "sample": "using System;\nusing System.Collections.Generic;\nusing System.Text.Json;\nusing System.Threading.Tasks;\nusing SumUp;\n\npublic static class Program\n{\n    public static async Task Main()\n    {\n        using var client = new SumUpClient();\n        var response = await client.Receipts.GetAsync(\n            \"example-id\",\n            new ReceiptsGetOptions\n            {\n                Mid = \"example-id\",\n                TxEventId = 10,\n            });\n\n        Console.WriteLine(response.StatusCode);\n    }\n}\n"
+    },
+    {
+      "id": "GetTransactionV2.1",
+      "operationId": "GetTransactionV2.1",
+      "summary": "Retrieve a transaction",
+      "description": "Retrieves the full details of an identified transaction. The transaction resource is identified by a query parameter and *one* of following parameters is required: - id - transaction_code - foreign_transaction_id - client_transaction_id",
+      "httpMethod": "GET",
+      "path": "/v2.1/merchants/{merchant_code}/transactions",
+      "sample": "using System;\nusing System.Collections.Generic;\nusing System.Text.Json;\nusing System.Threading.Tasks;\nusing SumUp;\n\npublic static class Program\n{\n    public static async Task Main()\n    {\n        using var client = new SumUpClient();\n        var response = await client.Transactions.GetAsync(\n            \"your-merchant-code\",\n            new TransactionsGetOptions\n            {\n                Id = \"example-id\",\n                TransactionCode = \"example\",\n                ForeignTransactionId = \"example-id\",\n                ClientTransactionId = \"example-id\",\n            });\n\n        Console.WriteLine(response.StatusCode);\n    }\n}\n"
+    },
+    {
+      "id": "ListCheckouts",
+      "operationId": "ListCheckouts",
+      "summary": "List checkouts",
+      "description": "Lists created checkout resources according to the applied checkout_reference.",
+      "httpMethod": "GET",
+      "path": "/v0.1/checkouts",
+      "sample": "using System;\nusing System.Collections.Generic;\nusing System.Text.Json;\nusing System.Threading.Tasks;\nusing SumUp;\n\npublic static class Program\n{\n    public static async Task Main()\n    {\n        using var client = new SumUpClient();\n        var response = await client.Checkouts.ListAsync(\n            new CheckoutsListOptions\n            {\n                CheckoutReference = \"example\",\n            });\n\n        Console.WriteLine(response.StatusCode);\n    }\n}\n"
+    },
+    {
+      "id": "ListMemberships",
+      "operationId": "ListMemberships",
+      "summary": "List memberships",
+      "description": "List memberships of the current user.",
+      "httpMethod": "GET",
+      "path": "/v0.1/memberships",
+      "sample": "using System;\nusing System.Collections.Generic;\nusing System.Text.Json;\nusing System.Threading.Tasks;\nusing SumUp;\n\npublic static class Program\n{\n    public static async Task Main()\n    {\n        using var client = new SumUpClient();\n        var response = await client.Memberships.ListAsync(\n            new MembershipsListOptions\n            {\n                Offset = 10,\n                Limit = 10,\n                Kind = \"example\",\n                Status = MembershipStatus.Accepted,\n                ResourceType = \"example\",\n                ResourceAttributesSandbox = true,\n                ResourceName = \"example\",\n                ResourceParentId = OptionalQuery\u003cstring\u003e.From(\"example-id\"),\n                ResourceParentType = OptionalQuery\u003cstring\u003e.From(\"example\"),\n                Roles = Array.Empty\u003cstring\u003e(),\n            });\n\n        Console.WriteLine(response.StatusCode);\n    }\n}\n"
+    },
+    {
+      "id": "ListMerchantMembers",
+      "operationId": "ListMerchantMembers",
+      "summary": "List members",
+      "description": "Lists merchant members.",
+      "httpMethod": "GET",
+      "path": "/v0.1/merchants/{merchant_code}/members",
+      "sample": "using System;\nusing System.Collections.Generic;\nusing System.Text.Json;\nusing System.Threading.Tasks;\nusing SumUp;\n\npublic static class Program\n{\n    public static async Task Main()\n    {\n        using var client = new SumUpClient();\n        var response = await client.Members.ListAsync(\n            \"your-merchant-code\",\n            new MembersListOptions\n            {\n                Offset = 10,\n                Limit = 10,\n                Scroll = true,\n                Email = \"merchant@example.com\",\n                UserId = Guid.Parse(\"00000000-0000-0000-0000-000000000001\"),\n                Status = MembershipStatus.Accepted,\n                Roles = Array.Empty\u003cstring\u003e(),\n            });\n\n        Console.WriteLine(response.StatusCode);\n    }\n}\n"
+    },
+    {
+      "id": "ListMerchantRoles",
+      "operationId": "ListMerchantRoles",
+      "summary": "List roles",
+      "description": "List merchant's custom roles.",
+      "httpMethod": "GET",
+      "path": "/v0.1/merchants/{merchant_code}/roles",
+      "sample": "using System;\nusing System.Collections.Generic;\nusing System.Text.Json;\nusing System.Threading.Tasks;\nusing SumUp;\n\npublic static class Program\n{\n    public static async Task Main()\n    {\n        using var client = new SumUpClient();\n        var response = await client.Roles.ListAsync(\n            \"your-merchant-code\");\n\n        Console.WriteLine(response.StatusCode);\n    }\n}\n"
+    },
+    {
+      "id": "ListPaymentInstruments",
+      "operationId": "ListPaymentInstruments",
+      "summary": "List payment instruments",
+      "description": "Lists all payment instrument resources that are saved for an identified customer.",
+      "httpMethod": "GET",
+      "path": "/v0.1/customers/{customer_id}/payment-instruments",
+      "sample": "using System;\nusing System.Collections.Generic;\nusing System.Text.Json;\nusing System.Threading.Tasks;\nusing SumUp;\n\npublic static class Program\n{\n    public static async Task Main()\n    {\n        using var client = new SumUpClient();\n        var response = await client.Customers.ListPaymentInstrumentsAsync(\n            \"example-id\");\n\n        Console.WriteLine(response.StatusCode);\n    }\n}\n"
+    },
+    {
+      "id": "ListPayoutsV1",
+      "operationId": "ListPayoutsV1",
+      "summary": "List payouts",
+      "description": "Lists payout and payout-deduction records for the specified merchant account within the requested date range. The response can include: - regular payouts (type = PAYOUT) - deduction records for refunds, chargebacks, direct debit returns, or balance adjustments Results are sorted by payout date in the requested order.",
+      "httpMethod": "GET",
+      "path": "/v1.0/merchants/{merchant_code}/payouts",
+      "sample": "using System;\nusing System.Collections.Generic;\nusing System.Text.Json;\nusing System.Threading.Tasks;\nusing SumUp;\n\npublic static class Program\n{\n    public static async Task Main()\n    {\n        using var client = new SumUpClient();\n        var response = await client.Payouts.ListAsync(\n            \"your-merchant-code\",\n            new PayoutsListOptions\n            {\n                StartDate = DateOnly.Parse(\"2025-01-01\"),\n                EndDate = DateOnly.Parse(\"2025-01-01\"),\n                Format = \"example\",\n                Limit = 10,\n                Order = \"example\",\n            });\n\n        Console.WriteLine(response.StatusCode);\n    }\n}\n"
+    },
+    {
+      "id": "ListPersons",
+      "operationId": "ListPersons",
+      "summary": "List Persons",
+      "description": "Returns the Persons related to a Merchant.",
+      "httpMethod": "GET",
+      "path": "/v1/merchants/{merchant_code}/persons",
+      "sample": "using System;\nusing System.Collections.Generic;\nusing System.Text.Json;\nusing System.Threading.Tasks;\nusing SumUp;\n\npublic static class Program\n{\n    public static async Task Main()\n    {\n        using var client = new SumUpClient();\n        var response = await client.Merchants.ListPersonsAsync(\n            \"your-merchant-code\",\n            new MerchantsListPersonsOptions\n            {\n                Version = \"example\",\n            });\n\n        Console.WriteLine(response.StatusCode);\n    }\n}\n"
+    },
+    {
+      "id": "ListReaders",
+      "operationId": "ListReaders",
+      "summary": "List Readers",
+      "description": "List all readers of the merchant.",
+      "httpMethod": "GET",
+      "path": "/v0.1/merchants/{merchant_code}/readers",
+      "sample": "using System;\nusing System.Collections.Generic;\nusing System.Text.Json;\nusing System.Threading.Tasks;\nusing SumUp;\n\npublic static class Program\n{\n    public static async Task Main()\n    {\n        using var client = new SumUpClient();\n        var response = await client.Readers.ListAsync(\n            \"your-merchant-code\");\n\n        Console.WriteLine(response.StatusCode);\n    }\n}\n"
+    },
+    {
+      "id": "ListTransactionsV2.1",
+      "operationId": "ListTransactionsV2.1",
+      "summary": "List transactions",
+      "description": "Lists detailed history of all transactions associated with the merchant profile.",
+      "httpMethod": "GET",
+      "path": "/v2.1/merchants/{merchant_code}/transactions/history",
+      "sample": "using System;\nusing System.Collections.Generic;\nusing System.Text.Json;\nusing System.Threading.Tasks;\nusing SumUp;\n\npublic static class Program\n{\n    public static async Task Main()\n    {\n        using var client = new SumUpClient();\n        var response = await client.Transactions.ListAsync(\n            \"your-merchant-code\",\n            new TransactionsListOptions\n            {\n                TransactionCode = \"example\",\n                Order = \"example\",\n                Limit = 10,\n                Users = Array.Empty\u003cstring\u003e(),\n                Statuses = Array.Empty\u003cstring\u003e(),\n                PaymentTypes = Array.Empty\u003cPaymentType\u003e(),\n                EntryModes = Array.Empty\u003cEntryMode\u003e(),\n                Types = Array.Empty\u003cstring\u003e(),\n                ChangesSince = DateTimeOffset.Parse(\"2025-01-01T12:00:00Z\"),\n                NewestTime = DateTimeOffset.Parse(\"2025-01-01T12:00:00Z\"),\n                NewestRef = \"example\",\n                OldestTime = DateTimeOffset.Parse(\"2025-01-01T12:00:00Z\"),\n                OldestRef = \"example\",\n            });\n\n        Console.WriteLine(response.StatusCode);\n    }\n}\n"
+    },
+    {
+      "id": "ProcessCheckout.ProcessBancontact",
+      "operationId": "ProcessCheckout",
+      "example": "ProcessBancontact",
+      "summary": "Process a checkout",
+      "description": "Process a checkout with Bancontact",
+      "httpMethod": "PUT",
+      "path": "/v0.1/checkouts/{checkout_id}",
+      "sample": "using System;\nusing System.Collections.Generic;\nusing System.Text.Json;\nusing System.Threading.Tasks;\nusing SumUp;\n\npublic static class Program\n{\n    public static async Task Main()\n    {\n        using var client = new SumUpClient();\n        var response = await client.Checkouts.ProcessAsync(\n            \"example-id\",\n            JsonSerializer.Deserialize\u003cProcessCheckout\u003e(@\"{\"\"payment_type\"\":\"\"bancontact\"\",\"\"personal_details\"\":{\"\"address\"\":{\"\"country\"\":\"\"BE\"\"},\"\"email\"\":\"\"user@example.com\"\",\"\"first_name\"\":\"\"John\"\",\"\"last_name\"\":\"\"Doe\"\"}}\")!);\n\n        Console.WriteLine(response.StatusCode);\n    }\n}\n"
+    },
+    {
+      "id": "ProcessCheckout.ProcessBoleto",
+      "operationId": "ProcessCheckout",
+      "example": "ProcessBoleto",
+      "summary": "Process a checkout",
+      "description": "Process a checkout with Boleto",
+      "httpMethod": "PUT",
+      "path": "/v0.1/checkouts/{checkout_id}",
+      "sample": "using System;\nusing System.Collections.Generic;\nusing System.Text.Json;\nusing System.Threading.Tasks;\nusing SumUp;\n\npublic static class Program\n{\n    public static async Task Main()\n    {\n        using var client = new SumUpClient();\n        var response = await client.Checkouts.ProcessAsync(\n            \"example-id\",\n            JsonSerializer.Deserialize\u003cProcessCheckout\u003e(@\"{\"\"payment_type\"\":\"\"boleto\"\",\"\"personal_details\"\":{\"\"address\"\":{\"\"city\"\":\"\"São Paulo\"\",\"\"country\"\":\"\"BR\"\",\"\"line1\"\":\"\"Rua Gilberto Sabino, 215\"\",\"\"postal_code\"\":\"\"05425-020\"\",\"\"state\"\":\"\"SP\"\"},\"\"email\"\":\"\"user@example.com\"\",\"\"first_name\"\":\"\"John\"\",\"\"last_name\"\":\"\"Doe\"\",\"\"tax_id\"\":\"\"423.378.593-47\"\"}}\")!);\n\n        Console.WriteLine(response.StatusCode);\n    }\n}\n"
+    },
+    {
+      "id": "ProcessCheckout.ProcessCard",
+      "operationId": "ProcessCheckout",
+      "example": "ProcessCard",
+      "summary": "Process a checkout",
+      "description": "Process a checkout with a card",
+      "httpMethod": "PUT",
+      "path": "/v0.1/checkouts/{checkout_id}",
+      "sample": "using System;\nusing System.Collections.Generic;\nusing System.Text.Json;\nusing System.Threading.Tasks;\nusing SumUp;\n\npublic static class Program\n{\n    public static async Task Main()\n    {\n        using var client = new SumUpClient();\n        var response = await client.Checkouts.ProcessAsync(\n            \"example-id\",\n            JsonSerializer.Deserialize\u003cProcessCheckout\u003e(@\"{\"\"card\"\":{\"\"cvv\"\":\"\"123\"\",\"\"expiry_month\"\":\"\"01\"\",\"\"expiry_year\"\":\"\"2023\"\",\"\"name\"\":\"\"John Doe\"\",\"\"number\"\":\"\"1234567890123456\"\",\"\"type\"\":\"\"VISA\"\",\"\"zip_code\"\":\"\"12345\"\"},\"\"installments\"\":1,\"\"mandate\"\":{\"\"type\"\":\"\"recurrent\"\",\"\"user_agent\"\":\"\"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.104 Safari/537.36\"\",\"\"user_ip\"\":\"\"172.217.169.174\"\"},\"\"payment_type\"\":\"\"card\"\"}\")!);\n\n        Console.WriteLine(response.StatusCode);\n    }\n}\n"
+    },
+    {
+      "id": "ProcessCheckout.ProcessToken",
+      "operationId": "ProcessCheckout",
+      "example": "ProcessToken",
+      "summary": "Process a checkout",
+      "description": "Process a checkout with a token",
+      "httpMethod": "PUT",
+      "path": "/v0.1/checkouts/{checkout_id}",
+      "sample": "using System;\nusing System.Collections.Generic;\nusing System.Text.Json;\nusing System.Threading.Tasks;\nusing SumUp;\n\npublic static class Program\n{\n    public static async Task Main()\n    {\n        using var client = new SumUpClient();\n        var response = await client.Checkouts.ProcessAsync(\n            \"example-id\",\n            JsonSerializer.Deserialize\u003cProcessCheckout\u003e(@\"{\"\"customer_id\"\":\"\"MEDKHDTI\"\",\"\"installments\"\":1,\"\"payment_type\"\":\"\"card\"\",\"\"token\"\":\"\"ba85dfee-c3cf-48a6-84f5-d7d761fbba50\"\"}\")!);\n\n        Console.WriteLine(response.StatusCode);\n    }\n}\n"
+    },
+    {
+      "id": "ProcessCheckout.ProcessiDeal",
+      "operationId": "ProcessCheckout",
+      "example": "ProcessiDeal",
+      "summary": "Process a checkout",
+      "description": "Process a checkout with iDeal",
+      "httpMethod": "PUT",
+      "path": "/v0.1/checkouts/{checkout_id}",
+      "sample": "using System;\nusing System.Collections.Generic;\nusing System.Text.Json;\nusing System.Threading.Tasks;\nusing SumUp;\n\npublic static class Program\n{\n    public static async Task Main()\n    {\n        using var client = new SumUpClient();\n        var response = await client.Checkouts.ProcessAsync(\n            \"example-id\",\n            JsonSerializer.Deserialize\u003cProcessCheckout\u003e(@\"{\"\"payment_type\"\":\"\"ideal\"\",\"\"personal_details\"\":{\"\"address\"\":{\"\"country\"\":\"\"NL\"\"},\"\"email\"\":\"\"user@example.com\"\",\"\"first_name\"\":\"\"John\"\",\"\"last_name\"\":\"\"Doe\"\"}}\")!);\n\n        Console.WriteLine(response.StatusCode);\n    }\n}\n"
+    },
+    {
+      "id": "RefundTransaction",
+      "operationId": "RefundTransaction",
+      "summary": "Refund a transaction",
+      "description": "Refunds an identified transaction either in full or partially.",
+      "httpMethod": "POST",
+      "path": "/v1.0/merchants/{merchant_code}/payments/{transaction_id}/refunds",
+      "sample": "using System;\nusing System.Collections.Generic;\nusing System.Text.Json;\nusing System.Threading.Tasks;\nusing SumUp;\n\npublic static class Program\n{\n    public static async Task Main()\n    {\n        using var client = new SumUpClient();\n        var response = await client.Transactions.RefundAsync(\n            \"your-merchant-code\",\n            \"example-id\",\n            JsonSerializer.Deserialize\u003cTransactionsRefundRequest\u003e(@\"{\"\"amount\"\":5}\")!);\n\n        Console.WriteLine(response.StatusCode);\n    }\n}\n"
+    },
+    {
+      "id": "UpdateCheckout",
+      "operationId": "UpdateCheckout",
+      "summary": "Update a checkout",
+      "description": "Updates an identified checkout resource.",
+      "httpMethod": "PATCH",
+      "path": "/v0.1/checkouts/{checkout_id}",
+      "sample": "using System;\nusing System.Collections.Generic;\nusing System.Text.Json;\nusing System.Threading.Tasks;\nusing SumUp;\n\npublic static class Program\n{\n    public static async Task Main()\n    {\n        using var client = new SumUpClient();\n        var response = await client.Checkouts.UpdateAsync(\n            \"example-id\",\n            JsonSerializer.Deserialize\u003cCheckoutUpdateRequest\u003e(@\"{\"\"amount\"\":12.5,\"\"checkout_reference\"\":\"\"f00a8f74-b05d-4605-bd73-2a901bae5802\"\",\"\"currency\"\":\"\"EUR\"\",\"\"customer_id\"\":\"\"831ff8d4cd5958ab5670\"\",\"\"description\"\":\"\"Updated purchase\"\",\"\"valid_until\"\":\"\"2020-02-29T10:56:56+00:00\"\"}\")!);\n\n        Console.WriteLine(response.StatusCode);\n    }\n}\n"
+    },
+    {
+      "id": "UpdateCustomer",
+      "operationId": "UpdateCustomer",
+      "summary": "Update a customer",
+      "description": "Updates an identified saved customer resource's personal details. The request only overwrites the parameters included in the request, all other parameters will remain with their initially assigned values.",
+      "httpMethod": "PUT",
+      "path": "/v0.1/customers/{customer_id}",
+      "sample": "using System;\nusing System.Collections.Generic;\nusing System.Text.Json;\nusing System.Threading.Tasks;\nusing SumUp;\n\npublic static class Program\n{\n    public static async Task Main()\n    {\n        using var client = new SumUpClient();\n        var response = await client.Customers.UpdateAsync(\n            \"example-id\",\n            JsonSerializer.Deserialize\u003cCustomersUpdateRequest\u003e(@\"{}\")!);\n\n        Console.WriteLine(response.StatusCode);\n    }\n}\n"
+    },
+    {
+      "id": "UpdateMerchantMember",
+      "operationId": "UpdateMerchantMember",
+      "summary": "Update a member",
+      "description": "Update the merchant member.",
+      "httpMethod": "PUT",
+      "path": "/v0.1/merchants/{merchant_code}/members/{member_id}",
+      "sample": "using System;\nusing System.Collections.Generic;\nusing System.Text.Json;\nusing System.Threading.Tasks;\nusing SumUp;\n\npublic static class Program\n{\n    public static async Task Main()\n    {\n        using var client = new SumUpClient();\n        var response = await client.Members.UpdateAsync(\n            \"your-merchant-code\",\n            \"example-id\",\n            JsonSerializer.Deserialize\u003cMembersUpdateRequest\u003e(@\"{\"\"Update managed user\"\":{\"\"user\"\":{\"\"nickname\"\":\"\"New Employee Name\"\"}},\"\"Update member's role\"\":{\"\"roles\"\":[\"\"role_manager\"\"]}}\")!);\n\n        Console.WriteLine(response.StatusCode);\n    }\n}\n"
+    },
+    {
+      "id": "UpdateMerchantRole",
+      "operationId": "UpdateMerchantRole",
+      "summary": "Update a role",
+      "description": "Update a custom role.",
+      "httpMethod": "PATCH",
+      "path": "/v0.1/merchants/{merchant_code}/roles/{role_id}",
+      "sample": "using System;\nusing System.Collections.Generic;\nusing System.Text.Json;\nusing System.Threading.Tasks;\nusing SumUp;\n\npublic static class Program\n{\n    public static async Task Main()\n    {\n        using var client = new SumUpClient();\n        var response = await client.Roles.UpdateAsync(\n            \"your-merchant-code\",\n            \"example-id\",\n            JsonSerializer.Deserialize\u003cRolesUpdateRequest\u003e(@\"{\"\"name\"\":\"\"Senior Shop Manager III\"\",\"\"permissions\"\":[\"\"catalog_edit\"\",\"\"taxes_access\"\",\"\"members_edit\"\"]}\")!);\n\n        Console.WriteLine(response.StatusCode);\n    }\n}\n"
+    },
+    {
+      "id": "UpdateReader",
+      "operationId": "UpdateReader",
+      "summary": "Update a Reader",
+      "description": "Update a Reader.",
+      "httpMethod": "PATCH",
+      "path": "/v0.1/merchants/{merchant_code}/readers/{reader_id}",
+      "sample": "using System;\nusing System.Collections.Generic;\nusing System.Text.Json;\nusing System.Threading.Tasks;\nusing SumUp;\n\npublic static class Program\n{\n    public static async Task Main()\n    {\n        using var client = new SumUpClient();\n        var response = await client.Readers.UpdateAsync(\n            \"your-merchant-code\",\n            \"your-reader-id\",\n            JsonSerializer.Deserialize\u003cReadersUpdateRequest\u003e(@\"{\"\"metadata\"\":{},\"\"name\"\":\"\"Frontdesk\"\"}\")!);\n\n        Console.WriteLine(response.StatusCode);\n    }\n}\n"
+    }
+  ]
+}
