@@ -57,15 +57,13 @@ const sectionAttrs = (id: ApiTopSection) =>
         />
       </div>
     </div>
-    {
-      doc.servers && (
-        <div class="servers api-docs-codeblock-stack">
-          {doc.servers.map((server) => (
-            <CodeBlock title="Base URL" language="bash" code={server.url} />
-          ))}
-        </div>
-      )
-    }
+    {doc.servers && (
+      <div class="servers api-docs-codeblock-stack">
+        {doc.servers.map((server) => (
+          <CodeBlock title="Base URL" language="bash" code={server.url} />
+        ))}
+      </div>
+    )}
   </LRGrid>
 </section>
 
@@ -287,7 +285,10 @@ let client = Client::default().with_authorization("sup_sk_MvxmLOl0...");`,
 <section id="errors" {...sectionAttrs("errors")}>
   <LRGrid>
     <MarkdownContent class="info">
-      <SectionHeading as="h2" id="errors-heading"> Errors </SectionHeading>
+      <SectionHeading as="h2" id="errors-heading">
+        {" "}
+        Errors{" "}
+      </SectionHeading>
       <p>
         Newer APIs use{" "}
         <a
@@ -305,8 +306,8 @@ let client = Client::default().with_authorization("sup_sk_MvxmLOl0...");`,
       </p>
       <p>
         If you do not use our SDKs, send the header{" "}
-        <code>Accept: application/problem+json, application/json</code> to ensure
-        you receive the newer Problem Details error format.
+        <code>Accept: application/problem+json, application/json</code> to
+        ensure you receive the newer Problem Details error format.
       </p>
       <div class="not-content">
         <Table
@@ -390,17 +391,15 @@ let client = Client::default().with_authorization("sup_sk_MvxmLOl0...");`,
           tableLayout="auto"
         />
       </div>
-      {
-        problemSchema && (
-          <div class="not-content">
-            <Schema
-              kind="Problem"
-              title="Problem schema"
-              schema={problemSchema}
-            />
-          </div>
-        )
-      }
+      {problemSchema && (
+        <div class="not-content">
+          <Schema
+            kind="Problem"
+            title="Problem schema"
+            schema={problemSchema}
+          />
+        </div>
+      )}
     </MarkdownContent>
     <div class="errors-panel api-docs-codeblock-stack">
       <CodeBlock
@@ -409,14 +408,12 @@ let client = Client::default().with_authorization("sup_sk_MvxmLOl0...");`,
         language="http"
         code={`application/problem+json`}
       />
-      {
-        resolvedProblemSchema && (
-          <Example
-            name="Example problem response"
-            schema={resolvedProblemSchema}
-          />
-        )
-      }
+      {resolvedProblemSchema && (
+        <Example
+          name="Example problem response"
+          schema={resolvedProblemSchema}
+        />
+      )}
     </div>
   </LRGrid>
 </section>

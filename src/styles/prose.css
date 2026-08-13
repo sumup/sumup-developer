@@ -1,0 +1,153 @@
+.docs-content {
+  color: var(--cui-fg-normal);
+  overflow-wrap: anywhere;
+}
+
+/* Components marked with `data-prose="off"` own their typography and spacing. */
+.docs-content > :where(:first-child:not([data-prose="off"])) {
+  margin-top: 0;
+}
+
+.docs-content > :where(:last-child:not([data-prose="off"])) {
+  margin-bottom: 0;
+}
+
+/* Keep the opt-out in one low-specificity guard instead of every prose rule. */
+.docs-content :where(:not([data-prose="off"] *)) {
+  &:where(h1, h2, h3, h4, h5, h6) {
+    color: var(--cui-fg-normal);
+    scroll-margin-top: calc(var(--portal-header-height) + 1.5rem);
+    text-wrap: balance;
+  }
+
+  &:where(h1) {
+    margin: var(--cui-spacings-giga) 0 var(--cui-spacings-mega);
+    font-size: var(--cui-headline-l-font-size);
+    font-weight: var(--cui-font-weight-bold);
+    line-height: var(--cui-headline-l-line-height);
+  }
+
+  &:where(h2) {
+    margin: var(--cui-spacings-exa) 0 var(--cui-spacings-mega);
+    font-size: var(--cui-headline-m-font-size);
+    font-weight: var(--cui-font-weight-bold);
+    line-height: var(--cui-headline-m-line-height);
+  }
+
+  &:where(h3) {
+    margin: var(--cui-spacings-tera) 0 var(--cui-spacings-kilo);
+    font-size: var(--cui-headline-s-font-size);
+    font-weight: var(--cui-font-weight-bold);
+    line-height: var(--cui-headline-s-line-height);
+  }
+
+  &:where(h4, h5, h6) {
+    margin: var(--cui-spacings-giga) 0 var(--cui-spacings-kilo);
+    font-weight: var(--cui-font-weight-bold);
+  }
+
+  &:where(p, ul, ol, blockquote, table, pre, .nb-table-scroll) {
+    margin: var(--cui-spacings-mega) 0;
+  }
+
+  &:where(ul, ol) {
+    padding-inline-start: 1.5rem;
+  }
+
+  &:where(li) + li {
+    margin-top: var(--cui-spacings-byte);
+  }
+
+  &:where(a) {
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.15em;
+  }
+
+  &:where(a):hover {
+    color: var(--cui-fg-accent-hovered);
+  }
+
+  &:where(code:not(:where(pre *))) {
+    padding: 0.1em 0.3em;
+    color: var(--cui-fg-normal);
+    background: var(--cui-bg-subtle);
+    border: 1px solid var(--cui-border-subtle);
+    border-radius: var(--cui-border-radius-bit);
+    font-size: 0.9em;
+    overflow-wrap: anywhere;
+    white-space: normal;
+  }
+
+  &:where(pre) {
+    position: relative;
+    max-width: 100%;
+    overflow: auto;
+    border: 1px solid var(--cui-border-subtle);
+    border-radius: var(--cui-border-radius-byte);
+    scrollbar-width: thin;
+  }
+
+  &:where(pre) code {
+    display: block;
+    min-width: max-content;
+    padding: var(--cui-spacings-mega);
+  }
+
+  &:where(blockquote) {
+    padding: var(--cui-spacings-kilo) var(--cui-spacings-mega);
+    color: var(--cui-fg-subtle);
+    background: var(--cui-bg-subtle);
+    border-inline-start: 3px solid var(--cui-border-strong);
+  }
+
+  &:where(img, video) {
+    max-width: 100%;
+    height: auto;
+  }
+
+  &:where(table) {
+    width: 100%;
+  }
+
+  &:where(th, td) {
+    padding: var(--cui-spacings-kilo);
+    text-align: start;
+    vertical-align: top;
+    border: 1px solid var(--cui-border-divider);
+  }
+
+  &:where(th) {
+    background: var(--cui-bg-subtle);
+    font-weight: var(--cui-font-weight-bold);
+  }
+
+  &:where(.heading-anchor) {
+    margin-inline-start: 0.35em;
+    color: var(--cui-fg-subtle);
+    opacity: 0;
+    text-decoration: none;
+  }
+
+  &:where(h2, h3, h4, h5, h6):hover .heading-anchor,
+  &:where(.heading-anchor):focus {
+    opacity: 1;
+  }
+}
+
+.nb-table-scroll {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.nb-table-scroll > table {
+  margin: 0;
+}
+
+/* Circuit UI owns the Callout's appearance; these only support rich MDX body content. */
+[data-callout] > :last-child {
+  min-width: 0;
+}
+
+[data-callout] :is(ul, ol) {
+  padding-inline-start: 1.5rem;
+}

@@ -1,7 +1,6 @@
 ---
-import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
 import ApiDocs from "@components/ApiDocs/ApiDocs.astro";
-import type { StarlightPageProps } from "@astrojs/starlight/props";
+import type { SidebarItem } from "@cloudflare/nimbus-docs/types";
 import { pathsByTag } from "@lib/openapi";
 import {
   apiTopLevelPaths,
@@ -13,7 +12,9 @@ import {
   getTagEntryBySlug,
   orderedTagEntriesCached,
 } from "@lib/openapi/tags";
-import type { StarlightUserConfig } from "@astrojs/starlight/types";
+import DocsLayout from "../../layouts/DocsLayout.astro";
+
+export const prerender = true;
 
 // list of resources that are expanded by default
 const mainResources = ["Checkouts", "Readers"];
@@ -36,62 +37,10 @@ export async function getStaticPaths() {
   ];
 }
 
-const sidebar: StarlightUserConfig["sidebar"] = [
-  {
-    label: "SumUp API",
-    items: [
-      {
-        label: "Overview",
-        link: "/api",
-      },
-      {
-        label: "SDKs",
-        link: "/api/sdks",
-        attrs: {
-          "data-scroll-to": "sdks",
-        },
-      },
-      {
-        label: "Authentication",
-        link: "/api/authentication",
-        attrs: {
-          "data-scroll-to": "authentication",
-        },
-      },
-      {
-        label: "Errors",
-        link: "/api/errors",
-        attrs: {
-          "data-scroll-to": "errors",
-        },
-      },
-      ...orderedTagEntriesCached.map(([tagName, operations]) => {
-        const tag = getTagBySlug(tagName)!;
-        return {
-          label: tag.name,
-          collapsed: !mainResources.includes(tag.name),
-          items: [
-            {
-              label: "Overview",
-              link: `/api/${tagName}`,
-            },
-            ...operations.map((op) => ({
-              label: op.summary!,
-              link: `/api/${tagName}/${op.slug}`,
-              attrs: {
-                "data-scroll-to": `${tagName}-${op.slug}`,
-              },
-            })),
-          ],
-        };
-      }),
-    ],
-  },
-];
-
 const { path } = Astro.params;
 const [segment, section] = (path || "").split("/");
 const currentTagEntry = segment ? getTagEntryBySlug(segment) : undefined;
+const isApiLandingPage = !segment;
 const isTopLevelPage = !segment || isApiTopLevelPath(segment);
 const topSection = getApiTopSection(segment);
 
@@ -100,34 +49,89 @@ const currentOperation =
   currentTagEntry && section
     ? currentTagEntry.find((operation) => operation.slug === section)
     : undefined;
-
-const props = {
-  frontmatter: {
-    title: currentTag?.name || "API Reference",
-    metaTitle: currentOperation?.summary || currentTag?.name || "API Reference",
-    description: "SumUp API reference and code samples.",
-    tableOfContents: false,
-  },
-  sidebar,
-  custom: true,
-} as StarlightPageProps;
+const isApiTagLandingPage = Boolean(currentTag) && !section;
 
 const canonicalPath = path ? `/api/${path}` : "/api";
+const pageTitle =
+  currentOperation?.summary || currentTag?.name || "API Reference";
+
+const sidebar: SidebarItem[] = [
+  {
+    type: "link",
+    label: "SumUp API",
+    href: "/api/",
+    isCurrent: canonicalPath === "/api",
+    order: 0,
+  },
+  ...apiTopLevelPaths.map((topLevelPath, index) => ({
+    type: "link" as const,
+    label:
+      topLevelPath === "sdks"
+        ? "SDKs"
+        : `${topLevelPath.charAt(0).toUpperCase()}${topLevelPath.slice(1)}`,
+    href: `/api/${topLevelPath}/`,
+    isCurrent: segment === topLevelPath,
+    attrs: { "data-scroll-to": topLevelPath },
+    order: index + 1,
+  })),
+  ...orderedTagEntriesCached.map(([tagName, operations], tagIndex) => {
+    const tag = getTagBySlug(tagName)!;
+    return {
+      type: "group" as const,
+      label: tag.name,
+      order: apiTopLevelPaths.length + tagIndex + 1,
+      collapsed: !mainResources.includes(tag.name),
+      indexHref: `/api/${tagName}/`,
+      indexIsCurrent: segment === tagName && !section,
+      children: operations.map((operation, operationIndex) => ({
+        type: "link" as const,
+        label: operation.summary!,
+        href: `/api/${tagName}/${operation.slug}/`,
+        isCurrent: segment === tagName && section === operation.slug,
+        attrs: {
+          "data-scroll-to": `${tagName}-${operation.slug}`,
+        },
+        order: operationIndex,
+      })),
+    };
+  }),
+];
 ---
 
-<link
-  slot="head"
-  rel="canonical"
-  href={`https://developer.sumup.com${canonicalPath}`}
-/>
-<StarlightPage {...props}>
+<DocsLayout
+  title={pageTitle}
+  description="SumUp API reference and code samples."
+  sidebar={sidebar}
+  headings={false}
+  breadcrumbs={[]}
+  prevNext={{}}
+  socialImage="/og/index.png"
+  wide
+  hideTitle={!isApiLandingPage && !isApiTagLandingPage}
+  hideDescription={!isApiLandingPage}
+  prose={false}
+>
   <ApiDocs
     class="api-docs"
     tagSlug={isTopLevelPage ? undefined : segment}
     operationSlug={isTopLevelPage ? undefined : section}
     topSection={topSection}
   />
-</StarlightPage>
+</DocsLayout>
+
+<style>
+  :global(.api-docs) {
+    width: 100%;
+    max-width: 84rem;
+    margin: 0 auto;
+  }
+
+  :global(.page-heading) {
+    width: 100%;
+    max-width: 84rem;
+    margin-inline: auto;
+  }
+</style>
 
 <script>
   import { initApiSidebarNavigation } from "@lib/openapi/sidebar-nav";
@@ -135,11 +139,3 @@ const canonicalPath = path ? `/api/${path}` : "/api";
   initApiSidebarNavigation();
   document.addEventListener("astro:page-load", initApiSidebarNavigation);
 </script>
-
-<style is:inline>
-  /* Wider content */
-  :root,
-  :root[data-theme="light"] {
-    --sl-content-width: 80rem;
-  }
-</style>

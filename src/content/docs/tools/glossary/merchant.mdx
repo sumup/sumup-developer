@@ -5,7 +5,7 @@ sidebar:
   order: 10
 ---
 
-import SearchableTable from "@components/content/SearchableTable";
+import SearchableTable from "@components/content/SearchableTable.astro";
 
 A Merchant is a business and a User can own and/or manage multiple businesses.
 Within SumUp every Merchant is identified by its merchant code, typically a
@@ -30,559 +30,102 @@ For every identifier, we use a unique reference as key following the pattern
 `{country_code}.{identifier_type}`. The prefix indicates the country (using ISO 3166-1 alpha-2 codes), and the
 suffix identifies the specific type of identifier.
 
-<SearchableTable
-  client:load
-  searchPlaceholder="Search company identifiers"
-  columns={[
-    { key: "icon", label: "" },
-    { key: "country", label: "Country", nowrap: true },
-    { key: "name", label: "Name", minWidth: "18rem" },
-    { key: "ref", label: "Reference", nowrap: true, as: "code" },
-  ]}
-  rows={[
-    {
-      icon: "flag_ar",
-      country: "Argentina (AR)",
-      name: "Clave Única de Identificación Tributaria",
-      ref: "ar.cuit",
-    },
-    {
-      icon: "flag_au",
-      country: "Australia (AU)",
-      name: "Australian Business Number",
-      ref: "au.abn",
-    },
-    {
-      icon: "flag_au",
-      country: "Australia (AU)",
-      name: "Australian Company Number",
-      ref: "au.acn",
-    },
-    {
-      icon: "flag_at",
-      country: "Austria (AT)",
-      name: "Umsatzsteuer-Identifikationsnummer",
-      ref: "at.uid",
-    },
-    {
-      icon: "flag_at",
-      country: "Austria (AT)",
-      name: "Abgabenkontonummer",
-      ref: "at.abgabenkontonummer",
-    },
-    {
-      icon: "flag_at",
-      country: "Austria (AT)",
-      name: "Zentrale Vereinsregister-Zahl",
-      ref: "at.zvr",
-    },
-    {
-      icon: "flag_at",
-      country: "Austria (AT)",
-      name: "Firmenbuchnummer",
-      ref: "at.fn",
-    },
-    {
-      icon: "flag_be",
-      country: "Belgium (BE)",
-      name: "Belasting over de Toegevoegde Waarde nummer",
-      ref: "be.btw",
-    },
-    {
-      icon: "flag_be",
-      country: "Belgium (BE)",
-      name: "Ondernemingsnummer",
-      ref: "be.ondernemingsnummer",
-    },
-    {
-      icon: "flag_br",
-      country: "Brazil (BR)",
-      name: "Cadastro Nacional de Pessoa Juridica",
-      ref: "br.cnpj",
-    },
-    {
-      icon: "flag_bg",
-      country: "Bulgaria (BG)",
-      name: "Identifikacionen nomer po DDS",
-      ref: "bg.dds",
-    },
-    {
-      icon: "flag_bg",
-      country: "Bulgaria (BG)",
-      name: "BULSTAT Unified Identification Code",
-      ref: "bg.uic",
-    },
-    {
-      icon: "flag_ca",
-      country: "Canada (CA)",
-      name: "Business Number",
-      ref: "ca.business_number",
-    },
-    {
-      icon: "flag_ca",
-      country: "Canada (CA)",
-      name: "GST/HST Number",
-      ref: "ca.gst_hst_number",
-    },
-    {
-      icon: "flag_ca",
-      country: "Canada (CA)",
-      name: "QST Number (Quebec)",
-      ref: "ca.qst_number",
-    },
-    {
-      icon: "flag_cl",
-      country: "Chile (CL)",
-      name: "Rol Único Tributario",
-      ref: "cl.rut",
-    },
-    {
-      icon: "flag_co",
-      country: "Colombia (CO)",
-      name: "Número de Identificación Tributaria",
-      ref: "co.nit",
-    },
-    {
-      icon: "flag_hr",
-      country: "Croatia (HR)",
-      name: "Osobni identifikacijski broj",
-      ref: "hr.oib",
-    },
-    {
-      icon: "flag_cy",
-      country: "Cyprus (CY)",
-      name: "Arithmós Engraphḗs phi. pi. a.",
-      ref: "cy.fpa",
-    },
-    {
-      icon: "flag_cy",
-      country: "Cyprus (CY)",
-      name: "Company Registration Number",
-      ref: "cy.crn",
-    },
-    {
-      icon: "flag_cz",
-      country: "Czech Republic (CZ)",
-      name: "Daňové identifikační číslo",
-      ref: "cz.dic",
-    },
-    {
-      icon: "flag_cz",
-      country: "Czech Republic (CZ)",
-      name: "Identifikační číslo osoby",
-      ref: "cz.ico",
-    },
-    {
-      icon: "flag_dk",
-      country: "Denmark (DK)",
-      name: "CVR-nummer",
-      ref: "dk.cvr",
-    },
-    {
-      icon: "flag_dk",
-      country: "Denmark (DK)",
-      name: "CVR-nummer",
-      ref: "dk.cvr",
-    },
-    {
-      icon: "flag_ee",
-      country: "Estonia (EE)",
-      name: "Käibemaksukohustuslase number",
-      ref: "ee.kmkr",
-    },
-    {
-      icon: "flag_ee",
-      country: "Estonia (EE)",
-      name: "Äriregistri Kood",
-      ref: "ee.reg",
-    },
-    {
-      icon: "flag_fi",
-      country: "Finland (FI)",
-      name: "Arvonlisäveronumero Mervärdesskattenummer",
-      ref: "fi.alv",
-    },
-    {
-      icon: "flag_fi",
-      country: "Finland (FI)",
-      name: "Y-tunnus",
-      ref: "fi.yt",
-    },
-    {
-      icon: "flag_fr",
-      country: "France (FR)",
-      name: "Numéro d'identification à la taxe sur la valeur ajoutée / Numéro de TVA intracommunautaire",
-      ref: "fr.tva",
-    },
-    {
-      icon: "flag_fr",
-      country: "France (FR)",
-      name: "Système d'identification du répertoire des entreprises",
-      ref: "fr.siren",
-    },
-    {
-      icon: "flag_fr",
-      country: "France (FR)",
-      name: "Système d’identification du répertoire des établissements",
-      ref: "fr.siret",
-    },
-    {
-      icon: "flag_fr",
-      country: "France (FR)",
-      name: "Numéro Répertoire national des associations / Numéro RNA",
-      ref: "fr.rna",
-    },
-    {
-      icon: "flag_de",
-      country: "Germany (DE)",
-      name: "Umsatzsteuer-Identifikationsnummer",
-      ref: "de.ust_idnr",
-    },
-    {
-      icon: "flag_de",
-      country: "Germany (DE)",
-      name: "Handelsregister A Nummer",
-      ref: "de.hra",
-    },
-    {
-      icon: "flag_de",
-      country: "Germany (DE)",
-      name: "Handelsregister B Nummer",
-      ref: "de.hrb",
-    },
-    {
-      icon: "flag_de",
-      country: "Germany (DE)",
-      name: "Vereinsregenister Nummer",
-      ref: "de.vr",
-    },
-    {
-      icon: "flag_de",
-      country: "Germany (DE)",
-      name: "Other registration numbers",
-      ref: "de.other",
-    },
-    {
-      icon: "flag_gr",
-      country: "Greece (GR)",
-      name: "Arithmós Forologikou Mētrṓou - ΑΦΜ",
-      ref: "gr.afm",
-    },
-    {
-      icon: "flag_gr",
-      country: "Greece (GR)",
-      name: "General Commercial Registry number.",
-      ref: "gr.gemi",
-    },
-    {
-      icon: "flag_hu",
-      country: "Hungary (HU)",
-      name: "Közösségi adószám",
-      ref: "hu.anum",
-    },
-    {
-      icon: "flag_hu",
-      country: "Hungary (HU)",
-      name: "Cégjegyzékszám",
-      ref: "hu.cegjegyzekszam",
-    },
-    {
-      icon: "flag_hu",
-      country: "Hungary (HU)",
-      name: "Adószám",
-      ref: "hu.adoszam",
-    },
-    {
-      icon: "flag_ie",
-      country: "Ireland (IE)",
-      name: "Value added tax identification no.",
-      ref: "ie.vat",
-    },
-    {
-      icon: "flag_ie",
-      country: "Ireland (IE)",
-      name: "Tax Registration Number",
-      ref: "ie.trn",
-    },
-    {
-      icon: "flag_ie",
-      country: "Ireland (IE)",
-      name: "Value added tax identification no.",
-      ref: "ie.crn",
-    },
-    {
-      icon: "flag_ie",
-      country: "Ireland (IE)",
-      name: "Tax identification number for charities",
-      ref: "ie.chy",
-    },
-    {
-      icon: "flag_it",
-      country: "Italy (IT)",
-      name: "Partita IVA",
-      ref: "it.p_iva",
-    },
-    {
-      icon: "flag_it",
-      country: "Italy (IT)",
-      name: "REA Number",
-      ref: "it.rea_number",
-    },
-    {
-      icon: "flag_lv",
-      country: "Latvia (LV)",
-      name: "PVN reģistrācijas numurs",
-      ref: "lv.pvn",
-    },
-    {
-      icon: "flag_lv",
-      country: "Latvia (LV)",
-      name: "Reģistrācijas numur",
-      ref: "lv.registracijas_numur",
-    },
-    {
-      icon: "flag_lt",
-      country: "Lithuania (LT)",
-      name: "PVM mokėtojo kodas",
-      ref: "lt.pvm_kodas",
-    },
-    {
-      icon: "flag_lt",
-      country: "Lithuania (LT)",
-      name: "Įmonės kodas",
-      ref: "lt.imones_kodas",
-    },
-    {
-      icon: "flag_lu",
-      country: "Luxembourg (LU)",
-      name: "Numéro d'identification à la taxe sur la valeur ajoutée",
-      ref: "lu.tva",
-    },
-    {
-      icon: "flag_lu",
-      country: "Luxembourg (LU)",
-      name: "Matricule",
-      ref: "lu.matricule",
-    },
-    {
-      icon: "flag_lu",
-      country: "Luxembourg (LU)",
-      name: "Numéro d'identification unique",
-      ref: "lu.rcs",
-    },
-    {
-      icon: "flag_mt",
-      country: "Malta (MT)",
-      name: "Numru tal-VAT",
-      ref: "mt.vat_no",
-    },
-    {
-      icon: "flag_mt",
-      country: "Malta (MT)",
-      name: "Business Registration Number",
-      ref: "mt.brn",
-    },
-    {
-      icon: "flag_mx",
-      country: "Mexico (MX)",
-      name: "Registro Federal de Contribuyentes",
-      ref: "mx.rfc",
-    },
-    {
-      icon: "flag_nl",
-      country: "Netherlands (NL)",
-      name: "Btw-nummer",
-      ref: "nl.btw",
-    },
-    {
-      icon: "flag_nl",
-      country: "Netherlands (NL)",
-      name: "Kamer van Koophandel nummer",
-      ref: "nl.kvk",
-    },
-    {
-      icon: "flag_no",
-      country: "Norway (NO)",
-      name: "MVA-nummer",
-      ref: "no.mva",
-    },
-    {
-      icon: "flag_no",
-      country: "Norway (NO)",
-      name: "Organisasjonsnummer",
-      ref: "no.orgnr",
-    },
-    {
-      icon: "flag_pl",
-      country: "Poland (PL)",
-      name: "Numer identyfikacji podatkowej",
-      ref: "pl.nip",
-    },
-    {
-      icon: "flag_pl",
-      country: "Poland (PL)",
-      name: "Numer Krajowego Rejestru Sądowego",
-      ref: "pl.krs",
-    },
-    {
-      icon: "flag_pl",
-      country: "Poland (PL)",
-      name: "Numer Rejestr Gospodarki Narodowej",
-      ref: "pl.regon",
-    },
-    {
-      icon: "flag_pt",
-      country: "Portugal (PT)",
-      name: "Número de Identificação Fiscal",
-      ref: "pt.nif",
-    },
-    {
-      icon: "flag_pt",
-      country: "Portugal (PT)",
-      name: "Número de Identificação de Pessoa Coletiva",
-      ref: "pt.nipc",
-    },
-    {
-      icon: "flag_pt",
-      country: "Portugal (PT)",
-      name: "Código de acesso à certidão permanente",
-      ref: "pt.codigo",
-    },
-    {
-      icon: "flag_ro",
-      country: "Romania (RO)",
-      name: "Codul de TVA",
-      ref: "ro.cui",
-    },
-    {
-      icon: "flag_ro",
-      country: "Romania (RO)",
-      name: "Codul Unic de Înregistrare",
-      ref: "ro.cui",
-    },
-    {
-      icon: "flag_ro",
-      country: "Romania (RO)",
-      name: "Codul de identificare fiscală",
-      ref: "ro.cif",
-    },
-    {
-      icon: "flag_ro",
-      country: "Romania (RO)",
-      name: "Numărul de ordine în registrul comerţului",
-      ref: "ro.onrc",
-    },
-    {
-      icon: "flag_sk",
-      country: "Slovakia (SK)",
-      name: "Identifikačné číslo pre daň z pridanej hodnoty",
-      ref: "sk.dph",
-    },
-    {
-      icon: "flag_sk",
-      country: "Slovakia (SK)",
-      name: "Identifikačné číslo organizácie",
-      ref: "sk.ico",
-    },
-    {
-      icon: "flag_si",
-      country: "Slovenia (SI)",
-      name: "Identifikacijska številka za DDV",
-      ref: "si.ddv",
-    },
-    {
-      icon: "flag_si",
-      country: "Slovenia (SI)",
-      name: "Matična številka",
-      ref: "si.maticna",
-    },
-    {
-      icon: "flag_es",
-      country: "Spain (ES)",
-      name: "Número de Identificación Fiscal",
-      ref: "es.nif",
-    },
-    {
-      icon: "flag_es",
-      country: "Spain (ES)",
-      name: "Certificado de Identificación Fiscal",
-      ref: "es.cif",
-    },
-    {
-      icon: "flag_se",
-      country: "Sweden (SE)",
-      name: "VAT-nummer",
-      ref: "se.momsnr",
-    },
-    {
-      icon: "flag_se",
-      country: "Sweden (SE)",
-      name: "Organisationsnumret",
-      ref: "se.orgnr",
-    },
-    {
-      icon: "flag_ch",
-      country: "Switzerland (CH)",
-      name: "Mehrwertsteuernummer / Taxe sur la valeur ajoutée / Imposta sul valore aggiunto",
-      ref: "ch.mwst",
-    },
-    {
-      icon: "flag_ch",
-      country: "Switzerland (CH)",
-      name: "Unternehmens-Identifikationsnummer",
-      ref: "ch.uid",
-    },
-    {
-      icon: "flag_gb",
-      country: "United Kingdom (GB)",
-      name: "Value added tax registration number",
-      ref: "gb.vrn",
-    },
-    {
-      icon: "flag_gb",
-      country: "United Kingdom (GB)",
-      name: "The company registration number for companies registered with Companies House",
-      ref: "gb.crn",
-    },
-    {
-      icon: "flag_us",
-      country: "United States (US)",
-      name: "Social Security Number",
-      ref: "us.ssn",
-    },
-    {
-      icon: "flag_us",
-      country: "United States (US)",
-      name: "Employer Identification Number",
-      ref: "us.ein",
-    },
-    {
-      icon: "flag_us",
-      country: "United States (US)",
-      name: "Social Security Number",
-      ref: "us.itin",
-    },
-    {
-      icon: "flag_us",
-      country: "United States (US)",
-      name: "Social Security Number",
-      ref: "us.ssn",
-    },
-    {
-      icon: "flag_us",
-      country: "United States (US)",
-      name: "Employer Identification Number",
-      ref: "us.ein",
-    },
-    {
-      icon: "flag_us",
-      country: "United States (US)",
-      name: "Social Security Number",
-      ref: "us.itin",
-    },
-  ]}
-  tableLayout="auto"
-/>
+<SearchableTable searchPlaceholder="Search company identifiers">
+
+| Country | Name | Reference |
+| --- | --- | --- |
+| Argentina (AR) | Clave Única de Identificación Tributaria | `ar.cuit` |
+| Australia (AU) | Australian Business Number | `au.abn` |
+| Australia (AU) | Australian Company Number | `au.acn` |
+| Austria (AT) | Umsatzsteuer-Identifikationsnummer | `at.uid` |
+| Austria (AT) | Abgabenkontonummer | `at.abgabenkontonummer` |
+| Austria (AT) | Zentrale Vereinsregister-Zahl | `at.zvr` |
+| Austria (AT) | Firmenbuchnummer | `at.fn` |
+| Belgium (BE) | Belasting over de Toegevoegde Waarde nummer | `be.btw` |
+| Belgium (BE) | Ondernemingsnummer | `be.ondernemingsnummer` |
+| Brazil (BR) | Cadastro Nacional de Pessoa Juridica | `br.cnpj` |
+| Bulgaria (BG) | Identifikacionen nomer po DDS | `bg.dds` |
+| Bulgaria (BG) | BULSTAT Unified Identification Code | `bg.uic` |
+| Canada (CA) | Business Number | `ca.business_number` |
+| Canada (CA) | GST/HST Number | `ca.gst_hst_number` |
+| Canada (CA) | QST Number (Quebec) | `ca.qst_number` |
+| Chile (CL) | Rol Único Tributario | `cl.rut` |
+| Colombia (CO) | Número de Identificación Tributaria | `co.nit` |
+| Croatia (HR) | Osobni identifikacijski broj | `hr.oib` |
+| Cyprus (CY) | Arithmós Engraphḗs phi. pi. a. | `cy.fpa` |
+| Cyprus (CY) | Company Registration Number | `cy.crn` |
+| Czech Republic (CZ) | Daňové identifikační číslo | `cz.dic` |
+| Czech Republic (CZ) | Identifikační číslo osoby | `cz.ico` |
+| Denmark (DK) | CVR-nummer | `dk.cvr` |
+| Denmark (DK) | CVR-nummer | `dk.cvr` |
+| Estonia (EE) | Käibemaksukohustuslase number | `ee.kmkr` |
+| Estonia (EE) | Äriregistri Kood | `ee.reg` |
+| Finland (FI) | Arvonlisäveronumero Mervärdesskattenummer | `fi.alv` |
+| Finland (FI) | Y-tunnus | `fi.yt` |
+| France (FR) | Numéro d'identification à la taxe sur la valeur ajoutée / Numéro de TVA intracommunautaire | `fr.tva` |
+| France (FR) | Système d'identification du répertoire des entreprises | `fr.siren` |
+| France (FR) | Système d’identification du répertoire des établissements | `fr.siret` |
+| France (FR) | Numéro Répertoire national des associations / Numéro RNA | `fr.rna` |
+| Germany (DE) | Umsatzsteuer-Identifikationsnummer | `de.ust_idnr` |
+| Germany (DE) | Handelsregister A Nummer | `de.hra` |
+| Germany (DE) | Handelsregister B Nummer | `de.hrb` |
+| Germany (DE) | Vereinsregenister Nummer | `de.vr` |
+| Germany (DE) | Other registration numbers | `de.other` |
+| Greece (GR) | Arithmós Forologikou Mētrṓou - ΑΦΜ | `gr.afm` |
+| Greece (GR) | General Commercial Registry number. | `gr.gemi` |
+| Hungary (HU) | Közösségi adószám | `hu.anum` |
+| Hungary (HU) | Cégjegyzékszám | `hu.cegjegyzekszam` |
+| Hungary (HU) | Adószám | `hu.adoszam` |
+| Ireland (IE) | Value added tax identification no. | `ie.vat` |
+| Ireland (IE) | Tax Registration Number | `ie.trn` |
+| Ireland (IE) | Value added tax identification no. | `ie.crn` |
+| Ireland (IE) | Tax identification number for charities | `ie.chy` |
+| Italy (IT) | Partita IVA | `it.p_iva` |
+| Italy (IT) | REA Number | `it.rea_number` |
+| Latvia (LV) | PVN reģistrācijas numurs | `lv.pvn` |
+| Latvia (LV) | Reģistrācijas numur | `lv.registracijas_numur` |
+| Lithuania (LT) | PVM mokėtojo kodas | `lt.pvm_kodas` |
+| Lithuania (LT) | Įmonės kodas | `lt.imones_kodas` |
+| Luxembourg (LU) | Numéro d'identification à la taxe sur la valeur ajoutée | `lu.tva` |
+| Luxembourg (LU) | Matricule | `lu.matricule` |
+| Luxembourg (LU) | Numéro d'identification unique | `lu.rcs` |
+| Malta (MT) | Numru tal-VAT | `mt.vat_no` |
+| Malta (MT) | Business Registration Number | `mt.brn` |
+| Mexico (MX) | Registro Federal de Contribuyentes | `mx.rfc` |
+| Netherlands (NL) | Btw-nummer | `nl.btw` |
+| Netherlands (NL) | Kamer van Koophandel nummer | `nl.kvk` |
+| Norway (NO) | MVA-nummer | `no.mva` |
+| Norway (NO) | Organisasjonsnummer | `no.orgnr` |
+| Poland (PL) | Numer identyfikacji podatkowej | `pl.nip` |
+| Poland (PL) | Numer Krajowego Rejestru Sądowego | `pl.krs` |
+| Poland (PL) | Numer Rejestr Gospodarki Narodowej | `pl.regon` |
+| Portugal (PT) | Número de Identificação Fiscal | `pt.nif` |
+| Portugal (PT) | Número de Identificação de Pessoa Coletiva | `pt.nipc` |
+| Portugal (PT) | Código de acesso à certidão permanente | `pt.codigo` |
+| Romania (RO) | Codul de TVA | `ro.cui` |
+| Romania (RO) | Codul Unic de Înregistrare | `ro.cui` |
+| Romania (RO) | Codul de identificare fiscală | `ro.cif` |
+| Romania (RO) | Numărul de ordine în registrul comerţului | `ro.onrc` |
+| Slovakia (SK) | Identifikačné číslo pre daň z pridanej hodnoty | `sk.dph` |
+| Slovakia (SK) | Identifikačné číslo organizácie | `sk.ico` |
+| Slovenia (SI) | Identifikacijska številka za DDV | `si.ddv` |
+| Slovenia (SI) | Matična številka | `si.maticna` |
+| Spain (ES) | Número de Identificación Fiscal | `es.nif` |
+| Spain (ES) | Certificado de Identificación Fiscal | `es.cif` |
+| Sweden (SE) | VAT-nummer | `se.momsnr` |
+| Sweden (SE) | Organisationsnumret | `se.orgnr` |
+| Switzerland (CH) | Mehrwertsteuernummer / Taxe sur la valeur ajoutée / Imposta sul valore aggiunto | `ch.mwst` |
+| Switzerland (CH) | Unternehmens-Identifikationsnummer | `ch.uid` |
+| United Kingdom (GB) | Value added tax registration number | `gb.vrn` |
+| United Kingdom (GB) | The company registration number for companies registered with Companies House | `gb.crn` |
+| United States (US) | Social Security Number | `us.ssn` |
+| United States (US) | Employer Identification Number | `us.ein` |
+| United States (US) | Social Security Number | `us.itin` |
+| United States (US) | Social Security Number | `us.ssn` |
+| United States (US) | Employer Identification Number | `us.ein` |
+| United States (US) | Social Security Number | `us.itin` |
+
+</SearchableTable>
 
 Example:
 
@@ -606,2269 +149,387 @@ Example:
 Legal type is the official way the business is set up and recognized by the law.
 Legal types are of the pattern `{country_code}.{identifier_type}`. The prefix indicates the country (using [ISO3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)), and the suffix identifies the specific legal type within that country.
 
-<SearchableTable
-  client:load
-  searchPlaceholder="Search legal types"
-  columns={[
-    { key: "icon", label: "" },
-    { key: "country", label: "Country", nowrap: true },
-    { key: "description", label: "Description", minWidth: "18rem" },
-    { key: "ref", label: "Reference", nowrap: true, as: "code" },
-  ]}
-  rows={[
-    {
-      icon: "flag_ar",
-      country: "Argentina (AR)",
-      description: "Persona Natural",
-      ref: "ar.pers",
-    },
-    {
-      icon: "flag_ar",
-      country: "Argentina (AR)",
-      description: "Empresa Unipersonal (E.U.)",
-      ref: "ar.eu",
-    },
-    {
-      icon: "flag_ar",
-      country: "Argentina (AR)",
-      description: "Sociedad Anónima (S.A.)",
-      ref: "ar.sa",
-    },
-    {
-      icon: "flag_ar",
-      country: "Argentina (AR)",
-      description: "Sociedad Anónima Unipersonal (S.A.U.)",
-      ref: "ar.sau",
-    },
-    {
-      icon: "flag_ar",
-      country: "Argentina (AR)",
-      description: "Sociedad Anónima Cerrada (S.A.C.)",
-      ref: "ar.sas",
-    },
-    {
-      icon: "flag_ar",
-      country: "Argentina (AR)",
-      description: "Sociedad de Responsabilidad Limitada  (S.R.L.)",
-      ref: "ar.srl",
-    },
-    {
-      icon: "flag_ar",
-      country: "Argentina (AR)",
-      description: "Sociedad Colectiva",
-      ref: "ar.sociedad_colectiva",
-    },
-    {
-      icon: "flag_ar",
-      country: "Argentina (AR)",
-      description: "Sociedad en Comandita por Acciones",
-      ref: "ar.sociedad_en_comandita_por_acciones",
-    },
-    {
-      icon: "flag_ar",
-      country: "Argentina (AR)",
-      description: "Sociedad en Comandita Simple",
-      ref: "ar.sociedad_en_comandita_simple",
-    },
-    {
-      icon: "flag_ar",
-      country: "Argentina (AR)",
-      description: "Asociación Civil",
-      ref: "ar.asociación_civil",
-    },
-    {
-      icon: "flag_ar",
-      country: "Argentina (AR)",
-      description: "Fundación",
-      ref: "ar.fundación",
-    },
-    {
-      icon: "flag_au",
-      country: "Australia (AU)",
-      description: "Agent",
-      ref: "au.agt",
-    },
-    {
-      icon: "flag_au",
-      country: "Australia (AU)",
-      description: "Trust",
-      ref: "au.trust",
-    },
-    {
-      icon: "flag_au",
-      country: "Australia (AU)",
-      description: "Co-operative",
-      ref: "au.coop",
-    },
-    {
-      icon: "flag_au",
-      country: "Australia (AU)",
-      description: "Sole Trader",
-      ref: "au.st",
-    },
-    {
-      icon: "flag_au",
-      country: "Australia (AU)",
-      description: "Company",
-      ref: "au.co",
-    },
-    {
-      icon: "flag_au",
-      country: "Australia (AU)",
-      description: "Partnership",
-      ref: "au.pship",
-    },
-    {
-      icon: "flag_au",
-      country: "Australia (AU)",
-      description: "Association",
-      ref: "au.assoc",
-    },
-    {
-      icon: "flag_at",
-      country: "Austria (AT)",
-      description: "Alle nicht registrierten Einzelunternehmen und freien Berufe ohne andere Gesellschaftsform",
-      ref: "at.freiberufler",
-    },
-    {
-      icon: "flag_at",
-      country: "Austria (AT)",
-      description: "Eingetragenes Einzelunternehmen (e. U.)",
-      ref: "at.eu",
-    },
-    {
-      icon: "flag_at",
-      country: "Austria (AT)",
-      description: "Gesellschaft bürgerlichen Rechts (GesbR)",
-      ref: "at.gesbr",
-    },
-    {
-      icon: "flag_at",
-      country: "Austria (AT)",
-      description: "Offene Gesellschaft (OG)",
-      ref: "at.og",
-    },
-    {
-      icon: "flag_at",
-      country: "Austria (AT)",
-      description: "Kommanditgesellschaft (KG)",
-      ref: "at.kg",
-    },
-    {
-      icon: "flag_at",
-      country: "Austria (AT)",
-      description: "Gesellschaft mit beschränkter Haftung (GmbH)",
-      ref: "at.gmbh",
-    },
-    {
-      icon: "flag_at",
-      country: "Austria (AT)",
-      description: "Aktiengesellschaft (AG)",
-      ref: "at.ag",
-    },
-    {
-      icon: "flag_at",
-      country: "Austria (AT)",
-      description: "Verein",
-      ref: "at.verein",
-    },
-    {
-      icon: "flag_at",
-      country: "Austria (AT)",
-      description: "Andere Rechtsformen",
-      ref: "at.andere",
-    },
-    {
-      icon: "flag_be",
-      country: "Belgium (BE)",
-      description: "Entreprise individuelle",
-      ref: "be.ei",
-    },
-    {
-      icon: "flag_be",
-      country: "Belgium (BE)",
-      description: "Partenariat",
-      ref: "be.partenariat",
-    },
-    {
-      icon: "flag_be",
-      country: "Belgium (BE)",
-      description: "Société en Nom Collectif (SNC)",
-      ref: "be.vof",
-    },
-    {
-      icon: "flag_be",
-      country: "Belgium (BE)",
-      description: "Société en Commandite par Action (SCA)",
-      ref: "be.sca",
-    },
-    {
-      icon: "flag_be",
-      country: "Belgium (BE)",
-      description: "Société en Commandite Simple (SCS)",
-      ref: "be.cv",
-    },
-    {
-      icon: "flag_be",
-      country: "Belgium (BE)",
-      description: "Société Anonyme (SA)",
-      ref: "be.nv",
-    },
-    {
-      icon: "flag_be",
-      country: "Belgium (BE)",
-      description: "Société à responsabilité limitée (S.R.L.)",
-      ref: "be.sprl",
-    },
-    {
-      icon: "flag_be",
-      country: "Belgium (BE)",
-      description: "Fondations",
-      ref: "be.stichting",
-    },
-    {
-      icon: "flag_be",
-      country: "Belgium (BE)",
-      description: "Association Sans But Lucratif (ASBL)",
-      ref: "be.asbl",
-    },
-    {
-      icon: "flag_be",
-      country: "Belgium (BE)",
-      description: "Société Coopérative à Responsabilité Limitée (SC/SCRL)",
-      ref: "be.scscrl",
-    },
-    {
-      icon: "flag_be",
-      country: "Belgium (BE)",
-      description: "Société Coopérative à Responsabilité Illimitée (SCRI)",
-      ref: "be.scri",
-    },
-    {
-      icon: "flag_be",
-      country: "Belgium (BE)",
-      description: "Agence Publique",
-      ref: "be.state_agency",
-    },
-    {
-      icon: "flag_br",
-      country: "Brazil (BR)",
-      description: "Pessoa Física",
-      ref: "br.pessoa_fisica",
-    },
-    {
-      icon: "flag_br",
-      country: "Brazil (BR)",
-      description: "LTDA",
-      ref: "br.ltda",
-    },
-    {
-      icon: "flag_br",
-      country: "Brazil (BR)",
-      description: "S/A Capital Aberto",
-      ref: "br.sa_capital_aberto",
-    },
-    {
-      icon: "flag_br",
-      country: "Brazil (BR)",
-      description: "S/A Capital Fechado",
-      ref: "br.sa_capital_fechado",
-    },
-    {
-      icon: "flag_br",
-      country: "Brazil (BR)",
-      description: "Sociedade Simples",
-      ref: "br.sociedade_simples",
-    },
-    {
-      icon: "flag_br",
-      country: "Brazil (BR)",
-      description: "Cooperativa",
-      ref: "br.cooperativa",
-    },
-    {
-      icon: "flag_br",
-      country: "Brazil (BR)",
-      description: "Associação",
-      ref: "br.associacao",
-    },
-    {
-      icon: "flag_br",
-      country: "Brazil (BR)",
-      description: "Fundação",
-      ref: "br.fundacao",
-    },
-    {
-      icon: "flag_br",
-      country: "Brazil (BR)",
-      description: "Outros",
-      ref: "br.outros",
-    },
-    {
-      icon: "flag_br",
-      country: "Brazil (BR)",
-      description: "Entidade Sindical",
-      ref: "br.entidade_sindical",
-    },
-    {
-      icon: "flag_br",
-      country: "Brazil (BR)",
-      description: "Empresa de Pequeno Porte (EPP)",
-      ref: "br.empresa_pequeno_porte",
-    },
-    {
-      icon: "flag_br",
-      country: "Brazil (BR)",
-      description: "Empresa Individual de Responsabilidade Limitada (Eireli)",
-      ref: "br.eireli",
-    },
-    {
-      icon: "flag_br",
-      country: "Brazil (BR)",
-      description: "Pessoa Jurídica payleven",
-      ref: "br.pessoa_juridica_payleven",
-    },
-    {
-      icon: "flag_br",
-      country: "Brazil (BR)",
-      description: "Micro Empreendedor Individual (MEI)",
-      ref: "br.empresario_individual",
-    },
-    {
-      icon: "flag_br",
-      country: "Brazil (BR)",
-      description: "Pessoa Jurídica",
-      ref: "br.pessoa_juridica",
-    },
-    {
-      icon: "flag_br",
-      country: "Brazil (BR)",
-      description: "Empresa individual (EI)",
-      ref: "br.empresa_individual",
-    },
-    {
-      icon: "flag_bg",
-      country: "Bulgaria (BG)",
-      description: "Събирателно дружество",
-      ref: "bg.general_partnership",
-    },
-    {
-      icon: "flag_bg",
-      country: "Bulgaria (BG)",
-      description: "Командитно дружество",
-      ref: "bg.limited_partnership",
-    },
-    {
-      icon: "flag_bg",
-      country: "Bulgaria (BG)",
-      description: "Командитно дружество с акции",
-      ref: "bg.limited_partnership_with_shares",
-    },
-    {
-      icon: "flag_bg",
-      country: "Bulgaria (BG)",
-      description: "Дружество с ограничена oтговорност",
-      ref: "bg.private_limited_company",
-    },
-    {
-      icon: "flag_bg",
-      country: "Bulgaria (BG)",
-      description: "Еднолично дружество с ограничена отговорност",
-      ref: "bg.private_limited_company_with_a_single_member",
-    },
-    {
-      icon: "flag_bg",
-      country: "Bulgaria (BG)",
-      description: "Акционерно дружество",
-      ref: "bg.joint-stock_company",
-    },
-    {
-      icon: "flag_bg",
-      country: "Bulgaria (BG)",
-      description: "Консорциум",
-      ref: "bg.association",
-    },
-    {
-      icon: "flag_bg",
-      country: "Bulgaria (BG)",
-      description: "Фондация",
-      ref: "bg.foundation",
-    },
-    {
-      icon: "flag_bg",
-      country: "Bulgaria (BG)",
-      description: "Кооперация",
-      ref: "bg.cooperative",
-    },
-    {
-      icon: "flag_bg",
-      country: "Bulgaria (BG)",
-      description: "Друго",
-      ref: "bg.other",
-    },
-    {
-      icon: "flag_bg",
-      country: "Bulgaria (BG)",
-      description: "Едноличен търговец",
-      ref: "bg.sole_trader",
-    },
-    {
-      icon: "flag_bg",
-      country: "Bulgaria (BG)",
-      description: "Професионалист на свободна практика",
-      ref: "bg.freelancer",
-    },
-    {
-      icon: "flag_bg",
-      country: "Bulgaria (BG)",
-      description: "Еднолично акционерно дружество",
-      ref: "bg.sole_shareholding_company",
-    },
-    {
-      icon: "flag_ca",
-      country: "Canada (CA)",
-      description: "Sole proprietorship",
-      ref: "ca.sp",
-    },
-    {
-      icon: "flag_ca",
-      country: "Canada (CA)",
-      description: "Private company",
-      ref: "ca.bsns",
-    },
-    {
-      icon: "flag_ca",
-      country: "Canada (CA)",
-      description: "Listed public company",
-      ref: "ca.lpc",
-    },
-    {
-      icon: "flag_ca",
-      country: "Canada (CA)",
-      description: "Governmental organization",
-      ref: "ca.gorg",
-    },
-    {
-      icon: "flag_ca",
-      country: "Canada (CA)",
-      description: "Association incorporated",
-      ref: "ca.asinc",
-    },
-    {
-      icon: "flag_ca",
-      country: "Canada (CA)",
-      description: "Nonprofit or charitable organisation",
-      ref: "ca.npro",
-    },
-    {
-      icon: "flag_ca",
-      country: "Canada (CA)",
-      description: "Unincorporated partnership",
-      ref: "ca.unincpar",
-    },
-    {
-      icon: "flag_ca",
-      country: "Canada (CA)",
-      description: "Incorporated partnership",
-      ref: "ca.pship",
-    },
-    {
-      icon: "flag_cl",
-      country: "Chile (CL)",
-      description: "Persona Natural",
-      ref: "cl.sole_trader",
-    },
-    {
-      icon: "flag_cl",
-      country: "Chile (CL)",
-      description: "Sociedad de Responsabilidad Limitada",
-      ref: "cl.ltda",
-    },
-    {
-      icon: "flag_cl",
-      country: "Chile (CL)",
-      description: "Sociedad Anónima",
-      ref: "cl.sa",
-    },
-    {
-      icon: "flag_cl",
-      country: "Chile (CL)",
-      description: "Sociedad por Acciones",
-      ref: "cl.sca",
-    },
-    {
-      icon: "flag_cl",
-      country: "Chile (CL)",
-      description: "Empresas Individuales de Responsabilidad Limitada",
-      ref: "cl.eirl",
-    },
-    {
-      icon: "flag_cl",
-      country: "Chile (CL)",
-      description: "Sociedad en Comandita Simple",
-      ref: "cl.scs",
-    },
-    {
-      icon: "flag_co",
-      country: "Colombia (CO)",
-      description: "Sociedad por Acciones Simplificadas (S.A.S.)",
-      ref: "co.sas",
-    },
-    {
-      icon: "flag_co",
-      country: "Colombia (CO)",
-      description: "Sociedad de Responsabilidad Limitada (Ltda.)",
-      ref: "co.ltda",
-    },
-    {
-      icon: "flag_co",
-      country: "Colombia (CO)",
-      description: "Sociedad Colectiva (S.C.)",
-      ref: "co.sc",
-    },
-    {
-      icon: "flag_co",
-      country: "Colombia (CO)",
-      description: "Sociedad Comandita Simple (S. en C.)",
-      ref: "co.sec",
-    },
-    {
-      icon: "flag_co",
-      country: "Colombia (CO)",
-      description: "Persona Natural",
-      ref: "co.pers",
-    },
-    {
-      icon: "flag_co",
-      country: "Colombia (CO)",
-      description: "Empresa Unipersonal (E.U.)",
-      ref: "co.eu",
-    },
-    {
-      icon: "flag_co",
-      country: "Colombia (CO)",
-      description: "Sociedad Comandita por Acciones (S.C.A.)",
-      ref: "co.sca",
-    },
-    {
-      icon: "flag_co",
-      country: "Colombia (CO)",
-      description: "Sociedad Anónima (S.A.)",
-      ref: "co.sa",
-    },
-    {
-      icon: "flag_hr",
-      country: "Croatia (HR)",
-      description: "udruga",
-      ref: "hr.association_new",
-    },
-    {
-      icon: "flag_hr",
-      country: "Croatia (HR)",
-      description: "obrt",
-      ref: "hr.sole_trader_new",
-    },
-    {
-      icon: "flag_hr",
-      country: "Croatia (HR)",
-      description: "javno trgovačko društvo",
-      ref: "hr.general_partnership_new",
-    },
-    {
-      icon: "flag_hr",
-      country: "Croatia (HR)",
-      description: "komanditno društvo",
-      ref: "hr.limited_partnership_new",
-    },
-    {
-      icon: "flag_hr",
-      country: "Croatia (HR)",
-      description: "društvo s ograničenom odgovornošću",
-      ref: "hr.private_limited_company_new",
-    },
-    {
-      icon: "flag_hr",
-      country: "Croatia (HR)",
-      description: "dioničko društvo",
-      ref: "hr.public_limited_company_new",
-    },
-    {
-      icon: "flag_hr",
-      country: "Croatia (HR)",
-      description: "zadruga",
-      ref: "hr.cooperative_new",
-    },
-    {
-      icon: "flag_hr",
-      country: "Croatia (HR)",
-      description: "Drugo",
-      ref: "hr.other_new",
-    },
-    {
-      icon: "flag_hr",
-      country: "Croatia (HR)",
-      description: "Ortaštvo",
-      ref: "hr.partnership_of_two_or_more_sole_traders_new",
-    },
-    {
-      icon: "flag_cy",
-      country: "Cyprus (CY)",
-      description: "Δημόσια εταιρεία περιορισμένης ευθύνης",
-      ref: "cy.public_limited_company",
-    },
-    {
-      icon: "flag_cy",
-      country: "Cyprus (CY)",
-      description: "Ατομική επιχείρηση",
-      ref: "cy.sole_trader",
-    },
-    {
-      icon: "flag_cy",
-      country: "Cyprus (CY)",
-      description: "Εταιρεία περιορισμένης ευθύνης δια μετοχών",
-      ref: "cy.private_limited_company",
-    },
-    {
-      icon: "flag_cy",
-      country: "Cyprus (CY)",
-      description: "Άλλο",
-      ref: "cy.other",
-    },
-    {
-      icon: "flag_cy",
-      country: "Cyprus (CY)",
-      description: "Εταιρεία περιορισμένης ευθύνης με εγγύηση",
-      ref: "cy.company_limited_by_guarantee",
-    },
-    {
-      icon: "flag_cy",
-      country: "Cyprus (CY)",
-      description: "Ομόρρυθμη εταιρεία",
-      ref: "cy.general_partnership",
-    },
-    {
-      icon: "flag_cy",
-      country: "Cyprus (CY)",
-      description: "Συνεταιρισμός",
-      ref: "cy.associations",
-    },
-    {
-      icon: "flag_cy",
-      country: "Cyprus (CY)",
-      description: "Ίδρυμα",
-      ref: "cy.foundation",
-    },
-    {
-      icon: "flag_cy",
-      country: "Cyprus (CY)",
-      description: "Ετερόρρυθμη εταιρεία",
-      ref: "cy.limited_partnership",
-    },
-    {
-      icon: "flag_cz",
-      country: "Czech Republic (CZ)",
-      description: "Živnost",
-      ref: "cz.sole_trader",
-    },
-    {
-      icon: "flag_cz",
-      country: "Czech Republic (CZ)",
-      description: "Společnost",
-      ref: "cz.unregistered_partnership",
-    },
-    {
-      icon: "flag_cz",
-      country: "Czech Republic (CZ)",
-      description: "Veřejná obchodní společnost",
-      ref: "cz.general_partnership",
-    },
-    {
-      icon: "flag_cz",
-      country: "Czech Republic (CZ)",
-      description: "Komanditní společnost",
-      ref: "cz.limited_partnerhip",
-    },
-    {
-      icon: "flag_cz",
-      country: "Czech Republic (CZ)",
-      description: "Společnost s ručením omezeným",
-      ref: "cz.private_limited_company",
-    },
-    {
-      icon: "flag_cz",
-      country: "Czech Republic (CZ)",
-      description: "Akciová společnost",
-      ref: "cz.public_limited_company",
-    },
-    {
-      icon: "flag_cz",
-      country: "Czech Republic (CZ)",
-      description: "Družstvo",
-      ref: "cz.cooperative",
-    },
-    {
-      icon: "flag_cz",
-      country: "Czech Republic (CZ)",
-      description: "Zapsaný spolek",
-      ref: "cz.association",
-    },
-    {
-      icon: "flag_cz",
-      country: "Czech Republic (CZ)",
-      description: "Nadační fond",
-      ref: "cz.foundation",
-    },
-    {
-      icon: "flag_cz",
-      country: "Czech Republic (CZ)",
-      description: "jiný",
-      ref: "cz.other",
-    },
-    {
-      icon: "flag_dk",
-      country: "Denmark (DK)",
-      description: "Enkeltmandsvirksomhed",
-      ref: "dk.sole_trader",
-    },
-    {
-      icon: "flag_dk",
-      country: "Denmark (DK)",
-      description: "Interessentskab",
-      ref: "dk.general_partnership",
-    },
-    {
-      icon: "flag_dk",
-      country: "Denmark (DK)",
-      description: "Kommanditselskab",
-      ref: "dk.limited_partnership",
-    },
-    {
-      icon: "flag_dk",
-      country: "Denmark (DK)",
-      description: "Partnerselskab or Kommanditaktieselskab",
-      ref: "dk.partnership_limited_by_shares",
-    },
-    {
-      icon: "flag_dk",
-      country: "Denmark (DK)",
-      description: "Anpartsselskab",
-      ref: "dk.private_limited_company",
-    },
-    {
-      icon: "flag_dk",
-      country: "Denmark (DK)",
-      description: "Aktieselskab",
-      ref: "dk.public_limited_company",
-    },
-    {
-      icon: "flag_dk",
-      country: "Denmark (DK)",
-      description: "Andelsselskab med begrænset ansvar",
-      ref: "dk.limited_liability_co-operative",
-    },
-    {
-      icon: "flag_dk",
-      country: "Denmark (DK)",
-      description: "Forening med begrænset ansvar",
-      ref: "dk.limited_liability_voluntary_association",
-    },
-    {
-      icon: "flag_dk",
-      country: "Denmark (DK)",
-      description: "Forening",
-      ref: "dk.association",
-    },
-    {
-      icon: "flag_dk",
-      country: "Denmark (DK)",
-      description: "Erhvervsdrivende fond",
-      ref: "dk.commercial_foundation",
-    },
-    {
-      icon: "flag_dk",
-      country: "Denmark (DK)",
-      description: "Ikke-erhvervsdrivende fond",
-      ref: "dk.non_commercial_foundation",
-    },
-    {
-      icon: "flag_dk",
-      country: "Denmark (DK)",
-      description: "Anden",
-      ref: "dk.other",
-    },
-    {
-      icon: "flag_ee",
-      country: "Estonia (EE)",
-      description: "Füüsilisest Isikust Ettevõtja",
-      ref: "ee.sole_trader",
-    },
-    {
-      icon: "flag_ee",
-      country: "Estonia (EE)",
-      description: "Täisühing",
-      ref: "ee.general_partnership",
-    },
-    {
-      icon: "flag_ee",
-      country: "Estonia (EE)",
-      description: "Usaldusühing",
-      ref: "ee.limited_partnership",
-    },
-    {
-      icon: "flag_ee",
-      country: "Estonia (EE)",
-      description: "Osaühing",
-      ref: "ee.private_limited_company",
-    },
-    {
-      icon: "flag_ee",
-      country: "Estonia (EE)",
-      description: "Aktsiaselts",
-      ref: "ee.public_limited_company",
-    },
-    {
-      icon: "flag_ee",
-      country: "Estonia (EE)",
-      description: "Ühistu",
-      ref: "ee.cooperative",
-    },
-    {
-      icon: "flag_ee",
-      country: "Estonia (EE)",
-      description: "Muud liiki",
-      ref: "ee.other",
-    },
-    {
-      icon: "flag_ee",
-      country: "Estonia (EE)",
-      description: "Tulundusühistu",
-      ref: "ee.commercial_association",
-    },
-    {
-      icon: "flag_fi",
-      country: "Finland (FI)",
-      description: "Avoin yhtiö",
-      ref: "fi.general_partnership",
-    },
-    {
-      icon: "flag_fi",
-      country: "Finland (FI)",
-      description: "Kommandiittiyhtiö",
-      ref: "fi.limited_partnership",
-    },
-    {
-      icon: "flag_fi",
-      country: "Finland (FI)",
-      description: "Osakeyhtiö",
-      ref: "fi.private_limited_company",
-    },
-    {
-      icon: "flag_fi",
-      country: "Finland (FI)",
-      description: "Julkinen osakeyhtiö",
-      ref: "fi.public_limited_company",
-    },
-    {
-      icon: "flag_fi",
-      country: "Finland (FI)",
-      description: "Osuuskunta",
-      ref: "fi.cooperative",
-    },
-    {
-      icon: "flag_fi",
-      country: "Finland (FI)",
-      description: "Rekisteröity yhdistys",
-      ref: "fi.registered_association",
-    },
-    {
-      icon: "flag_fi",
-      country: "Finland (FI)",
-      description: "Säätiö",
-      ref: "fi.foundation",
-    },
-    {
-      icon: "flag_fi",
-      country: "Finland (FI)",
-      description: "Muut",
-      ref: "fi.other",
-    },
-    {
-      icon: "flag_fi",
-      country: "Finland (FI)",
-      description: "Yksityinen elinkeinonharjoittaja",
-      ref: "fi.sole_trader",
-    },
-    {
-      icon: "flag_fr",
-      country: "France (FR)",
-      description: "Entrepreneur Individuel is a sole trader legal type.",
-      ref: "fr.ei",
-    },
-    {
-      icon: "flag_fr",
-      country: "France (FR)",
-      description: "EURL",
-      ref: "fr.eurl",
-    },
-    {
-      icon: "flag_fr",
-      country: "France (FR)",
-      description: "SARL",
-      ref: "fr.sarl",
-    },
-    {
-      icon: "flag_fr",
-      country: "France (FR)",
-      description: "SA",
-      ref: "fr.sa",
-    },
-    {
-      icon: "flag_fr",
-      country: "France (FR)",
-      description: "SAS",
-      ref: "fr.sas",
-    },
-    {
-      icon: "flag_fr",
-      country: "France (FR)",
-      description: "SASU",
-      ref: "fr.sasu",
-    },
-    {
-      icon: "flag_fr",
-      country: "France (FR)",
-      description: "SNC",
-      ref: "fr.snc",
-    },
-    {
-      icon: "flag_fr",
-      country: "France (FR)",
-      description: "Association",
-      ref: "fr.association",
-    },
-    {
-      icon: "flag_fr",
-      country: "France (FR)",
-      description: "Autres",
-      ref: "fr.autres",
-    },
-    {
-      icon: "flag_de",
-      country: "Germany (DE)",
-      description: "Alle nicht registrierten Einzelunternehmen und freien Berufe ohne andere Gesellschaftsform",
-      ref: "de.freiberufler",
-    },
-    {
-      icon: "flag_de",
-      country: "Germany (DE)",
-      description: "Eingetragener Kaufmann / Eingetragene Kauffrau (e.K., e.Kfm. oder e.Kfr.)",
-      ref: "de.ekfr",
-    },
-    {
-      icon: "flag_de",
-      country: "Germany (DE)",
-      description: "Gesellschaft bürgerlichen Rechts (GbR)",
-      ref: "de.gbr",
-    },
-    {
-      icon: "flag_de",
-      country: "Germany (DE)",
-      description: "Offene Handelsgesellschaft (OHG)",
-      ref: "de.ohg",
-    },
-    {
-      icon: "flag_de",
-      country: "Germany (DE)",
-      description: "Kommanditgesellschaft (KG)",
-      ref: "de.kg",
-    },
-    {
-      icon: "flag_de",
-      country: "Germany (DE)",
-      description: "Unternehmergesellschaft (UG (haftungsbeschränkt))",
-      ref: "de.ug",
-    },
-    {
-      icon: "flag_de",
-      country: "Germany (DE)",
-      description: "Gesellschaft mit beschränkter Haftung (GmbH)",
-      ref: "de.gmbh",
-    },
-    {
-      icon: "flag_de",
-      country: "Germany (DE)",
-      description: "GmbH & Co. KG",
-      ref: "de.gmbhco",
-    },
-    {
-      icon: "flag_de",
-      country: "Germany (DE)",
-      description: "Aktiengesellschaft (AG)",
-      ref: "de.ag",
-    },
-    {
-      icon: "flag_de",
-      country: "Germany (DE)",
-      description: "Eingetragener Verein (e.V.)",
-      ref: "de.ev",
-    },
-    {
-      icon: "flag_de",
-      country: "Germany (DE)",
-      description: "Andere Rechtsformen",
-      ref: "de.andere",
-    },
-    {
-      icon: "flag_de",
-      country: "Germany (DE)",
-      description: "Stiftung",
-      ref: "de.stiftung",
-    },
-    {
-      icon: "flag_de",
-      country: "Germany (DE)",
-      description: "Genossenschaft (eG)",
-      ref: "de.genossenschaft",
-    },
-    {
-      icon: "flag_de",
-      country: "Germany (DE)",
-      description: "Körperschaft öffentlichen Rechts (KöR)",
-      ref: "de.koerperschaft",
-    },
-    {
-      icon: "flag_gr",
-      country: "Greece (GR)",
-      description: "Atomikí epicheírisi / ατομική επιχείρηση",
-      ref: "gr.sole_trader",
-    },
-    {
-      icon: "flag_gr",
-      country: "Greece (GR)",
-      description: "Omórithmi Etaireía / Ομόρρυθμη Εταιρεία",
-      ref: "gr.general_partnership",
-    },
-    {
-      icon: "flag_gr",
-      country: "Greece (GR)",
-      description: "Eterórithmi Etaireía / Ετερόρρυθμη Εταιρία",
-      ref: "gr.limited_partnership",
-    },
-    {
-      icon: "flag_gr",
-      country: "Greece (GR)",
-      description: "Anónimi Etaireía / Ανώνυμη Εταιρεία",
-      ref: "gr.public_limited_company",
-    },
-    {
-      icon: "flag_gr",
-      country: "Greece (GR)",
-      description: "Etaireía Periorisménis Euthínis / Εταιρεία Περιορισμένης Ευθύνης",
-      ref: "gr.private_limited_company",
-    },
-    {
-      icon: "flag_gr",
-      country: "Greece (GR)",
-      description: "Monoprósopi Etaireía Periorisménis Euthínis / Μονοπρόσωπη",
-      ref: "gr.ltd_with_a_single_member",
-    },
-    {
-      icon: "flag_gr",
-      country: "Greece (GR)",
-      description: "Άλλο",
-      ref: "gr.other",
-    },
-    {
-      icon: "flag_gr",
-      country: "Greece (GR)",
-      description: "Συνεταιρισμός",
-      ref: "gr.association",
-    },
-    {
-      icon: "flag_gr",
-      country: "Greece (GR)",
-      description: "Ίδρυμα",
-      ref: "gr.foundation",
-    },
-    {
-      icon: "flag_hu",
-      country: "Hungary (HU)",
-      description: "Egyéni vállalkozó",
-      ref: "hu.sole_trader",
-    },
-    {
-      icon: "flag_hu",
-      country: "Hungary (HU)",
-      description: "Egyéni cég",
-      ref: "hu.registered_sole_trader",
-    },
-    {
-      icon: "flag_hu",
-      country: "Hungary (HU)",
-      description: "Betéti társaság",
-      ref: "hu.limited_partnership",
-    },
-    {
-      icon: "flag_hu",
-      country: "Hungary (HU)",
-      description: "Közkereseti társaság",
-      ref: "hu.general_partnership",
-    },
-    {
-      icon: "flag_hu",
-      country: "Hungary (HU)",
-      description: "Korlátolt felelősségű társaság",
-      ref: "hu.private_limited_company",
-    },
-    {
-      icon: "flag_hu",
-      country: "Hungary (HU)",
-      description: "Nyilvánosan működő részvénytársaság",
-      ref: "hu.public_limited_company",
-    },
-    {
-      icon: "flag_hu",
-      country: "Hungary (HU)",
-      description: "Zártközűen működő részvénytársaság",
-      ref: "hu.privately_held_company",
-    },
-    {
-      icon: "flag_hu",
-      country: "Hungary (HU)",
-      description: "Társaság",
-      ref: "hu.cooperative",
-    },
-    {
-      icon: "flag_hu",
-      country: "Hungary (HU)",
-      description: "Szövetség",
-      ref: "hu.association",
-    },
-    {
-      icon: "flag_hu",
-      country: "Hungary (HU)",
-      description: "Alapítvány",
-      ref: "hu.foundation",
-    },
-    {
-      icon: "flag_hu",
-      country: "Hungary (HU)",
-      description: "Más",
-      ref: "hu.other",
-    },
-    {
-      icon: "flag_ie",
-      country: "Ireland (IE)",
-      description: "Sole proprietorship / sole trader",
-      ref: "ie.sole_trader",
-    },
-    {
-      icon: "flag_ie",
-      country: "Ireland (IE)",
-      description: "All clubs or societies",
-      ref: "ie.society",
-    },
-    {
-      icon: "flag_ie",
-      country: "Ireland (IE)",
-      description: "All schools, colleges or universities",
-      ref: "ie.edu",
-    },
-    {
-      icon: "flag_ie",
-      country: "Ireland (IE)",
-      description: "All other legal forms",
-      ref: "ie.other",
-    },
-    {
-      icon: "flag_ie",
-      country: "Ireland (IE)",
-      description: "Private limited company",
-      ref: "ie.limited",
-    },
-    {
-      icon: "flag_ie",
-      country: "Ireland (IE)",
-      description: "All partnerships",
-      ref: "ie.partnership",
-    },
-    {
-      icon: "flag_it",
-      country: "Italy (IT)",
-      description: "Società a responsabilità limitata semplificata (Srls)",
-      ref: "it.srls",
-    },
-    {
-      icon: "flag_it",
-      country: "Italy (IT)",
-      description: "Società a responsabilità limitata unipersonale (Srl Uni)",
-      ref: "it.srl_uni",
-    },
-    {
-      icon: "flag_it",
-      country: "Italy (IT)",
-      description: "Società Semplice (S.s.)",
-      ref: "it.ss",
-    },
-    {
-      icon: "flag_it",
-      country: "Italy (IT)",
-      description: "Libero Professionista",
-      ref: "it.libero",
-    },
-    {
-      icon: "flag_it",
-      country: "Italy (IT)",
-      description: "Imprenditore individuale",
-      ref: "it.individuale",
-    },
-    {
-      icon: "flag_it",
-      country: "Italy (IT)",
-      description: "Società in nome collettivo (S.n.c.)",
-      ref: "it.snc",
-    },
-    {
-      icon: "flag_it",
-      country: "Italy (IT)",
-      description: "Società in accomandita semplice (S.a.s)",
-      ref: "it.sas",
-    },
-    {
-      icon: "flag_it",
-      country: "Italy (IT)",
-      description: "Società Cooperativa",
-      ref: "it.societa_cooperative",
-    },
-    {
-      icon: "flag_it",
-      country: "Italy (IT)",
-      description: "Società per Azioni (Spa)",
-      ref: "it.spa",
-    },
-    {
-      icon: "flag_it",
-      country: "Italy (IT)",
-      description: "Società a responsabilità limitata (Srl)",
-      ref: "it.srl",
-    },
-    {
-      icon: "flag_it",
-      country: "Italy (IT)",
-      description: "Società di capitali",
-      ref: "it.società_di_capitali",
-    },
-    {
-      icon: "flag_it",
-      country: "Italy (IT)",
-      description: "Società di persone",
-      ref: "it.società_di_persone",
-    },
-    {
-      icon: "flag_it",
-      country: "Italy (IT)",
-      description: "Società in accomandita per azioni",
-      ref: "it.siapa",
-    },
-    {
-      icon: "flag_it",
-      country: "Italy (IT)",
-      description: "Agenzia Statale",
-      ref: "it.agenzia_statale",
-    },
-    {
-      icon: "flag_it",
-      country: "Italy (IT)",
-      description: "Associazioni",
-      ref: "it.associazioni",
-    },
-    {
-      icon: "flag_lv",
-      country: "Latvia (LV)",
-      description: "Individuālais komersants",
-      ref: "lv.sole_trader",
-    },
-    {
-      icon: "flag_lv",
-      country: "Latvia (LV)",
-      description: "Komandītsabiedrība",
-      ref: "lv.limited_partnership",
-    },
-    {
-      icon: "flag_lv",
-      country: "Latvia (LV)",
-      description: "Pilnsabiedrība",
-      ref: "lv.general_partnership",
-    },
-    {
-      icon: "flag_lv",
-      country: "Latvia (LV)",
-      description: "Sabiedrība ar ierobežotu atbildību",
-      ref: "lv.private_limited_company",
-    },
-    {
-      icon: "flag_lv",
-      country: "Latvia (LV)",
-      description: "Akciju sabiedrība",
-      ref: "lv.public_limited_company",
-    },
-    {
-      icon: "flag_lv",
-      country: "Latvia (LV)",
-      description: "Asociācija",
-      ref: "lv.association",
-    },
-    {
-      icon: "flag_lv",
-      country: "Latvia (LV)",
-      description: "Fonds",
-      ref: "lv.foundation",
-    },
-    {
-      icon: "flag_lt",
-      country: "Lithuania (LT)",
-      description: "Individuali veikla",
-      ref: "lt.sole_trader",
-    },
-    {
-      icon: "flag_lt",
-      country: "Lithuania (LT)",
-      description: "Individuali įmonė",
-      ref: "lt.individual_company",
-    },
-    {
-      icon: "flag_lt",
-      country: "Lithuania (LT)",
-      description: "Tikroji ūkinė bendrija",
-      ref: "lt.general_partnership",
-    },
-    {
-      icon: "flag_lt",
-      country: "Lithuania (LT)",
-      description: "Komanditinė ūkinė bendrija",
-      ref: "lt.limited_partnership",
-    },
-    {
-      icon: "flag_lt",
-      country: "Lithuania (LT)",
-      description: "Mažoji bendrija",
-      ref: "lt.small_partnership",
-    },
-    {
-      icon: "flag_lt",
-      country: "Lithuania (LT)",
-      description: "Uždaroji akcinė bendrovė",
-      ref: "lt.private_limited_company",
-    },
-    {
-      icon: "flag_lt",
-      country: "Lithuania (LT)",
-      description: "Akcinė bendrovė",
-      ref: "lt.public_limited_company",
-    },
-    {
-      icon: "flag_lt",
-      country: "Lithuania (LT)",
-      description: "Kooperatinė bendrovė",
-      ref: "lt.cooperative",
-    },
-    {
-      icon: "flag_lt",
-      country: "Lithuania (LT)",
-      description: "Asociacija",
-      ref: "lt.association",
-    },
-    {
-      icon: "flag_lt",
-      country: "Lithuania (LT)",
-      description: "Fondas",
-      ref: "lt.foundation",
-    },
-    {
-      icon: "flag_lt",
-      country: "Lithuania (LT)",
-      description: "Kitas",
-      ref: "lt.other",
-    },
-    {
-      icon: "flag_lu",
-      country: "Luxembourg (LU)",
-      description: "Entrepreneur Individual",
-      ref: "lu.sole_trader",
-    },
-    {
-      icon: "flag_lu",
-      country: "Luxembourg (LU)",
-      description: "Société en commandite simple",
-      ref: "lu.limited_partnership",
-    },
-    {
-      icon: "flag_lu",
-      country: "Luxembourg (LU)",
-      description: "Sociéteé civil or sociéteé en nom collectif",
-      ref: "lu.general_partnership",
-    },
-    {
-      icon: "flag_lu",
-      country: "Luxembourg (LU)",
-      description: "Société en commandité par actions",
-      ref: "lu.partnership_limited_by_shares",
-    },
-    {
-      icon: "flag_lu",
-      country: "Luxembourg (LU)",
-      description: "Société à responsabilitée limitée",
-      ref: "lu.private_limited_company",
-    },
-    {
-      icon: "flag_lu",
-      country: "Luxembourg (LU)",
-      description: "Société anonyme",
-      ref: "lu.public_limited_company",
-    },
-    {
-      icon: "flag_lu",
-      country: "Luxembourg (LU)",
-      description: "Société co-opérative",
-      ref: "lu.cooperative",
-    },
-    {
-      icon: "flag_lu",
-      country: "Luxembourg (LU)",
-      description: "Association",
-      ref: "lu.association",
-    },
-    {
-      icon: "flag_lu",
-      country: "Luxembourg (LU)",
-      description: "Autres",
-      ref: "lu.other",
-    },
-    {
-      icon: "flag_mt",
-      country: "Malta (MT)",
-      description: "Sole trader",
-      ref: "mt.sole_trader",
-    },
-    {
-      icon: "flag_mt",
-      country: "Malta (MT)",
-      description: "Limited partnership",
-      ref: "mt.limited_partnership",
-    },
-    {
-      icon: "flag_mt",
-      country: "Malta (MT)",
-      description: "General partnership",
-      ref: "mt.general_partnership",
-    },
-    {
-      icon: "flag_mt",
-      country: "Malta (MT)",
-      description: "Private limited company",
-      ref: "mt.private_limited_company",
-    },
-    {
-      icon: "flag_mt",
-      country: "Malta (MT)",
-      description: "Public limited company",
-      ref: "mt.public_limited_company",
-    },
-    {
-      icon: "flag_mt",
-      country: "Malta (MT)",
-      description: "Association",
-      ref: "mt.associations",
-    },
-    {
-      icon: "flag_mt",
-      country: "Malta (MT)",
-      description: "Foundation",
-      ref: "mt.foundation",
-    },
-    {
-      icon: "flag_mt",
-      country: "Malta (MT)",
-      description: "Other",
-      ref: "mt.other",
-    },
-    {
-      icon: "flag_mx",
-      country: "Mexico (MX)",
-      description: "Persona fisica",
-      ref: "mx.persona_fisica",
-    },
-    {
-      icon: "flag_mx",
-      country: "Mexico (MX)",
-      description: "Persona moral",
-      ref: "mx.persona_moral",
-    },
-    {
-      icon: "flag_mx",
-      country: "Mexico (MX)",
-      description: "Empresa sin fin de lucro",
-      ref: "mx.empresa_sin_fin_de_lucro",
-    },
-    {
-      icon: "flag_nl",
-      country: "Netherlands (NL)",
-      description: "Zzp (Zelfstandige Zonder Personeel)",
-      ref: "nl.zzp",
-    },
-    {
-      icon: "flag_nl",
-      country: "Netherlands (NL)",
-      description: "Eenmanszaak (KvK registratie)",
-      ref: "nl.kvk",
-    },
-    {
-      icon: "flag_nl",
-      country: "Netherlands (NL)",
-      description: "Maatschap",
-      ref: "nl.maatschap",
-    },
-    {
-      icon: "flag_nl",
-      country: "Netherlands (NL)",
-      description: "Vennootschap Onder Firma (VOF)",
-      ref: "nl.vof",
-    },
-    {
-      icon: "flag_nl",
-      country: "Netherlands (NL)",
-      description: "Commanditaire Vennootschap (CV)",
-      ref: "nl.cv",
-    },
-    {
-      icon: "flag_nl",
-      country: "Netherlands (NL)",
-      description: "Naamloze Vennootschap (NV)",
-      ref: "nl.nv",
-    },
-    {
-      icon: "flag_nl",
-      country: "Netherlands (NL)",
-      description: "Besloten Vennootschap (BV)",
-      ref: "nl.bv",
-    },
-    {
-      icon: "flag_nl",
-      country: "Netherlands (NL)",
-      description: "Stichting",
-      ref: "nl.stichting",
-    },
-    {
-      icon: "flag_nl",
-      country: "Netherlands (NL)",
-      description: "Vereniging met volledige rechtsbevoegdheid",
-      ref: "nl.vvr",
-    },
-    {
-      icon: "flag_nl",
-      country: "Netherlands (NL)",
-      description: "Vereniging met beperkte rechtsbevoegdheid",
-      ref: "nl.vbr",
-    },
-    {
-      icon: "flag_nl",
-      country: "Netherlands (NL)",
-      description: "Coöperatie en Onderlinge Waarborgmaatschappij",
-      ref: "nl.cow",
-    },
-    {
-      icon: "flag_nl",
-      country: "Netherlands (NL)",
-      description: "Overheidsinstelling",
-      ref: "nl.overheidsinstelling",
-    },
-    {
-      icon: "flag_nl",
-      country: "Netherlands (NL)",
-      description: "Vereniging",
-      ref: "nl.vereniging",
-    },
-    {
-      icon: "flag_no",
-      country: "Norway (NO)",
-      description: "Enkeltpersonforetak",
-      ref: "no.sole_trader",
-    },
-    {
-      icon: "flag_no",
-      country: "Norway (NO)",
-      description: "Kommandittselsjap",
-      ref: "no.limited_partnership",
-    },
-    {
-      icon: "flag_no",
-      country: "Norway (NO)",
-      description: "Ansvarlig Selskap",
-      ref: "no.general_partnership",
-    },
-    {
-      icon: "flag_no",
-      country: "Norway (NO)",
-      description: "Aksjeselskap",
-      ref: "no.private_limited_company",
-    },
-    {
-      icon: "flag_no",
-      country: "Norway (NO)",
-      description: "Allmennaksjeselskap",
-      ref: "no.public_limited_company",
-    },
-    {
-      icon: "flag_no",
-      country: "Norway (NO)",
-      description: "Samvirkeforetak",
-      ref: "no.cooperative",
-    },
-    {
-      icon: "flag_no",
-      country: "Norway (NO)",
-      description: "Stiftelse",
-      ref: "no.foundation",
-    },
-    {
-      icon: "flag_no",
-      country: "Norway (NO)",
-      description: "Forening",
-      ref: "no.association",
-    },
-    {
-      icon: "flag_no",
-      country: "Norway (NO)",
-      description: "Norskregistrert Utenlandsk Foretak",
-      ref: "no.norwegian_registered_foreign_enterprise",
-    },
-    {
-      icon: "flag_no",
-      country: "Norway (NO)",
-      description: "Annen",
-      ref: "no.other",
-    },
-    {
-      icon: "flag_pe",
-      country: "Peru (PE)",
-      description: "Persona Natural",
-      ref: "pe.pers",
-    },
-    {
-      icon: "flag_pe",
-      country: "Peru (PE)",
-      description: "Empresa Unipersonal (E.U.)",
-      ref: "pe.eu",
-    },
-    {
-      icon: "flag_pe",
-      country: "Peru (PE)",
-      description: "Empresa Individual de Responsabilidad Limitada (E.I.R.L.)",
-      ref: "pe.eirl",
-    },
-    {
-      icon: "flag_pe",
-      country: "Peru (PE)",
-      description: "Sociedad Anónima (S.A.)",
-      ref: "pe.sa",
-    },
-    {
-      icon: "flag_pe",
-      country: "Peru (PE)",
-      description: "Sociedad Anónima Abierta (S.A.A.)",
-      ref: "pe.saa",
-    },
-    {
-      icon: "flag_pe",
-      country: "Peru (PE)",
-      description: "Sociedad Anónima Cerrada (S.A.C.)",
-      ref: "pe.sac",
-    },
-    {
-      icon: "flag_pe",
-      country: "Peru (PE)",
-      description: "Sociedad Comercial de Responsabilidad Limitada  (S.R.L.)",
-      ref: "pe.srl",
-    },
-    {
-      icon: "flag_pe",
-      country: "Peru (PE)",
-      description: "Sociedad por Acciones Cerrada Simplificada (S.A.C.S.)",
-      ref: "pe.sacs",
-    },
-    {
-      icon: "flag_pe",
-      country: "Peru (PE)",
-      description: "Associación",
-      ref: "pe.associación",
-    },
-    {
-      icon: "flag_pe",
-      country: "Peru (PE)",
-      description: "Fundación",
-      ref: "pe.fundación",
-    },
-    {
-      icon: "flag_pe",
-      country: "Peru (PE)",
-      description: "Comité",
-      ref: "pe.comité",
-    },
-    {
-      icon: "flag_pl",
-      country: "Poland (PL)",
-      description: "Spółka Cywilna",
-      ref: "pl.cywilna",
-    },
-    {
-      icon: "flag_pl",
-      country: "Poland (PL)",
-      description: "Indywidualna działalność gospodarcza",
-      ref: "pl.indywidualna",
-    },
-    {
-      icon: "flag_pl",
-      country: "Poland (PL)",
-      description: "Stowarzyszenie/Fundacja",
-      ref: "pl.stowarzyszenie_fundacja",
-    },
-    {
-      icon: "flag_pl",
-      country: "Poland (PL)",
-      description: "spółka komandytowo-akcyjna",
-      ref: "pl.komandytowo-akcyjna",
-    },
-    {
-      icon: "flag_pl",
-      country: "Poland (PL)",
-      description: "spółka komandytowa",
-      ref: "pl.komandytowa",
-    },
-    {
-      icon: "flag_pl",
-      country: "Poland (PL)",
-      description: "spółka jawna",
-      ref: "pl.jawna",
-    },
-    {
-      icon: "flag_pl",
-      country: "Poland (PL)",
-      description: "spółka akcyjna",
-      ref: "pl.akcyjna",
-    },
-    {
-      icon: "flag_pl",
-      country: "Poland (PL)",
-      description: "spółka z o.o.",
-      ref: "pl.zoo",
-    },
-    {
-      icon: "flag_pl",
-      country: "Poland (PL)",
-      description: "spółka partnerska",
-      ref: "pl.partnerska",
-    },
-    {
-      icon: "flag_pt",
-      country: "Portugal (PT)",
-      description: "Empresário em nome individual",
-      ref: "pt.eni",
-    },
-    {
-      icon: "flag_pt",
-      country: "Portugal (PT)",
-      description: "Associação/Organização sem fins lucrativos",
-      ref: "pt.asfl",
-    },
-    {
-      icon: "flag_pt",
-      country: "Portugal (PT)",
-      description: "Sociedade Civil",
-      ref: "pt.sociedad",
-    },
-    {
-      icon: "flag_pt",
-      country: "Portugal (PT)",
-      description: "Sociedade por Quotas",
-      ref: "pt.sociedad_limitada",
-    },
-    {
-      icon: "flag_pt",
-      country: "Portugal (PT)",
-      description: "Sociedade Anônima",
-      ref: "pt.sociedad_anonima",
-    },
-    {
-      icon: "flag_pt",
-      country: "Portugal (PT)",
-      description: "Sociedade em Comandita",
-      ref: "pt.sociedad_comanditaria",
-    },
-    {
-      icon: "flag_pt",
-      country: "Portugal (PT)",
-      description: "Sociedade em Nome Colectivo",
-      ref: "pt.sociedad_colectiva",
-    },
-    {
-      icon: "flag_pt",
-      country: "Portugal (PT)",
-      description: "Cooperativas",
-      ref: "pt.sociedad_cooperativa",
-    },
-    {
-      icon: "flag_pt",
-      country: "Portugal (PT)",
-      description: "Espresa Estatal",
-      ref: "pt.state_agency",
-    },
-    {
-      icon: "flag_pt",
-      country: "Portugal (PT)",
-      description: "Pessoas Colectivas de Direito Público",
-      ref: "pt.pcdp",
-    },
-    {
-      icon: "flag_ro",
-      country: "Romania (RO)",
-      description: "Persoana fizica autorizata",
-      ref: "ro.sole_trader",
-    },
-    {
-      icon: "flag_ro",
-      country: "Romania (RO)",
-      description: "Asociere fără personalitate juridică",
-      ref: "ro.unregistered_partnership",
-    },
-    {
-      icon: "flag_ro",
-      country: "Romania (RO)",
-      description: "Societatea în nume colectiv",
-      ref: "ro.general_partnership",
-    },
-    {
-      icon: "flag_ro",
-      country: "Romania (RO)",
-      description: "Societatea în comandită simplă",
-      ref: "ro.limited_partnership",
-    },
-    {
-      icon: "flag_ro",
-      country: "Romania (RO)",
-      description: "Societatea în comandită pe acțiuni,",
-      ref: "ro.partnership_limited_by_shares",
-    },
-    {
-      icon: "flag_ro",
-      country: "Romania (RO)",
-      description: "Societatea pe acțiuni",
-      ref: "ro.public_limited_company",
-    },
-    {
-      icon: "flag_ro",
-      country: "Romania (RO)",
-      description: "Societatea cu răspundere limitată",
-      ref: "ro.private_limited_company",
-    },
-    {
-      icon: "flag_ro",
-      country: "Romania (RO)",
-      description: "Societatea cu răspundere limitată cu proprietar unic",
-      ref: "ro.private_limited_company_with_sole_owner",
-    },
-    {
-      icon: "flag_ro",
-      country: "Romania (RO)",
-      description: "Cooperativă",
-      ref: "ro.cooperative",
-    },
-    {
-      icon: "flag_ro",
-      country: "Romania (RO)",
-      description: "Asociație",
-      ref: "ro.association",
-    },
-    {
-      icon: "flag_ro",
-      country: "Romania (RO)",
-      description: "Fundație",
-      ref: "ro.foundation",
-    },
-    {
-      icon: "flag_ro",
-      country: "Romania (RO)",
-      description: "Alt",
-      ref: "ro.other",
-    },
-    {
-      icon: "flag_sk",
-      country: "Slovakia (SK)",
-      description: "akciová spoločnosť",
-      ref: "sk.public_limited_company",
-    },
-    {
-      icon: "flag_sk",
-      country: "Slovakia (SK)",
-      description: "verejná obchodná spoločnosť",
-      ref: "sk.general_partnership",
-    },
-    {
-      icon: "flag_sk",
-      country: "Slovakia (SK)",
-      description: "komanditná spoločnosť",
-      ref: "sk.limited_partnership",
-    },
-    {
-      icon: "flag_sk",
-      country: "Slovakia (SK)",
-      description: "spoločnosť s ručením obmedzeným",
-      ref: "sk.private_limited_company",
-    },
-    {
-      icon: "flag_sk",
-      country: "Slovakia (SK)",
-      description: "živnostník",
-      ref: "sk.sole_trader",
-    },
-    {
-      icon: "flag_sk",
-      country: "Slovakia (SK)",
-      description: "Združenie bez právnej subjektivity",
-      ref: "sk.unregistered_partnership",
-    },
-    {
-      icon: "flag_sk",
-      country: "Slovakia (SK)",
-      description: "Združenie",
-      ref: "sk.association",
-    },
-    {
-      icon: "flag_sk",
-      country: "Slovakia (SK)",
-      description: "Nadácia",
-      ref: "sk.foundation",
-    },
-    {
-      icon: "flag_sk",
-      country: "Slovakia (SK)",
-      description: "Podnik / Organizačná zložka podniku zahraničnej osob",
-      ref: "sk.enterprise_or_foreign_company",
-    },
-    {
-      icon: "flag_sk",
-      country: "Slovakia (SK)",
-      description: "Iný",
-      ref: "sk.other",
-    },
-    {
-      icon: "flag_sk",
-      country: "Slovakia (SK)",
-      description: "Družstvo",
-      ref: "sk.cooperative",
-    },
-    {
-      icon: "flag_si",
-      country: "Slovenia (SI)",
-      description: "Komanditna delniška družba",
-      ref: "si.partnership_limited_by_shares",
-    },
-    {
-      icon: "flag_si",
-      country: "Slovenia (SI)",
-      description: "Združenje",
-      ref: "si.foundation",
-    },
-    {
-      icon: "flag_si",
-      country: "Slovenia (SI)",
-      description: "Samostojni podjetnik",
-      ref: "si.sole_trader",
-    },
-    {
-      icon: "flag_si",
-      country: "Slovenia (SI)",
-      description: "Komanditna družba",
-      ref: "si.limited_partnership",
-    },
-    {
-      icon: "flag_si",
-      country: "Slovenia (SI)",
-      description: "Družba z neomejeno odgovornostjo",
-      ref: "si.private_unlimited_company",
-    },
-    {
-      icon: "flag_si",
-      country: "Slovenia (SI)",
-      description: "Družba z omejeno odgovornostjo",
-      ref: "si.private_limited_company",
-    },
-    {
-      icon: "flag_si",
-      country: "Slovenia (SI)",
-      description: "Delniška družba",
-      ref: "si.public_limited_company",
-    },
-    {
-      icon: "flag_si",
-      country: "Slovenia (SI)",
-      description: "Zadruga",
-      ref: "si.cooperative",
-    },
-    {
-      icon: "flag_si",
-      country: "Slovenia (SI)",
-      description: "Druga",
-      ref: "si.other",
-    },
-    {
-      icon: "flag_si",
-      country: "Slovenia (SI)",
-      description: "Društvo, zveza društev",
-      ref: "si.association",
-    },
-    {
-      icon: "flag_es",
-      country: "Spain (ES)",
-      description: "Empresario Individual/autónomo",
-      ref: "es.autonomo",
-    },
-    {
-      icon: "flag_es",
-      country: "Spain (ES)",
-      description: "Comunidad de Bienes",
-      ref: "es.comunidad",
-    },
-    {
-      icon: "flag_es",
-      country: "Spain (ES)",
-      description: "Sociedad Civil",
-      ref: "es.sociedad",
-    },
-    {
-      icon: "flag_es",
-      country: "Spain (ES)",
-      description: "Asociaciones sin ánimo de lucro",
-      ref: "es.asociaciones",
-    },
-    {
-      icon: "flag_es",
-      country: "Spain (ES)",
-      description: "Sociedad Colectiva",
-      ref: "es.sociedad_colectiva",
-    },
-    {
-      icon: "flag_es",
-      country: "Spain (ES)",
-      description: "Sociedad Limitada",
-      ref: "es.sociedad_limitada",
-    },
-    {
-      icon: "flag_es",
-      country: "Spain (ES)",
-      description: "Sociedad Anónima",
-      ref: "es.sociedad_anonima",
-    },
-    {
-      icon: "flag_es",
-      country: "Spain (ES)",
-      description: "Sociedad Comanditaria",
-      ref: "es.sociedad_comanditaria",
-    },
-    {
-      icon: "flag_es",
-      country: "Spain (ES)",
-      description: "Sociedad Cooperativa",
-      ref: "es.sociedad_cooperativa",
-    },
-    {
-      icon: "flag_es",
-      country: "Spain (ES)",
-      description: "Agencia Estatal",
-      ref: "es.state_agency",
-    },
-    {
-      icon: "flag_se",
-      country: "Sweden (SE)",
-      description: "Enskildnärings - verksamhet",
-      ref: "se.sole_trader",
-    },
-    {
-      icon: "flag_se",
-      country: "Sweden (SE)",
-      description: "Kommanditbolag",
-      ref: "se.limited_partnership",
-    },
-    {
-      icon: "flag_se",
-      country: "Sweden (SE)",
-      description: "Aktiebolag",
-      ref: "se.limited",
-    },
-    {
-      icon: "flag_se",
-      country: "Sweden (SE)",
-      description: "Handelsbolag",
-      ref: "se.trading_partnership",
-    },
-    {
-      icon: "flag_se",
-      country: "Sweden (SE)",
-      description: "Förening",
-      ref: "se.economic_association",
-    },
-    {
-      icon: "flag_ch",
-      country: "Switzerland (CH)",
-      description: "Kollektivgesellschaft",
-      ref: "ch.kollektivgesellschaft",
-    },
-    {
-      icon: "flag_ch",
-      country: "Switzerland (CH)",
-      description: "Kollektivgesellschaft (OLD)",
-      ref: "ch.kollektivgesellschaft",
-    },
-    {
-      icon: "flag_ch",
-      country: "Switzerland (CH)",
-      description: "Einzelfirma",
-      ref: "ch.einzelfirma",
-    },
-    {
-      icon: "flag_ch",
-      country: "Switzerland (CH)",
-      description: "Kommanditgesellschaft",
-      ref: "ch.kommanditgesellschaft",
-    },
-    {
-      icon: "flag_ch",
-      country: "Switzerland (CH)",
-      description: "Gesellschaft mit beschränkter Haftung",
-      ref: "ch.gesellschaft_haftung",
-    },
-    {
-      icon: "flag_ch",
-      country: "Switzerland (CH)",
-      description: "Aktiengesellschaft/ Société anonyme",
-      ref: "ch.aktiengesellschaft_societe",
-    },
-    {
-      icon: "flag_ch",
-      country: "Switzerland (CH)",
-      description: "Verein",
-      ref: "ch.ch_verein",
-    },
-    {
-      icon: "flag_ch",
-      country: "Switzerland (CH)",
-      description: "Einfache Gesellschaft",
-      ref: "ch.einfachegesellschaft",
-    },
-    {
-      icon: "flag_gb",
-      country: "United Kingdom (GB)",
-      description: "All partnerships",
-      ref: "gb.partnership",
-    },
-    {
-      icon: "flag_gb",
-      country: "United Kingdom (GB)",
-      description: "Sole proprietorship / sole trader",
-      ref: "gb.sole_trader",
-    },
-    {
-      icon: "flag_gb",
-      country: "United Kingdom (GB)",
-      description: "All clubs or societies",
-      ref: "gb.society",
-    },
-    {
-      icon: "flag_gb",
-      country: "United Kingdom (GB)",
-      description: "All schools, colleges or universities",
-      ref: "gb.edu",
-    },
-    {
-      icon: "flag_gb",
-      country: "United Kingdom (GB)",
-      description: "All other legal forms",
-      ref: "gb.other",
-    },
-    {
-      icon: "flag_gb",
-      country: "United Kingdom (GB)",
-      description: "Private limited company",
-      ref: "gb.limited",
-    },
-    {
-      icon: "flag_us",
-      country: "United States (US)",
-      description: "Limited Partnership",
-      ref: "us.partnership",
-    },
-    {
-      icon: "flag_us",
-      country: "United States (US)",
-      description: "Limited Liability Partnership",
-      ref: "us.llp",
-    },
-    {
-      icon: "flag_us",
-      country: "United States (US)",
-      description: "Limited Liability Limited Partnership",
-      ref: "us.lllp",
-    },
-    {
-      icon: "flag_us",
-      country: "United States (US)",
-      description: "Limited Company",
-      ref: "us.lc",
-    },
-    {
-      icon: "flag_us",
-      country: "United States (US)",
-      description: "Limited Liability Company",
-      ref: "us.llc",
-    },
-    {
-      icon: "flag_us",
-      country: "United States (US)",
-      description: "Professional Limited Liability Company",
-      ref: "us.pllc",
-    },
-    {
-      icon: "flag_us",
-      country: "United States (US)",
-      description: "Single Member Limited Liability Company",
-      ref: "us.smllc",
-    },
-    {
-      icon: "flag_us",
-      country: "United States (US)",
-      description: "Corporation Incorporated",
-      ref: "us.corp_inc",
-    },
-    {
-      icon: "flag_us",
-      country: "United States (US)",
-      description: "Professional Corporation",
-      ref: "us.pc",
-    },
-    {
-      icon: "flag_us",
-      country: "United States (US)",
-      description: "Non-profit Organisation",
-      ref: "us.uba_org",
-    },
-    {
-      icon: "flag_us",
-      country: "United States (US)",
-      description: "Sole proprietorship",
-      ref: "us.sole_trader",
-    },
-  ]}
-  tableLayout="auto"
-/>
+<SearchableTable searchPlaceholder="Search legal types">
+
+| Country | Description | Reference |
+| --- | --- | --- |
+| Argentina (AR) | Persona Natural | `ar.pers` |
+| Argentina (AR) | Empresa Unipersonal (E.U.) | `ar.eu` |
+| Argentina (AR) | Sociedad Anónima (S.A.) | `ar.sa` |
+| Argentina (AR) | Sociedad Anónima Unipersonal (S.A.U.) | `ar.sau` |
+| Argentina (AR) | Sociedad Anónima Cerrada (S.A.C.) | `ar.sas` |
+| Argentina (AR) | Sociedad de Responsabilidad Limitada  (S.R.L.) | `ar.srl` |
+| Argentina (AR) | Sociedad Colectiva | `ar.sociedad_colectiva` |
+| Argentina (AR) | Sociedad en Comandita por Acciones | `ar.sociedad_en_comandita_por_acciones` |
+| Argentina (AR) | Sociedad en Comandita Simple | `ar.sociedad_en_comandita_simple` |
+| Argentina (AR) | Asociación Civil | `ar.asociación_civil` |
+| Argentina (AR) | Fundación | `ar.fundación` |
+| Australia (AU) | Agent | `au.agt` |
+| Australia (AU) | Trust | `au.trust` |
+| Australia (AU) | Co-operative | `au.coop` |
+| Australia (AU) | Sole Trader | `au.st` |
+| Australia (AU) | Company | `au.co` |
+| Australia (AU) | Partnership | `au.pship` |
+| Australia (AU) | Association | `au.assoc` |
+| Austria (AT) | Alle nicht registrierten Einzelunternehmen und freien Berufe ohne andere Gesellschaftsform | `at.freiberufler` |
+| Austria (AT) | Eingetragenes Einzelunternehmen (e. U.) | `at.eu` |
+| Austria (AT) | Gesellschaft bürgerlichen Rechts (GesbR) | `at.gesbr` |
+| Austria (AT) | Offene Gesellschaft (OG) | `at.og` |
+| Austria (AT) | Kommanditgesellschaft (KG) | `at.kg` |
+| Austria (AT) | Gesellschaft mit beschränkter Haftung (GmbH) | `at.gmbh` |
+| Austria (AT) | Aktiengesellschaft (AG) | `at.ag` |
+| Austria (AT) | Verein | `at.verein` |
+| Austria (AT) | Andere Rechtsformen | `at.andere` |
+| Belgium (BE) | Entreprise individuelle | `be.ei` |
+| Belgium (BE) | Partenariat | `be.partenariat` |
+| Belgium (BE) | Société en Nom Collectif (SNC) | `be.vof` |
+| Belgium (BE) | Société en Commandite par Action (SCA) | `be.sca` |
+| Belgium (BE) | Société en Commandite Simple (SCS) | `be.cv` |
+| Belgium (BE) | Société Anonyme (SA) | `be.nv` |
+| Belgium (BE) | Société à responsabilité limitée (S.R.L.) | `be.sprl` |
+| Belgium (BE) | Fondations | `be.stichting` |
+| Belgium (BE) | Association Sans But Lucratif (ASBL) | `be.asbl` |
+| Belgium (BE) | Société Coopérative à Responsabilité Limitée (SC/SCRL) | `be.scscrl` |
+| Belgium (BE) | Société Coopérative à Responsabilité Illimitée (SCRI) | `be.scri` |
+| Belgium (BE) | Agence Publique | `be.state_agency` |
+| Brazil (BR) | Pessoa Física | `br.pessoa_fisica` |
+| Brazil (BR) | LTDA | `br.ltda` |
+| Brazil (BR) | S/A Capital Aberto | `br.sa_capital_aberto` |
+| Brazil (BR) | S/A Capital Fechado | `br.sa_capital_fechado` |
+| Brazil (BR) | Sociedade Simples | `br.sociedade_simples` |
+| Brazil (BR) | Cooperativa | `br.cooperativa` |
+| Brazil (BR) | Associação | `br.associacao` |
+| Brazil (BR) | Fundação | `br.fundacao` |
+| Brazil (BR) | Outros | `br.outros` |
+| Brazil (BR) | Entidade Sindical | `br.entidade_sindical` |
+| Brazil (BR) | Empresa de Pequeno Porte (EPP) | `br.empresa_pequeno_porte` |
+| Brazil (BR) | Empresa Individual de Responsabilidade Limitada (Eireli) | `br.eireli` |
+| Brazil (BR) | Pessoa Jurídica payleven | `br.pessoa_juridica_payleven` |
+| Brazil (BR) | Micro Empreendedor Individual (MEI) | `br.empresario_individual` |
+| Brazil (BR) | Pessoa Jurídica | `br.pessoa_juridica` |
+| Brazil (BR) | Empresa individual (EI) | `br.empresa_individual` |
+| Bulgaria (BG) | Събирателно дружество | `bg.general_partnership` |
+| Bulgaria (BG) | Командитно дружество | `bg.limited_partnership` |
+| Bulgaria (BG) | Командитно дружество с акции | `bg.limited_partnership_with_shares` |
+| Bulgaria (BG) | Дружество с ограничена oтговорност | `bg.private_limited_company` |
+| Bulgaria (BG) | Еднолично дружество с ограничена отговорност | `bg.private_limited_company_with_a_single_member` |
+| Bulgaria (BG) | Акционерно дружество | `bg.joint-stock_company` |
+| Bulgaria (BG) | Консорциум | `bg.association` |
+| Bulgaria (BG) | Фондация | `bg.foundation` |
+| Bulgaria (BG) | Кооперация | `bg.cooperative` |
+| Bulgaria (BG) | Друго | `bg.other` |
+| Bulgaria (BG) | Едноличен търговец | `bg.sole_trader` |
+| Bulgaria (BG) | Професионалист на свободна практика | `bg.freelancer` |
+| Bulgaria (BG) | Еднолично акционерно дружество | `bg.sole_shareholding_company` |
+| Canada (CA) | Sole proprietorship | `ca.sp` |
+| Canada (CA) | Private company | `ca.bsns` |
+| Canada (CA) | Listed public company | `ca.lpc` |
+| Canada (CA) | Governmental organization | `ca.gorg` |
+| Canada (CA) | Association incorporated | `ca.asinc` |
+| Canada (CA) | Nonprofit or charitable organisation | `ca.npro` |
+| Canada (CA) | Unincorporated partnership | `ca.unincpar` |
+| Canada (CA) | Incorporated partnership | `ca.pship` |
+| Chile (CL) | Persona Natural | `cl.sole_trader` |
+| Chile (CL) | Sociedad de Responsabilidad Limitada | `cl.ltda` |
+| Chile (CL) | Sociedad Anónima | `cl.sa` |
+| Chile (CL) | Sociedad por Acciones | `cl.sca` |
+| Chile (CL) | Empresas Individuales de Responsabilidad Limitada | `cl.eirl` |
+| Chile (CL) | Sociedad en Comandita Simple | `cl.scs` |
+| Colombia (CO) | Sociedad por Acciones Simplificadas (S.A.S.) | `co.sas` |
+| Colombia (CO) | Sociedad de Responsabilidad Limitada (Ltda.) | `co.ltda` |
+| Colombia (CO) | Sociedad Colectiva (S.C.) | `co.sc` |
+| Colombia (CO) | Sociedad Comandita Simple (S. en C.) | `co.sec` |
+| Colombia (CO) | Persona Natural | `co.pers` |
+| Colombia (CO) | Empresa Unipersonal (E.U.) | `co.eu` |
+| Colombia (CO) | Sociedad Comandita por Acciones (S.C.A.) | `co.sca` |
+| Colombia (CO) | Sociedad Anónima (S.A.) | `co.sa` |
+| Croatia (HR) | udruga | `hr.association_new` |
+| Croatia (HR) | obrt | `hr.sole_trader_new` |
+| Croatia (HR) | javno trgovačko društvo | `hr.general_partnership_new` |
+| Croatia (HR) | komanditno društvo | `hr.limited_partnership_new` |
+| Croatia (HR) | društvo s ograničenom odgovornošću | `hr.private_limited_company_new` |
+| Croatia (HR) | dioničko društvo | `hr.public_limited_company_new` |
+| Croatia (HR) | zadruga | `hr.cooperative_new` |
+| Croatia (HR) | Drugo | `hr.other_new` |
+| Croatia (HR) | Ortaštvo | `hr.partnership_of_two_or_more_sole_traders_new` |
+| Cyprus (CY) | Δημόσια εταιρεία περιορισμένης ευθύνης | `cy.public_limited_company` |
+| Cyprus (CY) | Ατομική επιχείρηση | `cy.sole_trader` |
+| Cyprus (CY) | Εταιρεία περιορισμένης ευθύνης δια μετοχών | `cy.private_limited_company` |
+| Cyprus (CY) | Άλλο | `cy.other` |
+| Cyprus (CY) | Εταιρεία περιορισμένης ευθύνης με εγγύηση | `cy.company_limited_by_guarantee` |
+| Cyprus (CY) | Ομόρρυθμη εταιρεία | `cy.general_partnership` |
+| Cyprus (CY) | Συνεταιρισμός | `cy.associations` |
+| Cyprus (CY) | Ίδρυμα | `cy.foundation` |
+| Cyprus (CY) | Ετερόρρυθμη εταιρεία | `cy.limited_partnership` |
+| Czech Republic (CZ) | Živnost | `cz.sole_trader` |
+| Czech Republic (CZ) | Společnost | `cz.unregistered_partnership` |
+| Czech Republic (CZ) | Veřejná obchodní společnost | `cz.general_partnership` |
+| Czech Republic (CZ) | Komanditní společnost | `cz.limited_partnerhip` |
+| Czech Republic (CZ) | Společnost s ručením omezeným | `cz.private_limited_company` |
+| Czech Republic (CZ) | Akciová společnost | `cz.public_limited_company` |
+| Czech Republic (CZ) | Družstvo | `cz.cooperative` |
+| Czech Republic (CZ) | Zapsaný spolek | `cz.association` |
+| Czech Republic (CZ) | Nadační fond | `cz.foundation` |
+| Czech Republic (CZ) | jiný | `cz.other` |
+| Denmark (DK) | Enkeltmandsvirksomhed | `dk.sole_trader` |
+| Denmark (DK) | Interessentskab | `dk.general_partnership` |
+| Denmark (DK) | Kommanditselskab | `dk.limited_partnership` |
+| Denmark (DK) | Partnerselskab or Kommanditaktieselskab | `dk.partnership_limited_by_shares` |
+| Denmark (DK) | Anpartsselskab | `dk.private_limited_company` |
+| Denmark (DK) | Aktieselskab | `dk.public_limited_company` |
+| Denmark (DK) | Andelsselskab med begrænset ansvar | `dk.limited_liability_co-operative` |
+| Denmark (DK) | Forening med begrænset ansvar | `dk.limited_liability_voluntary_association` |
+| Denmark (DK) | Forening | `dk.association` |
+| Denmark (DK) | Erhvervsdrivende fond | `dk.commercial_foundation` |
+| Denmark (DK) | Ikke-erhvervsdrivende fond | `dk.non_commercial_foundation` |
+| Denmark (DK) | Anden | `dk.other` |
+| Estonia (EE) | Füüsilisest Isikust Ettevõtja | `ee.sole_trader` |
+| Estonia (EE) | Täisühing | `ee.general_partnership` |
+| Estonia (EE) | Usaldusühing | `ee.limited_partnership` |
+| Estonia (EE) | Osaühing | `ee.private_limited_company` |
+| Estonia (EE) | Aktsiaselts | `ee.public_limited_company` |
+| Estonia (EE) | Ühistu | `ee.cooperative` |
+| Estonia (EE) | Muud liiki | `ee.other` |
+| Estonia (EE) | Tulundusühistu | `ee.commercial_association` |
+| Finland (FI) | Avoin yhtiö | `fi.general_partnership` |
+| Finland (FI) | Kommandiittiyhtiö | `fi.limited_partnership` |
+| Finland (FI) | Osakeyhtiö | `fi.private_limited_company` |
+| Finland (FI) | Julkinen osakeyhtiö | `fi.public_limited_company` |
+| Finland (FI) | Osuuskunta | `fi.cooperative` |
+| Finland (FI) | Rekisteröity yhdistys | `fi.registered_association` |
+| Finland (FI) | Säätiö | `fi.foundation` |
+| Finland (FI) | Muut | `fi.other` |
+| Finland (FI) | Yksityinen elinkeinonharjoittaja | `fi.sole_trader` |
+| France (FR) | Entrepreneur Individuel is a sole trader legal type. | `fr.ei` |
+| France (FR) | EURL | `fr.eurl` |
+| France (FR) | SARL | `fr.sarl` |
+| France (FR) | SA | `fr.sa` |
+| France (FR) | SAS | `fr.sas` |
+| France (FR) | SASU | `fr.sasu` |
+| France (FR) | SNC | `fr.snc` |
+| France (FR) | Association | `fr.association` |
+| France (FR) | Autres | `fr.autres` |
+| Germany (DE) | Alle nicht registrierten Einzelunternehmen und freien Berufe ohne andere Gesellschaftsform | `de.freiberufler` |
+| Germany (DE) | Eingetragener Kaufmann / Eingetragene Kauffrau (e.K., e.Kfm. oder e.Kfr.) | `de.ekfr` |
+| Germany (DE) | Gesellschaft bürgerlichen Rechts (GbR) | `de.gbr` |
+| Germany (DE) | Offene Handelsgesellschaft (OHG) | `de.ohg` |
+| Germany (DE) | Kommanditgesellschaft (KG) | `de.kg` |
+| Germany (DE) | Unternehmergesellschaft (UG (haftungsbeschränkt)) | `de.ug` |
+| Germany (DE) | Gesellschaft mit beschränkter Haftung (GmbH) | `de.gmbh` |
+| Germany (DE) | GmbH & Co. KG | `de.gmbhco` |
+| Germany (DE) | Aktiengesellschaft (AG) | `de.ag` |
+| Germany (DE) | Eingetragener Verein (e.V.) | `de.ev` |
+| Germany (DE) | Andere Rechtsformen | `de.andere` |
+| Germany (DE) | Stiftung | `de.stiftung` |
+| Germany (DE) | Genossenschaft (eG) | `de.genossenschaft` |
+| Germany (DE) | Körperschaft öffentlichen Rechts (KöR) | `de.koerperschaft` |
+| Greece (GR) | Atomikí epicheírisi / ατομική επιχείρηση | `gr.sole_trader` |
+| Greece (GR) | Omórithmi Etaireía / Ομόρρυθμη Εταιρεία | `gr.general_partnership` |
+| Greece (GR) | Eterórithmi Etaireía / Ετερόρρυθμη Εταιρία | `gr.limited_partnership` |
+| Greece (GR) | Anónimi Etaireía / Ανώνυμη Εταιρεία | `gr.public_limited_company` |
+| Greece (GR) | Etaireía Periorisménis Euthínis / Εταιρεία Περιορισμένης Ευθύνης | `gr.private_limited_company` |
+| Greece (GR) | Monoprósopi Etaireía Periorisménis Euthínis / Μονοπρόσωπη | `gr.ltd_with_a_single_member` |
+| Greece (GR) | Άλλο | `gr.other` |
+| Greece (GR) | Συνεταιρισμός | `gr.association` |
+| Greece (GR) | Ίδρυμα | `gr.foundation` |
+| Hungary (HU) | Egyéni vállalkozó | `hu.sole_trader` |
+| Hungary (HU) | Egyéni cég | `hu.registered_sole_trader` |
+| Hungary (HU) | Betéti társaság | `hu.limited_partnership` |
+| Hungary (HU) | Közkereseti társaság | `hu.general_partnership` |
+| Hungary (HU) | Korlátolt felelősségű társaság | `hu.private_limited_company` |
+| Hungary (HU) | Nyilvánosan működő részvénytársaság | `hu.public_limited_company` |
+| Hungary (HU) | Zártközűen működő részvénytársaság | `hu.privately_held_company` |
+| Hungary (HU) | Társaság | `hu.cooperative` |
+| Hungary (HU) | Szövetség | `hu.association` |
+| Hungary (HU) | Alapítvány | `hu.foundation` |
+| Hungary (HU) | Más | `hu.other` |
+| Ireland (IE) | Sole proprietorship / sole trader | `ie.sole_trader` |
+| Ireland (IE) | All clubs or societies | `ie.society` |
+| Ireland (IE) | All schools, colleges or universities | `ie.edu` |
+| Ireland (IE) | All other legal forms | `ie.other` |
+| Ireland (IE) | Private limited company | `ie.limited` |
+| Ireland (IE) | All partnerships | `ie.partnership` |
+| Italy (IT) | Società a responsabilità limitata semplificata (Srls) | `it.srls` |
+| Italy (IT) | Società a responsabilità limitata unipersonale (Srl Uni) | `it.srl_uni` |
+| Italy (IT) | Società Semplice (S.s.) | `it.ss` |
+| Italy (IT) | Libero Professionista | `it.libero` |
+| Italy (IT) | Imprenditore individuale | `it.individuale` |
+| Italy (IT) | Società in nome collettivo (S.n.c.) | `it.snc` |
+| Italy (IT) | Società in accomandita semplice (S.a.s) | `it.sas` |
+| Italy (IT) | Società Cooperativa | `it.societa_cooperative` |
+| Italy (IT) | Società per Azioni (Spa) | `it.spa` |
+| Italy (IT) | Società a responsabilità limitata (Srl) | `it.srl` |
+| Italy (IT) | Società di capitali | `it.società_di_capitali` |
+| Italy (IT) | Società di persone | `it.società_di_persone` |
+| Italy (IT) | Società in accomandita per azioni | `it.siapa` |
+| Italy (IT) | Agenzia Statale | `it.agenzia_statale` |
+| Italy (IT) | Associazioni | `it.associazioni` |
+| Latvia (LV) | Individuālais komersants | `lv.sole_trader` |
+| Latvia (LV) | Komandītsabiedrība | `lv.limited_partnership` |
+| Latvia (LV) | Pilnsabiedrība | `lv.general_partnership` |
+| Latvia (LV) | Sabiedrība ar ierobežotu atbildību | `lv.private_limited_company` |
+| Latvia (LV) | Akciju sabiedrība | `lv.public_limited_company` |
+| Latvia (LV) | Asociācija | `lv.association` |
+| Latvia (LV) | Fonds | `lv.foundation` |
+| Lithuania (LT) | Individuali veikla | `lt.sole_trader` |
+| Lithuania (LT) | Individuali įmonė | `lt.individual_company` |
+| Lithuania (LT) | Tikroji ūkinė bendrija | `lt.general_partnership` |
+| Lithuania (LT) | Komanditinė ūkinė bendrija | `lt.limited_partnership` |
+| Lithuania (LT) | Mažoji bendrija | `lt.small_partnership` |
+| Lithuania (LT) | Uždaroji akcinė bendrovė | `lt.private_limited_company` |
+| Lithuania (LT) | Akcinė bendrovė | `lt.public_limited_company` |
+| Lithuania (LT) | Kooperatinė bendrovė | `lt.cooperative` |
+| Lithuania (LT) | Asociacija | `lt.association` |
+| Lithuania (LT) | Fondas | `lt.foundation` |
+| Lithuania (LT) | Kitas | `lt.other` |
+| Luxembourg (LU) | Entrepreneur Individual | `lu.sole_trader` |
+| Luxembourg (LU) | Société en commandite simple | `lu.limited_partnership` |
+| Luxembourg (LU) | Sociéteé civil or sociéteé en nom collectif | `lu.general_partnership` |
+| Luxembourg (LU) | Société en commandité par actions | `lu.partnership_limited_by_shares` |
+| Luxembourg (LU) | Société à responsabilitée limitée | `lu.private_limited_company` |
+| Luxembourg (LU) | Société anonyme | `lu.public_limited_company` |
+| Luxembourg (LU) | Société co-opérative | `lu.cooperative` |
+| Luxembourg (LU) | Association | `lu.association` |
+| Luxembourg (LU) | Autres | `lu.other` |
+| Malta (MT) | Sole trader | `mt.sole_trader` |
+| Malta (MT) | Limited partnership | `mt.limited_partnership` |
+| Malta (MT) | General partnership | `mt.general_partnership` |
+| Malta (MT) | Private limited company | `mt.private_limited_company` |
+| Malta (MT) | Public limited company | `mt.public_limited_company` |
+| Malta (MT) | Association | `mt.associations` |
+| Malta (MT) | Foundation | `mt.foundation` |
+| Malta (MT) | Other | `mt.other` |
+| Mexico (MX) | Persona fisica | `mx.persona_fisica` |
+| Mexico (MX) | Persona moral | `mx.persona_moral` |
+| Mexico (MX) | Empresa sin fin de lucro | `mx.empresa_sin_fin_de_lucro` |
+| Netherlands (NL) | Zzp (Zelfstandige Zonder Personeel) | `nl.zzp` |
+| Netherlands (NL) | Eenmanszaak (KvK registratie) | `nl.kvk` |
+| Netherlands (NL) | Maatschap | `nl.maatschap` |
+| Netherlands (NL) | Vennootschap Onder Firma (VOF) | `nl.vof` |
+| Netherlands (NL) | Commanditaire Vennootschap (CV) | `nl.cv` |
+| Netherlands (NL) | Naamloze Vennootschap (NV) | `nl.nv` |
+| Netherlands (NL) | Besloten Vennootschap (BV) | `nl.bv` |
+| Netherlands (NL) | Stichting | `nl.stichting` |
+| Netherlands (NL) | Vereniging met volledige rechtsbevoegdheid | `nl.vvr` |
+| Netherlands (NL) | Vereniging met beperkte rechtsbevoegdheid | `nl.vbr` |
+| Netherlands (NL) | Coöperatie en Onderlinge Waarborgmaatschappij | `nl.cow` |
+| Netherlands (NL) | Overheidsinstelling | `nl.overheidsinstelling` |
+| Netherlands (NL) | Vereniging | `nl.vereniging` |
+| Norway (NO) | Enkeltpersonforetak | `no.sole_trader` |
+| Norway (NO) | Kommandittselsjap | `no.limited_partnership` |
+| Norway (NO) | Ansvarlig Selskap | `no.general_partnership` |
+| Norway (NO) | Aksjeselskap | `no.private_limited_company` |
+| Norway (NO) | Allmennaksjeselskap | `no.public_limited_company` |
+| Norway (NO) | Samvirkeforetak | `no.cooperative` |
+| Norway (NO) | Stiftelse | `no.foundation` |
+| Norway (NO) | Forening | `no.association` |
+| Norway (NO) | Norskregistrert Utenlandsk Foretak | `no.norwegian_registered_foreign_enterprise` |
+| Norway (NO) | Annen | `no.other` |
+| Peru (PE) | Persona Natural | `pe.pers` |
+| Peru (PE) | Empresa Unipersonal (E.U.) | `pe.eu` |
+| Peru (PE) | Empresa Individual de Responsabilidad Limitada (E.I.R.L.) | `pe.eirl` |
+| Peru (PE) | Sociedad Anónima (S.A.) | `pe.sa` |
+| Peru (PE) | Sociedad Anónima Abierta (S.A.A.) | `pe.saa` |
+| Peru (PE) | Sociedad Anónima Cerrada (S.A.C.) | `pe.sac` |
+| Peru (PE) | Sociedad Comercial de Responsabilidad Limitada  (S.R.L.) | `pe.srl` |
+| Peru (PE) | Sociedad por Acciones Cerrada Simplificada (S.A.C.S.) | `pe.sacs` |
+| Peru (PE) | Associación | `pe.associación` |
+| Peru (PE) | Fundación | `pe.fundación` |
+| Peru (PE) | Comité | `pe.comité` |
+| Poland (PL) | Spółka Cywilna | `pl.cywilna` |
+| Poland (PL) | Indywidualna działalność gospodarcza | `pl.indywidualna` |
+| Poland (PL) | Stowarzyszenie/Fundacja | `pl.stowarzyszenie_fundacja` |
+| Poland (PL) | spółka komandytowo-akcyjna | `pl.komandytowo-akcyjna` |
+| Poland (PL) | spółka komandytowa | `pl.komandytowa` |
+| Poland (PL) | spółka jawna | `pl.jawna` |
+| Poland (PL) | spółka akcyjna | `pl.akcyjna` |
+| Poland (PL) | spółka z o.o. | `pl.zoo` |
+| Poland (PL) | spółka partnerska | `pl.partnerska` |
+| Portugal (PT) | Empresário em nome individual | `pt.eni` |
+| Portugal (PT) | Associação/Organização sem fins lucrativos | `pt.asfl` |
+| Portugal (PT) | Sociedade Civil | `pt.sociedad` |
+| Portugal (PT) | Sociedade por Quotas | `pt.sociedad_limitada` |
+| Portugal (PT) | Sociedade Anônima | `pt.sociedad_anonima` |
+| Portugal (PT) | Sociedade em Comandita | `pt.sociedad_comanditaria` |
+| Portugal (PT) | Sociedade em Nome Colectivo | `pt.sociedad_colectiva` |
+| Portugal (PT) | Cooperativas | `pt.sociedad_cooperativa` |
+| Portugal (PT) | Espresa Estatal | `pt.state_agency` |
+| Portugal (PT) | Pessoas Colectivas de Direito Público | `pt.pcdp` |
+| Romania (RO) | Persoana fizica autorizata | `ro.sole_trader` |
+| Romania (RO) | Asociere fără personalitate juridică | `ro.unregistered_partnership` |
+| Romania (RO) | Societatea în nume colectiv | `ro.general_partnership` |
+| Romania (RO) | Societatea în comandită simplă | `ro.limited_partnership` |
+| Romania (RO) | Societatea în comandită pe acțiuni, | `ro.partnership_limited_by_shares` |
+| Romania (RO) | Societatea pe acțiuni | `ro.public_limited_company` |
+| Romania (RO) | Societatea cu răspundere limitată | `ro.private_limited_company` |
+| Romania (RO) | Societatea cu răspundere limitată cu proprietar unic | `ro.private_limited_company_with_sole_owner` |
+| Romania (RO) | Cooperativă | `ro.cooperative` |
+| Romania (RO) | Asociație | `ro.association` |
+| Romania (RO) | Fundație | `ro.foundation` |
+| Romania (RO) | Alt | `ro.other` |
+| Slovakia (SK) | akciová spoločnosť | `sk.public_limited_company` |
+| Slovakia (SK) | verejná obchodná spoločnosť | `sk.general_partnership` |
+| Slovakia (SK) | komanditná spoločnosť | `sk.limited_partnership` |
+| Slovakia (SK) | spoločnosť s ručením obmedzeným | `sk.private_limited_company` |
+| Slovakia (SK) | živnostník | `sk.sole_trader` |
+| Slovakia (SK) | Združenie bez právnej subjektivity | `sk.unregistered_partnership` |
+| Slovakia (SK) | Združenie | `sk.association` |
+| Slovakia (SK) | Nadácia | `sk.foundation` |
+| Slovakia (SK) | Podnik / Organizačná zložka podniku zahraničnej osob | `sk.enterprise_or_foreign_company` |
+| Slovakia (SK) | Iný | `sk.other` |
+| Slovakia (SK) | Družstvo | `sk.cooperative` |
+| Slovenia (SI) | Komanditna delniška družba | `si.partnership_limited_by_shares` |
+| Slovenia (SI) | Združenje | `si.foundation` |
+| Slovenia (SI) | Samostojni podjetnik | `si.sole_trader` |
+| Slovenia (SI) | Komanditna družba | `si.limited_partnership` |
+| Slovenia (SI) | Družba z neomejeno odgovornostjo | `si.private_unlimited_company` |
+| Slovenia (SI) | Družba z omejeno odgovornostjo | `si.private_limited_company` |
+| Slovenia (SI) | Delniška družba | `si.public_limited_company` |
+| Slovenia (SI) | Zadruga | `si.cooperative` |
+| Slovenia (SI) | Druga | `si.other` |
+| Slovenia (SI) | Društvo, zveza društev | `si.association` |
+| Spain (ES) | Empresario Individual/autónomo | `es.autonomo` |
+| Spain (ES) | Comunidad de Bienes | `es.comunidad` |
+| Spain (ES) | Sociedad Civil | `es.sociedad` |
+| Spain (ES) | Asociaciones sin ánimo de lucro | `es.asociaciones` |
+| Spain (ES) | Sociedad Colectiva | `es.sociedad_colectiva` |
+| Spain (ES) | Sociedad Limitada | `es.sociedad_limitada` |
+| Spain (ES) | Sociedad Anónima | `es.sociedad_anonima` |
+| Spain (ES) | Sociedad Comanditaria | `es.sociedad_comanditaria` |
+| Spain (ES) | Sociedad Cooperativa | `es.sociedad_cooperativa` |
+| Spain (ES) | Agencia Estatal | `es.state_agency` |
+| Sweden (SE) | Enskildnärings - verksamhet | `se.sole_trader` |
+| Sweden (SE) | Kommanditbolag | `se.limited_partnership` |
+| Sweden (SE) | Aktiebolag | `se.limited` |
+| Sweden (SE) | Handelsbolag | `se.trading_partnership` |
+| Sweden (SE) | Förening | `se.economic_association` |
+| Switzerland (CH) | Kollektivgesellschaft | `ch.kollektivgesellschaft` |
+| Switzerland (CH) | Kollektivgesellschaft (OLD) | `ch.kollektivgesellschaft` |
+| Switzerland (CH) | Einzelfirma | `ch.einzelfirma` |
+| Switzerland (CH) | Kommanditgesellschaft | `ch.kommanditgesellschaft` |
+| Switzerland (CH) | Gesellschaft mit beschränkter Haftung | `ch.gesellschaft_haftung` |
+| Switzerland (CH) | Aktiengesellschaft/ Société anonyme | `ch.aktiengesellschaft_societe` |
+| Switzerland (CH) | Verein | `ch.ch_verein` |
+| Switzerland (CH) | Einfache Gesellschaft | `ch.einfachegesellschaft` |
+| United Kingdom (GB) | All partnerships | `gb.partnership` |
+| United Kingdom (GB) | Sole proprietorship / sole trader | `gb.sole_trader` |
+| United Kingdom (GB) | All clubs or societies | `gb.society` |
+| United Kingdom (GB) | All schools, colleges or universities | `gb.edu` |
+| United Kingdom (GB) | All other legal forms | `gb.other` |
+| United Kingdom (GB) | Private limited company | `gb.limited` |
+| United States (US) | Limited Partnership | `us.partnership` |
+| United States (US) | Limited Liability Partnership | `us.llp` |
+| United States (US) | Limited Liability Limited Partnership | `us.lllp` |
+| United States (US) | Limited Company | `us.lc` |
+| United States (US) | Limited Liability Company | `us.llc` |
+| United States (US) | Professional Limited Liability Company | `us.pllc` |
+| United States (US) | Single Member Limited Liability Company | `us.smllc` |
+| United States (US) | Corporation Incorporated | `us.corp_inc` |
+| United States (US) | Professional Corporation | `us.pc` |
+| United States (US) | Non-profit Organisation | `us.uba_org` |
+| United States (US) | Sole proprietorship | `us.sole_trader` |
+
+</SearchableTable>
 
 ## Business Profile
 
@@ -2894,226 +555,44 @@ Persons can have various roles within a merchant:
 
 ### Person Identifiers
 
-<SearchableTable
-  client:load
-  searchPlaceholder="Search person identifiers"
-  columns={[
-    { key: "icon", label: "" },
-    { key: "country", label: "Country", nowrap: true },
-    { key: "name", label: "Name", minWidth: "18rem" },
-    { key: "ref", label: "Reference", nowrap: true, as: "code" },
-  ]}
-  rows={[
-    {
-      icon: "flag_ar",
-      country: "Argentina (AR)",
-      name: "Código Único de Identificación Laboral",
-      ref: "ar.cuil",
-    },
-    {
-      icon: "flag_ar",
-      country: "Argentina (AR)",
-      name: "Documento Nacional de Identidad",
-      ref: "ar.dni",
-    },
-    {
-      icon: "flag_be",
-      country: "Belgium (BE)",
-      name: "Numéro de registre national",
-      ref: "be.nn",
-    },
-    {
-      icon: "flag_br",
-      country: "Brazil (BR)",
-      name: "Cadastro de Pessoas Física",
-      ref: "br.cpf",
-    },
-    {
-      icon: "flag_bg",
-      country: "Bulgaria (BG)",
-      name: "Единен граждански номер (Edinen grazhdanski nomer)",
-      ref: "bg.egn",
-    },
-    {
-      icon: "flag_cl",
-      country: "Chile (CL)",
-      name: "Rol Único Nacional",
-      ref: "cl.run",
-    },
-    {
-      icon: "flag_cl",
-      country: "Chile (CL)",
-      name: "Número de Documento",
-      ref: "cl.id_card_serial",
-    },
-    {
-      icon: "flag_co",
-      country: "Colombia (CO)",
-      name: "Número Único de Identificación Personal",
-      ref: "co.nuip",
-    },
-    {
-      icon: "flag_cy",
-      country: "Cyprus (CY)",
-      name: "Δελτίο Ταυτότητας",
-      ref: "cy.identity_card",
-    },
-    {
-      icon: "flag_cz",
-      country: "Czech Republic (CZ)",
-      name: "Občanský průkaz",
-      ref: "cz.civil_card",
-    },
-    {
-      icon: "flag_dk",
-      country: "Denmark (DK)",
-      name: "Det Centrale Personregister nummer",
-      ref: "dk.cpr",
-    },
-    {
-      icon: "flag_ee",
-      country: "Estonia (EE)",
-      name: "Isikukoodi",
-      ref: "ee.isikukoodi",
-    },
-    {
-      icon: "flag_fi",
-      country: "Finland (FI)",
-      name: "Henkilötunnus",
-      ref: "fi.hetu",
-    },
-    {
-      icon: "flag_hu",
-      country: "Hungary (HU)",
-      name: "Személyi igazolvány",
-      ref: "hu.szemelyi",
-    },
-    {
-      icon: "flag_hu",
-      country: "Hungary (HU)",
-      name: "Adóazonosító jel",
-      ref: "hu.adoazonosito_jel",
-    },
-    {
-      icon: "flag_it",
-      country: "Italy (IT)",
-      name: "Carta d'identità",
-      ref: "it.cie",
-    },
-    {
-      icon: "flag_it",
-      country: "Italy (IT)",
-      name: "Codice fiscale",
-      ref: "it.cf",
-    },
-    {
-      icon: "flag_it",
-      country: "Italy (IT)",
-      name: "Codice fiscale",
-      ref: "it.itax",
-    },
-    {
-      icon: "flag_lv",
-      country: "Latvia (LV)",
-      name: "Personas kods",
-      ref: "lv.personas_kods",
-    },
-    {
-      icon: "flag_lt",
-      country: "Lithuania (LT)",
-      name: "Asmens tapatybės kortelė",
-      ref: "lt.asmens",
-    },
-    {
-      icon: "flag_lu",
-      country: "Luxembourg (LU)",
-      name: "Matricule",
-      ref: "lu.matricule",
-    },
-    {
-      icon: "flag_mt",
-      country: "Malta (MT)",
-      name: "Karta tal-Identità",
-      ref: "mt.karta_tal_identita",
-    },
-    {
-      icon: "flag_mx",
-      country: "Mexico (MX)",
-      name: "Clave Única de Registro de Población",
-      ref: "mx.curp",
-    },
-    {
-      icon: "flag_mx",
-      country: "Mexico (MX)",
-      name: "Régimen Fiscal",
-      ref: "mx.tax_regimen",
-    },
-    {
-      icon: "flag_no",
-      country: "Norway (NO)",
-      name: "Fødselsnummer",
-      ref: "no.fodelsnummer",
-    },
-    {
-      icon: "flag_pe",
-      country: "Peru (PE)",
-      name: "Cédula Única de Identidad",
-      ref: "pe.cui",
-    },
-    {
-      icon: "flag_pl",
-      country: "Poland (PL)",
-      name: "Powszechny Elektroniczny System Ewidencji Ludności",
-      ref: "pl.pesel",
-    },
-    {
-      icon: "flag_pt",
-      country: "Portugal (PT)",
-      name: "Cartão de Cidadão",
-      ref: "pt.cc",
-    },
-    {
-      icon: "flag_ro",
-      country: "Romania (RO)",
-      name: "Codul numeric personal",
-      ref: "ro.cnp",
-    },
-    {
-      icon: "flag_sk",
-      country: "Slovakia (SK)",
-      name: "Rodné číslo",
-      ref: "sk.rc",
-    },
-    {
-      icon: "flag_si",
-      country: "Slovenia (SI)",
-      name: "Enotna matična številka občana (Unique Master Citizen Number)",
-      ref: "si.emso",
-    },
-    {
-      icon: "flag_es",
-      country: "Spain (ES)",
-      name: "Número de Identificación de Extranjero",
-      ref: "es.nie",
-    },
-    {
-      icon: "flag_es",
-      country: "Spain (ES)",
-      name: "Documento Nacional de Identidad",
-      ref: "es.dni",
-    },
-    {
-      icon: "flag_se",
-      country: "Sweden (SE)",
-      name: "Personnummer",
-      ref: "se.pn",
-    },
-    {
-      icon: "flag_us",
-      country: "United States (US)",
-      name: "Social Security Number",
-      ref: "us.ssn",
-    },
-  ]}
-  tableLayout="auto"
-/>
+<SearchableTable searchPlaceholder="Search person identifiers">
+
+| Country | Name | Reference |
+| --- | --- | --- |
+| Argentina (AR) | Código Único de Identificación Laboral | `ar.cuil` |
+| Argentina (AR) | Documento Nacional de Identidad | `ar.dni` |
+| Belgium (BE) | Numéro de registre national | `be.nn` |
+| Brazil (BR) | Cadastro de Pessoas Física | `br.cpf` |
+| Bulgaria (BG) | Единен граждански номер (Edinen grazhdanski nomer) | `bg.egn` |
+| Chile (CL) | Rol Único Nacional | `cl.run` |
+| Chile (CL) | Número de Documento | `cl.id_card_serial` |
+| Colombia (CO) | Número Único de Identificación Personal | `co.nuip` |
+| Cyprus (CY) | Δελτίο Ταυτότητας | `cy.identity_card` |
+| Czech Republic (CZ) | Občanský průkaz | `cz.civil_card` |
+| Denmark (DK) | Det Centrale Personregister nummer | `dk.cpr` |
+| Estonia (EE) | Isikukoodi | `ee.isikukoodi` |
+| Finland (FI) | Henkilötunnus | `fi.hetu` |
+| Hungary (HU) | Személyi igazolvány | `hu.szemelyi` |
+| Hungary (HU) | Adóazonosító jel | `hu.adoazonosito_jel` |
+| Italy (IT) | Carta d'identità | `it.cie` |
+| Italy (IT) | Codice fiscale | `it.cf` |
+| Italy (IT) | Codice fiscale | `it.itax` |
+| Latvia (LV) | Personas kods | `lv.personas_kods` |
+| Lithuania (LT) | Asmens tapatybės kortelė | `lt.asmens` |
+| Luxembourg (LU) | Matricule | `lu.matricule` |
+| Malta (MT) | Karta tal-Identità | `mt.karta_tal_identita` |
+| Mexico (MX) | Clave Única de Registro de Población | `mx.curp` |
+| Mexico (MX) | Régimen Fiscal | `mx.tax_regimen` |
+| Norway (NO) | Fødselsnummer | `no.fodelsnummer` |
+| Peru (PE) | Cédula Única de Identidad | `pe.cui` |
+| Poland (PL) | Powszechny Elektroniczny System Ewidencji Ludności | `pl.pesel` |
+| Portugal (PT) | Cartão de Cidadão | `pt.cc` |
+| Romania (RO) | Codul numeric personal | `ro.cnp` |
+| Slovakia (SK) | Rodné číslo | `sk.rc` |
+| Slovenia (SI) | Enotna matična številka občana (Unique Master Citizen Number) | `si.emso` |
+| Spain (ES) | Número de Identificación de Extranjero | `es.nie` |
+| Spain (ES) | Documento Nacional de Identidad | `es.dni` |
+| Sweden (SE) | Personnummer | `se.pn` |
+| United States (US) | Social Security Number | `us.ssn` |
+
+</SearchableTable>

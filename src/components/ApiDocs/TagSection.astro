@@ -34,7 +34,7 @@ const slug = formatSlug(name);
 // Tag descriptions are content entries so they use the configured Satteri
 // pipeline, matching operation descriptions and authored documentation.
 const descriptionEntry = await getEntry(
-  "apiDescriptions",
+  "_apiDescriptions",
   getTagDescriptionId(name),
 );
 
@@ -73,7 +73,7 @@ const coreObjectSections = coreObjects.map((schema, index) => {
 
 <section
   id={slug}
-  {...tagIsTarget
+  {...(tagIsTarget
     ? {
         "data-pagefind-body": "",
         "data-pagefind-tag": name,
@@ -83,78 +83,68 @@ const coreObjectSections = coreObjects.map((schema, index) => {
       }
     : {
         "data-pagefind-ignore": "all",
-      }}
+      })}
   {...attrs}
 >
   <LRGrid class="tag-overview">
     <div class="tag-info">
-      {
-        deprecationNotice && (
-          <div class="notice">
-            <Callout type="caution">
-              <Markdown>{deprecationNotice}</Markdown>
-            </Callout>
-          </div>
-        )
-      }
-      {
-        description && Description && (
-          <MarkdownContent>
-            <Description />
-          </MarkdownContent>
-        )
-      }
+      {deprecationNotice && (
+        <div class="notice">
+          <Callout type="caution">
+            <Markdown>{deprecationNotice}</Markdown>
+          </Callout>
+        </div>
+      )}
+      {description && Description && (
+        <MarkdownContent>
+          <Description />
+        </MarkdownContent>
+      )}
     </div>
-    {
-      operations.length > 0 && (
-        <EndpointList operations={operations} tagSlug={slug} />
-      )
-    }
+    {operations.length > 0 && (
+      <EndpointList operations={operations} tagSlug={slug} />
+    )}
   </LRGrid>
 </section>
-{
-  coreObjects?.length > 0 && (
-    <>
-      {coreObjectSections.map(({ schema, sectionId }) => (
-        <SchemaObject
-          schema={schema}
-          sectionId={sectionId}
-          {...objectPagefindAttributes}
-        />
-      ))}
-    </>
-  )
-}
-{
-  operations && (
-    <div
-      class="operations"
-      {...(tagIsTarget
-        ? {
-            "data-pagefind-ignore": "all",
-          }
-        : {})}
-    >
-      {operations.map((operation) => (
-        <Operation
-          operation={operation}
-          coreObjects={coreObjectSections.map(({ schema }) => schema)}
-          {...(targetTag === slug && targetOp === operation.slug
-            ? {
-                "data-pagefind-body": "",
-                "data-pagefind-tag": name,
-                "data-pagefind-kind": "operation",
-                "data-pagefind-meta":
-                  "kind[data-pagefind-kind], tag[data-pagefind-tag]",
-              }
-            : {
-                "data-pagefind-ignore": "all",
-              })}
-        />
-      ))}
-    </div>
-  )
-}
+{coreObjects?.length > 0 && (
+  <>
+    {coreObjectSections.map(({ schema, sectionId }) => (
+      <SchemaObject
+        schema={schema}
+        sectionId={sectionId}
+        {...objectPagefindAttributes}
+      />
+    ))}
+  </>
+)}
+{operations && (
+  <div
+    class="operations"
+    {...(tagIsTarget
+      ? {
+          "data-pagefind-ignore": "all",
+        }
+      : {})}
+  >
+    {operations.map((operation) => (
+      <Operation
+        operation={operation}
+        coreObjects={coreObjectSections.map(({ schema }) => schema)}
+        {...(targetTag === slug && targetOp === operation.slug
+          ? {
+              "data-pagefind-body": "",
+              "data-pagefind-tag": name,
+              "data-pagefind-kind": "operation",
+              "data-pagefind-meta":
+                "kind[data-pagefind-kind], tag[data-pagefind-tag]",
+            }
+          : {
+              "data-pagefind-ignore": "all",
+            })}
+      />
+    ))}
+  </div>
+)}
 
 <style>
   .tag-overview {

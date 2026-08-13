@@ -14,9 +14,9 @@ const { operation, class: className, ...props } = Astro.props;
   class:list={["endpoint", className]}
   title={`${operation.method.toUpperCase()} ${operation.path}`}
 >
-  <span class:list={["method", operation.method]}
-    >{operation.method.toUpperCase()}</span
-  >
+  <span class:list={["method", operation.method]}>
+    {operation.method.toUpperCase()}
+  </span>
   <span class="path">{operation.path}</span>
 </div>
 

@@ -38,7 +38,7 @@ for (const image of images) {
     `${name}: missing PNG header`,
   );
   assert.equal(png.readUInt32BE(16), 1200, `${name}: incorrect width`);
-  assert.equal(png.readUInt32BE(20), 600, `${name}: incorrect height`);
+  assert.equal(png.readUInt32BE(20), 630, `${name}: incorrect height`);
 }
 
 const generatedImages = new Set(images);

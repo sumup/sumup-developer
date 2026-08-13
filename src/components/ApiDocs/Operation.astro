@@ -1,5 +1,5 @@
 ---
-import { Badge, Tabs, TabItem } from "@astrojs/starlight/components";
+import { Badge, Tabs, TabItem } from "@components/nimbus";
 import Callout from "@components/content/Callout";
 import Markdown from "@components/Markdown.astro";
 import MarkdownContent from "@components/MarkdownContent.astro";
@@ -33,7 +33,7 @@ const { operation, coreObjects = [], ...props } = Astro.props;
 // Markdown pipeline as authored docs instead of a component-local parser.
 const descriptionEntry = operation.operationId
   ? await getEntry(
-      "apiDescriptions",
+      "_apiDescriptions",
       getOperationDescriptionId(operation.operationId),
     )
   : undefined;
@@ -259,209 +259,185 @@ const formattedPermissions = (operation["x-permissions"] || [])
           className="headline"
         >
           {operation.summary}
-          {
-            operation.deprecated && (
-              <Badge variant="caution" text="Deprecated" data-pagefind-ignore />
-            )
-          }
-          {
-            operation["x-beta"] && (
-              <Badge variant="tip" text="Beta" data-pagefind-ignore />
-            )
-          }
+          {operation.deprecated && (
+            <Badge variant="caution" text="Deprecated" data-pagefind-ignore />
+          )}
+          {operation["x-beta"] && (
+            <Badge variant="tip" text="Beta" data-pagefind-ignore />
+          )}
         </Headline>
         <OperationEndpoint class="operation-endpoint" operation={operation} />
-        {
-          "x-deprecation-notice" in operation && (
-            <div class="notice">
-              <Callout type="caution">
-                <Markdown>{operation["x-deprecation-notice"]}</Markdown>
-              </Callout>
-            </div>
-          )
-        }
-        {
-          operation.description && Description && (
-            <MarkdownContent class="description">
-              <Description />
-            </MarkdownContent>
-          )
-        }
-        {
-          operation["x-scopes"] && operation["x-scopes"].length > 0 && (
-            <div class="scopes" data-pagefind-ignore>
-              Requires one of scopes:
-              {operation["x-scopes"].map((scope) => (
-                <code dir="auto">{scope}</code>
-              ))}
-            </div>
-          )
-        }
-        {
-          formattedPermissions.length > 0 && (
-            <div class="permissions" data-pagefind-ignore>
-              Required permissions:
-              {formattedPermissions.map((permission) => (
-                <code dir="auto">{permission}</code>
-              ))}
-            </div>
-          )
-        }
+        {"x-deprecation-notice" in operation && (
+          <div class="notice">
+            <Callout type="caution">
+              <Markdown>{operation["x-deprecation-notice"]}</Markdown>
+            </Callout>
+          </div>
+        )}
+        {operation.description && Description && (
+          <MarkdownContent class="description">
+            <Description />
+          </MarkdownContent>
+        )}
+        {operation["x-scopes"] && operation["x-scopes"].length > 0 && (
+          <div class="scopes" data-pagefind-ignore>
+            Requires one of scopes:
+            {operation["x-scopes"].map((scope) => (
+              <code dir="auto">{scope}</code>
+            ))}
+          </div>
+        )}
+        {formattedPermissions.length > 0 && (
+          <div class="permissions" data-pagefind-ignore>
+            Required permissions:
+            {formattedPermissions.map((permission) => (
+              <code dir="auto">{permission}</code>
+            ))}
+          </div>
+        )}
       </div>
-      {
-        pathParams && pathParams.length > 0 && (
-          <Parameters kind="Path Parameters" parameters={pathParams} />
-        )
-      }
-      {
-        queryParams && queryParams.length > 0 && (
-          <Parameters kind="Query Parameters" parameters={queryParams} />
-        )
-      }
-      {
-        isRequestBody(operation.requestBody) &&
-          "application/json" in operation.requestBody.content &&
-          !!operation.requestBody.content["application/json"].schema && (
-            <Schema
-              kind="Body Parameters"
-              title="Body Parameters"
-              schema={operation.requestBody.content["application/json"].schema}
-            />
-          )
-      }
+      {pathParams && pathParams.length > 0 && (
+        <Parameters kind="Path Parameters" parameters={pathParams} />
+      )}
+      {queryParams && queryParams.length > 0 && (
+        <Parameters kind="Query Parameters" parameters={queryParams} />
+      )}
+      {isRequestBody(operation.requestBody) &&
+        "application/json" in operation.requestBody.content &&
+        !!operation.requestBody.content["application/json"].schema && (
+          <Schema
+            kind="Body Parameters"
+            title="Body Parameters"
+            schema={operation.requestBody.content["application/json"].schema}
+          />
+        )}
       <SectionHeading>Response</SectionHeading>
-      {
-        successResponse?.schema ? (
-          <>
-            {(successResponse.description ||
-              successResponseCoreObjects.length > 0) && (
-              <Body size="s" className="response-description">
-                {successResponse.description}
-                {successResponse.description &&
-                  successResponseCoreObjects.length > 0 &&
-                  " "}
-                {successResponseCoreObjects.length > 0 && (
-                  <>
-                    See{" "}
-                    {successResponseCoreObjects.map((coreObject, index) => (
-                      <>
-                        {index > 0 && ", "}
-                        <Anchor
-                          size="s"
-                          weight="bold"
-                          href={coreObject.href}
-                          data-pagefind-ignore
-                        >
-                          {coreObject.name} object
-                        </Anchor>
-                      </>
-                    ))}
-                    .
-                  </>
-                )}
-              </Body>
-            )}
-            <Schema kind="Response" schema={successResponse.schema} />
-          </>
-        ) : (
-          <Body size="s" className="response-description">
-            Returns empty response.
-          </Body>
-        )
-      }
+      {successResponse?.schema ? (
+        <>
+          {(successResponse.description ||
+            successResponseCoreObjects.length > 0) && (
+            <Body size="s" className="response-description">
+              {successResponse.description}
+              {successResponse.description &&
+                successResponseCoreObjects.length > 0 &&
+                " "}
+              {successResponseCoreObjects.length > 0 && (
+                <>
+                  See{" "}
+                  {successResponseCoreObjects.map((coreObject, index) => (
+                    <>
+                      {index > 0 && ", "}
+                      <Anchor
+                        size="s"
+                        weight="bold"
+                        href={coreObject.href}
+                        data-pagefind-ignore
+                      >
+                        {coreObject.name} object
+                      </Anchor>
+                    </>
+                  ))}
+                  .
+                </>
+              )}
+            </Body>
+          )}
+          <Schema kind="Response" schema={successResponse.schema} />
+        </>
+      ) : (
+        <Body size="s" className="response-description">
+          Returns empty response.
+        </Body>
+      )}
     </div>
     <div class="examples api-docs-stack-mega">
       <div class="example-request">
         <ExampleRequest operation={operation} />
       </div>
-      {
-        successResponse && (
-          <div class="example-response api-docs-sticky">
-            {successResponse.example && (
-              <CodeBlock
-                data-pagefind-ignore="all"
-                title="Response"
-                language="json"
-                code={JSON.stringify(successResponse.example, null, 2)}
+      {successResponse && (
+        <div class="example-response api-docs-sticky">
+          {successResponse.example && (
+            <CodeBlock
+              data-pagefind-ignore="all"
+              title="Response"
+              language="json"
+              code={JSON.stringify(successResponse.example, null, 2)}
+            />
+          )}
+          {successResponse.examples && (
+            <MultiCode
+              data-pagefind-ignore="all"
+              options={Object.entries(successResponse.examples).map(
+                ([key, value]) => ({
+                  label: key,
+                  code: JSON.stringify(
+                    "value" in value ? value.value : "",
+                    null,
+                    2,
+                  ),
+                  lang: "json",
+                }),
+              )}
+            >
+              <div slot="left">Response</div>
+            </MultiCode>
+          )}
+          {!successResponse.example &&
+            !successResponse.examples &&
+            successResponse.schema && (
+              <Example
+                name={`${operation.summary} response`}
+                schema={successResponse.schema}
               />
             )}
-            {successResponse.examples && (
-              <MultiCode
-                data-pagefind-ignore="all"
-                options={Object.entries(successResponse.examples).map(
-                  ([key, value]) => ({
-                    label: key,
-                    code: JSON.stringify(
-                      "value" in value ? value.value : "",
-                      null,
-                      2,
-                    ),
-                    lang: "json",
-                  }),
-                )}
-              >
-                <div slot="left">Response</div>
-              </MultiCode>
-            )}
-            {!successResponse.example &&
-              !successResponse.examples &&
-              successResponse.schema && (
-                <Example
-                  name={`${operation.summary} response`}
-                  schema={successResponse.schema}
-                />
-              )}
-          </div>
-        )
-      }
+        </div>
+      )}
     </div>
   </LRGrid>
-  {
-    errorResponses.length > 0 && (
-      <LRGrid class="error-responses">
-        <div>
-          <Tabs syncKey="errors">
-            {errorResponses.map((errorResponse) => (
-              <TabItem label={`Error ${errorResponse.status}`}>
-                <Body size="s" className="content-type">
-                  Content-Type:{" "}
-                  <code dir="auto">{errorResponse.contentType}</code>
-                </Body>
-                {errorResponse.description && (
-                  <Body size="s">{errorResponse.description}</Body>
-                )}
-                <Schema
-                  kind={`Error ${errorResponse.status}`}
+  {errorResponses.length > 0 && (
+    <LRGrid class="error-responses">
+      <div>
+        <Tabs syncKey="errors">
+          {errorResponses.map((errorResponse) => (
+            <TabItem label={`Error ${errorResponse.status}`}>
+              <Body size="s" className="content-type">
+                Content-Type:{" "}
+                <code dir="auto">{errorResponse.contentType}</code>
+              </Body>
+              {errorResponse.description && (
+                <Body size="s">{errorResponse.description}</Body>
+              )}
+              <Schema
+                kind={`Error ${errorResponse.status}`}
+                schema={errorResponse.schema}
+              />
+            </TabItem>
+          ))}
+        </Tabs>
+      </div>
+      <div class="error-example error-example-panels api-docs-sticky">
+        <Tabs syncKey="errors">
+          {errorResponses.map((errorResponse) => (
+            <TabItem label={`Error ${errorResponse.status}`}>
+              {errorResponse.example !== undefined ? (
+                <CodeBlock
+                  data-pagefind-ignore="all"
+                  title={`Error ${errorResponse.status}`}
+                  language="json"
+                  code={JSON.stringify(errorResponse.example, null, 2)}
+                />
+              ) : (
+                <Example
+                  name={`Error ${errorResponse.status}`}
                   schema={errorResponse.schema}
                 />
-              </TabItem>
-            ))}
-          </Tabs>
-        </div>
-        <div class="error-example error-example-panels api-docs-sticky">
-          <Tabs syncKey="errors">
-            {errorResponses.map((errorResponse) => (
-              <TabItem label={`Error ${errorResponse.status}`}>
-                {errorResponse.example !== undefined ? (
-                  <CodeBlock
-                    data-pagefind-ignore="all"
-                    title={`Error ${errorResponse.status}`}
-                    language="json"
-                    code={JSON.stringify(errorResponse.example, null, 2)}
-                  />
-                ) : (
-                  <Example
-                    name={`Error ${errorResponse.status}`}
-                    schema={errorResponse.schema}
-                  />
-                )}
-              </TabItem>
-            ))}
-          </Tabs>
-        </div>
-      </LRGrid>
-    )
-  }
+              )}
+            </TabItem>
+          ))}
+        </Tabs>
+      </div>
+    </LRGrid>
+  )}
 </section>
 
 <style>
@@ -522,14 +498,14 @@ const formattedPermissions = (operation["x-permissions"] || [])
     margin-top: var(--cui-spacings-giga);
   }
 
-  .error-responses :global(starlight-tabs [role="tablist"]) {
+  .error-responses :global([data-nb-tabs] [role="tablist"]) {
     border-bottom-width: 1px;
     font-size: var(--cui-body-s-font-size);
     line-height: var(--cui-body-s-line-height);
   }
 
-  .error-responses :global(starlight-tabs .tab > [role="tab"]) {
-    box-shadow: 0 1px 0 var(--sl-tab-color-border);
+  .error-responses :global([data-nb-tabs] [role="tab"]) {
+    box-shadow: 0 1px 0 var(--cui-border-divider);
   }
 
   .content-type {
@@ -540,12 +516,12 @@ const formattedPermissions = (operation["x-permissions"] || [])
     align-self: start;
   }
 
-  .error-example-panels :global(starlight-tabs > .tablist-wrapper),
-  .error-example-panels :global(starlight-tabs [role="tablist"]) {
+  .error-example-panels :global([data-nb-tabs] > [role="tablist"]),
+  .error-example-panels :global([data-nb-tabs] [role="tablist"]) {
     display: none !important;
   }
 
-  .error-example-panels :global(starlight-tabs > [role="tabpanel"]) {
+  .error-example-panels :global([data-nb-tabs-content]) {
     margin-top: 0;
   }
 
