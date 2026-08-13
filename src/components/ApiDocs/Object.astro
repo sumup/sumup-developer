@@ -25,15 +25,13 @@ const schema = resolveSchema(obj);
       <Headline as="h3" size="m">
         {`The ${schema.title || ""} object`}
       </Headline>
-      {
-        schema.description && (
-          <Markdown class="description">{schema.description}</Markdown>
-        )
-      }
+      {schema.description && (
+        <Markdown class="description">{schema.description}</Markdown>
+      )}
       <Schema kind="Attributes" schema={schema} />
     </div>
     <div class="scheme api-docs-sticky">
-      {(<Example name={`The ${schema.title || ""} object`} schema={schema} />)}
+      {<Example name={`The ${schema.title || ""} object`} schema={schema} />}
     </div>
   </LRGrid>
 </section>

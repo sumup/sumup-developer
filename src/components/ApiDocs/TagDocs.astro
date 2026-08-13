@@ -13,12 +13,6 @@ const selectedTag = getTagBySlug(tagSlug);
 const target = operationSlug ? `${tagSlug}/${operationSlug}` : tagSlug;
 ---
 
-{
-  selectedTagEntry && selectedTag && (
-    <TagSection
-      tag={selectedTag}
-      operations={selectedTagEntry}
-      target={target}
-    />
-  )
-}
+{selectedTagEntry && selectedTag && (
+  <TagSection tag={selectedTag} operations={selectedTagEntry} target={target} />
+)}

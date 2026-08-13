@@ -1,8 +1,7 @@
-import { docsLoader } from "@astrojs/starlight/loaders";
-import { docsSchema } from "@astrojs/starlight/schema";
+import { docsCollection } from "@cloudflare/nimbus-docs/content";
+import { defineCollection } from "astro:content";
 import { glob } from "astro/loaders";
 import { z } from "astro/zod";
-import { defineCollection } from "astro:content";
 import { openapiDescriptionsLoader } from "./loaders/openapiDescriptions";
 
 const help = defineCollection({
@@ -13,7 +12,10 @@ const help = defineCollection({
 });
 
 const changelog = defineCollection({
-  loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/changelog" }),
+  loader: glob({
+    pattern: "**/*.{md,mdx}",
+    base: "./src/content/changelog",
+  }),
   schema: z.object({
     title: z.string(),
     tags: z.array(z.string()),
@@ -38,10 +40,12 @@ const apiDescriptions = defineCollection({
 });
 
 export const collections = {
-  docs: defineCollection({
-    schema: docsSchema({
-      extend: z.object({
+  docs: defineCollection(
+    docsCollection({
+      schemaFields: {
         icon: z.string().optional(),
+        id: z.string().optional(),
+        nimbusDisableRules: z.array(z.string()).optional(),
         links: z
           .array(
             z.object({
@@ -50,11 +54,12 @@ export const collections = {
             }),
           )
           .optional(),
-      }),
+      },
     }),
-    loader: docsLoader(),
-  }),
-  help,
-  changelog,
-  apiDescriptions,
+  ),
+  // These collections are rendered by custom portal routes. The leading
+  // underscore keeps Nimbus from generating docs-style agent routes for them.
+  _apiDescriptions: apiDescriptions,
+  _help: help,
+  _changelog: changelog,
 };

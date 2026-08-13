@@ -4,31 +4,38 @@ import { getApiScrollTarget, parseApiPath } from "./routes";
  * Current sidebar links keyed by target section ID.
  * Updated on each init call, then used by the shared scroll listener.
  */
-let currentLinksBySectionId = new Map<string, HTMLAnchorElement>();
+let currentLinksBySectionId = new Map<string, HTMLAnchorElement[]>();
 /** Ensures we register at most one global scroll listener. */
 let scrollListenerBound = false;
 
 /** Updates active sidebar state and auto-expands parent groups while closing previously auto-opened groups. */
-const applyCurrentLink = (activeLink?: HTMLAnchorElement) => {
-  if (!activeLink) return;
+const applyCurrentLinks = (activeLinks?: HTMLAnchorElement[]) => {
+  if (!activeLinks?.length) return;
 
   document
-    .querySelector('[aria-current="page"]')
-    ?.removeAttribute("aria-current");
-  activeLink.setAttribute("aria-current", "page");
+    .querySelectorAll(
+      '[data-portal-sidebar] [aria-current="page"], [data-mobile-sidebar] [aria-current="page"]',
+    )
+    .forEach((link) => link.removeAttribute("aria-current"));
+  activeLinks.forEach((link) => link.setAttribute("aria-current", "page"));
 
-  const details = activeLink.closest("details") as HTMLDetailsElement | null;
-  if (details && !details.hasAttribute("open")) {
-    details.setAttribute("open", "");
-    details.dataset.wasAutoOpened = "true";
-  }
+  const activeGroups = new Set<HTMLDetailsElement>();
+  activeLinks.forEach((link) => {
+    const details = link.closest("details") as HTMLDetailsElement | null;
+    if (!details) return;
+    activeGroups.add(details);
+    if (!details.open) {
+      details.open = true;
+      details.dataset.wasAutoOpened = "true";
+    }
+  });
 
   Array.from(
     document.querySelectorAll<HTMLDetailsElement>(
       "details[data-was-auto-opened]",
     ),
   )
-    .filter((candidate) => candidate !== details)
+    .filter((candidate) => !activeGroups.has(candidate))
     .forEach((candidate) => {
       candidate.removeAttribute("open");
       delete candidate.dataset.wasAutoOpened;
@@ -37,29 +44,23 @@ const applyCurrentLink = (activeLink?: HTMLAnchorElement) => {
 
 /** Closes the mobile sidebar after a sidebar click-driven in-page scroll. */
 const closeMobileMenu = () => {
-  document.body.toggleAttribute("data-mobile-menu-expanded", false);
-  document
-    .querySelector("starlight-menu-button")
-    ?.setAttribute("aria-expanded", "false");
+  document.querySelector<HTMLDialogElement>("[data-mobile-sidebar]")?.close();
 };
 
 /**
  * Initializes API sidebar scroll syncing for the current page.
  *
- * Non-obvious behavior:
- * - It scopes links to Starlight's sidebar container (`#starlight__sidebar`).
- * - Click handlers are attached once per link (via dataset marker).
- * - A single global scroll listener is reused and reads from the latest link map.
+ * Click handlers are attached once per link and one global scroll listener is
+ * reused across both desktop and mobile sidebar copies.
  */
 export const initApiSidebarNavigation = () => {
-  const sidebarRoot = document.getElementById("starlight__sidebar");
-  if (!sidebarRoot) {
-    return;
-  }
   const currentPath = parseApiPath(window.location.pathname);
   const allLinks = Array.from(
-    sidebarRoot.querySelectorAll<HTMLAnchorElement>("a[data-scroll-to]"),
+    document.querySelectorAll<HTMLAnchorElement>(
+      "[data-portal-sidebar] a[data-scroll-to], [data-mobile-sidebar] a[data-scroll-to]",
+    ),
   );
+  if (allLinks.length === 0) return;
 
   const links = allLinks.filter((link) => {
     const targetPath = parseApiPath(
@@ -76,48 +77,48 @@ export const initApiSidebarNavigation = () => {
     );
   });
 
-  const linkBySectionId = new Map<string, HTMLAnchorElement>();
+  const linkBySectionId = new Map<string, HTMLAnchorElement[]>();
   for (const link of links) {
     const sectionId = link.getAttribute("data-scroll-to");
     if (!sectionId || !document.getElementById(sectionId)) {
       continue;
     }
 
-    if (!linkBySectionId.has(sectionId)) {
-      linkBySectionId.set(sectionId, link);
-    }
+    const sectionLinks = linkBySectionId.get(sectionId) ?? [];
+    sectionLinks.push(link);
+    linkBySectionId.set(sectionId, sectionLinks);
   }
   currentLinksBySectionId = linkBySectionId;
 
-  for (const [sectionId, link] of currentLinksBySectionId.entries()) {
-    if (link.dataset.apiSidebarScrollHandler === "true") {
-      continue;
+  for (const [sectionId, sectionLinks] of currentLinksBySectionId.entries()) {
+    for (const link of sectionLinks) {
+      if (link.dataset.apiSidebarScrollHandler === "true") continue;
+
+      const handler = (event: Event) => {
+        const target = document.getElementById(sectionId);
+        if (!target) return;
+
+        event.preventDefault();
+        applyCurrentLinks(sectionLinks);
+        target.scrollIntoView();
+        history.pushState(
+          {},
+          "",
+          link.getAttribute("href") || window.location.pathname,
+        );
+        closeMobileMenu();
+      };
+
+      link.dataset.apiSidebarScrollHandler = "true";
+      link.addEventListener("click", handler);
     }
-
-    const handler = (event: Event) => {
-      const target = document.getElementById(sectionId);
-      if (!target) return;
-
-      event.preventDefault();
-      applyCurrentLink(link);
-      target.scrollIntoView();
-      history.pushState(
-        {},
-        "",
-        link.getAttribute("href") || window.location.pathname,
-      );
-      closeMobileMenu();
-    };
-
-    link.dataset.apiSidebarScrollHandler = "true";
-    link.addEventListener("click", handler);
   }
 
   const onScroll = () => {
-    let closestLink: HTMLAnchorElement | undefined;
+    let closestLinks: HTMLAnchorElement[] | undefined;
     let closestDistance = Infinity;
 
-    for (const [sectionId, link] of currentLinksBySectionId.entries()) {
+    for (const [sectionId, links] of currentLinksBySectionId.entries()) {
       const section = document.getElementById(sectionId);
       if (!section) continue;
 
@@ -126,11 +127,11 @@ export const initApiSidebarNavigation = () => {
       );
       if (distanceFromTop < closestDistance) {
         closestDistance = distanceFromTop;
-        closestLink = link;
+        closestLinks = links;
       }
     }
 
-    applyCurrentLink(closestLink);
+    applyCurrentLinks(closestLinks);
   };
 
   if (!scrollListenerBound) {
@@ -143,7 +144,7 @@ export const initApiSidebarNavigation = () => {
     const initialTarget = document.getElementById(selectedTarget);
     if (initialTarget) {
       initialTarget.scrollIntoView();
-      applyCurrentLink(currentLinksBySectionId.get(selectedTarget));
+      applyCurrentLinks(currentLinksBySectionId.get(selectedTarget));
     }
   }
 };

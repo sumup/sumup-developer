@@ -159,7 +159,7 @@ export async function GET({ props: { title, description } }: Props) {
         display: "flex",
         position: "relative",
         width: "1200px",
-        height: "600px",
+        height: "630px",
         backgroundColor: "#000000",
         boxSizing: "border-box",
         alignItems: "center",
@@ -280,7 +280,7 @@ export async function GET({ props: { title, description } }: Props) {
 
   return createOgImageResponse(card, {
     width: 1200,
-    height: 600,
+    height: 630,
     debug: false,
     fonts: [
       ...(sumUpBlack

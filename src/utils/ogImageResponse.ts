@@ -1,5 +1,5 @@
-import { Resvg } from "@resvg/resvg-js";
 import satori from "satori";
+import sharp from "sharp";
 
 import type { ReactNode } from "react";
 import type { Font, SatoriOptions } from "satori";
@@ -24,14 +24,7 @@ export async function createOgImageResponse(
     debug: options.debug,
     fonts: options.fonts,
   } satisfies SatoriOptions);
-  const png = new Resvg(svg, {
-    fitTo: {
-      mode: "width",
-      value: options.width,
-    },
-  })
-    .render()
-    .asPng();
+  const png = await sharp(Buffer.from(svg)).png().toBuffer();
   const body = png.buffer.slice(
     png.byteOffset,
     png.byteOffset + png.byteLength,
@@ -42,7 +35,7 @@ export async function createOgImageResponse(
       "Content-Type": "image/png",
       "Cache-Control": options.debug
         ? "no-cache, no-store"
-        : "public, max-age=3600, must-revalidate",
+        : "public, immutable, no-transform, max-age=31536000",
       ...options.headers,
     },
     status: options.status ?? 200,

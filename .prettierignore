@@ -2,7 +2,6 @@ dist/
 .rumdl_cache/
 .wrangler/
 .astro/
-# css files are linted by biome
-**/*.css
+.nimbus/
 openapi.yaml
 openapi.json

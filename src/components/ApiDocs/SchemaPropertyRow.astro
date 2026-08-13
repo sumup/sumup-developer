@@ -43,49 +43,36 @@ const arrayAttributesSchema =
 
 <li>
   <ParameterName name={name} def={propertySchema} required={required} />
-  {
-    enumValues && (
-      <div class="enum">
-        <span>Options:&nbsp;</span>
-        {enumValues.map((value) => (
-          <code dir="auto">{value}</code>
-        ))}
-      </div>
-    )
-  }
-  {
-    "x-deprecation-notice" in propertySchema && (
-      <div class="notice">
-        <Callout type="caution">
-          <Markdown>{propertySchema["x-deprecation-notice"]}</Markdown>
-        </Callout>
-      </div>
-    )
-  }
-  {
-    propertySchema.description && (
-      <Markdown>{propertySchema.description}</Markdown>
-    )
-  }
+  {enumValues && (
+    <div class="enum">
+      <span>Options:&nbsp;</span>
+      {enumValues.map((value) => (
+        <code dir="auto">{value}</code>
+      ))}
+    </div>
+  )}
+  {"x-deprecation-notice" in propertySchema && (
+    <div class="notice">
+      <Callout type="caution">
+        <Markdown>{propertySchema["x-deprecation-notice"]}</Markdown>
+      </Callout>
+    </div>
+  )}
+  {propertySchema.description && (
+    <Markdown>{propertySchema.description}</Markdown>
+  )}
   {arrayItemDescription && <Markdown>{arrayItemDescription}</Markdown>}
-  {
-    objectAttributesSchema && (
-      <Attributes schema={propertySchema} kind={attributeKind} />
-    )
-  }
-  {
-    arrayAttributesSchema && (
-      <Attributes schema={arrayAttributesSchema} kind={attributeKind} />
-    )
-  }
-  {
-    isNonArraySchemaObject(propertySchema) && propertySchema.example && (
-      <div class="example">
-        Example:{" "}
-        <code dir="auto">{JSON.stringify(propertySchema.example)}</code>
-      </div>
-    )
-  }
+  {objectAttributesSchema && (
+    <Attributes schema={propertySchema} kind={attributeKind} />
+  )}
+  {arrayAttributesSchema && (
+    <Attributes schema={arrayAttributesSchema} kind={attributeKind} />
+  )}
+  {isNonArraySchemaObject(propertySchema) && propertySchema.example && (
+    <div class="example">
+      Example: <code dir="auto">{JSON.stringify(propertySchema.example)}</code>
+    </div>
+  )}
 </li>
 
 <style>
