@@ -1,21 +1,15 @@
 ---
-// Code component wrapper that renders custom header for switching
-// between code variants. Could be implemented as a plugin for
-// Expressive Code, but that's a bit of work:
-// https://expressive-code.com/guides/developing-plugins/
-// If attempted, inspiration can be taken from:
-// https://github.com/expressive-code/expressive-code/tree/main/packages/@expressive-code/plugin-frames
-import { Code as Default } from "@astrojs/starlight/components";
 import CodeBlock from "./CodeBlock.astro";
-import CodeLangSelector from "./CodeLangSelector";
-import CopyButton from "./CopyButton.astro";
+import CodeLangSelector from "./CodeLangSelector.astro";
 import CodeBlockHeader from "./CodeBlockHeader.astro";
+import Code from "./Code.astro";
 
-interface Props {
+export interface Props {
   class?: string;
   name?: string;
   title?: string;
   isLanguageSelect?: boolean;
+  meta?: string;
   options: {
     label: string;
     code: string;
@@ -28,6 +22,7 @@ const {
   options = [],
   name,
   title,
+  meta = `"$SUMUP_API_KEY" "SUMUP_API_KEY"`,
   isLanguageSelect = false,
   class: cn,
   ...props
@@ -46,20 +41,18 @@ const selectorOptions = options.map(({ label }) => ({ label }));
     </slot>
     {
       enableSelector && (
-        <CodeLangSelector slot="right" options={selectorOptions} client:load />
+        <CodeLangSelector slot="right" options={selectorOptions} />
       )
     }
-    <CopyButton slot="right" />
   </CodeBlockHeader>
   <div slot="code">
     {
-      options.map(({ lang, code, label, meta }) => (
+      options.map(({ lang, code, label, meta: optionMeta }) => (
         <div
           class:list={["code", label === defaultOption ? "active" : ""]}
           data-lang={label}
-          data-code={code.replace(/\n/g, "\u007f")}
         >
-          <Default lang={lang} code={code} meta={meta} />
+          <Code lang={lang} code={code} meta={optionMeta ?? meta} />
         </div>
       ))
     }
@@ -67,12 +60,8 @@ const selectorOptions = options.map(({ label }) => ({ label }));
 </CodeBlock>
 
 <style>
-  .description {
-    color: var(--cui-fg-subtle);
-    padding: var(--cui-spacings-byte) var(--cui-spacings-kilo);
-  }
-
   .code {
+    min-width: 0;
     overflow: auto;
     display: none;
   }

@@ -1,20 +1,16 @@
 ---
-import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
-import type { StarlightPageProps } from "@astrojs/starlight/props";
 import { Anchor, Body, Headline } from "@sumup-oss/circuit-ui";
 import { Illustration } from "@sumup-oss/illustrations";
-
-const props = {
-  frontmatter: {
-    title: "Page not found",
-    tableOfContents: false,
-    template: "splash",
-  },
-  custom: true,
-} as StarlightPageProps;
+import StandaloneLayout from "../layouts/StandaloneLayout.astro";
 ---
 
-<StarlightPage {...props}>
+<StandaloneLayout
+  title="Page not found"
+  socialImage="/og/index.png"
+  noindex
+  hideTitle
+  searchable={false}
+>
   <div class="wrap">
     <div class="img">
       <Illustration name="problems" />
@@ -28,7 +24,7 @@ const props = {
       <Anchor href="/">home page</Anchor>.
     </Body>
   </div>
-</StarlightPage>
+</StandaloneLayout>
 
 <style lang="scss">
   .wrap {

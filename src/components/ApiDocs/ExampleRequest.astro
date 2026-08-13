@@ -1,15 +1,6 @@
 ---
 import { MultiCode } from "@components/Code";
-import {
-  curl,
-  dotnet,
-  go,
-  java,
-  node,
-  php,
-  python,
-  rust,
-} from "@lib/codesamples";
+import { getCodeSample } from "@lib/codesamples";
 import type { OperationObject } from "src/types/openapi";
 import OperationEndpoint from "./OperationEndpoint.astro";
 
@@ -25,42 +16,42 @@ const { operation } = Astro.props;
   options={[
     {
       label: "cURL",
-      code: curl(operation),
+      code: getCodeSample("curl", operation),
       lang: "bash",
     },
     {
       label: "JavaScript",
-      code: node(operation),
+      code: getCodeSample("node", operation),
       lang: "ts",
     },
     {
       label: ".NET",
-      code: dotnet(operation),
+      code: getCodeSample("dotnet", operation),
       lang: "csharp",
     },
     {
       label: "Java",
-      code: java(operation),
+      code: getCodeSample("java", operation),
       lang: "java",
     },
     {
       label: "Python",
-      code: python(operation),
+      code: getCodeSample("python", operation),
       lang: "python",
     },
     {
       label: "PHP",
-      code: php(operation),
+      code: getCodeSample("php", operation),
       lang: "php",
     },
     {
       label: "Go",
-      code: go(operation),
+      code: getCodeSample("go", operation),
       lang: "go",
     },
     {
       label: "Rust",
-      code: rust(operation),
+      code: getCodeSample("rust", operation),
       lang: "rust",
     },
   ]}

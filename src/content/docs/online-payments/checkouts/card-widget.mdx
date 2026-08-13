@@ -5,7 +5,6 @@ sidebar:
   order: 11
 ---
 
-import { Steps } from "@astrojs/starlight/components";
 import Callout from "@components/content/Callout";
 import CardWidget from "@components/content/CardWidget.astro";
 
@@ -65,7 +64,7 @@ Strong Customer Authentication (SCA) may apply to European online payments. The 
 
    <CardWidget />
 
-</Steps >
+</Steps>
 
 ## Configurations
 
@@ -275,5 +274,6 @@ default-src 'self' applepay.cdn-apple.com ...; script-src 'self' applepay.cdn-ap
 This is an optional feature, not including these policies will simply prevent Apple Pay from extended availability on unsupported browsers.
 
 <Callout type="caution">
-  Note that Apple Pay is available on all SDKs, but only Swift Checkout SDK extends this feature to third party browsers.
+  Note that Apple Pay is available on all SDKs, but only Swift Checkout SDK
+  extends this feature to third party browsers.
 </Callout>

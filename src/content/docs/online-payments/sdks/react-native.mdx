@@ -6,13 +6,16 @@ sidebar:
   hidden: true
 ---
 
-import { Tabs, TabItem } from '@astrojs/starlight/components';
-import Callout from '@components/content/Callout';
-import Image from '@components/content/Image.astro';
+import Callout from "@components/content/Callout";
+import Image from "@components/content/Image.astro";
 
 SumUp's React Native Payment SDK provides a payment sheet that is displayed on top of your app. It collects user payment details, confirms a payment, and saves a card for future usage. Moreover, it allows a user to use Apple Pay or Google Pay to process payments.
 
-<Image alt="Challenge screen" src="/img/guides/react_native_payment_sheet.png" width="40%" />
+<Image
+  alt="Challenge screen"
+  src="/img/guides/react_native_payment_sheet.png"
+  width="40%"
+/>
 
 ## Integration
 
@@ -30,137 +33,140 @@ Here are the things that you need in order to complete the steps in this guide:
 
 Initializing the SDK works by passing it a `checkout_id`. To [create a checkout](/api/checkouts/create) on your backend make the following request:
 
-<Tabs syncKey="backend_lang">
-  <TabItem label="cURL" icon="seti:powershell">
-    ```bash
-    curl --request POST \
-      --url https://api.sumup.com/v0.1/checkouts \
-      --header "Authorization: Bearer $SUMUP_API_KEY" \
-      --header 'Content-Type: application/json' \
-      --data '{
-        "checkout_reference": "44ea5096-b83f-46e1-9323-fe82a8cb7eb5",
-        "currency": "SEK",
-        "amount": 9.99,
-        "description": "Order #1234",
-        "merchant_code": "MXXXXXXX",
-        "return_url": "https://example.com",
-        "redirect_url": "https://sumup.com"
-      }'
-    ```
-  </TabItem>
-  <TabItem label="JavaScript" icon="seti:javascript">
-    ```ts
-    const checkout = await client.checkouts.create({
-      checkout_reference: "44ea5096-b83f-46e1-9323-fe82a8cb7eb5",
-      amount: 9.99,
-      currency: "SEK",
-      merchant_code: "MXXXXXXX",
-      description: "Order #1234",
-      return_url: "https://example.com",
-      redirect_url: "https://sumup.com",
-    });
-    ```
-  </TabItem>
-  <TabItem label=".NET" icon="seti:c-sharp">
-    ```csharp
-    var checkout = await client.Checkouts.CreateAsync(new CheckoutCreateRequest
+<CodeExamples
+  title="Create a Checkout"
+  options={[
     {
-        CheckoutReference = "44ea5096-b83f-46e1-9323-fe82a8cb7eb5",
-        Amount = 9.99f,
-        Currency = Currency.Sek,
-        MerchantCode = "MXXXXXXX",
-        Description = "Order #1234",
-        ReturnUrl = "https://example.com",
-        RedirectUrl = "https://sumup.com",
-    });
-    ```
-  </TabItem>
-  <TabItem label="Java" icon="seti:java">
-    ```java
-    var checkout = client.checkouts().createCheckout(
-        CheckoutCreateRequest.builder()
-            .checkoutReference("44ea5096-b83f-46e1-9323-fe82a8cb7eb5")
-            .amount(9.99f)
-            .currency(Currency.SEK)
-            .merchantCode("MXXXXXXX")
-            .description("Order #1234")
-            .returnUrl("https://example.com")
-            .redirectUrl("https://sumup.com")
-            .build()
-    );
-    ```
-  </TabItem>
-  <TabItem label="Go" icon="seti:go">
-    ```go
-    description := "Order #1234"
-    returnURL := "https://example.com"
-    redirectURL := "https://sumup.com"
+      label: "cURL",
+      lang: "bash",
+      code: String.raw`curl --request POST \
+  --url https://api.sumup.com/v0.1/checkouts \
+  --header "Authorization: Bearer $SUMUP_API_KEY" \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "checkout_reference": "44ea5096-b83f-46e1-9323-fe82a8cb7eb5",
+    "currency": "SEK",
+    "amount": 9.99,
+    "description": "Order #1234",
+    "merchant_code": "MXXXXXXX",
+    "return_url": "https://example.com",
+    "redirect_url": "https://sumup.com"
+  }'`,
+    },
+    {
+      label: "JavaScript",
+      lang: "ts",
+      code: String.raw`const checkout = await client.checkouts.create({
+  checkout_reference: "44ea5096-b83f-46e1-9323-fe82a8cb7eb5",
+  amount: 9.99,
+  currency: "SEK",
+  merchant_code: "MXXXXXXX",
+  description: "Order #1234",
+  return_url: "https://example.com",
+  redirect_url: "https://sumup.com",
+});`,
+    },
+    {
+      label: ".NET",
+      lang: "csharp",
+      code: String.raw`var checkout = await client.Checkouts.CreateAsync(new CheckoutCreateRequest
+{
+    CheckoutReference = "44ea5096-b83f-46e1-9323-fe82a8cb7eb5",
+    Amount = 9.99f,
+    Currency = Currency.Sek,
+    MerchantCode = "MXXXXXXX",
+    Description = "Order #1234",
+    ReturnUrl = "https://example.com",
+    RedirectUrl = "https://sumup.com",
+});`,
+    },
+    {
+      label: "Java",
+      lang: "java",
+      code: String.raw`var checkout = client.checkouts().createCheckout(
+    CheckoutCreateRequest.builder()
+        .checkoutReference("44ea5096-b83f-46e1-9323-fe82a8cb7eb5")
+        .amount(9.99f)
+        .currency(Currency.SEK)
+        .merchantCode("MXXXXXXX")
+        .description("Order #1234")
+        .returnUrl("https://example.com")
+        .redirectUrl("https://sumup.com")
+        .build()
+);`,
+    },
+    {
+      label: "Go",
+      lang: "go",
+      code: String.raw`description := "Order #1234"
+returnURL := "https://example.com"
+redirectURL := "https://sumup.com"
 
-    checkout, err := client.Checkouts.Create(ctx, sumup.CheckoutsCreateParams{
-    	CheckoutReference: "44ea5096-b83f-46e1-9323-fe82a8cb7eb5",
-    	Amount:            9.99,
-    	Currency:          sumup.CurrencySEK,
-    	MerchantCode:      "MXXXXXXX",
-    	Description:       &description,
-    	ReturnURL:         &returnURL,
-    	RedirectURL:       &redirectURL,
-    })
-    ```
-  </TabItem>
-  <TabItem label="Python" icon="seti:python">
-    ```py
-    from sumup.checkouts.resource import CreateCheckoutBody
+checkout, err := client.Checkouts.Create(ctx, sumup.CheckoutsCreateParams{
+CheckoutReference: "44ea5096-b83f-46e1-9323-fe82a8cb7eb5",
+Amount: 9.99,
+Currency: sumup.CurrencySEK,
+MerchantCode: "MXXXXXXX",
+Description: &description,
+ReturnURL: &returnURL,
+RedirectURL: &redirectURL,
+})`,
+    },
+    {
+      label: "Python",
+      lang: "py",
+      code: String.raw`from sumup.checkouts.resource import CreateCheckoutBody
 
-    checkout = client.checkouts.create(
-        CreateCheckoutBody(
-            checkout_reference="44ea5096-b83f-46e1-9323-fe82a8cb7eb5",
-            amount=9.99,
-            currency="SEK",
-            merchant_code="MXXXXXXX",
-            description="Order #1234",
-            return_url="https://example.com",
-            redirect_url="https://sumup.com",
-        )
-    )
-    ```
-  </TabItem>
-  <TabItem label="Rust" icon="seti:rust">
-    ```rust
-    let checkout = client
-        .checkouts()
-        .create(Some(sumup::resources::checkouts::CheckoutCreateRequest {
-            checkout_reference: "44ea5096-b83f-46e1-9323-fe82a8cb7eb5".into(),
-            amount: 9.99,
-            currency: sumup::resources::checkouts::Currency::SEK,
-            merchant_code: "MXXXXXXX".into(),
-            description: Some("Order #1234".into()),
-            return_url: Some("https://example.com".into()),
-            redirect_url: Some("https://sumup.com".into()),
-            customer_id: None,
-            purpose: None,
-            id: None,
-            status: None,
-            date: None,
-            valid_until: None,
-            transactions: None,
-        }))
-        .await?;
-    ```
-  </TabItem>
-  <TabItem label="PHP" icon="seti:php">
-    ```php
-    $checkout = $sumup->checkouts->create([
-        'checkout_reference' => '44ea5096-b83f-46e1-9323-fe82a8cb7eb5',
-        'currency' => 'SEK',
-        'amount' => 9.99,
-        'description' => 'Order #1234',
-        'merchant_code' => 'MXXXXXXX',
-        'return_url' => 'https://example.com',
-        'redirect_url' => 'https://sumup.com',
-    ]);
-    ```
-  </TabItem>
-</Tabs>
+checkout = client.checkouts.create(
+CreateCheckoutBody(
+checkout_reference="44ea5096-b83f-46e1-9323-fe82a8cb7eb5",
+amount=9.99,
+currency="SEK",
+merchant_code="MXXXXXXX",
+description="Order #1234",
+return_url="https://example.com",
+redirect_url="https://sumup.com",
+)
+)`,
+    },
+    {
+      label: "Rust",
+      lang: "rust",
+      code: String.raw`let checkout = client
+.checkouts()
+.create(Some(sumup::resources::checkouts::CheckoutCreateRequest {
+checkout_reference: "44ea5096-b83f-46e1-9323-fe82a8cb7eb5".into(),
+amount: 9.99,
+currency: sumup::resources::checkouts::Currency::SEK,
+merchant_code: "MXXXXXXX".into(),
+description: Some("Order #1234".into()),
+return_url: Some("https://example.com".into()),
+redirect_url: Some("https://sumup.com".into()),
+customer_id: None,
+purpose: None,
+id: None,
+status: None,
+date: None,
+valid_until: None,
+transactions: None,
+}))
+.await?;`,
+    },
+    {
+      label: "PHP",
+      lang: "php",
+      code: String.raw`$checkout = $sumup->checkouts->create([
+'checkout_reference' => '44ea5096-b83f-46e1-9323-fe82a8cb7eb5',
+'currency' => 'SEK',
+'amount' => 9.99,
+'description' => 'Order #1234',
+'merchant_code' => 'MXXXXXXX',
+'return_url' => 'https://example.com',
+'redirect_url' => 'https://sumup.com',
+]);`,
+},
+]}
+/>
 
 The SDK will process the checkout once a customer provides payment details. If payment details aren't passed an error will be received.
 
@@ -210,8 +216,8 @@ If you don't need it, please provide the language field in the `initPaymentSheet
 
 ```javascript
 await initPaymentSheet({
- checkoutId,
- language: 'en',
+  checkoutId,
+  language: "en",
 });
 ```
 
@@ -225,14 +231,14 @@ pod install
 SDK should be initialized by wrapping your payment screen into SumUpProvider. This component requires an `apiKey` you can create in the [API Keys settings](/tools/authorization/api-keys/).
 
 ```javascript
-import { SumUpProvider } from 'sumup-react-native-alpha';
+import { SumUpProvider } from "sumup-react-native-alpha";
 
 export default function App() {
- return (
-   <SumUpProvider apiKey="sup_sk_...">
-     <Screen />
-   </SumUpProvider>
- );
+  return (
+    <SumUpProvider apiKey="sup_sk_...">
+      <Screen />
+    </SumUpProvider>
+  );
 }
 ```
 
@@ -277,7 +283,7 @@ export default function MainScreen() {
 
 - `checkoutId` - described in section [Create a checkout](/online-payments/sdks/react-native/#create-a-checkout).
 
-*Optional*:
+_Optional_:
 
 - `customerId` - used for saving cards for future usage.
 - `language` - English and Sweden are supported (if undefined, react-native-localization will be used to check user device language).
@@ -318,206 +324,209 @@ After initialization a payment sheet can be shown. When a user presses a button,
 
 To save a card for future usage, a customer should be created. It can be achieved by making the following request:
 
-<Tabs syncKey="backend_lang">
-  <TabItem label="cURL" icon="seti:powershell">
-    ```bash
-    curl -L -X POST 'https://api.sumup.com/v0.1/customers' \
-      -H 'Content-Type: application/json' \
-      -H 'Accept: application/json' \
-      -H "Authorization: Bearer $SUMUP_API_KEY" \
-      --data-raw '{
-        "customer_id": "831ff8d4cd5958ab5670",
-        "personal_details": {
-          "first_name": "John",
-          "last_name": "Doe",
-          "email": "user@example.com",
-          "phone": "+491635559723",
-          "birthdate": "1993-12-31",
-          "address": {
-            "city": "Berlin",
-            "country": "DE",
-            "line1": "Sample street",
-            "line2": "ap. 5",
-            "postal_code": "10115",
-            "state": "Berlin"
-          }
-        }
-      }'
-    ```
-  </TabItem>
-  <TabItem label="JavaScript" icon="seti:javascript">
-    ```ts
-    const customer = await client.customers.create({
-      customer_id: "831ff8d4cd5958ab5670",
-      personal_details: {
-        first_name: "John",
-        last_name: "Doe",
-        email: "user@example.com",
-        phone: "+491635559723",
-        birth_date: "1993-12-31",
-        address: {
-          city: "Berlin",
-          state: "Berlin",
-          country: "DE",
-          line_1: "Sample street",
-          line_2: "ap. 5",
-          postal_code: "10115",
-        },
-      },
-    });
-    ```
-  </TabItem>
-  <TabItem label=".NET" icon="seti:c-sharp">
-    ```csharp
-    var customer = await client.Customers.CreateAsync(new Customer
+<CodeExamples
+  title="Create a Customer"
+  options={[
     {
-        CustomerId = "831ff8d4cd5958ab5670",
-        PersonalDetails = new PersonalDetails
+      label: "cURL",
+      lang: "bash",
+      code: String.raw`curl -L -X POST 'https://api.sumup.com/v0.1/customers' \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json' \
+  -H "Authorization: Bearer $SUMUP_API_KEY" \
+  --data-raw '{
+    "customer_id": "831ff8d4cd5958ab5670",
+    "personal_details": {
+      "first_name": "John",
+      "last_name": "Doe",
+      "email": "user@example.com",
+      "phone": "+491635559723",
+      "birthdate": "1993-12-31",
+      "address": {
+        "city": "Berlin",
+        "country": "DE",
+        "line1": "Sample street",
+        "line2": "ap. 5",
+        "postal_code": "10115",
+        "state": "Berlin"
+      }
+    }
+  }'`,
+    },
+    {
+      label: "JavaScript",
+      lang: "ts",
+      code: String.raw`const customer = await client.customers.create({
+  customer_id: "831ff8d4cd5958ab5670",
+  personal_details: {
+    first_name: "John",
+    last_name: "Doe",
+    email: "user@example.com",
+    phone: "+491635559723",
+    birth_date: "1993-12-31",
+    address: {
+      city: "Berlin",
+      state: "Berlin",
+      country: "DE",
+      line_1: "Sample street",
+      line_2: "ap. 5",
+      postal_code: "10115",
+    },
+  },
+});`,
+    },
+    {
+      label: ".NET",
+      lang: "csharp",
+      code: String.raw`var customer = await client.Customers.CreateAsync(new Customer
+{
+    CustomerId = "831ff8d4cd5958ab5670",
+    PersonalDetails = new PersonalDetails
+    {
+        FirstName = "John",
+        LastName = "Doe",
+        Email = "user@example.com",
+        Phone = "+491635559723",
+        BirthDate = new System.DateTime(1993, 12, 31),
+        Address = new AddressLegacy
         {
-            FirstName = "John",
-            LastName = "Doe",
-            Email = "user@example.com",
-            Phone = "+491635559723",
-            BirthDate = new System.DateTime(1993, 12, 31),
-            Address = new AddressLegacy
-            {
-                City = "Berlin",
-                State = "Berlin",
-                Country = "DE",
-                Line1 = "Sample street",
-                Line2 = "ap. 5",
-                PostalCode = "10115",
-            },
+            City = "Berlin",
+            State = "Berlin",
+            Country = "DE",
+            Line1 = "Sample street",
+            Line2 = "ap. 5",
+            PostalCode = "10115",
         },
-    });
-    ```
-  </TabItem>
-  <TabItem label="Java" icon="seti:java">
-    ```java
-    var customer = client.customers().createCustomer(
-        Customer.builder()
-            .customerId("831ff8d4cd5958ab5670")
-            .personalDetails(
-                PersonalDetails.builder()
-                    .firstName("John")
-                    .lastName("Doe")
-                    .email("user@example.com")
-                    .phone("+491635559723")
-                    .birthDate(java.time.LocalDate.parse("1993-12-31"))
-                    .address(
-                        AddressLegacy.builder()
-                            .city("Berlin")
-                            .state("Berlin")
-                            .country("DE")
-                            .line1("Sample street")
-                            .line2("ap. 5")
-                            .postalCode("10115")
-                            .build()
-                    )
-                    .build()
-            )
-            .build()
-    );
-    ```
-  </TabItem>
-  <TabItem label="Go" icon="seti:go">
-    ```go
-    str := func(v string) *string { return &v }
-
-    customer, err := client.Customers.Create(ctx, sumup.CustomersCreateParams{
-    	CustomerID: "831ff8d4cd5958ab5670",
-    	PersonalDetails: &sumup.PersonalDetails{
-    		FirstName: str("John"),
-    		LastName:  str("Doe"),
-    		Email:     str("user@example.com"),
-    		Phone:     str("+491635559723"),
-    		Address: &sumup.AddressLegacy{
-    			City:       str("Berlin"),
-    			State:      str("Berlin"),
-    			Country:    str("DE"),
-    			Line1:      str("Sample street"),
-    			Line2:      str("ap. 5"),
-    			PostalCode: str("10115"),
-    		},
-    	},
-    })
-    ```
-  </TabItem>
-  <TabItem label="Python" icon="seti:python">
-    ```py
-    from sumup.customers.resource import CreateCustomerBody
-    from sumup.customers.types import AddressLegacy, PersonalDetails
-
-    customer = client.customers.create(
-        CreateCustomerBody(
-            customer_id="831ff8d4cd5958ab5670",
-            personal_details=PersonalDetails(
-                first_name="John",
-                last_name="Doe",
-                email="user@example.com",
-                phone="+491635559723",
-                birth_date="1993-12-31",
-                address=AddressLegacy(
-                    city="Berlin",
-                    state="Berlin",
-                    country="DE",
-                    line_1="Sample street",
-                    line_2="ap. 5",
-                    postal_code="10115",
-                ),
-            ),
+    },
+});`,
+    },
+    {
+      label: "Java",
+      lang: "java",
+      code: String.raw`var customer = client.customers().createCustomer(
+    Customer.builder()
+        .customerId("831ff8d4cd5958ab5670")
+        .personalDetails(
+            PersonalDetails.builder()
+                .firstName("John")
+                .lastName("Doe")
+                .email("user@example.com")
+                .phone("+491635559723")
+                .birthDate(java.time.LocalDate.parse("1993-12-31"))
+                .address(
+                    AddressLegacy.builder()
+                        .city("Berlin")
+                        .state("Berlin")
+                        .country("DE")
+                        .line1("Sample street")
+                        .line2("ap. 5")
+                        .postalCode("10115")
+                        .build()
+                )
+                .build()
         )
-    )
-    ```
-  </TabItem>
-  <TabItem label="Rust" icon="seti:rust">
-    ```rust
-    let customer = client
-        .customers()
-        .create(sumup::resources::customers::Customer {
-            customer_id: "831ff8d4cd5958ab5670".into(),
-            personal_details: Some(sumup::resources::common::PersonalDetails {
-                first_name: Some("John".into()),
-                last_name: Some("Doe".into()),
-                email: Some("user@example.com".into()),
-                phone: Some("+491635559723".into()),
-                birth_date: None,
-                tax_id: None,
-                address: Some(sumup::resources::common::AddressLegacy {
-                    city: Some("Berlin".into()),
-                    state: Some("Berlin".into()),
-                    country: Some("DE".into()),
-                    line_1: Some("Sample street".into()),
-                    line_2: Some("ap. 5".into()),
-                    postal_code: Some("10115".into()),
-                }),
-            }),
-        })
-        .await?;
-    ```
-  </TabItem>
-  <TabItem label="PHP" icon="seti:php">
-    ```php
-    $customer = $sumup->customers->create([
-        'customer_id' => '831ff8d4cd5958ab5670',
-        'personal_details' => [
-            'first_name' => 'John',
-            'last_name' => 'Doe',
-            'email' => 'user@example.com',
-            'phone' => '+491635559723',
-            'address' => [
-                'city' => 'Berlin',
-                'state' => 'Berlin',
-                'country' => 'DE',
-                'line_1' => 'Sample street',
-                'line_2' => 'ap. 5',
-                'postal_code' => '10115',
-            ],
-        ],
-    ]);
-    ```
-  </TabItem>
-</Tabs>
+        .build()
+);`,
+    },
+    {
+      label: "Go",
+      lang: "go",
+      code: String.raw`str := func(v string) *string { return &v }
+
+customer, err := client.Customers.Create(ctx, sumup.CustomersCreateParams{
+CustomerID: "831ff8d4cd5958ab5670",
+PersonalDetails: &sumup.PersonalDetails{
+FirstName: str("John"),
+LastName: str("Doe"),
+Email: str("user@example.com"),
+Phone: str("+491635559723"),
+Address: &sumup.AddressLegacy{
+City: str("Berlin"),
+State: str("Berlin"),
+Country: str("DE"),
+Line1: str("Sample street"),
+Line2: str("ap. 5"),
+PostalCode: str("10115"),
+},
+},
+})`,
+    },
+    {
+      label: "Python",
+      lang: "py",
+      code: String.raw`from sumup.customers.resource import CreateCustomerBody
+from sumup.customers.types import AddressLegacy, PersonalDetails
+
+customer = client.customers.create(
+CreateCustomerBody(
+customer_id="831ff8d4cd5958ab5670",
+personal_details=PersonalDetails(
+first_name="John",
+last_name="Doe",
+email="user@example.com",
+phone="+491635559723",
+birth_date="1993-12-31",
+address=AddressLegacy(
+city="Berlin",
+state="Berlin",
+country="DE",
+line_1="Sample street",
+line_2="ap. 5",
+postal_code="10115",
+),
+),
+)
+)`,
+    },
+    {
+      label: "Rust",
+      lang: "rust",
+      code: String.raw`let customer = client
+.customers()
+.create(sumup::resources::customers::Customer {
+customer_id: "831ff8d4cd5958ab5670".into(),
+personal_details: Some(sumup::resources::common::PersonalDetails {
+first_name: Some("John".into()),
+last_name: Some("Doe".into()),
+email: Some("user@example.com".into()),
+phone: Some("+491635559723".into()),
+birth_date: None,
+tax_id: None,
+address: Some(sumup::resources::common::AddressLegacy {
+city: Some("Berlin".into()),
+state: Some("Berlin".into()),
+country: Some("DE".into()),
+line_1: Some("Sample street".into()),
+line_2: Some("ap. 5".into()),
+postal_code: Some("10115".into()),
+}),
+}),
+})
+.await?;`,
+    },
+    {
+      label: "PHP",
+      lang: "php",
+      code: String.raw`$customer = $sumup->customers->create([
+'customer_id' => '831ff8d4cd5958ab5670',
+'personal_details' => [
+'first_name' => 'John',
+'last_name' => 'Doe',
+'email' => 'user@example.com',
+'phone' => '+491635559723',
+'address' => [
+'city' => 'Berlin',
+'state' => 'Berlin',
+'country' => 'DE',
+'line_1' => 'Sample street',
+'line_2' => 'ap. 5',
+'postal_code' => '10115',
+],
+],
+]);`,
+},
+]}
+/>
 
 For more information on saving a customer refer to [this guide](/api/customers/create).
 
@@ -525,8 +534,8 @@ To use the newly created customer, create a checkout by passing the `customer_id
 
 ```js
 await initPaymentSheet({
- // ...
- customerId: '...',
+  // ...
+  customerId: "...",
 });
 ```
 
@@ -549,10 +558,10 @@ Then provide `googlePay` object to the `initPaymentSheet` to initialize.
 
 ```js
 await initPaymentSheet({
- // ...
- googlePay: {
-   isProductionEnvironment: false,
- },
+  // ...
+  googlePay: {
+    isProductionEnvironment: false,
+  },
 });
 ```
 
@@ -560,7 +569,7 @@ await initPaymentSheet({
 
 <Callout type="caution">
 
-The backend doesn't process payments with Apple Pay and an error message will be displayed after attempting to pay with it.  This is a known issue and a fix is being worked on.
+The backend doesn't process payments with Apple Pay and an error message will be displayed after attempting to pay with it. This is a known issue and a fix is being worked on.
 
 </Callout>
 
@@ -583,10 +592,10 @@ Then provide an `applePay` object in `initPaymentSheet` to initialize.
 
 ```js
 await initPaymentSheet({
- // ...
- applePay: {
-   merchantIdentifier: 'merchant.com.{{YOUR_APP_NAME}}',
-   label: 'Pay',
- },
+  // ...
+  applePay: {
+    merchantIdentifier: "merchant.com.{{YOUR_APP_NAME}}",
+    label: "Pay",
+  },
 });
 ```

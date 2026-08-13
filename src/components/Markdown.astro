@@ -1,5 +1,5 @@
 ---
-import { markdownToHtml } from "satteri";
+import { marked } from "marked";
 
 interface Props {
   class?: string;
@@ -9,9 +9,9 @@ interface Props {
 
 const { class: className } = Astro.props;
 const slot = await Astro.slots.render("default");
-const { html } = markdownToHtml(slot);
+const html = await marked.parse(slot, { gfm: true });
 ---
 
-<div class:list={["sl-markdown-content", className]}>
+<div class:list={["docs-content", className]}>
   <Fragment set:html={html} />
 </div>

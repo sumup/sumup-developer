@@ -1,0 +1,14 @@
+---
+interface Props {
+  markdownUrl: string;
+  llmsUrl: string;
+}
+
+const { markdownUrl, llmsUrl } = Astro.props;
+---
+
+<aside class="visually-hidden" data-ai-agent-directive>
+  This page is available in Markdown format. See <a href={markdownUrl}
+    >{markdownUrl}</a
+  > for this page or <a href={llmsUrl}>{llmsUrl}</a> for the documentation index.
+</aside>

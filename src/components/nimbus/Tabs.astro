@@ -1,0 +1,65 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+interface Props extends HTMLAttributes<"div"> {
+  syncKey?: string;
+}
+
+const { syncKey, class: className, ...attributes } = Astro.props;
+---
+
+<div
+  data-nb-tabs
+  data-nb-sync-key={syncKey}
+  class:list={["tabs", className]}
+  {...attributes}
+>
+  <div class="tabs-list" role="tablist" aria-label="Choose an option"></div>
+  <div class="tabs-panels"><slot /></div>
+</div>
+
+<script>
+  import "./tabs.client";
+</script>
+
+<style>
+  .tabs {
+    margin: var(--cui-spacings-mega) 0;
+  }
+
+  .tabs-list {
+    display: flex;
+    overflow-x: auto;
+    border-bottom: 1px solid var(--cui-border-divider);
+    scrollbar-width: thin;
+  }
+
+  .tabs-list :global(button) {
+    flex: none;
+    padding: var(--cui-spacings-kilo) var(--cui-spacings-mega);
+    color: var(--cui-fg-subtle);
+    background: transparent;
+    border: 0;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    font-weight: var(--cui-font-weight-semibold);
+    white-space: nowrap;
+  }
+
+  .tabs-list :global(button:hover) {
+    color: var(--cui-fg-normal);
+  }
+
+  .tabs-list :global(button[aria-selected="true"]) {
+    color: var(--cui-fg-normal);
+    border-bottom-color: var(--cui-border-strong);
+  }
+
+  .tabs-panels {
+    padding-top: var(--cui-spacings-kilo);
+  }
+
+  .tabs-panels :global([role="tabpanel"][hidden]) {
+    display: none;
+  }
+</style>

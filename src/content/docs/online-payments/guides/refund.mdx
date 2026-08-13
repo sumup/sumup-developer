@@ -5,9 +5,8 @@ sidebar:
   order: 92
 ---
 
-import { Tabs, TabItem } from '@astrojs/starlight/components';
-import Callout from '@components/content/Callout';
-import Multicode from '@components/content/Multicode.astro';
+import Callout from "@components/content/Callout";
+import Multicode from "@components/content/Multicode.astro";
 
 ## Overview
 
@@ -41,65 +40,69 @@ Transactions are associated with active merchant user accounts. As a result, you
 ### 1. Look up a Transaction ID
 
 <Callout type="note">
-If you already have the ID of the transaction you want to refund, you can skip this step and continue with [Step 2](#2-refund-a-transaction).
+  If you already have the ID of the transaction you want to refund, you can skip
+  this step and continue with [Step 2](#2-refund-a-transaction).
 </Callout>
 
 1. Make a GET request to the `https://api.sumup.com/v0.1/checkouts/{id}` endpoint, where the value of the `{id}` path parameter is the identifier of the checkout resource.
 
 Example request:
 
-<Tabs syncKey="backend_lang">
-  <TabItem label="cURL" icon="seti:powershell">
-    ```bash
-    curl -X GET \
-      https://api.sumup.com/v0.1/checkouts/4ebc2ed7-bb8c-4d4d-a110-08fd31301bf2 \
-      -H "Authorization: Bearer $SUMUP_API_KEY"
-    ```
-  </TabItem>
-  <TabItem label="JavaScript" icon="seti:javascript">
-    ```ts
-    const checkout = await client.checkouts.get("4ebc2ed7-bb8c-4d4d-a110-08fd31301bf2");
-    ```
-  </TabItem>
-  <TabItem label=".NET" icon="seti:c-sharp">
-    ```csharp
-    var checkout = await client.Checkouts.GetAsync("4ebc2ed7-bb8c-4d4d-a110-08fd31301bf2");
-    ```
-  </TabItem>
-  <TabItem label="Java" icon="seti:java">
-    ```java
-    var checkout = client.checkouts().getCheckout("4ebc2ed7-bb8c-4d4d-a110-08fd31301bf2");
-    ```
-  </TabItem>
-  <TabItem label="Go" icon="seti:go">
-    ```go
-    ctx := context.Background()
-    client := sumup.NewClient()
+<CodeExamples
+  title="Retrieve a Checkout"
+  options={[
+    {
+      label: "cURL",
+      lang: "bash",
+      code: String.raw`curl -X GET \
+  https://api.sumup.com/v0.1/checkouts/4ebc2ed7-bb8c-4d4d-a110-08fd31301bf2 \
+  -H "Authorization: Bearer $SUMUP_API_KEY"`,
+    },
+    {
+      label: "JavaScript",
+      lang: "ts",
+      code: String.raw`const checkout = await client.checkouts.get("4ebc2ed7-bb8c-4d4d-a110-08fd31301bf2");`,
+    },
+    {
+      label: ".NET",
+      lang: "csharp",
+      code: String.raw`var checkout = await client.Checkouts.GetAsync("4ebc2ed7-bb8c-4d4d-a110-08fd31301bf2");`,
+    },
+    {
+      label: "Java",
+      lang: "java",
+      code: String.raw`var checkout = client.checkouts().getCheckout("4ebc2ed7-bb8c-4d4d-a110-08fd31301bf2");`,
+    },
+    {
+      label: "Go",
+      lang: "go",
+      code: String.raw`ctx := context.Background()
+client := sumup.NewClient()
 
-    checkout, err := client.Checkouts.Get(ctx, "4ebc2ed7-bb8c-4d4d-a110-08fd31301bf2")
-    ```
-  </TabItem>
-  <TabItem label="Python" icon="seti:python">
-    ```py
-    checkout = client.checkouts.get("4ebc2ed7-bb8c-4d4d-a110-08fd31301bf2")
-    ```
-  </TabItem>
-  <TabItem label="Rust" icon="seti:rust">
-    ```rust
-    let checkout = client
-        .checkouts()
-        .get("4ebc2ed7-bb8c-4d4d-a110-08fd31301bf2")
-        .await?;
-    ```
-  </TabItem>
-  <TabItem label="PHP" icon="seti:php">
-    ```php
-    $checkout = $sumup->checkouts->get('4ebc2ed7-bb8c-4d4d-a110-08fd31301bf2');
-    $checkoutReference = $checkout->checkout_reference;
-    $checkoutId = $checkout->id;
-    ```
-  </TabItem>
-</Tabs>
+checkout, err := client.Checkouts.Get(ctx, "4ebc2ed7-bb8c-4d4d-a110-08fd31301bf2")`,
+    },
+    {
+      label: "Python",
+      lang: "py",
+      code: String.raw`checkout = client.checkouts.get("4ebc2ed7-bb8c-4d4d-a110-08fd31301bf2")`,
+    },
+    {
+      label: "Rust",
+      lang: "rust",
+      code: String.raw`let checkout = client
+.checkouts()
+.get("4ebc2ed7-bb8c-4d4d-a110-08fd31301bf2")
+.await?;`,
+    },
+    {
+      label: "PHP",
+      lang: "php",
+      code: String.raw`$checkout = $sumup->checkouts->get('4ebc2ed7-bb8c-4d4d-a110-08fd31301bf2');
+$checkoutReference = $checkout->checkout_reference;
+$checkoutId = $checkout->id;`,
+},
+]}
+/>
 
 The response contains a JSON body with the full details of the processed checkout resource. You can find the transaction ID in the `id` attribute of the respective transaction resource (`664200af-2b62-4142-9c73-a2a505310d78` in the sample response below).
 
@@ -129,64 +132,67 @@ The response contains a JSON body with the full details of the processed checkou
 
 Example request for the transaction with identifier `664200af-2b62-4142-9c73-a2a505310d78`:
 
-<Tabs syncKey="backend_lang">
-  <TabItem label="cURL" icon="seti:powershell">
-    ```bash
-    curl -X POST \
-      https://api.sumup.com/v0.1/me/refund/19aa3cca-89f6-42d2-b462-463b0b53e959 \
-      -H "Authorization: Bearer $SUMUP_API_KEY"
-    ```
-  </TabItem>
-  <TabItem label="JavaScript" icon="seti:javascript">
-    ```ts
-    await client.transactions.refund("19aa3cca-89f6-42d2-b462-463b0b53e959");
-    ```
-  </TabItem>
-  <TabItem label=".NET" icon="seti:c-sharp">
-    ```csharp
-    await client.Transactions.RefundAsync("19aa3cca-89f6-42d2-b462-463b0b53e959");
-    ```
-  </TabItem>
-  <TabItem label="Java" icon="seti:java">
-    ```java
-    client.transactions().refundTransaction(
-        "19aa3cca-89f6-42d2-b462-463b0b53e959",
-        RefundTransactionRequest.builder().build()
-    );
-    ```
-  </TabItem>
-  <TabItem label="Go" icon="seti:go">
-    ```go
-    ctx := context.Background()
-    client := sumup.NewClient()
+<CodeExamples
+  title="Make a Full Refund"
+  options={[
+    {
+      label: "cURL",
+      lang: "bash",
+      code: String.raw`curl -X POST \
+  https://api.sumup.com/v0.1/me/refund/19aa3cca-89f6-42d2-b462-463b0b53e959 \
+  -H "Authorization: Bearer $SUMUP_API_KEY"`,
+    },
+    {
+      label: "JavaScript",
+      lang: "ts",
+      code: String.raw`await client.transactions.refund("19aa3cca-89f6-42d2-b462-463b0b53e959");`,
+    },
+    {
+      label: ".NET",
+      lang: "csharp",
+      code: String.raw`await client.Transactions.RefundAsync("19aa3cca-89f6-42d2-b462-463b0b53e959");`,
+    },
+    {
+      label: "Java",
+      lang: "java",
+      code: String.raw`client.transactions().refundTransaction(
+    "19aa3cca-89f6-42d2-b462-463b0b53e959",
+    RefundTransactionRequest.builder().build()
+);`,
+    },
+    {
+      label: "Go",
+      lang: "go",
+      code: String.raw`ctx := context.Background()
+client := sumup.NewClient()
 
-    err := client.Transactions.Refund(ctx, "19aa3cca-89f6-42d2-b462-463b0b53e959", sumup.TransactionsRefundParams{})
-    ```
-  </TabItem>
-  <TabItem label="Python" icon="seti:python">
-    ```py
-    from sumup.transactions.resource import RefundTransactionBody
+err := client.Transactions.Refund(ctx, "19aa3cca-89f6-42d2-b462-463b0b53e959", sumup.TransactionsRefundParams{})`,
+    },
+    {
+      label: "Python",
+      lang: "py",
+      code: String.raw`from sumup.transactions.resource import RefundTransactionBody
 
-    client.transactions.refund(
-        "19aa3cca-89f6-42d2-b462-463b0b53e959",
-        RefundTransactionBody(),
-    )
-    ```
-  </TabItem>
-  <TabItem label="Rust" icon="seti:rust">
-    ```rust
-    client
-        .transactions()
-        .refund("19aa3cca-89f6-42d2-b462-463b0b53e959", None)
-        .await?;
-    ```
-  </TabItem>
-  <TabItem label="PHP" icon="seti:php">
-    ```php
-    $sumup->transactions->refund('19aa3cca-89f6-42d2-b462-463b0b53e959');
-    ```
-  </TabItem>
-</Tabs>
+client.transactions.refund(
+"19aa3cca-89f6-42d2-b462-463b0b53e959",
+RefundTransactionBody(),
+)`,
+    },
+    {
+      label: "Rust",
+      lang: "rust",
+      code: String.raw`client
+.transactions()
+.refund("19aa3cca-89f6-42d2-b462-463b0b53e959", None)
+.await?;`,
+    },
+    {
+      label: "PHP",
+      lang: "php",
+      code: String.raw`$sumup->transactions->refund('19aa3cca-89f6-42d2-b462-463b0b53e959');`,
+},
+]}
+/>
 
 The response returns a 204 HTTP status code and contains no body.
 
@@ -198,83 +204,86 @@ Unlike the option for a full refund, the request body for partial refunds should
 
 Example request for a partial refund for the amount of 24.42 EUR:
 
-<Tabs syncKey="backend_lang">
-  <TabItem label="cURL" icon="seti:powershell">
-    ```bash
-    curl -X POST \
-      https://api.sumup.com/v0.1/me/refund/19aa3cca-89f6-42d2-b462-463b0b53e959 \
-      -H "Authorization: Bearer $SUMUP_API_KEY" \
-      -H 'Content-Type: application/json' \
-      -d '{"amount": 24.42}'
-    ```
-  </TabItem>
-  <TabItem label="JavaScript" icon="seti:javascript">
-    ```ts
-    await client.transactions.refund("19aa3cca-89f6-42d2-b462-463b0b53e959", {
-      amount: 24.42,
-    });
-    ```
-  </TabItem>
-  <TabItem label=".NET" icon="seti:c-sharp">
-    ```csharp
-    await client.Transactions.RefundAsync(
-        "19aa3cca-89f6-42d2-b462-463b0b53e959",
-        new TransactionsRefundRequest
-        {
-            Amount = 24.42f,
-        });
-    ```
-  </TabItem>
-  <TabItem label="Java" icon="seti:java">
-    ```java
-    client.transactions().refundTransaction(
-        "19aa3cca-89f6-42d2-b462-463b0b53e959",
-        RefundTransactionRequest.builder().amount(24.42f).build()
-    );
-    ```
-  </TabItem>
-  <TabItem label="Go" icon="seti:go">
-    ```go
-    ctx := context.Background()
-    client := sumup.NewClient()
+<CodeExamples
+  title="Make a Partial Refund"
+  options={[
+    {
+      label: "cURL",
+      lang: "bash",
+      code: String.raw`curl -X POST \
+  https://api.sumup.com/v0.1/me/refund/19aa3cca-89f6-42d2-b462-463b0b53e959 \
+  -H "Authorization: Bearer $SUMUP_API_KEY" \
+  -H 'Content-Type: application/json' \
+  -d '{"amount": 24.42}'`,
+    },
+    {
+      label: "JavaScript",
+      lang: "ts",
+      code: String.raw`await client.transactions.refund("19aa3cca-89f6-42d2-b462-463b0b53e959", {
+  amount: 24.42,
+});`,
+    },
+    {
+      label: ".NET",
+      lang: "csharp",
+      code: String.raw`await client.Transactions.RefundAsync(
+    "19aa3cca-89f6-42d2-b462-463b0b53e959",
+    new TransactionsRefundRequest
+    {
+        Amount = 24.42f,
+    });`,
+    },
+    {
+      label: "Java",
+      lang: "java",
+      code: String.raw`client.transactions().refundTransaction(
+    "19aa3cca-89f6-42d2-b462-463b0b53e959",
+    RefundTransactionRequest.builder().amount(24.42f).build()
+);`,
+    },
+    {
+      label: "Go",
+      lang: "go",
+      code: String.raw`ctx := context.Background()
+client := sumup.NewClient()
 
-    amount := float32(24.42)
-    client.Transactions.Refund(ctx, "19aa3cca-89f6-42d2-b462-463b0b53e959", sumup.TransactionsRefundParams{
-    	Amount: &amount,
-    })
-    ```
-  </TabItem>
-  <TabItem label="Python" icon="seti:python">
-    ```py
-    from sumup.transactions.resource import RefundTransactionBody
+amount := float32(24.42)
+client.Transactions.Refund(ctx, "19aa3cca-89f6-42d2-b462-463b0b53e959", sumup.TransactionsRefundParams{
+Amount: &amount,
+})`,
+    },
+    {
+      label: "Python",
+      lang: "py",
+      code: String.raw`from sumup.transactions.resource import RefundTransactionBody
 
-    client.transactions.refund(
-        "19aa3cca-89f6-42d2-b462-463b0b53e959",
-        RefundTransactionBody(amount=24.42),
-    )
-    ```
-  </TabItem>
-  <TabItem label="Rust" icon="seti:rust">
-    ```rust
-    use sumup::resources::transactions::RefundTransactionBody;
+client.transactions.refund(
+"19aa3cca-89f6-42d2-b462-463b0b53e959",
+RefundTransactionBody(amount=24.42),
+)`,
+    },
+    {
+      label: "Rust",
+      lang: "rust",
+      code: String.raw`use sumup::resources::transactions::RefundTransactionBody;
 
-    client
-        .transactions()
-        .refund(
-            "19aa3cca-89f6-42d2-b462-463b0b53e959",
-            Some(RefundTransactionBody { amount: Some(24.42) }),
-        )
-        .await?;
-    ```
-  </TabItem>
-  <TabItem label="PHP" icon="seti:php">
-    ```php
-    $sumup->transactions->refund('19aa3cca-89f6-42d2-b462-463b0b53e959', [
-        'amount' => 24.42,
-    ]);
-    ```
-  </TabItem>
-</Tabs>
+client
+.transactions()
+.refund(
+"19aa3cca-89f6-42d2-b462-463b0b53e959",
+Some(RefundTransactionBody { amount: Some(24.42) }),
+)
+.await?;`,
+    },
+    {
+      label: "PHP",
+      lang: "php",
+      code: String.raw`$sumup->transactions->refund('19aa3cca-89f6-42d2-b462-463b0b53e959', [
+'amount' => 24.42,
+]);`,
+},
+]}
+/>
 
 The response returns a 204 HTTP status code and contains no body.
 

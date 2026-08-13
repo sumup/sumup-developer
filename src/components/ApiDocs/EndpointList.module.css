@@ -1,0 +1,41 @@
+.endpoint {
+  display: flex;
+  min-width: 0;
+  gap: var(--cui-spacings-byte);
+  color: var(--cui-fg-subtle);
+  font-family: var(--cui-font-stack-mono);
+  font-size: var(--cui-compact-s-font-size);
+  line-height: var(--cui-compact-s-line-height);
+}
+
+.method {
+  flex: none;
+  font-weight: var(--cui-font-weight-bold);
+}
+
+.path {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.get {
+  color: var(--cui-fg-accent);
+}
+
+.post {
+  color: var(--cui-fg-success);
+}
+
+.patch {
+  color: var(--cui-fg-promo);
+}
+
+.put {
+  color: var(--cui-fg-warning);
+}
+
+.delete {
+  color: var(--cui-fg-danger);
+}

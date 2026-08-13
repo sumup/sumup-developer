@@ -2,9 +2,7 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "developer-sumup-com",
   "compatibility_date": "2026-05-26",
-  "compatibility_flags": [
-    "nodejs_compat"
-  ],
+  "compatibility_flags": ["nodejs_compat"],
   "workers_dev": true,
   "preview_urls": true,
   "upload_source_maps": true,
@@ -12,22 +10,19 @@
     "directory": "./dist",
     "not_found_handling": "404-page",
     "html_handling": "drop-trailing-slash",
-    "run_worker_first": [
-      "/contact",
-      "/og/*"
-    ],
+    "run_worker_first": ["/contact", "/og/*"],
   },
   "observability": {
     "enabled": true,
     "logs": {
       "enabled": true,
-      "invocation_logs": true
-    }
+      "invocation_logs": true,
+    },
   },
   "routes": [
     {
       "pattern": "developer.sumup.com",
-      "custom_domain": true
-    }
-  ]
+      "custom_domain": true,
+    },
+  ],
 }

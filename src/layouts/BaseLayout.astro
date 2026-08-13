@@ -1,0 +1,121 @@
+---
+import "../styles/reset.css";
+import "@sumup-oss/design-tokens/fonts.css";
+import "@sumup-oss/design-tokens/dynamic.css";
+import "@sumup-oss/circuit-ui/styles.css";
+import "@treelight/plugin-astro/styles.css";
+import "../styles/global.css";
+import "../styles/prose.css";
+import "../styles/code.css";
+
+import {
+  getCollectionLlmsUrl,
+  getVersionStatus,
+} from "@cloudflare/nimbus-docs";
+import NimbusHead from "@cloudflare/nimbus-docs/components/NimbusHead.astro";
+import type { BasePageProps } from "@cloudflare/nimbus-docs/types";
+import { config } from "virtual:nimbus/config";
+
+import AgentDirective from "@components/nimbus/AgentDirective.astro";
+import SearchDialog from "@components/nimbus/SearchDialog.astro";
+
+type Props = BasePageProps;
+
+const {
+  title,
+  description,
+  noindex,
+  markdownUrl,
+  socialImage,
+  lastUpdated,
+  head = [],
+  collection,
+  entryId,
+} = Astro.props;
+
+const versionStatus = collection ? await getVersionStatus(collection) : null;
+const llmsPath = collection
+  ? await getCollectionLlmsUrl(collection)
+  : "/llms.txt";
+const llmsUrl = Astro.site ? new URL(llmsPath, Astro.site).href : llmsPath;
+---
+
+<!doctype html>
+<html lang={config.locale ?? "en"}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <script is:inline>
+      (() => {
+        const key = "ui-mode";
+        const media = window.matchMedia("(prefers-color-scheme: dark)");
+
+        const preference = () => {
+          try {
+            const value = localStorage.getItem(key);
+            return value === "dark" || value === "light" ? value : null;
+          } catch {
+            return null;
+          }
+        };
+
+        const applyTheme = () => {
+          const mode = preference() ?? (media.matches ? "dark" : "light");
+          document.documentElement.dataset.mode = mode;
+          document.documentElement.dataset.theme = mode;
+          document.documentElement.dataset.colorScheme = mode;
+          document.documentElement.style.colorScheme = mode;
+          document.querySelectorAll("[data-theme-toggle]").forEach((button) => {
+            button.setAttribute("data-state", mode);
+            button.setAttribute(
+              "aria-label",
+              mode === "dark" ? "Use light mode" : "Use dark mode",
+            );
+          });
+        };
+
+        applyTheme();
+        media.addEventListener("change", () => {
+          if (!preference()) applyTheme();
+        });
+        window.addEventListener("storage", (event) => {
+          if (event.key === key) applyTheme();
+        });
+        window.__applyPortalTheme = applyTheme;
+      })();
+    </script>
+
+    <NimbusHead
+      title={title}
+      description={description}
+      noindex={noindex}
+      markdownUrl={markdownUrl}
+      socialImage={socialImage}
+      lastUpdated={lastUpdated}
+      head={head}
+      collection={collection}
+      entryId={entryId}
+    />
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    {
+      markdownUrl && !versionStatus?.isHidden && (
+        <AgentDirective markdownUrl={markdownUrl} llmsUrl={llmsUrl} />
+      )
+    }
+    <slot />
+    {config.search !== false && <SearchDialog />}
+
+    <script>
+      import { headingAnchors } from "@cloudflare/nimbus-docs/client";
+      import "@treelight/plugin-astro/copy";
+
+      headingAnchors();
+    </script>
+    <script
+      is:inline
+      src="https://static.sumup.com/legacy-browsers/check-support.js"></script>
+  </body>
+</html>

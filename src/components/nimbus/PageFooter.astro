@@ -1,0 +1,61 @@
+---
+import { Help, History, Sparkles, Webspace } from "@sumup-oss/icons";
+---
+
+<footer class="page-footer">
+  <div class="portal-footer-links">
+    <div>
+      <Webspace aria-hidden="true" />
+      <span>Go to <a href="https://me.sumup.com">SumUp Dashboard</a>.</span>
+    </div>
+    <div>
+      <Help aria-hidden="true" />
+      <span>Need help? <a href="/help/">Contact Support</a>.</span>
+    </div>
+    <div>
+      <History aria-hidden="true" />
+      <span>Check out our <a href="/changelog/">Changelog</a>.</span>
+    </div>
+    <div>
+      <Sparkles aria-hidden="true" />
+      <span>Using an LLM? See <a href="/llms.txt">llms.txt</a>.</span>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .page-footer {
+    margin-top: var(--cui-spacings-exa);
+    padding-top: var(--cui-spacings-tera);
+    border-top: 1px solid var(--cui-border-normal);
+    font-size: var(--cui-body-s-font-size);
+    line-height: var(--cui-body-s-line-height);
+  }
+
+  .page-footer a {
+    color: var(--cui-fg-subtle);
+    text-decoration: none;
+  }
+
+  .page-footer a:hover {
+    text-decoration: underline;
+  }
+
+  .portal-footer-links {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cui-spacings-bit);
+    margin-top: var(--cui-spacings-mega);
+  }
+
+  .portal-footer-links > div {
+    display: flex;
+    gap: var(--cui-spacings-byte);
+    align-items: center;
+  }
+
+  .portal-footer-links :global(svg) {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+</style>

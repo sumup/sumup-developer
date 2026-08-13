@@ -1,20 +1,11 @@
 ---
-import type { StarlightPageProps } from "@astrojs/starlight/props";
 import { getCollection, render } from "astro:content";
-import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
+import StandaloneLayout from "../layouts/StandaloneLayout.astro";
 
-const props = {
-  frontmatter: {
-    title: "FAQ",
-    description: "Frequently asked questions",
-    template: "splash",
-  },
-} as StarlightPageProps;
-
-const posts = await getCollection("help");
+const posts = await getCollection("_help");
 ---
 
-<StarlightPage {...props}>
+<StandaloneLayout title="FAQ" description="Frequently asked questions" prose>
   <div>
     {
       posts.map(async (post) => {
@@ -33,7 +24,7 @@ const posts = await getCollection("help");
       Didn't find answer to your question? <a href="/contact">Contact us</a>.
     </p>
   </div>
-</StarlightPage>
+</StandaloneLayout>
 
 <style lang="scss">
   p {

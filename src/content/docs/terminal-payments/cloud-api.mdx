@@ -5,10 +5,9 @@ sidebar:
   order: 3
 ---
 
-import { Steps, Tabs, TabItem } from '@astrojs/starlight/components';
-import Callout from '@components/content/Callout';
-import Video from '@components/content/Video.astro';
-import SoloScreen from '@components/content/SoloScreen.astro';
+import Callout from "@components/content/Callout";
+import Video from "@components/content/Video.astro";
+import SoloScreen from "@components/content/SoloScreen.astro";
 
 The Cloud API lets you start a transaction from a Point of Sale (POS) running on any platform (Windows, iOS, Linux, Android, Web-based, etc.) capable of sending HTTPS requests and complete that transaction via a Solo reader.
 
@@ -108,9 +107,14 @@ process must be restarted.
 5. Select **API**.
 6. Click **Connect**. The pairing code is generated.
 7. Copy the pairing code displayed on the
-Solo card reader screen. You will need this code to pair your Solo reader with your device.
+   Solo card reader screen. You will need this code to pair your Solo reader with your device.
 
-<Video src="/img/guides/pair_solo.mp4" trackSrc="/img/guides/pair_solo.vtt" width="400px" height="400px" />
+<Video
+  src="/img/guides/pair_solo.mp4"
+  trackSrc="/img/guides/pair_solo.vtt"
+  width="400px"
+  height="400px"
+/>
 
 ### Pair the Card Reader with Pairing Code
 
@@ -121,7 +125,10 @@ Solo card reader screen. You will need this code to pair your Solo reader with y
 
 </Steps>
 
-<SoloScreen src="/img/guides/solo-pairing-step-7.png" alt="Solo device API pairing confirmation screen." />
+<SoloScreen
+  src="/img/guides/solo-pairing-step-7.png"
+  alt="Solo device API pairing confirmation screen."
+/>
 
 ## Using Paired Reader
 
@@ -131,111 +138,114 @@ Cloud API lets you manage transactions and readers connected to your account.
 
 This is an asynchronous process; starting the transaction on the device may take some time.
 
-<Tabs syncKey="backend_lang">
-  <TabItem label="cURL" icon="seti:powershell">
-    ```bash
-    curl -X POST \
-      https://api.sumup.com/v0.1/merchants/$SUMUP_MERCHANT_CODE/readers/$READER_ID/checkout \
-      -H "Authorization: Bearer $SUMUP_API_KEY" \
-      -H 'Content-Type: application/json' \
-      -d '{
-            "total_amount": {
-              "currency": "EUR",
-              "minor_unit": 2,
-              "value": 1500,
-            }
-          }'
-    ```
-  </TabItem>
-  <TabItem label="JavaScript" icon="seti:javascript">
-    ```ts
-    const checkout = await client.readers.createCheckout(merchantCode, readerId, {
-      total_amount: {
-        currency: "EUR",
-        minor_unit: 2,
-        value: 1500,
-      },
-    });
-    ```
-  </TabItem>
-  <TabItem label=".NET" icon="seti:c-sharp">
-    ```csharp
-    var checkout = await client.Readers.CreateCheckoutAsync(
-        merchantCode,
-        readerId,
-        new CreateReaderCheckoutRequest
+<CodeExamples
+  title="Initiate a Transaction"
+  options={[
+    {
+      label: "cURL",
+      lang: "bash",
+      code: String.raw`curl -X POST \
+  https://api.sumup.com/v0.1/merchants/$SUMUP_MERCHANT_CODE/readers/$READER_ID/checkout \
+  -H "Authorization: Bearer $SUMUP_API_KEY" \
+  -H 'Content-Type: application/json' \
+  -d '{
+        "total_amount": {
+          "currency": "EUR",
+          "minor_unit": 2,
+          "value": 1500,
+        }
+      }'`,
+    },
+    {
+      label: "JavaScript",
+      lang: "ts",
+      code: String.raw`const checkout = await client.readers.createCheckout(merchantCode, readerId, {
+  total_amount: {
+    currency: "EUR",
+    minor_unit: 2,
+    value: 1500,
+  },
+});`,
+    },
+    {
+      label: ".NET",
+      lang: "csharp",
+      code: String.raw`var checkout = await client.Readers.CreateCheckoutAsync(
+    merchantCode,
+    readerId,
+    new CreateReaderCheckoutRequest
+    {
+        TotalAmount = new CreateReaderCheckoutRequestTotalAmount
         {
-            TotalAmount = new CreateReaderCheckoutRequestTotalAmount
-            {
-                Currency = "EUR",
-                MinorUnit = 2,
-                Value = 1500,
-            },
-        });
-    ```
-  </TabItem>
-  <TabItem label="Java" icon="seti:java">
-    ```java
-    var checkout = client.readers().createReaderCheckout(
-        merchantCode,
-        readerId,
-        CreateReaderCheckoutRequest.builder()
-            .totalAmount(
-                Money.builder()
-                    .currency("EUR")
-                    .minorUnit(2L)
-                    .value(1500L)
-                    .build()
-            )
-            .build()
-    );
-    ```
-  </TabItem>
-  <TabItem label="Go" icon="seti:go">
-    ```go
-    checkout, err := client.Readers.CreateCheckout(ctx, merchantCode, readerID, sumup.CreateCheckoutRequest{
-          TotalAmount: sumup.CreateCheckoutRequestTotalAmount{
-              Currency:  "EUR",
-              MinorUnit: 2,
-              Value:     1500,
-          },
-      })
-    ```
-  </TabItem>
-  <TabItem label="Python" icon="seti:python">
-    ```py
-    checkout = await client.readers.create_checkout(
-        merchant_code,
-        reader_id,
-        CreateReaderCheckoutBody(
-            total_amount=CreateReaderCheckoutBodyTotalAmount(currency="EUR", minor_unit=2, value=1500),
-        ),
-    )
-    ```
-  </TabItem>
-  <TabItem label="Rust" icon="seti:rust">
-    ```rust
-    let checkout = client.readers().create_checkout(
-        &merchant_code,
-        &reader_id,
-        CreateReaderCheckoutRequest {
-            total_amount: Money {
-                currency: "EUR".into(),
-                minor_unit: 2,
-                value: 1_500,
-            },
-            affiliate: None,
-            card_type: None,
-            description: None,
-            installments: None,
-            return_url: None,
-            tip_rates: None,
-            tip_timeout: None,
+            Currency = "EUR",
+            MinorUnit = 2,
+            Value = 1500,
         },
-    ).await?;
-    ```
-  </TabItem>
-</Tabs>
+    });`,
+    },
+    {
+      label: "Java",
+      lang: "java",
+      code: String.raw`var checkout = client.readers().createReaderCheckout(
+    merchantCode,
+    readerId,
+    CreateReaderCheckoutRequest.builder()
+        .totalAmount(
+            Money.builder()
+                .currency("EUR")
+                .minorUnit(2L)
+                .value(1500L)
+                .build()
+        )
+        .build()
+);`,
+    },
+    {
+      label: "Go",
+      lang: "go",
+      code: String.raw`checkout, err := client.Readers.CreateCheckout(ctx, merchantCode, readerID, sumup.CreateCheckoutRequest{
+      TotalAmount: sumup.CreateCheckoutRequestTotalAmount{
+          Currency:  "EUR",
+          MinorUnit: 2,
+          Value:     1500,
+      },
+  })`,
+    },
+    {
+      label: "Python",
+      lang: "py",
+      code: String.raw`checkout = await client.readers.create_checkout(
+    merchant_code,
+    reader_id,
+    CreateReaderCheckoutBody(
+        total_amount=CreateReaderCheckoutBodyTotalAmount(currency="EUR", minor_unit=2, value=1500),
+    ),
+)`,
+    },
+    {
+      label: "Rust",
+      lang: "rust",
+      code: String.raw`let checkout = client.readers().create_checkout(
+    &merchant_code,
+    &reader_id,
+    CreateReaderCheckoutRequest {
+        total_amount: Money {
+            currency: "EUR".into(),
+            minor_unit: 2,
+            value: 1_500,
+        },
+        affiliate: None,
+        card_type: None,
+        description: None,
+        installments: None,
+        return_url: None,
+        tip_rates: None,
+        tip_timeout: None,
+    },
+).await?;`,
+    },
+  ]}
+/>
 
 Important notes:
 
@@ -250,51 +260,54 @@ Read the [Create Checkout API endpoint documentation](/api/readers/create-checko
 Stops the current transaction on the target device.
 This process is asynchronous, and the actual termination may take some time to be performed on the device.
 
-<Tabs syncKey="backend_lang">
-  <TabItem label="cURL" icon="seti:powershell">
-    ```bash
-    curl -X POST \
-      https://api.sumup.com/v0.1/merchants/$SUMUP_MERCHANT_CODE/readers/$READER_ID/terminate \
-      -H "Authorization: Bearer $SUMUP_API_KEY"
-    ```
-  </TabItem>
-  <TabItem label="JavaScript" icon="seti:javascript">
-    ```ts
-    await client.readers.terminateCheckout(merchantCode, readerId)
-    ```
-  </TabItem>
-  <TabItem label=".NET" icon="seti:c-sharp">
-    ```csharp
-    await client.Readers.TerminateCheckoutAsync(merchantCode, readerId);
-    ```
-  </TabItem>
-  <TabItem label="Java" icon="seti:java">
-    ```java
-    client.readers().createReaderTerminate(merchantCode, readerId, java.util.Map.of());
-    ```
-  </TabItem>
-  <TabItem label="Go" icon="seti:go">
-    ```go
-    err := client.Readers.TerminateCheckout(ctx, merchantCode, readerID)
-    ```
-  </TabItem>
-  <TabItem label="Python" icon="seti:python">
-    ```py
-    await client.readers.terminate_checkout(merchant_code, reader_id)
-    ```
-  </TabItem>
-  <TabItem label="Rust" icon="seti:rust">
-    ```rust
-    client.readers().terminate_checkout(&merchant_code, &reader_id).await?;
-    ```
-  </TabItem>
-</Tabs>
+<CodeExamples
+  title="Terminate a Transaction"
+  options={[
+    {
+      label: "cURL",
+      lang: "bash",
+      code: String.raw`curl -X POST \
+  https://api.sumup.com/v0.1/merchants/$SUMUP_MERCHANT_CODE/readers/$READER_ID/terminate \
+  -H "Authorization: Bearer $SUMUP_API_KEY"`,
+    },
+    {
+      label: "JavaScript",
+      lang: "ts",
+      code: String.raw`await client.readers.terminateCheckout(merchantCode, readerId)`,
+    },
+    {
+      label: ".NET",
+      lang: "csharp",
+      code: String.raw`await client.Readers.TerminateCheckoutAsync(merchantCode, readerId);`,
+    },
+    {
+      label: "Java",
+      lang: "java",
+      code: String.raw`client.readers().createReaderTerminate(merchantCode, readerId, java.util.Map.of());`,
+    },
+    {
+      label: "Go",
+      lang: "go",
+      code: String.raw`err := client.Readers.TerminateCheckout(ctx, merchantCode, readerID)`,
+    },
+    {
+      label: "Python",
+      lang: "py",
+      code: String.raw`await client.readers.terminate_checkout(merchant_code, reader_id)`,
+    },
+    {
+      label: "Rust",
+      lang: "rust",
+      code: String.raw`client.readers().terminate_checkout(&merchant_code, &reader_id).await?;`,
+    },
+  ]}
+/>
 
 Important notes:
 
 - The target device must be online, otherwise termination won't be accepted.
 - This action is only possible if the device is waiting for cardholder action: waiting for card, waiting for PIN, etc.
-There is no confirmation of the termination.
+  There is no confirmation of the termination.
 - If a transaction is successfully terminated and `return_url` has been provided on Checkout, the transaction status is sent as failed to the provided URL.
 
 Read the [Terminate Checkout API endpoint documentation](/api/readers/terminate-checkout) for details on the API request, examples, and parameter descriptions.
@@ -303,44 +316,47 @@ Read the [Terminate Checkout API endpoint documentation](/api/readers/terminate-
 
 List all readers connected to your merchant account.
 
-<Tabs syncKey="backend_lang">
-  <TabItem label="cURL" icon="seti:powershell">
-    ```bash
-    curl https://api.sumup.com/v0.1/merchants/$SUMUP_MERCHANT_CODE/readers \
-      -H "Authorization: Bearer $SUMUP_API_KEY"
-    ```
-  </TabItem>
-  <TabItem label="JavaScript" icon="seti:javascript">
-    ```ts
-    const readers = await client.readers.list(merchantCode)
-    ```
-  </TabItem>
-  <TabItem label=".NET" icon="seti:c-sharp">
-    ```csharp
-    var readers = await client.Readers.ListAsync(merchantCode);
-    ```
-  </TabItem>
-  <TabItem label="Java" icon="seti:java">
-    ```java
-    var readers = client.readers().listReaders(merchantCode);
-    ```
-  </TabItem>
-  <TabItem label="Go" icon="seti:go">
-    ```go
-    readers, err := client.Readers.List(ctx, merchantCode)
-    ```
-  </TabItem>
-  <TabItem label="Python" icon="seti:python">
-    ```py
-    readers = await client.readers.list(merchant_code)
-    ```
-  </TabItem>
-  <TabItem label="Rust" icon="seti:rust">
-    ```rust
-    let readers = client.readers().list(&merchant_code).await?;
-    ```
-  </TabItem>
-</Tabs>
+<CodeExamples
+  title="List Connected Readers"
+  options={[
+    {
+      label: "cURL",
+      lang: "bash",
+      code: String.raw`curl https://api.sumup.com/v0.1/merchants/$SUMUP_MERCHANT_CODE/readers \
+  -H "Authorization: Bearer $SUMUP_API_KEY"`,
+    },
+    {
+      label: "JavaScript",
+      lang: "ts",
+      code: String.raw`const readers = await client.readers.list(merchantCode)`,
+    },
+    {
+      label: ".NET",
+      lang: "csharp",
+      code: String.raw`var readers = await client.Readers.ListAsync(merchantCode);`,
+    },
+    {
+      label: "Java",
+      lang: "java",
+      code: String.raw`var readers = client.readers().listReaders(merchantCode);`,
+    },
+    {
+      label: "Go",
+      lang: "go",
+      code: String.raw`readers, err := client.Readers.List(ctx, merchantCode)`,
+    },
+    {
+      label: "Python",
+      lang: "py",
+      code: String.raw`readers = await client.readers.list(merchant_code)`,
+    },
+    {
+      label: "Rust",
+      lang: "rust",
+      code: String.raw`let readers = client.readers().list(&merchant_code).await?;`,
+    },
+  ]}
+/>
 
 Read the [List API endpoint documentation](/api/readers/list) for details on the API request, examples, and parameter descriptions.
 

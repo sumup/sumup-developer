@@ -1,0 +1,23 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+interface Props extends HTMLAttributes<"div"> {
+  label: string;
+}
+
+const { label, class: className, ...attributes } = Astro.props;
+
+if (!label) {
+  throw new Error("Missing required `label` prop on `<TabItem>`. ");
+}
+---
+
+<div
+  role="tabpanel"
+  data-nb-tabs-content
+  data-nb-tab-label={label}
+  class={className}
+  {...attributes}
+>
+  <slot />
+</div>

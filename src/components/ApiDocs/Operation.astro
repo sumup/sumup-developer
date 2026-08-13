@@ -1,5 +1,5 @@
 ---
-import { Badge, Tabs, TabItem } from "@astrojs/starlight/components";
+import { Badge, Tabs, TabItem } from "@components/nimbus";
 import Callout from "@components/content/Callout";
 import Markdown from "@components/Markdown.astro";
 import { formatSlug } from "@lib/helpers";
@@ -501,14 +501,14 @@ const formattedPermissions = (operation["x-permissions"] || [])
     margin-top: var(--cui-spacings-giga);
   }
 
-  .error-responses :global(starlight-tabs [role="tablist"]) {
+  .error-responses :global([data-nb-tabs] [role="tablist"]) {
     border-bottom-width: 1px;
     font-size: var(--cui-body-s-font-size);
     line-height: var(--cui-body-s-line-height);
   }
 
-  .error-responses :global(starlight-tabs .tab > [role="tab"]) {
-    box-shadow: 0 1px 0 var(--sl-tab-color-border);
+  .error-responses :global([data-nb-tabs] [role="tab"]) {
+    box-shadow: 0 1px 0 var(--cui-border-divider);
   }
 
   .content-type {
@@ -519,12 +519,12 @@ const formattedPermissions = (operation["x-permissions"] || [])
     align-self: start;
   }
 
-  .error-example-panels :global(starlight-tabs > .tablist-wrapper),
-  .error-example-panels :global(starlight-tabs [role="tablist"]) {
+  .error-example-panels :global([data-nb-tabs] > [role="tablist"]),
+  .error-example-panels :global([data-nb-tabs] [role="tablist"]) {
     display: none !important;
   }
 
-  .error-example-panels :global(starlight-tabs > [role="tabpanel"]) {
+  .error-example-panels :global([data-nb-tabs-content]) {
     margin-top: 0;
   }
 

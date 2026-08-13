@@ -10,7 +10,7 @@
   padding: var(--cui-spacings-micro) var(--cui-spacings-kilo);
   border: var(--cui-border-width-kilo) solid var(--cui-border-normal);
   border-radius: var(--cui-border-radius-byte);
-  background: var(--sl-color-bg-nav);
-  color: var(--sl-color-white);
+  background: var(--cui-bg-normal);
+  color: var(--cui-fg-normal);
   cursor: pointer;
 }

@@ -9,7 +9,7 @@ You can use large language models (LLMs) to assist in the building of SumUp inte
 
 ## Plain Text Docs
 
-You can access all of our documentation as plain text Markdown files by adding `index.md` to the end of any URL. For example, you can find the plaintext version of this page itself at https://developer.sumup.com/tools/llms/index.md.
+You can access all of our documentation as plain text Markdown files by adding `index.md` to the end of any URL. For example, the plaintext version of this page is available at `/tools/llms/index.md`.
 
 This helps AI tools and agents consume our content and allows you to copy and paste the entire contents of a doc into an LLM. This format is preferable to scraping or copying from our HTML and JavaScript-rendered pages because:
 
@@ -17,6 +17,8 @@ This helps AI tools and agents consume our content and allows you to copy and pa
 - Content that isn’t rendered in the default view (for example, it’s hidden in a tab) of a given page is rendered in the plaintext version.
 - LLMs can parse and understand Markdown hierarchy.
 
+{/* Nimbus's route map omits generated text endpoints. */}
+{/* nimbus-rule-disable-next-line nimbus/internal-link */}
 We also host an [/llms.txt](/llms.txt) file which instructs AI tools and agents how to retrieve the plaintext versions of our pages. The `/llms.txt` file is an [emerging standard](https://llmstxt.org/) for making websites and content more accessible to LLMs.
 
 ## Agent Skills

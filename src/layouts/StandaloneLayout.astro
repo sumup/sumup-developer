@@ -1,0 +1,97 @@
+---
+import type { BasePageProps } from "@cloudflare/nimbus-docs/types";
+
+import Header from "@components/nimbus/Header.astro";
+
+import BaseLayout from "./BaseLayout.astro";
+
+interface Props extends BasePageProps {
+  fullWidth?: boolean;
+  heading?: string;
+  hideTitle?: boolean;
+  wide?: boolean;
+  prose?: boolean;
+  searchable?: boolean;
+}
+
+const {
+  title,
+  description,
+  fullWidth = false,
+  heading = title,
+  hideTitle = false,
+  wide = false,
+  prose = false,
+  searchable = true,
+  ...baseProps
+} = Astro.props;
+const socialImage =
+  baseProps.socialImage ??
+  `/og/${Astro.url.pathname.replace(/^\/+|\/+$/g, "") || "index"}.png`;
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  socialImage={socialImage}
+  {...baseProps}
+>
+  <Header />
+  <main
+    id="main-content"
+    class:list={["standalone-main", wide && "wide", fullWidth && "full-width"]}
+    data-pagefind-body={searchable ? "" : undefined}
+    data-pagefind-ignore={!searchable ? "" : undefined}
+  >
+    {
+      !hideTitle && (
+        <header class="standalone-heading">
+          <h1 data-pagefind-meta="title">{heading}</h1>
+          {description && <p>{description}</p>}
+        </header>
+      )
+    }
+    <div class:list={[prose && "docs-content"]}>
+      <slot />
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .standalone-main {
+    width: min(calc(100% - 2rem), var(--portal-content-width));
+    min-height: calc(100vh - var(--portal-header-height));
+    margin: 0 auto;
+    padding: var(--cui-spacings-exa) 0;
+  }
+
+  .standalone-main.wide {
+    width: min(calc(100% - 2rem), 68rem);
+  }
+
+  .standalone-main.full-width {
+    width: 100%;
+    padding-top: 0;
+  }
+
+  .standalone-heading {
+    margin-bottom: var(--cui-spacings-exa);
+    text-align: center;
+  }
+
+  .standalone-heading h1 {
+    margin: 0;
+    font-family: "SumUp Black", "SumUp Black fallback", sans-serif;
+    font-size: var(--cui-headline-l-font-size);
+    line-height: var(--cui-headline-l-line-height);
+    text-wrap: balance;
+  }
+
+  .standalone-heading p {
+    max-width: 42rem;
+    margin: var(--cui-spacings-mega) auto 0;
+    color: var(--cui-fg-subtle);
+    font-size: var(--cui-body-l-font-size);
+    line-height: var(--cui-body-l-line-height);
+  }
+</style>

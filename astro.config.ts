@@ -1,26 +1,30 @@
-import cloudflare from "@astrojs/cloudflare";
-import mdx from "@astrojs/mdx";
-import react from "@astrojs/react";
-import { satteri } from "@astrojs/markdown-satteri";
-import starlight from "@astrojs/starlight";
-import starlightLinksValidator from "starlight-links-validator";
-import mermaid from "astro-mermaid";
-import starlightLlmsTxt from "starlight-llms-txt";
-import { loadEnv } from "vite";
 import { readFile } from "node:fs/promises";
-import satteriExternalLinks from "./src/plugins/satteri/external-links";
 
+import cloudflare from "@astrojs/cloudflare";
+import { unified } from "@astrojs/markdown-remark";
+import react from "@astrojs/react";
+import nimbus, {
+  defineConfig as defineNimbusConfig,
+} from "@cloudflare/nimbus-docs";
+import treelight from "@treelight/plugin-astro";
+import mermaid from "astro-mermaid";
 import { defineConfig } from "astro/config";
-import type { HeadUserConfig } from "node_modules/@astrojs/starlight/schemas/head";
+import { loadEnv } from "vite";
 import type { Plugin } from "vite";
+
+import externalLinks from "./src/plugins/markdown/external-links";
+import tableScroll from "./src/plugins/markdown/table-scroll";
+import {
+  treelightHighlighter,
+  treelightLanguageMap,
+  treelightTheme,
+} from "./src/lib/treelight";
 
 const { PUBLIC_ONETRUST_DOMAIN_ID, PUBLIC_GA_TAG_ID } = loadEnv(
   process.env.NODE_ENV || "",
   process.cwd(),
   "",
 );
-
-const faviconBaseURL = "https://static.sumup.com";
 
 function rawFonts(extensions: string[]): Plugin {
   const pattern = new RegExp(
@@ -42,9 +46,58 @@ function rawFonts(extensions: string[]): Plugin {
   };
 }
 
-const head = (): HeadUserConfig => {
-  const head: HeadUserConfig = [
-    // font preload
+const head = defineNimbusConfig({
+  site: "https://developer.sumup.com",
+  title: "SumUp Developer",
+  description:
+    "Developer documentation, guides, and APIs for building with SumUp.",
+  locale: "en",
+  homeLabel: "Home",
+  github: "https://github.com/sumup/sumup-developer",
+  editPattern: "https://github.com/sumup/sumup-developer/edit/main/{path}",
+  socialImage: "/og/index.png",
+  socialImageAlt: "SumUp Developer documentation preview",
+  sidebar: {
+    defaultCollapsed: true,
+    items: [
+      {
+        label: "In-person Payments",
+        segment: "terminal-payments",
+        landing: "/terminal-payments/",
+        items: [{ autogenerate: { directory: "terminal-payments" } }],
+      },
+      {
+        label: "Online Payments",
+        segment: "online-payments",
+        landing: "/online-payments/",
+        items: [{ autogenerate: { directory: "online-payments" } }],
+      },
+      {
+        label: "Developer Resources",
+        autogenerate: { directory: "tools" },
+      },
+      {
+        label: "Resources",
+        autogenerate: { directory: "resources" },
+      },
+    ],
+  },
+  head: [
+    {
+      tag: "link",
+      attrs: {
+        rel: "icon",
+        type: "image/svg+xml",
+        href: "https://static.sumup.com/favicons/favicon.svg",
+      },
+    },
+    {
+      tag: "link",
+      attrs: {
+        rel: "shortcut icon",
+        href: "https://static.sumup.com/favicons/favicon.ico",
+      },
+    },
     {
       tag: "link",
       attrs: {
@@ -52,32 +105,7 @@ const head = (): HeadUserConfig => {
         href: "https://static.sumup.com/fonts/sumup/sumup-narrow-latin-s.woff2",
         as: "font",
         type: "font/woff2",
-        crossorigin: true,
-      },
-    },
-    // icons
-    {
-      tag: "link",
-      attrs: {
-        rel: "icon",
-        type: "image/svg+xml",
-        href: new URL("/favicons/favicon.svg", faviconBaseURL).toString(),
-      },
-    },
-    {
-      tag: "link",
-      attrs: {
-        rel: "icon",
-        sizes: "96x96",
-        type: "image/png",
-        href: new URL("/favicons/favicon-96x96.png", faviconBaseURL).toString(),
-      },
-    },
-    {
-      tag: "link",
-      attrs: {
-        rel: "shortcut icon",
-        href: new URL("favicons/favicon.ico", faviconBaseURL).toString(),
+        crossorigin: "anonymous",
       },
     },
     {
@@ -85,36 +113,14 @@ const head = (): HeadUserConfig => {
       attrs: {
         rel: "apple-touch-icon",
         sizes: "180x180",
-        href: new URL(
-          "/favicons/apple-touch-icon.png",
-          faviconBaseURL,
-        ).toString(),
+        href: "https://static.sumup.com/favicons/apple-touch-icon.png",
       },
     },
     {
       tag: "link",
       attrs: {
         rel: "manifest",
-        href: new URL("/favicons/site.webmanifest", faviconBaseURL).toString(),
-      },
-    },
-    // Theme
-    {
-      tag: "link",
-      attrs: {
-        rel: "mask-icon",
-        href: new URL(
-          "/favicons/safari-pinned-tab.svg",
-          faviconBaseURL,
-        ).toString(),
-        color: "#ffffff",
-      },
-    },
-    {
-      tag: "link",
-      attrs: {
-        rel: "shortcut icon",
-        href: new URL("/favicons/favicon.ico", faviconBaseURL).toString(),
+        href: "https://static.sumup.com/favicons/site.webmanifest",
       },
     },
     {
@@ -125,14 +131,9 @@ const head = (): HeadUserConfig => {
         media: "(prefers-color-scheme: dark)",
       },
     },
-    { tag: "meta", attrs: { name: "theme-color", content: "#fbfbf9" } },
     {
-      tag: "script",
-      attrs: {
-        src: "https://static.sumup.com/legacy-browsers/check-support.js",
-        defer: true,
-      },
-      content: "",
+      tag: "meta",
+      attrs: { name: "theme-color", content: "#fbfbf9" },
     },
     {
       tag: "link",
@@ -150,193 +151,96 @@ const head = (): HeadUserConfig => {
         content: "0mA7KPaajXK9CtZgu7A9lLDHeTEZ_SiHdmXz2vDej7Y",
       },
     },
-  ];
-
-  if (PUBLIC_ONETRUST_DOMAIN_ID) {
-    head.push({
-      tag: "script",
-      attrs: {
-        defer: true,
-        charset: "UTF-8",
-        src: "https://cdn-ukwest.onetrust.com/scripttemplates/otSDKStub.js",
-        "data-domain-script": PUBLIC_ONETRUST_DOMAIN_ID,
-      },
-    });
-  }
-
-  if (PUBLIC_GA_TAG_ID) {
-    head.push({
-      tag: "script",
-      attrs: {
-        src: `https://www.googletagmanager.com/gtag/js?id=${PUBLIC_GA_TAG_ID}`,
-      },
-    });
-    head.push({
-      tag: "script",
-      content: `
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', '${PUBLIC_GA_TAG_ID}');
-      `,
-    });
-  }
-
-  return head;
-};
+    {
+      tag: "meta",
+      attrs: { name: "twitter:site", content: "@SumUp" },
+    },
+    ...(PUBLIC_ONETRUST_DOMAIN_ID
+      ? [
+          {
+            tag: "script" as const,
+            attrs: {
+              defer: "",
+              charset: "UTF-8",
+              src: "https://cdn-ukwest.onetrust.com/scripttemplates/otSDKStub.js",
+              "data-domain-script": PUBLIC_ONETRUST_DOMAIN_ID,
+            },
+          },
+        ]
+      : []),
+    ...(PUBLIC_GA_TAG_ID
+      ? [
+          {
+            tag: "script" as const,
+            attrs: {
+              src: `https://www.googletagmanager.com/gtag/js?id=${PUBLIC_GA_TAG_ID}`,
+            },
+          },
+          {
+            tag: "script" as const,
+            content: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', '${PUBLIC_GA_TAG_ID}');
+            `,
+          },
+        ]
+      : []),
+  ],
+});
 
 export default defineConfig({
   adapter: cloudflare({
     imageService: "compile",
     prerenderEnvironment: "node",
   }),
-  site: "https://developer.sumup.com",
-  markdown: {
-    processor: satteri({
-      features: {
-        gfm: true,
-        smartPunctuation: true,
-      },
-      hastPlugins: [satteriExternalLinks],
-    }),
-  },
-
   experimental: {
     contentIntellisense: true,
   },
-
-  vite: {
-    plugins: [rawFonts([".woff2", ".woff", ".ttf", ".otf"])],
-    assetsInclude: ["**/*.wasm"], // Treat WASM files as assets (but not font files used by OG)
-    ssr: {
-      external: ["buffer", "path", "fs"].map((i) => `node:${i}`),
-      noExternal: ["workers-og"],
-    },
+  prefetch: {
+    prefetchAll: true,
+    defaultStrategy: "hover",
   },
-
+  vite: {
+    environments: {
+      // Treelight's grammar packages are native ESM with embedded WASM. Let
+      // Vite load them directly instead of discovering and re-bundling them
+      // during the first prerendered page request, which invalidates Astro's
+      // active prerender bundle in development.
+      prerender: {
+        optimizeDeps: { noDiscovery: true },
+      },
+    },
+    plugins: [rawFonts([".woff2", ".woff", ".ttf", ".otf"])],
+  },
   integrations: [
     react(),
-    mermaid({
-      autoTheme: true,
-    }),
-    starlight({
-      plugins: [
-        ...(process.env.CHECK_LINKS || false
-          ? [
-              starlightLinksValidator({
-                components: [["Anchor", "url"]],
-                exclude: [
-                  // API reference pages are generated through a dynamic route and
-                  // don't map to static Starlight doc entries. Their rendered links
-                  // are validated after the build by scripts/check-rendered-links.mjs.
-                  "/api/**",
-                  // Custom Astro page outside docs content collection.
-                  "/contact",
-                  // Custom help hub with dynamic sections rendered from Astro pages.
-                  "/help",
-                  "/help/**",
-                  // Changelog routes are generated by src/pages/changelog/[...tag].astro.
-                  "/changelog",
-                  "/changelog/**",
-                ],
-                errorOnInvalidHashes: true,
-              }),
-            ]
-          : []),
-        starlightLlmsTxt({
-          // We use MDX with components extensively which starlightLlmsTxt doesn't
-          // handle well otherwise
-          rawContent: true,
+    nimbus(head, {
+      icons: false,
+      markdown: {
+        // Unified avoids shipping Satteri's WASI binding in the Cloudflare
+        // server bundle used by the contact form.
+        processor: unified({
+          gfm: true,
+          smartypants: true,
+          rehypePlugins: [externalLinks, tableScroll],
         }),
-      ],
-      title: "SumUp Developer",
-      favicon: new URL("/favicons/favicon.svg", faviconBaseURL).toString(),
-      disable404Route: true,
-      tableOfContents: {
-        minHeadingLevel: 2,
-        maxHeadingLevel: 3,
       },
-      sidebar: [
-        {
-          label: "Get Started",
-          items: [
-            {
-              label: "Home",
-              link: "/",
-            },
-          ],
-        },
-        {
-          label: "In-person Payments",
-          items: [
-            {
-              autogenerate: { directory: "terminal-payments", collapsed: true },
-            },
-          ],
-        },
-        {
-          label: "Online Payments",
-          items: [
-            {
-              autogenerate: { directory: "online-payments", collapsed: true },
-            },
-          ],
-        },
-        {
-          label: "Developer Resources",
-          items: [
-            {
-              autogenerate: { directory: "tools", collapsed: true },
-            },
-          ],
-        },
-        {
-          label: "Resources",
-          items: [
-            {
-              autogenerate: { directory: "resources", collapsed: true },
-            },
-          ],
-        },
-      ],
-      head: head(),
-      components: {
-        EditLink: "./src/overrides/EditLink.astro",
-        Footer: "./src/overrides/Footer.astro",
-        TableOfContents: "./src/overrides/TableOfContents.astro",
-        Head: "./src/overrides/Head.astro",
-        MobileMenuToggle: "./src/overrides/MobileMenuToggle.astro",
-        Hero: "./src/overrides/Hero.astro",
-        MarkdownContent: "./src/overrides/MarkdownContent.astro",
-        Sidebar: "./src/overrides/Sidebar.astro",
-        SiteTitle: "./src/overrides/SiteTitle.astro",
-        SocialIcons: "./src/overrides/SocialIcons.astro",
-        PageFrame: "./src/overrides/PageFrame.astro",
-        PageTitle: "./src/overrides/PageTitle.astro",
-        MobileTableOfContents: "./src/overrides/MobileTableOfContents.astro",
+      rules: {
+        "nimbus/frontmatter-shape": "error",
+        "nimbus/image-ref": "error",
+        "nimbus/internal-link": "error",
+        "nimbus/no-self-host-url": "error",
       },
-      social: [
-        {
-          icon: "github",
-          label: "GitHub",
-          href: "https://github.com/sumup/sumup-developer",
-        },
-      ],
-      editLink: {
-        baseUrl: "https://github.com/sumup/sumup-developer/edit/main/",
-      },
-      customCss: [
-        "@sumup-oss/circuit-ui/styles.css",
-        "./src/styles/theme-dark.css",
-        "./src/styles/theme-light.css",
-        "./src/styles/starlight-vars.css",
-        "./src/styles/utilities.css",
-      ],
-      pagination: false,
-      lastUpdated: true,
     }),
-    mdx({
-      optimize: true,
+    mermaid({ autoTheme: true }),
+    treelight({
+      copyButton: true,
+      highlighter: treelightHighlighter,
+      languageMap: treelightLanguageMap,
+      lineNumbers: true,
+      theme: treelightTheme.id,
     }),
   ],
   server: {

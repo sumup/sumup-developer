@@ -8,7 +8,7 @@ import {
   type FlagProps,
   type SelectOption,
 } from "@sumup-oss/circuit-ui";
-import type { FC, ReactNode } from "react";
+import { useEffect, type FC, type ReactNode } from "react";
 import { Field, Form } from "react-final-form";
 import { Send } from "@sumup-oss/icons";
 
@@ -140,23 +140,39 @@ type ContactParams = {
 
 const Contact: FC<ContactParams> = ({ status }) => {
   const { setToast } = useNotificationToast();
-  if (status === "success") {
-    setToast({
-      variant: "success",
-      body: "Thank you! We will get back to you soon.",
-    });
-  } else if (status === "error") {
-    setToast({
-      variant: "danger",
-      body: "Submitting the form failed. Please try again later.",
-    });
-  }
+
+  useEffect(() => {
+    const url = new URL(window.location.href);
+    const queryStatus = url.searchParams.get("status");
+    const resolvedStatus =
+      status ??
+      (queryStatus === "success" || queryStatus === "error"
+        ? queryStatus
+        : undefined);
+
+    if (resolvedStatus === "success") {
+      setToast({
+        variant: "success",
+        body: "Thank you! We will get back to you soon.",
+      });
+    } else if (resolvedStatus === "error") {
+      setToast({
+        variant: "danger",
+        body: "Submitting the form failed. Please try again later.",
+      });
+    }
+
+    if (queryStatus) {
+      url.searchParams.delete("status");
+      window.history.replaceState({}, "", url);
+    }
+  }, [setToast, status]);
 
   return (
     <Form
       onSubmit={() => {}}
       render={({ submitting }) => (
-        <form action="/contact" method="post">
+        <form action="/contact/submit" method="post">
           <InputField name="email" type="email" label="Email" required />
           <SelectField
             name="country"

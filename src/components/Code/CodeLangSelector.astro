@@ -1,0 +1,40 @@
+---
+import { Select, type SelectProps } from "@sumup-oss/circuit-ui";
+
+import styles from "./CodeLangSelector.module.css";
+
+import { CODE_LANG_SELECTOR_ATTR } from "@lib/code";
+
+type Option = {
+  label: string;
+};
+
+type Props = {
+  options: Option[];
+} & Pick<SelectProps, "className" | "style" | "slot">;
+
+const { options, slot, ...rest } = Astro.props;
+
+const selectOptions = options.map(({ label }) => ({
+  label,
+  value: label,
+}));
+---
+
+<div slot={slot} data-code-lang-control>
+  <Select
+    {...rest}
+    size="s"
+    label="Language"
+    hideLabel
+    defaultValue={options.at(0)?.label}
+    options={selectOptions}
+    className={styles.selector}
+    required
+    {...{ [CODE_LANG_SELECTOR_ATTR]: "" }}
+  />
+</div>
+
+<script>
+  import "./code-lang-selector.client";
+</script>

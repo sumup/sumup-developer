@@ -1,0 +1,38 @@
+---
+/** A single step inside <Steps>. */
+import type { HTMLAttributes } from "astro/types";
+
+interface Props extends HTMLAttributes<"div"> {
+  title?: string;
+}
+
+const { title, class: className, ...attributes } = Astro.props;
+---
+
+<div data-step class={className} {...attributes}>
+  {title && <p class="step-title">{title}</p>}
+  <div class="step-content"><slot /></div>
+</div>
+
+<style>
+  .step-title {
+    margin: 0;
+    color: var(--cui-fg-normal);
+    font-weight: var(--cui-font-weight-semibold);
+  }
+
+  .step-content {
+    margin-top: var(--cui-spacings-bit);
+    color: var(--cui-fg-normal);
+    font-size: var(--cui-body-s-font-size);
+    line-height: var(--cui-body-s-line-height);
+  }
+
+  .step-content :global(p:first-child) {
+    margin-top: 0;
+  }
+
+  .step-content :global(p:last-child) {
+    margin-bottom: 0;
+  }
+</style>

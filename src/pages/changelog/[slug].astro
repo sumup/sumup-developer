@@ -2,12 +2,12 @@
 import { getCollection, render } from "astro:content";
 import slugify from "@sindresorhus/slugify";
 import { Anchor, Body } from "@sumup-oss/circuit-ui";
-import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
-import MarkdownContent from "@astrojs/starlight/components/MarkdownContent.astro";
-import type { StarlightPageProps } from "@astrojs/starlight/props";
+import StandaloneLayout from "../../layouts/StandaloneLayout.astro";
+
+export const prerender = true;
 
 export async function getStaticPaths() {
-  const changelogEntries = await getCollection("changelog");
+  const changelogEntries = await getCollection("_changelog");
 
   return changelogEntries.map((entry) => ({
     params: { slug: entry.id },
@@ -17,23 +17,14 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const { Content } = await render(entry);
-
-const props = {
-  frontmatter: {
-    title: entry.data.title,
-    template: "splash",
-    tableOfContents: false,
-  },
-  custom: true,
-} as StarlightPageProps;
 ---
 
-<StarlightPage {...props}>
-  <main data-pagefind-body>
+<StandaloneLayout title={entry.data.title} socialImage="/og/changelog.png">
+  <div data-pagefind-body>
     <article class="post">
-      <MarkdownContent>
+      <div class="docs-content">
         <Content />
-      </MarkdownContent>
+      </div>
     </article>
     <Body size="s" color="subtle" className="meta">
       <span class="metaItem">
@@ -54,8 +45,8 @@ const props = {
         ))
       }
     </Body>
-  </main>
-</StarlightPage>
+  </div>
+</StandaloneLayout>
 
 <style lang="scss">
   .meta {
@@ -76,7 +67,7 @@ const props = {
     margin: 0 var(--cui-spacings-byte);
   }
 
-  :global(.expressive-code .frame pre) {
+  :global(.docs-content pre) {
     overflow: auto;
     scrollbar-width: thin;
   }

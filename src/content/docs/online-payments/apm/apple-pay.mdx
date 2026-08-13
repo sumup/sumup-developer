@@ -29,7 +29,7 @@ In this guide, you will learn how to directly integrate Apple Pay with SumUp, so
 
 To begin your implementation, follow these steps:
 
-1. [Create a checkout](https://developer.sumup.com/api/checkouts/create#create-a-checkout)
+1. [Create a checkout](/api/checkouts/create#create-a-checkout)
 2. Create an [Apple Payment request](https://developer.apple.com/documentation/apple_pay_on_the_web/applepaypaymentrequest)
 
 ```js
@@ -64,7 +64,7 @@ PUT https://api.sumup.com/v0.1/checkouts/${checkoutId}/apple-pay-session
 
 5. Use the response from the previous step to complete merchant validation with the [`completeMerchantValidation`](https://developer.apple.com/documentation/apple_pay_on_the_web/applepaysession/1778015-completemerchantvalidation/) method.
 
-6. Submitting the payment sheet triggers the `onpaymentauthorized` callback. At that point, [process the checkout](https://developer.sumup.com/api/checkouts/process#process-a-checkout). The process-checkout request body needs to include a `payment_type` of `apple_pay` and an `apple_pay` object containing the Apple Pay payment token returned by the callback.
+6. Submitting the payment sheet triggers the `onpaymentauthorized` callback. At that point, [process the checkout](/api/checkouts/process#process-a-checkout). The process-checkout request body needs to include a `payment_type` of `apple_pay` and an `apple_pay` object containing the Apple Pay payment token returned by the callback.
 
 ```json
 {
@@ -97,5 +97,5 @@ PUT https://api.sumup.com/v0.1/checkouts/${checkoutId}/apple-pay-session
 
 <Callout type="tip">
   Handling the responses from the API calls should be according to our public{" "}
-  <a href="https://developer.sumup.com/api">API contract & guidelines</a>
+  <a href="/api/">API contract & guidelines</a>
 </Callout>

@@ -4,6 +4,8 @@ import Markdown from "@components/Markdown.astro";
 import { formatSlug } from "@lib/helpers";
 import type { HTMLAttributes } from "astro/types";
 import type { OperationObject, TagObject } from "src/types/openapi";
+import EndpointList from "./EndpointList";
+import LRGrid from "./LRGrid.astro";
 import SchemaObject from "./Object.astro";
 import Operation from "./Operation.astro";
 
@@ -67,18 +69,29 @@ const coreObjectSections = coreObjects.map((schema, index) => {
       }}
   {...attrs}
 >
-  <div class="tag-info">
+  <LRGrid class="tag-overview">
+    <div class="tag-info">
+      {
+        deprecationNotice && (
+          <div class="notice">
+            <Callout type="caution">
+              <Markdown>{deprecationNotice}</Markdown>
+            </Callout>
+          </div>
+        )
+      }
+      <Markdown>{description}</Markdown>
+    </div>
     {
-      deprecationNotice && (
-        <div class="notice">
-          <Callout type="caution">
-            <Markdown>{deprecationNotice}</Markdown>
-          </Callout>
-        </div>
+      operations.length > 0 && (
+        <EndpointList
+          operations={operations}
+          selectedOperationSlug={targetOp}
+          tagSlug={slug}
+        />
       )
     }
-    <Markdown>{description}</Markdown>
-  </div>
+  </LRGrid>
 </section>
 {
   coreObjects?.length > 0 && (
@@ -125,6 +138,10 @@ const coreObjectSections = coreObjects.map((schema, index) => {
 }
 
 <style>
+  .tag-overview {
+    align-items: start;
+  }
+
   .notice {
     margin-bottom: var(--cui-spacings-giga);
   }

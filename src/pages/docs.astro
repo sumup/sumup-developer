@@ -1,0 +1,227 @@
+---
+import { getSidebar } from "@cloudflare/nimbus-docs";
+import { ListItem } from "@sumup-oss/circuit-ui";
+import {
+  Apps,
+  CardIn,
+  Code,
+  Customise,
+  File,
+  Globe,
+  Key,
+  Play,
+  SecurePayments,
+  Sparkles,
+  VirtualTerminal,
+} from "@sumup-oss/icons";
+
+import DocsLayout from "../layouts/DocsLayout.astro";
+import { addDocsHome, expandSidebarGroups } from "../utils/docsSidebar";
+
+const sidebar = await getSidebar("/docs/", {
+  collection: "docs",
+  transform: ({ tree }) => addDocsHome(expandSidebarGroups(tree), "/docs/"),
+});
+
+const sections = [
+  {
+    id: "online-payments",
+    title: "Online payments",
+    description:
+      "Add hosted, embedded, or mobile checkout experiences to your product.",
+    links: [
+      {
+        icon: Play,
+        href: "/online-payments/",
+        label: "Accept your first online payment",
+        details:
+          "Create and verify a checkout with a sandbox merchant account.",
+      },
+      {
+        icon: Customise,
+        href: "/online-payments/checkouts/",
+        label: "Choose a checkout experience",
+        details: "Compare hosted, embedded, web, and mobile checkout options.",
+      },
+      {
+        icon: Globe,
+        href: "/online-payments/payment-methods/",
+        label: "Offer more payment methods",
+        details: "Discover the methods available to a merchant and checkout.",
+      },
+      {
+        icon: SecurePayments,
+        href: "/online-payments/testing/",
+        label: "Test your integration",
+        details: "Exercise successful, failed, and 3D Secure payment flows.",
+      },
+    ],
+  },
+  {
+    id: "in-person-payments",
+    title: "In-person payments",
+    description:
+      "Connect SumUp readers to mobile apps, kiosks, and point-of-sale systems.",
+    links: [
+      {
+        icon: CardIn,
+        href: "/terminal-payments/",
+        label: "Choose an in-person integration",
+        details: "Compare mobile SDKs, the Cloud API, and legacy app handoff.",
+      },
+      {
+        icon: Play,
+        href: "/terminal-payments/quickstart/",
+        label: "Accept your first in-person payment",
+        details:
+          "Prepare a merchant account, device, and integration for testing.",
+      },
+      {
+        icon: Code,
+        href: "/terminal-payments/sdks/",
+        label: "Build a native mobile flow",
+        details: "Accept payments in Android and iOS apps with SumUp SDKs.",
+      },
+      {
+        icon: VirtualTerminal,
+        href: "/terminal-payments/cloud-api/",
+        label: "Connect a standalone reader",
+        details: "Control a supported reader from a server or any platform.",
+      },
+    ],
+  },
+  {
+    id: "build-and-operate",
+    title: "Build and operate",
+    description:
+      "Find the credentials, libraries, references, and AI tools for your integration.",
+    links: [
+      {
+        icon: Key,
+        href: "/tools/authorization/",
+        label: "Set up authorization",
+        details: "Choose and protect the credentials for your integration.",
+      },
+      {
+        icon: Apps,
+        href: "/tools/sdks/",
+        label: "Call APIs with a server SDK",
+        details:
+          "Use an official client across online and in-person integrations.",
+      },
+      {
+        icon: File,
+        href: "/api/",
+        label: "Use the API reference",
+        details: "Look up endpoints, request fields, responses, and errors.",
+      },
+      {
+        icon: Sparkles,
+        href: "/tools/llms/",
+        label: "Build with AI",
+        details:
+          "Give coding assistants current SumUp documentation and tools.",
+      },
+    ],
+  },
+];
+---
+
+<DocsLayout
+  title="Developer documentation"
+  description="Guides and resources for accepting payments with SumUp."
+  sidebar={sidebar}
+  headings={false}
+  breadcrumbs={[]}
+  prevNext={{}}
+  socialImage="/og/index.png"
+  hideTitle
+  prose={false}
+>
+  <header class="docs-home-heading">
+    <h1 id="_top" data-pagefind-meta="title">Developer documentation</h1>
+    <p>Guides and resources for accepting payments with SumUp.</p>
+  </header>
+
+  <div class="docs-sections">
+    {
+      sections.map(({ id, title, description, links }) => (
+        <section aria-labelledby={id}>
+          <div class="section-heading">
+            <h2 id={id}>{title}</h2>
+            <p>{description}</p>
+          </div>
+          <div class="docs-links">
+            {links.map(({ icon, href, label, details }) => (
+              <ListItem
+                href={href}
+                variant="navigation"
+                label={label}
+                details={details}
+                leadingComponent={icon}
+              />
+            ))}
+          </div>
+        </section>
+      ))
+    }
+  </div>
+</DocsLayout>
+
+<style>
+  .docs-home-heading {
+    max-width: 42rem;
+    margin-bottom: var(--cui-spacings-exa);
+  }
+
+  .docs-home-heading h1 {
+    margin: 0;
+    font-family: "SumUp Black", "SumUp Black fallback", sans-serif;
+    font-size: clamp(2.5rem, 5vw, var(--cui-headline-l-font-size));
+    letter-spacing: -0.035em;
+    line-height: 1;
+    text-wrap: balance;
+  }
+
+  .docs-home-heading > p:last-child {
+    margin: var(--cui-spacings-mega) 0 0;
+    color: var(--cui-fg-subtle);
+    font-size: var(--cui-body-l-font-size);
+    line-height: var(--cui-body-l-line-height);
+  }
+
+  .docs-sections {
+    display: grid;
+    gap: var(--cui-spacings-exa);
+  }
+
+  .section-heading {
+    max-width: 42rem;
+    margin-bottom: var(--cui-spacings-giga);
+  }
+
+  .section-heading h2 {
+    margin: 0;
+    font-family: "SumUp Black", "SumUp Black fallback", sans-serif;
+    font-size: var(--cui-headline-m-font-size);
+    line-height: var(--cui-headline-m-line-height);
+    text-wrap: balance;
+  }
+
+  .section-heading p {
+    margin: var(--cui-spacings-byte) 0 0;
+    color: var(--cui-fg-subtle);
+  }
+
+  .docs-links {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--cui-spacings-kilo);
+  }
+
+  @media (max-width: 58rem) {
+    .docs-links {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

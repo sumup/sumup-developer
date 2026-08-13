@@ -1,7 +1,7 @@
 # Contributing
 
-SumUp Developer portal built using [Starlight](https://starlight.astro.build/), a documentation theme built on top of [Astro](https://astro.build/). Our theme is modified to rely on SumUp's design system - [Circuit UI](https://github.com/sumup-oss/circuit-ui) - wherever possible.
+SumUp Developer portal is built with [Nimbus](https://nimbus-docs.com/), a documentation framework for [Astro](https://astro.build/). The repository owns its visible components and plain CSS, using SumUp's [Circuit UI](https://github.com/sumup-oss/circuit-ui) design system wherever possible. Tailwind is not used.
 
 ## Codeblocks
 
-Codeblocks are rendered using [Expressive Code](https://expressive-code.com/), the configuration can be found in `./ec.config.mjs`.
+Code blocks are highlighted by Nimbus's Shiki pipeline. Site-wide docs behavior is configured in `astro.config.ts`; visible layouts and styles live in `src/layouts/`, `src/components/nimbus/`, and `src/styles/`.

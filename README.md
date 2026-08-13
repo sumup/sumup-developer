@@ -7,7 +7,7 @@
 [![License](https://img.shields.io/github/license/sumup/sumup-developer)](./LICENSE)
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v2.1%20adopted-ff69b4.svg)](https://github.com/sumup/sumup-developer/tree/main/CODE_OF_CONDUCT.md)
 
-The SumUp Developer Portal documents the integrations, SDKs, and public APIs that external developers use to build payment-acceptance solutions. The site is built with [Astro](https://astro.build/) and the [Starlight](https://starlight.astro.build/) documentation theme. Documentation pages are written in Markdown and MDX.
+The SumUp Developer Portal documents the integrations, SDKs, and public APIs that external developers use to build payment-acceptance solutions. The site is built with [Astro](https://astro.build/) and [Nimbus](https://nimbus-docs.com/). Documentation pages are written in Markdown and MDX, while the visible theme uses plain CSS and SumUp's Circuit UI design tokens.
 
 </div>
 
@@ -63,6 +63,7 @@ Run the checks that match your change before opening a pull request:
 | `npm run test` | Run the Vitest test suite |
 | `npm run build` | Create the production Cloudflare build |
 | `npm run linkcheck` | Build the site and validate internal links |
+| `npm run validate` | Run the complete CI validation sequence |
 
 ## API Specs
 

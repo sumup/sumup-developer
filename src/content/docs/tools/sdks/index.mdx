@@ -6,6 +6,8 @@ sidebar:
   order: 100
 ---
 
+import Callout from "@components/content/Callout";
+
 SumUp maintains open-source server SDKs that wrap the public API and handle authentication, pagination, and resource helpers. You can use the same SDK for online payments and for card-present payments through the Cloud API. Each guide includes examples for creating an online checkout and starting a checkout on a paired Solo reader.
 
 ## Choose Your SDK
@@ -20,8 +22,8 @@ SumUp maintains open-source server SDKs that wrap the public API and handle auth
 
 All SDKs require valid [authorisation credentials](/tools/authorization/) and work against both sandbox and production environments. Cloud API requests also require an [Affiliate Key](/tools/authorization/affiliate-keys/). After choosing an SDK, follow its guide for installation, environment variables, and example calls.
 
-:::tip[Client-side options]
-Looking for client-side or checkout experiences? See the
-[React Native SDK](/online-payments/sdks/react-native/) and
-[Swift Checkout SDK](/online-payments/checkouts/swift-checkout/).
-:::
+<Callout type="tip">
+  **Client-side options.** Looking for client-side or checkout experiences? See
+  the [React Native SDK](/online-payments/sdks/react-native/) and [Swift Checkout
+  SDK](/online-payments/checkouts/swift-checkout/).
+</Callout>

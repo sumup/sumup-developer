@@ -31,23 +31,8 @@ jobs:
           node-version-file: ".nvmrc"
           cache: npm
 
-      - name: Run rumdl
-        uses: rvben/rumdl@9faf4696d56c0cff426a2f85b3fd476ebe0d0ec0 # v0.2.52
-        with:
-          version: 0.2.9
-          path: "."
-          fail-on-error: true
-
       - name: Install dependencies
         run: npm ci
 
-      - name: Run Check
-        run: npm run check
-
-      - name: Run linter
-        # npm run lint includes lint:markdown which is already handled bby the rumdl
-        # step above
-        run: npm run lint:src
-
-      - name: Run linkcheck
-        run: npm run linkcheck
+      - name: Validate
+        run: npm run validate

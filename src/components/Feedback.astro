@@ -12,7 +12,6 @@
   .feedback {
     font-size: var(--cui-body-s-font-size);
     line-height: var(--cui-body-s-line-height);
-    margin-top: var(--cui-spacings-exa);
 
     :global(svg path:first-of-type) {
       fill: var(--cui-fg-on-strong);
@@ -21,6 +20,10 @@
     :global(svg path:last-of-type) {
       fill: var(--cui-fg-normal);
     }
+  }
+
+  .feedback:has(> div:empty) {
+    display: none;
   }
 </style>
 

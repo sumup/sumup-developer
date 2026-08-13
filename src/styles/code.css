@@ -1,0 +1,130 @@
+:root {
+  --code-frame-background: light-dark(#fff, #0d1117);
+}
+
+.treelight,
+.treelight-frame,
+.treelight-code-block {
+  --treelight-code-background: var(--code-frame-background);
+  --treelight-code-border-color: var(--cui-border-subtle);
+  --treelight-code-border-radius: var(--cui-border-radius-byte);
+  --treelight-code-padding-block: var(--cui-spacings-kilo);
+  --treelight-code-padding-inline: var(--cui-spacings-mega);
+  --treelight-code-font-size: 0.875rem;
+  --treelight-code-line-height: 1.625;
+  --treelight-title-background: var(--code-frame-background);
+  --treelight-title-border-color: var(--cui-border-subtle);
+  --treelight-title-color: var(--cui-fg-normal);
+  --treelight-title-font-size: var(--cui-body-s-font-size);
+  --treelight-title-font-weight: var(--cui-font-weight-semibold);
+  --treelight-line-number-color: var(--cui-fg-subtle);
+  --treelight-line-number-gap: var(--cui-spacings-mega);
+  --treelight-line-number-width: 3ch;
+  --treelight-highlighted-line-background: color-mix(
+    in oklch,
+    var(--cui-bg-highlight) 40%,
+    transparent
+  );
+  --treelight-highlighted-line-border-color: var(--cui-border-accent);
+}
+
+.treelight-code-block,
+.treelight-frame {
+  max-width: 100%;
+  margin: var(--cui-spacings-mega) 0;
+}
+
+pre.treelight {
+  max-width: 100%;
+  max-height: min(68vh, 62.5rem);
+  margin: var(--cui-spacings-mega) 0;
+  overflow: auto;
+  font-family: var(--cui-font-stack-mono);
+  scrollbar-width: thin;
+}
+
+pre.treelight code {
+  display: block;
+  width: max-content;
+  min-width: 100%;
+  padding: 0;
+  white-space: pre;
+}
+
+.treelight-code-block > pre.treelight,
+.treelight-code-block > .treelight-frame {
+  margin: 0;
+}
+
+.treelight-frame {
+  overflow: hidden;
+  background: var(--code-frame-background);
+  border: var(--cui-border-width-kilo) solid var(--cui-border-subtle);
+  border-radius: var(--cui-border-radius-byte);
+}
+
+.treelight-frame .treelight-title {
+  border: 0;
+  border-bottom: var(--cui-border-width-kilo) solid var(--cui-border-subtle);
+}
+
+.treelight-frame pre.treelight {
+  border: 0;
+  border-radius: 0;
+}
+
+.treelight-copy-button {
+  z-index: 2;
+  width: 1.75rem;
+  height: 1.75rem;
+  color: var(--cui-fg-subtle);
+  background: var(--cui-bg-subtle);
+  border: var(--cui-border-width-kilo) solid var(--cui-border-subtle);
+  border-radius: var(--cui-border-radius-bit);
+  opacity: 0;
+  transition:
+    opacity 150ms ease,
+    color 150ms ease,
+    background 150ms ease;
+}
+
+.treelight-code-block:hover .treelight-copy-button,
+.treelight-copy-button:focus-visible {
+  opacity: 1;
+}
+
+.treelight-code-block > .treelight-frame + .treelight-copy-button {
+  top: 2.75rem;
+}
+
+.treelight-copy-button:hover {
+  color: var(--cui-fg-normal);
+  background: var(--cui-bg-subtle-hovered);
+  filter: none;
+}
+
+.treelight-copy-button[data-copy-state="copied"] {
+  color: var(--cui-fg-success);
+}
+
+.treelight-copy-button[data-copy-state="error"] {
+  color: var(--cui-fg-danger);
+}
+
+.codeblock .treelight-code-block,
+.codeblock .treelight-frame,
+.codeblock pre.treelight {
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+}
+
+.codeblock .treelight-frame {
+  overflow: visible;
+}
+
+@media (hover: none) {
+  .treelight-copy-button {
+    opacity: 1;
+  }
+}

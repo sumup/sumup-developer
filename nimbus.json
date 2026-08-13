@@ -1,0 +1,50 @@
+{
+  "$schema": "https://nimbus-docs.com/schema/nimbus.json",
+  "version": null,
+  "templatesTag": null,
+  "variant": null,
+  "registry": "https://nimbus-docs.com/registry",
+  "reconstructed": true,
+  "install": {
+    "root": "src",
+    "aliases": {
+      "@/*": "src/*"
+    }
+  },
+  "components": [
+    {
+      "slug": "steps",
+      "type": "registry:ui",
+      "version": "0.8.2",
+      "source": "https://nimbus-docs.com/registry",
+      "hash": "sha256:80f99f91316886f985ef94061509e212496c88fc561734ad882054e4d6c3a040",
+      "files": [
+        "src/components/ui/steps/Step.astro",
+        "src/components/ui/steps/Steps.astro",
+        "src/components/ui/steps/index.ts",
+        "src/components/ui/steps/steps.client.ts"
+      ],
+      "modified": true
+    },
+    {
+      "slug": "cn",
+      "type": "registry:lib",
+      "version": "0.8.2",
+      "source": "https://nimbus-docs.com/registry",
+      "hash": "sha256:7c54894573a1398333b41a63838db5de40ba05ad3fdb71048414baf912bb0070",
+      "files": ["src/lib/cn.ts"]
+    },
+    {
+      "slug": "theme-toggle",
+      "type": "registry:ui",
+      "version": "0.8.2",
+      "source": "https://nimbus-docs.com/registry",
+      "hash": "sha256:fec337ac2ec88fa4357b2872ed6d92983fbcc56dbff499c499a25e0e83c689ab",
+      "files": [
+        "src/components/ui/theme-toggle/ThemeToggle.astro",
+        "src/components/ui/theme-toggle/index.ts",
+        "src/components/ui/theme-toggle/theme-toggle.client.ts"
+      ]
+    }
+  ]
+}

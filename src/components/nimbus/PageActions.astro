@@ -1,0 +1,143 @@
+---
+import Checkmark from "@sumup-oss/icons/checkmark_24.svg";
+import Copy from "@sumup-oss/icons/copy_24.svg";
+import File from "@sumup-oss/icons/file_24.svg";
+import Time from "@sumup-oss/icons/time_24.svg";
+
+interface Props {
+  markdownUrl: string;
+  lastUpdated?: Date;
+}
+
+const { markdownUrl, lastUpdated } = Astro.props;
+const formattedDate = lastUpdated?.toLocaleDateString("en-GB", {
+  day: "numeric",
+  month: "short",
+  year: "numeric",
+});
+---
+
+<div
+  class="page-actions-row not-content"
+  data-page-actions
+  data-markdown-url={markdownUrl}
+>
+  {
+    lastUpdated && (
+      <>
+        <span class="last-updated">
+          <Time aria-hidden="true" />
+          Last updated{" "}
+          <time datetime={lastUpdated.toISOString()}>{formattedDate}</time>
+        </span>
+        <span class="separator last-updated-separator" aria-hidden="true">
+          |
+        </span>
+      </>
+    )
+  }
+
+  <button
+    type="button"
+    data-page-actions-copy
+    aria-label="Copy page as Markdown"
+  >
+    <span data-page-actions-copy-icon aria-hidden="true"><Copy /></span>
+    <span data-page-actions-check-icon aria-hidden="true" hidden>
+      <Checkmark />
+    </span>
+    <span data-page-actions-label aria-live="polite">Copy as Markdown</span>
+  </button>
+
+  <span class="separator" aria-hidden="true">|</span>
+
+  <a
+    href={markdownUrl}
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="View page as Markdown"
+  >
+    <File aria-hidden="true" />
+    View as Markdown
+  </a>
+</div>
+
+<script>
+  import "./page-actions.client";
+</script>
+
+<style>
+  .page-actions-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--cui-spacings-bit) 0;
+    align-items: center;
+    margin-left: calc(-1 * var(--cui-spacings-byte));
+    color: var(--cui-fg-subtle);
+    font-size: 0.8125rem;
+    line-height: 1.25rem;
+  }
+
+  .last-updated,
+  button,
+  a {
+    display: inline-flex;
+    gap: var(--cui-spacings-byte);
+    align-items: center;
+    padding: var(--cui-spacings-bit) var(--cui-spacings-byte);
+  }
+
+  button,
+  a {
+    color: var(--cui-fg-subtle);
+    background: transparent;
+    border: 0;
+    border-radius: var(--cui-border-radius-byte);
+    cursor: pointer;
+    font: inherit;
+    text-decoration: none;
+  }
+
+  button:hover,
+  a:hover {
+    color: var(--cui-fg-strong);
+    background: var(--cui-bg-subtle);
+  }
+
+  button:focus-visible,
+  a:focus-visible {
+    outline: 2px solid var(--cui-border-accent);
+    outline-offset: 2px;
+  }
+
+  button:disabled {
+    cursor: wait;
+  }
+
+  .separator {
+    color: var(--cui-fg-subtle);
+    opacity: 0.4;
+    user-select: none;
+  }
+
+  .page-actions-row :global(svg) {
+    width: 0.875rem;
+    height: 0.875rem;
+    flex: 0 0 auto;
+  }
+
+  button > span[aria-hidden="true"] {
+    display: inline-flex;
+  }
+
+  button > span[aria-hidden="true"][hidden] {
+    display: none;
+  }
+
+  @media (max-width: 56.25rem) {
+    .last-updated,
+    .last-updated-separator {
+      display: none;
+    }
+  }
+</style>

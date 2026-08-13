@@ -1,10 +1,12 @@
 import { describe, expect, it } from "vitest";
 import type { OpenAPIV3_1 } from "openapi-types";
 import type { OperationObject } from "../../types/openapi";
+import goCatalog from "../../codesamples/go.json";
 import {
   curl,
   dotnet,
   go,
+  getCodeSample,
   java,
   node as nodeSample,
   php,
@@ -134,6 +136,39 @@ const updateCustomerOperation: OperationObject = {
 };
 
 describe("code sample generators", () => {
+  it("uses a matching vendored SDK sample", () => {
+    const operation: OperationObject = {
+      ...checkoutOperation,
+      path: "/v0.1/checkouts",
+      requestBody: {
+        content: {
+          "application/json": {
+            examples: {
+              Checkout: {
+                value: {},
+              },
+              Checkout3DS: {
+                value: {},
+              },
+            },
+          },
+        },
+      },
+    };
+    const expected = goCatalog.samples.find(
+      (sample) => sample.id === "CreateCheckout.Checkout",
+    )?.sample;
+
+    expect(getCodeSample("go", operation)).toBe(expected);
+  });
+
+  it("falls back to generated samples when no vendored sample matches", () => {
+    expect(getCodeSample("go", checkoutOperation)).toBe(go(checkoutOperation));
+    expect(getCodeSample("node", checkoutOperation)).toBe(
+      nodeSample(checkoutOperation),
+    );
+  });
+
   it("node sample matches the TypeScript SDK usage", () => {
     expect(nodeSample(checkoutOperation)).toBe(
       `import SumUp from '@sumup/sdk';

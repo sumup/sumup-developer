@@ -1,0 +1,254 @@
+---
+import type { SidebarBadge, SidebarItem } from "@cloudflare/nimbus-docs/types";
+
+interface Props {
+  items: SidebarItem[];
+  level?: number;
+}
+
+const { items, level = 0 } = Astro.props;
+
+const hasActiveDescendant = (children: SidebarItem[]): boolean =>
+  children.some((item) =>
+    item.type === "link"
+      ? Boolean(item.isCurrent)
+      : item.type === "group"
+        ? Boolean(item.indexIsCurrent) || hasActiveDescendant(item.children)
+        : false,
+  );
+
+const badgeText = (badge: SidebarBadge | undefined) =>
+  typeof badge === "string" ? badge : badge?.text;
+---
+
+<ul class:list={["sidebar-list", level === 0 && "top-level"]}>
+  {
+    items.map((item, index) => {
+      if (item.type === "external") {
+        return (
+          <li>
+            <a href={item.href} target="_blank" rel="noopener noreferrer">
+              <span>{item.label}</span>
+              {item.badge && <small>{badgeText(item.badge)}</small>}
+            </a>
+          </li>
+        );
+      }
+
+      if (item.type === "link") {
+        return (
+          <li>
+            <a
+              href={item.href}
+              aria-current={item.isCurrent ? "page" : undefined}
+              {...item.attrs}
+            >
+              <span>{item.label}</span>
+              {item.badge && <small>{badgeText(item.badge)}</small>}
+            </a>
+          </li>
+        );
+      }
+
+      const hasCurrentDescendant = hasActiveDescendant(item.children);
+      const isActive = Boolean(item.indexIsCurrent) || hasCurrentDescendant;
+      const isCurrent = Boolean(item.indexIsCurrent) && !hasCurrentDescendant;
+      const isOpen = isActive || item.collapsed === false;
+      const key = `${level}-${index}-${item.label}`;
+
+      return (
+        <li>
+          <details
+            open={isOpen}
+            data-sidebar-group
+            data-sidebar-key={key}
+            data-has-active={isActive ? "true" : undefined}
+          >
+            <summary class:list={[isCurrent && "current"]}>
+              {item.indexHref ? (
+                <a
+                  href={item.indexHref}
+                  aria-current={isCurrent ? "page" : undefined}
+                  target={item.indexIsExternal ? "_blank" : undefined}
+                  rel={item.indexIsExternal ? "noopener noreferrer" : undefined}
+                >
+                  {item.label}
+                </a>
+              ) : (
+                <span>{item.label}</span>
+              )}
+              {item.badge && <small>{badgeText(item.badge)}</small>}
+            </summary>
+            <Astro.self items={item.children} level={level + 1} />
+          </details>
+        </li>
+      );
+    })
+  }
+</ul>
+
+<script>
+  const storageKey = "portal-sidebar-groups";
+  let state: Record<string, boolean> = {};
+  try {
+    state = JSON.parse(sessionStorage.getItem(storageKey) ?? "{}");
+  } catch {
+    state = {};
+  }
+
+  document
+    .querySelectorAll<HTMLDetailsElement>("[data-sidebar-group]")
+    .forEach((group) => {
+      const key = group.dataset.sidebarKey;
+      if (!key) return;
+      if (group.dataset.hasActive !== "true" && key in state) {
+        group.open = state[key];
+      }
+      group.addEventListener("toggle", () => {
+        state[key] = group.open;
+        try {
+          sessionStorage.setItem(storageKey, JSON.stringify(state));
+        } catch {
+          // Navigation remains functional when storage is unavailable.
+        }
+      });
+    });
+</script>
+
+<style>
+  .sidebar-list {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0 0 0 var(--cui-spacings-kilo);
+    list-style: none;
+    font-size: var(--cui-body-s-font-size);
+    line-height: var(--cui-body-s-line-height);
+  }
+
+  .sidebar-list.top-level {
+    padding: 0;
+  }
+
+  .sidebar-list li {
+    margin-bottom: var(--cui-spacings-bit);
+  }
+
+  .sidebar-list > li > a {
+    display: flex;
+    gap: var(--cui-spacings-byte);
+    align-items: center;
+    padding: var(--cui-spacings-bit) var(--cui-spacings-byte);
+    color: var(--cui-fg-subtle);
+    border-radius: var(--cui-border-radius-bit);
+    text-decoration: none;
+    transition:
+      color var(--cui-transitions-default),
+      background-color var(--cui-transitions-default);
+  }
+
+  .sidebar-list > li > a:hover {
+    color: var(--cui-fg-strong);
+    background: var(--cui-bg-subtle-hovered);
+  }
+
+  .sidebar-list > li > a:active {
+    color: var(--cui-fg-strong);
+    background: var(--cui-bg-subtle-pressed);
+  }
+
+  .sidebar-list > li > a[aria-current="page"] {
+    color: var(--cui-fg-strong);
+    background: var(--cui-bg-highlight);
+  }
+
+  details > .sidebar-list {
+    margin: var(--cui-spacings-bit) 0 0;
+    padding-inline-start: var(--cui-spacings-kilo);
+  }
+
+  summary {
+    display: flex;
+    gap: var(--cui-spacings-bit);
+    align-items: center;
+    padding: var(--cui-spacings-bit) var(--cui-spacings-byte);
+    font-weight: var(--cui-font-weight-regular);
+    border-radius: var(--cui-border-radius-bit);
+    cursor: pointer;
+    list-style: none;
+    color: var(--cui-fg-subtle);
+    transition:
+      color var(--cui-transitions-default),
+      background-color var(--cui-transitions-default);
+  }
+
+  .top-level > li > details > summary {
+    color: var(--cui-fg-normal);
+    font-weight: var(--cui-font-weight-semibold);
+  }
+
+  summary::-webkit-details-marker {
+    display: none;
+  }
+
+  summary:hover {
+    color: var(--cui-fg-strong);
+    background: var(--cui-bg-subtle-hovered);
+  }
+
+  summary:active {
+    color: var(--cui-fg-strong);
+    background: var(--cui-bg-subtle-pressed);
+  }
+
+  details[data-has-active="true"] > summary {
+    color: var(--cui-fg-strong);
+  }
+
+  summary.current {
+    color: var(--cui-fg-strong);
+    background: var(--cui-bg-subtle);
+    font-weight: var(--cui-font-weight-bold);
+  }
+
+  summary::after {
+    content: "›";
+    margin-inline-start: auto;
+    color: var(--cui-fg-subtle);
+    transform: rotate(0);
+    transition: transform var(--cui-transitions-default);
+  }
+
+  details[open] > summary::after {
+    transform: rotate(90deg);
+  }
+
+  details[data-has-active="true"] > summary::after {
+    color: inherit;
+  }
+
+  summary > a {
+    min-height: auto;
+    flex: 1;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  summary > a[aria-current="page"] {
+    color: inherit;
+  }
+
+  .sidebar-list > li > a[aria-current="page"] small,
+  summary.current small,
+  summary.current::after {
+    color: inherit;
+  }
+
+  small {
+    margin-inline-start: auto;
+    padding: 0 var(--cui-spacings-bit);
+    color: var(--cui-fg-subtle);
+    background: var(--cui-bg-highlight);
+    border-radius: var(--cui-border-radius-pill);
+  }
+</style>

@@ -1,0 +1,708 @@
+---
+import type { DocsPageProps } from "@cloudflare/nimbus-docs/types";
+import { SumUpLogo } from "@sumup-oss/circuit-ui";
+import {
+  ArrowSlanted,
+  Close,
+  Help,
+  Info,
+  Moon,
+  Search,
+  Sun,
+} from "@sumup-oss/icons";
+
+import Header from "@components/nimbus/Header.astro";
+import PageActions from "@components/nimbus/PageActions.astro";
+import PageFooter from "@components/nimbus/PageFooter.astro";
+import Sidebar from "@components/nimbus/Sidebar.astro";
+import TableOfContents from "@components/nimbus/TableOfContents.astro";
+
+import BaseLayout from "./BaseLayout.astro";
+
+interface Props extends DocsPageProps {
+  links?: Array<{ title: string; href: string }>;
+  wide?: boolean;
+  hideTitle?: boolean;
+  hideDescription?: boolean;
+  prose?: boolean;
+  showFooter?: boolean;
+}
+
+const {
+  title,
+  description,
+  sidebar,
+  headings,
+  breadcrumbs,
+  searchable,
+  noindex,
+  markdownUrl,
+  socialImage,
+  lastUpdated,
+  editUrl,
+  draft,
+  collection,
+  entryId,
+  head,
+  links = [],
+  wide = false,
+  hideTitle = false,
+  hideDescription = false,
+  prose = true,
+  showFooter = true,
+} = Astro.props;
+
+const effectiveSearchable = searchable ?? !noindex;
+const pagefindAttributes = effectiveSearchable
+  ? { "data-pagefind-body": "" }
+  : { "data-pagefind-ignore": "" };
+const showSidebar = sidebar !== false;
+const toc = headings === false ? [] : headings;
+const pathname = Astro.url.pathname;
+const activeSection = pathname.startsWith("/api")
+  ? "api"
+  : pathname.startsWith("/changelog")
+    ? "changelog"
+    : "docs";
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  noindex={noindex || draft}
+  markdownUrl={markdownUrl}
+  socialImage={socialImage}
+  lastUpdated={lastUpdated}
+  head={head}
+  collection={collection}
+  entryId={entryId}
+>
+  <div class="page-shell">
+    <Header showSidebar={showSidebar} />
+    <div
+      class:list={[
+        "docs-grid",
+        wide && "wide",
+        !showSidebar && "no-sidebar",
+        toc.length === 0 && "no-toc",
+      ]}
+    >
+      {
+        showSidebar && (
+          <aside class="docs-sidebar" data-portal-sidebar>
+            <nav aria-label="Documentation">
+              <Sidebar items={sidebar} />
+            </nav>
+            <div class="sidebar-footer">
+              <a href="/help/">
+                <Help aria-hidden="true" />
+                Help
+              </a>
+              <a
+                href="https://status.sumup.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Info aria-hidden="true" />
+                Status
+              </a>
+            </div>
+          </aside>
+        )
+      }
+
+      <main id="main-content" class="docs-main">
+        <div class="content-column" {...pagefindAttributes}>
+          {
+            breadcrumbs.length > 1 && (
+              <nav class="breadcrumbs" aria-label="Breadcrumbs">
+                <ol>
+                  {breadcrumbs.map((item, index) => (
+                    <li>
+                      {item.href &&
+                      (index < breadcrumbs.length - 1 ||
+                        breadcrumbs.length === 2) ? (
+                        <a
+                          href={item.href}
+                          aria-current={
+                            index === breadcrumbs.length - 1
+                              ? "page"
+                              : undefined
+                          }
+                        >
+                          {item.label}
+                        </a>
+                      ) : (
+                        <span aria-current="page">{item.label}</span>
+                      )}
+                    </li>
+                  ))}
+                </ol>
+              </nav>
+            )
+          }
+
+          {
+            !hideTitle && (
+              <header class="page-heading">
+                <div class="title-row">
+                  <h1 id="_top" data-pagefind-meta="title">
+                    {title}
+                  </h1>
+                  {draft && <span class="draft-badge">Draft</span>}
+                </div>
+                {description && !hideDescription && <p>{description}</p>}
+                {links.length > 0 && (
+                  <div class="page-links">
+                    {links.map((link) => {
+                      const external = /^https?:\/\//.test(link.href);
+                      return (
+                        <a
+                          href={link.href}
+                          target={external ? "_blank" : undefined}
+                          rel={external ? "noopener noreferrer" : undefined}
+                        >
+                          {link.title}
+                          {external && (
+                            <ArrowSlanted size="16" aria-hidden="true" />
+                          )}
+                        </a>
+                      );
+                    })}
+                  </div>
+                )}
+                {markdownUrl && (
+                  <div class="page-actions">
+                    <PageActions
+                      markdownUrl={markdownUrl}
+                      lastUpdated={lastUpdated}
+                    />
+                  </div>
+                )}
+                {toc.length > 0 && <TableOfContents headings={toc} mobile />}
+              </header>
+            )
+          }
+
+          <article class:list={[prose && "docs-content"]}>
+            <slot />
+          </article>
+
+          {showFooter && <PageFooter />}
+        </div>
+      </main>
+
+      {
+        toc.length > 0 && (
+          <aside class="docs-toc">
+            <TableOfContents headings={toc} editUrl={editUrl} />
+          </aside>
+        )
+      }
+    </div>
+  </div>
+
+  {
+    showSidebar && (
+      <dialog
+        class="mobile-sidebar"
+        data-mobile-sidebar
+        aria-label="Site navigation"
+      >
+        <div class="mobile-sidebar-panel">
+          <div class="mobile-sidebar-header">
+            <a href="/" class="mobile-brand" aria-label="SumUp Developer home">
+              <SumUpLogo size="s" variant="short" />
+              <span translate="no">Developer</span>
+            </a>
+            <div class="mobile-header-actions">
+              <button
+                type="button"
+                data-search-trigger
+                aria-label="Search documentation"
+              >
+                <Search aria-hidden="true" />
+              </button>
+              <button
+                type="button"
+                class="mobile-theme-toggle"
+                data-theme-toggle
+                data-state="light"
+                aria-label="Toggle dark mode"
+              >
+                <Sun className="sun-icon" aria-hidden="true" />
+                <Moon className="moon-icon" aria-hidden="true" />
+              </button>
+              <button
+                type="button"
+                data-close-mobile-sidebar
+                aria-label="Close navigation"
+              >
+                <Close aria-hidden="true" />
+              </button>
+            </div>
+          </div>
+          <nav class="mobile-primary" aria-label="Primary navigation">
+            <a
+              href="/docs/"
+              aria-current={activeSection === "docs" ? "page" : undefined}
+            >
+              Docs
+            </a>
+            <a
+              href="/api/"
+              aria-current={activeSection === "api" ? "page" : undefined}
+            >
+              API
+            </a>
+            <a
+              href="/changelog/"
+              aria-current={activeSection === "changelog" ? "page" : undefined}
+            >
+              Changelog
+            </a>
+            <a
+              class="mobile-dashboard"
+              href="https://me.sumup.com/settings/developer"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Dashboard ↗
+            </a>
+          </nav>
+          <nav class="mobile-docs" aria-label="Documentation">
+            <Sidebar items={sidebar} />
+          </nav>
+          <nav class="mobile-sidebar-footer" aria-label="Support">
+            <a href="/help/">
+              <Help aria-hidden="true" />
+              Help
+            </a>
+            <a
+              href="https://status.sumup.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Info aria-hidden="true" />
+              Status
+            </a>
+          </nav>
+        </div>
+      </dialog>
+    )
+  }
+
+  <script>
+    const mobileSidebar = document.querySelector<HTMLDialogElement>(
+      "[data-mobile-sidebar]",
+    );
+    const menuButton = document.querySelector<HTMLElement>(
+      "[data-sidebar-menu-button]",
+    );
+
+    const openMobileSidebar = () => {
+      mobileSidebar?.showModal();
+      if (!mobileSidebar) return;
+      menuButton?.setAttribute("aria-expanded", "true");
+      document.body.dataset.scrollLocked = "";
+    };
+
+    const closeMobileSidebar = () => mobileSidebar?.close();
+
+    document
+      .querySelector<HTMLElement>("[data-sidebar-menu-button]")
+      ?.addEventListener("click", openMobileSidebar);
+    document
+      .querySelector<HTMLElement>("[data-close-mobile-sidebar]")
+      ?.addEventListener("click", closeMobileSidebar);
+    mobileSidebar?.addEventListener("click", (event) => {
+      if (event.target === mobileSidebar) closeMobileSidebar();
+    });
+    mobileSidebar?.addEventListener("close", () => {
+      menuButton?.setAttribute("aria-expanded", "false");
+      delete document.body.dataset.scrollLocked;
+    });
+  </script>
+</BaseLayout>
+
+<style>
+  .page-shell {
+    min-height: 100vh;
+  }
+
+  .docs-grid {
+    display: grid;
+    width: 100%;
+    min-height: calc(100vh - var(--portal-header-height));
+    grid-template-columns:
+      var(--portal-sidebar-width) minmax(0, 1fr)
+      var(--portal-toc-width);
+  }
+
+  .docs-grid.no-sidebar {
+    grid-template-columns: minmax(0, 1fr) var(--portal-toc-width);
+  }
+
+  .docs-grid.no-toc {
+    grid-template-columns: var(--portal-sidebar-width) minmax(0, 1fr);
+  }
+
+  .docs-grid.no-sidebar.no-toc {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .docs-sidebar,
+  .docs-toc {
+    position: sticky;
+    top: var(--portal-header-height);
+    height: calc(100vh - var(--portal-header-height));
+    overflow-y: auto;
+  }
+
+  .docs-sidebar {
+    display: flex;
+    flex-direction: column;
+    border-inline-end: 1px solid var(--cui-border-divider);
+    overflow: hidden;
+  }
+
+  .docs-sidebar > nav {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    padding: var(--cui-spacings-mega) var(--cui-spacings-mega) 0;
+  }
+
+  .sidebar-footer {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cui-spacings-bit);
+    padding: var(--cui-spacings-mega);
+  }
+
+  .sidebar-footer a {
+    display: flex;
+    align-items: center;
+    gap: var(--cui-spacings-byte);
+    padding: var(--cui-spacings-bit) var(--cui-spacings-byte);
+    color: var(--cui-fg-normal);
+    border-radius: var(--cui-border-radius-bit);
+    font-size: var(--cui-compact-s-font-size);
+    line-height: var(--cui-compact-s-line-height);
+    font-weight: var(--cui-font-weight-semibold);
+    line-height: var(--cui-body-s-line-height);
+    text-decoration: none;
+    transition:
+      color var(--cui-transitions-default),
+      background-color var(--cui-transitions-default);
+  }
+
+  .sidebar-footer a:hover {
+    color: var(--cui-fg-normal-hovered);
+    background: var(--cui-bg-normal-hovered);
+  }
+
+  .sidebar-footer a:active {
+    color: var(--cui-fg-normal-pressed);
+    background: var(--cui-bg-normal-pressed);
+  }
+
+  .sidebar-footer a :global(svg) {
+    width: 1.125rem;
+    height: 1.125rem;
+    flex: none;
+  }
+
+  .docs-main {
+    min-width: 0;
+  }
+
+  .content-column {
+    width: 100%;
+    max-width: calc(var(--portal-content-width) + 3rem);
+    margin: 0 auto;
+    padding: var(--cui-spacings-giga) 1.5rem var(--cui-spacings-exa);
+  }
+
+  .wide .content-column {
+    max-width: none;
+  }
+
+  .docs-toc {
+    padding: var(--cui-spacings-giga) var(--cui-spacings-mega);
+  }
+
+  .breadcrumbs ol {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--cui-spacings-bit);
+    margin: 0 0 var(--cui-spacings-kilo);
+    padding: 0;
+    color: var(--cui-fg-subtle);
+    list-style: none;
+    font-size: var(--cui-body-s-font-size);
+  }
+
+  .breadcrumbs li:not(:last-child)::after {
+    content: "/";
+    margin-inline-start: var(--cui-spacings-bit);
+  }
+
+  .breadcrumbs a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .breadcrumbs a[aria-current="page"],
+  .breadcrumbs span[aria-current="page"] {
+    font-weight: var(--cui-font-weight-semibold);
+    color: var(--cui-fg-normal);
+  }
+
+  .page-heading {
+    margin: var(--cui-spacings-mega) 0 var(--cui-spacings-giga);
+  }
+
+  .title-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--cui-spacings-kilo);
+    align-items: center;
+  }
+
+  .page-heading h1 {
+    margin: 0;
+    font-family: "SumUp Black", "SumUp Black fallback", sans-serif;
+    font-size: var(--cui-headline-l-font-size);
+    line-height: var(--cui-headline-l-line-height);
+    text-wrap: balance;
+  }
+
+  .page-heading > p {
+    max-width: 52rem;
+    margin: var(--cui-spacings-mega) 0 0;
+    color: var(--cui-fg-subtle);
+    font-size: var(--cui-body-l-font-size);
+    line-height: var(--cui-body-l-line-height);
+    text-wrap: pretty;
+  }
+
+  .draft-badge {
+    padding: var(--cui-spacings-bit) var(--cui-spacings-byte);
+    color: var(--cui-fg-warning);
+    background: var(--cui-bg-warning);
+    border-radius: var(--cui-border-radius-pill);
+    font-size: var(--cui-body-s-font-size);
+  }
+
+  .page-links,
+  .page-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--cui-spacings-kilo);
+    margin-top: var(--cui-spacings-mega);
+  }
+
+  .page-links a {
+    display: inline-flex;
+    min-height: 2.5rem;
+    gap: var(--cui-spacings-bit);
+    align-items: center;
+    padding: 0 var(--cui-spacings-mega);
+    color: var(--cui-fg-on-strong);
+    background: var(--cui-bg-strong);
+    border-radius: var(--cui-border-radius-byte);
+    font-weight: var(--cui-font-weight-semibold);
+    text-decoration: none;
+  }
+
+  .page-links a:hover {
+    background: var(--cui-bg-strong-hovered);
+  }
+
+  .mobile-sidebar {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    max-width: none;
+    height: 100dvh;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    color: var(--cui-fg-normal);
+    background: transparent;
+    border: 0;
+  }
+
+  .mobile-sidebar::backdrop {
+    background: transparent;
+  }
+
+  .mobile-sidebar-panel {
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    background: var(--cui-bg-normal);
+  }
+
+  .mobile-sidebar-header {
+    position: sticky;
+    z-index: 1;
+    top: 0;
+    display: flex;
+    min-height: var(--portal-header-height);
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--cui-spacings-kilo) var(--cui-spacings-mega);
+    background: var(--cui-bg-normal);
+    border-bottom: 1px solid var(--cui-border-divider);
+  }
+
+  .mobile-brand {
+    display: inline-flex;
+    gap: var(--cui-spacings-byte);
+    align-items: center;
+    color: var(--cui-fg-normal);
+    font-size: var(--cui-headline-s-font-size);
+    font-weight: var(--cui-font-weight-semibold);
+    line-height: var(--cui-headline-s-line-height);
+    text-decoration: none;
+  }
+
+  .mobile-brand :global(svg) {
+    width: auto;
+    height: 1.5rem;
+  }
+
+  .mobile-header-actions {
+    display: flex;
+    gap: var(--cui-spacings-bit);
+    align-items: center;
+  }
+
+  .mobile-header-actions button {
+    display: inline-flex;
+    width: 2rem;
+    height: 2rem;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    color: var(--cui-fg-normal);
+    background: transparent;
+    border: 1px solid var(--cui-border-normal);
+    border-radius: var(--cui-border-radius-byte);
+    cursor: pointer;
+  }
+
+  .mobile-header-actions button:hover {
+    background: var(--cui-bg-normal-hovered);
+  }
+
+  .mobile-header-actions button :global(svg) {
+    width: var(--cui-icon-sizes-s);
+    height: var(--cui-icon-sizes-s);
+  }
+
+  .mobile-theme-toggle[data-state="dark"] :global(.sun-icon),
+  .mobile-theme-toggle[data-state="light"] :global(.moon-icon) {
+    display: none;
+  }
+
+  .mobile-primary {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--cui-spacings-bit);
+    padding: var(--cui-spacings-kilo) var(--cui-spacings-mega);
+    border-bottom: 1px solid var(--cui-border-divider);
+  }
+
+  .mobile-primary a {
+    padding: var(--cui-spacings-bit) var(--cui-spacings-byte);
+    color: var(--cui-fg-normal);
+    border-radius: var(--cui-border-radius-byte);
+    font-size: var(--cui-body-s-font-size);
+    font-weight: var(--cui-font-weight-semibold);
+    text-decoration: none;
+  }
+
+  .mobile-primary a:hover {
+    background: var(--cui-bg-normal-hovered);
+  }
+
+  .mobile-primary a[aria-current="page"] {
+    font-weight: var(--cui-font-weight-bold);
+    background: var(--cui-bg-subtle);
+  }
+
+  .mobile-primary a[aria-current="page"]:hover {
+    background: var(--cui-bg-subtle-hovered);
+  }
+
+  .mobile-primary .mobile-dashboard {
+    margin-inline-start: auto;
+  }
+
+  .mobile-docs {
+    padding: var(--cui-spacings-mega);
+  }
+
+  .mobile-sidebar-footer {
+    display: flex;
+    gap: var(--cui-spacings-bit);
+    padding: 0 var(--cui-spacings-mega) var(--cui-spacings-exa);
+  }
+
+  .mobile-sidebar-footer a {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--cui-spacings-bit);
+    padding: var(--cui-spacings-bit) var(--cui-spacings-byte);
+    color: var(--cui-fg-normal);
+    border-radius: var(--cui-border-radius-bit);
+    font-size: var(--cui-body-s-font-size);
+    font-weight: var(--cui-font-weight-semibold);
+    text-decoration: none;
+  }
+
+  .mobile-sidebar-footer a:hover {
+    background: var(--cui-bg-normal-hovered);
+  }
+
+  .mobile-sidebar-footer a :global(svg) {
+    width: var(--cui-icon-sizes-s);
+    height: var(--cui-icon-sizes-s);
+  }
+
+  @media (max-width: 76rem) {
+    .docs-grid,
+    .docs-grid.no-sidebar {
+      grid-template-columns: var(--portal-sidebar-width) minmax(0, 1fr);
+    }
+
+    .docs-toc {
+      display: none;
+    }
+  }
+
+  @media (max-width: 60rem) {
+    .docs-grid,
+    .docs-grid.no-sidebar {
+      display: block;
+    }
+
+    .docs-sidebar {
+      display: none;
+    }
+  }
+
+  @media (max-width: 42rem) {
+    .mobile-sidebar-header {
+      padding-inline: var(--cui-spacings-kilo);
+    }
+
+    .content-column {
+      padding: var(--cui-spacings-mega) var(--cui-spacings-kilo)
+        var(--cui-spacings-exa);
+    }
+  }
+</style>

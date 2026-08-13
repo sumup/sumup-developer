@@ -1,0 +1,169 @@
+---
+import type { TOCItem } from "@cloudflare/nimbus-docs/types";
+import Edit from "@sumup-oss/icons/edit_16.svg";
+import Reports from "@sumup-oss/icons/reports_24.svg";
+
+import Feedback from "@components/Feedback.astro";
+
+interface Props {
+  headings: TOCItem[];
+  mobile?: boolean;
+  editUrl?: string;
+}
+
+const { headings, mobile = false, editUrl } = Astro.props;
+---
+
+{
+  mobile ? (
+    <nav class="mobile-toc" aria-label="On this page" data-table-of-contents>
+      <label for="mobile-toc-select">On this page</label>
+      <select id="mobile-toc-select" data-mobile-toc-select>
+        <option value="_top">Overview</option>
+        {headings.map((heading) => (
+          <option value={heading.slug}>
+            {`${" ".repeat(Math.max(0, heading.depth - 2))}${heading.text}`}
+          </option>
+        ))}
+      </select>
+    </nav>
+  ) : (
+    <>
+      <nav class="toc" aria-label="On this page" data-table-of-contents>
+        <h2>On this page</h2>
+        <ul>
+          {headings.map((heading) => (
+            <li style={`--toc-depth: ${Math.max(0, heading.depth - 2)}`}>
+              <a href={`#${heading.slug}`} data-toc-link={heading.slug}>
+                {heading.text}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+      <div class="toc-footer">
+        <Feedback />
+        <nav class="page-links" aria-label="Page actions">
+          {editUrl && (
+            <a href={editUrl} target="_blank" rel="noopener noreferrer">
+              <Edit aria-hidden="true" />
+              Edit page
+            </a>
+          )}
+          <a
+            href="https://github.com/sumup/sumup-developer/issues/new/choose"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Reports aria-hidden="true" />
+            Report issue
+          </a>
+        </nav>
+      </div>
+    </>
+  )
+}
+
+<script>
+  import "./table-of-contents.client";
+</script>
+
+<style>
+  .toc h2,
+  .mobile-toc label {
+    display: block;
+    margin: 0 0 var(--cui-spacings-byte);
+    font-size: var(--cui-body-s-font-size);
+    font-weight: var(--cui-font-weight-bold);
+  }
+
+  .toc ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .toc a {
+    display: block;
+    padding: var(--cui-spacings-bit) 0 var(--cui-spacings-bit)
+      calc(var(--cui-spacings-kilo) + var(--toc-depth) * 0.75rem);
+    color: var(--cui-fg-subtle);
+    border-inline-start: 2px solid var(--cui-border-divider);
+    font-size: var(--cui-body-s-font-size);
+    line-height: 1.35;
+    text-decoration: none;
+    transition:
+      color 150ms ease,
+      border-inline-start-color 150ms ease;
+  }
+
+  .toc a:hover {
+    color: var(--cui-fg-normal);
+    border-inline-start-color: var(--cui-border-strong);
+  }
+
+  .toc a[aria-current="true"] {
+    color: var(--cui-fg-strong);
+    border-inline-start-color: var(--cui-border-accent);
+    font-weight: var(--cui-font-weight-semibold);
+  }
+
+  .toc-footer {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cui-spacings-giga);
+    margin-top: var(--cui-spacings-tera);
+    padding-top: var(--cui-spacings-giga);
+    border-top: 1px solid var(--cui-border-divider);
+  }
+
+  .page-links {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cui-spacings-kilo);
+  }
+
+  .page-links a {
+    display: inline-flex;
+    gap: var(--cui-spacings-byte);
+    align-items: center;
+    color: var(--cui-fg-subtle);
+    font-size: 0.8125rem;
+    text-decoration: none;
+    transition: color var(--cui-transitions-default);
+  }
+
+  .page-links a:hover {
+    color: var(--cui-fg-normal);
+  }
+
+  .page-links a :global(svg) {
+    width: 0.875rem;
+    height: 0.875rem;
+    flex: none;
+  }
+
+  .mobile-toc {
+    display: none;
+    margin-top: var(--cui-spacings-mega);
+    padding: var(--cui-spacings-kilo) 0;
+    background: var(--cui-bg-normal);
+    border-block: 1px solid var(--cui-border-divider);
+  }
+
+  .mobile-toc select {
+    width: 100%;
+    min-height: 2.5rem;
+    padding: 0 var(--cui-spacings-kilo);
+    color: var(--cui-fg-normal);
+    background: var(--cui-bg-normal);
+    border: 1px solid var(--cui-border-normal);
+    border-radius: var(--cui-border-radius-byte);
+  }
+
+  @media (max-width: 76rem) {
+    .mobile-toc {
+      display: block;
+    }
+  }
+</style>

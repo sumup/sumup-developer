@@ -1,28 +1,96 @@
 ---
-import LogoSlider from "@components/LogoSlider.astro";
-
 const brands = [
-  { title: "Airpos", src: "/img/logos/airpos.svg" },
-  { title: "Booking.com", src: "/img/logos/booking.com.svg" },
-  { title: "Bookingkit", src: "/img/logos/bookingkit.svg" },
-  { title: "DHL", src: "/img/logos/dhl.svg" },
-  { title: "Decathlon", src: "/img/logos/decathlon.svg" },
-  { title: "Dominos", src: "/img/logos/dominos.svg" },
-  { title: "Flixbus", src: "/img/logos/flixbus.svg" },
-  { title: "Lightspeed", src: "/img/logos/lightspeed.svg" },
-  { title: "Loyverse", src: "/img/logos/loyverse.svg" },
-  { title: "Taxicaller", src: "/img/logos/taxicaller.svg" },
-  { title: "Transdev", src: "/img/logos/transdev.svg" },
-  { title: "Treatwell", src: "/img/logos/treatwell.svg" },
-  { title: "ready2order", src: "/img/logos/ready2order.svg" },
+  {
+    name: "Booking.com",
+    src: "/img/logos/booking.com.svg",
+    width: 119,
+    height: 21,
+  },
+  {
+    name: "Decathlon",
+    src: "/img/logos/decathlon.svg",
+    width: 1000,
+    height: 249,
+  },
+  { name: "DHL", src: "/img/logos/dhl.svg", width: 100, height: 15 },
+  {
+    name: "Domino's",
+    src: "/img/logos/dominos.svg",
+    width: 667,
+    height: 148,
+  },
+  {
+    name: "FlixBus",
+    src: "/img/logos/flixbus.svg",
+    width: 596,
+    height: 106,
+  },
+  {
+    name: "Treatwell",
+    src: "/img/logos/treatwell.svg",
+    width: 185,
+    height: 35,
+  },
 ];
-
-const splitIndex = Math.ceil(brands.length / 2 + 1);
-const firstRow = brands.slice(0, splitIndex);
-const secondRow = brands.slice(splitIndex);
 ---
 
-<div>
-  <LogoSlider logos={firstRow} />
-  <LogoSlider logos={secondRow} />
-</div>
+<ul class="brand-grid" aria-label="Companies building with SumUp">
+  {
+    brands.map(({ name, src, width, height }) => (
+      <li>
+        <img
+          src={src}
+          alt={name}
+          width={width}
+          height={height}
+          loading="lazy"
+          decoding="async"
+        />
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .brand-grid {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: var(--cui-spacings-giga);
+    align-items: center;
+    list-style: none;
+  }
+
+  .brand-grid li {
+    display: flex;
+    min-width: 0;
+    height: 2.5rem;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .brand-grid img {
+    width: auto;
+    max-width: 100%;
+    height: auto;
+    max-height: 1.75rem;
+    filter: grayscale(1) brightness(0);
+    opacity: 0.52;
+  }
+
+  :global(html[data-mode="dark"]) .brand-grid img {
+    filter: grayscale(1) brightness(0) invert(1);
+  }
+
+  @media (max-width: 64rem) {
+    .brand-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      row-gap: var(--cui-spacings-giga);
+    }
+  }
+
+  @media (max-width: 46rem) {
+    .brand-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+</style>

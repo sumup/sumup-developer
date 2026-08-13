@@ -298,16 +298,16 @@ SumupPayment.builder()
 .build();
 ```
 
-If there are connectivity issues and the transaction status can not be retrieved, the API will return `ERROR_UNKNOWN_TRANSACTION_STATUS`. In such cases, you can query the transaction status by calling [SumUp transaction status API](https://developer.sumup.com/api/transactions/get) using the specified `foreignTransactionId`.
+If there are connectivity issues and the transaction status can not be retrieved, the API will return `ERROR_UNKNOWN_TRANSACTION_STATUS`. In such cases, you can query the transaction status by calling [SumUp transaction status API](/api/transactions/get) using the specified `foreignTransactionId`.
 
 #### Transaction Identifier
 
-The `foreignTransactionID` identifier will be associated with the transaction and can be used to retrieve details related to the transaction. See [API documentation](https://developer.sumup.com/rest-api/#tag/Transactions) for details. Please make sure that this ID is unique within the scope of the SumUp merchant account and sub-accounts. It must not be longer than 128 characters.
+The `foreignTransactionID` identifier will be associated with the transaction and can be used to retrieve details related to the transaction. See the [Transactions API](/api/transactions/) for details. Please make sure that this ID is unique within the scope of the SumUp merchant account and sub-accounts. It must not be longer than 128 characters.
 The foreignTransactionID is available when the callback activity is called: `SumUpAPI.Param.FOREIGN_TRANSACTION_ID`
 
 #### Skip Success Screen
 
-To skip the success screen shown at the end of a successful transaction, the `skipSuccessScreen` parameter can be used. When using this parameter, your application is responsible for displaying the transaction result to the customer. In combination with the Receipts API your application can also send your own receipts, see [API documentation](https://developer.sumup.com/rest-api/#tag/Receipts) for details. Please note success screens will still be shown when using the SumUp Air Lite readers.
+To skip the success screen shown at the end of a successful transaction, the `skipSuccessScreen` parameter can be used. When using this parameter, your application is responsible for displaying the transaction result to the customer. In combination with the Receipts API your application can also send your own receipts; see the [Receipts API](/api/receipts/) for details. Please note success screens will still be shown when using the SumUp Air Lite readers.
 
 #### Skip Failed Screen
 

@@ -1,0 +1,437 @@
+---
+import { SumUpLogo } from "@sumup-oss/circuit-ui";
+import {
+  ArrowSlanted,
+  HamburgerMenu,
+  Moon,
+  Search,
+  Sun,
+} from "@sumup-oss/icons";
+
+interface Props {
+  showSidebar?: boolean;
+}
+
+const { showSidebar = false } = Astro.props;
+const pathname = Astro.url.pathname;
+const activeSection =
+  pathname === "/"
+    ? undefined
+    : pathname.startsWith("/api")
+      ? "api"
+      : pathname.startsWith("/changelog")
+        ? "changelog"
+        : "docs";
+
+const navigation = [
+  { id: "docs", label: "Docs", href: "/docs/" },
+  { id: "api", label: "API", href: "/api/" },
+  { id: "changelog", label: "Changelog", href: "/changelog/" },
+];
+---
+
+<header class="portal-header">
+  <div class="header-inner">
+    <a href="/" class="brand" aria-label="SumUp Developer home">
+      <SumUpLogo size="s" variant="short" />
+      <span translate="no">Developer</span>
+    </a>
+
+    <nav class="desktop-navigation" aria-label="Primary navigation">
+      {
+        navigation.map((item) => (
+          <a
+            href={item.href}
+            aria-current={activeSection === item.id ? "page" : undefined}
+          >
+            {item.label}
+          </a>
+        ))
+      }
+    </nav>
+
+    <div class="header-actions">
+      <button
+        class="search-trigger"
+        type="button"
+        data-search-trigger
+        aria-label="Search documentation"
+        aria-keyshortcuts="Control+K"
+      >
+        <Search size="16" aria-hidden="true" />
+        <span>Search</span>
+        <kbd><span data-shortcut-key>Ctrl</span>K</kbd>
+      </button>
+      <a
+        href="https://me.sumup.com/settings/developer"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="dashboard-link"
+      >
+        Dashboard <ArrowSlanted size="16" aria-hidden="true" />
+      </a>
+      <button
+        class="icon-button theme-toggle"
+        type="button"
+        data-theme-toggle
+        data-state="light"
+        aria-label="Use dark mode"
+      >
+        <Sun className="sun-icon" aria-hidden="true" />
+        <Moon className="moon-icon" aria-hidden="true" />
+      </button>
+      <button
+        class="icon-button mobile-menu-button"
+        type="button"
+        data-sidebar-menu-button={showSidebar ? "" : undefined}
+        data-global-menu-button={!showSidebar ? "" : undefined}
+        aria-expanded="false"
+        aria-controls={!showSidebar ? "global-menu" : undefined}
+        aria-label="Open navigation"
+      >
+        <HamburgerMenu aria-hidden="true" />
+      </button>
+    </div>
+  </div>
+</header>
+
+{
+  !showSidebar && (
+    <dialog
+      id="global-menu"
+      class="global-menu"
+      data-global-menu
+      aria-label="Site navigation"
+    >
+      <div class="global-menu-panel">
+        <button
+          type="button"
+          data-close-global-menu
+          aria-label="Close navigation"
+        >
+          Close
+        </button>
+        <nav aria-label="Primary navigation">
+          {navigation.map((item) => (
+            <a
+              href={item.href}
+              aria-current={activeSection === item.id ? "page" : undefined}
+            >
+              {item.label}
+            </a>
+          ))}
+          <a
+            href="https://me.sumup.com/settings/developer"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Dashboard ↗
+          </a>
+        </nav>
+      </div>
+    </dialog>
+  )
+}
+
+<script>
+  const applyShortcutLabel = () => {
+    const isApple = /Mac|iPhone|iPad/.test(navigator.platform);
+    document
+      .querySelectorAll<HTMLElement>("[data-shortcut-key]")
+      .forEach((label) => (label.textContent = isApple ? "⌘" : "Ctrl"));
+  };
+
+  document
+    .querySelectorAll<HTMLElement>("[data-theme-toggle]")
+    .forEach((button) => {
+      button.addEventListener("click", () => {
+        const current = document.documentElement.dataset.mode;
+        try {
+          localStorage.setItem(
+            "ui-mode",
+            current === "dark" ? "light" : "dark",
+          );
+        } catch {
+          // The OS preference remains available when storage is blocked.
+        }
+        window.__applyPortalTheme?.();
+      });
+    });
+
+  const globalMenu =
+    document.querySelector<HTMLDialogElement>("[data-global-menu]");
+  const globalMenuButton = document.querySelector<HTMLElement>(
+    "[data-global-menu-button]",
+  );
+  globalMenuButton?.addEventListener("click", () => {
+    globalMenu?.showModal();
+    globalMenuButton.setAttribute("aria-expanded", "true");
+  });
+  document
+    .querySelector<HTMLElement>("[data-close-global-menu]")
+    ?.addEventListener("click", () => globalMenu?.close());
+  globalMenu?.addEventListener("click", (event) => {
+    if (event.target === globalMenu) globalMenu.close();
+  });
+  globalMenu?.addEventListener("close", () => {
+    globalMenuButton?.setAttribute("aria-expanded", "false");
+  });
+
+  applyShortcutLabel();
+  window.__applyPortalTheme?.();
+</script>
+
+<style>
+  .portal-header {
+    position: sticky;
+    z-index: 50;
+    top: 0;
+    height: var(--portal-header-height);
+    background: color-mix(in srgb, var(--cui-bg-normal) 88%, transparent);
+    border-bottom: 1px solid var(--cui-border-divider);
+    backdrop-filter: blur(12px);
+  }
+
+  .header-inner {
+    display: grid;
+    width: 100%;
+    height: 100%;
+    padding: 0 var(--cui-spacings-mega);
+    gap: var(--cui-spacings-mega);
+    align-items: center;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  }
+
+  .brand {
+    display: inline-flex;
+    flex: none;
+    gap: var(--cui-spacings-byte);
+    align-items: center;
+    color: var(--cui-fg-normal);
+    font-size: var(--cui-headline-s-font-size);
+    font-weight: var(--cui-font-weight-semibold);
+    line-height: var(--cui-headline-s-line-height);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .brand :global(svg) {
+    width: auto;
+    height: 1.5rem;
+  }
+
+  .desktop-navigation {
+    display: flex;
+    gap: var(--cui-spacings-bit);
+    align-items: center;
+    justify-content: center;
+  }
+
+  .desktop-navigation a {
+    display: inline-flex;
+    gap: var(--cui-spacings-bit);
+    align-items: center;
+    padding: var(--cui-spacings-bit) var(--cui-spacings-byte);
+    color: var(--cui-fg-normal);
+    border-radius: var(--cui-border-radius-byte);
+    font-size: var(--cui-body-s-font-size);
+    font-weight: var(--cui-font-weight-semibold);
+    text-decoration: none;
+  }
+
+  .desktop-navigation a:hover {
+    background: var(--cui-bg-normal-hovered);
+  }
+
+  .desktop-navigation a[aria-current="page"] {
+    background: var(--cui-bg-subtle);
+  }
+
+  .desktop-navigation a[aria-current="page"]:hover {
+    background: var(--cui-bg-subtle-hovered);
+  }
+
+  .dashboard-link {
+    display: inline-flex;
+    gap: var(--cui-spacings-bit);
+    height: 2rem;
+    padding: 0 var(--cui-spacings-kilo);
+    align-items: center;
+    color: var(--cui-fg-on-strong);
+    background: var(--cui-bg-strong);
+    border-radius: var(--cui-border-radius-byte);
+    font-size: var(--cui-body-s-font-size);
+    font-weight: var(--cui-font-weight-semibold);
+    text-decoration: none;
+  }
+
+  .dashboard-link:hover {
+    color: var(--cui-fg-on-strong-hovered);
+    background: var(--cui-bg-strong-hovered);
+  }
+
+  .header-actions {
+    display: flex;
+    gap: var(--cui-spacings-bit);
+    align-items: center;
+    justify-content: flex-end;
+  }
+
+  .search-trigger,
+  .icon-button {
+    display: inline-flex;
+    height: 2rem;
+    align-items: center;
+    justify-content: center;
+    color: var(--cui-fg-subtle);
+    background: var(--cui-bg-normal);
+    border: 1px solid var(--cui-border-normal);
+    border-radius: var(--cui-border-radius-byte);
+    cursor: pointer;
+  }
+
+  .search-trigger:hover,
+  .icon-button:hover {
+    color: var(--cui-fg-normal);
+    background: var(--cui-bg-normal-hovered);
+  }
+
+  .search-trigger {
+    gap: var(--cui-spacings-byte);
+    width: 12rem;
+    justify-content: flex-start;
+    padding: 0 var(--cui-spacings-byte);
+    font-size: var(--cui-body-s-font-size);
+  }
+
+  .search-trigger kbd {
+    margin-inline-start: auto;
+    padding: 0 var(--cui-spacings-bit);
+    color: var(--cui-fg-subtle);
+    background: var(--cui-bg-subtle);
+    border: 1px solid var(--cui-border-subtle);
+    border-radius: var(--cui-border-radius-bit);
+    font: inherit;
+  }
+
+  .icon-button {
+    width: 2rem;
+    padding: 0;
+  }
+
+  .icon-button :global(svg) {
+    width: 1.1rem;
+    height: 1.1rem;
+  }
+
+  .theme-toggle[data-state="dark"] :global(.sun-icon),
+  .theme-toggle[data-state="light"] :global(.moon-icon) {
+    display: none;
+  }
+
+  .mobile-menu-button {
+    display: none;
+  }
+
+  .global-menu {
+    width: min(22rem, calc(100% - 2rem));
+    margin: calc(var(--portal-header-height) + 0.5rem) 0 auto auto;
+    padding: 0;
+    color: var(--cui-fg-normal);
+    background: transparent;
+    border: 0;
+  }
+
+  .global-menu::backdrop {
+    background: rgb(0 0 0 / 45%);
+  }
+
+  .global-menu-panel {
+    padding: var(--cui-spacings-mega);
+    background: var(--cui-bg-normal);
+    border: 1px solid var(--cui-border-normal);
+    border-radius: var(--cui-border-radius-mega);
+  }
+
+  .global-menu-panel > button {
+    display: block;
+    min-height: 2.75rem;
+    margin-inline-start: auto;
+    padding-inline: var(--cui-spacings-kilo);
+    color: var(--cui-fg-subtle);
+    background: none;
+    border: 0;
+    cursor: pointer;
+  }
+
+  .global-menu nav {
+    display: grid;
+    margin-top: var(--cui-spacings-kilo);
+    gap: var(--cui-spacings-bit);
+  }
+
+  .global-menu nav a {
+    padding: var(--cui-spacings-kilo);
+    color: var(--cui-fg-normal);
+    border-radius: var(--cui-border-radius-byte);
+    font-weight: var(--cui-font-weight-semibold);
+    text-decoration: none;
+  }
+
+  .global-menu nav a:hover {
+    background: var(--cui-bg-normal-hovered);
+  }
+
+  .global-menu nav a[aria-current="page"] {
+    background: var(--cui-bg-subtle);
+  }
+
+  .global-menu nav a[aria-current="page"]:hover {
+    background: var(--cui-bg-subtle-hovered);
+  }
+
+  @media (max-width: 70rem) {
+    .header-inner {
+      display: flex;
+    }
+
+    .desktop-navigation {
+      display: none;
+    }
+
+    .header-actions {
+      margin-inline-start: auto;
+    }
+
+    .mobile-menu-button {
+      display: inline-flex;
+    }
+  }
+
+  @media (max-width: 42rem) {
+    .header-inner {
+      padding: 0 var(--cui-spacings-kilo);
+    }
+
+    .brand span,
+    .search-trigger > span,
+    .search-trigger kbd {
+      display: none;
+    }
+
+    .search-trigger {
+      width: 2.75rem;
+      height: 2.75rem;
+      padding: 0;
+    }
+
+    .icon-button {
+      width: 2.75rem;
+      height: 2.75rem;
+    }
+
+    .dashboard-link {
+      height: 2.75rem;
+    }
+  }
+</style>

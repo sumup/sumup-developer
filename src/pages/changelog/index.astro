@@ -2,11 +2,9 @@
 import { getCollection, render } from "astro:content";
 import slugify from "@sindresorhus/slugify";
 import { Status, Body, Button, Anchor, Headline } from "@sumup-oss/circuit-ui";
-import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
-import MarkdownContent from "@astrojs/starlight/components/MarkdownContent.astro";
-import type { StarlightPageProps } from "@astrojs/starlight/props";
+import StandaloneLayout from "../../layouts/StandaloneLayout.astro";
 
-const changelogDocs = await getCollection("changelog");
+const changelogDocs = await getCollection("_changelog");
 
 const allTags = [
   ...new Set(changelogDocs.flatMap(({ data: { tags } }) => tags)),
@@ -25,19 +23,13 @@ const posts = await Promise.all(
     return { Content, ...entry };
   }),
 );
-
-const props = {
-  frontmatter: {
-    title: "Changelog",
-    pagefind: false,
-    template: "splash",
-    tableOfContents: false,
-  },
-  custom: true,
-} as StarlightPageProps;
 ---
 
-<StarlightPage {...props}>
+<StandaloneLayout
+  title="Changelog"
+  description="Product and API updates across the SumUp developer platform."
+  searchable={false}
+>
   <div>
     <ul class="tags">
       <li>
@@ -87,7 +79,7 @@ const props = {
       </span>
     </Button>
   </div>
-  <main class="content">
+  <div class="content">
     {
       posts.map(
         async ({ Content, id, data: { title, tags, publishedDate } }) => (
@@ -120,15 +112,15 @@ const props = {
                 </Anchor>
               </span>
             </Body>
-            <MarkdownContent>
+            <article class="docs-content">
               <Content />
-            </MarkdownContent>
+            </article>
           </div>
         ),
       )
     }
-  </main>
-</StarlightPage>
+  </div>
+</StandaloneLayout>
 
 <style lang="scss">
   .content {
@@ -138,7 +130,7 @@ const props = {
     gap: var(--cui-spacings-giga);
   }
 
-  :global(.expressive-code .frame pre) {
+  :global(.docs-content pre) {
     overflow: auto;
     scrollbar-width: thin;
   }

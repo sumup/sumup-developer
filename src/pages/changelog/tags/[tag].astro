@@ -2,12 +2,12 @@
 import { getCollection, render } from "astro:content";
 import slugify from "@sindresorhus/slugify";
 import { Status, Body, Button, Anchor, Headline } from "@sumup-oss/circuit-ui";
-import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
-import MarkdownContent from "@astrojs/starlight/components/MarkdownContent.astro";
-import type { StarlightPageProps } from "@astrojs/starlight/props";
+import StandaloneLayout from "../../../layouts/StandaloneLayout.astro";
+
+export const prerender = true;
 
 export async function getStaticPaths() {
-  const changelogEntries = await getCollection("changelog");
+  const changelogEntries = await getCollection("_changelog");
   const tags = [
     ...new Set(changelogEntries.flatMap(({ data: { tags } }) => tags)),
   ];
@@ -18,7 +18,7 @@ export async function getStaticPaths() {
 }
 
 const { tag: currentTag } = Astro.params;
-const changelogDocs = await getCollection("changelog");
+const changelogDocs = await getCollection("_changelog");
 
 const allTags = [
   ...new Set(changelogDocs.flatMap(({ data: { tags } }) => tags)),
@@ -43,20 +43,14 @@ const posts = await Promise.all(
 );
 
 const tagName = allTags.find((tag) => slugify(tag) === currentTag);
-
-const props = {
-  frontmatter: {
-    title: tagName ? `${tagName} Changelog` : "Changelog",
-    pagefind: false,
-    noindex: true,
-    template: "splash",
-    tableOfContents: false,
-  },
-  custom: true,
-} as StarlightPageProps;
 ---
 
-<StarlightPage {...props}>
+<StandaloneLayout
+  title={tagName ? `${tagName} Changelog` : "Changelog"}
+  socialImage="/og/changelog.png"
+  noindex
+  searchable={false}
+>
   <div>
     <ul class="tags">
       <li>
@@ -109,7 +103,7 @@ const props = {
       </span>
     </Button>
   </div>
-  <main class="content">
+  <div class="content">
     {
       posts.map(
         async ({ Content, id, data: { title, tags, publishedDate } }) => (
@@ -142,15 +136,15 @@ const props = {
                 </Anchor>
               </span>
             </Body>
-            <MarkdownContent>
+            <article class="docs-content">
               <Content />
-            </MarkdownContent>
+            </article>
           </div>
         ),
       )
     }
-  </main>
-</StarlightPage>
+  </div>
+</StandaloneLayout>
 
 <style lang="scss">
   .content {
@@ -160,7 +154,7 @@ const props = {
     gap: var(--cui-spacings-giga);
   }
 
-  :global(.expressive-code .frame pre) {
+  :global(.docs-content pre) {
     overflow: auto;
     scrollbar-width: thin;
   }

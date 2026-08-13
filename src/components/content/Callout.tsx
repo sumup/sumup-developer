@@ -10,7 +10,6 @@ import {
   type IconComponentType,
 } from "@sumup-oss/icons";
 import type { ComponentProps, ReactNode } from "react";
-import styles from "./Callout.module.css";
 
 type CalloutType = "note" | "tip" | "caution" | "success" | "promo";
 
@@ -36,13 +35,13 @@ const calloutConfig: Record<
 
 export default function Callout({ children, type = "note", ...props }: Props) {
   const config = calloutConfig[type];
-  const className = [styles.callout, props.className].filter(Boolean).join(" ");
 
   return (
     <CircuitCallout
       {...config}
       {...props}
-      className={className}
+      data-callout=""
+      data-prose="off"
       body={children}
     />
   );

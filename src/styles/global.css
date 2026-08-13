@@ -1,0 +1,116 @@
+:root {
+  --portal-header-height: 3.5rem;
+  --portal-sidebar-width: 17rem;
+  --portal-toc-width: 15rem;
+  --portal-content-width: 50rem;
+}
+
+* {
+  box-sizing: border-box;
+  scrollbar-width: thin;
+}
+
+html {
+  background: var(--cui-bg-normal);
+  scroll-behavior: smooth;
+}
+
+body {
+  min-width: 20rem;
+  min-height: 100vh;
+  color: var(--cui-fg-normal);
+  background: var(--cui-bg-normal);
+  font-family: "SumUp Narrow", "SumUp Narrow fallback", sans-serif;
+  font-size: var(--cui-body-m-font-size);
+  line-height: var(--cui-body-m-line-height);
+  text-rendering: optimizeLegibility;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+a {
+  color: var(--cui-fg-accent);
+}
+
+a,
+button {
+  touch-action: manipulation;
+}
+
+:where(h1, h2, h3, h4, h5, h6)[id] {
+  scroll-margin-top: calc(var(--portal-header-height) + 1.5rem);
+}
+
+:focus-visible {
+  outline: 2px solid var(--cui-border-focus);
+  outline-offset: 2px;
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+.skip-link {
+  position: fixed;
+  z-index: 1000;
+  top: var(--cui-spacings-byte);
+  left: var(--cui-spacings-byte);
+  padding: var(--cui-spacings-byte) var(--cui-spacings-kilo);
+  color: var(--cui-fg-on-strong);
+  background: var(--cui-bg-strong);
+  border-radius: var(--cui-border-radius-byte);
+  transform: translateY(-200%);
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+a.external-link::after {
+  content: " \2197";
+}
+
+code[dir="auto"] {
+  color: var(--cui-fg-normal);
+  background-color: var(--cui-bg-subtle);
+  padding: 0 var(--cui-spacings-bit);
+  border-radius: var(--cui-border-radius-bit);
+  border: var(--cui-border-width-kilo) solid var(--cui-border-subtle);
+  font-size: 0.9em;
+  overflow-wrap: anywhere;
+  white-space: normal;
+}
+
+body[data-scroll-locked] {
+  overflow: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+@media print {
+  .portal-header,
+  .docs-sidebar,
+  .docs-toc,
+  .mobile-toc,
+  .page-actions,
+  .portal-footer-links {
+    display: none !important;
+  }
+}
