@@ -29,6 +29,12 @@ Skills provide integration guidance without requiring credentials. Account queri
 
 ## Plain Text Docs
 
+{/* Nimbus's route map omits generated text endpoints. */}
+{/* nimbus-rule-disable-next-line nimbus/internal-link */}
 AI tools can discover our documentation through [/llms.txt](/llms.txt). To read a page as Markdown, append `index.md` to its URL, for example [this overview as Markdown](/tools/llms/index.md).
 
 Markdown versions include content from every tab and preserve heading structure, making them useful for assistants and agents. For hosted skill discovery, see [Discover Skills](/tools/llms/agent-skills/#discover-skills).
+
+{/* Nimbus’s link map omits generated text and JSON endpoints; check:agent-docs verifies these. */}
+{/* nimbus-rule-disable-next-line nimbus/internal-link */}
+For bulk ingestion, use [/llms-full.txt](/llms-full.txt). It contains the published guides with a canonical source URL for each page. For endpoint definitions, request fields, and response schemas, use the [OpenAPI specification](/openapi.json). The API reference is published separately from the guide bundle.

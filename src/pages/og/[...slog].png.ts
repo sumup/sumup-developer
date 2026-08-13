@@ -10,7 +10,20 @@ interface Props {
   params: { slog?: string };
 }
 
-export const prerender = false;
+export const prerender = true;
+
+export async function getStaticPaths() {
+  const docs = await getCollection("docs");
+  const paths = new Set([
+    "index",
+    "contact",
+    "help",
+    "changelog",
+    ...docs.map((entry) => entry.id),
+  ]);
+
+  return [...paths].map((slog) => ({ params: { slog } }));
+}
 
 // Overrides for pages that are not backend by content collections.
 const staticPageMetadata = new Map<
@@ -141,7 +154,7 @@ export async function GET({ params }: Props) {
         display: "flex",
         position: "relative",
         width: "1200px",
-        height: "600px",
+        height: "630px",
         backgroundColor: "#000000",
         boxSizing: "border-box",
         alignItems: "center",
@@ -262,7 +275,7 @@ export async function GET({ params }: Props) {
 
   return createOgImageResponse(card, {
     width: 1200,
-    height: 600,
+    height: 630,
     debug: false,
     fonts: [
       ...(sumUpBlack

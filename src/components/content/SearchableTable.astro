@@ -1,0 +1,87 @@
+---
+/* eslint-disable astro/jsx-a11y/no-noninteractive-tabindex -- Focus allows keyboard scrolling of the table region. */
+interface Props {
+  searchPlaceholder?: string;
+}
+
+const { searchPlaceholder = "Search table" } = Astro.props;
+---
+
+<section data-searchable-table>
+  <label hidden>
+    <span class="visually-hidden">{searchPlaceholder}</span>
+    <input type="search" placeholder={searchPlaceholder} />
+  </label>
+  <!-- Scrollable tables must be focusable for keyboard scrolling. -->
+  <div
+    class="table-scroll"
+    tabindex={0}
+    role="region"
+    aria-label={searchPlaceholder}
+  >
+    <slot />
+  </div>
+  <p role="status" hidden></p>
+</section>
+
+<script>
+  import { mount } from "@cloudflare/nimbus-docs/client";
+
+  mount("[data-searchable-table]", (root) => {
+    const input = root.querySelector("input")!;
+    const label = root.querySelector("label")!;
+    const status = root.querySelector<HTMLElement>('[role="status"]')!;
+    const rows = Array.from(root.querySelectorAll("tbody tr"), (row) => ({
+      row: row as HTMLElement,
+      text: row.textContent?.toLocaleLowerCase() ?? "",
+    }));
+    label.hidden = false;
+    const filter = () => {
+      const query = input.value.trim().toLocaleLowerCase();
+      let count = 0;
+      for (const { row, text } of rows) {
+        row.hidden = !text.includes(query);
+        if (!row.hidden) count++;
+      }
+      status.hidden = !query;
+      status.textContent = `${count} of ${rows.length} rows`;
+    };
+    input.addEventListener("input", filter);
+    return () => input.removeEventListener("input", filter);
+  });
+</script>
+
+<style>
+  section {
+    margin-block: var(--cui-spacings-kilo);
+  }
+  label:not([hidden]) {
+    display: block;
+    margin-bottom: var(--cui-spacings-byte);
+  }
+  input {
+    width: 100%;
+    padding: var(--cui-spacings-byte) var(--cui-spacings-kilo);
+    border: var(--cui-border-width-kilo) solid var(--cui-border-normal);
+    border-radius: var(--cui-border-radius-byte);
+    background: var(--cui-bg-normal);
+    color: var(--cui-fg-normal);
+    font: inherit;
+  }
+  input:focus-visible {
+    outline: 2px solid var(--cui-border-focus);
+    outline-offset: 2px;
+  }
+  .table-scroll {
+    max-height: 420px;
+    overflow: auto;
+  }
+  .table-scroll :global(.nb-table-scroll) {
+    overflow: visible;
+  }
+  .table-scroll :global(th) {
+    position: sticky;
+    top: 0;
+    background: var(--cui-bg-normal);
+  }
+</style>

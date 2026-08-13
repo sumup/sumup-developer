@@ -12,9 +12,13 @@ const { label, name, options, hideLabel } = Astro.props;
 ---
 
 <div>
-  <label for={name} class:list={[{ hide: hideLabel }]}>{label}</label>
+  <label for={name} class:list={[{ hide: hideLabel }]}>
+    {label}
+  </label>
   <select id={name} name={name}>
-    {options.map((o) => <option value={o.value}>{o.label}</option>)}
+    {options.map((o) => (
+      <option value={o.value}>{o.label}</option>
+    ))}
   </select>
 </div>
 

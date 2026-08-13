@@ -1,0 +1,9 @@
+---
+import MultiCode, { type Props as MultiCodeProps } from "./MultiCode.astro";
+
+type Props = Omit<MultiCodeProps, "isLanguageSelect">;
+
+const props = Astro.props;
+---
+
+<MultiCode {...props} isLanguageSelect />

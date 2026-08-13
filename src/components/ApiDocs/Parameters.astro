@@ -17,36 +17,29 @@ const { parameters = [], kind } = Astro.props;
 <div class="parameters" data-pagefind-ignore>
   <SectionHeading>{kind}</SectionHeading>
   <ul>
-    {
-      parameters.map((p) => {
-        const schema = resolveSchema(p.schema!);
-        const enumValues = getSchemaEnumValues(schema);
-        return (
-          <li>
-            <ParameterName
-              name={p.name}
-              def={p.schema}
-              required={!!p.required}
-            />
-            {enumValues && (
-              <div class="enum">
-                <span>Options:&nbsp;</span>
-                {enumValues.map((value) => (
-                  <code dir="auto">{value}</code>
-                ))}
-              </div>
-            )}
-            {p.description && <Markdown>{p.description}</Markdown>}
-            {"example" in schema && (
-              <div>
-                Example:{" "}
-                <code dir="auto">{JSON.stringify(schema.example)}</code>
-              </div>
-            )}
-          </li>
-        );
-      })
-    }
+    {parameters.map((p) => {
+      const schema = resolveSchema(p.schema!);
+      const enumValues = getSchemaEnumValues(schema);
+      return (
+        <li>
+          <ParameterName name={p.name} def={p.schema} required={!!p.required} />
+          {enumValues && (
+            <div class="enum">
+              <span>Options:&nbsp;</span>
+              {enumValues.map((value) => (
+                <code dir="auto">{value}</code>
+              ))}
+            </div>
+          )}
+          {p.description && <Markdown>{p.description}</Markdown>}
+          {"example" in schema && (
+            <div>
+              Example: <code dir="auto">{JSON.stringify(schema.example)}</code>
+            </div>
+          )}
+        </li>
+      );
+    })}
   </ul>
 </div>
 

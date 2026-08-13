@@ -11,7 +11,7 @@ const toDescription = (body: string): string => {
 };
 
 export async function GET(context: { site: URL | undefined }) {
-  const changelogEntries = (await getCollection("changelog")).sort(
+  const changelogEntries = (await getCollection("_changelog")).sort(
     (a, b) => b.data.publishedDate.valueOf() - a.data.publishedDate.valueOf(),
   );
 

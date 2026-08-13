@@ -9,11 +9,9 @@ const { href, ...props } = Astro.props;
 
 <a href={href} {...props}>
   <slot />
-  {
-    href?.toString()?.startsWith("http") ? (
-      <ExternalLink size="16" aria-label="(External link)" />
-    ) : null
-  }
+  {href?.toString()?.startsWith("http") ? (
+    <ExternalLink size="16" aria-label="(External link)" />
+  ) : null}
 </a>
 
 <style lang="scss">

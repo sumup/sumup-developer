@@ -1,0 +1,96 @@
+---
+/** Ordered list with numbered circles and connecting lines. */
+import type { HTMLAttributes } from "astro/types";
+
+interface Props extends HTMLAttributes<"div"> {
+  start?: number;
+}
+
+const { start, class: className, ...attributes } = Astro.props;
+---
+
+<div
+  data-steps
+  class:list={["steps", className]}
+  style={start !== undefined ? `--steps-start: ${start};` : undefined}
+  {...attributes}
+>
+  <slot />
+</div>
+
+<script>
+  import "./steps.client";
+</script>
+
+<style>
+  .steps {
+    --_start: var(--steps-start, 1);
+    margin: var(--cui-spacings-giga) 0;
+    counter-reset: step calc(var(--_start) - 1);
+  }
+
+  .steps :global(ol) {
+    margin: 0;
+    padding: 0;
+    counter-reset: step calc(var(--_start) - 1);
+    list-style: none;
+  }
+
+  .steps :global(ol > li),
+  .steps :global([data-step]) {
+    position: relative;
+    min-height: 1.75rem;
+    margin: 0;
+    padding-left: 2.5rem;
+    padding-bottom: var(--cui-spacings-giga);
+    counter-increment: step;
+  }
+
+  .steps :global(ol > li:last-child),
+  .steps :global([data-step]:last-child) {
+    padding-bottom: 0;
+  }
+
+  .steps :global(ol > li > * + *),
+  .steps :global([data-step] > * + *) {
+    margin-top: var(--cui-spacings-byte);
+  }
+
+  .steps :global(ol > li)::before,
+  .steps :global([data-step])::before {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    display: grid;
+    width: 1.75rem;
+    height: 1.75rem;
+    color: var(--cui-fg-normal);
+    background: var(--cui-bg-highlight);
+    border: var(--cui-border-width-kilo) solid var(--cui-border-strong);
+    border-radius: var(--cui-border-radius-byte);
+    content: counter(step);
+    font-size: 0.6875rem;
+    font-weight: var(--cui-font-weight-semibold);
+    place-items: center;
+  }
+
+  .steps :global(ol > li:not(:last-child))::after,
+  .steps :global([data-step]:not(:last-child))::after {
+    position: absolute;
+    top: 1.75rem;
+    bottom: 0;
+    left: calc(0.875rem - 0.75px);
+    width: 1.5px;
+    background: var(--cui-border-divider);
+    content: "";
+  }
+
+  .steps :global(ol > li > p:first-child > strong:only-child) {
+    color: var(--cui-fg-normal);
+  }
+
+  .steps :global(ol > li > p) {
+    margin: 0;
+  }
+</style>

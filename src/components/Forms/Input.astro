@@ -3,7 +3,9 @@ const { name, label, hideLabel, class: cls, ...props } = Astro.props;
 const hasPrefix = Astro.slots.has("prefix");
 ---
 
-<label for={name} class:list={[{ hide: hideLabel }]}>{label}</label>
+<label for={name} class:list={[{ hide: hideLabel }]}>
+  {label}
+</label>
 <div class="wrap">
   <slot name="prefix" />
   <input id={name} name={name} class:list={[{ hasPrefix }, cls]} {...props} />

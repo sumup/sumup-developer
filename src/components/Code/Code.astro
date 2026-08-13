@@ -1,0 +1,54 @@
+---
+import TreelightCode from "@treelight/plugin-astro/components/Code.astro";
+import type {
+  CopyButtonOption,
+  HighlightLinesOption,
+  LineNumbersOption,
+} from "@treelight/hast";
+
+import {
+  treelightHighlighter,
+  treelightLanguageMap,
+  treelightTheme,
+} from "@lib/treelight";
+
+export interface Props {
+  class?: string;
+  code: string;
+  copyButton?: CopyButtonOption;
+  highlightLines?: HighlightLinesOption;
+  lang?: string;
+  language?: string;
+  lineNumbers?: LineNumbersOption;
+  meta?: string;
+  title?: string;
+}
+
+const {
+  code,
+  copyButton = true,
+  lang,
+  language,
+  lineNumbers = true,
+  meta = "",
+  ...props
+} = Astro.props;
+
+const resolvedLanguage = language ?? lang ?? "text";
+const highlightedCode =
+  resolvedLanguage === "php" && !/^\s*<\?(?:php|=)/i.test(code)
+    ? `<?php\n\n${code}`
+    : code;
+const themedMeta = `${meta} theme=${treelightTheme.id}`.trim();
+---
+
+<TreelightCode
+  {...props}
+  code={highlightedCode}
+  copyButton={copyButton}
+  highlighter={treelightHighlighter}
+  lang={resolvedLanguage}
+  languageMap={treelightLanguageMap}
+  lineNumbers={lineNumbers}
+  meta={themedMeta}
+/>

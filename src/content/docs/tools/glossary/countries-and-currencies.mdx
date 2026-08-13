@@ -5,7 +5,7 @@ sidebar:
   order: 30
 ---
 
-import SearchableTable from "@components/content/SearchableTable";
+import SearchableTable from "@components/content/SearchableTable.astro";
 
 A SumUp merchant account has a default currency based on the country where the
 merchant is registered. When an API request requires a currency, use the
@@ -25,247 +25,50 @@ The country coverage follows SumUp's current
 [list of markets](https://www.sumup.com/en-us/press/). Search by country name,
 country code, currency, or currency code.
 
-<SearchableTable
-  client:load
-  searchPlaceholder="Search countries or currencies"
-  columns={[
-    { key: "icon", label: "" },
-    { key: "country", label: "Country", nowrap: true },
-    { key: "currency", label: "Currency", nowrap: true },
-    { key: "currencyCode", label: "Code", as: "code", nowrap: true },
-  ]}
-  rows={[
-    {
-      icon: "flag_au",
-      country: "Australia (AU)",
-      currency: "Australian dollar",
-      currencyCode: "AUD",
-    },
-    {
-      icon: "flag_at",
-      country: "Austria (AT)",
-      currency: "Euro",
-      currencyCode: "EUR",
-    },
-    {
-      icon: "flag_be",
-      country: "Belgium (BE)",
-      currency: "Euro",
-      currencyCode: "EUR",
-    },
-    {
-      icon: "flag_br",
-      country: "Brazil (BR)",
-      currency: "Brazilian real",
-      currencyCode: "BRL",
-    },
-    {
-      icon: "flag_bg",
-      country: "Bulgaria (BG)",
-      currency: "Euro",
-      currencyCode: "EUR",
-    },
-    {
-      icon: "flag_ca",
-      country: "Canada (CA)",
-      currency: "Canadian dollar",
-      currencyCode: "CAD",
-    },
-    {
-      icon: "flag_cl",
-      country: "Chile (CL)",
-      currency: "Chilean peso",
-      currencyCode: "CLP",
-    },
-    {
-      icon: "flag_co",
-      country: "Colombia (CO)",
-      currency: "Colombian peso",
-      currencyCode: "COP",
-    },
-    {
-      icon: "flag_hr",
-      country: "Croatia (HR)",
-      currency: "Euro",
-      currencyCode: "EUR",
-    },
-    {
-      icon: "flag_cy",
-      country: "Cyprus (CY)",
-      currency: "Euro",
-      currencyCode: "EUR",
-    },
-    {
-      icon: "flag_cz",
-      country: "Czech Republic (CZ)",
-      currency: "Czech koruna",
-      currencyCode: "CZK",
-    },
-    {
-      icon: "flag_dk",
-      country: "Denmark (DK)",
-      currency: "Danish krone",
-      currencyCode: "DKK",
-    },
-    {
-      icon: "flag_ee",
-      country: "Estonia (EE)",
-      currency: "Euro",
-      currencyCode: "EUR",
-    },
-    {
-      icon: "flag_fi",
-      country: "Finland (FI)",
-      currency: "Euro",
-      currencyCode: "EUR",
-    },
-    {
-      icon: "flag_fr",
-      country: "France (FR)",
-      currency: "Euro",
-      currencyCode: "EUR",
-    },
-    {
-      icon: "flag_de",
-      country: "Germany (DE)",
-      currency: "Euro",
-      currencyCode: "EUR",
-    },
-    {
-      icon: "flag_gr",
-      country: "Greece (GR)",
-      currency: "Euro",
-      currencyCode: "EUR",
-    },
-    {
-      icon: "flag_hu",
-      country: "Hungary (HU)",
-      currency: "Hungarian forint",
-      currencyCode: "HUF",
-    },
-    {
-      icon: "flag_ie",
-      country: "Ireland (IE)",
-      currency: "Euro",
-      currencyCode: "EUR",
-    },
-    {
-      icon: "flag_it",
-      country: "Italy (IT)",
-      currency: "Euro",
-      currencyCode: "EUR",
-    },
-    {
-      icon: "flag_lv",
-      country: "Latvia (LV)",
-      currency: "Euro",
-      currencyCode: "EUR",
-    },
-    {
-      icon: "flag_lt",
-      country: "Lithuania (LT)",
-      currency: "Euro",
-      currencyCode: "EUR",
-    },
-    {
-      icon: "flag_lu",
-      country: "Luxembourg (LU)",
-      currency: "Euro",
-      currencyCode: "EUR",
-    },
-    {
-      icon: "flag_mt",
-      country: "Malta (MT)",
-      currency: "Euro",
-      currencyCode: "EUR",
-    },
-    {
-      icon: "flag_mx",
-      country: "Mexico (MX)",
-      currency: "Mexican peso",
-      currencyCode: "MXN",
-    },
-    {
-      icon: "flag_nl",
-      country: "Netherlands (NL)",
-      currency: "Euro",
-      currencyCode: "EUR",
-    },
-    {
-      icon: "flag_no",
-      country: "Norway (NO)",
-      currency: "Norwegian krone",
-      currencyCode: "NOK",
-    },
-    {
-      icon: "flag_pe",
-      country: "Peru (PE)",
-      currency: "Peruvian sol",
-      currencyCode: "PEN",
-    },
-    {
-      icon: "flag_pl",
-      country: "Poland (PL)",
-      currency: "Polish zloty",
-      currencyCode: "PLN",
-    },
-    {
-      icon: "flag_pt",
-      country: "Portugal (PT)",
-      currency: "Euro",
-      currencyCode: "EUR",
-    },
-    {
-      icon: "flag_ro",
-      country: "Romania (RO)",
-      currency: "Romanian leu",
-      currencyCode: "RON",
-    },
-    {
-      icon: "flag_sk",
-      country: "Slovakia (SK)",
-      currency: "Euro",
-      currencyCode: "EUR",
-    },
-    {
-      icon: "flag_si",
-      country: "Slovenia (SI)",
-      currency: "Euro",
-      currencyCode: "EUR",
-    },
-    {
-      icon: "flag_es",
-      country: "Spain (ES)",
-      currency: "Euro",
-      currencyCode: "EUR",
-    },
-    {
-      icon: "flag_se",
-      country: "Sweden (SE)",
-      currency: "Swedish krona",
-      currencyCode: "SEK",
-    },
-    {
-      icon: "flag_ch",
-      country: "Switzerland (CH)",
-      currency: "Swiss franc",
-      currencyCode: "CHF",
-    },
-    {
-      icon: "flag_gb",
-      country: "United Kingdom (GB)",
-      currency: "Pound sterling",
-      currencyCode: "GBP",
-    },
-    {
-      icon: "flag_us",
-      country: "United States (US)",
-      currency: "US dollar",
-      currencyCode: "USD",
-    },
-  ]}
-  tableLayout="auto"
-/>
+<SearchableTable searchPlaceholder="Search countries or currencies">
+
+| Country | Currency | Code |
+| --- | --- | --- |
+| Australia (AU) | Australian dollar | `AUD` |
+| Austria (AT) | Euro | `EUR` |
+| Belgium (BE) | Euro | `EUR` |
+| Brazil (BR) | Brazilian real | `BRL` |
+| Bulgaria (BG) | Euro | `EUR` |
+| Canada (CA) | Canadian dollar | `CAD` |
+| Chile (CL) | Chilean peso | `CLP` |
+| Colombia (CO) | Colombian peso | `COP` |
+| Croatia (HR) | Euro | `EUR` |
+| Cyprus (CY) | Euro | `EUR` |
+| Czech Republic (CZ) | Czech koruna | `CZK` |
+| Denmark (DK) | Danish krone | `DKK` |
+| Estonia (EE) | Euro | `EUR` |
+| Finland (FI) | Euro | `EUR` |
+| France (FR) | Euro | `EUR` |
+| Germany (DE) | Euro | `EUR` |
+| Greece (GR) | Euro | `EUR` |
+| Hungary (HU) | Hungarian forint | `HUF` |
+| Ireland (IE) | Euro | `EUR` |
+| Italy (IT) | Euro | `EUR` |
+| Latvia (LV) | Euro | `EUR` |
+| Lithuania (LT) | Euro | `EUR` |
+| Luxembourg (LU) | Euro | `EUR` |
+| Malta (MT) | Euro | `EUR` |
+| Mexico (MX) | Mexican peso | `MXN` |
+| Netherlands (NL) | Euro | `EUR` |
+| Norway (NO) | Norwegian krone | `NOK` |
+| Peru (PE) | Peruvian sol | `PEN` |
+| Poland (PL) | Polish zloty | `PLN` |
+| Portugal (PT) | Euro | `EUR` |
+| Romania (RO) | Romanian leu | `RON` |
+| Slovakia (SK) | Euro | `EUR` |
+| Slovenia (SI) | Euro | `EUR` |
+| Spain (ES) | Euro | `EUR` |
+| Sweden (SE) | Swedish krona | `SEK` |
+| Switzerland (CH) | Swiss franc | `CHF` |
+| United Kingdom (GB) | Pound sterling | `GBP` |
+| United States (US) | US dollar | `USD` |
+
+</SearchableTable>
 
 ## Use the correct currency in an integration
 

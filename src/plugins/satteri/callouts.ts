@@ -1,6 +1,7 @@
 import { defineMdastPlugin } from "satteri";
 import type { Properties } from "hast";
 import type { Paragraph } from "mdast";
+import type {} from "mdast-util-to-hast";
 import {
   isCalloutType,
   type CalloutType,

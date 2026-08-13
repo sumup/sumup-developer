@@ -2,20 +2,21 @@
 
 ## Project Structure & Organization
 
-The portal uses Astro with the Starlight theme. Application source sits in `src/`, with `pages/` for route entry points, `content/` for MDX docs, `components/` for reusable UI (React, Astro, and Circuit UI), and `utils/`/`lib/` for shared logic. Assets live in `src/assets` and `public/`. Build outputs go to `dist/`. Configuration resides in `astro.config.ts`, `ec.config.mjs`, and `wrangler.jsonc`; adjust them when adding new content types or deployment targets. API documentation is based on `openapi.yaml`, this file is synchronized from outside this repository, do not edit it.
+The portal uses Astro with Nimbus. Application source sits in `src/`, with `pages/` for route entry points, `content/` for MDX docs, `layouts/` and `components/` for repository-owned UI (React, Astro, and Circuit UI), and `utils/`/`lib/` for shared logic. Assets live in `src/assets` and `public/`. Build outputs go to `dist/`. Configuration resides in `astro.config.ts`, `nimbus.json`, and `wrangler.jsonc`; adjust them when adding new content types or deployment targets. API documentation is based on `openapi.yaml`, this file is synchronized from outside this repository, do not edit it.
 
 ## Build, Test, and Development Commands
 
 - `npm run dev` — watch mode with Hot Module Reloading; use when authoring docs or components.
 - `npm run build` — production Astro build targeting Cloudflare; ensure it succeeds before merging.
-- `npm run check` — runs `astro check` for type and content schema validation after `astro sync`.
-- `npm run lint` — ESLint across Astro/TSX files; required before pushing structural changes.
-- `npm run format` — Prettier write for source and content; run after bulk edits.
-- `npm run linkcheck` — builds with `CHECK_LINKS=true` to surface broken internal/external links.
+- `npm run check` — runs `astro check` for Astro, TypeScript, and content schema validation.
+- `npm run lint` — runs ESLint and `rumdl`; required before pushing structural changes.
+- `npm run format` — formats source, styles, and data files with Prettier.
+- `npm run linkcheck` — builds, runs Nimbus's internal-link checks, and validates rendered API links.
+- `npm run validate` — runs the complete CI validation sequence.
 
 ## Coding Style & Naming Conventions
 
-Prettier (project defaults) handles whitespace, so commit formatted files rather than manual styling. Stick to TypeScript where possible; Astro islands may embed React components. Name components and directories in PascalCase (`src/components/LogoSlider`), utility modules in camelCase (`src/utils/formats.ts`), and content files in kebab-case (`src/content/docs/payments-overview.mdx`). Favor SumUp design tokens and Circuit UI primitives; extend `src/base.css` sparingly.
+Prettier (project defaults) handles whitespace, so commit formatted files rather than manual styling. Stick to TypeScript where possible; Astro islands may embed React components. Name components and directories in PascalCase (`src/components/LogoSlider`), utility modules in camelCase (`src/utils/formats.ts`), and content files in kebab-case (`src/content/docs/payments-overview.mdx`). Favor SumUp design tokens and Circuit UI primitives; extend `src/styles/portal.css` and `src/styles/prose.css` sparingly. Do not add Tailwind.
 
 ## Docs Frontmatter Requirements
 
@@ -40,7 +41,7 @@ For files in `src/content/docs/`, include frontmatter at the top of every page.
 
 ## Testing Guidelines
 
-CI relies on `npm run check`. When editing MDX content, preview via `npm run dev` to verify navigation, sidebar ordering, and snippet rendering. There is no Jest-style test suite; document any manual verification steps in the pull request if behavior changes or APIs are added.
+CI runs `npm run validate`. When editing MDX content, preview via `npm run dev` to verify navigation, sidebar ordering, and snippet rendering. The repository has a focused Vitest suite for runtime helpers; document any additional manual verification steps in the pull request when UI behavior changes.
 
 ## Markdown Linting Guidelines
 

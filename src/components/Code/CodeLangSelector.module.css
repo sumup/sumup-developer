@@ -10,16 +10,15 @@
 }
 
 .selector :global(> div > svg) {
-  width: 26px;
-  height: 26px;
-  padding: 6px;
+  width: 22px;
+  height: 22px;
+  padding: 4px;
 }
 
-.selector :global(select select) {
+.selector :global(select) {
   width: auto;
   min-width: 0;
-  padding: 2px 26px 2px var(--cui-spacings-byte);
-  font-size: var(--cui-body-s-font-size);
-  line-height: var(--cui-body-s-line-height);
-  background-color: var(--cui-bg-subtle);
+  padding: 2px 22px 2px var(--cui-spacings-byte);
+  font-size: var(--cui-compact-s-font-size);
+  line-height: var(--cui-compact-s-line-height);
 }

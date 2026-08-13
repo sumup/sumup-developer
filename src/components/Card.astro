@@ -11,15 +11,15 @@ const iconUrl = icon ? getIconURL(icon, "24") : null;
 ---
 
 <div class="card" {...props}>
-  {
-    title && (
-      <div class="title">
-        {iconUrl && <img src={iconUrl} alt="" aria-hidden="true" />}
-        {title}
-      </div>
-    )
-  }
-  <div class="body"><slot /></div>
+  {title && (
+    <div class="title">
+      {iconUrl && <img src={iconUrl} alt="" aria-hidden="true" />}
+      {title}
+    </div>
+  )}
+  <div class="body">
+    <slot />
+  </div>
 </div>
 
 <style>

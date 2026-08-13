@@ -4,11 +4,9 @@ import RssIcon from "@components/RssIcon";
 import { getCollection, render } from "astro:content";
 import slugify from "@sindresorhus/slugify";
 import { Status, Body, Anchor, Headline } from "@sumup-oss/circuit-ui";
-import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
-import MarkdownContent from "@components/MarkdownContent.astro";
-import type { StarlightPageProps } from "@astrojs/starlight/props";
+import StandaloneLayout from "../../layouts/StandaloneLayout.astro";
 
-const changelogDocs = await getCollection("changelog");
+const changelogDocs = await getCollection("_changelog");
 
 const allTags = [
   ...new Set(changelogDocs.flatMap(({ data: { tags } }) => tags)),
@@ -27,19 +25,13 @@ const posts = await Promise.all(
     return { Content, ...entry };
   }),
 );
-
-const props = {
-  frontmatter: {
-    title: "Changelog",
-    pagefind: false,
-    template: "splash",
-    tableOfContents: false,
-  },
-  custom: true,
-} as StarlightPageProps;
 ---
 
-<StarlightPage {...props}>
+<StandaloneLayout
+  title="Changelog"
+  description="Product and API updates across the SumUp developer platform."
+  searchable={false}
+>
   <div>
     <ul class="tags">
       <li>
@@ -47,15 +39,13 @@ const props = {
           <Status as="span">All</Status>
         </a>
       </li>
-      {
-        allTags.map((tag) => (
-          <li>
-            <a href={getTagHref(tag)}>
-              <Status as="span">{tag}</Status>
-            </a>
-          </li>
-        ))
-      }
+      {allTags.map((tag) => (
+        <li>
+          <a href={getTagHref(tag)}>
+            <Status as="span">{tag}</Status>
+          </a>
+        </li>
+      ))}
     </ul>
   </div>
   <div class="rssSubscribe">
@@ -66,48 +56,46 @@ const props = {
       label="Subscribe to RSS"
     />
   </div>
-  <main class="content">
-    {
-      posts.map(
-        async ({ Content, id, data: { title, tags, publishedDate } }) => (
-          <div class="post" id={`entry-${id}`}>
-            <Headline as="h2" size="s" className="title">
-              <a class="titleLink" href={getEntryHref(id)}>
-                {title}
-              </a>
-            </Headline>
-            <Body size="s" color="subtle" className="meta">
-              <span class="metaItem">
-                <time
-                  data-pagefind-meta="datetime"
-                  datetime={publishedDate.toISOString()}
-                >
-                  {publishedDate.toISOString().split("T")[0]}
-                </time>
-              </span>
-              {tags &&
-                tags.map((tag) => (
-                  <span class="metaItem">
-                    <Anchor size="s" href={getTagHref(tag)}>
-                      {tag}
-                    </Anchor>
-                  </span>
-                ))}
-              <span class="metaItem">
-                <Anchor size="s" href={getEntryHref(id)}>
-                  Permalink
-                </Anchor>
-              </span>
-            </Body>
-            <MarkdownContent>
-              <Content />
-            </MarkdownContent>
-          </div>
-        ),
-      )
-    }
-  </main>
-</StarlightPage>
+  <div class="content">
+    {posts.map(
+      async ({ Content, id, data: { title, tags, publishedDate } }) => (
+        <div class="post" id={`entry-${id}`}>
+          <Headline as="h2" size="s" className="title">
+            <a class="titleLink" href={getEntryHref(id)}>
+              {title}
+            </a>
+          </Headline>
+          <Body size="s" color="subtle" className="meta">
+            <span class="metaItem">
+              <time
+                data-pagefind-meta="datetime"
+                datetime={publishedDate.toISOString()}
+              >
+                {publishedDate.toISOString().split("T")[0]}
+              </time>
+            </span>
+            {tags &&
+              tags.map((tag) => (
+                <span class="metaItem">
+                  <Anchor size="s" href={getTagHref(tag)}>
+                    {tag}
+                  </Anchor>
+                </span>
+              ))}
+            <span class="metaItem">
+              <Anchor size="s" href={getEntryHref(id)}>
+                Permalink
+              </Anchor>
+            </span>
+          </Body>
+          <article class="docs-content">
+            <Content />
+          </article>
+        </div>
+      ),
+    )}
+  </div>
+</StandaloneLayout>
 
 <style lang="scss">
   .content {
@@ -117,7 +105,7 @@ const props = {
     gap: var(--cui-spacings-giga);
   }
 
-  :global(.expressive-code .frame pre) {
+  :global(.docs-content pre) {
     overflow: auto;
     scrollbar-width: thin;
   }

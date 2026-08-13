@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://developer.sumup.com/sitemap-index.xml

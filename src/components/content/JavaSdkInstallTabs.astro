@@ -1,36 +1,15 @@
 ---
-import { Tabs, TabItem } from "@astrojs/starlight/components";
+import { Tabs, TabItem } from "@components/nimbus";
 import { CodeBlock } from "@components/Code";
 import { getJavaSdkVersion } from "@lib/sdks/javaSdkVersion";
-
-const javaSdkVersion = await getJavaSdkVersion();
+import { javaInstallExamples } from "@lib/sdks/javaInstallExamples";
+const examples = javaInstallExamples(await getJavaSdkVersion());
 ---
 
 <Tabs>
-  <TabItem label="Gradle (Kotlin DSL)">
-    <CodeBlock
-      language="kotlin"
-      code={`dependencies {
-    implementation("com.sumup:sumup-sdk:${javaSdkVersion}")
-}`}
-    />
-  </TabItem>
-  <TabItem label="Gradle (Groovy)">
-    <CodeBlock
-      language="groovy"
-      code={`dependencies {
-    implementation 'com.sumup:sumup-sdk:${javaSdkVersion}'
-}`}
-    />
-  </TabItem>
-  <TabItem label="Maven">
-    <CodeBlock
-      language="xml"
-      code={`<dependency>
-  <groupId>com.sumup</groupId>
-  <artifactId>sumup-sdk</artifactId>
-  <version>${javaSdkVersion}</version>
-</dependency>`}
-    />
-  </TabItem>
+  {examples.map(({ label, language, code }) => (
+    <TabItem label={label}>
+      <CodeBlock language={language} code={code} />
+    </TabItem>
+  ))}
 </Tabs>
