@@ -72,6 +72,10 @@ tags:
     x-core-objects:
       - $ref: '#/components/schemas/Receipt'
   - name: Readers
+    description: >-
+      A reader represents a device that accepts payments. You can use the SumUp Solo to accept in-person payments.
+    x-core-objects:
+      - $ref: "#/components/schemas/Reader"
   - name: Members
     description: >-
       Endpoints to manage account members. Members are users that have membership within merchant accounts.
