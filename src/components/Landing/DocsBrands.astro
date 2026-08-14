@@ -1,0 +1,28 @@
+---
+import LogoSlider from "@components/LogoSlider.astro";
+
+const brands = [
+  { title: "Airpos", src: "/img/logos/airpos.svg" },
+  { title: "Booking.com", src: "/img/logos/booking.com.svg" },
+  { title: "Bookingkit", src: "/img/logos/bookingkit.svg" },
+  { title: "DHL", src: "/img/logos/dhl.svg" },
+  { title: "Decathlon", src: "/img/logos/decathlon.svg" },
+  { title: "Dominos", src: "/img/logos/dominos.svg" },
+  { title: "Flixbus", src: "/img/logos/flixbus.svg" },
+  { title: "Lightspeed", src: "/img/logos/lightspeed.svg" },
+  { title: "Loyverse", src: "/img/logos/loyverse.svg" },
+  { title: "Taxicaller", src: "/img/logos/taxicaller.svg" },
+  { title: "Transdev", src: "/img/logos/transdev.svg" },
+  { title: "Treatwell", src: "/img/logos/treatwell.svg" },
+  { title: "ready2order", src: "/img/logos/ready2order.svg" },
+];
+
+const splitIndex = Math.ceil(brands.length / 2 + 1);
+const firstRow = brands.slice(0, splitIndex);
+const secondRow = brands.slice(splitIndex);
+---
+
+<div>
+  <LogoSlider logos={firstRow} />
+  <LogoSlider logos={secondRow} />
+</div>
