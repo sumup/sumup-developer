@@ -235,6 +235,8 @@ export default defineConfig({
                   "/api/**",
                   // Custom Astro page outside docs content collection.
                   "/contact",
+                  // Custom documentation hub outside docs content collection.
+                  "/docs",
                   // Custom help hub with dynamic sections rendered from Astro pages.
                   "/help",
                   "/help/**",
@@ -264,8 +266,8 @@ export default defineConfig({
           label: "Get Started",
           items: [
             {
-              label: "Home",
-              link: "/",
+              label: "Overview",
+              link: "/docs/",
             },
           ],
         },

@@ -1,0 +1,303 @@
+---
+import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
+import type { StarlightPageProps } from "@astrojs/starlight/props";
+import Brands from "@components/Landing/DocsBrands.astro";
+import { Headline, ListItem } from "@sumup-oss/circuit-ui";
+import {
+  Globe,
+  Apps,
+  CardIn,
+  VirtualTerminal,
+  Code,
+  Customise,
+  File,
+  InterestOnBalance,
+  Key,
+  NoCosts,
+  Play,
+  SecurePayments,
+  Sparkles,
+} from "@sumup-oss/icons";
+
+const props = {
+  frontmatter: {
+    title: "SumUp Developer Portal",
+    description:
+      "Welcome to SumUp portal for developers. We’ve got everything you need to build your own payment acceptance solutions for your business.",
+    tableOfContents: false,
+    hero: {
+      title: "SumUp developer platform",
+    },
+  },
+  custom: true,
+} as StarlightPageProps;
+---
+
+<StarlightPage {...props}>
+  <main>
+    <section>
+      <section>
+        <Headline as="h2" className="header">Accept Online Payments</Headline>
+        <div class="button-links">
+          <ListItem
+            href="/online-payments/"
+            variant="navigation"
+            label="Accept Your First Online Payment"
+            details="Create and verify a checkout with a sandbox merchant account."
+            leadingComponent={Play}
+          />
+          <ListItem
+            variant="navigation"
+            leadingComponent={Customise}
+            href="/online-payments/checkouts/"
+            label="Choose a Checkout Experience"
+            details="Compare hosted, embedded, web, and mobile checkout options."
+          />
+          <ListItem
+            variant="navigation"
+            leadingComponent={Globe}
+            href="/online-payments/payment-methods/"
+            label="Offer More Payment Methods"
+            details="Discover the methods available to a merchant and checkout."
+          />
+          <ListItem
+            variant="navigation"
+            leadingComponent={SecurePayments}
+            href="/online-payments/testing/"
+            label="Test Your Integration"
+            details="Exercise successful, failed, and 3D Secure payment flows."
+          />
+        </div>
+      </section>
+      <section>
+        <Headline as="h2" className="header">Accept In-Person Payments</Headline
+        >
+        <div class="button-links">
+          <ListItem
+            variant="navigation"
+            leadingComponent={CardIn}
+            href="/terminal-payments/"
+            label="Choose an In-Person Integration"
+            details="Compare mobile SDKs, the Cloud API, and legacy app handoff."
+          />
+          <ListItem
+            variant="navigation"
+            leadingComponent={Play}
+            href="/terminal-payments/quickstart/"
+            label="Accept Your First In-Person Payment"
+            details="Prepare a merchant account, device, and integration for testing."
+          />
+          <ListItem
+            variant="navigation"
+            leadingComponent={Code}
+            href="/terminal-payments/sdks/"
+            label="Build a Native Mobile Flow"
+            details="Accept payments in Android and iOS apps with SumUp SDKs."
+          />
+          <ListItem
+            variant="navigation"
+            leadingComponent={VirtualTerminal}
+            href="/terminal-payments/cloud-api/"
+            label="Connect a Standalone Reader"
+            details="Control a supported reader from a server or any platform."
+          />
+        </div>
+      </section>
+      <section>
+        <Headline as="h2" className="header">Build and Operate</Headline>
+        <div class="button-links">
+          <ListItem
+            variant="navigation"
+            href="/tools/authorization/"
+            leadingComponent={Key}
+            label="Set Up Authorization"
+            details="Choose and protect the credentials for your integration."
+          />
+          <ListItem
+            variant="navigation"
+            leadingComponent={Apps}
+            href="/tools/sdks/"
+            label="Call APIs with a Server SDK"
+            details="Use an official client across online and in-person integrations."
+          />
+          <ListItem
+            variant="navigation"
+            href="/api/"
+            leadingComponent={File}
+            label="Use the API Reference"
+            details="Look up endpoints, request fields, responses, and errors."
+          />
+          <ListItem
+            variant="navigation"
+            href="/tools/llms/"
+            leadingComponent={Sparkles}
+            label="Build with AI"
+            details="Give coding assistants current SumUp documentation and tools."
+          />
+        </div>
+      </section>
+    </section>
+    <section class="antifraud">
+      <div class="content">
+        <h2>Our Anti-fraud Protection</h2>
+        <div class="callouts">
+          <div>
+            <SecurePayments aria-hidden="true" className="icon" />
+            <p>
+              We’re committed to protecting you from fraud, chargebacks and
+              headaches
+            </p>
+          </div>
+          <div>
+            <InterestOnBalance aria-hidden="true" className="icon" />
+            <p>
+              We use advanced artificial intelligence to constantly monitor
+              transactions for unusual activity
+            </p>
+          </div>
+          <div>
+            <NoCosts aria-hidden="true" className="icon" />
+            <p>
+              All of our anti-fraud protection is included at no additional cost
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="brands">
+      <h2>Brands That Build With SumUp</h2>
+      <Brands />
+    </section>
+  </main>
+</StarlightPage>
+
+<style>
+  :root {
+    --sl-content-width: 68rem !important;
+  }
+</style>
+
+<style lang="scss">
+  ul {
+    list-style-type: none;
+    padding-left: 0;
+    margin-top: var(--cui-spacings-mega);
+
+    li {
+      margin-bottom: 10px;
+    }
+  }
+
+  section {
+    margin: var(--cui-spacings-exa) 0;
+
+    a {
+      color: var(--cui-fg-accent);
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
+    @media screen and (min-width: 941px) {
+      &:nth-child(even) {
+        .image {
+          grid-area: right;
+        }
+
+        .text {
+          grid-area: left;
+        }
+      }
+    }
+  }
+
+  h3 {
+    margin-bottom: var(--cui-spacings-giga);
+  }
+
+  section :global(h2) {
+    margin-bottom: var(--cui-spacings-giga) !important;
+  }
+
+  .icon {
+    width: 48px;
+    height: 48px;
+    margin-bottom: var(--cui-spacings-mega);
+  }
+
+  .callouts {
+    margin: var(--cui-spacings-zetta) 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: var(--cui-spacings-giga);
+
+    & > div {
+      margin-bottom: var(--cui-spacings-mega);
+    }
+
+    @media screen and (max-width: 940px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .antifraud img {
+    width: 56px;
+    margin-bottom: var(--cui-spacings-kilo);
+  }
+
+  .antifraud .callouts {
+    text-align: center;
+  }
+
+  .links {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: var(--cui-spacings-giga);
+    ul {
+      li {
+        margin-bottom: var(--cui-spacings-bit);
+      }
+    }
+    & > div {
+      margin-bottom: var(--cui-spacings-giga);
+    }
+    @media screen and (max-width: 940px) {
+      grid-template-columns: 1fr 1fr;
+    }
+    @media screen and (max-width: 600px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .brands {
+    overflow: hidden;
+    padding: var(--cui-spacings-zetta) 0;
+  }
+
+  .card-grid {
+    display: grid;
+    gap: 1rem;
+
+    & > :global(*) {
+      margin-top: 0 !important;
+    }
+
+    @media (min-width: 50rem) {
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1.5rem;
+    }
+  }
+
+  .button-links {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--cui-spacings-kilo);
+  }
+
+  @media (max-width: 1279px) {
+    .button-links {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
