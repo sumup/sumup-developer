@@ -11,7 +11,7 @@ export default defineEcConfig({
     borderRadius: "0",
     borderWidth: "0",
     codeFontFamily: "var(--cui-font-stack-mono)",
-    codeBackground: "var(--cui-bg-subtle)",
+    codeBackground: "var(--sl-color-black)",
     gutterBorderWidth: "0",
     frames: {
       editorTabBarBorderBottomColor: "var(--cui-border-subtle)",
