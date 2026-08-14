@@ -1,14 +1,15 @@
 ---
 import { MultiCode } from "@components/Code";
 import {
+  cli,
   curl,
   dotnet,
   go,
   java,
-  node,
   php,
   python,
   rust,
+  typescript,
 } from "@lib/codesamples";
 import type { OperationObject } from "src/types/openapi";
 import OperationEndpoint from "./OperationEndpoint.astro";
@@ -29,8 +30,13 @@ const { operation } = Astro.props;
       lang: "bash",
     },
     {
+      label: "CLI",
+      code: cli(operation),
+      lang: "bash",
+    },
+    {
       label: "JavaScript",
-      code: node(operation),
+      code: typescript(operation),
       lang: "ts",
     },
     {
