@@ -1,15 +1,23 @@
 import { describe, expect, it } from "vitest";
 import type { OpenAPIV3_1 } from "openapi-types";
+import cliSamples from "../../codesamples/cli.json";
+import dotnetSamples from "../../codesamples/dotnet.json";
+import goSamples from "../../codesamples/go.json";
+import javaSamples from "../../codesamples/java.json";
+import pythonSamples from "../../codesamples/python.json";
+import rustSamples from "../../codesamples/rust.json";
+import typescriptSamples from "../../codesamples/typescript.json";
 import type { OperationObject } from "../../types/openapi";
 import {
+  cli,
   curl,
   dotnet,
   go,
   java,
-  node as nodeSample,
   php,
   python,
   rust,
+  typescript,
 } from "./index";
 
 const checkoutBodySchema: OpenAPIV3_1.SchemaObject = {
@@ -73,154 +81,33 @@ const checkoutOperation: OperationObject = {
   },
 };
 
-const updateCustomerBodySchema: OpenAPIV3_1.SchemaObject = {
-  type: "object",
-  required: ["email"],
-  properties: {
-    email: {
-      type: "string",
-      example: "ada@example.com",
-    },
-  },
-};
-
-const updateCustomerOperation: OperationObject = {
-  operationId: "UpdateCustomer",
-  tag: "Customers",
-  slug: "customers-update",
-  tagSlug: "customers",
-  summary: "Update customer",
-  description: "Updates a customer profile.",
-  method: "PUT",
-  path: "/v0.1/customers/{customer_id}",
-  "x-codegen": {
-    method_name: "update",
-  },
-  parameters: [
-    {
-      name: "customer_id",
-      in: "path",
-      required: true,
-      schema: {
-        type: "string",
-        example: "cust_123",
-      },
-    },
-    {
-      name: "fields",
-      in: "query",
-      required: false,
-      schema: {
-        type: "string",
-        example: "personal_details",
-      },
-    },
-  ],
-  requestBody: {
-    content: {
-      "application/json": {
-        schema: updateCustomerBodySchema,
-        example: {
-          email: "ada@example.com",
-        },
-      },
-    },
-  },
-  responses: {
-    "200": {
-      description: "Updated",
-    },
-  },
-};
-
-describe("code sample generators", () => {
-  it("node sample matches the TypeScript SDK usage", () => {
-    expect(nodeSample(checkoutOperation)).toBe(
-      `import SumUp from '@sumup/sdk';
-
-const client = new SumUp();
-
-const result = await client.checkouts.create("MC123", {
-  amount: 1000,
-  currency: "EUR",
-  description: "Online order #42",
-});`,
+describe("code samples", () => {
+  it.each([
+    ["Python", python, pythonSamples],
+    [".NET", dotnet, dotnetSamples],
+    ["Go", go, goSamples],
+    ["Java", java, javaSamples],
+    ["Rust", rust, rustSamples],
+    ["TypeScript", typescript, typescriptSamples],
+    ["CLI", cli, cliSamples],
+  ])("uses the vendored %s sample", (_, codeSample, vendoredSamples) => {
+    const expected = vendoredSamples.samples.find(
+      ({ operationId }) => operationId === checkoutOperation.operationId,
     );
+
+    expect(codeSample(checkoutOperation)).toBe(expected?.sample);
   });
 
-  it("python sample uses the Sumup SDK client", () => {
-    expect(python(checkoutOperation)).toBe(
-      `from sumup import Sumup
+  it("fails clearly when a vendored sample is missing", () => {
+    const operation = {
+      ...checkoutOperation,
+      operationId: "UnknownOperation",
+    };
 
-client = Sumup()
-
-result = client.checkouts.create("MC123", CreateCheckoutBody(
-  amount=1000,
-  currency="EUR",
-  description="Online order #42",
-))`,
+    expect(() => go(operation)).toThrow(
+      "Missing go code sample for UnknownOperation",
     );
-  });
-
-  it("dotnet sample uses the SumUp .NET client", () => {
-    expect(dotnet(checkoutOperation)).toBe(
-      `using SumUp;
-
-var client = new SumUpClient();
-
-var result = await client.Checkouts.CreateAsync(
-    "MC123",
-    new CreateCheckoutBody
-    {
-        Amount = 1000,
-        Currency = "EUR",
-        Description = "Online order #42",
-    }
-);`,
-    );
-  });
-
-  it("go sample renders struct initialisers", () => {
-    expect(go(checkoutOperation)).toBe(
-      `client := sumup.NewClient()
-
-result, err := client.Checkouts.Create(context.Background(), "MC123", sumup.CheckoutsCreateParams{
-  Amount: 1000,
-  Currency: "EUR",
-  Description: "Online order #42",
-})`,
-    );
-  });
-
-  it("java sample uses the SumUp client", () => {
-    expect(java(checkoutOperation)).toBe(
-      `import com.sumup.sdk.SumUpClient;
-
-SumUpClient client = SumUpClient.builder().build();
-
-var result = client.checkouts().createCheckout(
-  "MC123",
-  CreateCheckoutBody.builder()
-    .amount(1000f)
-    .currency("EUR")
-    .description("Online order #42")
-    .build()
-);`,
-    );
-  });
-
-  it("rust sample includes params and body examples", () => {
-    expect(rust(updateCustomerOperation)).toBe(
-      `use sumup::Client;
-
-let client = Client::default();
-
-let result = client.customers().update("cust_123", sumup::UpdateCustomerParams{
-    fields: Some("personal_details".to_string()),
-}, sumup::UpdateCustomerBody{
-  email: "ada@example.com".to_string(),
-}).await;`,
-    );
+    expect(cli(operation)).toBeUndefined();
   });
 
   it("php sample uses the SumUp PHP SDK", () => {
