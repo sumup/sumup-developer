@@ -5,7 +5,6 @@ import styles from "./EndpointList.module.css";
 
 interface Props {
   operations: OperationObject[];
-  selectedOperationSlug?: string;
   tagSlug: string;
 }
 
@@ -22,11 +21,7 @@ const EndpointDetails = ({ operation }: { operation: OperationObject }) => {
   );
 };
 
-export default function EndpointList({
-  operations,
-  selectedOperationSlug,
-  tagSlug,
-}: Props) {
+export default function EndpointList({ operations, tagSlug }: Props) {
   return (
     <ListItemGroup
       label="Endpoints"
@@ -39,7 +34,6 @@ export default function EndpointList({
         details: <EndpointDetails operation={operation} />,
         href: `/api/${tagSlug}/${operation.slug}/`,
         variant: "navigation",
-        selected: selectedOperationSlug === operation.slug,
       }))}
     />
   );

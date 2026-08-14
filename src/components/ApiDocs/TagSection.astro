@@ -84,11 +84,7 @@ const coreObjectSections = coreObjects.map((schema, index) => {
     </div>
     {
       operations.length > 0 && (
-        <EndpointList
-          operations={operations}
-          selectedOperationSlug={targetOp}
-          tagSlug={slug}
-        />
+        <EndpointList operations={operations} tagSlug={slug} />
       )
     }
   </LRGrid>
