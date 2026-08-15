@@ -208,6 +208,9 @@ export default defineConfig({
   vite: {
     plugins: [rawFonts([".woff2", ".woff", ".ttf", ".otf"])],
     assetsInclude: ["**/*.wasm"], // Treat WASM files as assets (but not font files used by OG)
+    resolve: {
+      noExternal: ["@sumup-oss/circuit-ui", "@sumup-oss/illustrations"],
+    },
     ssr: {
       external: ["buffer", "path", "fs"].map((i) => `node:${i}`),
       noExternal: ["workers-og"],
