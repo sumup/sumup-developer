@@ -1,90 +1,144 @@
 ---
-title: Agentic Workflows
-description: Use SumUp in your agentic workflows.
+title: Agent Toolkit
+description: Add SumUp API tools to LangChain, AI SDK, OpenAI Agents SDK, or an MCP server.
 sidebar:
   order: 54
 ---
 
-Use SumUp to enhance your agent with SumUp functionalities. By enabling access to financial services and tools, you allow your agents to help you earn money, manage funds, and other provide other functionalities available in SumUp APIs.
+The [SumUp Agent Toolkit](https://github.com/sumup/sumup-ai) adds SumUp API tools to agentic applications built with LangChain, AI SDK, the OpenAI Agents SDK, or the Model Context Protocol (MCP).
 
-## OpenAI
+## Prerequisites
 
-Example usage of the [SumUp Agent Toolkit](https://github.com/sumup/sumup-ai) with the [OpenAI](https://github.com/openai/openai-node).
+The Agent Toolkit requires Node.js 22 or later and a [SumUp API key](/tools/authorization/api-keys/).
+
+## Installation
+
+```sh
+npm install @sumup/agent-toolkit
+```
+
+## LangChain
 
 ```ts
-import { SumUpAgentToolkit } from "@sumup/agent-toolkit/openai";
-import OpenAI from "openai";
-import type { ChatCompletionMessageParam } from "openai/resources";
-
-require("dotenv").config();
-
-const openai = new OpenAI();
+import { SumUpAgentToolkit } from "@sumup/agent-toolkit/langchain";
+import { createAgent } from "langchain";
 
 const sumupAgentToolkit = new SumUpAgentToolkit({
   apiKey: process.env.SUMUP_API_KEY!,
 });
 
-(async (): Promise<void> => {
-  let messages: ChatCompletionMessageParam[] = [
+const agent = createAgent({
+  model: "openai:gpt-4o",
+  tools: sumupAgentToolkit.getTools(),
+});
+
+const response = await agent.invoke({
+  messages: [
     {
       role: "user",
-      content: "Tell me about my last 10 transactions please.",
+      content: "Tell me about my last 10 transactions.",
     },
-  ];
+  ],
+});
 
-  while (true) {
-    // eslint-disable-next-line no-await-in-loop
-    const completion = await openai.chat.completions.create({
-      model: "gpt-4o",
-      messages,
-      tools: sumupAgentToolkit.getTools(),
-    });
-
-    const message = completion.choices[0].message;
-
-    messages.push(message);
-
-    if (message.tool_calls) {
-      // eslint-disable-next-line no-await-in-loop
-      const toolMessages = await Promise.all(
-        message.tool_calls.map((tc) => sumupAgentToolkit.handleToolCall(tc)),
-      );
-      messages = [...messages, ...toolMessages];
-    } else {
-      console.log(completion.choices[0].message);
-      break;
-    }
-  }
-})();
+console.log(response);
 ```
 
 ## AI SDK
 
-Example usage of the [SumUp Agent Toolkit](https://github.com/sumup/ai) with the [AI SDK](https://sdk.vercel.ai/).
-
 ```ts
-import { openai } from "@ai-sdk/openai";
 import { SumUpAgentToolkit } from "@sumup/agent-toolkit/ai";
-import { generateText } from "ai";
-
-require("dotenv").config();
+import { generateText, stepCountIs } from "ai";
 
 const sumupAgentToolkit = new SumUpAgentToolkit({
   apiKey: process.env.SUMUP_API_KEY!,
 });
 
-const model = openai("gpt-4o");
+const response = await generateText({
+  model: "openai/gpt-4o",
+  tools: sumupAgentToolkit.getTools(),
+  stopWhen: stepCountIs(5),
+  prompt: "Tell me about my last 10 transactions.",
+});
 
-(async () => {
-  const result = await generateText({
-    model: model,
-    tools: {
-      ...sumupAgentToolkit.getTools(),
-    },
-    maxSteps: 5,
-    prompt: "Tell me about my last 5 transactions and their status.",
-  });
-
-  console.log(result);
-})();
+console.log(response.text);
 ```
+
+## OpenAI Agents SDK
+
+```ts
+import { Agent, run } from "@openai/agents";
+import { SumUpAgentToolkit } from "@sumup/agent-toolkit/openai";
+
+const sumupAgentToolkit = new SumUpAgentToolkit({
+  apiKey: process.env.SUMUP_API_KEY!,
+});
+
+const agent = new Agent({
+  name: "Transactions reporter",
+  instructions: "You are a helpful payments assistant.",
+  tools: sumupAgentToolkit.getTools(),
+});
+
+const result = await run(agent, "Tell me about my last 10 transactions.");
+
+console.log(result.finalOutput);
+```
+
+## Tool approvals
+
+The AI SDK and OpenAI Agents SDK adapters require approval before running tools that can modify data. Read-only tools run without approval. You can override the default with an `approvalPolicy` callback that is evaluated for each tool call.
+
+```ts
+const sumupAgentToolkit = new SumUpAgentToolkit({
+  apiKey: process.env.SUMUP_API_KEY!,
+  approvalPolicy: (tool) => !tool.annotations?.readOnly,
+});
+```
+
+Your application is responsible for presenting and resolving approval requests using the framework's approval flow.
+
+## Observability
+
+Every adapter accepts optional lifecycle callbacks for recording tool execution rate, errors, and duration. Events include the tool name and timing information, but never tool arguments or results. Callback failures do not interrupt tool execution.
+
+```ts
+const sumupAgentToolkit = new SumUpAgentToolkit({
+  apiKey: process.env.SUMUP_API_KEY!,
+  observability: {
+    onToolEnd: ({ toolName, durationMs }) => {
+      console.info("SumUp tool completed", { toolName, durationMs });
+    },
+    onToolError: ({ toolName, durationMs, error }) => {
+      console.error("SumUp tool failed", {
+        toolName,
+        durationMs,
+        errorType: error instanceof Error ? error.name : "unknown",
+      });
+    },
+  },
+});
+```
+
+## MCP adapter
+
+Use the MCP adapter when embedding SumUp tools in your own MCP server.
+
+```ts
+import { SumUpAgentToolkit } from "@sumup/agent-toolkit/mcp";
+
+const server = new SumUpAgentToolkit({
+  apiKey: process.env.SUMUP_API_KEY!,
+  readOnly: true,
+  configuration: {},
+});
+```
+
+The MCP adapter supports the following catalog controls:
+
+- `includeTools`: expose only the named tools.
+- `excludeTools`: omit the named tools.
+- `readOnly`: expose only tools that do not modify data.
+- `includeOutputSchemas`: advertise output schemas to MCP clients. This is disabled by default to reduce the context used by `tools/list`; tool results are still validated at runtime.
+
+To connect an MCP client to SumUp without hosting your own server, use the [managed SumUp MCP server](/tools/llms/mcp-server/).
