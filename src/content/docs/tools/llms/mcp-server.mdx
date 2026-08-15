@@ -5,25 +5,27 @@ sidebar:
   order: 53
 ---
 
-[MCP](https://modelcontextprotocol.io/introduction) is an open protocol that standardizes how applications provide context to LLMs. For developers using AI-powered code editors such as Cursor or Windsurf, or general-purpose tools such as Claude Desktop, we provide the [SumUp Model Context Protocol (MCP) server](https://github.com/sumup/ai/tree/main/mcp).
+[MCP](https://modelcontextprotocol.io/introduction) is an open protocol that standardizes how applications provide context and tools to LLMs. SumUp provides a [managed MCP server](https://github.com/sumup/sumup-mcp) for AI-powered code editors such as Cursor and general-purpose clients such as Claude Desktop.
 
-The MCP server gives AI agents tools for calling the SumUp API and searching our knowledge base (documentation, support articles, and so on).
+The MCP server gives AI agents tools for calling the SumUp API. It also exposes the SumUp developer documentation index and OpenAPI specification as resources.
 
-SumUp runs a managed MCP server at [https://mcp.sumup.com/mcp](https://mcp.sumup.com/mcp). This endpoint allows your MCP client to interact with SumUp APIs to manage your account, create checkouts, or process payments using [Cloud API](/terminal-payments/cloud-api). The server supports streamable HTTP[^streamable_http] transport via `/mcp` and the SSE transport (deprecated) via `/sse`.
+SumUp runs a managed MCP server at [https://mcp.sumup.com/mcp](https://mcp.sumup.com/mcp). This endpoint allows your MCP client to interact with SumUp APIs to manage your account, create checkouts, or process payments using [Cloud API](/terminal-payments/cloud-api). The server supports Streamable HTTP[^streamable_http] via `/mcp` and the deprecated SSE transport via `/sse`.
 
 ## Hosted MCP (managed)
 
-If your MCP client supports streamable HTTP, connect directly to the hosted server instead of running a local process. Configure your MCP client to use `https://mcp.sumup.com/mcp` and send your SumUp API key as a Bearer token in the `Authorization` header (or equivalent auth configuration in your client).
+If your MCP client supports Streamable HTTP and OAuth, connect it directly to `https://mcp.sumup.com/mcp`. The client can discover the SumUp authorization server from the endpoint's protected resource metadata and ask you to authorize access.
+
+The hosted server accepts OAuth access tokens issued for the MCP resource. Do not send a SumUp API key such as `sup_sk_...` as its Bearer token.
 
 ## CLI
 
-Run the following command to start the MCP server locally.
+The [local MCP CLI](https://github.com/sumup/sumup-ai/tree/main/mcp) requires Node.js 22 or later and uses a SumUp API key. Run it with:
 
 ```sh
 SUMUP_API_KEY='sup_sk_MvxmLOl0...' npx -y @sumup/mcp
 ```
 
-The MCP server uses either the passed `--api-key` or the `SUMUP_API_KEY` environment variable.
+The local MCP server reads the API key from the `SUMUP_API_KEY` environment variable.
 
 ## [Cursor](https://www.cursor.com/)
 
