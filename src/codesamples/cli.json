@@ -3,7 +3,7 @@
   "language": "bash",
   "sdk": {
     "module": "github.com/sumup/sumup-cli",
-    "version": "v0.2.0"
+    "version": "v0.4.1"
   },
   "openAPIVersion": "1.0.0",
   "samples": [
