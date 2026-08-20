@@ -75,7 +75,7 @@ const sectionAttrs = (id: ApiTopSection) =>
     <div>
       <MarkdownContent class="info">
         <SectionHeading as="h2" id="sdks-heading">
-          SDKs and CLI
+          SDKs
         </SectionHeading>
         <p>
           The SumUp SDKs and command-line interface reduce the amount of work
@@ -154,7 +154,7 @@ uv add sumup`,
         ]}
         isLanguageSelect
       >
-        <div slot="left">Install SDK or CLI</div>
+        <div slot="left">Install</div>
       </MultiCode>
       <Card style={{ marginTop: "var(--cui-spacings-mega)" }}>
         <Body size="s">
@@ -203,6 +203,11 @@ uv add sumup`,
             label: "cURL",
             code: `curl https://api.sumup.com/v0.1/checkouts \\
   -H "Authorization: Bearer sup_sk_MvxmLOl0..."`,
+            lang: "bash",
+          },
+          {
+            label: "CLI",
+            code: "export SUMUP_API_KEY='sup_sk_MvxmLOl0...'",
             lang: "bash",
           },
           {

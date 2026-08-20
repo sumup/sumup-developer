@@ -21,7 +21,7 @@ export default () => {
   return (
     <ListItemGroup
       style={{ marginTop: "var(--cui-spacings-mega)" }}
-      label="SDKs and CLI"
+      label="SDKs"
       items={[
         {
           key: "cli",
