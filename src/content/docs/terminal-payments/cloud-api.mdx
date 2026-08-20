@@ -245,6 +245,59 @@ Important notes:
 
 Read the [Create Checkout API endpoint documentation](/api/readers/create-checkout) for details on the API request, examples, and parameter descriptions.
 
+### Receive Transaction Results
+
+Because the checkout is asynchronous, the API response only confirms that the checkout was accepted—not that the payment succeeded. To receive the final result, pass a `return_url` when creating the checkout. SumUp sends an HTTPS `POST` request to that URL once the transaction reaches a final state.
+
+```bash
+curl -X POST \
+  https://api.sumup.com/v0.1/merchants/$SUMUP_MERCHANT_CODE/readers/$READER_ID/checkout \
+  -H "Authorization: Bearer $SUMUP_API_KEY" \
+  -H 'Content-Type: application/json' \
+  -d '{
+        "total_amount": {
+          "currency": "EUR",
+          "minor_unit": 2,
+          "value": 1500
+        },
+        "return_url": "https://example.com/sumup/webhook"
+      }'
+```
+
+The `return_url` must use HTTPS and be publicly reachable.
+
+#### Webhook Payload
+
+The webhook body uses the `solo.transaction.updated` event type:
+
+```json
+{
+  "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "event_type": "solo.transaction.updated",
+  "payload": {
+    "client_transaction_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    "merchant_code": "M1234567",
+    "status": "failed",
+    "failure_reason": "Invalid merchant number"
+  },
+  "timestamp": "2023-10-05T14:48:00Z"
+}
+```
+
+The `status` field is either `successful` or `failed`. Use `client_transaction_id` to match the webhook against the checkout you started—it holds the same value returned by the Create Checkout response. The `transaction_id` field is deprecated and should not be used in new integrations.
+
+#### Failure Reason
+
+When `status` is `failed`, the payload includes an additional `failure_reason` field describing why the transaction did not go through, so you can surface a meaningful message to the cashier or customer instead of a generic error.
+
+Treat the value as free-form text: do not match on exact strings, as new reasons can be introduced at any time.
+
+<Callout type="note">
+
+`failure_reason` is only sent for failed transactions. It is omitted from the payload entirely—rather than sent as `null`—for successful transactions, and when no reason is available.
+
+</Callout>
+
 ### Terminate Transaction
 
 Stops the current transaction on the target device.
@@ -295,7 +348,7 @@ Important notes:
 - The target device must be online, otherwise termination won't be accepted.
 - This action is only possible if the device is waiting for cardholder action: waiting for card, waiting for PIN, etc.
 There is no confirmation of the termination.
-- If a transaction is successfully terminated and `return_url` has been provided on Checkout, the transaction status is sent as failed to the provided URL.
+- If a transaction is successfully terminated and `return_url` has been provided on Checkout, the transaction status is sent as `failed` to the provided URL. See [Receive Transaction Results](#receive-transaction-results).
 
 Read the [Terminate Checkout API endpoint documentation](/api/readers/terminate-checkout) for details on the API request, examples, and parameter descriptions.
 
