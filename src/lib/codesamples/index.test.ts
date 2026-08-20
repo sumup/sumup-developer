@@ -107,7 +107,9 @@ describe("code samples", () => {
     expect(() => go(operation)).toThrow(
       "Missing go code sample for UnknownOperation",
     );
-    expect(cli(operation)).toBeUndefined();
+    expect(() => cli(operation)).toThrow(
+      "Missing bash code sample for UnknownOperation",
+    );
   });
 
   it("php sample uses the SumUp PHP SDK", () => {
