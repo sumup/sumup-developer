@@ -3,7 +3,7 @@
   "language": "python",
   "sdk": {
     "module": "sumup",
-    "version": "0.3.2"
+    "version": "0.3.3"
   },
   "openAPIVersion": "1.0.0",
   "samples": [
@@ -14,7 +14,7 @@
       "description": "Creates an Apple Pay merchant session for the specified checkout.\n\nUse this endpoint after the customer selects Apple Pay and before calling\n`ApplePaySession.completeMerchantValidation(...)` in the browser.\nSumUp validates the merchant session request and returns the Apple Pay\nsession object that your frontend should pass to Apple's JavaScript API.",
       "httpMethod": "PUT",
       "path": "/v0.2/checkouts/{checkout_id}/apple-pay-session",
-      "sample": "import os\n\nimport sumup\n\n\ndef main() -\u003e None:\n    client = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\n\n    result = client.checkouts.create_apple_pay_session(\n        \"string\",\n        context=\"example.com\",\n        target=\"https://apple-pay-gateway-cert.apple.com/paymentservices/startSession\",\n    )\n    print(result)\n\n\nif __name__ == \"__main__\":\n    main()\n"
+      "sample": "import os\n\nimport sumup\n\nclient = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\nresult = client.checkouts.create_apple_pay_session(\n    \"4e425463-3e1b-431d-83fa-1e51c2925e99\",\n    context=\"example.com\",\n    target=\"https://apple-pay-gateway-cert.apple.com/paymentservices/startSession\",\n)\nprint(result)\n"
     },
     {
       "id": "CreateCheckout.Checkout",
@@ -24,7 +24,7 @@
       "description": "Standard request body for creating a checkout",
       "httpMethod": "POST",
       "path": "/v0.1/checkouts",
-      "sample": "import os\n\nimport sumup\n\n\ndef main() -\u003e None:\n    client = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\n\n    result = client.checkouts.create(\n        checkout_reference=\"f00a8f74-b05d-4605-bd73-2a901bae5802\",\n        amount=10.1,\n        currency=\"EUR\",\n        merchant_code=\"MH4H92C7\",\n        description=\"Purchase\",\n        valid_until=\"2020-02-29T10:56:56+00:00\",\n        redirect_url=\"https://sumup.com\",\n    )\n    print(result)\n\n\nif __name__ == \"__main__\":\n    main()\n"
+      "sample": "import os\n\nimport sumup\n\nclient = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\nresult = client.checkouts.create(\n    checkout_reference=\"f00a8f74-b05d-4605-bd73-2a901bae5802\",\n    amount=10.1,\n    currency=\"EUR\",\n    merchant_code=\"MH4H92C7\",\n    description=\"Purchase\",\n    valid_until=\"2020-02-29T10:56:56+00:00\",\n    redirect_url=\"https://sumup.com\",\n)\nprint(result)\n"
     },
     {
       "id": "CreateCheckout.Checkout3DS",
@@ -34,7 +34,7 @@
       "description": "Create a 3DS checkout",
       "httpMethod": "POST",
       "path": "/v0.1/checkouts",
-      "sample": "import os\n\nimport sumup\n\n\ndef main() -\u003e None:\n    client = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\n\n    result = client.checkouts.create(\n        checkout_reference=\"f00a8f74-b05d-4605-bd73-2a901bae5802\",\n        amount=10.1,\n        currency=\"EUR\",\n        merchant_code=\"MH4H92C7\",\n        description=\"Purchase\",\n        return_url=\"http://example.com/\",\n        customer_id=\"831ff8d4cd5958ab5670\",\n        redirect_url=\"https://mysite.com/completed_purchase\",\n    )\n    print(result)\n\n\nif __name__ == \"__main__\":\n    main()\n"
+      "sample": "import os\n\nimport sumup\n\nclient = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\nresult = client.checkouts.create(\n    checkout_reference=\"f00a8f74-b05d-4605-bd73-2a901bae5802\",\n    amount=10.1,\n    currency=\"EUR\",\n    merchant_code=\"MH4H92C7\",\n    description=\"Purchase\",\n    return_url=\"http://example.com/\",\n    customer_id=\"831ff8d4cd5958ab5670\",\n    redirect_url=\"https://mysite.com/completed_purchase\",\n)\nprint(result)\n"
     },
     {
       "id": "CreateCheckout.CheckoutAPM",
@@ -44,7 +44,7 @@
       "description": "Create an Alternative Payment Method checkout",
       "httpMethod": "POST",
       "path": "/v0.1/checkouts",
-      "sample": "import os\n\nimport sumup\n\n\ndef main() -\u003e None:\n    client = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\n\n    result = client.checkouts.create(\n        checkout_reference=\"f00a8f74-b05d-4605-bd73-2a901bae5802\",\n        amount=10.1,\n        currency=\"EUR\",\n        merchant_code=\"MH4H92C7\",\n        redirect_url=\"https://mysite.com/completed_purchase\",\n    )\n    print(result)\n\n\nif __name__ == \"__main__\":\n    main()\n"
+      "sample": "import os\n\nimport sumup\n\nclient = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\nresult = client.checkouts.create(\n    checkout_reference=\"f00a8f74-b05d-4605-bd73-2a901bae5802\",\n    amount=10.1,\n    currency=\"EUR\",\n    merchant_code=\"MH4H92C7\",\n    redirect_url=\"https://mysite.com/completed_purchase\",\n)\nprint(result)\n"
     },
     {
       "id": "CreateCheckout.HostedCheckout",
@@ -54,7 +54,7 @@
       "description": "Create a checkout with a SumUp-hosted payment page",
       "httpMethod": "POST",
       "path": "/v0.1/checkouts",
-      "sample": "import os\n\nimport sumup\n\n\ndef main() -\u003e None:\n    client = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\n\n    result = client.checkouts.create(\n        checkout_reference=\"b50pr914-6k0e-3091-a592-890010285b3d\",\n        amount=12,\n        currency=\"EUR\",\n        merchant_code=\"MCXXXXXX\",\n        description=\"A sample checkout\",\n        hosted_checkout={\n            \"enabled\": True,\n        },\n    )\n    print(result)\n\n\nif __name__ == \"__main__\":\n    main()\n"
+      "sample": "import os\n\nimport sumup\n\nclient = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\nresult = client.checkouts.create(\n    checkout_reference=\"b50pr914-6k0e-3091-a592-890010285b3d\",\n    amount=12,\n    currency=\"EUR\",\n    merchant_code=\"MCXXXXXX\",\n    description=\"A sample checkout\",\n    hosted_checkout={\n        \"enabled\": True,\n    },\n)\nprint(result)\n"
     },
     {
       "id": "CreateCustomer",
@@ -63,7 +63,7 @@
       "description": "Creates a new saved customer resource which you can later manipulate and save payment instruments to.",
       "httpMethod": "POST",
       "path": "/v0.1/customers",
-      "sample": "import os\n\nimport sumup\n\n\ndef main() -\u003e None:\n    client = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\n\n    result = client.customers.create(\n        customer_id=\"831ff8d4cd5958ab5670\",\n    )\n    print(result)\n\n\nif __name__ == \"__main__\":\n    main()\n"
+      "sample": "import os\n\nimport sumup\n\nclient = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\nresult = client.customers.create(\n    customer_id=\"831ff8d4cd5958ab5670\",\n)\nprint(result)\n"
     },
     {
       "id": "CreateGoReaderCheckout",
@@ -72,7 +72,7 @@
       "description": "Initiates a payment on the SumUp Go terminal identified by the reader ID.\n\nUse `client_transaction_id` as an idempotency key: retrying the request with the same value returns the result of the original payment instead of creating a duplicate.",
       "httpMethod": "POST",
       "path": "/v0/merchants/{merchant_code}/readers/{reader_id}/go-checkout",
-      "sample": "import os\n\nimport sumup\n\n\ndef main() -\u003e None:\n    client = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\n\n    result = client.readers.create_go_checkout(\n        \"MK10CL2A\",\n        \"rdr_3MSAFM23CK82VSTT4BN6RWSQ65\",\n        client_transaction_id=\"19e12390-72cf-4f9f-80b5-b0c8a67fa43f\",\n        tip_amount=100,\n        total_amount={\n            \"currency\": \"MXN\",\n            \"value\": 1000,\n        },\n    )\n    print(result)\n\n\nif __name__ == \"__main__\":\n    main()\n"
+      "sample": "import os\n\nimport sumup\n\nclient = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\nresult = client.readers.create_go_checkout(\n    \"MK10CL2A\",\n    \"rdr_3MSAFM23CK82VSTT4BN6RWSQ65\",\n    client_transaction_id=\"19e12390-72cf-4f9f-80b5-b0c8a67fa43f\",\n    tip_amount=100,\n    total_amount={\n        \"currency\": \"MXN\",\n        \"value\": 1000,\n    },\n)\nprint(result)\n"
     },
     {
       "id": "CreateMerchantMember",
@@ -81,7 +81,7 @@
       "description": "Create a merchant member.",
       "httpMethod": "POST",
       "path": "/v0.1/merchants/{merchant_code}/members",
-      "sample": "import os\n\nimport sumup\n\n\ndef main() -\u003e None:\n    client = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\n\n    result = client.members.create(\n        \"MK10CL2A\",\n        email=\"karl.berg@example.com\",\n        roles=[\n            \"role_employee\",\n        ],\n    )\n    print(result)\n\n\nif __name__ == \"__main__\":\n    main()\n"
+      "sample": "import os\n\nimport sumup\n\nclient = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\nresult = client.members.create(\n    \"MK10CL2A\",\n    email=\"karl.berg@example.com\",\n    roles=[\n        \"role_employee\",\n    ],\n)\nprint(result)\n"
     },
     {
       "id": "CreateMerchantRole",
@@ -90,7 +90,7 @@
       "description": "Create a custom role for the merchant. Roles are defined by the set of permissions that they grant to the members that they are assigned to.",
       "httpMethod": "POST",
       "path": "/v0.1/merchants/{merchant_code}/roles",
-      "sample": "import os\n\nimport sumup\n\n\ndef main() -\u003e None:\n    client = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\n\n    result = client.roles.create(\n        \"MK10CL2A\",\n        name=\"Senior Shop Manager II\",\n        permissions=[\n            \"catalog_access\",\n            \"taxes_access\",\n            \"members_access\",\n        ],\n        metadata={},\n        description=\"Manges the shop and the employees.\",\n    )\n    print(result)\n\n\nif __name__ == \"__main__\":\n    main()\n"
+      "sample": "import os\n\nimport sumup\n\nclient = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\nresult = client.roles.create(\n    \"MK10CL2A\",\n    name=\"Senior Shop Manager II\",\n    permissions=[\n        \"catalog_access\",\n        \"taxes_access\",\n        \"members_access\",\n    ],\n    metadata={},\n    description=\"Manges the shop and the employees.\",\n)\nprint(result)\n"
     },
     {
       "id": "CreateReader",
@@ -99,7 +99,7 @@
       "description": "Create a new Reader for the merchant account.",
       "httpMethod": "POST",
       "path": "/v0.1/merchants/{merchant_code}/readers",
-      "sample": "import os\n\nimport sumup\n\n\ndef main() -\u003e None:\n    client = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\n\n    result = client.readers.create(\n        \"MK10CL2A\",\n        pairing_code=\"4WLFDSBF\",\n        name=\"Frontdesk\",\n        metadata={},\n    )\n    print(result)\n\n\nif __name__ == \"__main__\":\n    main()\n"
+      "sample": "import os\n\nimport sumup\n\nclient = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\nresult = client.readers.create(\n    \"MK10CL2A\",\n    pairing_code=\"4WLFDSBF\",\n    name=\"Frontdesk\",\n    metadata={},\n)\nprint(result)\n"
     },
     {
       "id": "CreateReaderCheckout",
@@ -108,7 +108,7 @@
       "description": "Creates a Checkout for a Reader.\n\nThis process is asynchronous and the actual transaction may take some time to be started on the device.\n\n\nThere are some caveats when using this endpoint:\n* The target device must be online, otherwise checkout won't be accepted\n* After the checkout is accepted, the system has 60 seconds to start the payment on the target device. During this time, any other checkout for the same device will be rejected.\n\n\n**Note**: If the target device is a Solo, it must be in version 3.3.24.3 or higher.",
       "httpMethod": "POST",
       "path": "/v0.1/merchants/{merchant_code}/readers/{reader_id}/checkout",
-      "sample": "import os\n\nimport sumup\n\n\ndef main() -\u003e None:\n    client = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\n\n    result = client.readers.create_checkout(\n        \"MC0X0ABC\",\n        \"rdr_3MSAFM23CK82VSTT4BN6RWSQ65\",\n        aade={\n            \"provider_id\": \"123\",\n            \"signature\": \"QjcxRDdBNTU1MDcyRTNFRTREMkZEM0Y0NTdBMjkxMTU4MzBFNkNCQTs7MjAyNTExMTIyMTQ3MTM7Nzk2OzEwNDs5MDA7OTAwOzU0ODg5MDM5\",\n            \"signature_data\": \"B71D7A555072E3EE4D2FD3F457A29115830E6CBA;;20251112214713;796;104;900;900;54889039\",\n        },\n        affiliate={\n            \"app_id\": \"com.example.app\",\n            \"foreign_transaction_id\": \"123456\",\n            \"key\": \"ef7b684a-d6f4-4e93-9b1b-6acdd6564a8e\",\n            \"tags\": {},\n        },\n        card_type=\"debit\",\n        description=\"This is a description...\",\n        installments=1,\n        return_url=\"https://webhook.site/e21ddbb0-42c4-4358-a981-f5a95cd86fb5\",\n        tip_rates=[\n            0.05,\n            0.1,\n            0.15,\n        ],\n        tip_timeout=60,\n        total_amount={\n            \"currency\": \"EUR\",\n            \"minor_unit\": 2,\n            \"value\": 5033,\n        },\n    )\n    print(result)\n\n\nif __name__ == \"__main__\":\n    main()\n"
+      "sample": "import os\n\nimport sumup\n\nclient = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\nresult = client.readers.create_checkout(\n    \"MC0X0ABC\",\n    \"rdr_3MSAFM23CK82VSTT4BN6RWSQ65\",\n    aade={\n        \"provider_id\": \"123\",\n        \"signature\": \"QjcxRDdBNTU1MDcyRTNFRTREMkZEM0Y0NTdBMjkxMTU4MzBFNkNCQTs7MjAyNTExMTIyMTQ3MTM7Nzk2OzEwNDs5MDA7OTAwOzU0ODg5MDM5\",\n        \"signature_data\": \"B71D7A555072E3EE4D2FD3F457A29115830E6CBA;;20251112214713;796;104;900;900;54889039\",\n    },\n    affiliate={\n        \"app_id\": \"com.example.app\",\n        \"foreign_transaction_id\": \"123456\",\n        \"key\": \"ef7b684a-d6f4-4e93-9b1b-6acdd6564a8e\",\n        \"tags\": {},\n    },\n    card_type=\"debit\",\n    description=\"This is a description...\",\n    installments=1,\n    return_url=\"https://webhook.site/e21ddbb0-42c4-4358-a981-f5a95cd86fb5\",\n    tip_rates=[\n        0.05,\n        0.1,\n        0.15,\n    ],\n    tip_timeout=60,\n    total_amount={\n        \"currency\": \"EUR\",\n        \"minor_unit\": 2,\n        \"value\": 5033,\n    },\n)\nprint(result)\n"
     },
     {
       "id": "CreateReaderTerminate",
@@ -117,7 +117,7 @@
       "description": "Terminate a Reader Checkout stops the current transaction on the target device.\n\nThis process is asynchronous and the actual termination may take some time to be performed on the device.\n\n\nThere are some caveats when using this endpoint:\n* The target device must be online, otherwise terminate won't be accepted\n* The action will succeed only if the device is waiting for cardholder action: e.g: waiting for card, waiting for PIN, etc.\n* There is no confirmation of the termination.\n\nIf a transaction is successfully terminated and `return_url` was provided on Checkout, the transaction status will be sent as `failed` to the provided URL.\n\n\n**Note**: If the target device is a Solo, it must be in version 3.3.28.0 or higher.",
       "httpMethod": "POST",
       "path": "/v0.1/merchants/{merchant_code}/readers/{reader_id}/terminate",
-      "sample": "import os\n\nimport sumup\n\n\ndef main() -\u003e None:\n    client = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\n\n    client.readers.terminate_checkout(\n        \"MC0X0ABC\",\n        \"rdr_3MSAFM23CK82VSTT4BN6RWSQ65\",\n    )\n\n\nif __name__ == \"__main__\":\n    main()\n"
+      "sample": "import os\n\nimport sumup\n\nclient = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\nclient.readers.terminate_checkout(\n    \"MC0X0ABC\",\n    \"rdr_3MSAFM23CK82VSTT4BN6RWSQ65\",\n)\n"
     },
     {
       "id": "DeactivateCheckout",
@@ -126,7 +126,7 @@
       "description": "Deactivates an identified checkout resource. If the checkout has already been processed it can not be deactivated.",
       "httpMethod": "DELETE",
       "path": "/v0.1/checkouts/{checkout_id}",
-      "sample": "import os\n\nimport sumup\n\n\ndef main() -\u003e None:\n    client = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\n\n    result = client.checkouts.deactivate(\n        \"string\",\n    )\n    print(result)\n\n\nif __name__ == \"__main__\":\n    main()\n"
+      "sample": "import os\n\nimport sumup\n\nclient = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\nresult = client.checkouts.deactivate(\n    \"4e425463-3e1b-431d-83fa-1e51c2925e99\",\n)\nprint(result)\n"
     },
     {
       "id": "DeactivatePaymentInstrument",
@@ -135,7 +135,7 @@
       "description": "Deactivates an identified card payment instrument resource for a customer.",
       "httpMethod": "DELETE",
       "path": "/v0.1/customers/{customer_id}/payment-instruments/{token}",
-      "sample": "import os\n\nimport sumup\n\n\ndef main() -\u003e None:\n    client = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\n\n    client.customers.deactivate_payment_instrument(\n        \"string\",\n        \"string\",\n    )\n\n\nif __name__ == \"__main__\":\n    main()\n"
+      "sample": "import os\n\nimport sumup\n\nclient = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\nclient.customers.deactivate_payment_instrument(\n    \"831ff8d4cd5958ab5670\",\n    \"bcfc8e5f-3b47-4cb9-854b-3b7a4cce7be3\",\n)\n"
     },
     {
       "id": "DeleteMerchantMember",
@@ -144,7 +144,7 @@
       "description": "Deletes a merchant member.",
       "httpMethod": "DELETE",
       "path": "/v0.1/merchants/{merchant_code}/members/{member_id}",
-      "sample": "import os\n\nimport sumup\n\n\ndef main() -\u003e None:\n    client = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\n\n    client.members.delete(\n        \"MK10CL2A\",\n        \"mem_WZsm7QTPhVrompscmPhoGTXXcrd58fr9MOhP\",\n    )\n\n\nif __name__ == \"__main__\":\n    main()\n"
+      "sample": "import os\n\nimport sumup\n\nclient = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\nclient.members.delete(\n    \"MK10CL2A\",\n    \"mem_WZsm7QTPhVrompscmPhoGTXXcrd58fr9MOhP\",\n)\n"
     },
     {
       "id": "DeleteMerchantRole",
@@ -153,7 +153,7 @@
       "description": "Delete a custom role.",
       "httpMethod": "DELETE",
       "path": "/v0.1/merchants/{merchant_code}/roles/{role_id}",
-      "sample": "import os\n\nimport sumup\n\n\ndef main() -\u003e None:\n    client = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\n\n    client.roles.delete(\n        \"MK10CL2A\",\n        \"role_WZsm7QTPhVrompscmPhoGTXXcrd58fr9MOhP\",\n    )\n\n\nif __name__ == \"__main__\":\n    main()\n"
+      "sample": "import os\n\nimport sumup\n\nclient = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\nclient.roles.delete(\n    \"MK10CL2A\",\n    \"role_WZsm7QTPhVrompscmPhoGTXXcrd58fr9MOhP\",\n)\n"
     },
     {
       "id": "DeleteReader",
@@ -162,7 +162,7 @@
       "description": "Delete a reader.",
       "httpMethod": "DELETE",
       "path": "/v0.1/merchants/{merchant_code}/readers/{reader_id}",
-      "sample": "import os\n\nimport sumup\n\n\ndef main() -\u003e None:\n    client = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\n\n    client.readers.delete(\n        \"MK10CL2A\",\n        \"rdr_3MSAFM23CK82VSTT4BN6RWSQ65\",\n    )\n\n\nif __name__ == \"__main__\":\n    main()\n"
+      "sample": "import os\n\nimport sumup\n\nclient = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\nclient.readers.delete(\n    \"MK10CL2A\",\n    \"rdr_3MSAFM23CK82VSTT4BN6RWSQ65\",\n)\n"
     },
     {
       "id": "GetCheckout",
@@ -171,7 +171,7 @@
       "description": "Retrieves an identified checkout resource. Use this request after processing a checkout to confirm its status and inform the end user respectively.",
       "httpMethod": "GET",
       "path": "/v0.1/checkouts/{checkout_id}",
-      "sample": "import os\n\nimport sumup\n\n\ndef main() -\u003e None:\n    client = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\n\n    result = client.checkouts.get(\n        \"string\",\n    )\n    print(result)\n\n\nif __name__ == \"__main__\":\n    main()\n"
+      "sample": "import os\n\nimport sumup\n\nclient = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\nresult = client.checkouts.get(\n    \"4e425463-3e1b-431d-83fa-1e51c2925e99\",\n)\nprint(result)\n"
     },
     {
       "id": "GetCustomer",
@@ -180,7 +180,7 @@
       "description": "Retrieves an identified saved customer resource through the unique `customer_id` parameter, generated upon customer creation.",
       "httpMethod": "GET",
       "path": "/v0.1/customers/{customer_id}",
-      "sample": "import os\n\nimport sumup\n\n\ndef main() -\u003e None:\n    client = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\n\n    result = client.customers.get(\n        \"string\",\n    )\n    print(result)\n\n\nif __name__ == \"__main__\":\n    main()\n"
+      "sample": "import os\n\nimport sumup\n\nclient = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\nresult = client.customers.get(\n    \"831ff8d4cd5958ab5670\",\n)\nprint(result)\n"
     },
     {
       "id": "GetMerchant",
@@ -189,7 +189,7 @@
       "description": "Returns a Merchant for a valid Merchant code.",
       "httpMethod": "GET",
       "path": "/v1/merchants/{merchant_code}",
-      "sample": "import os\n\nimport sumup\n\n\ndef main() -\u003e None:\n    client = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\n\n    result = client.merchants.get(\n        \"MK10CL2A\",\n        version=\"latest\",\n    )\n    print(result)\n\n\nif __name__ == \"__main__\":\n    main()\n"
+      "sample": "import os\n\nimport sumup\n\nclient = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\nresult = client.merchants.get(\n    \"MK10CL2A\",\n    version=\"latest\",\n)\nprint(result)\n"
     },
     {
       "id": "GetMerchantMember",
@@ -198,7 +198,7 @@
       "description": "Retrieve a merchant member.",
       "httpMethod": "GET",
       "path": "/v0.1/merchants/{merchant_code}/members/{member_id}",
-      "sample": "import os\n\nimport sumup\n\n\ndef main() -\u003e None:\n    client = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\n\n    result = client.members.get(\n        \"MK10CL2A\",\n        \"mem_WZsm7QTPhVrompscmPhoGTXXcrd58fr9MOhP\",\n    )\n    print(result)\n\n\nif __name__ == \"__main__\":\n    main()\n"
+      "sample": "import os\n\nimport sumup\n\nclient = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\nresult = client.members.get(\n    \"MK10CL2A\",\n    \"mem_WZsm7QTPhVrompscmPhoGTXXcrd58fr9MOhP\",\n)\nprint(result)\n"
     },
     {
       "id": "GetMerchantRole",
@@ -207,7 +207,7 @@
       "description": "Retrieve a custom role by ID.",
       "httpMethod": "GET",
       "path": "/v0.1/merchants/{merchant_code}/roles/{role_id}",
-      "sample": "import os\n\nimport sumup\n\n\ndef main() -\u003e None:\n    client = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\n\n    result = client.roles.get(\n        \"MK10CL2A\",\n        \"role_WZsm7QTPhVrompscmPhoGTXXcrd58fr9MOhP\",\n    )\n    print(result)\n\n\nif __name__ == \"__main__\":\n    main()\n"
+      "sample": "import os\n\nimport sumup\n\nclient = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\nresult = client.roles.get(\n    \"MK10CL2A\",\n    \"role_WZsm7QTPhVrompscmPhoGTXXcrd58fr9MOhP\",\n)\nprint(result)\n"
     },
     {
       "id": "GetPaymentMethods",
@@ -216,7 +216,7 @@
       "description": "Get payment methods available for the given merchant to use with a checkout.",
       "httpMethod": "GET",
       "path": "/v0.1/merchants/{merchant_code}/payment-methods",
-      "sample": "import os\n\nimport sumup\n\n\ndef main() -\u003e None:\n    client = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\n\n    result = client.checkouts.list_available_payment_methods(\n        \"MH4H92C7\",\n        amount=9.99,\n        currency=\"EUR\",\n    )\n    print(result)\n\n\nif __name__ == \"__main__\":\n    main()\n"
+      "sample": "import os\n\nimport sumup\n\nclient = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\nresult = client.checkouts.list_available_payment_methods(\n    \"MH4H92C7\",\n    amount=9.99,\n    currency=\"EUR\",\n)\nprint(result)\n"
     },
     {
       "id": "GetPerson",
@@ -225,7 +225,7 @@
       "description": "Returns a single Person related to a Merchant.",
       "httpMethod": "GET",
       "path": "/v1/merchants/{merchant_code}/persons/{person_id}",
-      "sample": "import os\n\nimport sumup\n\n\ndef main() -\u003e None:\n    client = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\n\n    result = client.merchants.get_person(\n        \"MK10CL2A\",\n        \"pers_5AKFHN2KSK8D3TS79DJE3P3A2Z\",\n        version=\"latest\",\n    )\n    print(result)\n\n\nif __name__ == \"__main__\":\n    main()\n"
+      "sample": "import os\n\nimport sumup\n\nclient = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\nresult = client.merchants.get_person(\n    \"MK10CL2A\",\n    \"pers_5AKFHN2KSK8D3TS79DJE3P3A2Z\",\n    version=\"latest\",\n)\nprint(result)\n"
     },
     {
       "id": "GetReader",
@@ -234,7 +234,7 @@
       "description": "Retrieve a Reader.",
       "httpMethod": "GET",
       "path": "/v0.1/merchants/{merchant_code}/readers/{reader_id}",
-      "sample": "import os\n\nimport sumup\n\n\ndef main() -\u003e None:\n    client = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\n\n    result = client.readers.get(\n        \"MK10CL2A\",\n        \"rdr_3MSAFM23CK82VSTT4BN6RWSQ65\",\n    )\n    print(result)\n\n\nif __name__ == \"__main__\":\n    main()\n"
+      "sample": "import os\n\nimport sumup\n\nclient = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\nresult = client.readers.get(\n    \"MK10CL2A\",\n    \"rdr_3MSAFM23CK82VSTT4BN6RWSQ65\",\n)\nprint(result)\n"
     },
     {
       "id": "GetReaderCheckout",
@@ -243,7 +243,7 @@
       "description": "Get a Checkout for a Reader.",
       "httpMethod": "GET",
       "path": "/v0.1/merchants/{merchant_code}/readers/{reader_id}/checkout/{checkout_id}",
-      "sample": "import os\n\nimport sumup\n\n\ndef main() -\u003e None:\n    client = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\n\n    result = client.readers.get_checkout(\n        \"MC0X0ABC\",\n        \"rdr_3MSAFM23CK82VSTT4BN6RWSQ65\",\n        \"74ecff66-1655-43ed-8ce3-193f49fa602f\",\n    )\n    print(result)\n\n\nif __name__ == \"__main__\":\n    main()\n"
+      "sample": "import os\n\nimport sumup\n\nclient = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\nresult = client.readers.get_checkout(\n    \"MC0X0ABC\",\n    \"rdr_3MSAFM23CK82VSTT4BN6RWSQ65\",\n    \"74ecff66-1655-43ed-8ce3-193f49fa602f\",\n)\nprint(result)\n"
     },
     {
       "id": "GetReaderStatus",
@@ -252,7 +252,7 @@
       "description": "Provides the last known status for a Reader.\n\nThis endpoint allows you to retrieve updates from the connected card reader, including the current screen being displayed during the payment process and the device status (battery level, connectivity, and update state).\n\nSupported States\n\n* `IDLE` – Reader ready for next transaction\n* `SELECTING_TIP` – Waiting for tip input\n* `WAITING_FOR_CARD` – Awaiting card insert/tap\n* `WAITING_FOR_PIN` – Waiting for PIN entry\n* `WAITING_FOR_SIGNATURE` – Waiting for customer signature\n* `UPDATING_FIRMWARE` – Firmware update in progress\n\nDevice Status\n\n* `ONLINE` – Device connected and operational\n* `OFFLINE` – Device disconnected (last state persisted)\n\n**Note**: If the target device is a Solo, it must be in version 3.3.39.0 or higher.",
       "httpMethod": "GET",
       "path": "/v0.1/merchants/{merchant_code}/readers/{reader_id}/status",
-      "sample": "import os\n\nimport sumup\n\n\ndef main() -\u003e None:\n    client = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\n\n    result = client.readers.get_status(\n        \"MC0X0ABC\",\n        \"rdr_3MSAFM23CK82VSTT4BN6RWSQ65\",\n    )\n    print(result)\n\n\nif __name__ == \"__main__\":\n    main()\n"
+      "sample": "import os\n\nimport sumup\n\nclient = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\nresult = client.readers.get_status(\n    \"MC0X0ABC\",\n    \"rdr_3MSAFM23CK82VSTT4BN6RWSQ65\",\n)\nprint(result)\n"
     },
     {
       "id": "GetReceipt",
@@ -261,7 +261,7 @@
       "description": "Retrieves receipt specific data for a transaction.",
       "httpMethod": "GET",
       "path": "/v1.1/receipts/{transaction_id}",
-      "sample": "import os\n\nimport sumup\n\n\ndef main() -\u003e None:\n    client = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\n\n    result = client.receipts.get(\n        \"string\",\n        mid=\"string\",\n    )\n    print(result)\n\n\nif __name__ == \"__main__\":\n    main()\n"
+      "sample": "import os\n\nimport sumup\n\nclient = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\nresult = client.receipts.get(\n    \"410fc44a-5956-44e1-b5cc-19c6f8d727a4\",\n    mid=\"MH4H92C7\",\n    tx_event_id=9567461191,\n)\nprint(result)\n"
     },
     {
       "id": "GetTransactionV2.1",
@@ -270,7 +270,7 @@
       "description": "Retrieves the full details of an identified transaction. The transaction resource is identified by a query parameter and *one* of following parameters is required:\n- `id`\n- `transaction_code`\n- `foreign_transaction_id`\n- `client_transaction_id`",
       "httpMethod": "GET",
       "path": "/v2.1/merchants/{merchant_code}/transactions",
-      "sample": "import os\n\nimport sumup\n\n\ndef main() -\u003e None:\n    client = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\n\n    result = client.transactions.get(\n        \"MH4H92C7\",\n    )\n    print(result)\n\n\nif __name__ == \"__main__\":\n    main()\n"
+      "sample": "import os\n\nimport sumup\n\nclient = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\nresult = client.transactions.get(\n    \"MH4H92C7\",\n    id=\"410fc44a-5956-44e1-b5cc-19c6f8d727a4\",\n    transaction_code=\"TEENSK4W2K\",\n    foreign_transaction_id=\"J13253253x1\",\n    client_transaction_id=\"urn:sumup:pos:sale:MNKKNGST:1D4E3B2D-111D-48D7-9AF0-832DAEF63DD7;2\",\n)\nprint(result)\n"
     },
     {
       "id": "ListCheckouts",
@@ -279,7 +279,7 @@
       "description": "Lists created checkout resources according to the applied `checkout_reference`.",
       "httpMethod": "GET",
       "path": "/v0.1/checkouts",
-      "sample": "import os\n\nimport sumup\n\n\ndef main() -\u003e None:\n    client = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\n\n    result = client.checkouts.list()\n    print(result)\n\n\nif __name__ == \"__main__\":\n    main()\n"
+      "sample": "import os\n\nimport sumup\n\nclient = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\nresult = client.checkouts.list(\n    checkout_reference=\"f00a8f74-b05d-4605-bd73-2a901bae5802\",\n)\nprint(result)\n"
     },
     {
       "id": "ListMemberships",
@@ -288,7 +288,7 @@
       "description": "List memberships of the current user.",
       "httpMethod": "GET",
       "path": "/v0.1/memberships",
-      "sample": "import os\n\nimport sumup\n\n\ndef main() -\u003e None:\n    client = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\n\n    result = client.memberships.list(\n        offset=0,\n        limit=10,\n        kind=\"merchant\",\n        status=\"accepted\",\n        resource_type=\"merchant\",\n        roles=[\n            \"role_employee\",\n            \"role_accountant\",\n        ],\n    )\n    print(result)\n\n\nif __name__ == \"__main__\":\n    main()\n"
+      "sample": "import os\n\nimport sumup\n\nclient = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\nresult = client.memberships.list(\n    offset=0,\n    limit=10,\n    kind=\"merchant\",\n    status=\"accepted\",\n    resource_type=\"merchant\",\n    roles=[\n        \"role_employee\",\n        \"role_accountant\",\n    ],\n)\nprint(result)\n"
     },
     {
       "id": "ListMerchantMembers",
@@ -297,7 +297,7 @@
       "description": "Lists merchant members.",
       "httpMethod": "GET",
       "path": "/v0.1/merchants/{merchant_code}/members",
-      "sample": "import os\n\nimport sumup\n\n\ndef main() -\u003e None:\n    client = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\n\n    result = client.members.list(\n        \"MK10CL2A\",\n        offset=0,\n        limit=10,\n        scroll=True,\n        email=\"user\",\n        user_id=\"245b2ead-85bf-45ff-856f-311a88a5d454\",\n        status=\"accepted\",\n        roles=[\n            \"role_employee\",\n            \"role_accountant\",\n        ],\n    )\n    print(result)\n\n\nif __name__ == \"__main__\":\n    main()\n"
+      "sample": "import os\n\nimport sumup\n\nclient = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\nresult = client.members.list(\n    \"MK10CL2A\",\n    offset=0,\n    limit=10,\n    scroll=True,\n    email=\"user\",\n    user_id=\"245b2ead-85bf-45ff-856f-311a88a5d454\",\n    status=\"accepted\",\n    roles=[\n        \"role_employee\",\n        \"role_accountant\",\n    ],\n)\nprint(result)\n"
     },
     {
       "id": "ListMerchantRoles",
@@ -306,7 +306,7 @@
       "description": "List merchant's custom roles.",
       "httpMethod": "GET",
       "path": "/v0.1/merchants/{merchant_code}/roles",
-      "sample": "import os\n\nimport sumup\n\n\ndef main() -\u003e None:\n    client = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\n\n    result = client.roles.list(\n        \"MK10CL2A\",\n    )\n    print(result)\n\n\nif __name__ == \"__main__\":\n    main()\n"
+      "sample": "import os\n\nimport sumup\n\nclient = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\nresult = client.roles.list(\n    \"MK10CL2A\",\n)\nprint(result)\n"
     },
     {
       "id": "ListPaymentInstruments",
@@ -315,7 +315,7 @@
       "description": "Lists all payment instrument resources that are saved for an identified customer.",
       "httpMethod": "GET",
       "path": "/v0.1/customers/{customer_id}/payment-instruments",
-      "sample": "import os\n\nimport sumup\n\n\ndef main() -\u003e None:\n    client = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\n\n    result = client.customers.list_payment_instruments(\n        \"string\",\n    )\n    print(result)\n\n\nif __name__ == \"__main__\":\n    main()\n"
+      "sample": "import os\n\nimport sumup\n\nclient = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\nresult = client.customers.list_payment_instruments(\n    \"831ff8d4cd5958ab5670\",\n)\nprint(result)\n"
     },
     {
       "id": "ListPayoutsV1",
@@ -324,7 +324,7 @@
       "description": "Lists payout and payout-deduction records for the specified merchant account within the requested date range.\n\nThe response can include:\n- regular payouts (`type = PAYOUT`)\n- deduction records for refunds, chargebacks, direct debit returns, or balance adjustments\n\nResults are sorted by payout date in the requested `order`.",
       "httpMethod": "GET",
       "path": "/v1.0/merchants/{merchant_code}/payouts",
-      "sample": "import os\n\nimport sumup\n\n\ndef main() -\u003e None:\n    client = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\n\n    result = client.payouts.list(\n        \"MH4H92C7\",\n        start_date=\"2024-02-01\",\n        end_date=\"2024-02-29\",\n        format=\"json\",\n        limit=10,\n        order=\"desc\",\n    )\n    print(result)\n\n\nif __name__ == \"__main__\":\n    main()\n"
+      "sample": "import os\n\nimport sumup\n\nclient = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\nresult = client.payouts.list(\n    \"MH4H92C7\",\n    start_date=\"2024-02-01\",\n    end_date=\"2024-02-29\",\n    format=\"json\",\n    limit=10,\n    order=\"desc\",\n)\nprint(result)\n"
     },
     {
       "id": "ListPersons",
@@ -333,7 +333,7 @@
       "description": "Returns the Persons related to a Merchant.",
       "httpMethod": "GET",
       "path": "/v1/merchants/{merchant_code}/persons",
-      "sample": "import os\n\nimport sumup\n\n\ndef main() -\u003e None:\n    client = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\n\n    result = client.merchants.list_persons(\n        \"MK10CL2A\",\n        version=\"latest\",\n    )\n    print(result)\n\n\nif __name__ == \"__main__\":\n    main()\n"
+      "sample": "import os\n\nimport sumup\n\nclient = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\nresult = client.merchants.list_persons(\n    \"MK10CL2A\",\n    version=\"latest\",\n)\nprint(result)\n"
     },
     {
       "id": "ListReaders",
@@ -342,7 +342,7 @@
       "description": "List all readers of the merchant.",
       "httpMethod": "GET",
       "path": "/v0.1/merchants/{merchant_code}/readers",
-      "sample": "import os\n\nimport sumup\n\n\ndef main() -\u003e None:\n    client = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\n\n    result = client.readers.list(\n        \"MK10CL2A\",\n    )\n    print(result)\n\n\nif __name__ == \"__main__\":\n    main()\n"
+      "sample": "import os\n\nimport sumup\n\nclient = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\nresult = client.readers.list(\n    \"MK10CL2A\",\n)\nprint(result)\n"
     },
     {
       "id": "ListTransactionsV2.1",
@@ -351,57 +351,7 @@
       "description": "Lists detailed history of all transactions associated with the merchant profile.",
       "httpMethod": "GET",
       "path": "/v2.1/merchants/{merchant_code}/transactions/history",
-      "sample": "import os\n\nimport sumup\n\n\ndef main() -\u003e None:\n    client = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\n\n    result = client.transactions.list(\n        \"MH4H92C7\",\n        order=\"ascending\",\n        users=[\n            \"merchant@example.com\",\n        ],\n    )\n    print(result)\n\n\nif __name__ == \"__main__\":\n    main()\n"
-    },
-    {
-      "id": "ProcessCheckout.ProcessBancontact",
-      "operationId": "ProcessCheckout",
-      "example": "ProcessBancontact",
-      "summary": "Process a checkout",
-      "description": "Process a checkout with Bancontact",
-      "httpMethod": "PUT",
-      "path": "/v0.1/checkouts/{checkout_id}",
-      "sample": "import os\n\nimport sumup\n\n\ndef main() -\u003e None:\n    client = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\n\n    result = client.checkouts.process(\n        \"string\",\n        payment_type=\"bancontact\",\n        personal_details={\n            \"address\": {\n                \"country\": \"BE\",\n            },\n            \"email\": \"user@example.com\",\n            \"first_name\": \"John\",\n            \"last_name\": \"Doe\",\n        },\n    )\n    print(result)\n\n\nif __name__ == \"__main__\":\n    main()\n"
-    },
-    {
-      "id": "ProcessCheckout.ProcessBoleto",
-      "operationId": "ProcessCheckout",
-      "example": "ProcessBoleto",
-      "summary": "Process a checkout",
-      "description": "Process a checkout with Boleto",
-      "httpMethod": "PUT",
-      "path": "/v0.1/checkouts/{checkout_id}",
-      "sample": "import os\n\nimport sumup\n\n\ndef main() -\u003e None:\n    client = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\n\n    result = client.checkouts.process(\n        \"string\",\n        payment_type=\"boleto\",\n        personal_details={\n            \"address\": {\n                \"city\": \"São Paulo\",\n                \"country\": \"BR\",\n                \"line1\": \"Rua Gilberto Sabino, 215\",\n                \"postal_code\": \"05425-020\",\n                \"state\": \"SP\",\n            },\n            \"email\": \"user@example.com\",\n            \"first_name\": \"John\",\n            \"last_name\": \"Doe\",\n            \"tax_id\": \"423.378.593-47\",\n        },\n    )\n    print(result)\n\n\nif __name__ == \"__main__\":\n    main()\n"
-    },
-    {
-      "id": "ProcessCheckout.ProcessCard",
-      "operationId": "ProcessCheckout",
-      "example": "ProcessCard",
-      "summary": "Process a checkout",
-      "description": "Process a checkout with a card",
-      "httpMethod": "PUT",
-      "path": "/v0.1/checkouts/{checkout_id}",
-      "sample": "import os\n\nimport sumup\n\n\ndef main() -\u003e None:\n    client = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\n\n    result = client.checkouts.process(\n        \"string\",\n        payment_type=\"card\",\n        installments=1,\n        mandate={\n            \"type\": \"recurrent\",\n            \"user_agent\": \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.104 Safari/537.36\",\n            \"user_ip\": \"172.217.169.174\",\n        },\n        card={\n            \"cvv\": \"123\",\n            \"expiry_month\": \"01\",\n            \"expiry_year\": \"2023\",\n            \"name\": \"John Doe\",\n            \"number\": \"1234567890123456\",\n            \"type\": \"VISA\",\n            \"zip_code\": \"12345\",\n        },\n    )\n    print(result)\n\n\nif __name__ == \"__main__\":\n    main()\n"
-    },
-    {
-      "id": "ProcessCheckout.ProcessToken",
-      "operationId": "ProcessCheckout",
-      "example": "ProcessToken",
-      "summary": "Process a checkout",
-      "description": "Process a checkout with a token",
-      "httpMethod": "PUT",
-      "path": "/v0.1/checkouts/{checkout_id}",
-      "sample": "import os\n\nimport sumup\n\n\ndef main() -\u003e None:\n    client = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\n\n    result = client.checkouts.process(\n        \"string\",\n        payment_type=\"card\",\n        installments=1,\n        token=\"ba85dfee-c3cf-48a6-84f5-d7d761fbba50\",\n        customer_id=\"MEDKHDTI\",\n    )\n    print(result)\n\n\nif __name__ == \"__main__\":\n    main()\n"
-    },
-    {
-      "id": "ProcessCheckout.ProcessiDeal",
-      "operationId": "ProcessCheckout",
-      "example": "ProcessiDeal",
-      "summary": "Process a checkout",
-      "description": "Process a checkout with iDeal",
-      "httpMethod": "PUT",
-      "path": "/v0.1/checkouts/{checkout_id}",
-      "sample": "import os\n\nimport sumup\n\n\ndef main() -\u003e None:\n    client = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\n\n    result = client.checkouts.process(\n        \"string\",\n        payment_type=\"ideal\",\n        personal_details={\n            \"address\": {\n                \"country\": \"NL\",\n            },\n            \"email\": \"user@example.com\",\n            \"first_name\": \"John\",\n            \"last_name\": \"Doe\",\n        },\n    )\n    print(result)\n\n\nif __name__ == \"__main__\":\n    main()\n"
+      "sample": "import os\n\nimport sumup\n\nclient = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\nresult = client.transactions.list(\n    \"MH4H92C7\",\n    transaction_code=\"TEENSK4W2K\",\n    order=\"ascending\",\n    limit=10,\n    users=[\n        \"merchant@example.com\",\n    ],\n    statuses=[\n        \"SUCCESSFUL\",\n        \"REFUNDED\",\n    ],\n    payment_types=[\n        \"ECOM\",\n        \"POS\",\n    ],\n    entry_modes=[\n        \"CUSTOMER_ENTRY\",\n        \"CHIP\",\n    ],\n    types=[\n        \"PAYMENT\",\n        \"REFUND\",\n    ],\n    changes_since=\"2019-08-28T09:00:00Z\",\n    newest_time=\"2019-08-29T09:00:00Z\",\n    newest_ref=\"090df9bf-93b7-40f1-8181-fbdb236568a1\",\n    oldest_time=\"2019-08-28T09:00:00Z\",\n    oldest_ref=\"090df9bf-93b7-40f1-8181-fbdb236568a1\",\n)\nprint(result)\n"
     },
     {
       "id": "RefundTransaction",
@@ -410,7 +360,7 @@
       "description": "Refunds an identified transaction either in full or partially.",
       "httpMethod": "POST",
       "path": "/v1.0/merchants/{merchant_code}/payments/{transaction_id}/refunds",
-      "sample": "import os\n\nimport sumup\n\n\ndef main() -\u003e None:\n    client = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\n\n    result = client.transactions.refund(\n        \"MH4H92C7\",\n        \"string\",\n        amount=5,\n    )\n    print(result)\n\n\nif __name__ == \"__main__\":\n    main()\n"
+      "sample": "import os\n\nimport sumup\n\nclient = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\nresult = client.transactions.refund(\n    \"MH4H92C7\",\n    \"4ffb8dfc-7f2b-413d-a497-2ad00766585e\",\n    amount=5,\n)\nprint(result)\n"
     },
     {
       "id": "UpdateCheckout",
@@ -419,7 +369,7 @@
       "description": "Updates an identified checkout resource.",
       "httpMethod": "PATCH",
       "path": "/v0.1/checkouts/{checkout_id}",
-      "sample": "import os\n\nimport sumup\n\n\ndef main() -\u003e None:\n    client = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\n\n    result = client.checkouts.update(\n        \"string\",\n        amount=12.5,\n        currency=\"EUR\",\n        description=\"Updated purchase\",\n        checkout_reference=\"f00a8f74-b05d-4605-bd73-2a901bae5802\",\n        valid_until=\"2020-02-29T10:56:56+00:00\",\n        customer_id=\"831ff8d4cd5958ab5670\",\n    )\n    print(result)\n\n\nif __name__ == \"__main__\":\n    main()\n"
+      "sample": "import os\n\nimport sumup\n\nclient = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\nresult = client.checkouts.update(\n    \"4e425463-3e1b-431d-83fa-1e51c2925e99\",\n    amount=12.5,\n    currency=\"EUR\",\n    description=\"Updated purchase\",\n    checkout_reference=\"f00a8f74-b05d-4605-bd73-2a901bae5802\",\n    valid_until=\"2020-02-29T10:56:56+00:00\",\n    customer_id=\"831ff8d4cd5958ab5670\",\n)\nprint(result)\n"
     },
     {
       "id": "UpdateCustomer",
@@ -428,7 +378,7 @@
       "description": "Updates an identified saved customer resource's personal details.\n\nThe request only overwrites the parameters included in the request, all other parameters will remain with their initially assigned values.",
       "httpMethod": "PUT",
       "path": "/v0.1/customers/{customer_id}",
-      "sample": "import os\n\nimport sumup\n\n\ndef main() -\u003e None:\n    client = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\n\n    result = client.customers.update(\n        \"string\",\n    )\n    print(result)\n\n\nif __name__ == \"__main__\":\n    main()\n"
+      "sample": "import os\n\nimport sumup\n\nclient = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\nresult = client.customers.update(\n    \"831ff8d4cd5958ab5670\",\n)\nprint(result)\n"
     },
     {
       "id": "UpdateMerchantMember",
@@ -437,7 +387,7 @@
       "description": "Update the merchant member.",
       "httpMethod": "PUT",
       "path": "/v0.1/merchants/{merchant_code}/members/{member_id}",
-      "sample": "import os\n\nimport sumup\n\n\ndef main() -\u003e None:\n    client = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\n\n    result = client.members.update(\n        \"MK10CL2A\",\n        \"mem_WZsm7QTPhVrompscmPhoGTXXcrd58fr9MOhP\",\n    )\n    print(result)\n\n\nif __name__ == \"__main__\":\n    main()\n"
+      "sample": "import os\n\nimport sumup\n\nclient = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\nresult = client.members.update(\n    \"MK10CL2A\",\n    \"mem_WZsm7QTPhVrompscmPhoGTXXcrd58fr9MOhP\",\n)\nprint(result)\n"
     },
     {
       "id": "UpdateMerchantRole",
@@ -446,7 +396,7 @@
       "description": "Update a custom role.",
       "httpMethod": "PATCH",
       "path": "/v0.1/merchants/{merchant_code}/roles/{role_id}",
-      "sample": "import os\n\nimport sumup\n\n\ndef main() -\u003e None:\n    client = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\n\n    result = client.roles.update(\n        \"MK10CL2A\",\n        \"role_WZsm7QTPhVrompscmPhoGTXXcrd58fr9MOhP\",\n        name=\"Senior Shop Manager III\",\n        permissions=[\n            \"catalog_edit\",\n            \"taxes_access\",\n            \"members_edit\",\n        ],\n    )\n    print(result)\n\n\nif __name__ == \"__main__\":\n    main()\n"
+      "sample": "import os\n\nimport sumup\n\nclient = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\nresult = client.roles.update(\n    \"MK10CL2A\",\n    \"role_WZsm7QTPhVrompscmPhoGTXXcrd58fr9MOhP\",\n    name=\"Senior Shop Manager III\",\n    permissions=[\n        \"catalog_edit\",\n        \"taxes_access\",\n        \"members_edit\",\n    ],\n)\nprint(result)\n"
     },
     {
       "id": "UpdateReader",
@@ -455,7 +405,7 @@
       "description": "Update a Reader.",
       "httpMethod": "PATCH",
       "path": "/v0.1/merchants/{merchant_code}/readers/{reader_id}",
-      "sample": "import os\n\nimport sumup\n\n\ndef main() -\u003e None:\n    client = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\n\n    result = client.readers.update(\n        \"MK10CL2A\",\n        \"rdr_3MSAFM23CK82VSTT4BN6RWSQ65\",\n        name=\"Frontdesk\",\n        metadata={},\n    )\n    print(result)\n\n\nif __name__ == \"__main__\":\n    main()\n"
+      "sample": "import os\n\nimport sumup\n\nclient = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\nresult = client.readers.update(\n    \"MK10CL2A\",\n    \"rdr_3MSAFM23CK82VSTT4BN6RWSQ65\",\n    name=\"Frontdesk\",\n    metadata={},\n)\nprint(result)\n"
     }
   ]
 }
