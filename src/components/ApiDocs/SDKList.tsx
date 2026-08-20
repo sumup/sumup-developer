@@ -1,4 +1,5 @@
 import { ListItemGroup } from "@sumup-oss/circuit-ui";
+import bashIcon from "@assets/languages/bash.svg";
 import dotnetIcon from "@assets/languages/dotnet.svg";
 import goIcon from "@assets/languages/go.svg";
 import javaIcon from "@assets/languages/java.svg";
@@ -20,8 +21,17 @@ export default () => {
   return (
     <ListItemGroup
       style={{ marginTop: "var(--cui-spacings-mega)" }}
-      label="SDKs"
+      label="SDKs and CLI"
       items={[
+        {
+          key: "cli",
+          leadingComponent: () => (
+            <SDKIcon src={bashIcon.src} alt="Command line icon" />
+          ),
+          label: "CLI",
+          href: "/tools/cli/",
+          variant: "navigation",
+        },
         {
           key: "javascript",
           leadingComponent: () => (
