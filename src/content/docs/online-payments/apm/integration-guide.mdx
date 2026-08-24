@@ -1,192 +1,185 @@
 ---
-title: Integration Guide
-description: Learn about the request parameters and flows required to process alternative payment methods.
+title: API Integration Guide
+description: Discover available alternative payment methods, process a checkout, and verify the final payment status.
 sidebar:
   order: 89
 ---
 
-## Overview
+import Callout from "@components/content/Callout";
 
-Alternative Payment Methods (further referred to as APMs) are similar to normal checkouts. One key difference is that the customer needs to take an additional action in order to finalize the payment with most APMs. Before proceeding, read the [online payments guide](/online-payments/).
+Alternative payment methods (APMs) can require the customer to approve a payment on another page or use payment instructions returned by the API. This guide covers an API-orchestrated integration. For an embedded checkout that presents supported methods for you, use the [Payment Widget](/online-payments/checkouts/card-widget/).
 
-## Check Available APMs
+## Prerequisites
 
-Check which payment methods are available to your merchant account.
+- A SumUp merchant account with the required payment methods enabled. Availability varies by merchant, amount, and currency.
+- An API key or access token. See the [Authorization Guide](/tools/authorization/).
+- A server-side integration that keeps credentials secret.
+- An HTTPS page to which the customer can return after an external payment flow.
 
-1. [Create a checkout](/api/checkouts/create) and use the checkout `id` to fetch the list of available payment methods from the following endpoint `https://api.sumup.com/v0.1/checkouts/{checkout_id}/payment-methods`.
+<Callout type="caution">
 
-   Example response:
+Call the SumUp API from your backend. Never expose an API key or access token in browser or mobile application code.
 
-    ```json
+</Callout>
+
+## 1. List available payment methods
+
+Before you show payment options, call [Get available payment methods](/api/checkouts/list-available-payment-methods/) for the merchant. Pass the checkout amount and currency so the result reflects the payment you are about to create. If you include `amount`, you must also include `currency`.
+
+Set `SUMUP_API_KEY` and `SUMUP_MERCHANT_CODE` in your server environment, then run:
+
+```bash
+curl --get "https://api.sumup.com/v0.1/merchants/$SUMUP_MERCHANT_CODE/payment-methods" \
+  --header "Authorization: Bearer $SUMUP_API_KEY" \
+  --data-urlencode "amount=25.00" \
+  --data-urlencode "currency=EUR"
+```
+
+The response contains method IDs:
+
+```json
+{
+  "available_payment_methods": [
     {
-      "items": [
-        {
-          "id": "card",
-          "name": "Credit Card"
-        },
-        {
-          "id": "blik",
-          "name": "Blik"
-        },
-        {
-          "id": "apple_pay",
-          "name": "Apple Pay"
-        }
-      ]
+      "id": "apple_pay"
+    },
+    {
+      "id": "blik"
     }
-    ```
+  ]
+}
+```
 
-Note that this object might change between checkouts as APMs are not offered for all currencies and amounts, and we are continuously introducing new APMs for you to offer.
+Treat the result as an allowlist, then offer only the methods your integration knows how to handle. Do not maintain an exhaustive list in your application: SumUp can add methods, and availability can change between payments.
 
-We recommend handling the returned payment methods as an allowlist for this checkout, and then picking all the payment methods you want to offer. Do **not** simply display all methods returned if your integration doesn't support them.
+## 2. Create a checkout
 
-The customer chooses one of the payment methods from the returned values, sent as part of the process checkout request under `payment_type`.
-
-The currently available payment method ids are: `card`, `ideal`, `bancontact`, `boleto`, `eps`, `mybank`, `satispay`, `blik`, `p24`, `pix`, `qr_code_pix`, `apple_pay`, `paypal`, `google_pay`. _name_ is just for display purposes.
-
-APMs differ from the behavior of cards. There are two possible flows, which we call `artifacts` or `redirect instructions`, explained in more detail below. APMs also require different input parameters obtained from the customer, as listed below:
-
-| Payment method name | Parameters                                          | Flow     |
-| ------------------- | --------------------------------------------------- | -------- |
-| bancontact          | First name, Last name, Country                      | Redirect |
-| blik                | First name, Last name, Country, Email               | Redirect |
-| boleto              | First name, Last name, Country, Email, Address, CPF | Artifact |
-| eps                 | First name, Last name, Country, Email               | Redirect |
-| ideal               | First name, Last name, Country, Email               | Redirect |
-| myBank              | First name, Last name, Country, Email               | Redirect |
-| p24                 | First name, Last name, Country, Email               | Redirect |
-| satispay            | First name, Last name, Country, Email               | Redirect |
-| pix                 |                                                     | Artifact |
-| qr_code_pix         |                                                     | Artifact |
-
-Example payload:
+Use your backend to [create a checkout](/api/checkouts/create/) with a unique `checkout_reference`. Always include `redirect_url` for an APM checkout so the external flow can return the customer to your application.
 
 ```json
 {
-  "payment_type": "#Payment method name",
+  "checkout_reference": "order-6f918b8d",
+  "amount": 25,
+  "currency": "EUR",
+  "merchant_code": "MH4H92C7",
+  "description": "Order 6f918b8d",
+  "redirect_url": "https://merchant.example/payments/complete"
+}
+```
+
+Store the returned checkout `id` with your order. You will need it to process the checkout and verify the result.
+
+## 3. Process the checkout
+
+After the customer selects one of the returned methods, call [Process a checkout](/api/checkouts/process/) with that method's ID as `payment_type`. The required personal details depend on the method and customer market.
+
+For example, an iDEAL request uses the following shape:
+
+```json
+{
+  "payment_type": "ideal",
   "personal_details": {
-    "email": "#Email",
-    "first_name:": "#First Name",
-    "last_name": "#Last Name",
-    "tax_id": "#CPF",
+    "email": "buyer@example.com",
+    "first_name": "Sam",
+    "last_name": "Buyer",
     "address": {
-      "country": "#Country",
-      "city": "#Address",
-      "line1": "#Address",
-      "postal_code": "#Address",
-      "state": "#Address"
+      "country": "NL"
     }
   }
 }
 ```
 
-### Process Checkout Using Redirect Flow
-
-In the Redirect Flow, when the checkout is processed, you receive the `"status": "pending"` parameter and the `next_step` parameter, which means an additional action is required to process the payment.Example response:
+For a Boleto payment on a BRL checkout, the request includes the buyer's Brazilian tax ID and billing address:
 
 ```json
 {
-  ...
-  "status": "pending",
+  "payment_type": "boleto",
+  "personal_details": {
+    "email": "buyer@example.com",
+    "first_name": "Sam",
+    "last_name": "Buyer",
+    "tax_id": "423.378.593-47",
+    "address": {
+      "country": "BR",
+      "city": "São Paulo",
+      "line1": "Rua Gilberto Sabino, 215",
+      "state": "SP",
+      "postal_code": "05425-020"
+    }
+  }
+}
+```
+
+Use the [Process a checkout request schema](/api/checkouts/process/) as the source of truth for supported fields. Do not send placeholder values or collect fields that the selected method does not need.
+
+### Handle redirect instructions
+
+A redirect-based method returns `next_step` instructions when the customer must continue on an external page. For example:
+
+```json
+{
   "next_step": {
-    "url": "https://apm-redirect-link",
+    "url": "https://payments.example/authorize",
     "method": "POST",
+    "redirect_url": "https://merchant.example/payments/complete",
+    "mechanism": ["browser"],
     "payload": {
-      "....": "..."
+      "token": "opaque-provider-value"
     }
-  },
-  ...
-}
-```
-
-Most of the time, this is a simple redirect to a 3rd party page, like Blik, where the customer can pay.
-But, as shown above, POST requests are also possible. For all calls, ensure that the payload is included, and the appropriate method is used.
-Once the customer completes the necessary actions on the page, they are redirected to the `redirect_url` specified under the [create checkout request](/api/checkouts/create).
-Now you can retrieve the final status via a [GET checkout request](/api/checkouts/get/).
-
-### Process Checkout Using Payment Method Artifacts Flow
-
-Payment method artifacts are images, PDFs etc. which the customer gets in order to pay. Currently, we have 3 payment methods which have artifacts: `boleto`, `pix` and `qr_code_pix`.
-
-Example requests for each:
-
-**boleto:**
-
-```json
-{
-  "boleto": {
-    "barcode": "23790001246004987209031123456704579990000010000",
-    "url": "https://api.sumup.com/v0.1/checkouts/19c11c6c-be1d-4dd6-b718-2798878117cb/boletos/1044833949",
-    "valid_until": "2022-02-01T17:57:10.442+00:00",
-    "artefacts": [
-      {
-        "name": "invoice",
-        "content_type": "application/pdf",
-        "location": "https://homolog.meiosdepagamentobradesco.com.br/apiboleto/Bradesco?token=bWJvYXpkc1hXRzdhRVkyUUFGZUV4T25NYjBVVEZrNG93Y3RKLzM4cTh5dWdDWEh5dDQyTXN6ZHl5NFdjaHBkZg..",
-        "created_at": "2022-01-21T17:57:10.443+00:00"
-      },
-      {
-        "name": "code",
-        "content_type": "text/plain",
-        "location": "https://api.sumup.com/v0.1/artefacts/5266b29e-625b-43c0-a74a-8985ea3acd8a/content",
-        "content": "23790001246004987209031123456704579990000010000",
-        "created_at": "2022-01-21T17:57:10.445+00:00"
-      }
-    ]
   }
 }
 ```
 
-**pix:**
+Follow the response exactly:
 
-```json
-{
-  "pix": {
-    "artefacts": [
-      {
-        "name": "barcode",
-        "content_type": "image/jpeg",
-        "location": "https://api.sumup.com/v0.1/artefacts/ee69508f-1b16-4ead-8416-8d2085933e6f/content",
-        "created_at": "2021-10-12T22:06:46.327+00:00"
-      },
-      {
-        "name": "code",
-        "content_type": "text/plain",
-        "location": "https://api.sumup.com/v0.1/artefacts/1e1e5130-17d1-495a-8e36-2a50d40dacde/content",
-        "content": "00020126580014br.gov.bcb.pix0136a4fac492-d03b-45a8-bd43-c3f23d4bac68520400005303986540520.005802BR5916Priscila Manhaes6009Sao Paulo62290525SUMUP202110122206453822986304A61E",
-        "created_at": "2021-10-12T22:06:46.326+00:00"
-      }
-    ]
-  }
-}
-```
+1. Read `url`, `method`, `payload`, and the supported `mechanism` values from `next_step`.
+2. For `GET`, send the payload as query parameters. For `POST`, submit the payload as form fields.
+3. Do not construct the provider URL, rename payload fields, or assume that every method uses the same HTTP method.
+4. Let the customer complete the external flow and return to the checkout's `redirect_url`.
 
-**qr_code_pix:**
+The URL and opaque payload can contain sensitive, short-lived data. Avoid logging them or retaining them after the payment flow finishes.
 
-```json
-{
-  "qr_code_pix": {
-    "artefacts": [
-      {
-        "name": "barcode",
-        "content_type": "image/jpeg",
-        "location": "https://api.sam-app.ro/v0.1/artefacts/ee69508f-1b16-4ead-8416-8d2085933e6f/content",
-        "created_at": "2021-10-12T22:06:46.327+00:00"
-      },
-      {
-        "name": "code",
-        "content_type": "text/plain",
-        "location": "https://localhost:3000/v0.1/artefacts/1e1e5130-17d1-495a-8e36-2a50d40dacde/content",
-        "content": "00020126580014br.gov.bcb.pix0136a4fac492-d03b-45a8-bd43-c3f23d4bac68520400005303986540520.005802BR5916Priscila Manhaes6009Sao Paulo62290525SUMUP202110122206453822986304A61E",
-        "created_at": "2021-10-12T22:06:46.326+00:00"
-      }
-    ]
-  }
-}
-```
+### Handle payment instructions and artifacts
 
-The major difference between `qr_code_pix` and `pix` is that `pix` is paid directly into the merchant's SumUp bank account if they have one. `qr_code_pix` is paid out with the normal payout process and incurs a fee.
+Some methods return payment instructions instead of redirect instructions. For example, Boleto can return a barcode and a URL, while PIX-family methods can return a text code or QR-code image.
 
-For all artifact payments, you need to provide the customer with the artifact and wait for the checkout to eventually complete.
+Response fields are method-specific. If the response contains an `artefacts` array, use each entry's `content_type` to decide how to present it. Prefer inline `content` when provided; otherwise fetch the exact `location` returned by SumUp. Do not construct artifact URLs or replace their host.
 
-Once the user has paid, you can retrieve the final status via the [GET checkout request](/api/checkouts/get/).
+Artifact-based payments are asynchronous. Present the instructions and expiry time to the customer, keep the order pending, and verify the checkout until it reaches a final status.
+
+## 4. Verify the final status
+
+Reaching `redirect_url`, receiving an artifact, or returning from a payment provider does not prove that the payment succeeded. After the customer action, [retrieve the checkout](/api/checkouts/get/) from your backend and use its status as the source of truth:
+
+- `PAID`: complete the order.
+- `PENDING`: keep the order pending and check again later.
+- `FAILED`: show a failure state and let the customer choose another available method.
+- `EXPIRED`: create a new checkout before retrying.
+
+Use [webhooks](/online-payments/webhooks/) to learn that a checkout changed, then retrieve the checkout before fulfilling the order. Make order fulfillment idempotent because browser returns, webhook deliveries, and status checks can occur more than once.
+
+<Callout type="caution">
+
+Never fulfill an order based only on a browser return, frontend callback, or provider page. Fulfill it only after your backend retrieves the checkout and confirms `PAID`.
+
+</Callout>
+
+## Failure and retry handling
+
+- If processing fails because a method is unavailable, list the available methods again and let the customer choose another one.
+- If the amount or currency changes, repeat the availability request before processing the checkout.
+- After a timeout or unknown response, retrieve the checkout before retrying. A successful request might have completed even if your application did not receive the response.
+- Use a new, unique `checkout_reference` only when you intentionally create a new checkout.
+- Preserve the order state while the checkout is `PENDING`; redirect and artifact methods might not complete immediately.
+
+## Test checklist
+
+Before going live, verify that your integration:
+
+- Shows only methods returned for the merchant, amount, and currency.
+- Supports both `GET` and `POST` redirect instructions without changing the returned payload.
+- Returns the customer to the configured `redirect_url`.
+- Presents text, image, and document artifacts according to `content_type` when the selected method returns them.
+- Keeps `PENDING` orders open and completes them only after the API returns `PAID`.
+- Handles `FAILED`, `EXPIRED`, abandoned, and duplicate callback scenarios.
+- Does not expose credentials or log redirect payloads and artifact contents.
