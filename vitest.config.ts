@@ -5,7 +5,7 @@ export default getViteConfig(
   {
     test: {
       environment: "node",
-      include: ["src/lib/codesamples/**/*.test.ts"],
+      include: ["src/lib/**/*.test.ts"],
     },
   },
   {

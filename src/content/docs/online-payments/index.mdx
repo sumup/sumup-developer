@@ -1,124 +1,209 @@
 ---
-title: Online Payments
-description: Get started with accepting online payments. This guide walks you through creating a sandbox merchant account and processing your first transaction in minutes.
+title: Online Payments Quickstart
+description: Create a sandbox Hosted Checkout, complete a test payment, and verify the result through the SumUp API.
 sidebar:
   label: Quickstart
   order: 1
 ---
 
-import { Steps } from '@astrojs/starlight/components';
-import Callout from '@components/content/Callout';
-import Image from '@components/content/Image.astro';
+import Callout from "@components/content/Callout";
 
-Online payments form an integral part of the SumUp product portfolio. SumUp supports online payments through multiple approaches to address every merchant use case. Use one of the out-of-the-box integrations or build a complete custom payments flow with the APIs. Your app communicates with SumUp via HTTP requests defined in the [API Reference](/api).​
+Complete your first online payment with [Hosted Checkout](/online-payments/checkouts/hosted-checkout/), SumUp's hosted payment page. This path requires one server-side API call and no payment UI code.
 
-![Image showing integrations in SumUp](/img/guides/integrations.png)
+**Expected time:** 10–15 minutes after you can access the SumUp Dashboard.
 
-To get started, review the options SumUp offers for managing online payments.
+<Callout type="note">
 
-## Getting a Sandbox Merchant Account
+You are finished when the Hosted Checkout shows a successful payment and a server-side Retrieve Checkout request returns `PAID`.
 
-To test SumUp APIs and tools without involving real money, use a sandbox merchant account. Create one from your Dashboard account as follows.
+</Callout>
 
-<Steps>
+## What runs where
 
-1. Log in to your SumUp account.
+| Surface                  | Responsibility                                                                                                      |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------------- |
+| Your backend or terminal | Creates the checkout, stores its ID and reference, and verifies the final status. The API key stays here.           |
+| Customer's browser       | Opens the returned `hosted_checkout_url` and displays SumUp's payment form.                                         |
+| SumUp                    | Hosts the payment UI, handles card data and authentication, processes the payment, and records the checkout status. |
+
+## Prerequisites
+
+- A SumUp developer account and sandbox merchant account.
+- The sandbox merchant's merchant code, currency, and API key.
+- A terminal with `curl` and `jq`.
+- A browser in which to open the hosted payment page.
+
+## Getting a sandbox merchant account
+
+1. Log in to the [SumUp Dashboard](https://me.sumup.com).
 2. Open [Developer Settings](https://me.sumup.com/settings/developer?tab=sandboxes).
-3. In the **Sandboxes** tab, create a sandbox merchant account if you do not have one yet.
+3. Create a sandbox merchant account, then select it in the Dashboard account switcher.
+4. With the sandbox merchant selected, go to **Settings** > **For Developers** > **Toolkit** > **API Keys**.
+5. Create and copy an API key. Do not use the SumUp Public Key.
+6. Copy the sandbox merchant code and note its account currency.
 
-</Steps>
+If you do not have a SumUp account, [create a developer account](https://me.sumup.com/signup?signup_intent=developer). New developer accounts start with a sandbox merchant account.
 
-<Callout type="note">
-If you don't have a sandbox account yet, [sign up for a developer account](https://me.sumup.com/signup?signup_intent=developer). This starts you with a sandbox merchant account.
+Sandbox payments are simulations and do not move real funds.
+
+## 1. Configure your terminal
+
+Replace the values below with the sandbox credentials you just collected. The checkout currency must match the sandbox merchant account currency.
+
+```bash
+export SUMUP_API_KEY="sk_test_replace_me"
+export SUMUP_MERCHANT_CODE="replace_me"
+export SUMUP_CURRENCY="EUR"
+```
+
+<Callout type="caution">
+
+Keep the API key on your server or local development machine. Never put it in browser code, a mobile application, source control, screenshots, or support messages.
+
 </Callout>
 
-<Image alt="A screenshot of the account selection dropdown in the SumUp dashboard with the sandbox merchant account highlighted with red circle" src="/img/guides/test_acc.png" width="40%" />
+## 2. Create a Hosted Checkout
 
-With your sandbox merchant account, begin making API calls with real data. Sandbox merchant accounts **do not** process transactions with real funds. The sandbox merchant account has a different ID and displays a clear warning. Requests with a value of 11 (in any currency) always fail by design, to test failed transaction scenarios.
+Set a successful test amount and a unique reference, then create the checkout:
 
-<Image alt="A screenshot of the dashboard with sandbox merchant account selected" src="/img/guides/test-account-warning.png" width="100%" />
+```bash
+export SUMUP_AMOUNT="12.00"
+export SUMUP_CHECKOUT_REFERENCE="quickstart-$(date +%s)"
 
-When finished experimenting with the sandbox merchant account, switch back to a regular account for business purposes.
+SUMUP_CHECKOUT_RESPONSE="$(
+  curl --fail-with-body --silent --show-error \
+    --request POST "https://api.sumup.com/v0.1/checkouts" \
+    --header "Authorization: Bearer $SUMUP_API_KEY" \
+    --header "Content-Type: application/json" \
+    --data @- <<JSON
+{
+  "checkout_reference": "$SUMUP_CHECKOUT_REFERENCE",
+  "amount": $SUMUP_AMOUNT,
+  "currency": "$SUMUP_CURRENCY",
+  "merchant_code": "$SUMUP_MERCHANT_CODE",
+  "description": "Quickstart order",
+  "hosted_checkout": {
+    "enabled": true
+  }
+}
+JSON
+)"
 
-## Authorization
+echo "$SUMUP_CHECKOUT_RESPONSE" | jq
+```
 
-All online payment products use SumUp APIs, which require authorization via an API key or access token. See the [Authorization Guide](/tools/authorization/) for details on available options.​
+The response should contain these fields:
 
-## Checkout Products
+```json
+{
+  "id": "64553e20-3f0e-49e4-8af3-fd0eca86ce91",
+  "checkout_reference": "quickstart-1785686400",
+  "status": "PENDING",
+  "hosted_checkout": {
+    "enabled": true
+  },
+  "hosted_checkout_url": "https://checkout.sumup.com/pay/8f9316a3-cda9-42a9-9771-54d534315676"
+}
+```
 
-SumUp provides a range of checkout products for seamless integration with your website.
+Store the values needed for the next steps:
 
-### Hosted Checkout
+```bash
+export SUMUP_CHECKOUT_ID="$(echo "$SUMUP_CHECKOUT_RESPONSE" | jq -r '.id')"
+export SUMUP_HOSTED_CHECKOUT_URL="$(echo "$SUMUP_CHECKOUT_RESPONSE" | jq -r '.hosted_checkout_url')"
 
-Hosted Checkout is the fastest path to launch. SumUp hosts the payment page, while your integration creates the checkout and redirects the customer to the returned URL.
+echo "$SUMUP_HOSTED_CHECKOUT_URL"
+```
 
-See the [Hosted Checkout documentation](/online-payments/checkouts/hosted-checkout/) for details.
+If either value is empty or `null`, stop and inspect the API response before continuing.
 
-### Payment Widget
+## 3. Complete the payment
 
-For an embedded checkout on your own site, use the [Payment Widget](/online-payments/checkouts/card-widget/). It only requires adding a single script to your payment page.
+1. Copy the printed `SUMUP_HOSTED_CHECKOUT_URL` into your browser.
+2. Enter the following sandbox card details.
+3. Submit the payment and wait for the Hosted Checkout success page.
 
-#### Alternative Payment Methods
+| Field           | Test value                       |
+| --------------- | -------------------------------- |
+| Card number     | `4200 0000 0000 0091`            |
+| Expiry date     | Any future date, such as `12/30` |
+| CVV             | Any three digits, such as `123`  |
+| Cardholder name | Any name                         |
 
-The Payment Widget supports [Alternative Payment Methods](/online-payments/apm) (APMs) to accept payments beyond traditional card schemes such as Visa and Mastercard. To enable APMs for your Payment Widget integration, use the [contact form](/contact).
+The browser result is useful customer feedback, but it is not the state your backend should use to fulfill an order.
 
-Available APMs include:
+## 4. Verify the payment
 
-- Apple Pay
-- Bancontact
-- Blik
-- Boleto
-- EPS
-- Google Pay
-- iDeal
-- MyBank
-- PIX
-- Przelewy24
-- Satispay
+Retrieve the checkout from your backend or terminal:
 
-<Callout type="tip">
-The APMs you can offer depend on the location your business is registered and operates in.
+```bash
+SUMUP_VERIFICATION_RESPONSE="$(
+  curl --fail-with-body --silent --show-error \
+    "https://api.sumup.com/v0.1/checkouts/$SUMUP_CHECKOUT_ID" \
+    --header "Authorization: Bearer $SUMUP_API_KEY"
+)"
+
+echo "$SUMUP_VERIFICATION_RESPONSE" | jq
+```
+
+After the successful sandbox payment, the relevant fields look like this:
+
+```json
+{
+  "id": "64553e20-3f0e-49e4-8af3-fd0eca86ce91",
+  "checkout_reference": "quickstart-1785686400",
+  "status": "PAID",
+  "transactions": [
+    {
+      "status": "SUCCESSFUL",
+      "transaction_code": "TEENSK4W2K"
+    }
+  ]
+}
+```
+
+- `PAID`: mark the order as paid exactly once.
+- `PENDING`: wait and retrieve the checkout again.
+- `FAILED`: keep the order unpaid and let the customer start a new attempt.
+- `EXPIRED`: create a new checkout with a new reference.
+
+<Callout type="caution">
+
+Fulfill the order only after your backend retrieves the checkout and confirms `PAID`. A browser redirect, hosted success page, frontend callback, or webhook delivery is not payment proof on its own.
+
 </Callout>
 
-<Callout type="note">
-See the [Payment Methods overview](/online-payments/payment-methods/) for the
-full list of supported methods grouped by payment method family.
-</Callout>
+## 5. Test a failed payment
 
-### Swift Checkout SDK
+Set the deliberate failure amount and a new reference:
 
-The Swift Checkout SDK provides a complete and fast checkout experience to your end users, collecting payment, address, and contact information with a click of a button.
+```bash
+export SUMUP_AMOUNT="11.00"
+export SUMUP_CHECKOUT_REFERENCE="quickstart-failure-$(date +%s)"
+```
 
-See the [Swift Checkout Documentation](/online-payments/checkouts/swift-checkout/) for details.
+Repeat steps 2–4 with the same test card. The hosted page should show a failed payment and Retrieve Checkout should return `FAILED`. Never reuse the successful checkout ID or reference for this attempt.
 
-## Plugins
+## Troubleshooting
 
-For Prestashop, Wix, or WooCommerce, use SumUp plugins for seamless payments. See the [Plugins section](/online-payments/plugins/) for details on each.​
+| Symptom                                       | What to check                                                                             |
+| --------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| `401 Unauthorized`                            | The value is a sandbox secret API key, and the header uses `Bearer`.                      |
+| `403 Forbidden`                               | The sandbox merchant can accept online payments and the credential can create checkouts.  |
+| `409 Conflict`                                | Generate a new `checkout_reference`; do not reuse a previous attempt's reference.         |
+| Missing `hosted_checkout_url`                 | Confirm that `hosted_checkout.enabled` is `true` and inspect the complete error response. |
+| Hosted page is expired                        | Hosted Checkout sessions expire after 30 minutes. Create a new checkout and URL.          |
+| Browser says success but the API is `PENDING` | Keep the order pending and retrieve the checkout again.                                   |
 
-## Custom Integrations
+## Move to production
 
-### SumUp APIs
+Before accepting real payments:
 
-SumUp provides REST APIs for creating and retrieving checkouts, managing transactions, storing tokenized payment instruments, and issuing refunds. SumUp APIs use API keys or [OAuth 2.0](https://www.rfc-editor.org/rfc/rfc6749) for authentication.
+1. Switch to the live merchant account and create separate production credentials.
+2. Store `checkout.id`, `checkout_reference`, merchant code, amount, currency, and transaction identifiers with your order.
+3. Add a real HTTPS `redirect_url` for customer navigation and a webhook for status-change notifications.
+4. Make checkout creation and order fulfillment safe against retries and duplicates.
+5. Test success, failure, expiry, and abandoned-payment scenarios.
+6. Process a small live payment and reconcile it in the SumUp Dashboard before launch.
 
-Call authenticated API endpoints from your server. Keep API keys and client secrets out of browsers and mobile apps.
-
-### Receiving Payments
-
-Start by [choosing a checkout integration](/online-payments/checkouts/). Your server creates a checkout with the amount, currency, merchant code, and a unique checkout reference. The selected checkout integration then collects the customer's payment details and completes the payment without sending raw card details through your server.
-
-SumUp supports the following payment paths:
-
-- [Hosted Checkout](/online-payments/checkouts/hosted-checkout/) redirects the customer to a SumUp-hosted payment page.
-- [Payment Widget](/online-payments/checkouts/card-widget/) embeds the SumUp payment form in your website.
-- [Swift Checkout SDK](/online-payments/checkouts/swift-checkout/) and the [React Native SDK](/online-payments/sdks/react-native/) provide checkout experiences for supported mobile use cases.
-- [Alternative Payment Methods](/online-payments/apm/) support wallets, bank-based methods, vouchers, and other locally available options.
-- [Tokenization and recurring payments](/online-payments/guides/tokenization-with-payment-sdk/) use a saved payment instrument rather than raw card details.
-
-Do not build a payment form that sends raw card details to the Checkouts API. Use one of the checkout integrations above to collect payment details.
-
-## Contact SumUp
-
-<Callout type="note">
-Do you have specific questions? Check out our [help page](/help) for the most frequently asked questions or [contact us here](/contact).
-</Callout>
+For an embedded payment form, continue with the [Payment Widget](/online-payments/checkouts/card-widget/). For mobile applications or other checkout experiences, compare the [checkout integrations](/online-payments/checkouts/).
