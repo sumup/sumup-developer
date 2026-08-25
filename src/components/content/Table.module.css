@@ -11,7 +11,7 @@
   width: 100%;
   overflow-y: auto;
   overflow-x: auto;
-  overscroll-behavior: contain;
+  overscroll-behavior-x: contain;
   -webkit-overflow-scrolling: touch;
 }
 
