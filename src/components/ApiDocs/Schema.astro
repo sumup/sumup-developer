@@ -192,18 +192,29 @@ const schema = resolveSchema(obj);
 </style>
 
 <script>
-  const buttons = document.querySelectorAll(".nested .close");
-  buttons.forEach((button) => {
-    button.addEventListener("click", () => {
-      const grandParentElement = button.closest(".open");
-      grandParentElement?.classList.remove("open");
+  const initSchemas = () => {
+    const buttons = document.querySelectorAll<HTMLElement>(".nested .close");
+    buttons.forEach((button) => {
+      if (button.dataset.initialized) return;
+      button.dataset.initialized = "true";
+      button.addEventListener("click", () => {
+        const grandParentElement = button.closest(".open");
+        grandParentElement?.classList.remove("open");
+      });
     });
-  });
 
-  const chevrons = document.querySelectorAll(".collapsable .header");
-  chevrons.forEach((chevron) => {
-    chevron.addEventListener("click", () => {
-      chevron.parentElement?.classList.toggle("collapsed");
+    const chevrons = document.querySelectorAll<HTMLElement>(
+      ".collapsable > .header",
+    );
+    chevrons.forEach((chevron) => {
+      if (chevron.dataset.initialized) return;
+      chevron.dataset.initialized = "true";
+      chevron.addEventListener("click", () => {
+        chevron.parentElement?.classList.toggle("collapsed");
+      });
     });
-  });
+  };
+
+  initSchemas();
+  document.addEventListener("astro:page-load", initSchemas);
 </script>

@@ -25,6 +25,14 @@
   }
 
   const appendScript = (scriptToAppend: string, onLoad: () => void) => {
+    const existingScript = document.querySelector<HTMLScriptElement>(
+      `script[src="${scriptToAppend}"]`,
+    );
+    if (existingScript) {
+      existingScript.addEventListener("load", onLoad, { once: true });
+      return;
+    }
+
     const script = document.createElement("script");
     script.async = false;
     script.onload = onLoad;
@@ -33,7 +41,13 @@
   };
 
   const initSumupCardWidget = () => {
-    if (typeof SumUpCard !== "undefined") {
+    const target = document.querySelector<HTMLElement>("#sumup-card");
+    if (
+      target &&
+      !target.dataset.initialized &&
+      typeof SumUpCard !== "undefined"
+    ) {
+      target.dataset.initialized = "true";
       SumUpCard.mount({
         checkoutId: "demo",
         onResponse(type) {
@@ -45,12 +59,21 @@
     }
   };
 
-  document.addEventListener("DOMContentLoaded", () => {
+  const initCardWidget = () => {
+    if (!document.querySelector("#sumup-card")) return;
+    if (typeof SumUpCard !== "undefined") {
+      initSumupCardWidget();
+      return;
+    }
+
     appendScript(
       "https://gateway.sumup.com/gateway/ecom/card/v2/sdk.js",
       initSumupCardWidget,
     );
-  });
+  };
+
+  initCardWidget();
+  document.addEventListener("astro:page-load", initCardWidget);
 </script>
 
 <style>

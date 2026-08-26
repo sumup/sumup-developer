@@ -56,10 +56,17 @@ const { schema, kind = "Attributes", ...attrs } = Astro.props;
 </style>
 
 <script>
-  const buttons = document.querySelectorAll(".button");
-  buttons.forEach((button) => {
-    button.addEventListener("click", () => {
-      button.parentElement?.classList.add("open");
+  const initAttributeButtons = () => {
+    const buttons = document.querySelectorAll<HTMLElement>(".wrap > .button");
+    buttons.forEach((button) => {
+      if (button.dataset.initialized) return;
+      button.dataset.initialized = "true";
+      button.addEventListener("click", () => {
+        button.parentElement?.classList.add("open");
+      });
     });
-  });
+  };
+
+  initAttributeButtons();
+  document.addEventListener("astro:page-load", initAttributeButtons);
 </script>

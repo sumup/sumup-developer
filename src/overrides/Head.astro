@@ -2,6 +2,7 @@
 import Default from "@astrojs/starlight/components/Head.astro";
 import "@sumup-oss/design-tokens/fonts.css";
 import "@sumup-oss/design-tokens/dynamic.css";
+import { ClientRouter } from "astro:transitions";
 
 const { entry, head, lastUpdated } = Astro.locals.starlightRoute;
 const frontmatter = entry.data;
@@ -156,3 +157,4 @@ ensureMarkdownAlternateLink(markdownAlternateUrl);
 </script>
 
 <Default {...Astro.props} />
+<ClientRouter />
