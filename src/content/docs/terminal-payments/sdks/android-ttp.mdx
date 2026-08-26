@@ -19,9 +19,9 @@ The Android Tap-to-Pay SDK enables your mobile app to accept card-present contac
 
 ## Prerequisites
 
-- Kotlin version: 1.9.22 or later
+- Kotlin version: **2.0 or later** (2.2.x recommended; required for SDK 1.1.6+)
 - `minSDK`: 30 or later
-- `targetSDK`/`compileSDK`: 34 or later
+- `targetSDK`/`compileSDK`: 36 or later
 - Android Gradle Plugin: 7.3.0 or later
 - Java 17 or later
 - [Core library desugaring](https://developer.android.com/studio/write/java8-support#library-desugaring) enabled (required since SDK version 1.1.1)
@@ -68,7 +68,7 @@ You can use the sample app provided in the [GitHub repository](https://github.co
 2. Add the dependency to a module `build.gradle`:
 
    ```kotlin
-   implementation("com.sumup.tap-to-pay:utopia-sdk:1.1.5")
+   implementation("com.sumup.tap-to-pay:utopia-sdk:1.1.6")
    ```
 
 3. Starting from SDK version 1.1.1, [core library desugaring](https://developer.android.com/studio/write/java8-support#library-desugaring) is required. Add the following to your module `build.gradle`:
@@ -135,9 +135,10 @@ The function can also return `Result.Failure` with one exception from the list o
 #### 2. Start Payment
 
 ```kotlin
-suspend fun startPayment(
+fun startPayment(
     checkoutData: CheckoutData,
-    skipSuccessScreen: Boolean
+    skipSuccessScreen: Boolean = false,
+    timeoutCardWaitSeconds: Int? = null,
 ): Flow<PaymentEvent>
 ```
 
@@ -165,13 +166,15 @@ The list of possible events:
 - `TransactionFailed(val paymentOutput: PaymentOutput?, val tapToPayException: TapToPayException?)` - transaction failed. It might happen due to many reasons, like attestation error, backend error, card reader error, and so on. The full list of errors is described in the [Exceptions](#exceptions) section. `PaymentOutput` param might be null if the transaction failed before reaching the backend.
 - `TransactionCanceled(val paymentOutput: PaymentOutput?)` - transaction was cancelled by the user.
 - `TransactionResultUnknown(val paymentOutput: PaymentOutput?)` - transaction result is unknown. This might happen on remote calls, when there is no response due to timeout.
-- `PaymentFlowClosedSuccessfully(val paymentOutput: PaymentOutput?, val shouldDisplayReceipt: Boolean)` - after a successful transaction, users see the successful screen with two buttons: **Send receipt** and **Done**. Once the user clicks on any button, the screen closes and fires the `PaymentClosed` event.
+- `PaymentFlowClosedSuccessfully(val paymentOutput: PaymentOutput, val shouldDisplayReceipt: Boolean = false)` - after a successful transaction, once the user dismisses the success screen (or when it is skipped via `skipSuccessScreen`), the flow closes and fires this event. The **Send receipt** button has been removed from the SDK success screen (SDK 1.1.6+); receipts must be handled by the host app if required. `shouldDisplayReceipt` is deprecated, always emitted as `false`, and will be removed in **1.1.7**.
 
 ##### Parameters
 
 `checkoutData` - The checkout data object.
 
-`skipSuccessScreen` - A boolean value that controls whether the user is redirected to a built-in success screen after a successful payment.
+`skipSuccessScreen` - When `true`, the SDK closes the payment flow immediately after a successful transaction without showing the built-in success screen. The consumer app is then responsible for displaying its own success UI. Defaults to `false`.
+
+`timeoutCardWaitSeconds` - Maximum time (in seconds) the SDK waits for the cardholder to present a card during the "Tap card" step (SDK 1.1.5+). When `null` (the default), the SDK uses its built-in default of **240** seconds. Values are clamped to the supported range **\[60, 240\]** seconds.
 
 ```kotlin
 data class CheckoutData(
@@ -239,7 +242,28 @@ fun startPayment() {
             priceItems = null,
             processCardAs = null,
         ),
-        skipSuccessScreen = false
+    ).collectLatest {
+        Log.d("Payment event: $it")
+    }
+}
+```
+
+To customize the payment flow behavior:
+
+```kotlin
+fun startPaymentCustomized() {
+    tapToPay.startPayment(
+        checkoutData = CheckoutData(
+            totalAmount = 1234, // 12.34 EUR
+            clientUniqueTransactionId = "123",
+            tipsAmount = null,
+            vatAmount = null,
+            customItems = null,
+            priceItems = null,
+            processCardAs = null,
+        ),
+        skipSuccessScreen = true,
+        timeoutCardWaitSeconds = 120, // wait 2 minutes for card tap
     ).collectLatest {
         Log.d("Payment event: $it")
     }
@@ -264,7 +288,7 @@ The base types are listed below, and each of these is further divided into more 
 
 - `CommonException` - These exceptions cover scenarios such as initialization issues, registration problems, authentication failures, and required updates, providing a consistent and predictable way to handle errors across the system.
 - `NetworkException` - These exceptions represent network-related and communication errors encountered during SDK operation. They include issues such as interrupted connections, authentication problems, and server/client-side failures.
-- `PaymentException` - These exceptions represent errors related to the payment transaction flow, covering everything from preprocessing to final charge attempts. They include issues such as invalid payment actions, timeouts, incorrect amounts, unsupported card technologies, and unexpected states during card reading.
+- `PaymentException` - These exceptions represent errors related to the payment transaction flow, covering everything from preprocessing to final charge attempts. They include issues such as invalid payment actions, timeouts, incorrect amounts, unsupported card technologies, and unexpected states during card reading. Starting with SDK 1.1.6, when a presented card cannot be used the SDK prompts the cardholder to try another card; after repeated unsuccessful attempts the payment fails with `PaymentException.CardErrorNotAccepted` (code `1029`). If you use an exhaustive `when` on `PaymentException`, add a branch for this type.
 - `PaymentPreparationException` - These exceptions relate to the preparation and availability of the payment process. They indicate failures such as the unavailability of the payment function, issues during kernel setup, missing security-related data, and general checkout failures. These errors typically occur before or at the start of a transaction and prevent it from proceeding.
 - `AttestationException` - These exceptions represent errors related to the attestation process, which is crucial for ensuring the security and integrity of the payment environment. They include issues like enabled USB debugging, non secure device or network.
 - `TapToPayException.Unknown` - The Unknown exception represents an internal error that cannot be exposed externally. It acts as a fallback for unexpected or unclassified issues that occur within the SDK, ensuring sensitive or implementation-specific details are not leaked.
@@ -313,6 +337,8 @@ The base types are listed below, and each of these is further divided into more 
 |                                 | DeclinedOutcome             | 1025           | Card declined.                                            |
 |                                 | EmptyCandidatesList         | 1026           | No candidates available.                                  |
 |                                 | UnknownKernel               | 1027           | Unknown kernel error.                                     |
+|                                 | OnlinePinFailed             | 1028           | Online PIN verification failed.                           |
+|                                 | CardErrorNotAccepted        | 1029           | Presented card cannot be used after retry attempts.       |
 | **PaymentPreparationException** | PaymentAvailability         | 1101           | Payment availability issue.                               |
 |                                 | KernelPreparation           | 1102           | Error during kernel preparation.                          |
 |                                 | EmptyAntireplayData         | 1103           | Antireplay data is empty.                                 |
