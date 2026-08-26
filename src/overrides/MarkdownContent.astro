@@ -1,13 +1,13 @@
 ---
-import Default from "@astrojs/starlight/components/MarkdownContent.astro";
+import MarkdownContent from "@components/MarkdownContent.astro";
 ---
 
 {
   Astro.locals.starlightRoute.custom ? (
     <slot />
   ) : (
-    <Default>
+    <MarkdownContent>
       <slot />
-    </Default>
+    </MarkdownContent>
   )
 }

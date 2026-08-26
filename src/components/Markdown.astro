@@ -1,5 +1,6 @@
 ---
 import { markdownToHtml } from "satteri";
+import MarkdownContent from "@components/MarkdownContent.astro";
 
 interface Props {
   class?: string;
@@ -12,6 +13,6 @@ const slot = await Astro.slots.render("default");
 const { html } = markdownToHtml(slot);
 ---
 
-<div class:list={["sl-markdown-content", className]}>
+<MarkdownContent class={className}>
   <Fragment set:html={html} />
-</div>
+</MarkdownContent>

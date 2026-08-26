@@ -1,5 +1,6 @@
 ---
 import type { StarlightPageProps } from "@astrojs/starlight/props";
+import MarkdownContent from "@components/MarkdownContent.astro";
 import { getCollection, render } from "astro:content";
 import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
 
@@ -23,7 +24,9 @@ const posts = await getCollection("help");
           <details>
             <summary>{post.data.title}</summary>
             <div class="content">
-              <Content />
+              <MarkdownContent>
+                <Content />
+              </MarkdownContent>
             </div>
           </details>
         );

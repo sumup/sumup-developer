@@ -1,4 +1,5 @@
 ---
+import MarkdownContent from "@components/MarkdownContent.astro";
 import { CodeBlock, MultiCode } from "@components/Code";
 import Markdown from "@components/Markdown.astro";
 import type { ApiTopSection } from "@lib/openapi/routes";
@@ -72,14 +73,14 @@ const sectionAttrs = (id: ApiTopSection) =>
 <section id="sdks" {...sectionAttrs("sdks")}>
   <LRGrid class="sdks">
     <div>
-      <div class="info sl-markdown-content">
+      <MarkdownContent class="info">
         <SectionHeading as="h2" id="sdks-heading">SDKs</SectionHeading>
         <p>
           The SumUp SDKs reduce the amount of work required to use our REST
-          APIs. SumUp maintains SDKs for PHP, JavaScript, Python, Java, Go, Rust,
-          and .NET.
+          APIs. SumUp maintains SDKs for PHP, JavaScript, Python, Java, Go,
+          Rust, and .NET.
         </p>
-      </div>
+      </MarkdownContent>
       <SDKList />
     </div>
     <div>
@@ -167,7 +168,7 @@ uv add sumup`,
 
 <section id="authentication" {...sectionAttrs("authentication")}>
   <LRGrid>
-    <div class="info sl-markdown-content">
+    <MarkdownContent class="info">
       <SectionHeading as="h2" id="authentication-heading">
         Authentication
       </SectionHeading>
@@ -185,7 +186,7 @@ uv add sumup`,
         All API requests must be made over HTTPS and authenticated. Calls made
         over plain HTTP or calls without authentication will fail.
       </p>
-    </div>
+    </MarkdownContent>
     <div class="servers">
       <MultiCode
         data-pagefind-ignore="all"
@@ -266,7 +267,7 @@ let client = Client::default().with_authorization("sup_sk_MvxmLOl0...");`,
 
 <section id="errors" {...sectionAttrs("errors")}>
   <LRGrid>
-    <div class="info sl-markdown-content">
+    <MarkdownContent class="info">
       <SectionHeading as="h2" id="errors-heading"> Errors </SectionHeading>
       <p>
         Newer APIs use{" "}
@@ -381,7 +382,7 @@ let client = Client::default().with_authorization("sup_sk_MvxmLOl0...");`,
           </div>
         )
       }
-    </div>
+    </MarkdownContent>
     <div class="errors-panel api-docs-codeblock-stack">
       <CodeBlock
         data-pagefind-ignore="all"

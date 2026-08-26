@@ -1,20 +1,14 @@
 import {
-  Callout as CircuitCallout,
-  type CalloutColor,
-} from "@sumup-oss/circuit-ui";
-import {
   Confirm,
   Info,
   Notify,
   Sparkles,
   type IconComponentType,
 } from "@sumup-oss/icons";
-import type { ComponentProps, ReactNode } from "react";
-import styles from "./Callout.module.css";
+import type { HTMLAttributes, ReactNode } from "react";
+import type { CalloutType } from "./calloutTypes";
 
-type CalloutType = "note" | "tip" | "caution" | "success" | "promo";
-
-type Props = Omit<ComponentProps<typeof CircuitCallout>, "body" | "color"> & {
+type Props = HTMLAttributes<HTMLDivElement> & {
   children: ReactNode;
   type?: CalloutType;
 };
@@ -22,28 +16,36 @@ type Props = Omit<ComponentProps<typeof CircuitCallout>, "body" | "color"> & {
 const calloutConfig: Record<
   CalloutType,
   {
-    color: CalloutColor;
     icon: IconComponentType<"24">;
     iconLabel: string;
   }
 > = {
-  note: { color: "neutral", icon: Info, iconLabel: "Note" },
-  tip: { color: "promo", icon: Sparkles, iconLabel: "Tip" },
-  caution: { color: "alert", icon: Notify, iconLabel: "Caution" },
-  success: { color: "confirm", icon: Confirm, iconLabel: "Success" },
-  promo: { color: "promo", icon: Sparkles, iconLabel: "Promo" },
+  note: { icon: Info, iconLabel: "Note" },
+  tip: { icon: Sparkles, iconLabel: "Tip" },
+  caution: { icon: Notify, iconLabel: "Caution" },
+  success: { icon: Confirm, iconLabel: "Success" },
+  promo: { icon: Sparkles, iconLabel: "Promo" },
 };
 
-export default function Callout({ children, type = "note", ...props }: Props) {
+export default function Callout({
+  children,
+  className,
+  type = "note",
+  ...props
+}: Props) {
   const config = calloutConfig[type];
-  const className = [styles.callout, props.className].filter(Boolean).join(" ");
+  const classes = ["sumup-callout", `sumup-callout--${type}`, className]
+    .filter(Boolean)
+    .join(" ");
+  const Icon = config.icon;
 
   return (
-    <CircuitCallout
-      {...config}
-      {...props}
-      className={className}
-      body={children}
-    />
+    <div {...props} className={classes}>
+      <div className="sumup-callout__icon">
+        <Icon aria-hidden="true" size="24" />
+      </div>
+      <span className="visually-hidden">{config.iconLabel}</span>
+      <div className="sumup-callout__content">{children}</div>
+    </div>
   );
 }

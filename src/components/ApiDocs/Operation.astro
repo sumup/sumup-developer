@@ -2,10 +2,13 @@
 import { Badge, Tabs, TabItem } from "@astrojs/starlight/components";
 import Callout from "@components/content/Callout";
 import Markdown from "@components/Markdown.astro";
+import MarkdownContent from "@components/MarkdownContent.astro";
 import { formatSlug } from "@lib/helpers";
 import { resolveReference } from "@lib/openapi";
+import { getOperationDescriptionId } from "@lib/openapiContent";
 import { Headline, Body, Anchor } from "@sumup-oss/circuit-ui";
 import type { HTMLAttributes } from "astro/types";
+import { getEntry, render } from "astro:content";
 import type { OpenAPIV3_1 } from "openapi-types";
 import type {
   OperationObject,
@@ -26,6 +29,24 @@ interface Props extends HTMLAttributes<"section"> {
 }
 
 const { operation, coreObjects = [], ...props } = Astro.props;
+// OpenAPI descriptions are content entries so they use the same configured
+// Markdown pipeline as authored docs instead of a component-local parser.
+const descriptionEntry = operation.operationId
+  ? await getEntry(
+      "apiDescriptions",
+      getOperationDescriptionId(operation.operationId),
+    )
+  : undefined;
+
+if (operation.description && !descriptionEntry) {
+  throw new Error(
+    `Missing Markdown content entry for operation ${operation.operationId ?? "without an operationId"}`,
+  );
+}
+
+const Description = descriptionEntry
+  ? (await render(descriptionEntry)).Content
+  : undefined;
 
 const isParameterObject = (
   object: OpenAPIV3_1.ParameterObject | OpenAPIV3_1.ReferenceObject,
@@ -260,10 +281,10 @@ const formattedPermissions = (operation["x-permissions"] || [])
           )
         }
         {
-          operation.description && (
-            <div class="description">
-              <Markdown>{operation.description}</Markdown>
-            </div>
+          operation.description && Description && (
+            <MarkdownContent class="description">
+              <Description />
+            </MarkdownContent>
           )
         }
         {

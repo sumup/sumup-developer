@@ -4,7 +4,7 @@ import { pluginLineNumbers } from "@expressive-code/plugin-line-numbers";
 
 export default defineEcConfig({
   plugins: [pluginCollapsibleSections(), pluginLineNumbers()],
-  themes: ["github-dark-dimmed", "github-light-default"],
+  themes: ["github-dark-default", "github-light-default"],
   styleOverrides: {
     codeFontSize: "0.8rem",
     borderColor: "var(--cui-border-subtle)",

@@ -1,8 +1,11 @@
 ---
 import Callout from "@components/content/Callout";
 import Markdown from "@components/Markdown.astro";
+import MarkdownContent from "@components/MarkdownContent.astro";
 import { formatSlug } from "@lib/helpers";
+import { getTagDescriptionId } from "@lib/openapiContent";
 import type { HTMLAttributes } from "astro/types";
+import { getEntry, render } from "astro:content";
 import type { OperationObject, TagObject } from "src/types/openapi";
 import EndpointList from "./EndpointList";
 import LRGrid from "./LRGrid.astro";
@@ -28,6 +31,20 @@ const {
 } = Astro.props;
 
 const slug = formatSlug(name);
+// Tag descriptions are content entries so they use the configured Satteri
+// pipeline, matching operation descriptions and authored documentation.
+const descriptionEntry = await getEntry(
+  "apiDescriptions",
+  getTagDescriptionId(name),
+);
+
+if (description && !descriptionEntry) {
+  throw new Error(`Missing Markdown content entry for tag ${name}`);
+}
+
+const Description = descriptionEntry
+  ? (await render(descriptionEntry)).Content
+  : undefined;
 const [targetTag, targetOp] = (target || "").split("/");
 const tagIsTarget = !targetOp && targetTag === slug;
 const objectPagefindAttributes = tagIsTarget
@@ -80,7 +97,13 @@ const coreObjectSections = coreObjects.map((schema, index) => {
           </div>
         )
       }
-      <Markdown>{description}</Markdown>
+      {
+        description && Description && (
+          <MarkdownContent>
+            <Description />
+          </MarkdownContent>
+        )
+      }
     </div>
     {
       operations.length > 0 && (
