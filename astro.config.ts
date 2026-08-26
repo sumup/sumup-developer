@@ -9,6 +9,7 @@ import starlightLlmsTxt from "starlight-llms-txt";
 import { loadEnv } from "vite";
 import { readFile } from "node:fs/promises";
 import satteriExternalLinks from "./src/plugins/satteri/external-links";
+import satteriCallouts from "./src/plugins/satteri/callouts";
 
 import { defineConfig } from "astro/config";
 import type { HeadUserConfig } from "node_modules/@astrojs/starlight/schemas/head";
@@ -194,9 +195,11 @@ export default defineConfig({
   markdown: {
     processor: satteri({
       features: {
+        directive: true,
         gfm: true,
         smartPunctuation: true,
       },
+      mdastPlugins: [satteriCallouts],
       hastPlugins: [satteriExternalLinks],
     }),
   },
@@ -334,6 +337,7 @@ export default defineConfig({
         "./src/styles/theme-light.css",
         "./src/styles/starlight-vars.css",
         "./src/styles/utilities.css",
+        "./src/styles/callout.css",
       ],
       pagination: false,
       lastUpdated: true,

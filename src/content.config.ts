@@ -2,6 +2,7 @@ import { docsLoader } from "@astrojs/starlight/loaders";
 import { docsSchema } from "@astrojs/starlight/schema";
 import { glob } from "astro/loaders";
 import { defineCollection, z } from "astro:content";
+import { openapiDescriptionsLoader } from "./loaders/openapiDescriptions";
 
 const help = defineCollection({
   loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/help" }),
@@ -17,6 +18,22 @@ const changelog = defineCollection({
     tags: z.array(z.string()),
     publishedDate: z.date(),
   }),
+});
+
+const apiDescriptions = defineCollection({
+  loader: openapiDescriptionsLoader(),
+  schema: z.discriminatedUnion("kind", [
+    z.object({
+      kind: z.literal("tag"),
+      name: z.string(),
+    }),
+    z.object({
+      kind: z.literal("operation"),
+      name: z.string(),
+      method: z.string(),
+      path: z.string(),
+    }),
+  ]),
 });
 
 export const collections = {
@@ -38,4 +55,5 @@ export const collections = {
   }),
   help,
   changelog,
+  apiDescriptions,
 };

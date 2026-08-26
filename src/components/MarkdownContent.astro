@@ -1,0 +1,12 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import "@astrojs/starlight/style/markdown.css";
+
+type Props = HTMLAttributes<"div">;
+
+const { class: className, ...attrs } = Astro.props;
+---
+
+<div {...attrs} class:list={["sl-markdown-content", className]}>
+  <slot />
+</div>

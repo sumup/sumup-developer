@@ -1,0 +1,92 @@
+.sumup-callout {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  max-width: 100%;
+  padding: var(--cui-spacings-kilo) var(--cui-spacings-mega);
+  color: var(--cui-fg-normal);
+  background-color: var(--cui-bg-neutral);
+  border-radius: var(--cui-border-radius-kilo);
+}
+
+.sumup-callout--tip,
+.sumup-callout--promo {
+  background-color: var(--cui-bg-promo);
+}
+
+.sumup-callout--caution {
+  background-color: var(--cui-bg-warning);
+}
+
+.sumup-callout--success {
+  background-color: var(--cui-bg-success);
+}
+
+.sumup-callout__icon {
+  position: relative;
+  flex-grow: 0;
+  flex-shrink: 0;
+  align-self: flex-start;
+  color: var(--cui-fg-neutral);
+  line-height: 0;
+}
+
+.sumup-callout--tip .sumup-callout__icon,
+.sumup-callout--promo .sumup-callout__icon {
+  color: var(--cui-fg-promo);
+}
+
+.sumup-callout--caution .sumup-callout__icon {
+  color: var(--cui-fg-warning);
+}
+
+.sumup-callout--success .sumup-callout__icon {
+  color: var(--cui-fg-success);
+}
+
+.sumup-callout__content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+  max-width: 100%;
+  padding-left: var(--cui-spacings-mega);
+  font-size: var(--cui-body-m-font-size);
+  font-weight: var(--cui-font-weight-regular);
+  line-height: var(--cui-body-m-line-height);
+  letter-spacing: var(--cui-letter-spacing);
+}
+
+/* Starlight adds vertical spacing between all block siblings in prose. The icon
+ * and content are flex columns, so that generic spacing must not apply here. */
+.sumup-callout__icon + .sumup-callout__content {
+  margin-top: 0;
+}
+
+.sumup-callout__title {
+  margin: 0 0 var(--cui-spacings-bit);
+  font-weight: var(--cui-font-weight-semibold);
+}
+
+/* The title already owns the Circuit-sized gap before the callout body. */
+.sumup-callout__title + * {
+  margin-top: 0;
+}
+
+.sumup-callout__content > :first-child,
+.sumup-callout__content > .sl-markdown-content > :first-child {
+  margin-top: 0;
+}
+
+.sumup-callout__content > :last-child,
+.sumup-callout__content > .sl-markdown-content > :last-child {
+  margin-bottom: 0;
+}
+
+.sumup-callout :is(.expressive-code, .expressive-code .frame, pre) {
+  max-width: 100%;
+}
+
+.sumup-callout :is(.expressive-code .frame pre, pre) {
+  overflow-x: auto;
+}

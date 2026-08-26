@@ -3,7 +3,7 @@ import { getCollection, render } from "astro:content";
 import slugify from "@sindresorhus/slugify";
 import { Status, Body, Button, Anchor, Headline } from "@sumup-oss/circuit-ui";
 import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
-import MarkdownContent from "@astrojs/starlight/components/MarkdownContent.astro";
+import MarkdownContent from "@components/MarkdownContent.astro";
 import type { StarlightPageProps } from "@astrojs/starlight/props";
 
 const changelogDocs = await getCollection("changelog");
