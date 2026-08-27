@@ -6,7 +6,6 @@ sidebar:
 ---
 
 import { Steps, Tabs, TabItem } from '@astrojs/starlight/components';
-import Callout from '@components/content/Callout';
 import Image from '@components/content/Image.astro';
 
 
@@ -65,7 +64,7 @@ NSBluetoothAlwaysUsageDescription
 
 Check the [Sample App property list](https://github.com/sumup/sumup-ios-sdk/tree/master/SampleApp/SumUpSDKSampleApp/SumUpSDKSampleApp-Info.plist) for reference.
 
-<Callout>
+:::note
 You can provide localization by providing a localized [InfoPlist.strings](https://github.com/sumup/sumup-ios-sdk/tree/master/SampleApp/SumUpSDKSampleApp/en.lproj/InfoPlist.strings) file.
 
 ```txt
@@ -77,12 +76,11 @@ You can provide localization by providing a localized [InfoPlist.strings](https:
 ```
 
 For further information, see Apple's documentation on [NSLocationWhenInUseUsageDescription](https://developer.apple.com/documentation/bundleresources/information-property-list/nslocationwheninuseusagedescription) and [NSBluetoothAlwaysUsageDescription](https://developer.apple.com/documentation/bundleresources/information-property-list/nsbluetoothalwaysusagedescription).
-
-</Callout>
+:::
 
 ### Location Services Requirement
 
-<Callout type="caution">
+:::caution
 **Mandatory Location Access**
 
 For security, compliance, and fraud prevention, the SumUp SDK **requires active location services** to process any transaction.
@@ -93,7 +91,7 @@ If a user denies location permissions (e.g., selecting "Never" in the iOS settin
 * **Explicit Description:** Ensure your `NSLocationWhenInUseUsageDescription` clearly states that location is mandatory for processing card payments.
 * **Pre-flight Check:** We recommend checking the `CLLocationManager.authorizationStatus()` before calling the checkout method. If access is denied, guide the user to the system settings to enable it.
 * **User Guidance:** If you receive a General Error (50), verify the location permissions before retrying the transaction.
-</Callout>
+:::
 
 ## Fast-Track Implementation
 
@@ -129,13 +127,13 @@ Please consider the following when building Tap-to-Pay solutions, as Apple revie
 The SumUp iOS SDK is provided as an XCFramework `SumUpSDK.xcframework` that contains
 the headers and bundles containing resources such as images and localizations. You can add the SDK binary manually or use a package manager such as Swift Package Manager or Cocoapods.
 
-<Callout type="caution">
+:::caution
 **Cocoapods support ending**
 
 Cocoapods will be making their registry service read-only after November 2026; because of this new releases of the SDK will not be published via Cocoapods after October 31st 2026.
 
 We encourage you to migrate your app to use Swift Package Manager before this deadline in order to be able to update to new versions as needed. Existing SDK versions on Cocoapods should not be affected.
-</Callout>
+:::
 
 Please follow the relevant instructions below to prepare your project:
 
@@ -857,14 +855,14 @@ There are three modes for tipping:
 1. No tipping. Leave `tipAmount` set to nil when creating the `SMPCheckoutRequest` object.
 2. Programmatic tipping via the `tipAmount` property. Ask the user in your own UI for an appropriate tip amount and then set the `tipAmount` property on `SMPCheckoutRequest`. This will be added to the total amount, but will be displayed to the user separately during checkout.
 3. Tip on Card Reader. TCR prompts the customer directly on the card reader's display for a tip amount, rather than prompting for a tip amount on the iPhone or iPad display.
-    <Callout type="caution">
+    :::caution
     Not all card readers support this feature. To find out if the feature is supported for the last-used card reader, you should always check `SMPSumUpSDK.isTipOnCardReaderAvailable`. You must handle this case yourself in order to avoid no tip from being prompted. To do this:
 
     Before calling `SMPSumUpSDK checkoutWithRequest:fromViewController:completion:`, check `SMPSumUpSDK.isTipOnCardReaderAvailable`:
 
     - If NO, you should prompt the user for a tip amount yourself and set tipAmount on `SMPCheckoutRequest`
     - If YES, you may set `tipOnCardReaderIfAvailable` on `SMPCheckoutRequest` to YES. Do not prompt the user for a tip amount or set tipAmount if you do this.
-    </Callout>
+    :::
 </Steps>
 
 
@@ -1254,10 +1252,10 @@ This is because a payment card may contain multiple applications linked with dif
 
 For countries that do not require credit/debit selection, you can set the `processAs` property of `SMPCheckoutRequest` to `SMPProcessAsNotSet`.
 
-<Callout type="caution">
+:::caution
 * For countries that require credit/debit selection, using `SMPProcessAsNotSet` will cause the transaction to fail.
 * Not all countries support `processAs`. Setting `processAs` for unsupported countries may cause the transaction to fail. Currently supported countries are: Brazil, Chile and Colombia.
-</Callout>
+:::
 
 To tell if the current country requires `processAs` to be set to a value other than `SMPProcessAsNotSet`, check `SMPSumUpSDK.isProcessAsRequired`.
 
@@ -1265,9 +1263,9 @@ If needed, your app should set the `processAs` property of `SMPCheckoutRequest` 
 
 SDK 6.0 and earlier presented two screens during the checkout that prompted the user to select Credit or Debit, and if Credit, to also choose the number of installments. This behavior was previously available via `SMPProcessAsPromptUser`.
 
-<Callout type="caution">
+:::caution
 `SMPProcessAsPromptUser` is deprecated. A future SDK version will treat it as `SMPProcessAsNotSet`, causing the transaction to fail if the merchant's country requires credit/debit selection. It is not supported for Tap to Pay on iPhone payments and will produce an error. Migrate to the programmatic approach above (`SMPProcessAsCredit` / `SMPProcessAsDebit`).
-</Callout>
+:::
 
 #### Installments
 

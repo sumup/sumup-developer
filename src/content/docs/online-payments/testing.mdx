@@ -6,7 +6,6 @@ sidebar:
 ---
 
 import { Steps } from "@astrojs/starlight/components";
-import Callout from "@components/content/Callout";
 import Table from "@components/content/Table";
 
 Testing your online payments integration is crucial before going live. SumUp provides sandbox merchant accounts and a comprehensive set of test cards to simulate various payment scenarios, including different 3D Secure authentication flows.
@@ -23,16 +22,16 @@ Before you can test online payments, you need to create a sandbox merchant accou
 
 </Steps>
 
-<Callout type="note">
+:::note
   If you don't have a sandbox account yet, [sign up for a developer
   account](https://me.sumup.com/signup?signup_intent=developer). This starts you with a
   sandbox merchant account.
-</Callout>
+:::
 
-<Callout type="note">
+:::note
   Sandbox merchant accounts **do not** process transactions with real funds. All
   transactions are simulated for testing purposes only.
-</Callout>
+:::
 
 ## How to Use Test Cards
 
@@ -237,9 +236,9 @@ Once you've thoroughly tested your integration with your sandbox merchant accoun
 3. Process a small real transaction to verify everything works as expected
 4. Monitor your first transactions closely to ensure proper payment processing
 
-<Callout type="caution">
+:::caution
   Remember to switch from your sandbox merchant account to your live merchant
   account before accepting real payments from customers.
-</Callout>
+:::
 
 [^minor_units]: [Minor unit fractions](https://en.wikipedia.org/wiki/ISO_4217#Minor_unit_fractions) refer to the smallest denomination of a currency, which is used for representing transaction amounts. For example, if a currency has two decimal places, like USD (dollars and cents), the minor unit is the cent, and an amount is represented as a whole number of cents

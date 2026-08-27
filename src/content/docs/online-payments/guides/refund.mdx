@@ -6,7 +6,6 @@ sidebar:
 ---
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
-import Callout from '@components/content/Callout';
 import Multicode from '@components/content/Multicode.astro';
 
 ## Overview
@@ -30,19 +29,17 @@ Here are the things that you need in order to complete the steps in this guide:
 - Valid access token obtained with the [Authorization code flow](/tools/authorization/oauth/#authorization-code-flow).
 - You have processed a checkout and you have the checkout ID.
 
-<Callout type="note">
-
+:::note
 Transactions are associated with active merchant user accounts. As a result, you _cannot_ use an access token obtained via the [Client credentials flow](/tools/authorization/oauth/#client-credentials-flow) to complete the steps in this guide.
-
-</Callout>
+:::
 
 ## Steps
 
 ### 1. Look up a Transaction ID
 
-<Callout type="note">
+:::note
 If you already have the ID of the transaction you want to refund, you can skip this step and continue with [Step 2](#2-refund-a-transaction).
-</Callout>
+:::
 
 1. Make a GET request to the `https://api.sumup.com/v0.1/checkouts/{id}` endpoint, where the value of the `{id}` path parameter is the identifier of the checkout resource.
 

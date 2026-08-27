@@ -5,8 +5,6 @@ sidebar:
   order: 12
 ---
 
-import Callout from "@components/content/Callout";
-
 The Swift Checkout SDK enables you to offer a complete and fast checkout experience to your end users, allowing you to collect payment, address, and contact information with a click of a button. Swift Checkout SDK allows for Google Pay and Apple Pay setup.
 
 ## Prerequisites
@@ -16,9 +14,9 @@ The Swift Checkout SDK enables you to offer a complete and fast checkout experie
 
 Currently available payment methods through Swift Checkout SDK:
 
-<Callout type="caution">
+:::caution
   For pages that have a strict Content Security Policy (CSP) visit the [Handling CSP](/online-payments/checkouts/card-widget/#handling-strict-content-security-policies) instructions.
-</Callout>
+:::
 
 - [Apple Pay](#apple-pay-setup)
 - [Google Pay](#google-pay-setup)
@@ -163,9 +161,9 @@ if (someCustomCheck()) {
 }
 ```
 
-<Callout type="note">
+:::note
   The `abort` method should only be used if the payment request has not yet been processed. Attempting to cancel a payment request after it has been processed may result in unexpected behavior.
-</Callout>
+:::
 
 #### `onShippingAddressChange`
 
@@ -186,13 +184,13 @@ paymentRequest.onShippingAddressChange(async (newShippingAddress) => {
 });
 ```
 
-<Callout type="note">
+:::note
 To protect user privacy, browsers might hide non-essential and sensitive details from the shipping address, and only provide data required for shipping cost estimation.
 
 The extent of information provided can vary based on the chosen browser and payment method, leading to certain fields being absent. For example, the displayed shipping address might be limited to the city, state, country, and ZIP code.
 
 The full shipping address is disclosed only in the `PaymentResponse` object after the payment is authorized by the account holder.
-</Callout>
+:::
 
 #### `onShippingOptionsChange`
 
@@ -258,9 +256,9 @@ Use the following labels depending on the checkout context:
 
 Label rendering depends on wallet and browser support. For example, `label: "book"` can be used to show booking-oriented Apple Pay and Google Pay buttons where supported. On Google Pay, `buy`, `pay`, and `plain` can also show the card brand and last four digits when the user's payment method is an eligible card.
 
-<Callout type="caution">
+:::caution
   Apple Pay has additional requirements for donation flows. Before using `label: "donate"` with Apple Pay, make sure your organization is approved to accept donations with Apple Pay and use the donation-specific Apple Pay setup described in Apple’s [Apple Pay for Donations](https://developer.apple.com/apple-pay/nonprofits/) guide.
-</Callout>
+:::
 
 #### Rendering Buttons for Available Payment Methods
 

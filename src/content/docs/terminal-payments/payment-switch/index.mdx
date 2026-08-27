@@ -6,19 +6,15 @@ sidebar:
   order: 20
 ---
 
-import Callout from '@components/content/Callout';
-
 The SumUp API Payment Switch is a lightweight integration where your app opens the SumUp app to request and execute a payment.
 
 This approach is useful when you want a simpler mobile handoff instead of embedding the native SDK. Your app starts the transaction, the SumUp app handles the checkout flow, and then control returns to your app with the payment result.
 
-<Callout type="caution">
-
+:::caution
 Payment Switch is a legacy fallback integration and is no longer actively being developed.
 
 Use it only when you cannot use the native [Terminal SDKs](/terminal-payments/sdks/) or the [Cloud API](/terminal-payments/cloud-api/).
-
-</Callout>
+:::
 
 The Payment Switch supports the same core handoff on both platforms:
 

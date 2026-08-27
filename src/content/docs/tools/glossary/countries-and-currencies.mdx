@@ -5,7 +5,6 @@ sidebar:
   order: 30
 ---
 
-import Callout from "@components/content/Callout";
 import SearchableTable from "@components/content/SearchableTable";
 
 A SumUp merchant account has a default currency based on the country where the
@@ -13,12 +12,12 @@ merchant is registered. When an API request requires a currency, use the
 merchant account's `default_currency` in the format defined by
 [ISO 4217](https://www.iso.org/iso-4217-currency-codes.html).
 
-<Callout type="caution">
+:::caution
   This table describes merchant-account markets and currencies, not universal
   product availability. An API, SDK, payment method, or card reader might
   support fewer countries or currencies. Check the relevant product guide and
   API schema before building an integration.
-</Callout>
+:::
 
 ## Supported countries and currencies
 

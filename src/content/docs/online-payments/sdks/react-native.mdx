@@ -7,7 +7,6 @@ sidebar:
 ---
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
-import Callout from '@components/content/Callout';
 import Image from '@components/content/Image.astro';
 
 SumUp's React Native Payment SDK provides a payment sheet that is displayed on top of your app. It collects user payment details, confirms a payment, and saves a card for future usage. Moreover, it allows a user to use Apple Pay or Google Pay to process payments.
@@ -558,11 +557,9 @@ await initPaymentSheet({
 
 ### Use Apple Pay
 
-<Callout type="caution">
-
+:::caution
 The backend doesn't process payments with Apple Pay and an error message will be displayed after attempting to pay with it.  This is a known issue and a fix is being worked on.
-
-</Callout>
+:::
 
 #### Register for an Apple Merchant ID
 

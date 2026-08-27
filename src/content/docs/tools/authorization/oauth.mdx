@@ -6,7 +6,6 @@ sidebar:
 ---
 
 import { Steps } from '@astrojs/starlight/components';
-import Callout from '@components/content/Callout';
 import Image from '@components/content/Image.astro';
 
 OAuth 2.0 lets your application request permission to act on behalf of other SumUp users and access their merchant accounts. It follows the industry-standard OAuth 2.0 protocol and is the right choice for integrations where your application needs delegated access to a merchant’s data or needs to perform actions on their behalf.
@@ -23,11 +22,9 @@ SumUp supports two OAuth 2.0 flows:
 - The [authorization code flow](#authorization-code-flow) when an end user grants your application access.
 - The [client credentials flow](#client-credentials-flow) when your application authenticates as itself.
 
-<Callout>
-
+:::note
 SumUp strongly recommends that you rely on [reputable existing libraries](https://oauth.net/code/) when implementing OAuth 2.0 authorization.
-
-</Callout>
+:::
 
 ## Authorization Flows
 
@@ -44,9 +41,9 @@ Use this flow when your application has a backend that can keep the client secre
 1. Redirect the user to `https://api.sumup.com/authorize` with the required parameters.
 2. SumUp shows an authorization prompt describing your application and the scopes requested.
 
-   <Callout type="caution">
+   :::caution
    If the user denies the request, SumUp sends an error response to your redirect URI and does not issue an authorization code.
-   </Callout>
+   :::
 3. After the user approves, SumUp redirects to your **Redirect URI** with an authorization code and the original `state`.
 4. Your application verifies the returned `state` and exchanges the authorization code for tokens by calling the token endpoint described below.
 5. Use the `access_token` in the `Authorization: Bearer` header when calling SumUp APIs.
@@ -145,16 +142,14 @@ Scopes restrict what your application may do on behalf of the merchant. Request 
 | `payments`*             | no      | feature      | Create and process payment checkouts. Requires manual verification by SumUp.              |
 | `payment_instruments`*  | no      | feature      | Save customers and tokenize their payment cards. Requires manual verification by SumUp.   |
 
-<Callout type="caution">
-
+:::caution
 *SumUp manually verifies requests for the following scopes:
 
 - `payments` – required to create and process payments.
 - `payment_instruments` – required to store customer data and tokenize cards.
 
 [Contact us](/contact) to request those scopes for your application.
-
-</Callout>
+:::
 
 ## Client Credentials Flow
 
@@ -205,11 +200,9 @@ To integrate an external application with SumUp, register an OAuth application a
 
    Select **Save** to generate the credentials. The **Client secrets** section lists each credential with its name, application type, and client ID.
 
-   <Callout type="note">
-
+   :::note
    You can register as many client credentials as you need. Repeat this step to create additional ones.
-
-   </Callout>
+   :::
 
 4. After creation, credentials appear in the **Client credentials** section of your OAuth application.
 
@@ -228,11 +221,9 @@ To integrate an external application with SumUp, register an OAuth application a
    }
    ```
 
-   <Callout type="note">
-
+   :::note
    Store client secrets securely and never expose them publicly. If you suspect a secret was compromised, [contact us](/contact) immediately.
-
-   </Callout>
+   :::
 
 </Steps>
 

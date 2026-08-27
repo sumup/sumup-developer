@@ -7,8 +7,6 @@ sidebar:
 icon: alternative_payment_method
 ---
 
-import Callout from '@components/content/Callout';
-
 Alternative Payment Methods (APMs) provide alternatives to standard card payment schemes. They offer familiar and frictionless payment experiences to your customers, while making you stand out from your competitors offering only traditional payment experiences.
 
 APMs have completely transformed how we pay online. For example, in the Netherlands more than half of the consumers use iDeal to pay online merchandise.
@@ -39,26 +37,24 @@ As a **sole trader**, APMs are automatically enabled for your merchant account a
 
 As with any other legal type, you must request activation from our support team or via our [contact form here](/contact), providing your merchant ID (MXXXXX). Our team will onboard your merchant account and grant access to the APMs applicable to your business location. Once your request is processed, APMs become available within [Payment Links](https://sumup.co.uk/payment-links/), [Invoices](https://sumup.co.uk/invoices), and [Online Store](https://sumup.co.uk/online-store/).
 
-<Callout type="note">
-
+:::note
 At this time APMs are not available in our SumUp plugins.
-
-</Callout>
+:::
 
 ## Integration
 
 You can offer APMs through a number of approaches:
 
 - Through the [SumUp Payment Widget](/online-payments/checkouts/card-widget). To make APM payments successful, you must always set a `redirect_url` upon [checkout creation](/api/checkouts/create). Beyond that step, the SumUp Payment Widget will handle the rest.
-<Callout type="note">
+:::note
   Please note that Google Pay [Terms of Service](https://payments.developers.google.com/terms/sellertos) are applied to all Google Pay transactions via SumUp Payment Widget
-</Callout>
+:::
 - [API Integrations](/online-payments/apm/integration-guide/)
 - Through the [Swift Checkout SDK](/online-payments/checkouts/swift-checkout/)
 - Direct Integration:
   - [Apple Pay](/online-payments/apm/apple-pay)
   - [Google Pay](/online-payments/apm/google-pay)
 
-<Callout type="caution">
+:::caution
 [Apple Pay](/online-payments/apm/apple-pay) and [Google Pay](/online-payments/apm/google-pay) direct integrations require domain verification in order to be implemented successfully.
-</Callout>
+:::

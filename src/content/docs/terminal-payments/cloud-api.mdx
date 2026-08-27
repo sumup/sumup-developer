@@ -6,17 +6,14 @@ sidebar:
 ---
 
 import { Steps, Tabs, TabItem } from '@astrojs/starlight/components';
-import Callout from '@components/content/Callout';
 import Video from '@components/content/Video.astro';
 import SoloScreen from '@components/content/SoloScreen.astro';
 
 The Cloud API lets you start a transaction from a Point of Sale (POS) running on any platform (Windows, iOS, Linux, Android, Web-based, etc.) capable of sending HTTPS requests and complete that transaction via a Solo reader.
 
-<Callout type="tip">
-
+:::tip
 You can start building with the Cloud API before you order or receive a physical Solo reader. Use [Virtual Solo](https://virtual-solo.sumup.com) together with a [sandbox merchant account](/terminal-payments/quickstart/#sandbox-merchant-account) to test the pairing and checkout flow first, then switch to a physical reader later to validate hardware-specific behavior. See [Solo Virtual Terminal](#solo-virtual-terminal) for the supported limitations.
-
-</Callout>
+:::
 
 Key advantages include:
 
@@ -94,12 +91,10 @@ The Cloud API pairing process is only available for logged-out users. If you're 
 
 To initiate a payment on the Solo card reader, it must be enrolled with the merchant account. This enrollment, called reader pairing, starts on the card reader by generating a pairing code and finishes when your device completes a pairing request using the Cloud API with that code. Both your application and Solo reader must be connected to the internet (not necessarily the same network).
 
-<Callout type="note">
-
+:::note
 The pairing process has an expiration time of 5 minutes, if any issue occurs, the
 process must be restarted.
-
-</Callout>
+:::
 
 1. Turn on the Solo card reader.
 2. Make sure you're not logged in. [Log out from your Solo card reader](#log-out-of-solo) if you are.
@@ -292,11 +287,9 @@ When `status` is `failed`, the payload includes an additional `failure_reason` f
 
 Treat the value as free-form text: do not match on exact strings, as new reasons can be introduced at any time.
 
-<Callout type="note">
-
+:::note
 `failure_reason` is only sent for failed transactions. It is omitted from the payload entirely—rather than sent as `null`—for successful transactions, and when no reason is available.
-
-</Callout>
+:::
 
 ### Terminate Transaction
 

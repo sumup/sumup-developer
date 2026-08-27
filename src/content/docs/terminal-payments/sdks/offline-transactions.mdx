@@ -6,20 +6,19 @@ sidebar:
 ---
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
-import Callout from '@components/content/Callout';
 import Confirm from '@components/content/Confirm.astro';
 
-<Callout type="note">
+:::note
 Offline Transactions is not enabled by default. Your organization must complete an opt-in process with the SumUp Integrations team and accept the related terms before using it.
-</Callout>
+:::
 
 Offline Transactions let merchants continue accepting card payments when internet connectivity is unavailable or unreliable. In this store-and-forward flow, card data is captured and cached securely on the device, then uploaded later for processing and authorization.
 
 The feature is available for the [Android SDK](/terminal-payments/sdks/android-sdk/) and [iOS SDK](/terminal-payments/sdks/ios-sdk/). It is not available for Tap to Pay.
 
-<Callout type="caution">
+:::caution
 Offline transactions are provisionally approved on device without real-time authorization. The merchant bears the risk for transactions that are later declined during reconciliation.
-</Callout>
+:::
 
 ## Before You Begin
 
@@ -120,9 +119,9 @@ Offline sessions are explicit on both platforms.
 
 Once an offline session starts, subsequent payments are attempted as offline transactions until the session is ended.
 
-<Callout type="note">
+:::note
 The first offline transaction binds the session to the reader serial number. If the merchant switches readers mid-session, stop the session and start a new one with the new reader.
-</Callout>
+:::
 
 ## Offline Window
 

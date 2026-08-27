@@ -5,8 +5,6 @@ sidebar:
   order: 6
 ---
 
-import Callout from "@components/content/Callout";
-
 3D Secure (3DS) lets a card issuer authenticate a cardholder during an online card payment. SumUp supports EMV 3DS and starts authentication when it is required for the transaction.
 
 Your integration must support the [two primary EMV 3DS flows](https://www.emvco.com/dynamic/emv-3-d-secure-whitepaper-v2/introduction/):
@@ -14,11 +12,9 @@ Your integration must support the [two primary EMV 3DS flows](https://www.emvco.
 - **Frictionless flow:** The issuer completes its assessment without asking the customer to take action.
 - **Challenge flow:** The issuer asks the customer to verify the payment, for example in their banking app or with a one-time passcode.
 
-<Callout type="note">
-
+:::note
 You cannot determine whether a customer will be challenged. SumUp, the card scheme, and the issuer evaluate the payment and applicable regulatory requirements. Always handle an authentication step when SumUp returns one.
-
-</Callout>
+:::
 
 ## 3D Secure and Strong Customer Authentication
 
@@ -50,11 +46,9 @@ Choose Hosted Checkout for a SumUp-hosted payment page or the Payment Widget for
 5. The customer returns to your `redirect_url` after the external flow finishes.
 6. Your backend [retrieves the checkout](/api/checkouts/get) and uses its status as the source of truth.
 
-<Callout type="caution">
-
+:::caution
 Reaching the `redirect_url`, receiving a frontend callback, or completing a challenge does not prove that the payment succeeded. Fulfill the order only after your backend retrieves the checkout and confirms that its status is `PAID`.
-
-</Callout>
+:::
 
 ## Frictionless and challenge flows
 
@@ -79,11 +73,9 @@ Your application must allow the customer to:
 
 The [EU regulatory technical standards for SCA](https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32018R0389) include exemptions intended to reduce unnecessary customer friction. The issuer always makes the final authentication decision and can request a challenge even when a payment appears to qualify for an exemption.
 
-<Callout type="note">
-
+:::note
 The SumUp Checkouts API does not expose a merchant-selectable SCA exemption parameter. Do not base your integration on a specific exemption being applied. Build it to handle both frictionless and challenge outcomes for every customer-initiated card payment.
-
-</Callout>
+:::
 
 Common exemption categories include:
 

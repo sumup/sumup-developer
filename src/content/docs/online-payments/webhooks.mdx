@@ -5,8 +5,6 @@ sidebar:
   order: 6
 ---
 
-import Callout from '@components/content/Callout';
-
 Webhooks are a convenient approach to notify an application about relevant events that have taken place within another application.
 
 The event is similar to one in real-life, where you’re awaiting your favorite item to restock in a shop and ask a representative to notify you once it’s back. In this scenario, SumUp plays the role of the shop, the representative is the [SumUp APIs](/api) and the update seeker is your application.
@@ -23,11 +21,9 @@ Webhooks are delivered in the form of a HTTP POST request, to which your applica
 
 Your application should return a valid, empty response with any `2xx` status code. Any response other than a `2xx` is treated as erroneous.
 
-<Callout type="note">
-
+:::note
 After receiving a webhook call, your application must **always** verify if the event really took place, by calling a relevant SumUp's API.
-
-</Callout>
+:::
 
 Here's a sample of the webhook payload:
 
