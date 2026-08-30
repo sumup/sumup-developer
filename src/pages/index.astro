@@ -1,303 +1,1005 @@
 ---
+import { getCollection } from "astro:content";
+
+import Brands from "@components/Landing/Brands.astro";
+import PaymentScenes from "@components/Landing/PaymentScenes.astro";
+import LinkButton from "@components/Landing/LinkButton.astro";
 import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
 import type { StarlightPageProps } from "@astrojs/starlight/props";
-import Brands from "@components/Landing/Brands.astro";
-import { Headline, ListItem } from "@sumup-oss/circuit-ui";
 import {
-  Globe,
   Apps,
   CardIn,
-  VirtualTerminal,
-  Code,
+  Code as CodeIcon,
   Customise,
   File,
-  InterestOnBalance,
+  Globe,
+  History,
   Key,
-  NoCosts,
   Play,
   SecurePayments,
   Sparkles,
+  VirtualTerminal,
 } from "@sumup-oss/icons";
+
+const latestUpdates = (await getCollection("changelog"))
+  .sort(
+    (a, b) => b.data.publishedDate.valueOf() - a.data.publishedDate.valueOf(),
+  )
+  .slice(0, 3);
+
+const dateFormatter = new Intl.DateTimeFormat("en", {
+  day: "numeric",
+  month: "short",
+  year: "numeric",
+});
+
+const products = [
+  {
+    variant: "online",
+    icon: Globe,
+    title: "Online payments",
+    description:
+      "Accept cards and local payment methods with hosted, embedded, or mobile checkout experiences.",
+    links: [
+      {
+        icon: Customise,
+        label: "Compare checkouts",
+        href: "/online-payments/checkouts/",
+      },
+      {
+        icon: Globe,
+        label: "Browse payment methods",
+        href: "/online-payments/payment-methods/",
+      },
+      {
+        icon: SecurePayments,
+        label: "Test payment flows",
+        href: "/online-payments/testing/",
+      },
+    ],
+    cta: { label: "Start online", href: "/online-payments/" },
+  },
+  {
+    variant: "terminal",
+    icon: CardIn,
+    title: "In-person payments",
+    description:
+      "Add card-present payments to mobile apps, kiosks, and point-of-sale systems with SumUp readers.",
+    links: [
+      {
+        icon: CodeIcon,
+        label: "Explore mobile SDKs",
+        href: "/terminal-payments/sdks/",
+      },
+      {
+        icon: VirtualTerminal,
+        label: "Use the Cloud API",
+        href: "/terminal-payments/cloud-api/",
+      },
+      {
+        icon: Play,
+        label: "Run your first payment",
+        href: "/terminal-payments/quickstart/",
+      },
+    ],
+    cta: { label: "Explore in-person", href: "/terminal-payments/" },
+  },
+];
+
+const quickstartSteps = [
+  {
+    title: "Create a sandbox",
+    description: "Get a test merchant account in Developer Settings.",
+    label: "Open Developer Settings",
+    href: "https://me.sumup.com/settings/developer?tab=sandboxes",
+  },
+  {
+    title: "Get credentials",
+    description: "Choose an API key or OAuth flow for your integration.",
+    label: "Set up authorization",
+    href: "/tools/authorization/",
+  },
+  {
+    title: "Create a checkout",
+    description: "Send an API request and open the hosted payment page.",
+    label: "Follow the guide",
+    href: "/online-payments/checkouts/hosted-checkout/",
+  },
+];
+
+const toolkitItems = [
+  {
+    icon: File,
+    title: "API reference",
+    description: "Endpoints, schemas, responses, and errors",
+    href: "/api/",
+  },
+  {
+    icon: Apps,
+    title: "Server SDKs",
+    description: "Official libraries for popular languages",
+    href: "/tools/sdks/",
+  },
+  {
+    icon: Key,
+    title: "Authorization",
+    description: "API keys, OAuth, and affiliate keys",
+    href: "/tools/authorization/",
+  },
+  {
+    icon: SecurePayments,
+    title: "Testing",
+    description: "Sandbox accounts, test cards, and 3DS",
+    href: "/online-payments/testing/",
+  },
+  {
+    icon: Sparkles,
+    title: "Build with AI",
+    description: "Docs context and tools for coding agents",
+    href: "/tools/llms/",
+  },
+  {
+    icon: History,
+    title: "Changelog",
+    description: "Recent platform and SDK updates",
+    href: "/changelog/",
+  },
+];
+
+const productionLinks = [
+  {
+    icon: SecurePayments,
+    title: "Test safely",
+    description: "Success, failure, and 3D Secure scenarios",
+    href: "/online-payments/testing/",
+  },
+  {
+    icon: Key,
+    title: "Protect credentials",
+    description: "Keep secret keys on your server",
+    href: "/tools/authorization/api-keys/",
+  },
+  {
+    icon: Apps,
+    title: "Handle updates",
+    description: "Confirm asynchronous payment states",
+    href: "/online-payments/webhooks/",
+  },
+];
 
 const props = {
   frontmatter: {
     title: "SumUp Developer Portal",
     description:
-      "Welcome to SumUp portal for developers. We’ve got everything you need to build your own payment acceptance solutions for your business.",
+      "APIs, SDKs, and prebuilt experiences for accepting payments online and in person with SumUp.",
     tableOfContents: false,
     hero: {
-      title: "SumUp developer platform",
+      title: "Build payments with SumUp",
     },
   },
+  hasSidebar: false,
   custom: true,
 } as StarlightPageProps;
 ---
 
 <StarlightPage {...props}>
-  <main>
-    <section>
-      <section>
-        <Headline as="h2" className="header">Accept Online Payments</Headline>
-        <div class="button-links">
-          <ListItem
-            href="/online-payments/"
-            variant="navigation"
-            label="Accept Your First Online Payment"
-            details="Create and verify a checkout with a sandbox merchant account."
-            leadingComponent={Play}
+  <div class="landing-page">
+    <div class="hero-band">
+      <header class="hero" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <h1 id="hero-title" data-pagefind-meta="title">
+            Build payments with SumUp
+          </h1>
+          <p class="hero-description">
+            APIs, SDKs, and prebuilt experiences for accepting payments online
+            and in person.
+          </p>
+          <div class="hero-actions">
+            <LinkButton href="/online-payments/">Start online</LinkButton>
+            <LinkButton href="/terminal-payments/" variant="secondary">
+              Explore in-person
+            </LinkButton>
+          </div>
+          <a class="text-link" href="/api/">
+            Browse the API reference <span aria-hidden="true">→</span>
+          </a>
+        </div>
+
+        <div class="hero-visual">
+          <!-- Brand Resources and Assets: Sky graphic / Static v.01 -->
+          <img
+            class="hero-sky"
+            src="/img/landing/sumup-sky-v01.webp"
+            alt=""
+            width="960"
+            height="640"
+            fetchpriority="high"
+            decoding="async"
           />
-          <ListItem
-            variant="navigation"
-            leadingComponent={Customise}
-            href="/online-payments/checkouts/"
-            label="Choose a Checkout Experience"
-            details="Compare hosted, embedded, web, and mobile checkout options."
-          />
-          <ListItem
-            variant="navigation"
-            leadingComponent={Globe}
-            href="/online-payments/payment-methods/"
-            label="Offer More Payment Methods"
-            details="Discover the methods available to a merchant and checkout."
-          />
-          <ListItem
-            variant="navigation"
-            leadingComponent={SecurePayments}
-            href="/online-payments/testing/"
-            label="Test Your Integration"
-            details="Exercise successful, failed, and 3D Secure payment flows."
-          />
+
+          <PaymentScenes />
+        </div>
+      </header>
+    </div>
+
+    <div class="content-shell">
+      <section class="section" aria-labelledby="choose-path">
+        <div class="section-heading">
+          <h2 id="choose-path">One platform, wherever customers pay</h2>
+          <p>
+            Start with a prebuilt experience or use the APIs and SDKs to shape
+            the flow around your product.
+          </p>
+        </div>
+
+        <div class="product-grid">
+          {
+            products.map(
+              ({ variant, icon: Icon, title, description, links, cta }) => (
+                <article class="product-card">
+                  <div class="product-card-header">
+                    <span class:list={["icon-shell", `${variant}-icon`]}>
+                      <Icon aria-hidden="true" />
+                    </span>
+                    <h3>{title}</h3>
+                  </div>
+                  <p>{description}</p>
+                  <ul>
+                    {links.map(({ icon: LinkIcon, label, href }) => (
+                      <li>
+                        <LinkIcon aria-hidden="true" />
+                        <a href={href}>{label}</a>
+                      </li>
+                    ))}
+                  </ul>
+                  <a class="card-cta" href={cta.href}>
+                    {cta.label} <span aria-hidden="true">→</span>
+                  </a>
+                </article>
+              ),
+            )
+          }
         </div>
       </section>
-      <section>
-        <Headline as="h2" className="header">Accept In-Person Payments</Headline
-        >
-        <div class="button-links">
-          <ListItem
-            variant="navigation"
-            leadingComponent={CardIn}
-            href="/terminal-payments/"
-            label="Choose an In-Person Integration"
-            details="Compare mobile SDKs, the Cloud API, and legacy app handoff."
-          />
-          <ListItem
-            variant="navigation"
-            leadingComponent={Play}
-            href="/terminal-payments/quickstart/"
-            label="Accept Your First In-Person Payment"
-            details="Prepare a merchant account, device, and integration for testing."
-          />
-          <ListItem
-            variant="navigation"
-            leadingComponent={Code}
-            href="/terminal-payments/sdks/"
-            label="Build a Native Mobile Flow"
-            details="Accept payments in Android and iOS apps with SumUp SDKs."
-          />
-          <ListItem
-            variant="navigation"
-            leadingComponent={VirtualTerminal}
-            href="/terminal-payments/cloud-api/"
-            label="Connect a Standalone Reader"
-            details="Control a supported reader from a server or any platform."
-          />
+
+      <section class="section journey-section" aria-label="Integration journey">
+        <div class="journey-grid">
+          <article class="journey-panel" aria-labelledby="first-payment">
+            <h3 id="first-payment">From sandbox to first payment</h3>
+            <p class="journey-description">
+              Build and test a complete checkout without moving real money.
+            </p>
+
+            <ol class="steps">
+              {
+                quickstartSteps.map(
+                  ({ title, description, label, href }, index) => (
+                    <li>
+                      <span class="step-number">{index + 1}</span>
+                      <div>
+                        <h4>{title}</h4>
+                        <p>{description}</p>
+                        <a href={href}>
+                          {label}{" "}
+                          <span aria-hidden="true">
+                            {href.startsWith("http") ? "↗" : "→"}
+                          </span>
+                        </a>
+                      </div>
+                    </li>
+                  ),
+                )
+              }
+            </ol>
+          </article>
+
+          <article class="journey-panel" aria-labelledby="production-heading">
+            <h3 id="production-heading">Ship a payment flow you can trust</h3>
+            <p class="journey-description">
+              Test difficult paths, protect credentials, and verify payment
+              updates before you go live.
+            </p>
+
+            <div class="production-links">
+              {
+                productionLinks.map(
+                  ({ icon: Icon, title, description, href }) => (
+                    <a href={href}>
+                      <Icon aria-hidden="true" />
+                      <span>
+                        <strong>{title}</strong>
+                        <small>{description}</small>
+                      </span>
+                      <span aria-hidden="true">→</span>
+                    </a>
+                  ),
+                )
+              }
+            </div>
+          </article>
         </div>
       </section>
-      <section>
-        <Headline as="h2" className="header">Build and Operate</Headline>
-        <div class="button-links">
-          <ListItem
-            variant="navigation"
-            href="/tools/authorization/"
-            leadingComponent={Key}
-            label="Set Up Authorization"
-            details="Choose and protect the credentials for your integration."
-          />
-          <ListItem
-            variant="navigation"
-            leadingComponent={Apps}
-            href="/tools/sdks/"
-            label="Call APIs with a Server SDK"
-            details="Use an official client across online and in-person integrations."
-          />
-          <ListItem
-            variant="navigation"
-            href="/api/"
-            leadingComponent={File}
-            label="Use the API Reference"
-            details="Look up endpoints, request fields, responses, and errors."
-          />
-          <ListItem
-            variant="navigation"
-            href="/tools/llms/"
-            leadingComponent={Sparkles}
-            label="Build with AI"
-            details="Give coding assistants current SumUp documentation and tools."
-          />
+
+      <section class="section" aria-labelledby="toolkit-heading">
+        <div class="section-heading">
+          <h2 id="toolkit-heading">Everything you need to keep moving</h2>
+          <p>
+            Go from endpoint details to production-ready integration guidance
+            without losing your place.
+          </p>
+        </div>
+
+        <div class="tool-grid">
+          {
+            toolkitItems.map(({ icon: Icon, title, description, href }) => (
+              <a class="tool-card" href={href}>
+                <span class="tool-icon">
+                  <Icon aria-hidden="true" />
+                </span>
+                <span>
+                  <strong>{title}</strong>
+                  <small>{description}</small>
+                </span>
+                <span class="tool-arrow" aria-hidden="true">
+                  →
+                </span>
+              </a>
+            ))
+          }
         </div>
       </section>
-    </section>
-    <section class="antifraud">
-      <div class="content">
-        <h2>Our Anti-fraud Protection</h2>
-        <div class="callouts">
-          <div>
-            <SecurePayments aria-hidden="true" className="icon" />
-            <p>
-              We’re committed to protecting you from fraud, chargebacks and
-              headaches
-            </p>
+
+      <section class="section" aria-labelledby="updates-heading">
+        <div class="updates-header">
+          <div class="section-heading">
+            <h2 id="updates-heading">Latest developer updates</h2>
           </div>
-          <div>
-            <InterestOnBalance aria-hidden="true" className="icon" />
-            <p>
-              We use advanced artificial intelligence to constantly monitor
-              transactions for unusual activity
-            </p>
-          </div>
-          <div>
-            <NoCosts aria-hidden="true" className="icon" />
-            <p>
-              All of our anti-fraud protection is included at no additional cost
-            </p>
-          </div>
+          <a class="text-link" href="/changelog/">
+            View all updates <span aria-hidden="true">→</span>
+          </a>
         </div>
-      </div>
-    </section>
-    <section class="brands">
-      <h2>Brands That Build With SumUp</h2>
-      <Brands />
-    </section>
-  </main>
+        <div class="update-grid">
+          {
+            latestUpdates.map(({ id, data }) => (
+              <article class="update-card">
+                <div class="update-meta">
+                  <time datetime={data.publishedDate.toISOString()}>
+                    {dateFormatter.format(data.publishedDate)}
+                  </time>
+                  {data.tags[0] && <span>{data.tags[0]}</span>}
+                </div>
+                <h3>
+                  <a href={`/changelog/${id}/`}>{data.title}</a>
+                </h3>
+                <a class="update-link" href={`/changelog/${id}/`}>
+                  Read update <span aria-hidden="true">→</span>
+                </a>
+              </article>
+            ))
+          }
+        </div>
+      </section>
+
+      <section
+        class="section proof"
+        aria-label="Built into products used around the world"
+      >
+        <Brands />
+      </section>
+    </div>
+  </div>
 </StarlightPage>
 
 <style>
-  :root {
-    --sl-content-width: 68rem !important;
+  :global(:root) {
+    --sl-content-width: 100% !important;
   }
-</style>
 
-<style lang="scss">
-  ul {
-    list-style-type: none;
-    padding-left: 0;
+  .landing-page {
+    margin-top: -1.5rem;
+    margin-right: calc(-1 * var(--sl-content-pad-x));
+    margin-left: calc(-1 * var(--sl-content-pad-x));
+  }
+
+  .hero-band {
+    width: 100%;
+    background: var(--cui-bg-subtle);
+  }
+
+  .hero {
+    width: min(calc(100% - 2rem), 68rem);
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  .hero {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(24rem, 0.95fr);
+    gap: clamp(2rem, 6vw, 5rem);
+    align-items: center;
+    min-height: 37rem;
+    padding-block: clamp(2rem, 5vw, 4rem);
+  }
+
+  .hero-copy,
+  .hero-visual {
+    position: relative;
+    z-index: 1;
+    min-width: 0;
+  }
+
+  .hero h1 {
+    max-width: 11ch;
+    margin: 0;
+    font-family: "SumUp Black", "SumUp Black fallback", sans-serif;
+    font-size: clamp(3.25rem, 4.75vw, 4.25rem);
+    letter-spacing: -0.045em;
+    line-height: 0.96;
+    text-wrap: balance;
+  }
+
+  .hero-description {
+    max-width: 31rem;
+    margin: var(--cui-spacings-giga) 0 0;
+    color: var(--cui-fg-subtle);
+    font-size: var(--cui-body-l-font-size);
+    line-height: var(--cui-body-l-line-height);
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--cui-spacings-kilo);
+    margin-top: var(--cui-spacings-giga);
+  }
+
+  .text-link,
+  .card-cta,
+  .steps a,
+  .update-link {
+    display: inline-flex;
+    gap: var(--cui-spacings-byte);
+    align-items: center;
+    color: var(--cui-fg-normal);
+    font-weight: var(--cui-font-weight-semibold);
+    text-decoration: none;
+  }
+
+  .hero-copy > .text-link {
     margin-top: var(--cui-spacings-mega);
-
-    li {
-      margin-bottom: 10px;
-    }
   }
 
-  section {
-    margin: var(--cui-spacings-exa) 0;
-
-    a {
-      color: var(--cui-fg-accent);
-
-      &:hover {
-        text-decoration: underline;
-      }
-    }
-
-    @media screen and (min-width: 941px) {
-      &:nth-child(even) {
-        .image {
-          grid-area: right;
-        }
-
-        .text {
-          grid-area: left;
-        }
-      }
-    }
+  .text-link:hover,
+  .card-cta:hover,
+  .steps a:hover,
+  .update-link:hover {
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
   }
 
-  h3 {
+  .hero-visual {
+    display: flex;
+    min-height: 30rem;
+    align-items: center;
+    overflow: hidden;
+    padding: clamp(1rem, 3vw, 2rem);
+    border-radius: 1.5rem;
+  }
+
+  .hero-sky {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    pointer-events: none;
+  }
+
+  .content-shell {
+    width: min(calc(100% - 2rem), 68rem);
+    margin-right: auto;
+    margin-left: auto;
+    padding-block: clamp(3rem, 6vw, 5rem);
+    display: flex;
+    flex-direction: column;
+    gap: clamp(4rem, 8vw, 6rem);
+  }
+
+  .section {
+    width: 100%;
+  }
+
+  .section-heading {
+    max-width: 40rem;
     margin-bottom: var(--cui-spacings-giga);
   }
 
-  section :global(h2) {
-    margin-bottom: var(--cui-spacings-giga) !important;
+  .section-heading h2 {
+    margin: 0;
+    font-family: "SumUp Black", "SumUp Black fallback", sans-serif;
+    font-size: clamp(2rem, 4vw, var(--cui-headline-l-font-size));
+    letter-spacing: -0.025em;
+    line-height: 1.05;
+    text-wrap: balance;
   }
 
-  .icon {
-    width: 48px;
-    height: 48px;
-    margin-bottom: var(--cui-spacings-mega);
+  .section-heading > p:last-child {
+    margin: var(--cui-spacings-mega) 0 0;
+    color: var(--cui-fg-subtle);
+    font-size: var(--cui-body-l-font-size);
+    line-height: var(--cui-body-l-line-height);
   }
 
-  .callouts {
-    margin: var(--cui-spacings-zetta) 0;
+  .product-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-gap: var(--cui-spacings-giga);
-
-    & > div {
-      margin-bottom: var(--cui-spacings-mega);
-    }
-
-    @media screen and (max-width: 940px) {
-      grid-template-columns: 1fr;
-    }
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--cui-spacings-giga);
   }
 
-  .antifraud img {
-    width: 56px;
-    margin-bottom: var(--cui-spacings-kilo);
+  .product-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-height: 27rem;
+    overflow: hidden;
+    padding: clamp(1.5rem, 4vw, 2.5rem);
+    background: var(--cui-bg-subtle);
+    border: var(--cui-border-width-kilo) solid var(--cui-border-subtle);
+    border-radius: var(--cui-border-radius-mega);
   }
 
-  .antifraud .callouts {
+  .product-card-header {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    gap: var(--cui-spacings-kilo);
+    align-items: center;
+  }
+
+  .icon-shell {
+    display: inline-flex;
+    width: 3.5rem;
+    height: 3.5rem;
+    align-items: center;
+    justify-content: center;
+    color: var(--cui-fg-normal);
+    border-radius: 1rem;
+  }
+
+  .online-icon {
+    background: var(--cui-bg-highlight);
+  }
+
+  .terminal-icon {
+    background: var(--cui-bg-success);
+  }
+
+  .icon-shell :global(svg) {
+    width: 2rem;
+    height: 2rem;
+  }
+
+  .product-card h3 {
+    margin: 0;
+    font-family: "SumUp Black", "SumUp Black fallback", sans-serif;
+    font-size: var(--cui-headline-m-font-size);
+    line-height: var(--cui-headline-m-line-height);
+  }
+
+  .product-card > p {
+    position: relative;
+    z-index: 1;
+    max-width: 34rem;
+    margin: var(--cui-spacings-mega) 0 0;
+    color: var(--cui-fg-subtle);
+    font-size: var(--cui-body-l-font-size);
+    line-height: var(--cui-body-l-line-height);
+  }
+
+  .product-card ul {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    gap: var(--cui-spacings-kilo);
+    margin: var(--cui-spacings-giga) 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .product-card li {
+    display: flex;
+    gap: var(--cui-spacings-kilo);
+    align-items: center;
+  }
+
+  .product-card li :global(svg) {
+    width: 1.25rem;
+    height: 1.25rem;
+    flex: 0 0 auto;
+    color: var(--cui-fg-subtle);
+  }
+
+  .product-card li a {
+    color: var(--cui-fg-normal);
+    font-weight: var(--cui-font-weight-semibold);
+    text-decoration: none;
+  }
+
+  .product-card li a:hover {
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  .card-cta {
+    position: relative;
+    z-index: 1;
+    margin-top: auto;
+    font-size: var(--cui-body-l-font-size);
+  }
+
+  .steps {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin: var(--cui-spacings-giga) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .steps::before {
+    position: absolute;
+    top: 1.5rem;
+    right: 16.67%;
+    left: 16.67%;
+    height: var(--cui-border-width-kilo);
+    background: var(--cui-border-normal);
+    content: "";
+  }
+
+  .steps li {
+    position: relative;
+    display: grid;
+    justify-items: center;
+    padding: 0 clamp(1rem, 3vw, 2rem);
     text-align: center;
   }
 
-  .links {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-gap: var(--cui-spacings-giga);
-    ul {
-      li {
-        margin-bottom: var(--cui-spacings-bit);
-      }
-    }
-    & > div {
-      margin-bottom: var(--cui-spacings-giga);
-    }
-    @media screen and (max-width: 940px) {
-      grid-template-columns: 1fr 1fr;
-    }
-    @media screen and (max-width: 600px) {
-      grid-template-columns: 1fr;
-    }
+  .step-number {
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    width: 3rem;
+    height: 3rem;
+    align-items: center;
+    justify-content: center;
+    color: var(--cui-fg-on-strong);
+    background: var(--cui-bg-strong);
+    border: 0.375rem solid var(--cui-bg-normal);
+    border-radius: 50%;
+    font-weight: var(--cui-font-weight-bold);
   }
 
-  .brands {
-    overflow: hidden;
-    padding: var(--cui-spacings-zetta) 0;
+  .steps h4 {
+    margin: var(--cui-spacings-mega) 0 0;
+    font-size: var(--cui-headline-s-font-size);
+    line-height: var(--cui-headline-s-line-height);
   }
 
-  .card-grid {
-    display: grid;
-    gap: 1rem;
-
-    & > :global(*) {
-      margin-top: 0 !important;
-    }
-
-    @media (min-width: 50rem) {
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 1.5rem;
-    }
+  .steps p {
+    margin: var(--cui-spacings-byte) 0 var(--cui-spacings-mega);
+    color: var(--cui-fg-subtle);
   }
 
-  .button-links {
+  .journey-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    gap: clamp(3rem, 6vw, 4.5rem);
+  }
+
+  .journey-panel {
+    min-width: 0;
+  }
+
+  .journey-panel > h3 {
+    max-width: 18ch;
+    margin: 0;
+    font-family: "SumUp Black", "SumUp Black fallback", sans-serif;
+    font-size: var(--cui-headline-m-font-size);
+    line-height: var(--cui-headline-m-line-height);
+    text-wrap: balance;
+  }
+
+  .journey-description {
+    max-width: 30rem;
+    margin: var(--cui-spacings-kilo) 0 0;
+    color: var(--cui-fg-subtle);
+    font-size: var(--cui-body-l-font-size);
+    line-height: var(--cui-body-l-line-height);
+  }
+
+  .tool-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: var(--cui-spacings-kilo);
   }
 
-  @media (max-width: 1279px) {
-    .button-links {
+  .tool-card {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    gap: var(--cui-spacings-kilo);
+    align-items: center;
+    min-height: 7rem;
+    padding: var(--cui-spacings-mega);
+    color: var(--cui-fg-normal);
+    background: var(--cui-bg-subtle);
+    border: var(--cui-border-width-kilo) solid transparent;
+    border-radius: var(--cui-border-radius-mega);
+    text-decoration: none;
+  }
+
+  .tool-card:hover {
+    background: var(--cui-bg-subtle-hovered);
+    border-color: var(--cui-border-strong);
+  }
+
+  .tool-icon {
+    display: inline-flex;
+    width: 2.5rem;
+    height: 2.5rem;
+    align-items: center;
+    justify-content: center;
+    background: var(--cui-bg-subtle);
+    border-radius: var(--cui-border-radius-byte);
+  }
+
+  .tool-icon :global(svg) {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  .tool-card strong,
+  .tool-card small {
+    display: block;
+  }
+
+  .tool-card small {
+    margin-top: var(--cui-spacings-bit);
+    color: var(--cui-fg-subtle);
+    font-size: var(--cui-body-s-font-size);
+    line-height: var(--cui-body-s-line-height);
+  }
+
+  .tool-arrow {
+    color: var(--cui-fg-subtle);
+  }
+
+  .production-links {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--cui-spacings-kilo);
+    margin-top: var(--cui-spacings-giga);
+  }
+
+  .production-links a {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    gap: var(--cui-spacings-kilo);
+    align-items: center;
+    min-height: 8rem;
+    padding: var(--cui-spacings-mega);
+    color: var(--cui-fg-normal);
+    background: var(--cui-bg-normal);
+    border: var(--cui-border-width-kilo) solid var(--cui-border-subtle);
+    border-radius: var(--cui-border-radius-byte);
+    text-decoration: none;
+  }
+
+  .production-links a:hover {
+    background: var(--cui-bg-normal-hovered);
+    border-color: var(--cui-border-strong);
+  }
+
+  .production-links :global(svg) {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  .production-links strong,
+  .production-links small {
+    display: block;
+  }
+
+  .production-links small {
+    margin-top: var(--cui-spacings-bit);
+    color: var(--cui-fg-subtle);
+    font-size: var(--cui-body-s-font-size);
+    line-height: var(--cui-body-s-line-height);
+  }
+
+  .proof {
+    padding-block: var(--cui-spacings-giga);
+  }
+
+  .updates-header {
+    display: flex;
+    gap: var(--cui-spacings-giga);
+    align-items: end;
+    justify-content: space-between;
+  }
+
+  .updates-header .section-heading {
+    margin-bottom: 0;
+  }
+
+  .update-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--cui-spacings-kilo);
+    margin-top: var(--cui-spacings-giga);
+  }
+
+  .update-card {
+    display: flex;
+    min-height: 13rem;
+    flex-direction: column;
+    padding: var(--cui-spacings-mega);
+    background: var(--cui-bg-subtle);
+    border: var(--cui-border-width-kilo) solid transparent;
+    border-radius: var(--cui-border-radius-mega);
+  }
+
+  .update-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--cui-spacings-byte);
+    align-items: center;
+    color: var(--cui-fg-subtle);
+    font-size: var(--cui-body-s-font-size);
+    line-height: var(--cui-body-s-line-height);
+  }
+
+  .update-meta span::before {
+    margin-right: var(--cui-spacings-byte);
+    content: "·";
+  }
+
+  .update-card h3 {
+    margin: var(--cui-spacings-mega) 0;
+    font-size: var(--cui-headline-s-font-size);
+    line-height: var(--cui-headline-s-line-height);
+  }
+
+  .update-card h3 a {
+    color: var(--cui-fg-normal);
+    text-decoration: none;
+  }
+
+  .update-card h3 a:hover {
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  .update-link {
+    margin-top: auto;
+  }
+
+  @media (max-width: 64rem) {
+    .hero {
       grid-template-columns: 1fr;
+    }
+
+    .hero {
+      min-height: auto;
+    }
+
+    .hero-copy {
+      max-width: 42rem;
+    }
+
+    .hero h1 {
+      max-width: 12ch;
+    }
+
+    .hero-visual {
+      width: min(100%, 40rem);
+    }
+
+    .tool-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 46rem) {
+    .hero {
+      padding-block: var(--cui-spacings-giga);
+    }
+
+    .hero h1 {
+      font-size: clamp(3rem, 14vw, 4rem);
+    }
+
+    .hero-description {
+      font-size: var(--cui-body-m-font-size);
+      line-height: var(--cui-body-m-line-height);
+    }
+
+    .hero-actions {
+      align-items: stretch;
+      flex-direction: column;
+    }
+
+    .hero-actions :global(.link-button) {
+      justify-content: center;
+    }
+
+    .hero-visual {
+      min-height: 29rem;
+      padding: var(--cui-spacings-kilo);
+      border-radius: var(--cui-border-radius-mega);
+    }
+
+    .product-grid,
+    .steps,
+    .production-links,
+    .tool-grid,
+    .update-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .product-card {
+      min-height: auto;
+    }
+
+    .product-card-header {
+      gap: var(--cui-spacings-byte);
+    }
+
+    .product-card h3 {
+      font-size: var(--cui-headline-s-font-size);
+      line-height: var(--cui-headline-s-line-height);
+    }
+
+    .card-cta {
+      margin-top: var(--cui-spacings-mega);
+    }
+
+    .production-links a {
+      padding: var(--cui-spacings-kilo);
+    }
+
+    .steps li,
+    .production-links a {
+      min-height: auto;
+    }
+
+    .steps {
+      gap: var(--cui-spacings-giga);
+    }
+
+    .steps::before {
+      top: 1.5rem;
+      bottom: 1.5rem;
+      left: 1.5rem;
+      width: var(--cui-border-width-kilo);
+      height: auto;
+    }
+
+    .steps li {
+      grid-template-columns: 3rem minmax(0, 1fr);
+      gap: var(--cui-spacings-mega);
+      align-items: start;
+      justify-items: start;
+      padding: 0;
+      text-align: left;
+    }
+
+    .steps h4 {
+      margin-top: 0;
+    }
+
+    .updates-header {
+      align-items: start;
+      flex-direction: column;
     }
   }
 </style>
