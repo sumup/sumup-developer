@@ -2547,6 +2547,15 @@ paths:
             type: string
             format: uuid
             example: 245b2ead-85bf-45ff-856f-311a88a5d454
+        - name: user.type
+          in: query
+          description: Filter the returned members by user type. Repeat this parameter to include multiple user types.
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/UserType'
+          style: form
+          explode: true
         - name: status
           in: query
           description: Filter the returned members by the membership status.
@@ -6522,6 +6531,15 @@ components:
           description: The timestamp of when the role was last updated.
           format: date-time
           example: 2023-01-20T15:16:17Z
+    UserType:
+      type: string
+      description: Type of the user account.
+      enum:
+        - user
+        - managed_user
+        - service_account
+        - system_account
+      example: user
     Metadata:
       description: >-
         Set of user-defined key-value pairs attached to the object. Partial updates are not supported. When updating, always submit whole metadata. Maximum of 64 parameters are allowed in the object.
@@ -6536,15 +6554,6 @@ components:
       type: object
       example: {}
       additionalProperties: true
-    UserType:
-      type: string
-      description: Type of the user account.
-      enum:
-        - user
-        - managed_user
-        - service_account
-        - system_account
-      example: user
     Address:
       externalDocs:
         description: Address documentation
