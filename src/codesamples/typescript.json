@@ -3,7 +3,7 @@
   "language": "typescript",
   "sdk": {
     "module": "@sumup/sdk",
-    "version": "0.1.9"
+    "version": "0.2.0"
   },
   "openAPIVersion": "1.0.0",
   "samples": [
@@ -189,7 +189,7 @@
       "description": "Returns a Merchant for a valid Merchant code.",
       "httpMethod": "GET",
       "path": "/v1/merchants/{merchant_code}",
-      "sample": "import SumUp from \"@sumup/sdk\";\n\nasync function main() {\n  const client = new SumUp({ apiKey: \"sup_sk_your_api_key\" });\n\n  const result = await client.merchants.get(\n    \"MK10CL2A\",\n    {\n      \"version\": \"example\"\n    }\n  );\n  console.log(result);\n}\n\nmain().catch(console.error);\n"
+      "sample": "import SumUp from \"@sumup/sdk\";\n\nasync function main() {\n  const client = new SumUp({ apiKey: \"sup_sk_your_api_key\" });\n\n  const result = await client.merchants.get(\n    \"MK10CL2A\"\n  );\n  console.log(result);\n}\n\nmain().catch(console.error);\n"
     },
     {
       "id": "GetMerchantMember",
@@ -225,7 +225,7 @@
       "description": "Returns a single Person related to a Merchant.",
       "httpMethod": "GET",
       "path": "/v1/merchants/{merchant_code}/persons/{person_id}",
-      "sample": "import SumUp from \"@sumup/sdk\";\n\nasync function main() {\n  const client = new SumUp({ apiKey: \"sup_sk_your_api_key\" });\n\n  const result = await client.merchants.getPerson(\n    \"MK10CL2A\",\n    \"pers_5AKFHN2KSK8D3TS79DJE3P3A2Z\",\n    {\n      \"version\": \"example\"\n    }\n  );\n  console.log(result);\n}\n\nmain().catch(console.error);\n"
+      "sample": "import SumUp from \"@sumup/sdk\";\n\nasync function main() {\n  const client = new SumUp({ apiKey: \"sup_sk_your_api_key\" });\n\n  const result = await client.merchants.getPerson(\n    \"MK10CL2A\",\n    \"pers_5AKFHN2KSK8D3TS79DJE3P3A2Z\"\n  );\n  console.log(result);\n}\n\nmain().catch(console.error);\n"
     },
     {
       "id": "GetReader",
@@ -333,7 +333,7 @@
       "description": "Returns the Persons related to a Merchant.",
       "httpMethod": "GET",
       "path": "/v1/merchants/{merchant_code}/persons",
-      "sample": "import SumUp from \"@sumup/sdk\";\n\nasync function main() {\n  const client = new SumUp({ apiKey: \"sup_sk_your_api_key\" });\n\n  const result = await client.merchants.listPersons(\n    \"MK10CL2A\",\n    {\n      \"version\": \"example\"\n    }\n  );\n  console.log(result);\n}\n\nmain().catch(console.error);\n"
+      "sample": "import SumUp from \"@sumup/sdk\";\n\nasync function main() {\n  const client = new SumUp({ apiKey: \"sup_sk_your_api_key\" });\n\n  const result = await client.merchants.listPersons(\n    \"MK10CL2A\"\n  );\n  console.log(result);\n}\n\nmain().catch(console.error);\n"
     },
     {
       "id": "ListReaders",
@@ -352,6 +352,56 @@
       "httpMethod": "GET",
       "path": "/v2.1/merchants/{merchant_code}/transactions/history",
       "sample": "import SumUp from \"@sumup/sdk\";\n\nasync function main() {\n  const client = new SumUp({ apiKey: \"sup_sk_your_api_key\" });\n\n  const result = await client.transactions.list(\n    \"MH4H92C7\",\n    {\n      \"transaction_code\": \"TEENSK4W2K\"\n    }\n  );\n  console.log(result);\n}\n\nmain().catch(console.error);\n"
+    },
+    {
+      "id": "ProcessCheckout.ProcessBancontact",
+      "operationId": "ProcessCheckout",
+      "example": "ProcessBancontact",
+      "summary": "Process a checkout",
+      "description": "Process a checkout with Bancontact",
+      "httpMethod": "PUT",
+      "path": "/v0.1/checkouts/{checkout_id}",
+      "sample": "import SumUp from \"@sumup/sdk\";\n\nasync function main() {\n  const client = new SumUp({ apiKey: \"sup_sk_your_api_key\" });\n\n  const result = await client.checkouts.process(\n    \"4e425463-3e1b-431d-83fa-1e51c2925e99\",\n    {\n      \"payment_type\": \"bancontact\",\n      \"personal_details\": {\n        \"first_name\": \"John\",\n        \"last_name\": \"Doe\",\n        \"email\": \"user@example.com\",\n        \"address\": {\n          \"country\": \"BE\"\n        }\n      }\n    }\n  );\n  console.log(result);\n}\n\nmain().catch(console.error);\n"
+    },
+    {
+      "id": "ProcessCheckout.ProcessBoleto",
+      "operationId": "ProcessCheckout",
+      "example": "ProcessBoleto",
+      "summary": "Process a checkout",
+      "description": "Process a checkout with Boleto",
+      "httpMethod": "PUT",
+      "path": "/v0.1/checkouts/{checkout_id}",
+      "sample": "import SumUp from \"@sumup/sdk\";\n\nasync function main() {\n  const client = new SumUp({ apiKey: \"sup_sk_your_api_key\" });\n\n  const result = await client.checkouts.process(\n    \"4e425463-3e1b-431d-83fa-1e51c2925e99\",\n    {\n      \"payment_type\": \"boleto\",\n      \"personal_details\": {\n        \"first_name\": \"John\",\n        \"last_name\": \"Doe\",\n        \"email\": \"user@example.com\",\n        \"tax_id\": \"423.378.593-47\",\n        \"address\": {\n          \"city\": \"São Paulo\",\n          \"country\": \"BR\",\n          \"postal_code\": \"05425-020\",\n          \"state\": \"SP\"\n        }\n      }\n    }\n  );\n  console.log(result);\n}\n\nmain().catch(console.error);\n"
+    },
+    {
+      "id": "ProcessCheckout.ProcessCard",
+      "operationId": "ProcessCheckout",
+      "example": "ProcessCard",
+      "summary": "Process a checkout",
+      "description": "Process a checkout with a card",
+      "httpMethod": "PUT",
+      "path": "/v0.1/checkouts/{checkout_id}",
+      "sample": "import SumUp from \"@sumup/sdk\";\n\nasync function main() {\n  const client = new SumUp({ apiKey: \"sup_sk_your_api_key\" });\n\n  const result = await client.checkouts.process(\n    \"4e425463-3e1b-431d-83fa-1e51c2925e99\",\n    {\n      \"payment_type\": \"card\",\n      \"installments\": 1,\n      \"mandate\": {\n        \"type\": \"recurrent\",\n        \"user_agent\": \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.104 Safari/537.36\",\n        \"user_ip\": \"172.217.169.174\"\n      },\n      \"card\": {\n        \"name\": \"John Doe\",\n        \"number\": \"1234567890123456\",\n        \"expiry_year\": \"2023\",\n        \"expiry_month\": \"01\",\n        \"cvv\": \"123\",\n        \"zip_code\": \"12345\",\n        \"type\": \"VISA\"\n      }\n    }\n  );\n  console.log(result);\n}\n\nmain().catch(console.error);\n"
+    },
+    {
+      "id": "ProcessCheckout.ProcessToken",
+      "operationId": "ProcessCheckout",
+      "example": "ProcessToken",
+      "summary": "Process a checkout",
+      "description": "Process a checkout with a token",
+      "httpMethod": "PUT",
+      "path": "/v0.1/checkouts/{checkout_id}",
+      "sample": "import SumUp from \"@sumup/sdk\";\n\nasync function main() {\n  const client = new SumUp({ apiKey: \"sup_sk_your_api_key\" });\n\n  const result = await client.checkouts.process(\n    \"4e425463-3e1b-431d-83fa-1e51c2925e99\",\n    {\n      \"payment_type\": \"card\",\n      \"installments\": 1,\n      \"token\": \"ba85dfee-c3cf-48a6-84f5-d7d761fbba50\",\n      \"customer_id\": \"MEDKHDTI\"\n    }\n  );\n  console.log(result);\n}\n\nmain().catch(console.error);\n"
+    },
+    {
+      "id": "ProcessCheckout.ProcessiDeal",
+      "operationId": "ProcessCheckout",
+      "example": "ProcessiDeal",
+      "summary": "Process a checkout",
+      "description": "Process a checkout with iDeal",
+      "httpMethod": "PUT",
+      "path": "/v0.1/checkouts/{checkout_id}",
+      "sample": "import SumUp from \"@sumup/sdk\";\n\nasync function main() {\n  const client = new SumUp({ apiKey: \"sup_sk_your_api_key\" });\n\n  const result = await client.checkouts.process(\n    \"4e425463-3e1b-431d-83fa-1e51c2925e99\",\n    {\n      \"payment_type\": \"ideal\",\n      \"personal_details\": {\n        \"first_name\": \"John\",\n        \"last_name\": \"Doe\",\n        \"email\": \"user@example.com\",\n        \"address\": {\n          \"country\": \"NL\"\n        }\n      }\n    }\n  );\n  console.log(result);\n}\n\nmain().catch(console.error);\n"
     },
     {
       "id": "RefundTransaction",
