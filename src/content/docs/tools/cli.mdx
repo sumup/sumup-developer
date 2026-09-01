@@ -1,0 +1,118 @@
+---
+title: CLI
+description: Install and use the SumUp command-line interface to interact with SumUp APIs from your terminal.
+sidebar:
+  order: 101
+links:
+  - title: Source code
+    href: https://github.com/sumup/sumup-cli
+  - title: Releases
+    href: https://github.com/sumup/sumup-cli/releases
+---
+
+The SumUp CLI, `sumup`, lets you manage your SumUp account and call SumUp APIs from a terminal. Use it to explore API operations, run development workflows, or write scripts without setting up an SDK project.
+
+The [API reference](/api/) includes a **CLI** sample for every operation supported by the tool.
+
+## Install the CLI
+
+Install the CLI with [Homebrew](https://brew.sh/):
+
+```bash
+brew install sumup/cli/sumup
+```
+
+Alternatively, install it with Go:
+
+```bash
+go install github.com/sumup/sumup-cli/cmd/sumup
+```
+
+Confirm that the installation succeeded:
+
+```bash
+sumup version
+```
+
+## Configure Authentication
+
+Create a secret API key in the [developer dashboard](https://me.sumup.com/developers), then expose it to the CLI through the `SUMUP_API_KEY` environment variable:
+
+```bash
+export SUMUP_API_KEY=sup_sk_your_api_key
+```
+
+You can also pass an API key with the global `--api-key` option. Avoid saving secret API keys in shell history or source control.
+
+## Set Your Merchant Context
+
+Commands that operate on a merchant accept the `--merchant-code` option. To avoid repeating it, select a merchant interactively and save it as your current context:
+
+```bash
+sumup context set
+```
+
+View or clear the saved context with:
+
+```bash
+sumup context get
+sumup context unset
+```
+
+An explicit `--merchant-code` option overrides the saved context.
+
+## Run Commands
+
+Create an online checkout:
+
+```bash
+sumup checkouts create \
+  --reference order-123 \
+  --amount 19.99 \
+  --currency EUR \
+  --merchant-code M123 \
+  --description "Ticket purchase"
+```
+
+List the readers paired with a merchant:
+
+```bash
+sumup readers list --merchant-code M123
+```
+
+Add the global `--json` option when a script needs machine-readable output:
+
+```bash
+sumup --json readers list --merchant-code M123
+```
+
+Use the built-in help to discover available resources, operations, and options:
+
+```bash
+sumup --help
+sumup checkouts --help
+sumup checkouts create --help
+```
+
+## Enable Shell Completion
+
+Generate and load a completion script for your shell:
+
+```bash
+# bash
+source <(sumup completion bash)
+
+# zsh
+source <(sumup completion zsh)
+
+# fish
+sumup completion fish > ~/.config/fish/completions/sumup.fish
+```
+
+Release archives also include pre-generated completion scripts and a man page.
+
+## Next Steps
+
+- Browse the [API reference](/api/) and select the **CLI** tab for operation-specific commands.
+- Review [authorization options](/tools/authorization/) before using the CLI with production accounts.
+- Use an [official server SDK](/tools/sdks/) when you need typed clients and application-level integration.

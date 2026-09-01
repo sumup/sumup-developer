@@ -74,11 +74,14 @@ const sectionAttrs = (id: ApiTopSection) =>
   <LRGrid class="sdks">
     <div>
       <MarkdownContent class="info">
-        <SectionHeading as="h2" id="sdks-heading">SDKs</SectionHeading>
+        <SectionHeading as="h2" id="sdks-heading">
+          SDKs and CLI
+        </SectionHeading>
         <p>
-          The SumUp SDKs reduce the amount of work required to use our REST
-          APIs. SumUp maintains SDKs for PHP, JavaScript, Python, Java, Go,
-          Rust, and .NET.
+          The SumUp SDKs and command-line interface reduce the amount of work
+          required to use our REST APIs. Use the CLI directly from your
+          terminal, or choose an SDK for PHP, JavaScript, Python, Java, Go,
+          Rust, or .NET.
         </p>
       </MarkdownContent>
       <SDKList />
@@ -89,7 +92,12 @@ const sectionAttrs = (id: ApiTopSection) =>
         options={[
           {
             label: "cURL",
-            code: "# Select a client library to see installation instructions.",
+            code: "# Select the CLI or an SDK to see installation instructions.",
+            lang: "bash",
+          },
+          {
+            label: "CLI",
+            code: "brew install sumup/cli/sumup",
             lang: "bash",
           },
           {
@@ -146,7 +154,7 @@ uv add sumup`,
         ]}
         isLanguageSelect
       >
-        <div slot="left">Install SDK</div>
+        <div slot="left">Install SDK or CLI</div>
       </MultiCode>
       <Card style={{ marginTop: "var(--cui-spacings-mega)" }}>
         <Body size="s">
@@ -195,6 +203,11 @@ uv add sumup`,
             label: "cURL",
             code: `curl https://api.sumup.com/v0.1/checkouts \\
   -H "Authorization: Bearer sup_sk_MvxmLOl0..."`,
+            lang: "bash",
+          },
+          {
+            label: "CLI",
+            code: "export SUMUP_API_KEY='sup_sk_MvxmLOl0...'",
             lang: "bash",
           },
           {
