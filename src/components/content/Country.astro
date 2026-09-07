@@ -1,36 +1,40 @@
 ---
-import { getIconURL, type IconName } from "@sumup-oss/icons";
+import { getIconURL, type FlagProps } from "@sumup-oss/icons";
 
 interface Props {
-  code: string;
+  code: FlagProps["countryCode"];
   name: string;
 }
 
 const { code, name } = Astro.props;
-const icon = `flag_${code.toLowerCase()}` as IconName;
+const countryCode = code.toLowerCase() as Lowercase<Props["code"]>;
 ---
 
 <span class="country">
   <img
-    class="country-flag"
-    src={getIconURL(icon)}
-    height="15"
-    width="20"
+    src={getIconURL(`flag_${countryCode}`, "480")}
     alt={name}
-    loading="lazy"
+    width="16"
+    height="12"
   />
 </span>
 
 <style>
   .country {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--cui-icon-sizes-s);
+    aspect-ratio: 1;
     vertical-align: middle;
     margin-right: var(--cui-spacings-bit);
   }
 
-  .country-flag {
-    display: inline-block;
-    border-radius: var(--cui-border-radius-bit);
-    object-fit: cover;
+  .country img {
+    width: var(--cui-icon-sizes-s);
+    height: calc(var(--cui-icon-sizes-s) * 3 / 4);
     margin: 0;
+    border: 0.5px solid #ccc;
+    border-radius: 2px;
   }
 </style>

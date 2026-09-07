@@ -1,5 +1,5 @@
 ---
-import ArrowRight from "@sumup-oss/icons/arrow_right_16.svg";
+import Icon from "./Icon.astro";
 
 type Props = {
   href: string;
@@ -11,7 +11,9 @@ const { href, title, description, image } = Astro.props;
 ---
 
 <a href={href} class="card">
-  <div class="title">{title}<ArrowRight /></div>
+  <div class="title">
+    {title}<Icon icon="arrow_right" size="s" class="arrow" />
+  </div>
   <div class="body">
     {description}
   </div>
@@ -62,13 +64,11 @@ const { href, title, description, image } = Astro.props;
     gap: var(--cui-spacings-byte);
   }
 
-  .title :global(svg) {
+  .title .arrow {
     display: none;
-    width: 14px;
-    height: 14px;
   }
 
-  .card:hover :global(svg) {
+  .card:hover .arrow {
     display: block;
   }
 

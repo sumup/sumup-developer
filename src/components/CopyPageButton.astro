@@ -1,7 +1,6 @@
 ---
-import { Icon } from "@astrojs/starlight/components";
-import Copy from "@sumup-oss/icons/copy_24.svg";
-import Checkmark from "@sumup-oss/icons/checkmark_24.svg";
+import { Icon as StarlightIcon } from "@astrojs/starlight/components";
+import Icon from "./Icon.astro";
 
 const currentPath = Astro.url.pathname.replace(/\/$/, "");
 const currentUrl = Astro.url.href.replace(/\/$/, "/index.md");
@@ -21,17 +20,12 @@ const encodedPrompt = encodeURIComponent(
     aria-controls="dropdown-menu"
   >
     <span class="button-content">
-      <Copy name="mdx" class="icon-default" width="18px" height="18px" />
-      <Checkmark
-        name="approve-check"
-        class="icon-success"
-        width="18px"
-        height="18px"
-      />
+      <Icon icon="copy_paste" size="s" class="icon-default" />
+      <Icon icon="checkmark" size="s" class="icon-success" />
       <span>Copy Markdown</span>
     </span>
     <span class="dropdown-toggle" aria-hidden="true">
-      <Icon name="down-caret" size="1rem" />
+      <StarlightIcon name="down-caret" size="1rem" />
     </span>
   </button>
 
@@ -162,7 +156,7 @@ const encodedPrompt = encodeURIComponent(
     border-left: 1px solid var(--cui-border-normal);
   }
 
-  .icon-success {
+  .button-content .icon-success {
     display: none;
   }
 

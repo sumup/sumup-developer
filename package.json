@@ -73,7 +73,7 @@
     "@sindresorhus/slugify": "^3.0.0",
     "@sumup-oss/circuit-ui": "11.19.0",
     "@sumup-oss/design-tokens": "10.2.0",
-    "@sumup-oss/icons": "6.17.0",
+    "@sumup-oss/icons": "7.0.1",
     "@sumup-oss/illustrations": "1.0.0",
     "@types/node": "26.4.0",
     "@types/react": "^19.2.18",

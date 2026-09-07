@@ -2,17 +2,34 @@
 import { getIconURL, type IconName } from "@sumup-oss/icons";
 
 interface Props {
-  icon?: IconName;
-  size?: "16" | "24" | "32";
+  icon: IconName;
+  size?: "s" | "m" | "l";
+  class?: string;
 }
 
-const { icon, size = "24" } = Astro.props;
+const { icon, size = "m", class: className, ...rest } = Astro.props;
 
-if (!icon) {
-  throw new Error("Icon prop is required!");
-}
-
-const iconUrl = getIconURL(icon, size);
+const dimensions = { s: 16, m: 24, l: 32 };
+const iconUrl = getIconURL(icon, "24");
 ---
 
-<img src={iconUrl} alt="" aria-hidden="true" />
+<span
+  {...rest}
+  class:list={["icon", className]}
+  style={{
+    maskImage: `url("${iconUrl}")`,
+    width: `${dimensions[size]}px`,
+    height: `${dimensions[size]}px`,
+  }}
+  aria-hidden="true"></span>
+
+<style>
+  .icon {
+    display: inline-block;
+    flex-shrink: 0;
+    background-color: currentColor;
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    mask-position: center;
+  }
+</style>

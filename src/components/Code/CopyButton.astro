@@ -1,6 +1,5 @@
 ---
-import Copy from "@sumup-oss/icons/copy_24.svg";
-import Checkmark from "@sumup-oss/icons/checkmark_24.svg";
+import Icon from "../Icon.astro";
 import IconButton from "../IconButton.astro";
 
 export interface Props {
@@ -10,9 +9,12 @@ export interface Props {
 const { float = false } = Astro.props;
 ---
 
-<IconButton class:list={["copy-code-btn", float && "float"]}>
-  <Copy class="copy" />
-  <Checkmark class="checkmark" />
+<IconButton
+  class:list={["copy-code-btn", float && "float"]}
+  aria-label="Copy code"
+>
+  <Icon icon="copy_paste" size="s" class="copy" />
+  <Icon icon="checkmark" size="s" class="checkmark" />
 </IconButton>
 
 <script>
