@@ -419,15 +419,20 @@ The Swift Checkout SDK returns a series of Errors depending on the event that ha
 - [Verify your domain with Apple Pay](#verify-your-domain-with-apple-pay), both in development and production
 - For Apple Pay [additional configurations](#apple-pay-setup) are required, including macOS 10.12.1+ or iOS 10.1+
 
-### Verify your domain with Apple Pay
+### Verify Your Domain with Apple Pay
 
-To use Apple Pay, you need to register with Apple on all of your web domains which will show an Apple Pay button.
+To use Apple Pay, verify every domain and subdomain where you display an Apple Pay button, both in development and production.
 
-Apple’s documentation for Apple Pay on the Web describes their process of “merchant validation”, which SumUp handles for you behind the scenes. You don’t need to create an Apple Merchant ID, CSR and so on, as described in their documentation. Instead, follow the steps in this section:
+1. Open [Apple Pay settings in your SumUp profile](https://me.sumup.com/settings/apple-pay).
+2. Click **Add Domain**.
+3. Click **Download domain verification file** to download the domain association file.
+4. Host the file at `https://[DOMAIN_NAME]/.well-known/apple-developer-merchantid-domain-association`, replacing `[DOMAIN_NAME]` with your domain or subdomain.
 
-1. Request the domain association file through our [contact form](https://developer.sumup.com/contact/) and host it at `https://[YOUR_DOMAIN_NAME]/.well-known/apple-developer-merchantid-domain-association`.
+:::note
+You don't need to create an Apple Merchant ID or Certificate Signing Request (CSR) to use Apple Pay with the Swift Checkout SDK.
 
-2. Once hosted, request assistance from our integration specialists through the form, to register your domain with Apple.
+Use the verification file downloaded from your SumUp profile. Make sure it is publicly accessible at the URL above without adding a file extension.
+:::
 
 ## Google Pay Setup
 
