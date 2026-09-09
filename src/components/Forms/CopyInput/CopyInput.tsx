@@ -3,7 +3,7 @@ import {
   type InputProps,
   useNotificationToast,
 } from "@sumup-oss/circuit-ui";
-import { Checkmark, Copy } from "@sumup-oss/icons";
+import { Checkmark, CopyPaste } from "@sumup-oss/icons";
 
 import { useEffect, useState } from "react";
 import styles from "./styles.module.css";
@@ -50,7 +50,7 @@ export const CopyInput = ({
             />
           );
         }
-        return <Copy className={className} />;
+        return <CopyPaste className={className} />;
       }}
       inputClassName={copied ? styles.inputCopied : styles.input}
       readOnly
