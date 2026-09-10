@@ -11,7 +11,7 @@ import Image from '@components/content/Image.astro';
 
 SumUp provides a [native iOS SDK](https://github.com/sumup/sumup-ios-sdk) that enables you to integrate SumUp's proprietary
 card terminal(s) and its payment platform to accept credit and debit card payments
-(incl. VISA, MasterCard, American Express and more) as well as Tap-to-Pay payments on iPhones. SumUp's SDK communicates transparently
+(incl. VISA, MasterCard, American Express and more) as well as Tap to Pay on iPhone payments. SumUp's SDK communicates transparently
 to the card terminal(s) via Bluetooth. Upon initiating
 a checkout, the SDK guides your user using appropriate screens through each step of the payment
 process. As part of the process, SumUp also provides the card terminal setup screen, along with the
@@ -107,7 +107,7 @@ If you want to dive straight into implementation, carry out the following steps:
 6. [Allow the user to select a card reader](#present-card-reader-settings).
 7. Finally, [implement the full checkout](#implement-full-checkout).
 
-### Tap-to-Pay Flow
+### Tap to Pay Flow
 
 Please consider the following when building Tap-to-Pay solutions, as Apple reviews them with high scrutiny:
 
@@ -118,7 +118,7 @@ Please consider the following when building Tap-to-Pay solutions, as Apple revie
 2. [Import the SDK into your project file](#importing-sdk).
 3. [Initialize the SDK with an Affiliate Key](#initialization).
 4. [Log the user in](#logging-the-user-in).
-5. Follow steps under [Implementing Tap-to-Pay](#implementing-tap-to-pay).
+5. Follow steps under [Implementing Tap to Pay](#implementing-tap-to-pay).
 
 ## Integrating iOS SDK
 
@@ -1435,7 +1435,7 @@ open class func presentTapToPayActivation(from fromViewController: UIViewControl
  *
  *  Call `checkTapToPayAvailability:` before calling this method to find out if this payment method is available
  *  and if activation is needed.
- *ń
+ *
  *  The merchant must be logged in before you call this method.
  *
  *  Tap to Pay on iPhone requirements:
@@ -1469,7 +1469,7 @@ open class func presentTapToPayActivation(from fromViewController: UIViewControl
 <TabItem label="Swift">
 ```swift
 let productName = SumUpSDK.tapToPayProductName()
-// e.g. "Tap To Pay on iPhone"
+// e.g. "Tap to Pay on iPhone"
 ```
 
 </TabItem>
@@ -1477,7 +1477,7 @@ let productName = SumUpSDK.tapToPayProductName()
 <TabItem label="Objective C">
 ```objc
 NSString *productName = [SMPSumUpSDK tapToPayProductName];
-// e.g. @"Tap To Pay on iPhone"
+// e.g. @"Tap to Pay on iPhone"
 ```
 
 </TabItem>
@@ -1578,7 +1578,7 @@ To run it, clone the [repository](https://github.com/sumup/sumup-ios-sdk) and op
 
 ## Known Issues
 
-* In Tap-to-Pay solutions, if entitlements are not correctly set up in your app, `presentTapToPayActivation` may show an error Alert with `Failed to show Terms of Service`.
+* In Tap to Pay on iPhone solutions, if entitlements are not correctly set up in your app, `presentTapToPayActivation` may show an error Alert with `Failed to show Terms of Service`.
 * Businesses using SumUp sub-accounts must first activate the feature on their main account before using it on devices logged in with sub-accounts, otherwise an error message will appear during activation for the sub-account user.
 
 ## Community
