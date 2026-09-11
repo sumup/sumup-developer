@@ -1,4 +1,4 @@
-import { isRequestBody, resolveSchema, schemaToExample } from "@lib/openapi";
+import { resolveSchema, schemaToExample } from "@lib/openapi";
 import type { OpenAPIV3_1 } from "openapi-types";
 import type { OperationObject } from "src/types/openapi";
 
@@ -123,29 +123,6 @@ export const getRequestBodyExample = (operation: OperationObject): any => {
   }
 
   return filterRequiredFields(example, schema);
-};
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const bodyExample = (operation: OperationObject): any => {
-  if (!isRequestBody(operation.requestBody)) {
-    return undefined;
-  }
-
-  if (!("application/json" in operation.requestBody.content)) {
-    return undefined;
-  }
-
-  if (operation.requestBody.content["application/json"].example) {
-    return operation.requestBody.content["application/json"].example;
-  }
-
-  if (!operation.requestBody.content["application/json"].schema) {
-    return undefined;
-  }
-
-  return schemaToExample(
-    operation.requestBody.content["application/json"].schema!,
-  );
 };
 
 /**
