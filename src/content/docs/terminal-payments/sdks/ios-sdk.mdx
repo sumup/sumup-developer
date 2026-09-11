@@ -11,7 +11,7 @@ import Image from '@components/content/Image.astro';
 
 SumUp provides a [native iOS SDK](https://github.com/sumup/sumup-ios-sdk) that enables you to integrate SumUp's proprietary
 card terminal(s) and its payment platform to accept credit and debit card payments
-(incl. VISA, MasterCard, American Express and more) as well as Tap-to-Pay payments on iPhones. SumUp's SDK communicates transparently
+(incl. VISA, MasterCard, American Express and more) as well as Tap to Pay on iPhone payments. SumUp's SDK communicates transparently
 to the card terminal(s) via Bluetooth. Upon initiating
 a checkout, the SDK guides your user using appropriate screens through each step of the payment
 process. As part of the process, SumUp also provides the card terminal setup screen, along with the
@@ -107,18 +107,15 @@ If you want to dive straight into implementation, carry out the following steps:
 6. [Allow the user to select a card reader](#present-card-reader-settings).
 7. Finally, [implement the full checkout](#implement-full-checkout).
 
-### Tap-to-Pay Flow
+### Tap to Pay Flow
 
-Please consider the following when building Tap-to-Pay solutions, as Apple reviews them with high scrutiny:
-
-* Follow the [Human Interface Guidelines](https://developer.apple.com/design/human-interface-guidelines/tap-to-pay-on-iphone) to save time when Apple reviews your app.
-* Also consider [Apple’s marketing guidelines](https://developer.apple.com/tap-to-pay/marketing-guidelines/) and use standard assets where possible.
+Apple reviews Tap to Pay on iPhone apps with high scrutiny, and the entitlement must be granted before you can build. Read [Apple's Requirements for Tap to Pay on iPhone](#apples-requirements-for-tap-to-pay-on-iphone) before you start, so that you do not discover a blocking requirement at submission time.
 
 1. [Install the SDK](#adding-sdk-framework-to-project).
 2. [Import the SDK into your project file](#importing-sdk).
 3. [Initialize the SDK with an Affiliate Key](#initialization).
 4. [Log the user in](#logging-the-user-in).
-5. Follow steps under [Implementing Tap-to-Pay](#implementing-tap-to-pay).
+5. Follow steps under [Implementing Tap to Pay](#implementing-tap-to-pay).
 
 ## Integrating iOS SDK
 
@@ -147,7 +144,7 @@ The latest Swift Package Manager version added support to [distribute binary fra
 Follow this workaround to manage SumUp iOS SDK versions via Swift PM in those cases:
 
 <Steps>
-1. Add the package dependency to the repository `https://github.com/sumup/sumup-ios-sdk` (*File > Swift Packages > Add Package Dependency...*) with the version `Up to Next Major: 7.1.0`
+1. Add the package dependency to the repository `https://github.com/sumup/sumup-ios-sdk` (*File > Swift Packages > Add Package Dependency...*) with the version `Up to Next Major: 7.1.2`
 2. Leave the checkbox unchecked for the SumUpSDK at the integration popup (*Add Package to ...:*)
 3. From the Project Navigator, drag and drop the `SumUpSDK/Referenced Binaries/SumUpSDK.xcframework` to your Xcode project's "Frameworks, Libraries, and Embedded Content" on the General settings tab.
 4. Make sure the [required Info.plist keys](#add-property-list-keys-to-project) are present.
@@ -171,7 +168,7 @@ Libraries, and Embedded Content" on the project General Settings tab.
 
 ```ruby
 target '<Your Target Name>' do
-    pod 'SumUpSDK', '~> 7.1.0'
+    pod 'SumUpSDK', '~> 7.1.2'
 end
 ```
 
@@ -646,7 +643,7 @@ The returned `SMPReaderStatus` object exposes:
 
 - `batteryLevel` — last reported battery level (updated during pairing or transaction processing; freshness varies with reader usage).
 - `serialNumber` — the serial number printed on the back of the physical reader.
-- `readerType` — the reader model (`SMPReaderType` / `ReaderType`): Air, Air Lite, 3G, Solo, Solo Lite.
+- `readerType` — the reader model (`SMPReaderType` / `ReaderType`): Unknown, Pin Plus (incl. Pin Plus Contactless), 3G, Air (incl. Air Lite), Solo, Solo Lite. Returns Unknown if no reader has ever been connected, which is the expected value for Tap to Pay on iPhone-only integrations.
 - `isActive` — `YES` when the reader is currently active or becoming active (e.g. after calling `prepareForCheckout:`). Returns `NO` if no reader has been connected or the saved reader is currently disconnected.
 
 <Tabs>
@@ -1271,14 +1268,72 @@ SDK 6.0 and earlier presented two screens during the checkout that prompted the 
 
 When `SMPProcessAsCredit` is used, you should obtain the number of installments from the customer using your own UI. Assign the positive, non-zero value to `numberOfInstallments` on `SMPCheckoutRequest`.
 
-### Implementing Tap-to-Pay
+### Apple's Requirements for Tap to Pay on iPhone
+
+Apple reviews Tap to Pay on iPhone apps with more scrutiny than an ordinary App Store submission. Most delays are caused by requirements that are easy to overlook rather than by defects in the
+payment flow itself, so read this section before you submit.
+
+SumUp does not approve Tap to Pay on iPhone apps — approval comes solely from Apple's review team, and every requirement below is Apple's. SumUp's integration team can help if you get stuck, but the quickest route through review is to satisfy this list first.
+
+#### Non-Negotiable Requirements
+
+Each of the following is required. Confirm all of them before submitting.
+
+* **Hold the entitlement before you build.** Request the Tap to Pay on iPhone entitlement from Apple and wait for approval, then add `com.apple.developer.proximity-reader.payment.acceptance` to your
+  app. See Apple's guide to [setting up the entitlement](https://developer.apple.com/documentation/proximityreader/setting-up-the-entitlement-for-tap-to-pay-on-iphone?language=objc). Approval is not immediate, so start this early.
+* **Follow the [Human Interface Guidelines for Tap to Pay on iPhone](https://developer.apple.com/design/human-interface-guidelines/tap-to-pay-on-iphone).** These are treated as requirements during review, not as suggestions.
+* **Follow [Apple's Tap to Pay marketing guidelines](https://developer.apple.com/tap-to-pay/marketing-guidelines/)** and use Apple's standard assets wherever they are offered.
+* **Never alter the product name.** Call `tapToPayProductName` rather than hardcoding a string. It returns the correctly localized name for every language the SDK supports, and it tracks any rebranding by Apple.
+* **Never draw your own version of Apple's payment UI.** The card-reading and PIN entry screens belong to Apple, as described in the next section. Reimplementing, overlaying, restyling or obscuring them will fail review.
+* **Use a runtime availability check, not a hardcoded one.** Requirements move over time, so call `checkTapToPayAvailability` instead of comparing against a fixed iOS version or device list.
+
+#### What the SDK Provides and What You Must Build
+
+Apple's review checklist covers the whole merchant experience, but the SumUp iOS SDK already implements most of it. Use the table below to work out which items are yours.
+
+| Requirement | Provided by the SDK | What you need to do |
+| --- | --- | --- |
+| Apple terms and conditions | Yes. Activation presents Apple's account-linking sheet, and if the merchant has not yet accepted, the SDK presents it again during a checkout and retries the transaction. | Nothing. Do not build your own terms screen. |
+| Merchant authorization | Partly. The SDK blocks activation on employee (sub-account) logins and explains that the main account owner must enable the feature first. | Make sure the merchant signing in is the account owner during first-time setup. |
+| Unsupported device and iOS messaging | Yes. Activation shows an alert when the device model, iOS version or Apple's own service does not meet the requirements. | Call `checkTapToPayAvailability` before you offer the feature so merchants never reach a dead end, and hide the entry point when it returns unavailable. |
+| Live activation-status checks | Yes. `checkTapToPayAvailability` reports both availability and whether activation has already been completed, checked against Apple rather than cached indefinitely. | Re-check on launch instead of persisting the result. Handle error 101 by running activation and retrying. |
+| Initial configuration progress | Yes. The SDK shows a progress screen while the device is prepared, which can take 45 seconds or longer on first use. | Nothing, but do not put your own blocking UI on top of it. |
+| Initializing and processing screens | Yes. The SDK's checkout screen moves through initializing, processing and finalizing states. | Nothing. |
+| Card-reading | Presented by Apple, not by SumUp. | Nothing, and nothing is possible — the SDK cannot alter or inspect this UI. |
+| PIN entry | Presented by Apple, and requested by SumUp's backend when a transaction needs it. | Nothing. Do not build a PIN pad. |
+| Approved and declined outcomes | Yes. The SDK presents the outcome screen, with messaging supplied by SumUp's backend. | Read `SMPCheckoutResult` in your completion handler and update your own order state. |
+| Timeout outcomes | Handled as a declined payment. There is no separate timeout screen. | Treat a timeout as a failed transaction rather than expecting a distinct result. |
+| Fallback payment | No. The SDK does not automatically prompt the customer for another payment method when a payment fails. | Detect the failure in your completion handler and prompt for an alternative yourself. That can include starting a new checkout against a card reader, if the merchant has one paired. |
+| Merchant education | Yes. Activation includes an introduction to the feature that shows the merchant how to take a payment. | Nothing. Calling `presentTapToPayActivation` again re-shows it, which is useful for a "How it works" menu item. |
+| `ProximityReaderDiscovery` | Depends on the SDK version. Up to and including 7.1.2 the SDK does not use Apple's `ProximityReaderDiscovery` API at all. From 7.2.0 onwards the SDK uses it internally for merchants on iOS 26 or later, and continues to show SumUp's own education screens on earlier iOS versions. | Nothing. There is no public API for it in either case. Do not state unconditionally in your App Review notes that your app presents it, because on 7.2.0 it appears only for merchants on iOS 26 or later. |
+| Digital receipts | Not part of the SDK. | Issue receipts through the [Receipts API](/api/receipts/get/). |
+
+#### Common Issues
+
+These account for most of the time integrators lose during review and integration.
+
+* **Testing on the Simulator.** Tap to Pay on iPhone is compiled out for the Simulator and can never work there. Test on a physical iPhone XS or later.
+* **Testing with a Sandbox Apple ID.** Debugging requires a non-Sandbox Apple ID, because a Sandbox Apple ID expects both Apple and SumUp to be running against test backends, which the SDK does not
+  support. Use a [SumUp sandbox merchant account](#sandbox-merchant-account) to avoid moving real money instead.
+* **Submitting before the entitlement is granted.** If the entitlement is missing or misconfigured, `presentTapToPayActivation` fails with a misleading `Failed to show Terms of Service` alert. The
+  cause is the entitlement, not the terms.
+* **Activating on an employee account.** A business using SumUp sub-accounts must enable the feature on the main account first, otherwise activation fails for every sub-account.
+* **Assuming a passcode is set.** Apple requires a device passcode. Without one, activation fails with a requirements error rather than a passcode-specific one.
+* **Starting a payment during a phone call.** Apple blocks card reads while a call is active, which surfaces as a checkout failure.
+* **Hardcoding the minimum iOS version.** The floor rises over time. Handle errors 103, 104 and 105 and re-check availability later, since a merchant who updates their device can become eligible.
+* **Calling `prepareForCheckout` for a Tap to Pay payment.** It exists to wake a Bluetooth reader and is unnecessary here. See [Differences from Card Reader Checkouts](#differences-from-card-reader-checkouts).
+* **Using `SMPProcessAsPromptUser`.** It is not supported for Tap to Pay on iPhone and produces an error. See [Credit/Debit Selection](#creditdebit-selection-processas-property).
+* **Building against an old SDK.** Submit with the latest released version of the SDK, and check the [SDK changelog](https://github.com/sumup/sumup-ios-sdk/blob/master/CHANGELOG.md) before you build.
+
+### Implementing Tap to Pay
 
 With Tap to Pay on iPhone merchants can accept contactless card payments on their iPhone without needing a card reader.
 
 To add Tap to Pay on iPhone to your app:
 
 * Request the Tap to Pay on iPhone entitlement from Apple, receive approval, and then add the `com.apple.developer.proximity-reader.payment.acceptance` entitlement to your app. [Setting up the entitlement](https://developer.apple.com/documentation/proximityreader/setting-up-the-entitlement-for-tap-to-pay-on-iphone?language=objc).
-* This feature requires an iPhone XS or later, running iOS 16.4 (iOS 16.7 starting July 8th) or later (ideally 17.5 or later.) The feature does not work on iPad.
+* This feature requires an iPhone XS or later and does not work on iPad. The minimum iOS version is raised over time, so treat it as a moving target: as of September 2026 it is **iOS 18.7**. Do not hardcode a version check — call `checkTapToPayAvailability` and handle `SMPSumUpSDKErrorTapToPayiOSVersionTooOld` (104) and `SMPSumUpSDKErrorTapToPayMinHardwareNotMet` (103) instead, so your app keeps working as the floor moves.
+* The SDK's own deployment target is iOS 16.0, which is significantly lower than the Tap to Pay on iPhone minimum. An app that builds against iOS 16.0 must therefore gate Tap to Pay on iPhone at runtime rather than assuming it is available.
 * For debugging and testing you will need to be logged into an iPhone with a non-Sandbox Apple ID. Using a Sandbox Apple ID requires both Apple and SumUp implementations to connect to their respective non-production (test) backends, which the SDK does not support.
 * **During testing use a SumUp sandbox merchant account**, to avoid transactions going to the acquirer and transferring real money.
 
@@ -1294,7 +1349,13 @@ In your code:
 * If the feature is not available, your app could, as an example, hide or disable a button or menu item representing the Tap to Pay on iPhone payment method.
 * The feature is generally available when the following criteria are fulfilled:
     * the iPhone model and iOS version requirements are met
-    * the user logs in with a SumUp account registered in one of the countries where SumUp supports Tap to Pay on iPhone (temporarily with exception of Brazil)
+    * the user logs in with a SumUp account registered in a country where SumUp supports Tap to Pay on iPhone, which does not include Brazil
+
+:::note
+Availability is determined at runtime by SumUp, not by a list you can check at build time, so treat `checkTapToPayAvailability` as the only source of truth. The [Tap to Pay reader overview](/terminal-payments/readers/tap-to-pay/) lists the countries currently supported on iOS, which is useful for planning a launch, but do not hardcode it.
+
+Which card schemes are accepted, and whether a given payment requires PIN entry, also depend on the merchant's country and are applied by SumUp when the transaction is processed. Your app does not configure either of them, and the PIN screen is presented by Apple when one is needed. The SDK does not automatically prompt for another payment method when a payment fails, so your app must handle the failure and offer the customer an alternative way to pay.
+:::
 
 #### Perform Activation If Needed
 
@@ -1305,6 +1366,15 @@ In your code:
 * In addition to determining feature availability, `checkTapToPayAvailability` also indicates whether Tap to Pay on iPhone has been activated yet for the current merchant.
 * If it has not yet been activated then you should trigger activation by calling `presentTapToPayActivation` at a convenient time. Calling it more than once will still show the user education screens each time. Independently, the activation from the initial setup will remain valid.
 
+#### Differences from Card Reader Checkouts
+
+A Tap to Pay on iPhone checkout uses the same `SMPCheckoutRequest` and completion handler as a card reader checkout, but several steps that are routine for a card reader do not apply.
+
+* **Set the payment method explicitly.** `paymentMethod` defaults to `SMPPaymentMethodCardReader`, so set it to `SMPPaymentMethodTapToPay` on every Tap to Pay on iPhone request.
+* **Do not call `prepareForCheckout`.** It exists only to wake a connected Bluetooth reader ahead of a transaction, and it does nothing for Tap to Pay on iPhone. In a Tap-only integration no reader has ever been paired, so it returns `SMPSumUpSDKErrorPrepareCheckoutReaderWakeFailed` (60). That is the expected result, not a fault to handle.
+* **`SMPProcessAsPromptUser` is not supported** and produces an error. Set `processAs` programmatically instead — see [Credit/Debit Selection](#creditdebit-selection-processas-property).
+* **Reader status does not apply.** `readerType` returns `Unknown` and `isActive` returns `NO` when no reader has ever been connected, which is the normal state for a Tap-only integration. Do not gate the checkout on either value.
+* **There is no automatic fallback to another payment method.** When a payment fails the SDK does not prompt the customer to try a different one. Your app must detect the failure in the completion handler and offer an alternative itself, which can include starting a new checkout against a card reader if the merchant has one paired.
 
 
 #### Definitions
@@ -1370,7 +1440,8 @@ open class func checkTapToPayAvailability() async throws -> (Bool, Bool)
  *  - The hosting app must have the `com.apple.developer.proximity-reader.payment.acceptance`
  *    entitlement.
  *
- *  - The merchant must have an iPhone XS or later with iOS 16.4 or later (iOS 17 or later recommended.)
+ *  - The merchant must have a supported iPhone model running a supported iOS version.
+ *    See the requirements above, as the minimum iOS version changes over time.
  *    The feature does not work with iPads.
  *
  *  @param fromViewController The UIViewController instance from which the UI should be presented modally.
@@ -1393,7 +1464,8 @@ open class func presentTapToPayActivation(from fromViewController: UIViewControl
  *  - The hosting app must have the `com.apple.developer.proximity-reader.payment.acceptance`
  *    entitlement.
  *
- *  - The merchant must have an iPhone XS or later with iOS 16.4 or later (iOS 17 or later recommended.)
+ *  - The merchant must have a supported iPhone model running a supported iOS version.
+ *    See the requirements above, as the minimum iOS version changes over time.
  *    The feature does not work with iPads.
  *
  *  @param fromViewController The UIViewController instance from which the UI should be presented modally.
@@ -1435,7 +1507,7 @@ open class func presentTapToPayActivation(from fromViewController: UIViewControl
  *
  *  Call `checkTapToPayAvailability:` before calling this method to find out if this payment method is available
  *  and if activation is needed.
- *ń
+ *
  *  The merchant must be logged in before you call this method.
  *
  *  Tap to Pay on iPhone requirements:
@@ -1443,7 +1515,8 @@ open class func presentTapToPayActivation(from fromViewController: UIViewControl
  *  - The hosting app must have the `com.apple.developer.proximity-reader.payment.acceptance`
  *    entitlement.
  *
- *  - The merchant must have an iPhone XS or later with iOS 16.4 or later (iOS 17 or later recommended.)
+ *  - The merchant must have a supported iPhone model running a supported iOS version.
+ *    See the requirements above, as the minimum iOS version changes over time.
  *    The feature does not work with iPads.
  *
  *  @param fromViewController The UIViewController instance from which the UI should be presented modally.
@@ -1462,14 +1535,14 @@ open class func presentTapToPayActivation(from fromViewController: UIViewControl
 
 #### Product Name
 
-`tapToPayProductName` returns the localized "Tap To Pay on iPhone" string. It is localized in all languages supported by the SDK and exposed as a convenience for use in your app's UI — use it instead of hardcoding the product name, as Apple may update the branding.
+`tapToPayProductName` returns the localized "Tap to Pay on iPhone" string. It is localized in all languages supported by the SDK and exposed as a convenience for use in your app's UI — use it instead of hardcoding the product name, as Apple may update the branding.
 
 <Tabs>
 
 <TabItem label="Swift">
 ```swift
 let productName = SumUpSDK.tapToPayProductName()
-// e.g. "Tap To Pay on iPhone"
+// e.g. "Tap to Pay on iPhone"
 ```
 
 </TabItem>
@@ -1477,7 +1550,7 @@ let productName = SumUpSDK.tapToPayProductName()
 <TabItem label="Objective C">
 ```objc
 NSString *productName = [SMPSumUpSDK tapToPayProductName];
-// e.g. @"Tap To Pay on iPhone"
+// e.g. @"Tap to Pay on iPhone"
 ```
 
 </TabItem>
@@ -1562,7 +1635,7 @@ The SDK uses Objective C header files, but XCode can also display its public typ
 | SMPCurrencyCodes.h | Defines available currency codes |
 | SMPMerchant.h (Merchant) | Describes a Merchant, including Merchant Code (identifier) and currency used by merchant |
 | SMPReaderStatus.h | Reader information: battery level, serial number, model type, and active state |
-| SMPReaderType.h (ReaderType) | Enumeration of card reader models: Pin Plus, 3G, Air, Solo, Solo Lite |
+| SMPReaderType.h (ReaderType) | Enumeration of card reader models: Unknown, Pin Plus, 3G, Air, Solo, Solo Lite |
 | SMPOfflineSessionDetails.h | Offline session state: remaining time, transaction counts, total approved amount |
 | SMPSkipScreenOptions.h (SkipScreenOptions) | Describes options allowing to skip transaction confirmation screen |
 | SumUpSDK.h | Declares project version  |
@@ -1578,8 +1651,10 @@ To run it, clone the [repository](https://github.com/sumup/sumup-ios-sdk) and op
 
 ## Known Issues
 
-* In Tap-to-Pay solutions, if entitlements are not correctly set up in your app, `presentTapToPayActivation` may show an error Alert with `Failed to show Terms of Service`.
+* In Tap to Pay on iPhone solutions, if entitlements are not correctly set up in your app, `presentTapToPayActivation` may show an error Alert with `Failed to show Terms of Service`.
 * Businesses using SumUp sub-accounts must first activate the feature on their main account before using it on devices logged in with sub-accounts, otherwise an error message will appear during activation for the sub-account user.
+
+For the wider set of issues integrators hit with Tap to Pay on iPhone, see [Common Issues](#common-issues).
 
 ## Community
 
