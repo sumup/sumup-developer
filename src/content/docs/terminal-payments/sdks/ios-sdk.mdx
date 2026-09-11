@@ -1303,7 +1303,9 @@ Apple's review checklist covers the whole merchant experience, but the SumUp iOS
 | PIN entry | Presented by Apple, and requested by SumUp's backend when a transaction needs it. | Nothing. Do not build a PIN pad. |
 | Approved and declined outcomes | Yes. The SDK presents the outcome screen, with messaging supplied by SumUp's backend. | Read `SMPCheckoutResult` in your completion handler and update your own order state. |
 | Timeout outcomes | Handled as a declined payment. There is no separate timeout screen. | Treat a timeout as a failed transaction rather than expecting a distinct result. |
+| Fallback payment | No. The SDK does not automatically prompt the customer for another payment method when a payment fails. | Detect the failure in your completion handler and prompt for an alternative yourself. That can include starting a new checkout against a card reader, if the merchant has one paired. |
 | Merchant education | Yes. Activation includes an introduction to the feature that shows the merchant how to take a payment. | Nothing. Calling `presentTapToPayActivation` again re-shows it, which is useful for a "How it works" menu item. |
+| `ProximityReaderDiscovery` | Depends on the SDK version. Up to and including 7.1.2 the SDK does not use Apple's `ProximityReaderDiscovery` API at all. From 7.2.0 onwards the SDK uses it internally for merchants on iOS 26 or later, and continues to show SumUp's own education screens on earlier iOS versions. | Nothing. There is no public API for it in either case. Do not state unconditionally in your App Review notes that your app presents it, because on 7.2.0 it appears only for merchants on iOS 26 or later. |
 | Digital receipts | Not part of the SDK. | Issue receipts through the [Receipts API](/api/receipts/get/). |
 
 #### Common Issues
@@ -1352,7 +1354,7 @@ In your code:
 :::note
 Availability is determined at runtime by SumUp, not by a list you can check at build time, so treat `checkTapToPayAvailability` as the only source of truth. In Chile the feature additionally requires iOS 18 or later, which is higher than the general minimum.
 
-Which card schemes are accepted, and whether a given payment requires PIN entry, also depend on the merchant's country and are applied by SumUp when the transaction is processed. Your app does not configure either of them, and the PIN screen is presented by Apple when one is needed. The SDK does not fall back to another payment method, so treat a failed Tap to Pay on iPhone payment like any other declined payment and decide in your own UI what to offer next.
+Which card schemes are accepted, and whether a given payment requires PIN entry, also depend on the merchant's country and are applied by SumUp when the transaction is processed. Your app does not configure either of them, and the PIN screen is presented by Apple when one is needed. The SDK does not automatically prompt for another payment method when a payment fails, so your app must handle the failure and offer the customer an alternative way to pay.
 :::
 
 #### Perform Activation If Needed
@@ -1363,6 +1365,16 @@ Which card schemes are accepted, and whether a given payment requires PIN entry,
 * This needs to be done once per merchant account, per device.
 * In addition to determining feature availability, `checkTapToPayAvailability` also indicates whether Tap to Pay on iPhone has been activated yet for the current merchant.
 * If it has not yet been activated then you should trigger activation by calling `presentTapToPayActivation` at a convenient time. Calling it more than once will still show the user education screens each time. Independently, the activation from the initial setup will remain valid.
+
+#### Differences from Card Reader Checkouts
+
+A Tap to Pay on iPhone checkout uses the same `SMPCheckoutRequest` and completion handler as a card reader checkout, but several steps that are routine for a card reader do not apply.
+
+* **Set the payment method explicitly.** `paymentMethod` defaults to `SMPPaymentMethodCardReader`, so set it to `SMPPaymentMethodTapToPay` on every Tap to Pay on iPhone request.
+* **Do not call `prepareForCheckout`.** It exists only to wake a connected Bluetooth reader ahead of a transaction, and it does nothing for Tap to Pay on iPhone. In a Tap-only integration no reader has ever been paired, so it returns `SMPSumUpSDKErrorPrepareCheckoutReaderWakeFailed` (60). That is the expected result, not a fault to handle.
+* **`SMPProcessAsPromptUser` is not supported** and produces an error. Set `processAs` programmatically instead — see [Credit/Debit Selection](#creditdebit-selection-processas-property).
+* **Reader status does not apply.** `readerType` returns `Unknown` and `isActive` returns `NO` when no reader has ever been connected, which is the normal state for a Tap-only integration. Do not gate the checkout on either value.
+* **There is no automatic fallback to another payment method.** When a payment fails the SDK does not prompt the customer to try a different one. Your app must detect the failure in the completion handler and offer an alternative itself, which can include starting a new checkout against a card reader if the merchant has one paired.
 
 
 
