@@ -1347,7 +1347,7 @@ In your code:
 * If the feature is not available, your app could, as an example, hide or disable a button or menu item representing the Tap to Pay on iPhone payment method.
 * The feature is generally available when the following criteria are fulfilled:
     * the iPhone model and iOS version requirements are met
-    * the user logs in with a SumUp account registered in a country where SumUp supports Tap to Pay on iPhone (temporarily with exception of Brazil)
+    * the user logs in with a SumUp account registered in a country where SumUp supports Tap to Pay on iPhone, which does not include Brazil
 
 :::note
 Availability is determined at runtime by SumUp, not by a list you can check at build time, so treat `checkTapToPayAvailability` as the only source of truth. In Chile the feature additionally requires iOS 18 or later, which is higher than the general minimum.
