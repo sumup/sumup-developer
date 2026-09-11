@@ -3,7 +3,7 @@
   "language": "rust",
   "sdk": {
     "module": "sumup",
-    "version": "0.5.12"
+    "version": "0.5.13"
   },
   "openAPIVersion": "1.0.0",
   "samples": [
@@ -24,7 +24,7 @@
       "description": "Standard request body for creating a checkout",
       "httpMethod": "POST",
       "path": "/v0.1/checkouts",
-      "sample": "use sumup::{Authorization, Client};\n#[tokio::main]\nasync fn main() {\n    let client = Client::default()\n        .with_authorization(Authorization::api_key(\"sup_sk_test_...\"));\n    let body = serde_json::from_value(\n            serde_json::json!(\n                { \"amount\" : 10.1, \"checkout_reference\" :\n                \"f00a8f74-b05d-4605-bd73-2a901bae5802\", \"currency\" : \"EUR\", \"description\"\n                : \"Purchase\", \"merchant_code\" : \"MH4H92C7\", \"redirect_url\" :\n                \"https://sumup.com\", \"valid_until\" : \"2020-02-29T10:56:56+00:00\" }\n            ),\n        )\n        .expect(\"build request body\");\n    let response = client.checkouts().create(body).await.expect(\"create request failed\");\n    println!(\"{response:#?}\");\n}\n"
+      "sample": "use sumup::{Authorization, Client};\n#[tokio::main]\nasync fn main() {\n    let client = Client::default()\n        .with_authorization(Authorization::api_key(\"sup_sk_test_...\"));\n    let body = serde_json::from_value(\n            serde_json::json!(\n                { \"checkout_reference\" : \"f00a8f74-b05d-4605-bd73-2a901bae5802\", \"amount\"\n                : 10.1, \"currency\" : \"EUR\", \"merchant_code\" : \"MH4H92C7\", \"description\" :\n                \"Purchase\", \"valid_until\" : \"2020-02-29T10:56:56+00:00\", \"redirect_url\" :\n                \"https://sumup.com\" }\n            ),\n        )\n        .expect(\"build request body\");\n    let response = client.checkouts().create(body).await.expect(\"create request failed\");\n    println!(\"{response:#?}\");\n}\n"
     },
     {
       "id": "CreateCheckout.Checkout3DS",
@@ -34,7 +34,7 @@
       "description": "Create a 3DS checkout",
       "httpMethod": "POST",
       "path": "/v0.1/checkouts",
-      "sample": "use sumup::{Authorization, Client};\n#[tokio::main]\nasync fn main() {\n    let client = Client::default()\n        .with_authorization(Authorization::api_key(\"sup_sk_test_...\"));\n    let body = serde_json::from_value(\n            serde_json::json!(\n                { \"amount\" : 10.1, \"checkout_reference\" :\n                \"f00a8f74-b05d-4605-bd73-2a901bae5802\", \"currency\" : \"EUR\", \"customer_id\"\n                : \"831ff8d4cd5958ab5670\", \"description\" : \"Purchase\", \"merchant_code\" :\n                \"MH4H92C7\", \"redirect_url\" : \"https://mysite.com/completed_purchase\",\n                \"return_url\" : \"http://example.com/\" }\n            ),\n        )\n        .expect(\"build request body\");\n    let response = client.checkouts().create(body).await.expect(\"create request failed\");\n    println!(\"{response:#?}\");\n}\n"
+      "sample": "use sumup::{Authorization, Client};\n#[tokio::main]\nasync fn main() {\n    let client = Client::default()\n        .with_authorization(Authorization::api_key(\"sup_sk_test_...\"));\n    let body = serde_json::from_value(\n            serde_json::json!(\n                { \"checkout_reference\" : \"f00a8f74-b05d-4605-bd73-2a901bae5802\", \"amount\"\n                : 10.1, \"currency\" : \"EUR\", \"merchant_code\" : \"MH4H92C7\", \"description\" :\n                \"Purchase\", \"return_url\" : \"http://example.com/\", \"customer_id\" :\n                \"831ff8d4cd5958ab5670\", \"redirect_url\" :\n                \"https://mysite.com/completed_purchase\" }\n            ),\n        )\n        .expect(\"build request body\");\n    let response = client.checkouts().create(body).await.expect(\"create request failed\");\n    println!(\"{response:#?}\");\n}\n"
     },
     {
       "id": "CreateCheckout.CheckoutAPM",
@@ -44,7 +44,7 @@
       "description": "Create an Alternative Payment Method checkout",
       "httpMethod": "POST",
       "path": "/v0.1/checkouts",
-      "sample": "use sumup::{Authorization, Client};\n#[tokio::main]\nasync fn main() {\n    let client = Client::default()\n        .with_authorization(Authorization::api_key(\"sup_sk_test_...\"));\n    let body = serde_json::from_value(\n            serde_json::json!(\n                { \"amount\" : 10.1, \"checkout_reference\" :\n                \"f00a8f74-b05d-4605-bd73-2a901bae5802\", \"currency\" : \"EUR\",\n                \"merchant_code\" : \"MH4H92C7\", \"redirect_url\" :\n                \"https://mysite.com/completed_purchase\" }\n            ),\n        )\n        .expect(\"build request body\");\n    let response = client.checkouts().create(body).await.expect(\"create request failed\");\n    println!(\"{response:#?}\");\n}\n"
+      "sample": "use sumup::{Authorization, Client};\n#[tokio::main]\nasync fn main() {\n    let client = Client::default()\n        .with_authorization(Authorization::api_key(\"sup_sk_test_...\"));\n    let body = serde_json::from_value(\n            serde_json::json!(\n                { \"checkout_reference\" : \"f00a8f74-b05d-4605-bd73-2a901bae5802\", \"amount\"\n                : 10.1, \"currency\" : \"EUR\", \"merchant_code\" : \"MH4H92C7\", \"redirect_url\"\n                : \"https://mysite.com/completed_purchase\" }\n            ),\n        )\n        .expect(\"build request body\");\n    let response = client.checkouts().create(body).await.expect(\"create request failed\");\n    println!(\"{response:#?}\");\n}\n"
     },
     {
       "id": "CreateCheckout.HostedCheckout",
@@ -54,7 +54,7 @@
       "description": "Create a checkout with a SumUp-hosted payment page",
       "httpMethod": "POST",
       "path": "/v0.1/checkouts",
-      "sample": "use sumup::{Authorization, Client};\n#[tokio::main]\nasync fn main() {\n    let client = Client::default()\n        .with_authorization(Authorization::api_key(\"sup_sk_test_...\"));\n    let body = serde_json::from_value(\n            serde_json::json!(\n                { \"amount\" : 12, \"checkout_reference\" :\n                \"b50pr914-6k0e-3091-a592-890010285b3d\", \"currency\" : \"EUR\", \"description\"\n                : \"A sample checkout\", \"hosted_checkout\" : { \"enabled\" : true },\n                \"merchant_code\" : \"MCXXXXXX\" }\n            ),\n        )\n        .expect(\"build request body\");\n    let response = client.checkouts().create(body).await.expect(\"create request failed\");\n    println!(\"{response:#?}\");\n}\n"
+      "sample": "use sumup::{Authorization, Client};\n#[tokio::main]\nasync fn main() {\n    let client = Client::default()\n        .with_authorization(Authorization::api_key(\"sup_sk_test_...\"));\n    let body = serde_json::from_value(\n            serde_json::json!(\n                { \"checkout_reference\" : \"b50pr914-6k0e-3091-a592-890010285b3d\", \"amount\"\n                : 12, \"currency\" : \"EUR\", \"merchant_code\" : \"MCXXXXXX\", \"description\" :\n                \"A sample checkout\", \"hosted_checkout\" : { \"enabled\" : true } }\n            ),\n        )\n        .expect(\"build request body\");\n    let response = client.checkouts().create(body).await.expect(\"create request failed\");\n    println!(\"{response:#?}\");\n}\n"
     },
     {
       "id": "CreateCustomer",
@@ -72,7 +72,7 @@
       "description": "Initiates a payment on the SumUp Go terminal identified by the reader ID.\n\nUse `client_transaction_id` as an idempotency key: retrying the request with the same value returns the result of the original payment instead of creating a duplicate.",
       "httpMethod": "POST",
       "path": "/v0/merchants/{merchant_code}/readers/{reader_id}/go-checkout",
-      "sample": "use sumup::{Authorization, Client};\n#[tokio::main]\nasync fn main() {\n    let client = Client::default()\n        .with_authorization(Authorization::api_key(\"sup_sk_test_...\"));\n    let body = serde_json::from_value(\n            serde_json::json!(\n                { \"client_transaction_id\" : \"19e12390-72cf-4f9f-80b5-b0c8a67fa43f\",\n                \"total_amount\" : { \"currency\" : \"MXN\", \"value\" : 1000 } }\n            ),\n        )\n        .expect(\"build request body\");\n    let response = client\n        .readers()\n        .create_go_checkout(\"MERCHANT_CODE\", \"READER_ID\", body)\n        .await\n        .expect(\"create_go_checkout request failed\");\n    println!(\"{response:#?}\");\n}\n"
+      "sample": "use sumup::{Authorization, Client};\n#[tokio::main]\nasync fn main() {\n    let client = Client::default()\n        .with_authorization(Authorization::api_key(\"sup_sk_test_...\"));\n    let body = serde_json::from_value(\n            serde_json::json!(\n                { \"total_amount\" : { \"currency\" : \"MXN\", \"value\" : 1000 },\n                \"client_transaction_id\" : \"19e12390-72cf-4f9f-80b5-b0c8a67fa43f\" }\n            ),\n        )\n        .expect(\"build request body\");\n    let response = client\n        .readers()\n        .create_go_checkout(\"MERCHANT_CODE\", \"READER_ID\", body)\n        .await\n        .expect(\"create_go_checkout request failed\");\n    println!(\"{response:#?}\");\n}\n"
     },
     {
       "id": "CreateMerchantMember",
@@ -99,7 +99,7 @@
       "description": "Create a new Reader for the merchant account.",
       "httpMethod": "POST",
       "path": "/v0.1/merchants/{merchant_code}/readers",
-      "sample": "use sumup::{Authorization, Client};\n#[tokio::main]\nasync fn main() {\n    let client = Client::default()\n        .with_authorization(Authorization::api_key(\"sup_sk_test_...\"));\n    let body = serde_json::from_value(\n            serde_json::json!({ \"name\" : \"Frontdesk\", \"pairing_code\" : \"4WLFDSBF\" }),\n        )\n        .expect(\"build request body\");\n    let response = client\n        .readers()\n        .create(\"MERCHANT_CODE\", body)\n        .await\n        .expect(\"create request failed\");\n    println!(\"{response:#?}\");\n}\n"
+      "sample": "use sumup::{Authorization, Client};\n#[tokio::main]\nasync fn main() {\n    let client = Client::default()\n        .with_authorization(Authorization::api_key(\"sup_sk_test_...\"));\n    let body = serde_json::from_value(\n            serde_json::json!({ \"pairing_code\" : \"4WLFDSBF\", \"name\" : \"Frontdesk\" }),\n        )\n        .expect(\"build request body\");\n    let response = client\n        .readers()\n        .create(\"MERCHANT_CODE\", body)\n        .await\n        .expect(\"create request failed\");\n    println!(\"{response:#?}\");\n}\n"
     },
     {
       "id": "CreateReaderCheckout",
@@ -189,7 +189,7 @@
       "description": "Returns a Merchant for a valid Merchant code.",
       "httpMethod": "GET",
       "path": "/v1/merchants/{merchant_code}",
-      "sample": "use sumup::{Authorization, Client};\n#[tokio::main]\nasync fn main() {\n    let client = Client::default()\n        .with_authorization(Authorization::api_key(\"sup_sk_test_...\"));\n    let response = client\n        .merchants()\n        .get(\"MERCHANT_CODE\", Default::default())\n        .await\n        .expect(\"get request failed\");\n    println!(\"{response:#?}\");\n}\n"
+      "sample": "use sumup::{Authorization, Client};\n#[tokio::main]\nasync fn main() {\n    let client = Client::default()\n        .with_authorization(Authorization::api_key(\"sup_sk_test_...\"));\n    let response = client\n        .merchants()\n        .get(\"MERCHANT_CODE\")\n        .await\n        .expect(\"get request failed\");\n    println!(\"{response:#?}\");\n}\n"
     },
     {
       "id": "GetMerchantMember",
@@ -225,7 +225,7 @@
       "description": "Returns a single Person related to a Merchant.",
       "httpMethod": "GET",
       "path": "/v1/merchants/{merchant_code}/persons/{person_id}",
-      "sample": "use sumup::{Authorization, Client};\n#[tokio::main]\nasync fn main() {\n    let client = Client::default()\n        .with_authorization(Authorization::api_key(\"sup_sk_test_...\"));\n    let response = client\n        .merchants()\n        .get_person(\"MERCHANT_CODE\", \"PERSON_ID\", Default::default())\n        .await\n        .expect(\"get_person request failed\");\n    println!(\"{response:#?}\");\n}\n"
+      "sample": "use sumup::{Authorization, Client};\n#[tokio::main]\nasync fn main() {\n    let client = Client::default()\n        .with_authorization(Authorization::api_key(\"sup_sk_test_...\"));\n    let response = client\n        .merchants()\n        .get_person(\"MERCHANT_CODE\", \"PERSON_ID\")\n        .await\n        .expect(\"get_person request failed\");\n    println!(\"{response:#?}\");\n}\n"
     },
     {
       "id": "GetReader",
@@ -333,7 +333,7 @@
       "description": "Returns the Persons related to a Merchant.",
       "httpMethod": "GET",
       "path": "/v1/merchants/{merchant_code}/persons",
-      "sample": "use sumup::{Authorization, Client};\n#[tokio::main]\nasync fn main() {\n    let client = Client::default()\n        .with_authorization(Authorization::api_key(\"sup_sk_test_...\"));\n    let response = client\n        .merchants()\n        .list_persons(\"MERCHANT_CODE\", Default::default())\n        .await\n        .expect(\"list_persons request failed\");\n    println!(\"{response:#?}\");\n}\n"
+      "sample": "use sumup::{Authorization, Client};\n#[tokio::main]\nasync fn main() {\n    let client = Client::default()\n        .with_authorization(Authorization::api_key(\"sup_sk_test_...\"));\n    let response = client\n        .merchants()\n        .list_persons(\"MERCHANT_CODE\")\n        .await\n        .expect(\"list_persons request failed\");\n    println!(\"{response:#?}\");\n}\n"
     },
     {
       "id": "ListReaders",
@@ -354,8 +354,59 @@
       "sample": "use sumup::{Authorization, Client};\n#[tokio::main]\nasync fn main() {\n    let client = Client::default()\n        .with_authorization(Authorization::api_key(\"sup_sk_test_...\"));\n    let response = client\n        .transactions()\n        .list(\"MERCHANT_CODE\", Default::default())\n        .await\n        .expect(\"list request failed\");\n    println!(\"{response:#?}\");\n}\n"
     },
     {
-      "id": "RefundTransaction",
+      "id": "ProcessCheckout.ProcessBancontact",
+      "operationId": "ProcessCheckout",
+      "example": "ProcessBancontact",
+      "summary": "Process a checkout",
+      "description": "Process a checkout with Bancontact",
+      "httpMethod": "PUT",
+      "path": "/v0.1/checkouts/{checkout_id}",
+      "sample": "use sumup::{Authorization, Client};\n#[tokio::main]\nasync fn main() {\n    let client = Client::default()\n        .with_authorization(Authorization::api_key(\"sup_sk_test_...\"));\n    let body = serde_json::from_value(\n            serde_json::json!(\n                { \"payment_type\" : \"bancontact\", \"personal_details\" : { \"email\" :\n                \"user@example.com\", \"first_name\" : \"John\", \"last_name\" : \"Doe\", \"address\"\n                : { \"country\" : \"BE\" } } }\n            ),\n        )\n        .expect(\"build request body\");\n    let response = client\n        .checkouts()\n        .process(\"CHECKOUT_ID\", body)\n        .await\n        .expect(\"process request failed\");\n    println!(\"{response:#?}\");\n}\n"
+    },
+    {
+      "id": "ProcessCheckout.ProcessBoleto",
+      "operationId": "ProcessCheckout",
+      "example": "ProcessBoleto",
+      "summary": "Process a checkout",
+      "description": "Process a checkout with Boleto",
+      "httpMethod": "PUT",
+      "path": "/v0.1/checkouts/{checkout_id}",
+      "sample": "use sumup::{Authorization, Client};\n#[tokio::main]\nasync fn main() {\n    let client = Client::default()\n        .with_authorization(Authorization::api_key(\"sup_sk_test_...\"));\n    let body = serde_json::from_value(\n            serde_json::json!(\n                { \"payment_type\" : \"boleto\", \"personal_details\" : { \"email\" :\n                \"user@example.com\", \"first_name\" : \"John\", \"last_name\" : \"Doe\", \"tax_id\"\n                : \"423.378.593-47\", \"address\" : { \"country\" : \"BR\", \"city\" :\n                \"São Paulo\", \"line1\" : \"Rua Gilberto Sabino, 215\", \"state\" : \"SP\",\n                \"postal_code\" : \"05425-020\" } } }\n            ),\n        )\n        .expect(\"build request body\");\n    let response = client\n        .checkouts()\n        .process(\"CHECKOUT_ID\", body)\n        .await\n        .expect(\"process request failed\");\n    println!(\"{response:#?}\");\n}\n"
+    },
+    {
+      "id": "ProcessCheckout.ProcessCard",
+      "operationId": "ProcessCheckout",
+      "example": "ProcessCard",
+      "summary": "Process a checkout",
+      "description": "Process a checkout with a card",
+      "httpMethod": "PUT",
+      "path": "/v0.1/checkouts/{checkout_id}",
+      "sample": "use sumup::{Authorization, Client};\n#[tokio::main]\nasync fn main() {\n    let client = Client::default()\n        .with_authorization(Authorization::api_key(\"sup_sk_test_...\"));\n    let body = serde_json::from_value(\n            serde_json::json!(\n                { \"payment_type\" : \"card\", \"installments\" : 1, \"mandate\" : { \"type\" :\n                \"recurrent\", \"user_agent\" :\n                \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.104 Safari/537.36\",\n                \"user_ip\" : \"172.217.169.174\" }, \"card\" : { \"type\" : \"VISA\", \"name\" :\n                \"John Doe\", \"number\" : \"1234567890123456\", \"expiry_year\" : \"2023\",\n                \"expiry_month\" : \"01\", \"cvv\" : \"123\", \"zip_code\" : \"12345\" } }\n            ),\n        )\n        .expect(\"build request body\");\n    let response = client\n        .checkouts()\n        .process(\"CHECKOUT_ID\", body)\n        .await\n        .expect(\"process request failed\");\n    println!(\"{response:#?}\");\n}\n"
+    },
+    {
+      "id": "ProcessCheckout.ProcessToken",
+      "operationId": "ProcessCheckout",
+      "example": "ProcessToken",
+      "summary": "Process a checkout",
+      "description": "Process a checkout with a token",
+      "httpMethod": "PUT",
+      "path": "/v0.1/checkouts/{checkout_id}",
+      "sample": "use sumup::{Authorization, Client};\n#[tokio::main]\nasync fn main() {\n    let client = Client::default()\n        .with_authorization(Authorization::api_key(\"sup_sk_test_...\"));\n    let body = serde_json::from_value(\n            serde_json::json!(\n                { \"payment_type\" : \"card\", \"installments\" : 1, \"token\" :\n                \"ba85dfee-c3cf-48a6-84f5-d7d761fbba50\", \"customer_id\" : \"MEDKHDTI\" }\n            ),\n        )\n        .expect(\"build request body\");\n    let response = client\n        .checkouts()\n        .process(\"CHECKOUT_ID\", body)\n        .await\n        .expect(\"process request failed\");\n    println!(\"{response:#?}\");\n}\n"
+    },
+    {
+      "id": "ProcessCheckout.ProcessiDeal",
+      "operationId": "ProcessCheckout",
+      "example": "ProcessiDeal",
+      "summary": "Process a checkout",
+      "description": "Process a checkout with iDeal",
+      "httpMethod": "PUT",
+      "path": "/v0.1/checkouts/{checkout_id}",
+      "sample": "use sumup::{Authorization, Client};\n#[tokio::main]\nasync fn main() {\n    let client = Client::default()\n        .with_authorization(Authorization::api_key(\"sup_sk_test_...\"));\n    let body = serde_json::from_value(\n            serde_json::json!(\n                { \"payment_type\" : \"ideal\", \"personal_details\" : { \"email\" :\n                \"user@example.com\", \"first_name\" : \"John\", \"last_name\" : \"Doe\", \"address\"\n                : { \"country\" : \"NL\" } } }\n            ),\n        )\n        .expect(\"build request body\");\n    let response = client\n        .checkouts()\n        .process(\"CHECKOUT_ID\", body)\n        .await\n        .expect(\"process request failed\");\n    println!(\"{response:#?}\");\n}\n"
+    },
+    {
+      "id": "RefundTransaction.default",
       "operationId": "RefundTransaction",
+      "example": "default",
       "summary": "Refund a transaction",
       "description": "Refunds an identified transaction either in full or partially.",
       "httpMethod": "POST",
@@ -363,13 +414,14 @@
       "sample": "use sumup::{Authorization, Client};\n#[tokio::main]\nasync fn main() {\n    let client = Client::default()\n        .with_authorization(Authorization::api_key(\"sup_sk_test_...\"));\n    let body = serde_json::from_value(serde_json::json!({ \"amount\" : 5 }))\n        .expect(\"build request body\");\n    let response = client\n        .transactions()\n        .refund(\"MERCHANT_CODE\", \"TRANSACTION_ID\", Some(body))\n        .await\n        .expect(\"refund request failed\");\n    println!(\"{response:#?}\");\n}\n"
     },
     {
-      "id": "UpdateCheckout",
+      "id": "UpdateCheckout.default",
       "operationId": "UpdateCheckout",
+      "example": "default",
       "summary": "Update a checkout",
       "description": "Updates an identified checkout resource.",
       "httpMethod": "PATCH",
       "path": "/v0.1/checkouts/{checkout_id}",
-      "sample": "use sumup::{Authorization, Client};\n#[tokio::main]\nasync fn main() {\n    let client = Client::default()\n        .with_authorization(Authorization::api_key(\"sup_sk_test_...\"));\n    let body = serde_json::from_value(\n            serde_json::json!(\n                { \"amount\" : 12.5, \"checkout_reference\" :\n                \"f00a8f74-b05d-4605-bd73-2a901bae5802\", \"currency\" : \"EUR\", \"customer_id\"\n                : \"831ff8d4cd5958ab5670\", \"description\" : \"Updated purchase\",\n                \"valid_until\" : \"2020-02-29T10:56:56+00:00\" }\n            ),\n        )\n        .expect(\"build request body\");\n    let response = client\n        .checkouts()\n        .update(\"CHECKOUT_ID\", body)\n        .await\n        .expect(\"update request failed\");\n    println!(\"{response:#?}\");\n}\n"
+      "sample": "use sumup::{Authorization, Client};\n#[tokio::main]\nasync fn main() {\n    let client = Client::default()\n        .with_authorization(Authorization::api_key(\"sup_sk_test_...\"));\n    let body = serde_json::from_value(\n            serde_json::json!(\n                { \"amount\" : 12.5, \"currency\" : \"EUR\", \"description\" :\n                \"Updated purchase\", \"checkout_reference\" :\n                \"f00a8f74-b05d-4605-bd73-2a901bae5802\", \"valid_until\" :\n                \"2020-02-29T10:56:56+00:00\", \"customer_id\" : \"831ff8d4cd5958ab5670\" }\n            ),\n        )\n        .expect(\"build request body\");\n    let response = client\n        .checkouts()\n        .update(\"CHECKOUT_ID\", body)\n        .await\n        .expect(\"update request failed\");\n    println!(\"{response:#?}\");\n}\n"
     },
     {
       "id": "UpdateCustomer",
@@ -387,7 +439,7 @@
       "description": "Update the merchant member.",
       "httpMethod": "PUT",
       "path": "/v0.1/merchants/{merchant_code}/members/{member_id}",
-      "sample": "use sumup::{Authorization, Client};\n#[tokio::main]\nasync fn main() {\n    let client = Client::default()\n        .with_authorization(Authorization::api_key(\"sup_sk_test_...\"));\n    let body = serde_json::from_value(\n            serde_json::json!(\n                { \"Update managed user\" : { \"user\" : { \"nickname\" : \"New Employee Name\" }\n                }, \"Update member's role\" : { \"roles\" : [\"role_manager\"] } }\n            ),\n        )\n        .expect(\"build request body\");\n    let response = client\n        .members()\n        .update(\"MERCHANT_CODE\", \"MEMBER_ID\", body)\n        .await\n        .expect(\"update request failed\");\n    println!(\"{response:#?}\");\n}\n"
+      "sample": "use sumup::{Authorization, Client};\n#[tokio::main]\nasync fn main() {\n    let client = Client::default()\n        .with_authorization(Authorization::api_key(\"sup_sk_test_...\"));\n    let body = serde_json::from_value(\n            serde_json::json!(\n                { \"Update member's role\" : { \"roles\" : [\"role_manager\"] },\n                \"Update managed user\" : { \"user\" : { \"nickname\" : \"New Employee Name\" } }\n                }\n            ),\n        )\n        .expect(\"build request body\");\n    let response = client\n        .members()\n        .update(\"MERCHANT_CODE\", \"MEMBER_ID\", body)\n        .await\n        .expect(\"update request failed\");\n    println!(\"{response:#?}\");\n}\n"
     },
     {
       "id": "UpdateMerchantRole",
