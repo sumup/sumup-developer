@@ -3,7 +3,7 @@
   "language": "bash",
   "sdk": {
     "module": "github.com/sumup/sumup-cli",
-    "version": "v0.5.1"
+    "version": "v0.5.2"
   },
   "openAPIVersion": "1.0.0",
   "samples": [
@@ -322,6 +322,15 @@
       "httpMethod": "GET",
       "path": "/v2.1/merchants/{merchant_code}/transactions/history",
       "sample": "sumup transactions list \\\n  --merchant-code \"MH4H92C7\"\n"
+    },
+    {
+      "id": "ProcessCheckout",
+      "operationId": "ProcessCheckout",
+      "summary": "Process a checkout",
+      "description": ":::caution[PCI DSS compliance required]\nWhen you submit raw card details directly to the Checkout API, your systems store, process, or transmit cardholder data and are therefore subject to applicable [PCI DSS requirements](https://www.pcisecuritystandards.org/document_library/). You should only use this integration if your environment is appropriately PCI DSS compliant.\n:::\n\nProcessing a checkout will attempt to charge the provided payment instrument for the amount of the specified checkout resource initiated in the `Create a checkout` endpoint.\n\nFollow this request with `Retrieve a checkout` to confirm its status.",
+      "httpMethod": "PUT",
+      "path": "/v0.1/checkouts/{checkout_id}",
+      "sample": "# not supported"
     },
     {
       "id": "RefundTransaction",
