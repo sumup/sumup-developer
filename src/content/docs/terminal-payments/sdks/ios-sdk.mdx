@@ -144,7 +144,7 @@ The latest Swift Package Manager version added support to [distribute binary fra
 Follow this workaround to manage SumUp iOS SDK versions via Swift PM in those cases:
 
 <Steps>
-1. Add the package dependency to the repository `https://github.com/sumup/sumup-ios-sdk` (*File > Swift Packages > Add Package Dependency...*) with the version `Up to Next Major: 7.1.0`
+1. Add the package dependency to the repository `https://github.com/sumup/sumup-ios-sdk` (*File > Swift Packages > Add Package Dependency...*) with the version `Up to Next Major: 7.1.2`
 2. Leave the checkbox unchecked for the SumUpSDK at the integration popup (*Add Package to ...:*)
 3. From the Project Navigator, drag and drop the `SumUpSDK/Referenced Binaries/SumUpSDK.xcframework` to your Xcode project's "Frameworks, Libraries, and Embedded Content" on the General settings tab.
 4. Make sure the [required Info.plist keys](#add-property-list-keys-to-project) are present.
@@ -168,7 +168,7 @@ Libraries, and Embedded Content" on the project General Settings tab.
 
 ```ruby
 target '<Your Target Name>' do
-    pod 'SumUpSDK', '~> 7.1.0'
+    pod 'SumUpSDK', '~> 7.1.2'
 end
 ```
 
@@ -1352,7 +1352,7 @@ In your code:
     * the user logs in with a SumUp account registered in a country where SumUp supports Tap to Pay on iPhone, which does not include Brazil
 
 :::note
-Availability is determined at runtime by SumUp, not by a list you can check at build time, so treat `checkTapToPayAvailability` as the only source of truth. In Chile the feature additionally requires iOS 18 or later, which is higher than the general minimum.
+Availability is determined at runtime by SumUp, not by a list you can check at build time, so treat `checkTapToPayAvailability` as the only source of truth. The [Tap to Pay reader overview](/terminal-payments/readers/tap-to-pay/) lists the countries currently supported on iOS, which is useful for planning a launch, but do not hardcode it. In Chile the feature additionally requires iOS 18 or later, which is higher than the general minimum.
 
 Which card schemes are accepted, and whether a given payment requires PIN entry, also depend on the merchant's country and are applied by SumUp when the transaction is processed. Your app does not configure either of them, and the PIN screen is presented by Apple when one is needed. The SDK does not automatically prompt for another payment method when a payment fails, so your app must handle the failure and offer the customer an alternative way to pay.
 :::
@@ -1375,7 +1375,6 @@ A Tap to Pay on iPhone checkout uses the same `SMPCheckoutRequest` and completio
 * **`SMPProcessAsPromptUser` is not supported** and produces an error. Set `processAs` programmatically instead — see [Credit/Debit Selection](#creditdebit-selection-processas-property).
 * **Reader status does not apply.** `readerType` returns `Unknown` and `isActive` returns `NO` when no reader has ever been connected, which is the normal state for a Tap-only integration. Do not gate the checkout on either value.
 * **There is no automatic fallback to another payment method.** When a payment fails the SDK does not prompt the customer to try a different one. Your app must detect the failure in the completion handler and offer an alternative itself, which can include starting a new checkout against a card reader if the merchant has one paired.
-
 
 
 #### Definitions
