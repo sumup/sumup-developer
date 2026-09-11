@@ -1352,7 +1352,7 @@ In your code:
     * the user logs in with a SumUp account registered in a country where SumUp supports Tap to Pay on iPhone, which does not include Brazil
 
 :::note
-Availability is determined at runtime by SumUp, not by a list you can check at build time, so treat `checkTapToPayAvailability` as the only source of truth. The [Tap to Pay reader overview](/terminal-payments/readers/tap-to-pay/) lists the countries currently supported on iOS, which is useful for planning a launch, but do not hardcode it. In Chile the feature additionally requires iOS 18 or later, which is higher than the general minimum.
+Availability is determined at runtime by SumUp, not by a list you can check at build time, so treat `checkTapToPayAvailability` as the only source of truth. The [Tap to Pay reader overview](/terminal-payments/readers/tap-to-pay/) lists the countries currently supported on iOS, which is useful for planning a launch, but do not hardcode it.
 
 Which card schemes are accepted, and whether a given payment requires PIN entry, also depend on the merchant's country and are applied by SumUp when the transaction is processed. Your app does not configure either of them, and the PIN screen is presented by Apple when one is needed. The SDK does not automatically prompt for another payment method when a payment fails, so your app must handle the failure and offer the customer an alternative way to pay.
 :::
