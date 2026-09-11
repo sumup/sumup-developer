@@ -3,7 +3,7 @@
   "language": "java",
   "sdk": {
     "module": "com.sumup:sumup-sdk",
-    "version": "0.0.10"
+    "version": "0.1.0"
   },
   "openAPIVersion": "1.0.0",
   "samples": [
@@ -14,7 +14,7 @@
       "description": "Creates an Apple Pay merchant session for the specified checkout.\n\nUse this endpoint after the customer selects Apple Pay and before calling\n`ApplePaySession.completeMerchantValidation(...)` in the browser.\nSumUp validates the merchant session request and returns the Apple Pay\nsession object that your frontend should pass to Apple's JavaScript API.",
       "httpMethod": "PUT",
       "path": "/v0.2/checkouts/{checkout_id}/apple-pay-session",
-      "sample": "import com.sumup.sdk.SumUpClient;\n\npublic final class CreateApplePaySessionSample {\n  public static void main(String[] args) throws Exception {\n    var client = new SumUpClient();\n\n    var result = client.checkouts().createApplePaySession(\n            \"example\",\n            com.sumup.sdk.models.CreateApplePaySessionRequest.builder()\n                .context(\"example.com\")\n                .target(\"https://apple-pay-gateway-cert.apple.com/paymentservices/startSession\")\n                .build()\n        );\n    System.out.println(result);\n  }\n}\n"
+      "sample": "import com.sumup.sdk.SumUpClient;\n\npublic final class CreateApplePaySessionSample {\n  public static void main(String[] args) throws Exception {\n    var client = new SumUpClient();\n\n    var result = client.checkouts().createApplePaySession(\n            \"4e425463-3e1b-431d-83fa-1e51c2925e99\",\n            com.sumup.sdk.models.CreateApplePaySessionRequest.builder()\n                .context(\"example.com\")\n                .target(\"https://apple-pay-gateway-cert.apple.com/paymentservices/startSession\")\n                .build()\n        );\n    System.out.println(result);\n  }\n}\n"
     },
     {
       "id": "CreateCheckout.Checkout",
@@ -72,7 +72,7 @@
       "description": "Initiates a payment on the SumUp Go terminal identified by the reader ID.\n\nUse `client_transaction_id` as an idempotency key: retrying the request with the same value returns the result of the original payment instead of creating a duplicate.",
       "httpMethod": "POST",
       "path": "/v0/merchants/{merchant_code}/readers/{reader_id}/go-checkout",
-      "sample": "import com.sumup.sdk.SumUpClient;\n\npublic final class CreateGoReaderCheckoutSample {\n  public static void main(String[] args) throws Exception {\n    var client = new SumUpClient();\n\n    var result = client.readers().createGoCheckout(\n            \"MK10CL2A\",\n            new com.sumup.sdk.models.ReaderId(\"example\"),\n            com.sumup.sdk.models.ReaderPaymentRequestParams.builder()\n                .clientTransactionId(\"19e12390-72cf-4f9f-80b5-b0c8a67fa43f\")\n                .totalAmount(com.sumup.sdk.models.Amount.builder()\n                .currency(\"MXN\")\n                .value(1000L)\n                .build())\n                .build()\n        );\n    System.out.println(result);\n  }\n}\n"
+      "sample": "import com.sumup.sdk.SumUpClient;\n\npublic final class CreateGoReaderCheckoutSample {\n  public static void main(String[] args) throws Exception {\n    var client = new SumUpClient();\n\n    var result = client.readers().createGoCheckout(\n            \"MK10CL2A\",\n            \"rdr_3MSAFM23CK82VSTT4BN6RWSQ65\",\n            com.sumup.sdk.models.ReaderPaymentRequestParams.builder()\n                .clientTransactionId(\"19e12390-72cf-4f9f-80b5-b0c8a67fa43f\")\n                .totalAmount(com.sumup.sdk.models.Amount.builder()\n                .currency(\"MXN\")\n                .value(1000L)\n                .build())\n                .build()\n        );\n    System.out.println(result);\n  }\n}\n"
     },
     {
       "id": "CreateMerchantMember",
@@ -99,7 +99,7 @@
       "description": "Create a new Reader for the merchant account.",
       "httpMethod": "POST",
       "path": "/v0.1/merchants/{merchant_code}/readers",
-      "sample": "import com.sumup.sdk.SumUpClient;\n\npublic final class CreateReaderSample {\n  public static void main(String[] args) throws Exception {\n    var client = new SumUpClient();\n\n    var result = client.readers().create(\n            \"MK10CL2A\",\n            com.sumup.sdk.models.CreateReaderRequest.builder()\n                .name(new com.sumup.sdk.models.ReaderName(\"example\"))\n                .pairingCode(new com.sumup.sdk.models.ReaderPairingCode(\"example\"))\n                .build()\n        );\n    System.out.println(result);\n  }\n}\n"
+      "sample": "import com.sumup.sdk.SumUpClient;\n\npublic final class CreateReaderSample {\n  public static void main(String[] args) throws Exception {\n    var client = new SumUpClient();\n\n    var result = client.readers().create(\n            \"MK10CL2A\",\n            com.sumup.sdk.models.CreateReaderRequest.builder()\n                .name(\"Frontdesk\")\n                .pairingCode(\"4WLFDSBF\")\n                .build()\n        );\n    System.out.println(result);\n  }\n}\n"
     },
     {
       "id": "CreateReaderCheckout",
@@ -126,7 +126,7 @@
       "description": "Deactivates an identified checkout resource. If the checkout has already been processed it can not be deactivated.",
       "httpMethod": "DELETE",
       "path": "/v0.1/checkouts/{checkout_id}",
-      "sample": "import com.sumup.sdk.SumUpClient;\n\npublic final class DeactivateCheckoutSample {\n  public static void main(String[] args) throws Exception {\n    var client = new SumUpClient();\n\n    var result = client.checkouts().deactivate(\n            \"example\"\n        );\n    System.out.println(result);\n  }\n}\n"
+      "sample": "import com.sumup.sdk.SumUpClient;\n\npublic final class DeactivateCheckoutSample {\n  public static void main(String[] args) throws Exception {\n    var client = new SumUpClient();\n\n    var result = client.checkouts().deactivate(\n            \"4e425463-3e1b-431d-83fa-1e51c2925e99\"\n        );\n    System.out.println(result);\n  }\n}\n"
     },
     {
       "id": "DeactivatePaymentInstrument",
@@ -135,7 +135,7 @@
       "description": "Deactivates an identified card payment instrument resource for a customer.",
       "httpMethod": "DELETE",
       "path": "/v0.1/customers/{customer_id}/payment-instruments/{token}",
-      "sample": "import com.sumup.sdk.SumUpClient;\n\npublic final class DeactivatePaymentInstrumentSample {\n  public static void main(String[] args) throws Exception {\n    var client = new SumUpClient();\n\n    client.customers().deactivatePaymentInstrument(\n            \"example\",\n            \"example\"\n        );\n  }\n}\n"
+      "sample": "import com.sumup.sdk.SumUpClient;\n\npublic final class DeactivatePaymentInstrumentSample {\n  public static void main(String[] args) throws Exception {\n    var client = new SumUpClient();\n\n    client.customers().deactivatePaymentInstrument(\n            \"831ff8d4cd5958ab5670\",\n            \"bcfc8e5f-3b47-4cb9-854b-3b7a4cce7be3\"\n        );\n  }\n}\n"
     },
     {
       "id": "DeleteMerchantMember",
@@ -162,7 +162,7 @@
       "description": "Delete a reader.",
       "httpMethod": "DELETE",
       "path": "/v0.1/merchants/{merchant_code}/readers/{reader_id}",
-      "sample": "import com.sumup.sdk.SumUpClient;\n\npublic final class DeleteReaderSample {\n  public static void main(String[] args) throws Exception {\n    var client = new SumUpClient();\n\n    client.readers().delete(\n            \"MK10CL2A\",\n            new com.sumup.sdk.models.ReaderId(\"example\")\n        );\n  }\n}\n"
+      "sample": "import com.sumup.sdk.SumUpClient;\n\npublic final class DeleteReaderSample {\n  public static void main(String[] args) throws Exception {\n    var client = new SumUpClient();\n\n    client.readers().delete(\n            \"MK10CL2A\",\n            \"rdr_3MSAFM23CK82VSTT4BN6RWSQ65\"\n        );\n  }\n}\n"
     },
     {
       "id": "GetCheckout",
@@ -171,7 +171,7 @@
       "description": "Retrieves an identified checkout resource. Use this request after processing a checkout to confirm its status and inform the end user respectively.",
       "httpMethod": "GET",
       "path": "/v0.1/checkouts/{checkout_id}",
-      "sample": "import com.sumup.sdk.SumUpClient;\n\npublic final class GetCheckoutSample {\n  public static void main(String[] args) throws Exception {\n    var client = new SumUpClient();\n\n    var result = client.checkouts().get(\n            \"example\"\n        );\n    System.out.println(result);\n  }\n}\n"
+      "sample": "import com.sumup.sdk.SumUpClient;\n\npublic final class GetCheckoutSample {\n  public static void main(String[] args) throws Exception {\n    var client = new SumUpClient();\n\n    var result = client.checkouts().get(\n            \"4e425463-3e1b-431d-83fa-1e51c2925e99\"\n        );\n    System.out.println(result);\n  }\n}\n"
     },
     {
       "id": "GetCustomer",
@@ -180,7 +180,7 @@
       "description": "Retrieves an identified saved customer resource through the unique `customer_id` parameter, generated upon customer creation.",
       "httpMethod": "GET",
       "path": "/v0.1/customers/{customer_id}",
-      "sample": "import com.sumup.sdk.SumUpClient;\n\npublic final class GetCustomerSample {\n  public static void main(String[] args) throws Exception {\n    var client = new SumUpClient();\n\n    var result = client.customers().get(\n            \"example\"\n        );\n    System.out.println(result);\n  }\n}\n"
+      "sample": "import com.sumup.sdk.SumUpClient;\n\npublic final class GetCustomerSample {\n  public static void main(String[] args) throws Exception {\n    var client = new SumUpClient();\n\n    var result = client.customers().get(\n            \"831ff8d4cd5958ab5670\"\n        );\n    System.out.println(result);\n  }\n}\n"
     },
     {
       "id": "GetMerchant",
@@ -234,7 +234,7 @@
       "description": "Retrieve a Reader.",
       "httpMethod": "GET",
       "path": "/v0.1/merchants/{merchant_code}/readers/{reader_id}",
-      "sample": "import com.sumup.sdk.SumUpClient;\n\npublic final class GetReaderSample {\n  public static void main(String[] args) throws Exception {\n    var client = new SumUpClient();\n\n    var result = client.readers().get(\n            \"MK10CL2A\",\n            new com.sumup.sdk.models.ReaderId(\"example\")\n        );\n    System.out.println(result);\n  }\n}\n"
+      "sample": "import com.sumup.sdk.SumUpClient;\n\npublic final class GetReaderSample {\n  public static void main(String[] args) throws Exception {\n    var client = new SumUpClient();\n\n    var result = client.readers().get(\n            \"MK10CL2A\",\n            \"rdr_3MSAFM23CK82VSTT4BN6RWSQ65\"\n        );\n    System.out.println(result);\n  }\n}\n"
     },
     {
       "id": "GetReaderCheckout",
@@ -261,7 +261,7 @@
       "description": "Retrieves receipt specific data for a transaction.",
       "httpMethod": "GET",
       "path": "/v1.1/receipts/{transaction_id}",
-      "sample": "import com.sumup.sdk.SumUpClient;\n\npublic final class GetReceiptSample {\n  public static void main(String[] args) throws Exception {\n    var client = new SumUpClient();\n\n    var result = client.receipts().get(\n            \"example\",\n            \"example\"\n        );\n    System.out.println(result);\n  }\n}\n"
+      "sample": "import com.sumup.sdk.SumUpClient;\n\npublic final class GetReceiptSample {\n  public static void main(String[] args) throws Exception {\n    var client = new SumUpClient();\n\n    var result = client.receipts().get(\n            \"410fc44a-5956-44e1-b5cc-19c6f8d727a4\",\n            \"MH4H92C7\"\n        );\n    System.out.println(result);\n  }\n}\n"
     },
     {
       "id": "GetTransactionV2.1",
@@ -315,7 +315,7 @@
       "description": "Lists all payment instrument resources that are saved for an identified customer.",
       "httpMethod": "GET",
       "path": "/v0.1/customers/{customer_id}/payment-instruments",
-      "sample": "import com.sumup.sdk.SumUpClient;\n\npublic final class ListPaymentInstrumentsSample {\n  public static void main(String[] args) throws Exception {\n    var client = new SumUpClient();\n\n    var result = client.customers().listPaymentInstruments(\n            \"example\"\n        );\n    System.out.println(result);\n  }\n}\n"
+      "sample": "import com.sumup.sdk.SumUpClient;\n\npublic final class ListPaymentInstrumentsSample {\n  public static void main(String[] args) throws Exception {\n    var client = new SumUpClient();\n\n    var result = client.customers().listPaymentInstruments(\n            \"831ff8d4cd5958ab5670\"\n        );\n    System.out.println(result);\n  }\n}\n"
     },
     {
       "id": "ListPayoutsV1",
@@ -361,7 +361,7 @@
       "description": "Process a checkout with Bancontact",
       "httpMethod": "PUT",
       "path": "/v0.1/checkouts/{checkout_id}",
-      "sample": "import com.sumup.sdk.SumUpClient;\n\npublic final class ProcessCheckoutProcessBancontactSample {\n  public static void main(String[] args) throws Exception {\n    var client = new SumUpClient();\n\n    var result = client.checkouts().process(\n            \"example\",\n            com.sumup.sdk.models.ProcessCheckout.builder()\n                .paymentType(com.sumup.sdk.models.ProcessCheckoutPaymentType.of(\"bancontact\"))\n                .personalDetails(com.sumup.sdk.models.PersonalDetails.builder()\n                .address(com.sumup.sdk.models.AddressLegacy.builder()\n                .country(\"BE\")\n                .build())\n                .email(\"user@example.com\")\n                .firstName(\"John\")\n                .lastName(\"Doe\")\n                .build())\n                .build()\n        );\n    System.out.println(result);\n  }\n}\n"
+      "sample": "import com.sumup.sdk.SumUpClient;\n\npublic final class ProcessCheckoutProcessBancontactSample {\n  public static void main(String[] args) throws Exception {\n    var client = new SumUpClient();\n\n    var result = client.checkouts().process(\n            \"4e425463-3e1b-431d-83fa-1e51c2925e99\",\n            com.sumup.sdk.models.ProcessCheckout.builder()\n                .paymentType(com.sumup.sdk.models.ProcessCheckoutPaymentType.of(\"bancontact\"))\n                .personalDetails(com.sumup.sdk.models.PersonalDetails.builder()\n                .address(com.sumup.sdk.models.AddressLegacy.builder()\n                .country(\"BE\")\n                .build())\n                .email(\"user@example.com\")\n                .firstName(\"John\")\n                .lastName(\"Doe\")\n                .build())\n                .build()\n        );\n    System.out.println(result);\n  }\n}\n"
     },
     {
       "id": "ProcessCheckout.ProcessBoleto",
@@ -371,7 +371,7 @@
       "description": "Process a checkout with Boleto",
       "httpMethod": "PUT",
       "path": "/v0.1/checkouts/{checkout_id}",
-      "sample": "import com.sumup.sdk.SumUpClient;\n\npublic final class ProcessCheckoutProcessBoletoSample {\n  public static void main(String[] args) throws Exception {\n    var client = new SumUpClient();\n\n    var result = client.checkouts().process(\n            \"example\",\n            com.sumup.sdk.models.ProcessCheckout.builder()\n                .paymentType(com.sumup.sdk.models.ProcessCheckoutPaymentType.of(\"boleto\"))\n                .personalDetails(com.sumup.sdk.models.PersonalDetails.builder()\n                .address(com.sumup.sdk.models.AddressLegacy.builder()\n                .city(\"São Paulo\")\n                .country(\"BR\")\n                .postalCode(\"05425-020\")\n                .state(\"SP\")\n                .build())\n                .email(\"user@example.com\")\n                .firstName(\"John\")\n                .lastName(\"Doe\")\n                .taxId(\"423.378.593-47\")\n                .build())\n                .build()\n        );\n    System.out.println(result);\n  }\n}\n"
+      "sample": "import com.sumup.sdk.SumUpClient;\n\npublic final class ProcessCheckoutProcessBoletoSample {\n  public static void main(String[] args) throws Exception {\n    var client = new SumUpClient();\n\n    var result = client.checkouts().process(\n            \"4e425463-3e1b-431d-83fa-1e51c2925e99\",\n            com.sumup.sdk.models.ProcessCheckout.builder()\n                .paymentType(com.sumup.sdk.models.ProcessCheckoutPaymentType.of(\"boleto\"))\n                .personalDetails(com.sumup.sdk.models.PersonalDetails.builder()\n                .address(com.sumup.sdk.models.AddressLegacy.builder()\n                .city(\"São Paulo\")\n                .country(\"BR\")\n                .postalCode(\"05425-020\")\n                .state(\"SP\")\n                .build())\n                .email(\"user@example.com\")\n                .firstName(\"John\")\n                .lastName(\"Doe\")\n                .taxId(\"423.378.593-47\")\n                .build())\n                .build()\n        );\n    System.out.println(result);\n  }\n}\n"
     },
     {
       "id": "ProcessCheckout.ProcessCard",
@@ -381,7 +381,7 @@
       "description": "Process a checkout with a card",
       "httpMethod": "PUT",
       "path": "/v0.1/checkouts/{checkout_id}",
-      "sample": "import com.sumup.sdk.SumUpClient;\n\npublic final class ProcessCheckoutProcessCardSample {\n  public static void main(String[] args) throws Exception {\n    var client = new SumUpClient();\n\n    var result = client.checkouts().process(\n            \"example\",\n            com.sumup.sdk.models.ProcessCheckout.builder()\n                .card(com.sumup.sdk.models.Card.builder()\n                .cvv(\"123\")\n                .expiryMonth(com.sumup.sdk.models.CardExpiryMonth.of(\"01\"))\n                .expiryYear(\"2023\")\n                .name(\"John Doe\")\n                .number(\"1234567890123456\")\n                .type(com.sumup.sdk.models.CardType.of(\"VISA\"))\n                .zipCode(\"12345\")\n                .build())\n                .installments(1L)\n                .mandate(com.sumup.sdk.models.MandatePayload.builder()\n                .type(com.sumup.sdk.models.MandatePayloadType.of(\"recurrent\"))\n                .userAgent(\"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.104 Safari/537.36\")\n                .userIp(\"172.217.169.174\")\n                .build())\n                .paymentType(com.sumup.sdk.models.ProcessCheckoutPaymentType.of(\"card\"))\n                .build()\n        );\n    System.out.println(result);\n  }\n}\n"
+      "sample": "import com.sumup.sdk.SumUpClient;\n\npublic final class ProcessCheckoutProcessCardSample {\n  public static void main(String[] args) throws Exception {\n    var client = new SumUpClient();\n\n    var result = client.checkouts().process(\n            \"4e425463-3e1b-431d-83fa-1e51c2925e99\",\n            com.sumup.sdk.models.ProcessCheckout.builder()\n                .card(com.sumup.sdk.models.Card.builder()\n                .cvv(\"123\")\n                .expiryMonth(\"01\")\n                .expiryYear(\"2023\")\n                .name(\"John Doe\")\n                .number(\"1234567890123456\")\n                .type(com.sumup.sdk.models.CardType.of(\"VISA\"))\n                .zipCode(\"12345\")\n                .build())\n                .installments(1L)\n                .mandate(com.sumup.sdk.models.MandatePayload.builder()\n                .type(com.sumup.sdk.models.MandatePayloadType.of(\"recurrent\"))\n                .userAgent(\"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.104 Safari/537.36\")\n                .userIp(\"172.217.169.174\")\n                .build())\n                .paymentType(com.sumup.sdk.models.ProcessCheckoutPaymentType.of(\"card\"))\n                .build()\n        );\n    System.out.println(result);\n  }\n}\n"
     },
     {
       "id": "ProcessCheckout.ProcessToken",
@@ -391,7 +391,7 @@
       "description": "Process a checkout with a token",
       "httpMethod": "PUT",
       "path": "/v0.1/checkouts/{checkout_id}",
-      "sample": "import com.sumup.sdk.SumUpClient;\n\npublic final class ProcessCheckoutProcessTokenSample {\n  public static void main(String[] args) throws Exception {\n    var client = new SumUpClient();\n\n    var result = client.checkouts().process(\n            \"example\",\n            com.sumup.sdk.models.ProcessCheckout.builder()\n                .customerId(\"MEDKHDTI\")\n                .installments(1L)\n                .paymentType(com.sumup.sdk.models.ProcessCheckoutPaymentType.of(\"card\"))\n                .token(\"ba85dfee-c3cf-48a6-84f5-d7d761fbba50\")\n                .build()\n        );\n    System.out.println(result);\n  }\n}\n"
+      "sample": "import com.sumup.sdk.SumUpClient;\n\npublic final class ProcessCheckoutProcessTokenSample {\n  public static void main(String[] args) throws Exception {\n    var client = new SumUpClient();\n\n    var result = client.checkouts().process(\n            \"4e425463-3e1b-431d-83fa-1e51c2925e99\",\n            com.sumup.sdk.models.ProcessCheckout.builder()\n                .customerId(\"MEDKHDTI\")\n                .installments(1L)\n                .paymentType(com.sumup.sdk.models.ProcessCheckoutPaymentType.of(\"card\"))\n                .token(\"ba85dfee-c3cf-48a6-84f5-d7d761fbba50\")\n                .build()\n        );\n    System.out.println(result);\n  }\n}\n"
     },
     {
       "id": "ProcessCheckout.ProcessiDeal",
@@ -401,7 +401,7 @@
       "description": "Process a checkout with iDeal",
       "httpMethod": "PUT",
       "path": "/v0.1/checkouts/{checkout_id}",
-      "sample": "import com.sumup.sdk.SumUpClient;\n\npublic final class ProcessCheckoutProcessiDealSample {\n  public static void main(String[] args) throws Exception {\n    var client = new SumUpClient();\n\n    var result = client.checkouts().process(\n            \"example\",\n            com.sumup.sdk.models.ProcessCheckout.builder()\n                .paymentType(com.sumup.sdk.models.ProcessCheckoutPaymentType.of(\"ideal\"))\n                .personalDetails(com.sumup.sdk.models.PersonalDetails.builder()\n                .address(com.sumup.sdk.models.AddressLegacy.builder()\n                .country(\"NL\")\n                .build())\n                .email(\"user@example.com\")\n                .firstName(\"John\")\n                .lastName(\"Doe\")\n                .build())\n                .build()\n        );\n    System.out.println(result);\n  }\n}\n"
+      "sample": "import com.sumup.sdk.SumUpClient;\n\npublic final class ProcessCheckoutProcessiDealSample {\n  public static void main(String[] args) throws Exception {\n    var client = new SumUpClient();\n\n    var result = client.checkouts().process(\n            \"4e425463-3e1b-431d-83fa-1e51c2925e99\",\n            com.sumup.sdk.models.ProcessCheckout.builder()\n                .paymentType(com.sumup.sdk.models.ProcessCheckoutPaymentType.of(\"ideal\"))\n                .personalDetails(com.sumup.sdk.models.PersonalDetails.builder()\n                .address(com.sumup.sdk.models.AddressLegacy.builder()\n                .country(\"NL\")\n                .build())\n                .email(\"user@example.com\")\n                .firstName(\"John\")\n                .lastName(\"Doe\")\n                .build())\n                .build()\n        );\n    System.out.println(result);\n  }\n}\n"
     },
     {
       "id": "RefundTransaction",
@@ -410,7 +410,7 @@
       "description": "Refunds an identified transaction either in full or partially.",
       "httpMethod": "POST",
       "path": "/v1.0/merchants/{merchant_code}/payments/{transaction_id}/refunds",
-      "sample": "import com.sumup.sdk.SumUpClient;\n\npublic final class RefundTransactionSample {\n  public static void main(String[] args) throws Exception {\n    var client = new SumUpClient();\n\n    var result = client.transactions().refund(\n            \"MH4H92C7\",\n            \"example\",\n            com.sumup.sdk.models.RefundTransactionRequest.builder()\n                .amount(5.0f)\n                .build()\n        );\n    System.out.println(result);\n  }\n}\n"
+      "sample": "import com.sumup.sdk.SumUpClient;\n\npublic final class RefundTransactionSample {\n  public static void main(String[] args) throws Exception {\n    var client = new SumUpClient();\n\n    var result = client.transactions().refund(\n            \"MH4H92C7\",\n            \"4ffb8dfc-7f2b-413d-a497-2ad00766585e\",\n            com.sumup.sdk.models.RefundTransactionRequest.builder()\n                .amount(5.0f)\n                .build()\n        );\n    System.out.println(result);\n  }\n}\n"
     },
     {
       "id": "UpdateCheckout",
@@ -419,7 +419,7 @@
       "description": "Updates an identified checkout resource.",
       "httpMethod": "PATCH",
       "path": "/v0.1/checkouts/{checkout_id}",
-      "sample": "import com.sumup.sdk.SumUpClient;\n\npublic final class UpdateCheckoutSample {\n  public static void main(String[] args) throws Exception {\n    var client = new SumUpClient();\n\n    var result = client.checkouts().update(\n            \"example\",\n            com.sumup.sdk.models.CheckoutUpdateRequest.builder()\n                .amount(12.5f)\n                .checkoutReference(\"f00a8f74-b05d-4605-bd73-2a901bae5802\")\n                .currency(com.sumup.sdk.models.Currency.of(\"EUR\"))\n                .customerId(\"831ff8d4cd5958ab5670\")\n                .description(\"Updated purchase\")\n                .validUntil(java.time.OffsetDateTime.parse(\"2020-02-29T10:56:56+00:00\"))\n                .build()\n        );\n    System.out.println(result);\n  }\n}\n"
+      "sample": "import com.sumup.sdk.SumUpClient;\n\npublic final class UpdateCheckoutSample {\n  public static void main(String[] args) throws Exception {\n    var client = new SumUpClient();\n\n    var result = client.checkouts().update(\n            \"4e425463-3e1b-431d-83fa-1e51c2925e99\",\n            com.sumup.sdk.models.CheckoutUpdateRequest.builder()\n                .amount(12.5f)\n                .checkoutReference(\"f00a8f74-b05d-4605-bd73-2a901bae5802\")\n                .currency(com.sumup.sdk.models.Currency.of(\"EUR\"))\n                .customerId(\"831ff8d4cd5958ab5670\")\n                .description(\"Updated purchase\")\n                .validUntil(java.time.OffsetDateTime.parse(\"2020-02-29T10:56:56+00:00\"))\n                .build()\n        );\n    System.out.println(result);\n  }\n}\n"
     },
     {
       "id": "UpdateCustomer",
@@ -428,7 +428,7 @@
       "description": "Updates an identified saved customer resource's personal details.\n\nThe request only overwrites the parameters included in the request, all other parameters will remain with their initially assigned values.",
       "httpMethod": "PUT",
       "path": "/v0.1/customers/{customer_id}",
-      "sample": "import com.sumup.sdk.SumUpClient;\n\npublic final class UpdateCustomerSample {\n  public static void main(String[] args) throws Exception {\n    var client = new SumUpClient();\n\n    var result = client.customers().update(\n            \"example\",\n            com.sumup.sdk.models.UpdateCustomerRequest.builder()\n                .build()\n        );\n    System.out.println(result);\n  }\n}\n"
+      "sample": "import com.sumup.sdk.SumUpClient;\n\npublic final class UpdateCustomerSample {\n  public static void main(String[] args) throws Exception {\n    var client = new SumUpClient();\n\n    var result = client.customers().update(\n            \"831ff8d4cd5958ab5670\",\n            com.sumup.sdk.models.UpdateCustomerRequest.builder()\n                .build()\n        );\n    System.out.println(result);\n  }\n}\n"
     },
     {
       "id": "UpdateMerchantMember",
@@ -455,7 +455,7 @@
       "description": "Update a Reader.",
       "httpMethod": "PATCH",
       "path": "/v0.1/merchants/{merchant_code}/readers/{reader_id}",
-      "sample": "import com.sumup.sdk.SumUpClient;\n\npublic final class UpdateReaderSample {\n  public static void main(String[] args) throws Exception {\n    var client = new SumUpClient();\n\n    var result = client.readers().update(\n            \"MK10CL2A\",\n            new com.sumup.sdk.models.ReaderId(\"example\"),\n            com.sumup.sdk.models.UpdateReaderRequest.builder()\n                .build()\n        );\n    System.out.println(result);\n  }\n}\n"
+      "sample": "import com.sumup.sdk.SumUpClient;\n\npublic final class UpdateReaderSample {\n  public static void main(String[] args) throws Exception {\n    var client = new SumUpClient();\n\n    var result = client.readers().update(\n            \"MK10CL2A\",\n            \"rdr_3MSAFM23CK82VSTT4BN6RWSQ65\",\n            com.sumup.sdk.models.UpdateReaderRequest.builder()\n                .build()\n        );\n    System.out.println(result);\n  }\n}\n"
     }
   ]
 }
