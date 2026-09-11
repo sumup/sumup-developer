@@ -3,7 +3,7 @@
   "language": "go",
   "sdk": {
     "module": "github.com/sumup/sumup-go",
-    "version": "0.19.0"
+    "version": "0.20.0"
   },
   "openAPIVersion": "1.0.0",
   "samples": [
@@ -189,7 +189,7 @@
       "description": "Returns a Merchant for a valid Merchant code.",
       "httpMethod": "GET",
       "path": "/v1/merchants/{merchant_code}",
-      "sample": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/sumup/sumup-go\"\n)\n\nfunc main() {\n\tclient := sumup.NewClient()\n\tresult, err := client.Merchants.Get(context.TODO(), \"MK10CL2A\", sumup.MerchantsGetParams{\n\t\tVersion: new(\"latest\"),\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\n\tfmt.Printf(\"%+v\\n\", result)\n}\n"
+      "sample": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/sumup/sumup-go\"\n)\n\nfunc main() {\n\tclient := sumup.NewClient()\n\tresult, err := client.Merchants.Get(context.TODO(), \"MK10CL2A\")\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\n\tfmt.Printf(\"%+v\\n\", result)\n}\n"
     },
     {
       "id": "GetMerchantMember",
@@ -225,7 +225,7 @@
       "description": "Returns a single Person related to a Merchant.",
       "httpMethod": "GET",
       "path": "/v1/merchants/{merchant_code}/persons/{person_id}",
-      "sample": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/sumup/sumup-go\"\n)\n\nfunc main() {\n\tclient := sumup.NewClient()\n\tresult, err := client.Merchants.GetPerson(context.TODO(), \"MK10CL2A\", \"pers_5AKFHN2KSK8D3TS79DJE3P3A2Z\", sumup.MerchantsGetPersonParams{\n\t\tVersion: new(\"latest\"),\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\n\tfmt.Printf(\"%+v\\n\", result)\n}\n"
+      "sample": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/sumup/sumup-go\"\n)\n\nfunc main() {\n\tclient := sumup.NewClient()\n\tresult, err := client.Merchants.GetPerson(context.TODO(), \"MK10CL2A\", \"pers_5AKFHN2KSK8D3TS79DJE3P3A2Z\")\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\n\tfmt.Printf(\"%+v\\n\", result)\n}\n"
     },
     {
       "id": "GetReader",
@@ -333,7 +333,7 @@
       "description": "Returns the Persons related to a Merchant.",
       "httpMethod": "GET",
       "path": "/v1/merchants/{merchant_code}/persons",
-      "sample": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/sumup/sumup-go\"\n)\n\nfunc main() {\n\tclient := sumup.NewClient()\n\tresult, err := client.Merchants.ListPersons(context.TODO(), \"MK10CL2A\", sumup.MerchantsListPersonsParams{\n\t\tVersion: new(\"latest\"),\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\n\tfmt.Printf(\"%+v\\n\", result)\n}\n"
+      "sample": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/sumup/sumup-go\"\n)\n\nfunc main() {\n\tclient := sumup.NewClient()\n\tresult, err := client.Merchants.ListPersons(context.TODO(), \"MK10CL2A\")\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\n\tfmt.Printf(\"%+v\\n\", result)\n}\n"
     },
     {
       "id": "ListReaders",
@@ -352,6 +352,56 @@
       "httpMethod": "GET",
       "path": "/v2.1/merchants/{merchant_code}/transactions/history",
       "sample": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\t\"time\"\n\n\t\"github.com/sumup/sumup-go\"\n)\n\nfunc main() {\n\tclient := sumup.NewClient()\n\tresult, err := client.Transactions.List(context.TODO(), \"MH4H92C7\", sumup.TransactionsListParams{\n\t\tTransactionCode: new(\"TEENSK4W2K\"),\n\t\tOrder:           new(sumup.TransactionsListOrder(\"ascending\")),\n\t\tLimit:           new(10),\n\t\tUsers:           []string{\"merchant@example.com\"},\n\t\tStatuses:        []sumup.TransactionsListStatusesItem{\"SUCCESSFUL\", \"REFUNDED\"},\n\t\tPaymentTypes:    []sumup.PaymentType{\"ECOM\", \"POS\"},\n\t\tEntryModes:      []sumup.EntryMode{\"CUSTOMER_ENTRY\", \"CHIP\"},\n\t\tTypes:           []sumup.TransactionsListTypesItem{\"PAYMENT\", \"REFUND\"},\n\t\tChangesSince:    new(time.Date(2019, time.August, 28, 9, 0, 0, 0, time.UTC)),\n\t\tNewestTime:      new(time.Date(2019, time.August, 29, 9, 0, 0, 0, time.UTC)),\n\t\tNewestRef:       new(\"090df9bf-93b7-40f1-8181-fbdb236568a1\"),\n\t\tOldestTime:      new(time.Date(2019, time.August, 28, 9, 0, 0, 0, time.UTC)),\n\t\tOldestRef:       new(\"090df9bf-93b7-40f1-8181-fbdb236568a1\"),\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\n\tfmt.Printf(\"%+v\\n\", result)\n}\n"
+    },
+    {
+      "id": "ProcessCheckout.ProcessBancontact",
+      "operationId": "ProcessCheckout",
+      "example": "ProcessBancontact",
+      "summary": "Process a checkout",
+      "description": "Process a checkout with Bancontact",
+      "httpMethod": "PUT",
+      "path": "/v0.1/checkouts/{checkout_id}",
+      "sample": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/sumup/sumup-go\"\n)\n\nfunc main() {\n\tclient := sumup.NewClient()\n\tresult, err := client.Checkouts.Process(context.TODO(), \"4e425463-3e1b-431d-83fa-1e51c2925e99\", sumup.CheckoutsProcessParams{\n\t\tPaymentType: \"bancontact\",\n\t\tPersonalDetails: new(sumup.PersonalDetails{\n\t\t\tAddress: new(sumup.AddressLegacy{\n\t\t\t\tCountry: new(\"BE\"),\n\t\t\t}),\n\t\t\tEmail:     new(\"user@example.com\"),\n\t\t\tFirstName: new(\"John\"),\n\t\t\tLastName:  new(\"Doe\"),\n\t\t}),\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\n\tfmt.Printf(\"%+v\\n\", result)\n}\n"
+    },
+    {
+      "id": "ProcessCheckout.ProcessBoleto",
+      "operationId": "ProcessCheckout",
+      "example": "ProcessBoleto",
+      "summary": "Process a checkout",
+      "description": "Process a checkout with Boleto",
+      "httpMethod": "PUT",
+      "path": "/v0.1/checkouts/{checkout_id}",
+      "sample": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/sumup/sumup-go\"\n)\n\nfunc main() {\n\tclient := sumup.NewClient()\n\tresult, err := client.Checkouts.Process(context.TODO(), \"4e425463-3e1b-431d-83fa-1e51c2925e99\", sumup.CheckoutsProcessParams{\n\t\tPaymentType: \"boleto\",\n\t\tPersonalDetails: new(sumup.PersonalDetails{\n\t\t\tAddress: new(sumup.AddressLegacy{\n\t\t\t\tCity:       new(\"São Paulo\"),\n\t\t\t\tCountry:    new(\"BR\"),\n\t\t\t\tPostalCode: new(\"05425-020\"),\n\t\t\t\tState:      new(\"SP\"),\n\t\t\t}),\n\t\t\tEmail:     new(\"user@example.com\"),\n\t\t\tFirstName: new(\"John\"),\n\t\t\tLastName:  new(\"Doe\"),\n\t\t\tTaxID:     new(\"423.378.593-47\"),\n\t\t}),\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\n\tfmt.Printf(\"%+v\\n\", result)\n}\n"
+    },
+    {
+      "id": "ProcessCheckout.ProcessCard",
+      "operationId": "ProcessCheckout",
+      "example": "ProcessCard",
+      "summary": "Process a checkout",
+      "description": "Process a checkout with a card",
+      "httpMethod": "PUT",
+      "path": "/v0.1/checkouts/{checkout_id}",
+      "sample": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/sumup/sumup-go\"\n)\n\nfunc main() {\n\tclient := sumup.NewClient()\n\tresult, err := client.Checkouts.Process(context.TODO(), \"4e425463-3e1b-431d-83fa-1e51c2925e99\", sumup.CheckoutsProcessParams{\n\t\tCard: new(sumup.Card{\n\t\t\tCvv:         \"123\",\n\t\t\tExpiryMonth: \"01\",\n\t\t\tExpiryYear:  \"2023\",\n\t\t\tName:        \"John Doe\",\n\t\t\tNumber:      \"1234567890123456\",\n\t\t\tType:        \"VISA\",\n\t\t\tZipCode:     new(\"12345\"),\n\t\t}),\n\t\tInstallments: new(1),\n\t\tMandate: new(sumup.MandatePayload{\n\t\t\tType:      \"recurrent\",\n\t\t\tUserAgent: \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.104 Safari/537.36\",\n\t\t\tUserIP:    new(\"172.217.169.174\"),\n\t\t}),\n\t\tPaymentType: \"card\",\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\n\tfmt.Printf(\"%+v\\n\", result)\n}\n"
+    },
+    {
+      "id": "ProcessCheckout.ProcessToken",
+      "operationId": "ProcessCheckout",
+      "example": "ProcessToken",
+      "summary": "Process a checkout",
+      "description": "Process a checkout with a token",
+      "httpMethod": "PUT",
+      "path": "/v0.1/checkouts/{checkout_id}",
+      "sample": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/sumup/sumup-go\"\n)\n\nfunc main() {\n\tclient := sumup.NewClient()\n\tresult, err := client.Checkouts.Process(context.TODO(), \"4e425463-3e1b-431d-83fa-1e51c2925e99\", sumup.CheckoutsProcessParams{\n\t\tCustomerID:   new(\"MEDKHDTI\"),\n\t\tInstallments: new(1),\n\t\tPaymentType:  \"card\",\n\t\tToken:        new(\"ba85dfee-c3cf-48a6-84f5-d7d761fbba50\"),\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\n\tfmt.Printf(\"%+v\\n\", result)\n}\n"
+    },
+    {
+      "id": "ProcessCheckout.ProcessiDeal",
+      "operationId": "ProcessCheckout",
+      "example": "ProcessiDeal",
+      "summary": "Process a checkout",
+      "description": "Process a checkout with iDeal",
+      "httpMethod": "PUT",
+      "path": "/v0.1/checkouts/{checkout_id}",
+      "sample": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/sumup/sumup-go\"\n)\n\nfunc main() {\n\tclient := sumup.NewClient()\n\tresult, err := client.Checkouts.Process(context.TODO(), \"4e425463-3e1b-431d-83fa-1e51c2925e99\", sumup.CheckoutsProcessParams{\n\t\tPaymentType: \"ideal\",\n\t\tPersonalDetails: new(sumup.PersonalDetails{\n\t\t\tAddress: new(sumup.AddressLegacy{\n\t\t\t\tCountry: new(\"NL\"),\n\t\t\t}),\n\t\t\tEmail:     new(\"user@example.com\"),\n\t\t\tFirstName: new(\"John\"),\n\t\t\tLastName:  new(\"Doe\"),\n\t\t}),\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\n\tfmt.Printf(\"%+v\\n\", result)\n}\n"
     },
     {
       "id": "RefundTransaction",
