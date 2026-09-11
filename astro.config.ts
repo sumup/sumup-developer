@@ -12,7 +12,7 @@ import satteriExternalLinks from "./src/plugins/satteri/external-links";
 import satteriCallouts from "./src/plugins/satteri/callouts";
 
 import { defineConfig } from "astro/config";
-import type { HeadUserConfig } from "node_modules/@astrojs/starlight/schemas/head";
+import type { StarlightUserConfig } from "@astrojs/starlight/types";
 import type { Plugin } from "vite";
 
 const { PUBLIC_ONETRUST_DOMAIN_ID, PUBLIC_GA_TAG_ID } = loadEnv(
@@ -43,8 +43,8 @@ function rawFonts(extensions: string[]): Plugin {
   };
 }
 
-const head = (): HeadUserConfig => {
-  const head: HeadUserConfig = [
+const head = (): NonNullable<StarlightUserConfig["head"]> => {
+  const head: NonNullable<StarlightUserConfig["head"]> = [
     // font preload
     {
       tag: "link",
