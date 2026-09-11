@@ -25,7 +25,7 @@ const isExternalHref = (href: string): boolean => {
   }
 };
 
-const mergeRel = (rel: Element["properties"]["rel"]): string[] => {
+const mergeRel = (rel: Element["properties"]["rel"] | string): string[] => {
   const relValues = new Set<string>();
 
   if (Array.isArray(rel)) {
@@ -48,7 +48,7 @@ const mergeRel = (rel: Element["properties"]["rel"]): string[] => {
 };
 
 const addClassName = (
-  className: Element["properties"]["className"],
+  className: Element["properties"]["className"] | string,
   newClassName: string,
 ): string[] => {
   const classNames = new Set<string>();
