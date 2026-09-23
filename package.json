@@ -76,7 +76,7 @@
     "@sumup-oss/design-tokens": "11.0.0",
     "@sumup-oss/icons": "7.0.1",
     "@sumup-oss/illustrations": "1.1.0",
-    "@types/node": "26.6.1",
+    "@types/node": "26.6.2",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "@typescript-eslint/parser": "8.64.0",
