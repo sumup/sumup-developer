@@ -97,7 +97,14 @@ const sectionAttrs = (id: ApiTopSection) =>
           },
           {
             label: "CLI",
-            code: "brew install sumup/cli/sumup",
+            code: `# Homebrew
+brew install sumup/cli/sumup
+
+# mise
+mise use -g github:sumup/sumup-cli@latest
+
+# Go
+go install github.com/sumup/sumup-cli/cmd/sumup`,
             lang: "bash",
           },
           {
