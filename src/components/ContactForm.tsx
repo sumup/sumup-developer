@@ -2,15 +2,13 @@ import {
   Anchor,
   Body,
   ButtonGroup,
-  Flag,
   ToastProvider,
   useNotificationToast,
-  type FlagProps,
   type SelectOption,
 } from "@sumup-oss/circuit-ui";
 import type { FC, ReactNode } from "react";
 import { Field, Form } from "react-final-form";
-import { Send } from "@sumup-oss/icons";
+import { Flag, Send, type FlagProps } from "@sumup-oss/icons";
 
 import {
   CheckboxField,

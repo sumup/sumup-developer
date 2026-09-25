@@ -333,6 +333,7 @@ export default defineConfig({
       },
       customCss: [
         "@sumup-oss/circuit-ui/styles.css",
+        "@sumup-oss/illustrations/styles.css",
         "./src/styles/theme-dark.css",
         "./src/styles/theme-light.css",
         "./src/styles/starlight-vars.css",
