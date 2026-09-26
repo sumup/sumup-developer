@@ -1,4 +1,4 @@
-import { SearchInput } from "@sumup-oss/circuit-ui";
+import { I18nProvider, SearchInput } from "@sumup-oss/circuit-ui";
 import { useMemo, useRef, useState } from "react";
 
 import styles from "./SearchableTable.module.css";
@@ -44,23 +44,25 @@ const SearchableTable = ({
   }, [columns, normalizedQuery, rows]);
 
   return (
-    <section className={`${styles.section} not-content`}>
-      <SearchInput
-        label="Search"
-        value={searchQuery}
-        onChange={(event) => setSearchQuery(event.target.value)}
-        placeholder={searchPlaceholder}
-        hideLabel
-      />
+    <I18nProvider locale="en-US">
+      <section className={`${styles.section} not-content`}>
+        <SearchInput
+          label="Search"
+          value={searchQuery}
+          onChange={(event) => setSearchQuery(event.target.value)}
+          placeholder={searchPlaceholder}
+          hideLabel
+        />
 
-      <Table
-        columns={columns}
-        rows={filteredRows}
-        tableLayout={tableLayout}
-        containerRef={wrapperRef}
-        maxHeight="420px"
-      />
-    </section>
+        <Table
+          columns={columns}
+          rows={filteredRows}
+          tableLayout={tableLayout}
+          containerRef={wrapperRef}
+          maxHeight="420px"
+        />
+      </section>
+    </I18nProvider>
   );
 };
 
