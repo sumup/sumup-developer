@@ -1,0 +1,472 @@
+---
+import { CardIn, Code, Globe, Nfc } from "@sumup-oss/icons";
+---
+
+<div class="payment-scenes" aria-hidden="true">
+  <div class="checkout-cluster">
+    <div class="glass-surface checkout-scene">
+      <div class="scene-toolbar">
+        <span class="window-controls">
+          <span></span><span></span><span></span>
+        </span>
+        <span>checkout.sumup.com</span>
+      </div>
+      <div class="checkout-content">
+        <div class="scene-kicker">
+          <Globe />
+          <span>Online checkout</span>
+        </div>
+        <div class="checkout-total">
+          <span>Order total</span>
+          <strong>€24.00</strong>
+        </div>
+        <div class="card-field">
+          <span class="mini-card"><span></span></span>
+          <span>•••• 4242</span>
+          <span>12/28</span>
+        </div>
+        <div class="pay-button">Pay €24.00</div>
+      </div>
+    </div>
+    <div class="glass-surface floating-label online-status">
+      <Globe />
+      <span>Online</span>
+    </div>
+  </div>
+
+  <div class="glass-surface integration-scene">
+    <div class="integration-toolbar">
+      <Code />
+      <span>Your integration</span>
+    </div>
+    <pre
+      class="integration-code"><code><span class="code-punctuation">&#123;</span>
+  <span class="code-property">"amount"</span><span class="code-punctuation">:</span> <span class="code-number">2400</span><span class="code-punctuation">,</span>
+  <span class="code-property">"currency"</span><span class="code-punctuation">:</span> <span class="code-string">"EUR"</span>
+<span class="code-punctuation">&#125;</span></code></pre>
+  </div>
+
+  <div class="terminal-scene">
+    <div class="glass-surface reader-glass">
+      <div class="solo-screen">
+        <div class="solo-system-status">
+          <span class="signal-bars"><i></i><i></i><i></i></span>
+          <span>100%</span>
+          <span class="battery-level"></span>
+        </div>
+        <div class="solo-payment-state">
+          <span>Please tap</span>
+          <strong>€24.00</strong>
+          <Nfc />
+        </div>
+        <div class="solo-navigation">
+          <span class="active"></span><span></span><span></span><span></span>
+        </div>
+      </div>
+    </div>
+    <div class="glass-surface floating-label reader-status">
+      <CardIn />
+      <span>In person</span>
+    </div>
+  </div>
+</div>
+
+<style>
+  .payment-scenes {
+    position: relative;
+    z-index: 1;
+    isolation: isolate;
+    width: 100%;
+    min-width: 0;
+    height: 26rem;
+  }
+
+  .payment-scenes::before {
+    position: absolute;
+    inset: 7% 8% 9% 10%;
+    z-index: 0;
+    background: rgb(251 251 249 / 4%);
+    border: var(--cui-border-width-kilo) solid rgb(251 251 249 / 22%);
+    border-radius: 2rem;
+    box-shadow: inset 0 1px 0 rgb(251 251 249 / 18%);
+    content: "";
+    transform: rotate(2deg);
+  }
+
+  .glass-surface {
+    -webkit-backdrop-filter: blur(1rem) saturate(125%);
+    backdrop-filter: blur(1rem) saturate(125%);
+    background: rgb(30 28 28 / 18%);
+    border: var(--cui-border-width-kilo) solid rgb(251 251 249 / 58%);
+    box-shadow:
+      inset 0 1px 0 rgb(251 251 249 / 24%),
+      0 1.5rem 3rem rgb(30 28 28 / 20%);
+  }
+
+  .checkout-cluster {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 76%;
+  }
+
+  .checkout-scene {
+    position: relative;
+    z-index: 2;
+    overflow: hidden;
+    color: #fbfbf9;
+    border-radius: 1.25rem;
+    transform: rotate(-1deg);
+  }
+
+  .scene-toolbar {
+    display: flex;
+    gap: var(--cui-spacings-byte);
+    align-items: center;
+    padding: var(--cui-spacings-kilo);
+    color: rgb(251 251 249 / 76%);
+    background: rgb(251 251 249 / 7%);
+    border-bottom: var(--cui-border-width-kilo) solid rgb(251 251 249 / 34%);
+    font-size: var(--cui-body-s-font-size);
+  }
+
+  .window-controls {
+    display: flex;
+    gap: 0.25rem;
+  }
+
+  .window-controls span {
+    width: 0.5rem;
+    height: 0.5rem;
+    background: rgb(251 251 249 / 12%);
+    border: var(--cui-border-width-kilo) solid rgb(251 251 249 / 72%);
+    border-radius: 50%;
+  }
+
+  .checkout-content {
+    display: grid;
+    gap: var(--cui-spacings-mega);
+    padding: var(--cui-spacings-mega);
+  }
+
+  .scene-kicker {
+    display: flex;
+    gap: var(--cui-spacings-byte);
+    align-items: center;
+    color: rgb(251 251 249 / 78%);
+    font-size: var(--cui-body-s-font-size);
+    font-weight: var(--cui-font-weight-semibold);
+  }
+
+  .scene-kicker :global(svg) {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  .checkout-total {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    color: rgb(251 251 249 / 74%);
+  }
+
+  .checkout-total strong {
+    color: #fbfbf9;
+    font-family: "SumUp Black", "SumUp Black fallback", sans-serif;
+    font-size: var(--cui-headline-m-font-size);
+    line-height: 1;
+  }
+
+  .card-field {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    gap: var(--cui-spacings-kilo);
+    align-items: center;
+    padding: var(--cui-spacings-kilo);
+    color: rgb(251 251 249 / 78%);
+    background: rgb(251 251 249 / 8%);
+    border: var(--cui-border-width-kilo) solid rgb(251 251 249 / 32%);
+    border-radius: var(--cui-border-radius-byte);
+    font-size: var(--cui-body-s-font-size);
+  }
+
+  .mini-card {
+    display: inline-flex;
+    width: 2rem;
+    height: 1.35rem;
+    align-items: center;
+    padding-left: 0.35rem;
+    background: rgb(251 251 249 / 12%);
+    border: var(--cui-border-width-kilo) solid rgb(251 251 249 / 36%);
+    border-radius: 0.2rem;
+  }
+
+  .mini-card span {
+    width: 0.65rem;
+    height: 0.5rem;
+    background: rgb(251 251 249 / 70%);
+    border-radius: 0.1rem;
+  }
+
+  .pay-button {
+    padding: var(--cui-spacings-kilo);
+    color: #1e1c1c;
+    background: rgb(251 251 249 / 92%);
+    border-radius: var(--cui-border-radius-byte);
+    font-weight: var(--cui-font-weight-bold);
+    text-align: center;
+  }
+
+  .integration-scene {
+    position: absolute;
+    bottom: 0.25rem;
+    left: 0;
+    z-index: 2;
+    width: 50%;
+    overflow: hidden;
+    color: #fbfbf9;
+    border-radius: 1rem;
+    transform: rotate(1deg);
+  }
+
+  .integration-toolbar {
+    display: flex;
+    gap: var(--cui-spacings-byte);
+    align-items: center;
+    padding: var(--cui-spacings-byte) var(--cui-spacings-kilo);
+    color: rgb(251 251 249 / 84%);
+    background: rgb(251 251 249 / 7%);
+    border-bottom: var(--cui-border-width-kilo) solid rgb(251 251 249 / 28%);
+    font-size: 0.6875rem;
+    font-weight: var(--cui-font-weight-semibold);
+  }
+
+  .integration-toolbar :global(svg) {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  .integration-code {
+    margin: 0;
+    padding: var(--cui-spacings-kilo) var(--cui-spacings-mega);
+    background: transparent;
+    font-family: var(--cui-font-stack-mono);
+    font-size: 0.75rem;
+    line-height: 1.45;
+  }
+
+  .code-property {
+    color: rgb(251 251 249 / 90%);
+  }
+
+  .code-number {
+    color: #fbfbf9;
+  }
+
+  .code-string {
+    color: rgb(251 251 249 / 76%);
+  }
+
+  .code-punctuation {
+    color: rgb(251 251 249 / 72%);
+  }
+
+  .terminal-scene {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 48%;
+    aspect-ratio: 1;
+  }
+
+  .reader-glass {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    width: 100%;
+    height: 100%;
+    padding: 0.8rem;
+    background: rgb(251 251 249 / 11%);
+    border-width: 0.125rem;
+    border-radius: 1.5rem;
+    transform: rotate(1.75deg);
+  }
+
+  .solo-screen {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    width: 100%;
+    height: 100%;
+    padding: 0.55rem;
+    color: #fbfbf9;
+    background: rgb(30 28 28 / 10%);
+    border: var(--cui-border-width-kilo) solid rgb(251 251 249 / 76%);
+    border-radius: 0.9rem;
+    box-shadow: inset 0 1px 0 rgb(251 251 249 / 16%);
+  }
+
+  .solo-system-status {
+    display: flex;
+    gap: 0.25rem;
+    align-items: end;
+    justify-content: end;
+    color: rgb(251 251 249 / 74%);
+    font-size: 0.4375rem;
+    line-height: 1;
+  }
+
+  .signal-bars {
+    display: flex;
+    gap: 0.1rem;
+    align-items: end;
+    height: 0.45rem;
+  }
+
+  .signal-bars i {
+    display: block;
+    width: 0.1rem;
+    background: currentColor;
+    border-radius: 999rem;
+  }
+
+  .signal-bars i:nth-child(1) {
+    height: 35%;
+  }
+
+  .signal-bars i:nth-child(2) {
+    height: 65%;
+  }
+
+  .signal-bars i:nth-child(3) {
+    height: 100%;
+  }
+
+  .battery-level {
+    position: relative;
+    width: 0.65rem;
+    height: 0.35rem;
+    border: var(--cui-border-width-kilo) solid currentColor;
+    border-radius: 0.08rem;
+  }
+
+  .battery-level::before {
+    position: absolute;
+    inset: 0.07rem;
+    background: currentColor;
+    border-radius: 0.03rem;
+    content: "";
+  }
+
+  .battery-level::after {
+    position: absolute;
+    top: 0.07rem;
+    right: -0.13rem;
+    width: 0.07rem;
+    height: 0.13rem;
+    background: currentColor;
+    border-radius: 0 0.03rem 0.03rem 0;
+    content: "";
+  }
+
+  .solo-payment-state {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    line-height: 1;
+  }
+
+  .solo-payment-state > span {
+    color: rgb(251 251 249 / 78%);
+    font-size: 0.5625rem;
+    font-weight: var(--cui-font-weight-semibold);
+  }
+
+  .solo-payment-state strong {
+    margin-top: 0.2rem;
+    font-family: "SumUp Black", "SumUp Black fallback", sans-serif;
+    font-size: 1rem;
+  }
+
+  .solo-payment-state :global(svg) {
+    width: 2.5rem;
+    height: 2.5rem;
+    margin-top: 0.55rem;
+  }
+
+  .solo-navigation {
+    display: flex;
+    gap: 0.8rem;
+    justify-content: center;
+  }
+
+  .solo-navigation span {
+    width: 0.25rem;
+    height: 0.25rem;
+    border: var(--cui-border-width-kilo) solid rgb(251 251 249 / 76%);
+    border-radius: 50%;
+  }
+
+  .solo-navigation .active {
+    background: #fbfbf9;
+  }
+
+  .floating-label {
+    position: absolute;
+    z-index: 10;
+    display: flex;
+    gap: var(--cui-spacings-byte);
+    align-items: center;
+    padding: var(--cui-spacings-byte) var(--cui-spacings-kilo);
+    color: #fbfbf9;
+    border-radius: 999rem;
+    font-size: 0.6875rem;
+    font-weight: var(--cui-font-weight-semibold);
+    white-space: nowrap;
+  }
+
+  .reader-status {
+    right: 0;
+    bottom: 0;
+    transform: translate(18%, 40%);
+  }
+
+  .online-status {
+    top: 0;
+    right: 0;
+    transform: translate(18%, -40%);
+  }
+
+  .floating-label :global(svg) {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  @media (max-width: 46rem) {
+    .payment-scenes {
+      height: 27rem;
+    }
+
+    .checkout-cluster {
+      width: 94%;
+    }
+
+    .checkout-content {
+      gap: var(--cui-spacings-kilo);
+      padding: var(--cui-spacings-kilo);
+    }
+
+    .checkout-total strong {
+      font-size: var(--cui-headline-s-font-size);
+    }
+
+    .terminal-scene {
+      width: 56%;
+    }
+
+    .integration-code {
+      padding: var(--cui-spacings-byte) var(--cui-spacings-kilo);
+      font-size: 0.625rem;
+    }
+  }
+</style>
