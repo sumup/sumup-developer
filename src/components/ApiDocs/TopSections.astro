@@ -1,4 +1,5 @@
 ---
+import Button from "@components/Button";
 import MarkdownContent from "@components/MarkdownContent.astro";
 import { CodeBlock, MultiCode } from "@components/Code";
 import Markdown from "@components/Markdown.astro";
@@ -6,7 +7,7 @@ import type { ApiTopSection } from "@lib/openapi/routes";
 import { doc, resolveSchema } from "@lib/openapi";
 import type { OpenAPIV3_1 } from "openapi-types";
 import { ArrowSlanted } from "@sumup-oss/icons";
-import { Anchor, Body, Button, Card } from "@sumup-oss/circuit-ui";
+import { Anchor, Body, Card } from "@sumup-oss/circuit-ui";
 import { getJavaSdkVersion } from "@lib/sdks/javaSdkVersion";
 import Table from "@components/content/Table";
 import Example from "./Example.astro";
@@ -44,18 +45,16 @@ const sectionAttrs = (id: ApiTopSection) =>
           target="_blank"
           rel="noreferrer noopener"
           icon={ArrowSlanted}
-        >
-          View YAML spec
-        </Button>
+          label="View YAML spec"
+        />
         <Button
           size="s"
           href="https://raw.githubusercontent.com/sumup/sumup-openapi/refs/heads/main/openapi.json"
           target="_blank"
           rel="noreferrer noopener"
           icon={ArrowSlanted}
-        >
-          View JSON spec
-        </Button>
+          label="View JSON spec"
+        />
       </div>
     </div>
     {

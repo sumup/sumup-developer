@@ -2,6 +2,7 @@ import {
   Anchor,
   Body,
   ButtonGroup,
+  I18nProvider,
   ToastProvider,
   useNotificationToast,
   type SelectOption,
@@ -273,9 +274,11 @@ const Contact: FC<ContactParams> = ({ status }) => {
 
 export default function ContactForm(params: ContactParams) {
   return (
-    <ToastProvider>
-      <Contact {...params} />
-    </ToastProvider>
+    <I18nProvider locale="en-US">
+      <ToastProvider>
+        <Contact {...params} />
+      </ToastProvider>
+    </I18nProvider>
   );
 }
 
