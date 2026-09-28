@@ -78,6 +78,7 @@ export default defineMdastPlugin({
       "aside",
       {
         "aria-label": title,
+        "data-prose": "off",
         class: `sumup-callout sumup-callout--${node.name}`,
       },
       [

@@ -76,7 +76,10 @@ function bindGlobalListeners() {
   });
 }
 
-mount("[data-search-dialog]", (element) => {
+export function initSearchDialog(
+  element: HTMLElement,
+  searchQuery: (query: string) => Promise<SearchResult[]> = search,
+) {
   const dialog = element as SearchDialog;
   const input = dialog.querySelector<HTMLInputElement>("[data-search-input]");
   const results = dialog.querySelector<HTMLElement>("[data-search-results]");
@@ -88,6 +91,12 @@ mount("[data-search-dialog]", (element) => {
   const { signal } = controller;
   let timer: ReturnType<typeof setTimeout> | undefined;
   let activeIndex = -1;
+  let requestId = 0;
+
+  const invalidateSearch = () => {
+    requestId++;
+    clearTimeout(timer);
+  };
 
   const options = () =>
     Array.from(results.querySelectorAll<HTMLElement>("[role='option']"));
@@ -149,13 +158,13 @@ mount("[data-search-dialog]", (element) => {
     return option;
   };
 
-  const runSearch = async (query: string) => {
+  const runSearch = async (query: string, id: number) => {
     clear();
     empty.hidden = false;
     empty.textContent = "Searching…";
     try {
-      const found = await search(query);
-      if (signal.aborted) return;
+      const found = await searchQuery(query);
+      if (signal.aborted || id !== requestId) return;
       empty.hidden = found.length > 0;
       empty.textContent = found.length ? "" : "No results found.";
       found.forEach((result, index) =>
@@ -163,6 +172,7 @@ mount("[data-search-dialog]", (element) => {
       );
       input.setAttribute("aria-expanded", String(found.length > 0));
     } catch {
+      if (signal.aborted || id !== requestId) return;
       empty.hidden = false;
       empty.textContent = "Search is available after a production build.";
     }
@@ -171,10 +181,11 @@ mount("[data-search-dialog]", (element) => {
   input.addEventListener(
     "input",
     () => {
-      if (timer) clearTimeout(timer);
+      invalidateSearch();
+      const id = requestId;
       timer = setTimeout(() => {
         const query = input.value.trim();
-        if (query) void runSearch(query);
+        if (query) void runSearch(query, id);
         else {
           clear();
           empty.hidden = false;
@@ -203,6 +214,7 @@ mount("[data-search-dialog]", (element) => {
   );
 
   close.addEventListener("click", () => dialog.close(), { signal });
+  dialog.addEventListener("close", invalidateSearch, { signal });
   dialog.addEventListener(
     "click",
     (event) => {
@@ -212,6 +224,7 @@ mount("[data-search-dialog]", (element) => {
   );
 
   dialog.openSearch = () => {
+    invalidateSearch();
     if (!dialog.open) dialog.showModal();
     input.value = "";
     clear();
@@ -222,8 +235,11 @@ mount("[data-search-dialog]", (element) => {
 
   return () => {
     controller.abort();
-    if (timer) clearTimeout(timer);
+    invalidateSearch();
+    delete dialog.openSearch;
   };
-});
+}
+
+mount("[data-search-dialog]", initSearchDialog);
 
 bindGlobalListeners();

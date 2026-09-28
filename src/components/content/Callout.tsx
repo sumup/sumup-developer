@@ -40,7 +40,7 @@ export default function Callout({
   const Icon = config.icon;
 
   return (
-    <div {...props} className={classes}>
+    <div {...props} className={classes} data-prose="off">
       <div className="sumup-callout__icon">
         <Icon aria-hidden="true" size="24" />
       </div>

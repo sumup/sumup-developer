@@ -5,6 +5,18 @@ import { mdxToMdast, markdownToMdast } from "satteri";
 
 const output = "dist/client";
 const full = await readFile(join(output, "llms-full.txt"), "utf8");
+// Verify each example in its own page's bundle section, so an identical
+// snippet elsewhere cannot hide a conversion regression during Nimbus upgrades.
+const fullSections = new Map(
+  full
+    .split(
+      /(?=^Source: https:\/\/developer\.sumup\.com\/.* · Markdown: .*\/index\.md$)/m,
+    )
+    .flatMap((section) => {
+      const source = section.match(/^Source: (\S+) · Markdown:/);
+      return source ? [[source[1], section]] : [];
+    }),
+);
 const codeBlocks = (tree) => {
   const blocks = [];
   const visit = (node) => {
@@ -26,12 +38,18 @@ for await (const file of glob("src/content/docs/**/*.{md,mdx}")) {
   const sourceBody = source.replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n/, "");
   const sourceTree = mdxToMdast(sourceBody);
   const published = codeBlocks(markdownToMdast(markdown));
+  const bundled = fullSections.get(`https://developer.sumup.com/${path}/`);
+  assert(bundled, `${path}: missing from full documentation`);
+  const bundledCode = codeBlocks(markdownToMdast(bundled));
   for (const code of codeBlocks(sourceTree)) {
     assert(
       published.includes(code),
       `${path}: published code differs from source: ${code.slice(0, 100)}`,
     );
-    assert(full.includes(code), `${path}: code missing from llms-full.txt`);
+    assert(
+      bundledCode.includes(code),
+      `${path}: code missing from its llms-full.txt section`,
+    );
     examples++;
   }
   const prose = markdown

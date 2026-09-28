@@ -13,7 +13,7 @@
 }
 
 /* Keep the opt-out in one low-specificity guard instead of every prose rule. */
-.docs-content :where(:not([data-prose="off"] *)) {
+.docs-content :where(:not([data-prose="off"], [data-prose="off"] *)) {
   &:where(h1, h2, h3, h4, h5, h6) {
     color: var(--cui-fg-normal);
     scroll-margin-top: calc(var(--portal-header-height) + 1.5rem);
