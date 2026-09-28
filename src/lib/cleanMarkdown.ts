@@ -1,9 +1,13 @@
 import { mdxToMdast } from "satteri";
 import type { RootContent } from "mdast";
 
-// Nimbus 0.15 strips four spaces from fenced code and retains MDX imports.
+// TEMPORARY: Nimbus 0.15 strips four spaces from fenced code and retains MDX imports.
 // Correct only those losses using the authored AST; leave its routing,
 // discovery, component conversion, and publication filtering to Nimbus.
+// On a Nimbus upgrade, bypass this cleaner in agentEndpoints.ts and run
+// `npm run linkcheck`. Once all source examples and MDX-leak checks pass,
+// delete this module and its unit tests. Keep the canonical Source footer.
+// Do not expand this into a second Markdown conversion pipeline.
 export function markdownCleaner(sources: string[]) {
   const snippets = new Map<string, string>();
   const syntax = new Set<string>();

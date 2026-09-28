@@ -1,0 +1,61 @@
+---
+import type { SidebarItem } from "@cloudflare/nimbus-docs/types";
+import Sidebar from "./Sidebar.astro";
+
+interface Props {
+  item: Extract<SidebarItem, { type: "group" }>;
+  level: number;
+  path: string;
+  collapsible: boolean;
+}
+
+const { item, level, path, collapsible } = Astro.props;
+const hasActiveDescendant = (items: SidebarItem[]): boolean =>
+  items.some((child) =>
+    child.type === "link"
+      ? Boolean(child.isCurrent)
+      : child.type === "group"
+        ? Boolean(child.indexIsCurrent) || hasActiveDescendant(child.children)
+        : false,
+  );
+const hasCurrentDescendant = hasActiveDescendant(item.children);
+const isActive = Boolean(item.indexIsCurrent) || hasCurrentDescendant;
+const isCurrent = Boolean(item.indexIsCurrent) && !hasCurrentDescendant;
+const badge = typeof item.badge === "string" ? item.badge : item.badge?.text;
+const Group = collapsible ? "details" : "div";
+const Heading = collapsible ? "summary" : "h2";
+---
+
+<Group
+  class:list={[!collapsible && "sidebar-section"]}
+  {...(collapsible && {
+    open: isActive || item.collapsed !== true,
+    "data-sidebar-group": "",
+    "data-sidebar-key": item.indexHref ?? path,
+    "data-has-active": isActive ? "true" : undefined,
+  })}
+>
+  <Heading
+    class:list={[!collapsible && "group-heading", isCurrent && "current"]}
+  >
+    {item.indexHref ? (
+      <a
+        href={item.indexHref}
+        aria-current={isCurrent ? "page" : undefined}
+        target={item.indexIsExternal ? "_blank" : undefined}
+        rel={item.indexIsExternal ? "noopener noreferrer" : undefined}
+      >
+        {item.label}
+      </a>
+    ) : (
+      <span>{item.label}</span>
+    )}
+    {badge && <small>{badge}</small>}
+    {collapsible && (
+      <svg class="caret" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="m9 5 7 7-7 7" />
+      </svg>
+    )}
+  </Heading>
+  <Sidebar items={item.children} level={level + 1} path={path} />
+</Group>

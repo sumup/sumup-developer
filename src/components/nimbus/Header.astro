@@ -1,4 +1,6 @@
 ---
+import type { SidebarItem } from "@cloudflare/nimbus-docs/types";
+import MobileNavigation from "./MobileNavigation.astro";
 import { SumUpLogo } from "@sumup-oss/circuit-ui";
 import {
   ArrowSlanted,
@@ -9,10 +11,11 @@ import {
 } from "@sumup-oss/icons";
 
 interface Props {
-  showSidebar?: boolean;
+  sidebar?: SidebarItem[] | false;
+  sidebarSections?: boolean;
 }
 
-const { showSidebar = false } = Astro.props;
+const { sidebar = false, sidebarSections = false } = Astro.props;
 const pathname = Astro.url.pathname;
 const activeSection =
   pathname === "/"
@@ -56,7 +59,7 @@ const navigation = [
         aria-label="Search documentation"
         aria-keyshortcuts="Control+K"
       >
-        <Search size="16" aria-hidden="true" />
+        <Search size="24" aria-hidden="true" />
         <span>Search</span>
         <kbd>
           <span data-shortcut-key>Ctrl</span>K
@@ -83,10 +86,10 @@ const navigation = [
       <button
         class="icon-button mobile-menu-button"
         type="button"
-        data-sidebar-menu-button={showSidebar ? "" : undefined}
-        data-global-menu-button={!showSidebar ? "" : undefined}
+        data-mobile-menu-button
         aria-expanded="false"
-        aria-controls={!showSidebar ? "global-menu" : undefined}
+        aria-controls="mobile-navigation"
+        aria-haspopup="dialog"
         aria-label="Open navigation"
       >
         <HamburgerMenu aria-hidden="true" />
@@ -95,41 +98,12 @@ const navigation = [
   </div>
 </header>
 
-{!showSidebar && (
-  <dialog
-    id="global-menu"
-    class="global-menu"
-    data-global-menu
-    aria-label="Site navigation"
-  >
-    <div class="global-menu-panel">
-      <button
-        type="button"
-        data-close-global-menu
-        aria-label="Close navigation"
-      >
-        Close
-      </button>
-      <nav aria-label="Primary navigation">
-        {navigation.map((item) => (
-          <a
-            href={item.href}
-            aria-current={activeSection === item.id ? "page" : undefined}
-          >
-            {item.label}
-          </a>
-        ))}
-        <a
-          href="https://me.sumup.com/settings/developer"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Dashboard ↗
-        </a>
-      </nav>
-    </div>
-  </dialog>
-)}
+<MobileNavigation
+  sidebar={sidebar}
+  sidebarSections={sidebarSections}
+  navigation={navigation}
+  activeSection={activeSection}
+/>
 
 <script>
   const applyShortcutLabel = () => {
@@ -155,25 +129,6 @@ const navigation = [
         window.__applyPortalTheme?.();
       });
     });
-
-  const globalMenu =
-    document.querySelector<HTMLDialogElement>("[data-global-menu]");
-  const globalMenuButton = document.querySelector<HTMLElement>(
-    "[data-global-menu-button]",
-  );
-  globalMenuButton?.addEventListener("click", () => {
-    globalMenu?.showModal();
-    globalMenuButton.setAttribute("aria-expanded", "true");
-  });
-  document
-    .querySelector<HTMLElement>("[data-close-global-menu]")
-    ?.addEventListener("click", () => globalMenu?.close());
-  globalMenu?.addEventListener("click", (event) => {
-    if (event.target === globalMenu) globalMenu.close();
-  });
-  globalMenu?.addEventListener("close", () => {
-    globalMenuButton?.setAttribute("aria-expanded", "false");
-  });
 
   applyShortcutLabel();
   window.__applyPortalTheme?.();
@@ -317,75 +272,21 @@ const navigation = [
     padding: 0;
   }
 
-  .icon-button :global(svg) {
-    width: 1.1rem;
-    height: 1.1rem;
+  .icon-button :global(svg),
+  .search-trigger :global(svg) {
+    display: block;
+    flex: none;
+    width: var(--cui-icon-sizes-m);
+    height: var(--cui-icon-sizes-m);
   }
 
-  .theme-toggle[data-state="dark"] :global(.sun-icon),
-  .theme-toggle[data-state="light"] :global(.moon-icon) {
+  .theme-toggle[data-state="light"] :global(.sun-icon),
+  .theme-toggle[data-state="dark"] :global(.moon-icon) {
     display: none;
   }
 
   .mobile-menu-button {
     display: none;
-  }
-
-  .global-menu {
-    width: min(22rem, calc(100% - 2rem));
-    margin: calc(var(--portal-header-height) + 0.5rem) 0 auto auto;
-    padding: 0;
-    color: var(--cui-fg-normal);
-    background: transparent;
-    border: 0;
-  }
-
-  .global-menu::backdrop {
-    background: rgb(0 0 0 / 45%);
-  }
-
-  .global-menu-panel {
-    padding: var(--cui-spacings-mega);
-    background: var(--cui-bg-normal);
-    border: 1px solid var(--cui-border-normal);
-    border-radius: var(--cui-border-radius-mega);
-  }
-
-  .global-menu-panel > button {
-    display: block;
-    min-height: 2.75rem;
-    margin-inline-start: auto;
-    padding-inline: var(--cui-spacings-kilo);
-    color: var(--cui-fg-subtle);
-    background: none;
-    border: 0;
-    cursor: pointer;
-  }
-
-  .global-menu nav {
-    display: grid;
-    margin-top: var(--cui-spacings-kilo);
-    gap: var(--cui-spacings-bit);
-  }
-
-  .global-menu nav a {
-    padding: var(--cui-spacings-kilo);
-    color: var(--cui-fg-normal);
-    border-radius: var(--cui-border-radius-byte);
-    font-weight: var(--cui-font-weight-semibold);
-    text-decoration: none;
-  }
-
-  .global-menu nav a:hover {
-    background: var(--cui-bg-normal-hovered);
-  }
-
-  .global-menu nav a[aria-current="page"] {
-    background: var(--cui-bg-subtle);
-  }
-
-  .global-menu nav a[aria-current="page"]:hover {
-    background: var(--cui-bg-subtle-hovered);
   }
 
   @media (max-width: 70rem) {
@@ -404,14 +305,33 @@ const navigation = [
     .mobile-menu-button {
       display: inline-flex;
     }
+
+    .dashboard-link {
+      display: none;
+    }
+
+    .icon-button,
+    .search-trigger {
+      min-height: 2.75rem;
+    }
+
+    .icon-button {
+      width: 2.75rem;
+      color: var(--cui-fg-normal);
+      background: transparent;
+      border: 0;
+    }
+
+    .icon-button:hover {
+      background: var(--cui-bg-normal-hovered);
+    }
   }
 
   @media (max-width: 42rem) {
     .header-inner {
-      padding: 0 var(--cui-spacings-kilo);
+      padding: 0 var(--cui-spacings-mega);
     }
 
-    .brand span,
     .search-trigger > span,
     .search-trigger kbd {
       display: none;
@@ -420,7 +340,15 @@ const navigation = [
     .search-trigger {
       width: 2.75rem;
       height: 2.75rem;
+      justify-content: center;
       padding: 0;
+      color: var(--cui-fg-normal);
+      background: transparent;
+      border: 0;
+    }
+
+    .search-trigger:hover {
+      background: var(--cui-bg-normal-hovered);
     }
 
     .icon-button {
@@ -428,8 +356,16 @@ const navigation = [
       height: 2.75rem;
     }
 
-    .dashboard-link {
-      height: 2.75rem;
+    .header-inner {
+      gap: var(--cui-spacings-byte);
+    }
+
+    .brand {
+      font-size: var(--cui-body-m-font-size);
+    }
+
+    .theme-toggle {
+      display: none;
     }
   }
 </style>
