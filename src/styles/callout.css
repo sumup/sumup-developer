@@ -57,36 +57,25 @@
   letter-spacing: var(--cui-letter-spacing);
 }
 
-/* Starlight adds vertical spacing between all block siblings in prose. The icon
- * and content are flex columns, so that generic spacing must not apply here. */
-.sumup-callout__icon + .sumup-callout__content {
-  margin-top: 0;
-}
-
 .sumup-callout__title {
   margin: 0 0 var(--cui-spacings-bit);
   font-weight: var(--cui-font-weight-semibold);
 }
 
-/* The title already owns the Circuit-sized gap before the callout body. */
-.sumup-callout__title + * {
-  margin-top: 0;
+/* Callouts own their rich-content spacing, independent of article prose. */
+.sumup-callout__content > :not(.sumup-callout__title) + * {
+  margin-block-start: var(--cui-spacings-kilo);
 }
 
-.sumup-callout__content > :first-child,
-.sumup-callout__content > .sl-markdown-content > :first-child {
-  margin-top: 0;
+.sumup-callout__content :where(ul, ol) {
+  padding-inline-start: 1.5rem;
 }
 
-.sumup-callout__content > :last-child,
-.sumup-callout__content > .sl-markdown-content > :last-child {
-  margin-bottom: 0;
+.sumup-callout__content :where(li + li) {
+  margin-block-start: var(--cui-spacings-bit);
 }
 
-.sumup-callout :is(.expressive-code, .expressive-code .frame, pre) {
+.sumup-callout pre {
   max-width: 100%;
-}
-
-.sumup-callout :is(.expressive-code .frame pre, pre) {
   overflow-x: auto;
 }

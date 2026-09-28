@@ -14,7 +14,7 @@ Use the [official requirements](https://example.com).
     });
 
     expect(html).toContain(
-      '<aside aria-label="PCI DSS compliance required" class="sumup-callout sumup-callout--caution">',
+      '<aside aria-label="PCI DSS compliance required" data-prose="off" class="sumup-callout sumup-callout--caution">',
     );
     expect(html).toContain('class="sumup-callout__icon"');
     expect(html).toContain(

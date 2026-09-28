@@ -10,7 +10,7 @@
     "directory": "./dist",
     "not_found_handling": "404-page",
     "html_handling": "drop-trailing-slash",
-    "run_worker_first": ["/contact", "/og/*"],
+    "run_worker_first": ["/contact/submit"],
   },
   "observability": {
     "enabled": true,

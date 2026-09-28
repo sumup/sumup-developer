@@ -1,15 +1,6 @@
 ---
 import type { DocsPageProps } from "@cloudflare/nimbus-docs/types";
-import { SumUpLogo } from "@sumup-oss/circuit-ui";
-import {
-  ArrowSlanted,
-  Close,
-  Help,
-  Info,
-  Moon,
-  Search,
-  Sun,
-} from "@sumup-oss/icons";
+import { ArrowSlanted, Help, Info } from "@sumup-oss/icons";
 
 import Header from "@components/nimbus/Header.astro";
 import PageActions from "@components/nimbus/PageActions.astro";
@@ -20,6 +11,7 @@ import TableOfContents from "@components/nimbus/TableOfContents.astro";
 import BaseLayout from "./BaseLayout.astro";
 
 interface Props extends DocsPageProps {
+  sidebarSections?: boolean;
   links?: Array<{ title: string; href: string }>;
   wide?: boolean;
   hideTitle?: boolean;
@@ -32,6 +24,7 @@ const {
   title,
   description,
   sidebar,
+  sidebarSections = true,
   headings,
   breadcrumbs,
   searchable,
@@ -58,12 +51,6 @@ const pagefindAttributes = effectiveSearchable
   : { "data-pagefind-ignore": "" };
 const showSidebar = sidebar !== false;
 const toc = headings === false ? [] : headings;
-const pathname = Astro.url.pathname;
-const activeSection = pathname.startsWith("/api")
-  ? "api"
-  : pathname.startsWith("/changelog")
-    ? "changelog"
-    : "docs";
 ---
 
 <BaseLayout
@@ -78,7 +65,7 @@ const activeSection = pathname.startsWith("/api")
   entryId={entryId}
 >
   <div class="page-shell">
-    <Header showSidebar={showSidebar} />
+    <Header sidebar={sidebar} sidebarSections={sidebarSections} />
     <div
       class:list={[
         "docs-grid",
@@ -90,7 +77,7 @@ const activeSection = pathname.startsWith("/api")
       {showSidebar && (
         <aside class="docs-sidebar" data-portal-sidebar>
           <nav aria-label="Documentation">
-            <Sidebar items={sidebar} />
+            <Sidebar items={sidebar} sections={sidebarSections} persist />
           </nav>
           <div class="sidebar-footer">
             <a href="/help/">
@@ -191,126 +178,6 @@ const activeSection = pathname.startsWith("/api")
       )}
     </div>
   </div>
-
-  {showSidebar && (
-    <dialog
-      class="mobile-sidebar"
-      data-mobile-sidebar
-      aria-label="Site navigation"
-    >
-      <div class="mobile-sidebar-panel">
-        <div class="mobile-sidebar-header">
-          <a href="/" class="mobile-brand" aria-label="SumUp Developer home">
-            <SumUpLogo size="s" variant="short" />
-            <span translate="no">Developer</span>
-          </a>
-          <div class="mobile-header-actions">
-            <button
-              type="button"
-              data-search-trigger
-              aria-label="Search documentation"
-            >
-              <Search aria-hidden="true" />
-            </button>
-            <button
-              type="button"
-              class="mobile-theme-toggle"
-              data-theme-toggle
-              data-state="light"
-              aria-label="Toggle dark mode"
-            >
-              <Sun className="sun-icon" aria-hidden="true" />
-              <Moon className="moon-icon" aria-hidden="true" />
-            </button>
-            <button
-              type="button"
-              data-close-mobile-sidebar
-              aria-label="Close navigation"
-            >
-              <Close aria-hidden="true" />
-            </button>
-          </div>
-        </div>
-        <nav class="mobile-primary" aria-label="Primary navigation">
-          <a
-            href="/docs/"
-            aria-current={activeSection === "docs" ? "page" : undefined}
-          >
-            Docs
-          </a>
-          <a
-            href="/api/"
-            aria-current={activeSection === "api" ? "page" : undefined}
-          >
-            API
-          </a>
-          <a
-            href="/changelog/"
-            aria-current={activeSection === "changelog" ? "page" : undefined}
-          >
-            Changelog
-          </a>
-          <a
-            class="mobile-dashboard"
-            href="https://me.sumup.com/settings/developer"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Dashboard ↗
-          </a>
-        </nav>
-        <nav class="mobile-docs" aria-label="Documentation">
-          <Sidebar items={sidebar} />
-        </nav>
-        <nav class="mobile-sidebar-footer" aria-label="Support">
-          <a href="/help/">
-            <Help aria-hidden="true" />
-            Help
-          </a>
-          <a
-            href="https://status.sumup.com/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Info aria-hidden="true" />
-            Status
-          </a>
-        </nav>
-      </div>
-    </dialog>
-  )}
-
-  <script>
-    const mobileSidebar = document.querySelector<HTMLDialogElement>(
-      "[data-mobile-sidebar]",
-    );
-    const menuButton = document.querySelector<HTMLElement>(
-      "[data-sidebar-menu-button]",
-    );
-
-    const openMobileSidebar = () => {
-      mobileSidebar?.showModal();
-      if (!mobileSidebar) return;
-      menuButton?.setAttribute("aria-expanded", "true");
-      document.body.dataset.scrollLocked = "";
-    };
-
-    const closeMobileSidebar = () => mobileSidebar?.close();
-
-    document
-      .querySelector<HTMLElement>("[data-sidebar-menu-button]")
-      ?.addEventListener("click", openMobileSidebar);
-    document
-      .querySelector<HTMLElement>("[data-close-mobile-sidebar]")
-      ?.addEventListener("click", closeMobileSidebar);
-    mobileSidebar?.addEventListener("click", (event) => {
-      if (event.target === mobileSidebar) closeMobileSidebar();
-    });
-    mobileSidebar?.addEventListener("close", () => {
-      menuButton?.setAttribute("aria-expanded", "false");
-      delete document.body.dataset.scrollLocked;
-    });
-  </script>
 </BaseLayout>
 
 <style>
@@ -508,159 +375,6 @@ const activeSection = pathname.startsWith("/api")
     background: var(--cui-bg-strong-hovered);
   }
 
-  .mobile-sidebar {
-    position: fixed;
-    inset: 0;
-    width: 100%;
-    max-width: none;
-    height: 100dvh;
-    max-height: none;
-    margin: 0;
-    padding: 0;
-    color: var(--cui-fg-normal);
-    background: transparent;
-    border: 0;
-  }
-
-  .mobile-sidebar::backdrop {
-    background: transparent;
-  }
-
-  .mobile-sidebar-panel {
-    width: 100%;
-    height: 100%;
-    overflow-y: auto;
-    background: var(--cui-bg-normal);
-  }
-
-  .mobile-sidebar-header {
-    position: sticky;
-    z-index: 1;
-    top: 0;
-    display: flex;
-    min-height: var(--portal-header-height);
-    align-items: center;
-    justify-content: space-between;
-    padding: var(--cui-spacings-kilo) var(--cui-spacings-mega);
-    background: var(--cui-bg-normal);
-    border-bottom: 1px solid var(--cui-border-divider);
-  }
-
-  .mobile-brand {
-    display: inline-flex;
-    gap: var(--cui-spacings-byte);
-    align-items: center;
-    color: var(--cui-fg-normal);
-    font-size: var(--cui-headline-s-font-size);
-    font-weight: var(--cui-font-weight-semibold);
-    line-height: var(--cui-headline-s-line-height);
-    text-decoration: none;
-  }
-
-  .mobile-brand :global(svg) {
-    width: auto;
-    height: 1.5rem;
-  }
-
-  .mobile-header-actions {
-    display: flex;
-    gap: var(--cui-spacings-bit);
-    align-items: center;
-  }
-
-  .mobile-header-actions button {
-    display: inline-flex;
-    width: 2rem;
-    height: 2rem;
-    align-items: center;
-    justify-content: center;
-    padding: 0;
-    color: var(--cui-fg-normal);
-    background: transparent;
-    border: 1px solid var(--cui-border-normal);
-    border-radius: var(--cui-border-radius-byte);
-    cursor: pointer;
-  }
-
-  .mobile-header-actions button:hover {
-    background: var(--cui-bg-normal-hovered);
-  }
-
-  .mobile-header-actions button :global(svg) {
-    width: var(--cui-icon-sizes-s);
-    height: var(--cui-icon-sizes-s);
-  }
-
-  .mobile-theme-toggle[data-state="dark"] :global(.sun-icon),
-  .mobile-theme-toggle[data-state="light"] :global(.moon-icon) {
-    display: none;
-  }
-
-  .mobile-primary {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--cui-spacings-bit);
-    padding: var(--cui-spacings-kilo) var(--cui-spacings-mega);
-    border-bottom: 1px solid var(--cui-border-divider);
-  }
-
-  .mobile-primary a {
-    padding: var(--cui-spacings-bit) var(--cui-spacings-byte);
-    color: var(--cui-fg-normal);
-    border-radius: var(--cui-border-radius-byte);
-    font-size: var(--cui-body-s-font-size);
-    font-weight: var(--cui-font-weight-semibold);
-    text-decoration: none;
-  }
-
-  .mobile-primary a:hover {
-    background: var(--cui-bg-normal-hovered);
-  }
-
-  .mobile-primary a[aria-current="page"] {
-    font-weight: var(--cui-font-weight-bold);
-    background: var(--cui-bg-subtle);
-  }
-
-  .mobile-primary a[aria-current="page"]:hover {
-    background: var(--cui-bg-subtle-hovered);
-  }
-
-  .mobile-primary .mobile-dashboard {
-    margin-inline-start: auto;
-  }
-
-  .mobile-docs {
-    padding: var(--cui-spacings-mega);
-  }
-
-  .mobile-sidebar-footer {
-    display: flex;
-    gap: var(--cui-spacings-bit);
-    padding: 0 var(--cui-spacings-mega) var(--cui-spacings-exa);
-  }
-
-  .mobile-sidebar-footer a {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--cui-spacings-bit);
-    padding: var(--cui-spacings-bit) var(--cui-spacings-byte);
-    color: var(--cui-fg-normal);
-    border-radius: var(--cui-border-radius-bit);
-    font-size: var(--cui-body-s-font-size);
-    font-weight: var(--cui-font-weight-semibold);
-    text-decoration: none;
-  }
-
-  .mobile-sidebar-footer a:hover {
-    background: var(--cui-bg-normal-hovered);
-  }
-
-  .mobile-sidebar-footer a :global(svg) {
-    width: var(--cui-icon-sizes-s);
-    height: var(--cui-icon-sizes-s);
-  }
-
   @media (max-width: 76rem) {
     .docs-grid,
     .docs-grid.no-sidebar {
@@ -684,10 +398,6 @@ const activeSection = pathname.startsWith("/api")
   }
 
   @media (max-width: 42rem) {
-    .mobile-sidebar-header {
-      padding-inline: var(--cui-spacings-kilo);
-    }
-
     .content-column {
       padding: var(--cui-spacings-mega) var(--cui-spacings-kilo)
         var(--cui-spacings-exa);

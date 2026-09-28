@@ -234,6 +234,30 @@ export default defineConfig({
         "nimbus/no-self-host-url": "error",
       },
     }),
+    // Astro 7 restarts Vite in place. Refresh Nimbus's in-memory Markdown
+    // registry after content config reloads, and keep Markdown fresh on edits.
+    // Cloudflare also caches modules in a separate prerender environment.
+    {
+      name: "refresh-nimbus-content",
+      hooks: {
+        "astro:server:setup": ({ server, refreshContent }) => {
+          if (!refreshContent) return;
+          let refreshed: Promise<void> | undefined;
+          server.watcher.add(`${server.config.root}/src/content`);
+          server.watcher.on("all", (_event, file) => {
+            if (/[\\/]src[\\/]content[\\/]/.test(file)) refreshed = undefined;
+          });
+          server.middlewares.use((_request, _response, next) => {
+            refreshed ??= refreshContent({}).then(() => {
+              for (const environment of Object.values(server.environments)) {
+                environment.moduleGraph.invalidateAll();
+              }
+            });
+            refreshed.then(() => next(), next);
+          });
+        },
+      },
+    },
     mermaid({ autoTheme: true }),
   ],
   server: {

@@ -9,6 +9,7 @@ export const fetchLatestGithubTag = async (
     const response = await fetch(
       `https://api.github.com/repos/${owner}/${repo}/tags?per_page=1`,
       {
+        signal: AbortSignal.timeout(5000),
         headers: {
           Accept: "application/vnd.github+json",
           "User-Agent": "sumup-developer-docs",

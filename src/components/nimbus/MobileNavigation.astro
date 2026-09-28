@@ -1,0 +1,385 @@
+---
+import type { SidebarItem } from "@cloudflare/nimbus-docs/types";
+import { SumUpLogo } from "@sumup-oss/circuit-ui";
+import {
+  ArrowSlanted,
+  Close,
+  Help,
+  Info,
+  Moon,
+  Search,
+  Sun,
+} from "@sumup-oss/icons";
+import Sidebar from "./Sidebar.astro";
+
+interface Props {
+  sidebar: SidebarItem[] | false;
+  navigation: Array<{ id: string; label: string; href: string }>;
+  activeSection?: string;
+  sidebarSections?: boolean;
+}
+
+const {
+  sidebar,
+  navigation,
+  activeSection,
+  sidebarSections = false,
+} = Astro.props;
+---
+
+<dialog
+  id="mobile-navigation"
+  data-mobile-sidebar
+  class="mobile-navigation"
+  aria-label="Site navigation"
+>
+  <div class="menu-panel">
+    <div class="menu-header">
+      <a href="/" class="brand" aria-label="SumUp Developer home">
+        <SumUpLogo size="s" variant="short" />
+        <span translate="no">Developer</span>
+      </a>
+      <button
+        type="button"
+        class="icon-button"
+        data-close-mobile-menu
+        aria-label="Close navigation"
+      >
+        <Close aria-hidden="true" />
+      </button>
+    </div>
+    <div class="menu-content">
+      <button type="button" class="menu-search" data-search-trigger>
+        <Search size="24" aria-hidden="true" />
+        <span>Search documentation</span>
+      </button>
+      <nav
+        class:list={["primary-navigation", !sidebar && "standalone"]}
+        aria-label="Primary navigation"
+      >
+        {navigation.map((item) => (
+          <a
+            href={item.href}
+            aria-current={activeSection === item.id ? "page" : undefined}
+          >
+            {item.label}
+          </a>
+        ))}
+      </nav>
+      {sidebar && (
+        <nav class="mobile-docs" aria-label="Documentation">
+          <Sidebar items={sidebar} sections={sidebarSections} />
+        </nav>
+      )}
+    </div>
+    <div class="menu-footer">
+      <nav aria-label="Support">
+        <a href="/help/">
+          <Help size="16" aria-hidden="true" />
+          Help
+        </a>
+        <a
+          href="https://status.sumup.com/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <Info size="16" aria-hidden="true" />
+          Status<span class="visually-hidden"> (opens in a new tab)</span>
+        </a>
+      </nav>
+      <button
+        type="button"
+        class="icon-button theme-toggle"
+        data-theme-toggle
+        data-state="light"
+        aria-label="Use dark mode"
+      >
+        <Sun className="sun-icon" aria-hidden="true" />
+        <Moon className="moon-icon" aria-hidden="true" />
+      </button>
+      <a
+        class="dashboard-link"
+        href="https://me.sumup.com/settings/developer"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Dashboard
+        <ArrowSlanted size="16" aria-hidden="true" />
+        <span class="visually-hidden"> (opens in a new tab)</span>
+      </a>
+    </div>
+  </div>
+</dialog>
+
+<script>
+  import { mount } from "@cloudflare/nimbus-docs/client";
+
+  mount("#mobile-navigation", (element) => {
+    const dialog = element as HTMLDialogElement;
+    const trigger = document.querySelector<HTMLButtonElement>(
+      "[data-mobile-menu-button]",
+    );
+    const desktop = window.matchMedia("(min-width: 70.001rem)");
+    const controller = new AbortController();
+    const { signal } = controller;
+    const close = () => dialog.close();
+
+    trigger?.addEventListener(
+      "click",
+      () => {
+        dialog.showModal();
+        dialog
+          .querySelector<HTMLButtonElement>("[data-close-mobile-menu]")
+          ?.focus();
+        trigger.setAttribute("aria-expanded", "true");
+      },
+      { signal },
+    );
+    dialog.addEventListener(
+      "click",
+      (event) => {
+        const target = event.target;
+        if (!(target instanceof Element)) return;
+        if (
+          target === dialog ||
+          target.closest(
+            "[data-close-mobile-menu], [data-search-trigger], a[href]",
+          )
+        ) {
+          close();
+        }
+      },
+      { signal },
+    );
+    dialog.addEventListener(
+      "close",
+      () => {
+        trigger?.setAttribute("aria-expanded", "false");
+      },
+      { signal },
+    );
+    desktop.addEventListener(
+      "change",
+      () => {
+        if (desktop.matches) close();
+      },
+      { signal },
+    );
+
+    return () => {
+      controller.abort();
+      close();
+    };
+  });
+</script>
+
+<style>
+  .mobile-navigation {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    max-width: none;
+    height: 100dvh;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    color: var(--cui-fg-normal);
+    background: var(--cui-bg-normal);
+    border: 0;
+  }
+
+  .mobile-navigation::backdrop {
+    background: rgb(0 0 0 / 45%);
+  }
+
+  .menu-panel {
+    display: grid;
+    height: 100%;
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    padding-inline: env(safe-area-inset-left) env(safe-area-inset-right);
+  }
+
+  .menu-header {
+    display: flex;
+    min-height: var(--portal-header-height);
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--cui-spacings-byte);
+    padding: var(--cui-spacings-bit) var(--cui-spacings-mega);
+    padding-top: max(var(--cui-spacings-bit), env(safe-area-inset-top));
+    border-bottom: 1px solid var(--cui-border-divider);
+  }
+
+  .brand {
+    display: inline-flex;
+    gap: var(--cui-spacings-byte);
+    min-height: 2.75rem;
+    align-items: center;
+    color: var(--cui-fg-normal);
+    font-weight: var(--cui-font-weight-semibold);
+    text-decoration: none;
+  }
+
+  .brand :global(svg) {
+    width: auto;
+    height: 1.5rem;
+  }
+
+  .icon-button {
+    display: inline-flex;
+    flex: none;
+    width: 2.75rem;
+    height: 2.75rem;
+    padding: 0;
+    align-items: center;
+    justify-content: center;
+    color: var(--cui-fg-normal);
+    background: transparent;
+    border: 0;
+    border-radius: var(--cui-border-radius-byte);
+    cursor: pointer;
+  }
+
+  .icon-button :global(svg),
+  .menu-search :global(svg) {
+    display: block;
+    flex: none;
+    width: var(--cui-icon-sizes-m);
+    height: var(--cui-icon-sizes-m);
+  }
+
+  .menu-footer nav :global(svg) {
+    display: block;
+    flex: none;
+    width: var(--cui-icon-sizes-s);
+    height: var(--cui-icon-sizes-s);
+  }
+
+  .icon-button:hover,
+  .menu-footer nav a:hover {
+    background: var(--cui-bg-normal-hovered);
+  }
+
+  .theme-toggle[data-state="light"] :global(.sun-icon),
+  .theme-toggle[data-state="dark"] :global(.moon-icon) {
+    display: none;
+  }
+
+  .menu-content {
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: var(--cui-spacings-mega);
+    scrollbar-gutter: stable;
+  }
+
+  .menu-search {
+    display: flex;
+    width: 100%;
+    min-height: 2.75rem;
+    gap: var(--cui-spacings-byte);
+    align-items: center;
+    padding: var(--cui-spacings-byte) var(--cui-spacings-kilo);
+    color: var(--cui-fg-subtle);
+    background: var(--cui-bg-subtle);
+    border: 1px solid var(--cui-border-normal);
+    border-radius: var(--cui-border-radius-byte);
+    font-size: var(--cui-body-s-font-size);
+    text-align: start;
+    cursor: pointer;
+  }
+
+  .menu-search:hover {
+    background: var(--cui-bg-subtle-hovered);
+  }
+
+  .primary-navigation {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--cui-spacings-bit);
+    margin-block: var(--cui-spacings-mega);
+    padding-bottom: var(--cui-spacings-mega);
+    border-bottom: 1px solid var(--cui-border-divider);
+  }
+
+  .primary-navigation a {
+    display: flex;
+    min-height: 2.75rem;
+    padding: var(--cui-spacings-byte);
+    align-items: center;
+    justify-content: center;
+    color: var(--cui-fg-subtle);
+    border-radius: var(--cui-border-radius-byte);
+    font-size: var(--cui-body-s-font-size);
+    font-weight: var(--cui-font-weight-semibold);
+    text-decoration: none;
+  }
+
+  .primary-navigation a:hover {
+    background: var(--cui-bg-normal-hovered);
+  }
+
+  .primary-navigation a[aria-current="page"] {
+    color: var(--cui-fg-normal);
+    background: var(--cui-bg-subtle);
+  }
+
+  .primary-navigation.standalone {
+    grid-template-columns: 1fr;
+  }
+
+  .standalone a {
+    justify-content: flex-start;
+  }
+
+  .mobile-docs {
+    --sidebar-row-min-height: 2.75rem;
+  }
+
+  .menu-footer {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: var(--cui-spacings-byte);
+    padding: var(--cui-spacings-byte) var(--cui-spacings-mega);
+    padding-bottom: max(var(--cui-spacings-kilo), env(safe-area-inset-bottom));
+    border-top: 1px solid var(--cui-border-divider);
+  }
+
+  .menu-footer nav {
+    display: flex;
+    gap: var(--cui-spacings-byte);
+  }
+
+  .menu-footer nav a {
+    display: inline-flex;
+    min-height: 2.75rem;
+    gap: var(--cui-spacings-byte);
+    align-items: center;
+    padding-inline: var(--cui-spacings-byte);
+    color: var(--cui-fg-subtle);
+    border-radius: var(--cui-border-radius-byte);
+    font-size: var(--cui-body-s-font-size);
+    text-decoration: none;
+  }
+
+  .dashboard-link {
+    display: flex;
+    grid-column: 1 / -1;
+    min-height: 2.75rem;
+    align-items: center;
+    justify-content: center;
+    gap: var(--cui-spacings-byte);
+    color: var(--cui-fg-on-strong);
+    background: var(--cui-bg-strong);
+    border-radius: var(--cui-border-radius-byte);
+    font-size: var(--cui-body-s-font-size);
+    font-weight: var(--cui-font-weight-semibold);
+    text-decoration: none;
+  }
+
+  .dashboard-link:hover {
+    background: var(--cui-bg-strong-hovered);
+  }
+</style>

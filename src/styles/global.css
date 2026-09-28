@@ -94,7 +94,7 @@ code[dir="auto"] {
   white-space: normal;
 }
 
-body[data-scroll-locked] {
+body:has(#mobile-navigation[open], [data-search-dialog][open]) {
   overflow: hidden;
 }
 

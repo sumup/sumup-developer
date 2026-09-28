@@ -80,6 +80,7 @@
     "@treelight/kotlin": "0.6.0",
     "@treelight/php": "0.6.0",
     "@treelight/plugin-astro": "0.6.0",
+    "@treelight/plugin-rehype": "0.6.0",
     "@treelight/python": "0.6.0",
     "@treelight/ruby": "0.6.0",
     "@treelight/rust": "0.6.0",
@@ -102,7 +103,7 @@
     "eslint-plugin-react": "^7.37.5",
     "globals": "17.12.0",
     "jsdom": "^30.1.1",
-    "marked": "18.0.14",
+    "mdast-util-to-hast": "13.2.1",
     "openapi-types": "^12.1.3",
     "pagefind": "1.5.2",
     "prettier": "3.9.9",
@@ -115,14 +116,11 @@
     "satori": "0.33.5",
     "satteri": "0.10.5",
     "sharp": "0.35.5",
-    "tailwind-merge": "3.7.0",
     "typescript": "6.0.3",
     "typescript-eslint": "8.71.0",
-    "vitest": "5.0.2",
-    "wrangler": "4.143.0",
-    "@treelight/plugin-rehype": "0.6.0",
     "unified": "11.0.5",
-    "mdast-util-to-hast": "13.2.1"
+    "vitest": "5.0.2",
+    "wrangler": "4.143.0"
   },
   "overrides": {
     "satori": {
