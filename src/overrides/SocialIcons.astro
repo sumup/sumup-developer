@@ -6,18 +6,14 @@ import { ArrowSlanted } from "@sumup-oss/icons";
 // such that we can structure the portal around main sections.
 const currentPath = Astro.url.pathname;
 const isActive = (href: string) => currentPath.startsWith(href);
+const isHomeActive = currentPath === "/";
+const isDocsActive =
+  !isHomeActive && !isActive("/api") && !isActive("/changelog");
 ---
 
 <div class="nav">
-  <a
-    href="/"
-    class:list={[
-      "link",
-      !isActive("/api") && !isActive("/changelog") && "active",
-    ]}
-  >
-    Docs
-  </a>
+  <a href="/" class:list={["link", isHomeActive && "active"]}>Home</a>
+  <a href="/docs/" class:list={["link", isDocsActive && "active"]}> Docs </a>
   <a href="/api/" class:list={["link", isActive("/api") && "active"]}>API</a>
   <a
     href="/changelog/"
