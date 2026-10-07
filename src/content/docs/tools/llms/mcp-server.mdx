@@ -1,39 +1,170 @@
 ---
 title: MCP Server
-description: Connect MCP-compatible clients and assistants to SumUp APIs and tools.
+description: Connect Codex, Claude Code, Cursor, Gemini CLI, and other MCP clients to SumUp.
 sidebar:
   order: 53
 ---
 
-[MCP](https://modelcontextprotocol.io/introduction) is an open protocol that standardizes how applications provide context and tools to LLMs. SumUp provides a [managed MCP server](https://github.com/sumup/sumup-mcp) for AI-powered code editors such as Cursor and general-purpose clients such as Claude Desktop.
+import { Tabs, TabItem } from '@astrojs/starlight/components';
 
-The MCP server gives AI agents tools for calling the SumUp API. It also exposes the SumUp developer documentation index and OpenAPI specification as resources.
+The [Model Context Protocol (MCP)](https://modelcontextprotocol.io/introduction) connects AI assistants to external tools and context. The [SumUp MCP server](https://github.com/sumup/sumup-mcp) provides tools for calling SumUp APIs and resources for reading the developer documentation index and OpenAPI specification.
 
-SumUp runs a managed MCP server at [https://mcp.sumup.com/mcp](https://mcp.sumup.com/mcp). This endpoint allows your MCP client to interact with SumUp APIs to manage your account, create checkouts, or process payments using [Cloud API](/terminal-payments/cloud-api). The server supports Streamable HTTP[^streamable_http] via `/mcp` and the deprecated SSE transport via `/sse`.
+Use it to query your merchant profile, inspect checkout status, review transactions, or build payment workflows with [Cloud API](/terminal-payments/cloud-api/).
 
-## Hosted MCP (managed)
+## Choose a Setup
 
-If your MCP client supports Streamable HTTP and OAuth, connect it directly to `https://mcp.sumup.com/mcp`. The client can discover the SumUp authorization server from the endpoint's protected resource metadata and ask you to authorize access.
+If you use a supported coding assistant, [install the SumUp plugin](/tools/llms/plugins/) to get both integration skills and MCP configuration. If you have already installed the plugin, authorize its bundled server and continue to [verify the connection](#verify-the-connection).
 
-The hosted server accepts OAuth access tokens issued for the MCP resource. Do not send a SumUp API key such as `sup_sk_...` as its Bearer token.
+For a direct connection, choose between:
 
-## CLI
+| Setup | Authentication | Requirements |
+| --- | --- | --- |
+| Hosted server at `https://mcp.sumup.com/mcp` | Sign in with SumUp through OAuth | A client that supports Streamable HTTP and OAuth |
+| Local `@sumup/mcp` process | SumUp API key in `SUMUP_API_KEY` | Node.js 22 or later and a client that supports stdio |
 
-The [local MCP CLI](https://github.com/sumup/sumup-ai/tree/main/mcp) requires Node.js 22 or later and uses a SumUp API key. Run it with:
+## Connect the Hosted Server
 
-```sh
-SUMUP_API_KEY='sup_sk_MvxmLOl0...' npx -y @sumup/mcp
+Add `https://mcp.sumup.com/mcp` to your client, then authorize access in your browser. The client discovers the SumUp authorization server through the endpoint's protected resource metadata.
+
+The hosted server accepts OAuth access tokens issued for the MCP resource. SumUp API keys such as `sup_sk_...` are used by the local server and are not valid Bearer tokens for the hosted endpoint.
+
+<Tabs>
+<TabItem label="Codex">
+
+Run these commands in your terminal:
+
+```bash
+codex mcp add sumup --url https://mcp.sumup.com/mcp
+codex mcp login sumup
+codex mcp list
 ```
 
-The local MCP server reads the API key from the `SUMUP_API_KEY` environment variable.
+Complete the browser login. In a Codex session, use `/mcp` to check the active tools.
 
-## [Cursor](https://www.cursor.com/)
+Alternatively, add this entry to `~/.codex/config.toml`, then run `codex mcp login sumup`:
 
-1. Go to `Cursor Settings` > `MCP`
-2. Click `+ Add new Global MCP Server`
-3. Add the following configuration to your global `.cursor/mcp.json` file.
+```toml
+[mcp_servers.sumup]
+url = "https://mcp.sumup.com/mcp"
+```
 
-See the [Cursor documentation](https://docs.cursor.com/context/model-context-protocol) for more details. You can also add this to your project-specific Cursor configuration (supported in Cursor 0.46+).
+The Codex CLI, ChatGPT desktop app, and Codex IDE extension share this MCP configuration on the same host. See the [OpenAI MCP documentation](https://developers.openai.com/codex/mcp).
+
+</TabItem>
+<TabItem label="Claude Code">
+
+Add the server from your terminal:
+
+```bash
+claude mcp add --transport http --scope user sumup https://mcp.sumup.com/mcp
+claude mcp list
+```
+
+Open Claude Code, run `/mcp`, and select the SumUp server to authenticate in your browser. The `user` scope makes the connection available across your projects.
+
+See the [Claude Code MCP documentation](https://code.claude.com/docs/en/mcp).
+
+</TabItem>
+<TabItem label="Cursor">
+
+Add this entry to `~/.cursor/mcp.json` for all projects, or `.cursor/mcp.json` for one project. Merge it with any existing servers:
+
+```json
+{
+  "mcpServers": {
+    "sumup": {
+      "url": "https://mcp.sumup.com/mcp"
+    }
+  }
+}
+```
+
+Open Cursor's MCP settings, connect the SumUp server, and complete authorization in your browser. Check that its tools are available in Agent.
+
+See the [Cursor MCP documentation](https://cursor.com/docs/context/mcp).
+
+</TabItem>
+<TabItem label="Gemini CLI">
+
+Add the server from your terminal:
+
+```bash
+gemini mcp add --transport http --scope user sumup https://mcp.sumup.com/mcp
+gemini mcp list
+```
+
+Start Gemini CLI and run `/mcp auth sumup` to sign in through your browser. Use `/mcp` to check the server and its tools.
+
+See the [Gemini CLI MCP documentation](https://geminicli.com/docs/tools/mcp-server/).
+
+</TabItem>
+<TabItem label="VS Code">
+
+For GitHub Copilot, add this configuration to `.vscode/mcp.json` in your workspace. Merge it with any existing servers:
+
+```json
+{
+  "servers": {
+    "sumup": {
+      "type": "http",
+      "url": "https://mcp.sumup.com/mcp"
+    }
+  }
+}
+```
+
+Run **MCP: List Servers** from the command palette, start SumUp, and complete authorization when prompted. Its tools are then available in agent chat.
+
+See the [VS Code MCP documentation](https://code.visualstudio.com/docs/agent-customization/mcp-servers).
+
+</TabItem>
+<TabItem label="Claude Desktop">
+
+For a Claude plan that supports custom connectors:
+
+1. Open **Customize > Connectors**.
+2. Choose **Add**, then **Add custom connector**.
+3. Enter **SumUp** as the name and `https://mcp.sumup.com/mcp` as the URL.
+4. Complete the SumUp authorization flow and enable the connector in your conversation.
+
+On Team and Enterprise plans, an owner must add the connector before members can connect it. See the [Claude custom connector documentation](https://support.claude.com/en/articles/11175166-getting-started-with-custom-connectors-using-remote-mcp).
+
+</TabItem>
+</Tabs>
+
+## Verify the Connection
+
+Confirm that your client's MCP tool list includes SumUp, then try a read-only prompt:
+
+```text
+Use the SumUp MCP tools to show my merchant profile.
+```
+
+To test a payment workflow, first connect a [sandbox merchant account](/online-payments/#getting-a-sandbox-merchant-account). For example:
+
+```text
+Using my sandbox merchant, create a checkout for 12.34 EUR with a unique
+reference and return its ID. Do not process a payment.
+```
+
+## Run the Local Server
+
+Use the [local MCP CLI](https://github.com/sumup/sumup-ai/tree/main/mcp) for clients that launch stdio servers or for workflows using a [SumUp API key](/tools/authorization/api-keys/). It requires Node.js 22 or later.
+
+To start it from your terminal:
+
+```bash
+SUMUP_API_KEY='sup_sk_...' npx -y @sumup/mcp
+```
+
+For Codex, add a local server instead of the hosted URL:
+
+```bash
+codex mcp add sumup --env SUMUP_API_KEY=sup_sk_... -- npx -y @sumup/mcp
+codex mcp list
+```
+
+For clients such as Cursor or Claude Desktop that accept `mcpServers` configuration, use:
 
 ```json
 {
@@ -49,24 +180,13 @@ See the [Cursor documentation](https://docs.cursor.com/context/model-context-pro
 }
 ```
 
-## [Claude](https://claude.ai)
+Replace the placeholder with your API key in your client's private configuration. Keep credentials out of shared project files. For Claude Desktop, this goes in `claude_desktop_config.json`.
 
-Add the following to your `claude_desktop_config.json` file. See the [Claude Desktop documentation](https://modelcontextprotocol.io/quickstart/user) for more details.
+## Troubleshooting
 
-```json
-{
-  "mcpServers": {
-    "sumup": {
-      "command": "npx",
-      "args": ["-y", "@sumup/mcp"],
-      "env": {
-        "SUMUP_API_KEY": "sup_sk_..."
-      }
-    }
-  }
-}
-```
+- **Authorization fails:** use your client's OAuth login flow for the hosted server. If you configured a `sup_sk_...` Bearer token, remove it and reconnect through OAuth. For the local server, check `SUMUP_API_KEY`.
+- **Tools are missing:** restart or refresh the MCP connection and check its status in your client. After installing a Codex plugin, start a new session.
+- **Duplicate tools appear:** if the SumUp plugin already configures MCP, remove the separate manual entry for the same server.
+- **The server cannot connect:** check the `/mcp` URL, outbound HTTPS access, and Streamable HTTP support. The hosted server also exposes the legacy `/sse` endpoint, but new connections should use `/mcp`.
 
-The code editor agent automatically detects available tools and calls the relevant tool when you ask related questions.
-
-[^streamable_http]: https://modelcontextprotocol.io/specification/2025-11-25/basic/transports#streamable-http
+For integration guidance alongside the tools, see [Agent Skills](/tools/llms/agent-skills/) and [Plugins](/tools/llms/plugins/).

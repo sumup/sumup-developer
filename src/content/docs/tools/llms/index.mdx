@@ -1,11 +1,30 @@
 ---
 title: Overview
-description: Use LLMs to guide you through developing with SumUp SDKs.
+description: Set up AI coding assistants with SumUp plugins, skills, and MCP tools.
 sidebar:
   order: 50
 ---
 
-You can use large language models (LLMs) to assist in the building of SumUp integrations. We provide a set of tools and best practices if you use LLMs during development.
+Use your AI assistant to build SumUp payment integrations, troubleshoot checkout flows, or query your merchant account. SumUp provides integration guidance through Agent Skills and API access through the Model Context Protocol (MCP).
+
+## Get Started
+
+Choose the setup that fits your workflow:
+
+| Your workflow | Start with |
+| --- | --- |
+| Build integrations in an AI coding assistant | [Install the SumUp plugin](/tools/llms/plugins/) for your assistant to get skills and MCP configuration. |
+| Connect an assistant directly to your SumUp account | [Set up the hosted MCP server](/tools/llms/mcp-server/) and sign in with SumUp. |
+| Add integration guidance to an assistant that supports skills | [Install Agent Skills](/tools/llms/agent-skills/). Skills work without connecting an account. |
+| Build your own agentic application | [Use the Agent Toolkit](/tools/llms/agent-toolkit/) to add SumUp API tools to your application. |
+
+For example, after installing the plugin, ask your assistant:
+
+- "Help me choose between SumUp Hosted Checkout and the Payment Widget."
+- "Implement a SumUp Payment Widget checkout with server-side checkout creation."
+- "Use the SumUp MCP tools to show my merchant profile."
+
+The first two prompts use integration guidance. Account queries require an authenticated MCP connection.
 
 ## Plain Text Docs
 
