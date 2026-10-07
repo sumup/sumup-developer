@@ -1,6 +1,6 @@
 ---
 title: Overview
-description: Set up AI coding assistants with SumUp plugins, skills, and MCP tools.
+description: Build SumUp integrations and agentic applications with AI assistants, skills, and MCP tools.
 sidebar:
   order: 50
 ---
@@ -9,59 +9,26 @@ Use your AI assistant to build SumUp payment integrations, troubleshoot checkout
 
 ## Get Started
 
-Choose the setup that fits your workflow:
+[Set up your AI assistant](/tools/llms/setup/) for client-specific installation, authentication, and verification instructions. The guide covers Codex, Claude Code, Cursor, Gemini CLI, Kiro, VS Code, and Claude Desktop.
 
-| Your workflow | Start with |
-| --- | --- |
-| Build integrations in an AI coding assistant | [Install the SumUp plugin](/tools/llms/plugins/) for your assistant to get skills and MCP configuration. |
-| Connect an assistant directly to your SumUp account | [Set up the hosted MCP server](/tools/llms/mcp-server/) and sign in with SumUp. |
-| Add integration guidance to an assistant that supports skills | [Install Agent Skills](/tools/llms/agent-skills/). Skills work without connecting an account. |
-| Build your own agentic application | [Use the Agent Toolkit](/tools/llms/agent-toolkit/) to add SumUp API tools to your application. |
-
-For example, after installing the plugin, ask your assistant:
+After setup, try prompts such as:
 
 - "Help me choose between SumUp Hosted Checkout and the Payment Widget."
 - "Implement a SumUp Payment Widget checkout with server-side checkout creation."
 - "Use the SumUp MCP tools to show my merchant profile."
 
-The first two prompts use integration guidance. Account queries require an authenticated MCP connection.
+Skills provide integration guidance without requiring credentials. Account queries require an authenticated MCP connection.
+
+## Explore the Tools
+
+| Tool | Use it for |
+| --- | --- |
+| [Agent Skills](/tools/llms/agent-skills/) | Focused guidance for implementing, testing, upgrading, and debugging integrations; browse the skill catalog or install skills on their own. |
+| [MCP Server](/tools/llms/mcp-server/) | SumUp API tools and documentation resources; learn about authentication, local setup, and troubleshooting. |
+| [Agent Toolkit](/tools/llms/agent-toolkit/) | SumUp API tools for your own applications built with LangChain, AI SDK, the OpenAI Agents SDK, or MCP. |
 
 ## Plain Text Docs
 
-You can access all of our documentation as plain text Markdown files by adding `index.md` to the end of any URL. For example, you can find the plaintext version of this page itself at https://developer.sumup.com/tools/llms/index.md.
+AI tools can discover our documentation through [/llms.txt](/llms.txt). To read a page as Markdown, append `index.md` to its URL, for example [this overview as Markdown](/tools/llms/index.md).
 
-This helps AI tools and agents consume our content and allows you to copy and paste the entire contents of a doc into an LLM. This format is preferable to scraping or copying from our HTML and JavaScript-rendered pages because:
-
-- Plain text contains fewer formatting tokens.
-- Content that isn’t rendered in the default view (for example, it’s hidden in a tab) of a given page is rendered in the plaintext version.
-- LLMs can parse and understand Markdown hierarchy.
-
-We also host an [/llms.txt](/llms.txt) file which instructs AI tools and agents how to retrieve the plaintext versions of our pages. The `/llms.txt` file is an [emerging standard](https://llmstxt.org/) for making websites and content more accessible to LLMs.
-
-## Agent Skills
-
-If you use AI coding assistants, SumUp provides [Agent Skills](/tools/llms/agent-skills/) with targeted guidance for building payment integrations. Install only the skill folders with `npx skills`, copy them into your assistant's skills directory, or use the hosted Agent Skills Discovery index at `https://developer.sumup.com/.well-known/agent-skills/index.json`.
-
-## Plugins
-
-SumUp also publishes [plugins, extensions, and powers](/tools/llms/plugins/) for Claude Code, Cursor, Gemini CLI, OpenAI Codex, and Kiro. Use these packaged integrations when you want the assistant-specific setup from the `sumup/sumup-skills` repository.
-
-## SumUp Model Context Protocol (MCP) Server
-
-Use the [SumUp MCP server](/tools/llms/mcp-server/) to connect MCP-compatible clients and AI assistants to SumUp APIs and documentation tools.
-
-Hosted MCP URL: [https://mcp.sumup.com/mcp](https://mcp.sumup.com/mcp)
-
-The hosted server uses OAuth. Connect with an OAuth-capable MCP client and authorize access when prompted.
-
-You can also run MCP locally with Node.js 22 or later and a SumUp API key:
-
-```sh
-SUMUP_API_KEY='sup_sk_...' npx -y @sumup/mcp
-```
-
-For full setup instructions and client examples, see [MCP Server](/tools/llms/mcp-server/).
-
-## SumUp Agent Toolkit SDK
-
-If you’re building agentic software, we provide an SDK for adding SumUp functionality to your agent’s capabilities. Learn more in our [agents documentation](/tools/llms/agent-toolkit/).
+Markdown versions include content from every tab and preserve heading structure, making them useful for assistants and agents. For hosted skill discovery, see [Discover Skills](/tools/llms/agent-skills/#discover-skills).

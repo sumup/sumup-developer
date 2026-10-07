@@ -1,3 +1,8 @@
+# AI assistant setup
+/tools/llms/plugins                                                         /tools/llms/setup/ 301
+/tools/llms/plugins/                                                        /tools/llms/setup/ 301
+/tools/llms/plugins/index.md                                                /tools/llms/setup/index.md 301
+
 # SDKs redirects
 /tools/sdks/ios-sdk/                                                         /terminal-payments/sdks/ios-sdk
 /tools/sdks/android-ttp/                                                     /terminal-payments/sdks/android-ttp

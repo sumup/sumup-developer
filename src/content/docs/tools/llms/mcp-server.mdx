@@ -1,146 +1,54 @@
 ---
 title: MCP Server
-description: Connect Codex, Claude Code, Cursor, Gemini CLI, and other MCP clients to SumUp.
+description: Learn about SumUp MCP capabilities, authentication, documentation resources, local setup, and troubleshooting.
 sidebar:
   order: 53
 ---
 
-import { Tabs, TabItem } from '@astrojs/starlight/components';
+The [Model Context Protocol (MCP)](https://modelcontextprotocol.io/introduction) connects AI assistants to external tools and context. The [SumUp MCP server](https://github.com/sumup/sumup-mcp) provides tools for calling SumUp APIs and resources for reading developer documentation.
 
-The [Model Context Protocol (MCP)](https://modelcontextprotocol.io/introduction) connects AI assistants to external tools and context. The [SumUp MCP server](https://github.com/sumup/sumup-mcp) provides tools for calling SumUp APIs and resources for reading the developer documentation index and OpenAPI specification.
+For client-specific installation and login steps, start with [Set up your AI assistant](/tools/llms/setup/).
 
-Use it to query your merchant profile, inspect checkout status, review transactions, or build payment workflows with [Cloud API](/terminal-payments/cloud-api/).
+## What You Can Do
 
-## Choose a Setup
+Use the server to:
 
-If you use a supported coding assistant, [install the SumUp plugin](/tools/llms/plugins/) to get both integration skills and MCP configuration. If you have already installed the plugin, authorize its bundled server and continue to [verify the connection](#verify-the-connection).
+- Query your merchant profile and review transactions.
+- Create checkouts and inspect their status.
+- Build payment workflows with [Cloud API](/terminal-payments/cloud-api/).
+- Read SumUp developer documentation and the OpenAPI specification through MCP resources.
 
-For a direct connection, choose between:
+## Documentation Resources
+
+Clients that support MCP resources can read:
+
+| Resource | URI |
+| --- | --- |
+| Developer documentation index | `https://developer.sumup.com/llms.txt` |
+| API OpenAPI specification | `https://developer.sumup.com/openapi.json` |
+
+The documentation index points to guides available as Markdown. Clients without resource support can read the [documentation index](/llms.txt) and the [OpenAPI specification from the SumUp OpenAPI repository](https://raw.githubusercontent.com/sumup/sumup-openapi/refs/heads/main/openapi.json) directly.
+
+## Authentication
 
 | Setup | Authentication | Requirements |
 | --- | --- | --- |
 | Hosted server at `https://mcp.sumup.com/mcp` | Sign in with SumUp through OAuth | A client that supports Streamable HTTP and OAuth |
 | Local `@sumup/mcp` process | SumUp API key in `SUMUP_API_KEY` | Node.js 22 or later and a client that supports stdio |
 
-## Connect the Hosted Server
+### Connect the Hosted Server
 
-Add `https://mcp.sumup.com/mcp` to your client, then authorize access in your browser. The client discovers the SumUp authorization server through the endpoint's protected resource metadata.
+The client discovers the SumUp authorization server through the endpoint's protected resource metadata and asks you to authorize access in your browser. Follow the login steps for your client in the [assistant setup guide](/tools/llms/setup/#choose-your-assistant).
 
 The hosted server accepts OAuth access tokens issued for the MCP resource. SumUp API keys such as `sup_sk_...` are used by the local server and are not valid Bearer tokens for the hosted endpoint.
 
-<Tabs>
-<TabItem label="Codex">
-
-Run these commands in your terminal:
-
-```bash
-codex mcp add sumup --url https://mcp.sumup.com/mcp
-codex mcp login sumup
-codex mcp list
-```
-
-Complete the browser login. In a Codex session, use `/mcp` to check the active tools.
-
-Alternatively, add this entry to `~/.codex/config.toml`, then run `codex mcp login sumup`:
-
-```toml
-[mcp_servers.sumup]
-url = "https://mcp.sumup.com/mcp"
-```
-
-The Codex CLI, ChatGPT desktop app, and Codex IDE extension share this MCP configuration on the same host. See the [OpenAI MCP documentation](https://developers.openai.com/codex/mcp).
-
-</TabItem>
-<TabItem label="Claude Code">
-
-Add the server from your terminal:
-
-```bash
-claude mcp add --transport http --scope user sumup https://mcp.sumup.com/mcp
-claude mcp list
-```
-
-Open Claude Code, run `/mcp`, and select the SumUp server to authenticate in your browser. The `user` scope makes the connection available across your projects.
-
-See the [Claude Code MCP documentation](https://code.claude.com/docs/en/mcp).
-
-</TabItem>
-<TabItem label="Cursor">
-
-Add this entry to `~/.cursor/mcp.json` for all projects, or `.cursor/mcp.json` for one project. Merge it with any existing servers:
-
-```json
-{
-  "mcpServers": {
-    "sumup": {
-      "url": "https://mcp.sumup.com/mcp"
-    }
-  }
-}
-```
-
-Open Cursor's MCP settings, connect the SumUp server, and complete authorization in your browser. Check that its tools are available in Agent.
-
-See the [Cursor MCP documentation](https://cursor.com/docs/context/mcp).
-
-</TabItem>
-<TabItem label="Gemini CLI">
-
-Add the server from your terminal:
-
-```bash
-gemini mcp add --transport http --scope user sumup https://mcp.sumup.com/mcp
-gemini mcp list
-```
-
-Start Gemini CLI and run `/mcp auth sumup` to sign in through your browser. Use `/mcp` to check the server and its tools.
-
-See the [Gemini CLI MCP documentation](https://geminicli.com/docs/tools/mcp-server/).
-
-</TabItem>
-<TabItem label="VS Code">
-
-For GitHub Copilot, add this configuration to `.vscode/mcp.json` in your workspace. Merge it with any existing servers:
-
-```json
-{
-  "servers": {
-    "sumup": {
-      "type": "http",
-      "url": "https://mcp.sumup.com/mcp"
-    }
-  }
-}
-```
-
-Run **MCP: List Servers** from the command palette, start SumUp, and complete authorization when prompted. Its tools are then available in agent chat.
-
-See the [VS Code MCP documentation](https://code.visualstudio.com/docs/agent-customization/mcp-servers).
-
-</TabItem>
-<TabItem label="Claude Desktop">
-
-For a Claude plan that supports custom connectors:
-
-1. Open **Customize > Connectors**.
-2. Choose **Add**, then **Add custom connector**.
-3. Enter **SumUp** as the name and `https://mcp.sumup.com/mcp` as the URL.
-4. Complete the SumUp authorization flow and enable the connector in your conversation.
-
-On Team and Enterprise plans, an owner must add the connector before members can connect it. See the [Claude custom connector documentation](https://support.claude.com/en/articles/11175166-getting-started-with-custom-connectors-using-remote-mcp).
-
-</TabItem>
-</Tabs>
+The hosted server supports Streamable HTTP at `/mcp` and the legacy SSE transport at `/sse`. Use `/mcp` for new connections.
 
 ## Verify the Connection
 
-Confirm that your client's MCP tool list includes SumUp, then try a read-only prompt:
+Follow the [setup verification steps](/tools/llms/setup/#verify-the-setup) to check that tools are available and make a read-only request. Before testing payment workflows, connect a [sandbox merchant account](/online-payments/#getting-a-sandbox-merchant-account).
 
-```text
-Use the SumUp MCP tools to show my merchant profile.
-```
-
-To test a payment workflow, first connect a [sandbox merchant account](/online-payments/#getting-a-sandbox-merchant-account). For example:
+For example, once your sandbox connection is ready:
 
 ```text
 Using my sandbox merchant, create a checkout for 12.34 EUR with a unique
@@ -189,4 +97,4 @@ Replace the placeholder with your API key in your client's private configuration
 - **Duplicate tools appear:** if the SumUp plugin already configures MCP, remove the separate manual entry for the same server.
 - **The server cannot connect:** check the `/mcp` URL, outbound HTTPS access, and Streamable HTTP support. The hosted server also exposes the legacy `/sse` endpoint, but new connections should use `/mcp`.
 
-For integration guidance alongside the tools, see [Agent Skills](/tools/llms/agent-skills/) and [Plugins](/tools/llms/plugins/).
+For integration guidance alongside the tools, see [Agent Skills](/tools/llms/agent-skills/) and [Set up your AI assistant](/tools/llms/setup/).

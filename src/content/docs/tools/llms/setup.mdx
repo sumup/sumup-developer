@@ -1,0 +1,264 @@
+---
+title: Set up your AI assistant
+description: Install SumUp skills and connect MCP tools in Codex, Claude Code, Cursor, Gemini CLI, Kiro, VS Code, and Claude Desktop.
+sidebar:
+  label: Set up your assistant
+  order: 51
+tableOfContents:
+  maxHeadingLevel: 2
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+Set up your assistant to build SumUp integrations and work with your merchant account. Choose your assistant below, install the available package, and sign in with SumUp to use account tools.
+
+The [SumUp plugin](https://github.com/sumup/sumup-skills) bundles two capabilities:
+
+- **Agent Skills** provide guidance for implementing, testing, upgrading, and debugging payment integrations. Skills work without connecting a SumUp account.
+- **MCP tools** let your assistant call SumUp APIs and read documentation resources. The hosted server at `https://mcp.sumup.com/mcp` uses OAuth: sign in with SumUp through your client when prompted.
+
+If you install a plugin, extension, or power that configures MCP, use its bundled connection. The direct MCP instructions are an alternative for clients without plugins or when you only need account tools. For API-key authentication or stdio-only clients, see [local MCP setup](/tools/llms/mcp-server/#run-the-local-server).
+
+## Choose Your Assistant
+
+<Tabs>
+<TabItem label="Codex">
+
+### Install the Codex Plugin
+
+Run these commands in your terminal:
+
+```bash
+codex plugin marketplace add sumup/sumup-skills
+codex plugin add sumup@sumup
+codex plugin list
+```
+
+Start a new Codex session to load the skills and tools. Complete the SumUp authorization flow when prompted.
+
+Plugins are supported in the Codex CLI and Codex in the ChatGPT desktop app. For the Codex IDE extension, [install standalone skills](/tools/llms/agent-skills/#install-standalone-skills) and use the direct MCP instructions below.
+
+See the [OpenAI plugin documentation](https://developers.openai.com/codex/plugins/).
+
+### Connect Codex Directly
+
+Run these commands in your terminal:
+
+```bash
+codex mcp add sumup --url https://mcp.sumup.com/mcp
+codex mcp login sumup
+codex mcp list
+```
+
+Complete the browser login. In a Codex session, use `/mcp` to check the active tools.
+
+Alternatively, add this entry to `~/.codex/config.toml`, then run `codex mcp login sumup`:
+
+```toml
+[mcp_servers.sumup]
+url = "https://mcp.sumup.com/mcp"
+```
+
+The Codex CLI, ChatGPT desktop app, and Codex IDE extension share this MCP configuration on the same host. See the [OpenAI MCP documentation](https://developers.openai.com/codex/mcp).
+
+</TabItem>
+<TabItem label="Claude Code">
+
+### Install the Claude Code Plugin
+
+Run these commands in your terminal:
+
+```bash
+claude plugin marketplace add sumup/sumup-skills
+claude plugin install sumup@sumup
+claude plugin list
+```
+
+You can also run `/plugin marketplace add sumup/sumup-skills` and `/plugin install sumup@sumup` inside Claude Code.
+
+Open `/plugin` to confirm SumUp is installed. Follow the install summary's reload instructions, then open `/mcp` and authenticate the SumUp server in your browser.
+
+See the [Claude Code plugin documentation](https://code.claude.com/docs/en/discover-plugins).
+
+### Connect Claude Code Directly
+
+Add the server from your terminal:
+
+```bash
+claude mcp add --transport http --scope user sumup https://mcp.sumup.com/mcp
+claude mcp list
+```
+
+Open Claude Code, run `/mcp`, and select the SumUp server to authenticate in your browser. The `user` scope makes the connection available across your projects.
+
+See the [Claude Code MCP documentation](https://code.claude.com/docs/en/mcp).
+
+</TabItem>
+<TabItem label="Cursor">
+
+### Install the Cursor Plugin
+
+For a team marketplace, an administrator can import the repository:
+
+1. Open the Cursor dashboard and go to **Plugins & MCPs**.
+2. Under **Team Marketplaces**, choose **Add Marketplace**, then **Import from Repo**.
+3. Enter `https://github.com/sumup/sumup-skills` and add the SumUp plugin to the marketplace.
+4. In Cursor, install SumUp from your team's marketplace and authorize the MCP connection when prompted.
+
+For an individual setup, [install standalone SumUp skills](/tools/llms/agent-skills/#install-standalone-skills) and add the hosted MCP server using the configuration below.
+
+See the [Cursor plugin documentation](https://cursor.com/docs/plugins).
+
+### Connect Cursor Directly
+
+Add this entry to `~/.cursor/mcp.json` for all projects, or `.cursor/mcp.json` for one project. Merge it with any existing servers:
+
+```json
+{
+  "mcpServers": {
+    "sumup": {
+      "url": "https://mcp.sumup.com/mcp"
+    }
+  }
+}
+```
+
+Open Cursor's MCP settings, connect the SumUp server, and complete authorization in your browser. Check that its tools are available in Agent.
+
+See the [Cursor MCP documentation](https://cursor.com/docs/context/mcp).
+
+</TabItem>
+<TabItem label="Gemini CLI">
+
+### Install the Gemini Extension
+
+Install the SumUp extension from your terminal:
+
+```bash
+gemini extensions install https://github.com/sumup/sumup-skills --ref=main
+gemini extensions list
+```
+
+Start a new Gemini CLI session. Run `/mcp` to check the SumUp server and `/mcp auth sumup` to complete authorization in your browser.
+
+See the [Gemini CLI extension documentation](https://geminicli.com/docs/extensions/).
+
+### Connect Gemini CLI Directly
+
+Add the server from your terminal:
+
+```bash
+gemini mcp add --transport http --scope user sumup https://mcp.sumup.com/mcp
+gemini mcp list
+```
+
+Start Gemini CLI and run `/mcp auth sumup` to sign in through your browser. Use `/mcp` to check the server and its tools.
+
+See the [Gemini CLI MCP documentation](https://geminicli.com/docs/tools/mcp-server/).
+
+</TabItem>
+<TabItem label="Kiro">
+
+### Install the Kiro Power
+
+Import SumUp as a custom power:
+
+1. Open **Powers**.
+2. Select **Add Custom Power**, then **Import power from GitHub**.
+3. Enter `https://github.com/sumup/sumup-skills`.
+4. Activate the SumUp power and complete authentication when its MCP tools are needed.
+
+For local testing, use **Import power from a folder** and select a clone of the repository.
+
+See the [Kiro power installation documentation](https://kiro.dev/docs/powers/installation/).
+
+</TabItem>
+<TabItem label="VS Code">
+
+### Connect VS Code to SumUp
+
+For GitHub Copilot, add this configuration to `.vscode/mcp.json` in your workspace. Merge it with any existing servers:
+
+```json
+{
+  "servers": {
+    "sumup": {
+      "type": "http",
+      "url": "https://mcp.sumup.com/mcp"
+    }
+  }
+}
+```
+
+Run **MCP: List Servers** from the command palette, start SumUp, and complete authorization when prompted. Its tools are then available in agent chat.
+
+See the [VS Code MCP documentation](https://code.visualstudio.com/docs/agent-customization/mcp-servers).
+
+</TabItem>
+<TabItem label="Claude Desktop">
+
+### Connect Claude Desktop to SumUp
+
+For a Claude plan that supports custom connectors:
+
+1. Open **Customize > Connectors**.
+2. Choose **Add**, then **Add custom connector**.
+3. Enter **SumUp** as the name and `https://mcp.sumup.com/mcp` as the URL.
+4. Complete the SumUp authorization flow and enable the connector in your conversation.
+
+On Team and Enterprise plans, an owner must add the connector before members can connect it. See the [Claude custom connector documentation](https://support.claude.com/en/articles/11175166-getting-started-with-custom-connectors-using-remote-mcp).
+
+</TabItem>
+</Tabs>
+
+## Verify the Setup
+
+If you installed skills, start with a guidance prompt:
+
+```text
+Use the SumUp skills to explain how to build a Hosted Checkout integration.
+```
+
+After authorizing MCP, check the connection with a read-only request:
+
+```text
+Use the SumUp MCP tools to show my merchant profile.
+```
+
+If the skills load but account tools fail, follow [MCP troubleshooting](/tools/llms/mcp-server/#troubleshooting). Before trying payment flows, use a [sandbox merchant account](/online-payments/#getting-a-sandbox-merchant-account).
+
+## Keep the Plugin Updated
+
+For Codex, refresh the marketplace from your terminal, then start a new session:
+
+```bash
+codex plugin marketplace upgrade sumup
+```
+
+For Claude Code, update the installed plugin:
+
+```bash
+claude plugin update sumup@sumup
+```
+
+For Gemini CLI, update the extension:
+
+```bash
+gemini extensions update sumup
+```
+
+For a Cursor team marketplace, your administrator can enable **Auto Refresh** in its marketplace settings.
+
+For Kiro, open the SumUp power, select **Check for updates**, and install any available update.
+
+## Other Assistants
+
+For clients that support Agent Skills, install the skills separately:
+
+```bash
+npx skills add https://github.com/sumup/sumup-skills
+```
+
+For account tools, add `https://mcp.sumup.com/mcp` using your client's Streamable HTTP configuration and complete its OAuth login flow. Check that SumUp tools appear, then use the verification prompt above.
+
+For more installation options, see [Agent Skills](/tools/llms/agent-skills/). For server capabilities, local setup, and troubleshooting, see [MCP Server](/tools/llms/mcp-server/).
