@@ -27,7 +27,7 @@
       "description": "Use the SumUp MCP server (https://mcp.sumup.com/mcp) from Cursor, Claude Code, Codex, or any MCP-capable client. Use when the user mentions SumUp MCP, needs to wire mcp.sumup.com, or wants tool-based access to SumUp APIs.",
       "type": "archive",
       "url": "https://developer.sumup.com/.well-known/agent-skills/sumup-mcp.zip",
-      "digest": "sha256:7efa49491ad42a36f9467d196bdfadc2a9122aade11b83e2d2260f6e02964fec"
+      "digest": "sha256:3656f700c64d1bde2643c41b889a7dbb897886ffa3e1a3fe5f7fd1a42ef77deb"
     },
     {
       "name": "sumup-testing",
