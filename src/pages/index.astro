@@ -3,7 +3,7 @@ import { getCollection } from "astro:content";
 
 import Brands from "@components/Landing/Brands.astro";
 import PaymentScenes from "@components/Landing/PaymentScenes.astro";
-import LinkButton from "@components/nimbus/LinkButton.astro";
+import Button from "@components/Button";
 import PageFooter from "@components/nimbus/PageFooter.astro";
 import {
   Apps,
@@ -179,10 +179,19 @@ const productionLinks = [
   prose={false}
   fullWidth
 >
-  <div class="hero-band">
+  <div class="hero-band" data-color-scheme="dark">
+    <!-- Brand Resources and Assets: Sky graphic / Static v.01 -->
+    <img
+      class="hero-sky"
+      src="/img/landing/sumup-sky-v01.webp"
+      alt=""
+      width="960"
+      height="640"
+      fetchpriority="high"
+      decoding="async"
+    />
     <header class="hero" aria-labelledby="hero-title">
       <div class="hero-copy">
-        <p class="eyebrow">Payment APIs &amp; SDKs</p>
         <h1 id="hero-title" data-pagefind-meta="title">
           Build payments with SumUp
         </h1>
@@ -191,28 +200,20 @@ const productionLinks = [
           in person.
         </p>
         <div class="hero-actions">
-          <LinkButton href="/online-payments/">Start online</LinkButton>
-          <LinkButton href="/terminal-payments/" variant="secondary">
-            Explore in-person
-          </LinkButton>
+          <Button
+            href="/online-payments/"
+            variant="primary"
+            label="Start online"
+          />
+          <Button
+            href="/terminal-payments/"
+            variant="secondary"
+            label="Explore in-person"
+          />
         </div>
-        <a class="text-link" href="/api/">
-          Browse the API reference <span aria-hidden="true">→</span>
-        </a>
       </div>
 
       <div class="hero-visual">
-        <!-- Brand Resources and Assets: Sky graphic / Static v.01 -->
-        <img
-          class="hero-sky"
-          src="/img/landing/sumup-sky-v01.webp"
-          alt=""
-          width="960"
-          height="640"
-          fetchpriority="high"
-          decoding="async"
-        />
-
         <PaymentScenes />
       </div>
     </header>
@@ -390,8 +391,10 @@ const productionLinks = [
 
 <style>
   .hero-band {
+    position: relative;
     width: 100%;
-    background: var(--cui-bg-subtle);
+    color: var(--cui-fg-normal);
+    background: var(--cui-bg-normal);
   }
 
   .hero,
@@ -407,8 +410,7 @@ const productionLinks = [
     grid-template-columns: minmax(0, 1fr) minmax(24rem, 0.95fr);
     gap: clamp(2rem, 6vw, 5rem);
     align-items: center;
-    min-height: 37rem;
-    padding-block: clamp(2rem, 5vw, 4rem);
+    padding-block: clamp(2rem, 4vw, 3rem);
   }
 
   .hero-copy,
@@ -431,6 +433,7 @@ const productionLinks = [
   }
 
   .hero h1 {
+    color: var(--cui-fg-normal);
     max-width: 11ch;
     margin: 0;
     font-family: "SumUp Black", "SumUp Black fallback", sans-serif;
@@ -443,7 +446,7 @@ const productionLinks = [
   .hero-description {
     max-width: 31rem;
     margin: var(--cui-spacings-giga) 0 0;
-    color: var(--cui-fg-subtle);
+    color: var(--cui-fg-normal);
     font-size: var(--cui-body-l-font-size);
     line-height: var(--cui-body-l-line-height);
   }
@@ -481,7 +484,7 @@ const productionLinks = [
 
   .hero-visual {
     display: flex;
-    min-height: 30rem;
+    aspect-ratio: 4 / 3;
     align-items: center;
     overflow: hidden;
     padding: clamp(1rem, 3vw, 2rem);
@@ -893,10 +896,6 @@ const productionLinks = [
       grid-template-columns: 1fr;
     }
 
-    .hero {
-      min-height: auto;
-    }
-
     .hero-copy {
       max-width: 42rem;
     }
@@ -937,12 +936,11 @@ const productionLinks = [
       flex-direction: column;
     }
 
-    .hero-actions :global(.link-button) {
+    .hero-actions :global(a) {
       justify-content: center;
     }
 
     .hero-visual {
-      min-height: 29rem;
       padding: var(--cui-spacings-kilo);
       border-radius: var(--cui-border-radius-mega);
     }

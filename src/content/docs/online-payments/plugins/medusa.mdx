@@ -5,6 +5,8 @@ sidebar:
   order: 54
 ---
 
+import { ExternalLink } from "@sumup-oss/icons";
+
 The [SumUp plugin for Medusa](https://github.com/sumup/sumup-plugin-medusa) adds SumUp as a payment provider for [Medusa v2](https://medusajs.com/). It lets your Medusa backend create and manage SumUp online checkouts while keeping your SumUp credentials on the server side.
 
 The plugin supports:
@@ -19,12 +21,14 @@ The plugin supports:
   terminal or other card-present integrations.
 :::
 
-<LinkButton
+<Button
   href="https://github.com/sumup/sumup-plugin-medusa"
-  icon="external"
->
-  View Medusa Plugin Repository
-</LinkButton>
+  label="View Medusa Plugin Repository"
+  variant="primary"
+  navigationIcon={ExternalLink}
+  target="_blank"
+  rel="noopener noreferrer"
+/>
 
 ## Prerequisites
 

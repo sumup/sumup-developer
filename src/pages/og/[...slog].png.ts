@@ -95,7 +95,7 @@ export async function getStaticPaths() {
   const defaultMetadata = staticPageMetadata.get("")!;
   const changelogMetadata = staticPageMetadata.get("changelog")!;
   const docs = await getCollection("docs");
-  const changelog = await getCollection("changelog");
+  const changelog = await getCollection("_changelog");
   const metadata = new Map<string, Props["props"]>(staticPageMetadata);
 
   // Preserve the existing default cards for custom API and 404 pages.
