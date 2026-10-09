@@ -35,7 +35,7 @@ export async function createOgImageResponse(
       "Content-Type": "image/png",
       "Cache-Control": options.debug
         ? "no-cache, no-store"
-        : "public, immutable, no-transform, max-age=31536000",
+        : "public, max-age=3600, must-revalidate",
       ...options.headers,
     },
     status: options.status ?? 200,
