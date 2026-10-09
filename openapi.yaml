@@ -3,7 +3,7 @@ info:
   title: SumUp REST API
   version: 1.0.0
   description: |-
-    SumUp’s REST API operates with [JSON](https://www.json.org/json-en.html) HTTP requests and responses. The request bodies are sent through resource-oriented URLs and use the standard [HTTP response codes](https://developer.mozilla.org/docs/Web/HTTP/Status).
+    SumUp's REST API lets you create and process payments, manage saved customers and payment instruments, and retrieve transactions, payouts, and receipt details. It uses resource-oriented URLs and standard [HTTP response codes](https://developer.mozilla.org/docs/Web/HTTP/Status). Send request bodies as [JSON](https://www.json.org/json-en.html) with `Content-Type: application/json`, unless an endpoint specifies another format.
 
     You can experiment and work on your integration in a sandbox that doesn't affect your regular data and doesn't process real transactions. To create a sandbox merchant account visit the [dashboard](https://me.sumup.com/settings/developer). To use the sandbox when interacting with SumUp APIs [create an API](https://me.sumup.com/settings/api-keys) key and use it for [authentication](https://developer.sumup.com/api/authentication).
   license:
@@ -33,11 +33,11 @@ tags:
       - $ref: '#/components/schemas/Checkout'
   - name: Customers
     description: |-
-      Allow your regular customers to save their information with the Customers model.
+      Customers represent payers in your integration. Create a customer with your own `customer_id` to associate their personal details and saved payment instruments with your business records.
 
-      This will prevent re-entering payment instrument information for recurring payments on your platform.
+      To save a card, create a checkout for that customer with `purpose = SETUP_RECURRING_PAYMENT`, then process it with the payer's consent and mandate details. See the [tokenization guide](https://developer.sumup.com/online-payments/guides/tokenization-with-payment-sdk/).
 
-      Depending on the needs you can allow, creating, listing or deactivating payment instruments & creating, retrieving and updating customers.
+      Use the Customers endpoints to create, retrieve, or update customer details and to list or deactivate saved payment instruments. For subsequent payments, process a new checkout with the saved instrument's `token` and its associated `customer_id`.
     x-core-objects:
       - $ref: '#/components/schemas/Customer'
   - name: Transactions
@@ -68,7 +68,7 @@ tags:
     x-core-objects:
       - $ref: '#/components/schemas/FinancialPayouts'
   - name: Receipts
-    description: The Receipts model obtains receipt-like details for specific transactions.
+    description: Retrieve structured receipt data for a transaction, including payment, merchant, and acquirer details. Use this data to display a receipt in your application. The response is JSON, rather than a rendered receipt document.
     x-core-objects:
       - $ref: '#/components/schemas/Receipt'
   - name: Readers
@@ -105,7 +105,7 @@ paths:
       operationId: GetPaymentMethods
       summary: Get available payment methods
       description: |-
-        Get payment methods available for the given merchant to use with a checkout.
+        Lists the payment methods available to the merchant for checkout payments. Use the optional amount and currency filters to check eligibility for a particular payment before presenting payment options to the payer.
       tags:
         - Checkouts
       x-codegen:
@@ -123,14 +123,14 @@ paths:
           name: amount
           required: false
           description: |-
-            The amount for which the payment methods should be eligible, in major units.
+            Payment amount in major units, for example `9.99` for EUR 9.99. When filtering by `amount`, also provide `currency`.
           schema:
             type: number
             example: 9.99
         - in: query
           name: currency
           required: false
-          description: The currency for which the payment methods should be eligible.
+          description: Three-letter ISO 4217 currency code for which the payment methods should be eligible, for example `EUR`.
           schema:
             type: string
             example: EUR
@@ -222,7 +222,7 @@ paths:
                   currency: EUR
                   merchant_code: MH4H92C7
                   description: Purchase
-                  valid_until: '2020-02-29T10:56:56+00:00'
+                  valid_until: '2030-12-31T23:59:59Z'
                   redirect_url: https://sumup.com
               Checkout3DS:
                 description: Create a 3DS checkout
@@ -275,7 +275,7 @@ paths:
                     id: 88fcf8de-304d-4820-8f1c-ec880290eb92
                     status: PENDING
                     date: '2020-02-29T10:56:56+00:00'
-                    valid_until: '2020-02-29T10:56:56+00:00'
+                    valid_until: '2030-12-31T23:59:59Z'
                     customer_id: 831ff8d4cd5958ab5670
                     mandate:
                       type: recurrent
@@ -306,7 +306,7 @@ paths:
                     id: 88fcf8de-304d-4820-8f1c-ec880290eb92
                     status: PENDING
                     date: '2020-02-29T10:56:56+00:00'
-                    valid_until: '2020-02-29T10:56:56+00:00'
+                    valid_until: '2030-12-31T23:59:59Z'
                     customer_id: 831ff8d4cd5958ab5670
                     redirect_url: https://mysite.com/completed_purchase
                     transactions:
@@ -447,7 +447,7 @@ paths:
       parameters:
         - name: checkout_reference
           in: query
-          description: Filters the list of checkout resources by the unique reference of the checkout.
+          description: Filters checkouts by the merchant-defined `checkout_reference` supplied when creating the checkout. This is separate from the SumUp-generated checkout `id`.
           required: false
           schema:
             type: string
@@ -490,7 +490,7 @@ paths:
       - name: checkout_id
         in: path
         required: true
-        description: Unique identifier of the checkout resource.
+        description: SumUp-generated `id` returned when creating a checkout. Use this value to retrieve, update, process, or deactivate the checkout.
         schema:
           type: string
           example: 4e425463-3e1b-431d-83fa-1e51c2925e99
@@ -498,7 +498,7 @@ paths:
       operationId: GetCheckout
       summary: Retrieve a checkout
       description: |-
-        Retrieves an identified checkout resource. Use this request after processing a checkout to confirm its status and inform the end user respectively.
+        Retrieves a checkout by its SumUp `checkout_id`. After processing a payment, returning from a redirect, or receiving a checkout notification, retrieve the checkout to confirm its current `status` before updating your order or displaying the payment outcome to the payer.
       tags:
         - Checkouts
       security:
@@ -587,7 +587,7 @@ paths:
               currency: EUR
               description: Updated purchase
               checkout_reference: f00a8f74-b05d-4605-bd73-2a901bae5802
-              valid_until: '2020-02-29T10:56:56+00:00'
+              valid_until: '2030-12-31T23:59:59Z'
               customer_id: 831ff8d4cd5958ab5670
       responses:
         '200':
@@ -606,7 +606,7 @@ paths:
                 id: 88fcf8de-304d-4820-8f1c-ec880290eb92
                 status: PENDING
                 date: '2020-02-29T10:56:56+00:00'
-                valid_until: '2020-02-29T10:56:56+00:00'
+                valid_until: '2030-12-31T23:59:59Z'
                 customer_id: 831ff8d4cd5958ab5670
                 transactions: []
         '401':
@@ -646,7 +646,9 @@ paths:
 
         Processing a checkout will attempt to charge the provided payment instrument for the amount of the specified checkout resource initiated in the `Create a checkout` endpoint.
 
-        Follow this request with `Retrieve a checkout` to confirm its status.
+        A processing response can require an additional payer action, such as a 3DS challenge or a payment-provider redirect. If `next_step` is returned, follow its instructions to continue the payment flow.
+
+        Retrieve the checkout afterwards to confirm its payment status. Acceptance of the processing request does not by itself mean the checkout is paid.
       tags:
         - Checkouts
       security:
@@ -781,9 +783,9 @@ paths:
                     description: Purchase
                     return_url: http://example.com
                     id: 4e425463-3e1b-431d-83fa-1e51c2925e99
-                    status: PENDING
+                    status: PAID
                     date: '2020-02-29T10:56:56+00:00'
-                    valid_until: '2020-02-29T10:56:56+00:00'
+                    valid_until: '2030-12-31T23:59:59Z'
                     customer_id: 831ff8d4cd5958ab5670
                     mandate:
                       type: recurrent
@@ -814,7 +816,7 @@ paths:
                     merchant_code: MH4H92C7
                     description: Purchase with token
                     id: 4e425463-3e1b-431d-83fa-1e51c2925e99
-                    status: PENDING
+                    status: PAID
                     date: '2020-02-29T10:56:56+00:00'
                     transaction_code: TEENSK4W2K
                     transaction_id: 410fc44a-5956-44e1-b5cc-19c6f8d727a4
@@ -838,7 +840,7 @@ paths:
                         entry_mode: CUSTOMER_ENTRY
                         auth_code: '053201'
                 CheckoutSuccessBoleto:
-                  description: Successfully processed checkout with Boleto
+                  description: Boleto payment initiated, awaiting payment by the payer
                   value:
                     checkout_reference: f00a8f74-b05d-4605-bd73-2a901bae5802
                     amount: 10.1
@@ -869,7 +871,7 @@ paths:
                         entry_mode: BOLETO
                         installments_count: 1
                 CheckoutSuccessiDeal:
-                  description: Successfully processed checkout with iDeal
+                  description: iDEAL processing response requiring a payer redirect
                   value:
                     next_step:
                       url: https://r3.girogate.de/ti/simideal
@@ -884,7 +886,7 @@ paths:
                       mechanism:
                         - browser
                 CheckoutSuccessBancontact:
-                  description: Successfully processed checkout with Bancontact
+                  description: Bancontact processing response requiring a payer redirect
                   value:
                     next_step:
                       url: https://r3.girogate.de/ti/simbcmc
@@ -999,7 +1001,7 @@ paths:
                 $ref: '#/components/schemas/Checkout'
               example:
                 checkout_reference: f00a8f74-b05d-4605-bd73-2a901bae5802
-                id: 817340ce-f1d9-4609-b90a-6152f8ee267j
+                id: 817340ce-f1d9-4609-b90a-6152f8ee267a
                 amount: 2
                 currency: EUR
                 merchant_code: MH4H92C7
@@ -1007,7 +1009,7 @@ paths:
                 purpose: CHECKOUT
                 status: EXPIRED
                 date: '2020-02-29T10:56:56+00:00'
-                valid_until: '2020-02-29T10:56:56+00:00'
+                valid_until: '2030-12-31T23:59:59Z'
                 merchant_name: Sample Merchant
                 transactions: []
         '401':
@@ -1066,7 +1068,7 @@ paths:
         - name: checkout_id
           in: path
           required: true
-          description: Unique identifier of the checkout resource.
+          description: SumUp-generated `id` returned when creating a checkout. Use this value to retrieve, update, process, or deactivate the checkout.
           schema:
             type: string
             example: 4e425463-3e1b-431d-83fa-1e51c2925e99
@@ -1074,7 +1076,7 @@ paths:
         method_name: create_apple_pay_session
       x-scopes: []
       requestBody:
-        description: The data needed to create an apple pay session for a checkout.
+        description: Merchant validation details from the Apple Pay session in the payer's browser.
         content:
           application/json:
             schema:
@@ -1085,12 +1087,12 @@ paths:
               properties:
                 context:
                   type: string
-                  description: the context to create this apple pay session.
+                  description: Hostname of the website displaying the Apple Pay payment sheet, without a URL scheme or path. Use the domain registered for Apple Pay.
                   format: hostname
                   example: example.com
                 target:
                   type: string
-                  description: The target url to create this apple pay session.
+                  description: Apple Pay validation URL received as `validationURL` in the browser's `onvalidatemerchant` event.
                   format: uri
                   example: https://apple-pay-gateway-cert.apple.com/paymentservices/startSession
       responses:
@@ -1149,7 +1151,7 @@ paths:
       operationId: CreateCustomer
       summary: Create a customer
       description: |-
-        Creates a new saved customer resource which you can later manipulate and save payment instruments to.
+        Creates a customer using the `customer_id` you supply. Choose an identifier that maps to the payer in your own system and reuse it when retrieving the customer or associating checkouts and saved payment instruments with them.
       tags:
         - Customers
       security:
@@ -1254,7 +1256,7 @@ paths:
       - name: customer_id
         in: path
         required: true
-        description: Unique identifier of the saved customer resource.
+        description: The `customer_id` you supplied when creating the customer.
         schema:
           type: string
           example: 831ff8d4cd5958ab5670
@@ -1262,7 +1264,7 @@ paths:
       operationId: GetCustomer
       summary: Retrieve a customer
       description: |-
-        Retrieves an identified saved customer resource through the unique `customer_id` parameter, generated upon customer creation.
+        Retrieves a saved customer using the `customer_id` you supplied when creating the customer.
       tags:
         - Customers
       security:
@@ -1403,7 +1405,7 @@ paths:
       - name: customer_id
         in: path
         required: true
-        description: Unique identifier of the saved customer resource.
+        description: The `customer_id` you supplied when creating the customer.
         schema:
           type: string
           example: 831ff8d4cd5958ab5670
@@ -1478,7 +1480,7 @@ paths:
       - name: customer_id
         in: path
         required: true
-        description: Unique identifier of the saved customer resource.
+        description: The `customer_id` you supplied when creating the customer.
         schema:
           type: string
           example: 831ff8d4cd5958ab5670
@@ -1581,7 +1583,10 @@ paths:
     post:
       operationId: RefundTransaction
       summary: Refund a transaction
-      description: Refunds an identified transaction either in full or partially.
+      description: |-
+        Refunds a transaction identified by its SumUp transaction ID. Omit the request body to request a full refund, or provide `amount` for a partial refund in the transaction's currency.
+
+        Retrieve the transaction afterwards to inspect its refunded amount and refund events. The transaction must be eligible for a refund; see the error responses for invalid amounts, permissions, and processing failures.
       tags:
         - Transactions
       security:
@@ -1608,7 +1613,7 @@ paths:
                   type: number
                   format: float
                   description: |-
-                    Amount to be refunded. Eligible amount can't exceed the amount of the transaction and varies based on country and currency. If you do not specify a value, the system performs a full refund of the transaction.
+                    Amount to refund in major units of the transaction's currency, for example `5` for EUR 5.00. It must be greater than zero and cannot exceed the amount eligible for a refund. Eligibility depends on the transaction and country/currency rules. If omitted, the system requests a full refund.
                   example: 5
       responses:
         '201':
@@ -1617,6 +1622,7 @@ paths:
             application/json:
               schema:
                 type: object
+                properties: {}
               example: {}
         '400':
           description: The refund request is invalid.
@@ -1804,7 +1810,9 @@ paths:
       operationId: ListTransactionsV2.1
       summary: List transactions
       description: |-
-        Lists detailed history of all transactions associated with the merchant profile.
+        Lists transaction history for the merchant, with optional filters for payment type, status, and date range. The response contains the current page in `items` and pagination query strings in `links`.
+
+        To request another page, use the query string from the relevant link's `href` with this history endpoint. Use `changes_since` when retrieving transactions modified since a previous synchronization, including transactions created earlier whose status has changed.
       tags:
         - Transactions
       security:
@@ -1834,7 +1842,7 @@ paths:
             example: TEENSK4W2K
         - name: order
           in: query
-          description: Specifies the order in which the returned results are displayed.
+          description: Sort direction for the transaction history. Use `ascending` or `descending`; the default is `ascending`.
           schema:
             type: string
             enum:
@@ -1844,13 +1852,13 @@ paths:
         - name: limit
           in: query
           description: |-
-            Specifies the maximum number of results per page. Value must be a positive integer and if not specified, will return 10 results.
+            Maximum number of transactions per page. Must be a positive integer. Defaults to `10` when omitted; a page can contain fewer results.
           schema:
             type: integer
             example: 10
         - name: users[]
           in: query
-          description: Filters the returned results by user email.
+          description: Filters transactions by user email. For multiple values, repeat the query parameter, for example `users[]=first@example.com&users[]=second@example.com`.
           required: false
           example:
             - merchant@example.com
@@ -1864,7 +1872,7 @@ paths:
         - name: statuses[]
           in: query
           description: |-
-            Filters the returned results by the specified list of final statuses of the transactions.
+            Filters transactions by the listed final statuses. For multiple values, repeat the query parameter, for example `statuses[]=SUCCESSFUL&statuses[]=REFUNDED`.
           required: false
           schema:
             type: array
@@ -1938,7 +1946,7 @@ paths:
         - name: newest_ref
           in: query
           description: |-
-            Filters the results by the reference ID of transaction events and returns only transactions with events whose IDs are *smaller* than the specified value. This parameters supersedes the `newest_time` parameter (if both are provided in the request).
+            Pagination reference that returns results before the specified reference. Use the value from a returned pagination link rather than constructing it yourself. This parameter takes precedence over `newest_time` when both are provided.
           required: false
           schema:
             type: string
@@ -1955,7 +1963,7 @@ paths:
         - name: oldest_ref
           in: query
           description: |-
-            Filters the results by the reference ID of transaction events and returns only transactions with events whose IDs are *greater* than the specified value. This parameters supersedes the `oldest_time` parameter (if both are provided in the request).
+            Pagination reference that returns results after the specified reference. Use the value from a returned pagination link rather than constructing it yourself. This parameter takes precedence over `oldest_time` when both are provided.
           required: false
           schema:
             type: string
@@ -2187,7 +2195,7 @@ paths:
     get:
       operationId: GetReceipt
       summary: Retrieve receipt details
-      description: Retrieves receipt specific data for a transaction.
+      description: Retrieves structured receipt data for a transaction belonging to the merchant specified by `mid`. The path accepts either the SumUp transaction ID or transaction code. Provide `tx_event_id` to include a specific transaction event, such as a refund, on the receipt.
       tags:
         - Receipts
       security:
@@ -4340,7 +4348,10 @@ components:
           $ref: '#/components/schemas/CardType'
         payment_account_reference:
           type: string
-          description: PAR (Payment account reference) if available for the card.
+          description: |-
+            Payment Account Reference (PAR) defined by [EMVCo](https://www.emvco.com/emv-technologies/payment-tokenisation/). It links a card's primary account number (PAN) with its affiliated payment tokens, allowing transactions made with the physical card and tokenized versions of that card, such as digital wallets, to be correlated when PAR is available.
+
+            This reference cannot be used to initiate a payment and is separate from the saved payment instrument `token` used to process checkouts. Returned only when available for the card; integrations must handle its absence.
           example: '5665ABCDEFGHIJKLMNOPQRSTUVWXY'
     Device:
       title: Device
@@ -4408,7 +4419,7 @@ components:
       properties:
         checkout_reference:
           type: string
-          maxLength: 90
+          maxLength: 64
           description: |-
             Merchant-defined reference for the checkout. Use it to correlate the SumUp checkout with your own order, cart, subscription, or payment attempt in your systems.
           example: f00a8f74-b05d-4605-bd73-2a901bae5802
@@ -4432,7 +4443,7 @@ components:
           type: string
           format: uri
           description: |-
-            Optional backend callback URL used by SumUp to notify your platform about processing updates for the checkout.
+            Optional backend callback URL for checkout status notifications. SumUp sends an HTTP POST with `event_type` and the checkout `id`. Retrieve the checkout to verify its current status before updating your order. See the [webhook guide](https://developer.sumup.com/online-payments/webhooks/) for the payload and response requirements.
           example: http://example.com
         id:
           type: string
@@ -4456,7 +4467,7 @@ components:
           description: The timestamp of when the checkout was created.
         valid_until:
           type: string
-          example: '2020-02-29T10:56:56+00:00'
+          example: '2030-12-31T23:59:59Z'
           format: date-time
           description: |-
             Optional expiration timestamp. The checkout must be processed before this moment, otherwise it becomes unusable. If omitted, the checkout does not have an explicit expiry time.
@@ -4508,7 +4519,7 @@ components:
           type: string
           maxLength: 64
           description: |-
-            Merchant-defined reference for the new checkout. It should be unique enough for you to identify the payment attempt in your own systems.
+            Merchant-defined reference for the new checkout, up to 64 characters. Use it to correlate the checkout with an order or payment attempt in your own system. If a checkout already exists for the supplied unique parameters, creation returns `409` with `DUPLICATED_CHECKOUT`; see the conflict response.
           example: f00a8f74-b05d-4605-bd73-2a901bae5802
         amount:
           type: number
@@ -4530,7 +4541,7 @@ components:
           type: string
           format: uri
           description: |-
-            Optional backend callback URL used by SumUp to notify your platform about processing updates for the checkout.
+            Optional backend callback URL for checkout status notifications. SumUp sends an HTTP POST with `event_type` and the checkout `id`. Retrieve the checkout to verify its current status before updating your order. See the [webhook guide](https://developer.sumup.com/online-payments/webhooks/) for the payload and response requirements.
           example: http://example.com/
         customer_id:
           type: string
@@ -4547,7 +4558,7 @@ components:
             - SETUP_RECURRING_PAYMENT
         valid_until:
           type: string
-          example: '2020-02-29T10:56:56+00:00'
+          example: '2030-12-31T23:59:59Z'
           format: date-time
           description: |-
             Optional expiration timestamp. The checkout must be processed before this moment, otherwise it becomes unusable. If omitted, the checkout does not have an explicit expiry time.
@@ -4584,13 +4595,13 @@ components:
           example: Updated purchase
         checkout_reference:
           type: string
-          maxLength: 90
+          maxLength: 64
           description: |-
             Updated merchant-defined reference for the checkout.
           example: f00a8f74-b05d-4605-bd73-2a901bae5802
         valid_until:
           type: string
-          example: '2020-02-29T10:56:56+00:00'
+          example: '2030-12-31T23:59:59Z'
           format: date-time
           description: |-
             Updated expiration timestamp. The checkout must be processed before this moment, otherwise it becomes unusable.
@@ -4668,7 +4679,7 @@ components:
         token:
           type: string
           description: |-
-            Saved-card token to use instead of raw card details when processing with a previously stored payment instrument.
+            Token of a saved payment instrument returned by checkout processing or the customer's payment-instruments endpoint. To charge a saved card, set `payment_type` to `card` and provide both this `token` and the associated `customer_id` instead of raw card details.
           example: ba85dfee-c3cf-48a6-84f5-d7d761fbba50
         customer_id:
           type: string
@@ -4765,13 +4776,13 @@ components:
     Customer:
       type: object
       title: Customer
-      description: Saved customer details.
+      description: Saved payer details identified by the `customer_id` supplied by your integration. A customer can have saved payment instruments for subsequent payments.
       required:
         - customer_id
       properties:
         customer_id:
           type: string
-          description: Unique identifier of the customer.
+          description: Identifier you supply when creating the customer. Use an ID from your own system and retain it for subsequent customer, checkout, and saved-payment-instrument requests.
           example: 831ff8d4cd5958ab5670
         personal_details:
           $ref: '#/components/schemas/PersonalDetails'
@@ -5036,11 +5047,11 @@ components:
       properties:
         rel:
           type: string
-          description: Relation.
+          description: Pagination relation indicating which page the link retrieves, for example `next`.
           example: next
         href:
           type: string
-          description: Location.
+          description: Query string to use with the transaction history endpoint when requesting the linked page. Preserve the returned pagination references and query parameters.
           example: limit=10&oldest_ref=090df9bf-93b7-40f1-8181-fbdb236568a1&order=ascending
       required:
         - rel
@@ -5104,7 +5115,7 @@ components:
       properties:
         token:
           type: string
-          description: Unique token identifying the saved payment card for a customer.
+          description: Token identifying the customer's saved payment card. Pass it as `token`, together with the associated `customer_id` and `payment_type = card`, when processing a checkout with this instrument.
           readOnly: true
           example: bcfc8e5f-3b47-4cb9-854b-3b7a4cce7be3
         active:
@@ -5175,7 +5186,7 @@ components:
           example: '+491635559723'
         birth_date:
           type: string
-          description: Date of birth of the customer.
+          description: Date of birth of the customer in `YYYY-MM-DD` format, without a time or timezone.
           format: date
           example: '1993-12-31'
         tax_id:
@@ -5206,7 +5217,7 @@ components:
         vat_rate:
           type: number
           format: decimal
-          description: VAT rate applied to the product price.
+          description: VAT rate as a decimal fraction, for example `0.19` for 19%.
           example: 0.19
         single_vat_amount:
           type: number
@@ -5240,7 +5251,7 @@ components:
     Receipt:
       type: object
       title: Receipt
-      description: Receipt details for a transaction.
+      description: Structured receipt details for a transaction. The transaction's `amount`, `vat_amount`, and `tip_amount`, as well as event amounts, are returned as decimal strings in major currency units, for example `"10.10"` for EUR 10.10.
       properties:
         transaction_data:
           $ref: '#/components/schemas/ReceiptTransaction'
@@ -5591,7 +5602,7 @@ components:
         amount:
           type: number
           format: decimal
-          description: Amount of the event.
+          description: Amount of the event in major units of the associated transaction's currency.
           example: 58.8
         due_date:
           type: string
@@ -5606,7 +5617,7 @@ components:
         installment_number:
           type: integer
           description: |-
-            Consecutive number of the installment that is paid. Applicable only payout events, i.e. `event_type = PAYOUT`.
+            Consecutive number of the installment that is paid. Applicable only to payout events, i.e. `event_type = PAYOUT`.
           example: 1
         timestamp:
           type: string
@@ -5625,12 +5636,12 @@ components:
         transaction_code:
           type: string
           description: |-
-            Transaction code returned by the acquirer/processing entity after processing the transaction.
+            SumUp transaction code, for example `TEENSK4W2K`. Use it to look up the transaction with the `transaction_code` query parameter. This is separate from the transaction's `id` and the card issuer's `auth_code`.
           example: TEENSK4W2K
         amount:
           type: number
           format: float
-          description: Total amount of the transaction.
+          description: Total amount of the transaction in major units of `currency`, for example `10.1` for EUR 10.10.
           example: 10.1
         currency:
           $ref: '#/components/schemas/Currency'
@@ -5660,12 +5671,12 @@ components:
         vat_amount:
           type: number
           format: float
-          description: Amount of the applicable VAT (out of the total transaction amount).
+          description: VAT included in the total transaction amount, in major units of the transaction's currency.
           example: 6
         tip_amount:
           type: number
           format: float
-          description: Amount of the tip (out of the total transaction amount).
+          description: Tip included in the total transaction amount, in major units of the transaction's currency.
           example: 3
         entry_mode:
           $ref: '#/components/schemas/EntryMode'
@@ -5749,12 +5760,13 @@ components:
             refunded_amount:
               type: number
               format: decimal
-              description: Total refunded amount.
+              description: Total amount refunded for this transaction, in major units of the transaction's currency.
               example: 0
     PaymentType:
       title: Payment Type
       type: string
-      description: Payment type used for the transaction.
+      description: |-
+        Payment category recorded on a transaction, for example `POS` for a point-of-sale card payment, `ECOM` for an online card payment, or `RECURRING` for a recurring card payment. These reporting values are separate from the lowercase `payment_type` values used to process checkouts.
       enum:
         - CASH
         - POS
@@ -5771,7 +5783,7 @@ components:
     EntryMode:
       title: Entry Mode
       type: string
-      description: Entry mode of the payment details.
+      description: How the payment details were captured, for example `CHIP` or `CONTACTLESS` for card-present payments and `CUSTOMER_ENTRY` for card details entered by the payer. For wallet and alternative payment methods, this can identify the method, such as `APPLE_PAY` or `BLIK`.
       enum:
         - BOLETO
         - SOFORT
@@ -5858,7 +5870,7 @@ components:
             fee_amount:
               type: number
               format: decimal
-              description: Transaction SumUp total fee amount.
+              description: Total SumUp transaction fee in major units of the transaction's currency.
               example: 8.0
             lat:
               $ref: '#/components/schemas/Lat'
@@ -6063,7 +6075,13 @@ components:
     TransactionEventType:
       title: Transaction Event Type
       type: string
-      description: Type of the transaction event.
+      description: |-
+        Financial event associated with a transaction.
+
+        - `PAYOUT`: Funds from the transaction being prepared for or included in a merchant payout. Check the event status to determine whether they have been paid out.
+        - `REFUND`: Money returned to the payer.
+        - `CHARGE_BACK`: A reversal of the payment following a chargeback.
+        - `PAYOUT_DEDUCTION`: An amount deducted from a merchant payout, for example to cover a refund or chargeback.
       enum:
         - PAYOUT
         - CHARGE_BACK
@@ -6098,7 +6116,7 @@ components:
       title: Transaction Event ID
       type: integer
       format: int64
-      description: Unique identifier of the transaction event.
+      description: Numeric identifier of a transaction event. Use it as `tx_event_id` when requesting receipt details for a specific event. This is separate from the transaction ID and the transaction history pagination references.
       example: 9567461191
     HorizontalAccuracy:
       title: Horizontal Accuracy
@@ -6113,7 +6131,7 @@ components:
       format: float
       description: |-
         Latitude value from the coordinates of the payment location (as received from the payment terminal reader).
-      minimum: 0
+      minimum: -90
       maximum: 90
       example: 52.520008
     Lon:
@@ -6122,7 +6140,7 @@ components:
       format: float
       description: |-
         Longitude value from the coordinates of the payment location (as received from the payment terminal reader).
-      minimum: 0
+      minimum: -180
       maximum: 180
       example: 13.404954
     TransactionID:
@@ -6166,7 +6184,10 @@ components:
     ReaderPaymentRequestParams:
       properties:
         affiliate:
-          $ref: '#/components/schemas/Affiliate'
+          allOf:
+            - description: Optional caller-supplied context about the integration initiating the payment.
+              type: object
+            - $ref: '#/components/schemas/Affiliate'
         client_transaction_id:
           description: Caller-supplied correlation identifier, used as the idempotency key.
           example: 19e12390-72cf-4f9f-80b5-b0c8a67fa43f
@@ -6176,7 +6197,12 @@ components:
           example: 100
           type: integer
         total_amount:
-          $ref: '#/components/schemas/Amount'
+          allOf:
+            - description: Amount structure. The amount is represented as an integer value altogether with the currency and the minor unit. For example, MXN 10.00 is represented as value 1000 with minor unit of 2.
+              example:
+                currency: MXN
+                value: 1000
+            - $ref: '#/components/schemas/Amount'
       required:
         - total_amount
         - client_transaction_id
@@ -6184,7 +6210,9 @@ components:
     ReaderPaymentResponse:
       properties:
         data:
-          $ref: '#/components/schemas/ReaderPaymentResponseData'
+          allOf:
+            - type: object
+            - $ref: '#/components/schemas/ReaderPaymentResponseData'
       type: object
     ReaderPaymentResponseData:
       properties:
@@ -6559,7 +6587,6 @@ components:
     Attributes:
       description: >
         Object attributes that are modifiable only by SumUp applications.
-
       type: object
       example: {}
       additionalProperties: true
@@ -6598,107 +6625,96 @@ components:
           type: string
           description: >
             The postal code (aka. zip code) of the address.
-
           maxLength: 10
           example: "10999"
         country:
-          $ref: '#/components/schemas/CountryCode'
+          allOf:
+            - description: >
+                The ISO3166-1 Alpha-2 code of the address country.
+              example: "DE"
+            - $ref: '#/components/schemas/CountryCode'
         city:
           type: string
           description: >
             The city of the address.
-
           maxLength: 60
           example: Berlin
         province:
           type: string
           description: >
             The province where the address is located. This may not be relevant in some countries.
-
           maxLength: 60
           example: Berlin
         region:
           type: string
           description: >
             The region where the address is located. This may not be relevant in some countries.
-
           maxLength: 60
           example: Baden Wuerttemberg
         county:
           type: string
           description: >
             A county is a geographic region of a country used for administrative or other purposes in some nations. Used in countries such as Ireland, Romania, etc.
-
           maxLength: 60
           example: Dublin County
         autonomous_community:
           type: string
           description: >
             In Spain, an autonomous community is the first sub-national level of political and administrative division.
-
           maxLength: 60
           example: Catalonia
         post_town:
           type: string
           description: >
             A post town is a required part of all postal addresses in the United Kingdom and Ireland, and a basic unit of the postal delivery system.
-
           maxLength: 60
           example: London
         state:
           type: string
           description: >
             Most often, a country has a single state, with various administrative divisions. The term "state" is sometimes used to refer to the federated polities that make up the federation. Used in countries such as the United States and Brazil.
-
           maxLength: 60
           example: California
         neighborhood:
           type: string
           description: >
             Locality level of the address. Used in countries such as Brazil or Chile.
-
           maxLength: 60
           example: Copacabana
         commune:
           type: string
           description: >
             In many countries, terms cognate with "commune" are used, referring to the community living in the area and the common interest. Used in countries such as Chile.
-
           maxLength: 60
           example: Providencia
         department:
           type: string
           description: >
             A department (French: département, Spanish: departamento) is an administrative or political division in several countries. Used in countries such as Colombia.
-
           maxLength: 60
           example: Antioquia
         municipality:
           type: string
           description: >
             A municipality is usually a single administrative division having corporate status and powers of self-government or jurisdiction as granted by national and regional laws to which it is subordinate. Used in countries such as Colombia.
-
           maxLength: 60
           example: Medellín
         district:
           type: string
           description: >
             A district is a type of administrative division that in some countries is managed by the local government. Used in countries such as Portugal.
-
           maxLength: 60
           example: Lisbon District
         zip_code:
           type: string
           description: >
             A US system of postal codes used by the United States Postal Service (USPS).
-
           maxLength: 10
           example: "94103"
         eircode:
           type: string
           description: >
             A postal address in Ireland.
-
           maxLength: 10
           example: "D02 X285"
       example:
@@ -6792,7 +6808,6 @@ components:
                 * `non_profit`: The business is run as a nonprofit organization that operates for public or social benefit
 
                 * `government_entity`: The business is state owned and operated
-
             company:
               $ref: '#/components/schemas/Company'
             country:
@@ -6804,18 +6819,15 @@ components:
               format: uri
               description: >
                 A user-facing small-format logo for use in dashboards and other user-facing applications. For customer-facing branding see `merchant.business_profile.branding`.
-
             alias:
               type: string
               description: >
                 A user-facing name of the merchant account for use in dashboards and other user-facing applications. For customer-facing business name see `merchant.business_profile`.
-
             default_currency:
               type: string
               readOnly: true
               description: >
                 Three-letter [ISO currency code](https://en.wikipedia.org/wiki/ISO_4217) representing the default currency for the account.
-
               example: EUR
               minLength: 3
               maxLength: 3
@@ -6856,7 +6868,6 @@ components:
       type: object
       description: >
         Business information about the merchant. This information will be visible to the merchant's customers.
-
       properties:
         name:
           type: string
@@ -6873,7 +6884,6 @@ components:
             The descriptor is the text that your customer sees on their bank account statement.
 
             The more recognisable your descriptor is, the less risk you have of receiving disputes (e.g. chargebacks).
-
           example: Example Coffee
         website:
           type: string
@@ -6900,7 +6910,6 @@ components:
       type: string
       description: >
         A publicly available phone number in [E.164](https://en.wikipedia.org/wiki/E.164) format.
-
       example: "+420123456789"
       maxLength: 16
     Branding:
@@ -6911,74 +6920,49 @@ components:
           type: string
           description: >
             Footer text rendered on receipts and other customer-facing products.
-
           minLength: 1
           maxLength: 500
-          examples:
-            - Thanks for shopping with us.
+          example: Thanks for shopping with us.
         icon:
           type: string
           format: uri
           description: >
             An icon for the merchant. Must be square.
-
         logo:
           type: string
           format: uri
           description: >
             A logo for the merchant that will be used in place of the icon and without the merchant's name next to it if there's sufficient space.
-
         hero:
           type: string
           format: uri
           description: >
             Data-URL encoded hero image for the merchant business.
-
         primary_color:
           type: string
           description: >
             A hex color value representing the primary branding color of this merchant (your brand color).
-
-          examples:
-            - "#FF4B3A"
-            - "#0072C6"
-            - "#F68B20"
+          example: "#FF4B3A"
         primary_color_fg:
           type: string
           description: >
             A hex color value representing the color of the text displayed on branding color of this merchant.
-
-          examples:
-            - "#FF4B3A"
-            - "#0072C6"
-            - "#F68B20"
+          example: "#FF4B3A"
         secondary_color:
           type: string
           description: >
             A hex color value representing the secondary branding color of this merchant (accent color used for buttons).
-
-          examples:
-            - "#FF4B3A"
-            - "#0072C6"
-            - "#F68B20"
+          example: "#FF4B3A"
         secondary_color_fg:
           type: string
           description: >
             A hex color value representing the color of the text displayed on secondary branding color of this merchant.
-
-          examples:
-            - "#FF4B3A"
-            - "#0072C6"
-            - "#F68B20"
+          example: "#FF4B3A"
         background_color:
           type: string
           description: >
             A hex color value representing the preferred background color of this merchant.
-
-          examples:
-            - "#FF4B3A"
-            - "#0072C6"
-            - "#F68B20"
+          example: "#FF4B3A"
     LegalType:
       externalDocs:
         description: The country SDK documentation for legal types.
@@ -6986,20 +6970,14 @@ components:
       type: string
       description: >
         The unique legal type reference as defined in the country SDK. We do not rely on IDs as used by other services. Consumers of this API are expected to use the country SDK to map to any other IDs, translation keys, or descriptions.
-
       minLength: 4
       maxLength: 64
       pattern: '^[a-z]{2}\.[a-z_]+$'
-      examples:
-        - de.freiberufler
-        - br.ltda
-        - gb.partnership
-        - bg.private_limited_company
+      example: de.freiberufler
     CompanyIdentifiers:
       type: array
       description: >
         A list of country-specific company identifiers.
-
       items:
         $ref: '#/components/schemas/CompanyIdentifier'
     CompanyIdentifier:
@@ -7016,21 +6994,17 @@ components:
           pattern: '^[a-z]{2}\.[a-z_]+$'
           description: >
             The unique reference for the company identifier type as defined in the country SDK.
-
-          examples:
-            - "de.gmbh"
+          example: "de.gmbh"
         value:
           type: string
           minLength: 1
           maxLength: 100
           description: >
             The company identifier value.
-
-          examples:
-            - "HRB 123456"
-      examples:
-        - ref: "de.gmbh"
-          value: "HRB 123456"
+          example: "HRB 123456"
+      example:
+        ref: "de.gmbh"
+        value: "HRB 123456"
     Ownership:
       type: object
       required:
@@ -7039,7 +7013,6 @@ components:
         share:
           description: >
             The percent of ownership shares held by the Person expressed in percent mille (1/100000). Only Persons with the relationship `owner` can have ownership.
-
           type: integer
           format: int32
           minimum: 25000
@@ -7049,9 +7022,7 @@ components:
       type: string
       description: >
         The version of the resource. The version reflects a specific change submitted to the API via one of the `PATCH` endpoints.
-
-      examples:
-        - "chng_01HS0KG3MPVEVWW85E3KNXH55J"
+      example: "chng_01HS0KG3MPVEVWW85E3KNXH55J"
     ChangeStatus:
       type: string
       readOnly: true
@@ -7059,7 +7030,6 @@ components:
         Reflects the status of changes submitted through the `PATCH` endpoints for the Merchant or Persons. If some changes have not been applied yet, the status will be `pending`. If all changes have been applied, the status `done`.
 
         The status is only returned after write operations or on read endpoints when the `version` query parameter is provided.
-
     BasePerson:
       externalDocs:
         description: Person documentation
@@ -7067,7 +7037,6 @@ components:
       type: object
       description: >
         Base schema for a Person associated with a Merchant. This can be a legal representative, business owner (ultimate beneficial owner), or an officer. A legal representative is the Person who registered the Merchant with SumUp. They should always have a `user_id`.
-
       required:
         - id
       properties:
@@ -7076,22 +7045,17 @@ components:
           readOnly: true
           description: >
             The unique identifier for the Person. This is a [typeid](https://github.com/sumup/typeid).
-
-          examples:
-            - "pers_2EGQ057R6C8J791RVCG5NWAEAB"
+          example: "pers_2EGQ057R6C8J791RVCG5NWAEAB"
         user_id:
           type: string
           description: >
             A corresponding identity user ID for the Person, if they have a user account.
-
-          examples:
-            - "ef263f37-8701-4181-9758-acddbb778ee9"
+          example: "ef263f37-8701-4181-9758-acddbb778ee9"
         birthdate:
           type: string
           format: date
           description: >
             The date of birth of the individual, represented as an ISO 8601:2004 [ISO8601‑2004] YYYY-MM-DD format.
-
           example: "1980-01-12"
         given_name:
           type: string
@@ -7109,17 +7073,18 @@ components:
           type: string
           description: >
             Middle name(s) of the End-User. Note that in some cultures, people can have multiple middle names; all can be present, with the names being separated by space characters. Also note that in some cultures, middle names are not used.
-
           example: Maria Sophie
           minLength: 1
           maxLength: 60
         phone_number:
-          $ref: '#/components/schemas/PhoneNumber'
+          allOf:
+            - description: >
+                The (mobile) phone number of the individual (used for verification) in [E.164](https://en.wikipedia.org/wiki/E.164) format.
+            - $ref: '#/components/schemas/PhoneNumber'
         relationships:
           type: array
           description: >
             A list of roles the Person has in the Merchant or towards SumUp. A Merchant must have at least one Person with the relationship `representative`.
-
           minItems: 1
           maxItems: 1
           items:
@@ -7130,31 +7095,33 @@ components:
               * `owner`: The Person is a business owner. If this value is set, the `ownership_percent` should be set as well.
 
               * `officer`: The Person is an officer at the company.
-
-            examples:
-              - representative
-              - owner
-              - officer
+            example: representative
         ownership:
-          $ref: '#/components/schemas/Ownership'
+          allOf:
+            - description: >
+                Details about the ownership relationship between the Person and the Merchant. This is only set if the Person has a relationship of type `owner`.
+            - $ref: '#/components/schemas/Ownership'
         address:
-          $ref: '#/components/schemas/Address'
+          allOf:
+            - description: The address of the individual.
+            - $ref: '#/components/schemas/Address'
         identifiers:
           $ref: '#/components/schemas/PersonalIdentifiers'
         citizenship:
-          $ref: '#/components/schemas/CountryCode'
+          allOf:
+            - description: >
+                The Alpha-2 ISO code of the country where the Person is a citizen.
+            - $ref: '#/components/schemas/CountryCode'
         nationality:
           type: string
           pattern: "^[A-Z]{2}$"
           description: >
             The Person's nationality. May be an [ISO3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) country code, but legacy data may not conform to this standard.
-
           nullable: true
         country_of_residence:
           type: string
           description: >
             An [ISO3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) country code representing the country where the Person resides.
-
           pattern: "^[A-Z]{2}$"
           nullable: true
         version:
@@ -7168,7 +7135,6 @@ components:
       type: object
       description: >
         Information about the company or business. This is legal information that is used for verification.
-
       properties:
         name:
           type: string
@@ -7179,29 +7145,37 @@ components:
         merchant_category_code:
           description: >
             The merchant category code for the account as specified by [ISO18245](https://www.iso.org/standard/33365.html). MCCs are used to classify businesses based on the goods or services they provide.
-
           type: string
           example: "1532"
           pattern: ^[0-9]{4}$
         legal_type:
-          $ref: '#/components/schemas/LegalType'
+          allOf:
+            - description: >
+                The category identifying the legal structure of the company or legal entity.
+            - $ref: '#/components/schemas/LegalType'
         address:
-          $ref: '#/components/schemas/Address'
+          allOf:
+            - description: The company's primary address.
+            - $ref: '#/components/schemas/Address'
         trading_address:
-          $ref: '#/components/schemas/Address'
+          allOf:
+            - description: >
+                A trading address is where your suppliers, banks or customers send you correspondence to. Trading address can be different to the company's registered address (`address`).
+            - $ref: '#/components/schemas/Address'
         identifiers:
           $ref: '#/components/schemas/CompanyIdentifiers'
         phone_number:
-          $ref: '#/components/schemas/PhoneNumber'
+          allOf:
+            - description: >
+                The company's phone number (used for verification) in [E.164](https://en.wikipedia.org/wiki/E.164) format.
+            - $ref: '#/components/schemas/PhoneNumber'
         website:
           description: >
             HTTP(S) URL of the company's website.
-
           type: string
           minLength: 1
           maxLength: 255
-          examples:
-            - https://www.sumup.com
+          example: https://www.sumup.com
         attributes:
           $ref: '#/components/schemas/Attributes'
     ClassicMerchantIdentifiers:
@@ -7223,19 +7197,15 @@ components:
           format: date-time
           description: >
             The date and time when the resource was created. This is a string as defined in [RFC 3339, section 5.6](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6).
-
           readOnly: true
-          examples:
-            - "2021-08-31T12:00:00Z"
+          example: "2021-08-31T12:00:00Z"
         updated_at:
           type: string
           format: date-time
           description: >
             The date and time when the resource was last updated. This is a string as defined in [RFC 3339, section 5.6](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6).
-
           readOnly: true
-          examples:
-            - "2021-08-31T12:00:00Z"
+          example: "2021-08-31T12:00:00Z"
       required:
         - created_at
         - updated_at
@@ -7975,7 +7945,7 @@ components:
                 currency: EUR
                 merchant_code: MH4H92C7
                 description: Purchase
-                valid_until: '2020-02-29T10:56:56+00:00'
+                valid_until: '2030-12-31T23:59:59Z'
                 redirect_url: https://sumup.com
             Checkout3DS:
               description: Create a 3DS checkout
@@ -8019,7 +7989,7 @@ components:
             currency: EUR
             description: Updated purchase
             checkout_reference: f00a8f74-b05d-4605-bd73-2a901bae5802
-            valid_until: '2020-02-29T10:56:56+00:00'
+            valid_until: '2030-12-31T23:59:59Z'
             customer_id: 831ff8d4cd5958ab5670
     CustomerCreate:
       required: true
@@ -8052,7 +8022,7 @@ components:
                 type: number
                 format: float
                 description: |-
-                  Amount to be refunded. Eligible amount can't exceed the amount of the transaction and varies based on country and currency. If you do not specify a value, the system performs a full refund of the transaction.
+                  Amount to refund in major units of the transaction's currency, for example `5` for EUR 5.00. It must be greater than zero and cannot exceed the amount eligible for a refund. Eligibility depends on the transaction and country/currency rules. If omitted, the system requests a full refund.
                 example: 5
   responses:
     Checkout:
@@ -8075,7 +8045,7 @@ components:
                 id: 88fcf8de-304d-4820-8f1c-ec880290eb92
                 status: PENDING
                 date: '2020-02-29T10:56:56+00:00'
-                valid_until: '2020-02-29T10:56:56+00:00'
+                valid_until: '2030-12-31T23:59:59Z'
                 customer_id: 831ff8d4cd5958ab5670
                 mandate:
                   type: recurrent
@@ -8106,7 +8076,7 @@ components:
                 id: 88fcf8de-304d-4820-8f1c-ec880290eb92
                 status: PENDING
                 date: '2020-02-29T10:56:56+00:00'
-                valid_until: '2020-02-29T10:56:56+00:00'
+                valid_until: '2030-12-31T23:59:59Z'
                 customer_id: 831ff8d4cd5958ab5670
                 redirect_url: https://mysite.com/completed_purchase
                 transactions:
@@ -8187,7 +8157,7 @@ components:
             id: 88fcf8de-304d-4820-8f1c-ec880290eb92
             status: PENDING
             date: '2020-02-29T10:56:56+00:00'
-            valid_until: '2020-02-29T10:56:56+00:00'
+            valid_until: '2030-12-31T23:59:59Z'
             customer_id: 831ff8d4cd5958ab5670
             transactions: []
     CheckoutList:
@@ -8401,7 +8371,7 @@ components:
     CheckoutReference:
       name: checkout_reference
       in: query
-      description: Filters the list of checkout resources by the unique reference of the checkout.
+      description: Filters checkouts by the merchant-defined `checkout_reference` supplied when creating the checkout. This is separate from the SumUp-generated checkout `id`.
       required: false
       schema:
         type: string
@@ -8410,7 +8380,7 @@ components:
       name: checkout_id
       in: path
       required: true
-      description: Unique identifier of the checkout resource.
+      description: SumUp-generated `id` returned when creating a checkout. Use this value to retrieve, update, process, or deactivate the checkout.
       schema:
         type: string
         example: 4e425463-3e1b-431d-83fa-1e51c2925e99
@@ -8418,7 +8388,7 @@ components:
       name: customer_id
       in: path
       required: true
-      description: Unique identifier of the saved customer resource.
+      description: The `customer_id` you supplied when creating the customer.
       schema:
         type: string
         example: 831ff8d4cd5958ab5670
@@ -8442,7 +8412,7 @@ components:
     OrderFilter:
       name: order
       in: query
-      description: Specifies the order in which the returned results are displayed.
+      description: Sort direction for the transaction history. Use `ascending` or `descending`; the default is `ascending`.
       schema:
         type: string
         enum:
@@ -8453,14 +8423,14 @@ components:
       name: limit
       in: query
       description: |-
-        Specifies the maximum number of results per page. Value must be a positive integer and if not specified, will return 10 results.
+        Maximum number of transactions per page. Must be a positive integer. Defaults to `10` when omitted; a page can contain fewer results.
       schema:
         type: integer
         example: 10
     UsersFilter:
       name: users[]
       in: query
-      description: Filters the returned results by user email.
+      description: Filters transactions by user email. For multiple values, repeat the query parameter, for example `users[]=first@example.com&users[]=second@example.com`.
       required: false
       example:
         - merchant@example.com
@@ -8475,7 +8445,7 @@ components:
       name: statuses[]
       in: query
       description: |-
-        Filters the returned results by the specified list of final statuses of the transactions.
+        Filters transactions by the listed final statuses. For multiple values, repeat the query parameter, for example `statuses[]=SUCCESSFUL&statuses[]=REFUNDED`.
       required: false
       schema:
         type: array
@@ -8555,7 +8525,7 @@ components:
       name: newest_ref
       in: query
       description: |-
-        Filters the results by the reference ID of transaction events and returns only transactions with events whose IDs are *smaller* than the specified value. This parameters supersedes the `newest_time` parameter (if both are provided in the request).
+        Pagination reference that returns results before the specified reference. Use the value from a returned pagination link rather than constructing it yourself. This parameter takes precedence over `newest_time` when both are provided.
       required: false
       schema:
         type: string
@@ -8572,7 +8542,7 @@ components:
   securitySchemes:
     apiKey:
       description: |-
-        API keys allow you easily interact with SumUp APIs. API keys are static tokens. You can create API keys from the [Dashboard](https://me.sumup.com/settings/api-keys)
+        Authenticate requests with an API key created in the [Dashboard](https://me.sumup.com/settings/api-keys). Send the key in the HTTP `Authorization` header as `Bearer YOUR_API_KEY`. See the [API key guide](https://developer.sumup.com/tools/authorization/api-keys/).
       type: http
       scheme: Bearer
     oauth2:
@@ -8580,7 +8550,7 @@ components:
       description: |-
         SumUp supports [OAuth 2.0](https://tools.ietf.org/html/rfc6749) authentication for platforms that want to offer their services to SumUp users.
 
-        To integrate via OAuth 2.0 you will need a client credentials that you can create in the [SumUp Dashboard](https://me.sumup.com/settings/oauth2-applications).
+        Register an application in the [SumUp Dashboard](https://me.sumup.com/settings/oauth2-applications) to obtain a client ID and client secret. Use the authorization code flow to request a merchant's consent, then send the issued access token in the HTTP `Authorization` header as `Bearer ACCESS_TOKEN`. Request the scopes needed for the endpoints your integration calls.
 
         To maintain security of our users, we highly recommend that you use one of the [recommended OAuth 2.0 libraries](https://oauth.net/code/) for authentication.
       flows:
@@ -8630,159 +8600,3 @@ components:
         reader_id: "$response.body#/id"
       description: >-
         Delete the reader.
-webhooks:
-  readers.created:
-    post:
-      operationId: ReaderCreatedWebhook
-      tags:
-        - Readers
-      summary: Reader created
-      description: >-
-        Sent when a reader is paired to a merchant account and becomes available through the Readers API.
-      x-object:
-        $ref: "#/components/schemas/Reader"
-      x-object-type: reader
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Event'
-            examples:
-              created:
-                summary: A reader created webhook event.
-                value:
-                  id: evt_reader_123
-                  type: readers.created
-                  created_at: "2023-05-09T14:52:58.714Z"
-                  object:
-                    id: rdr_3MSAFM23CK82VSTT4BN6RWSQ65
-                    type: reader
-                    url: https://api.sumup.com/v0.1/merchants/MC0DE/readers/rdr_3MSAFM23CK82VSTT4BN6RWSQ65
-      responses:
-        "2XX":
-          description: Return any 2xx response to acknowledge successful delivery.
-  readers.deleted:
-    post:
-      operationId: ReaderDeletedWebhook
-      tags:
-        - Readers
-      summary: Reader deleted
-      description: >-
-        Sent when a reader is unpaired from a merchant account and is no longer available through the Readers API.
-      x-object:
-        $ref: "#/components/schemas/Reader"
-      x-object-type: reader
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Event'
-            examples:
-              deleted:
-                summary: A reader deleted webhook event.
-                value:
-                  id: evt_reader_456
-                  type: readers.deleted
-                  created_at: "2023-05-10T09:21:33.004Z"
-                  object:
-                    id: rdr_3MSAFM23CK82VSTT4BN6RWSQ65
-                    type: reader
-                    url: https://api.sumup.com/v0.1/merchants/MC0DE/readers/rdr_3MSAFM23CK82VSTT4BN6RWSQ65
-      responses:
-        "2XX":
-          description: Return any 2xx response to acknowledge successful delivery.
-  members.created:
-    post:
-      operationId: MemberCreatedWebhook
-      tags:
-        - Members
-      summary: Member created
-      description: >-
-        Sent when a member is created, invited, or accepts an invitation for a merchant account.
-      x-object:
-        $ref: "#/components/schemas/Member"
-      x-object-type: member
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Event'
-            examples:
-              created:
-                summary: A member created webhook event.
-                value:
-                  id: evt_membership_123
-                  type: members.created
-                  created_at: "2026-05-14T08:30:00Z"
-                  object:
-                    id: mem_123
-                    type: member
-                    url: https://api.sumup.com/v0.1/merchants/MC0DE/members/mem_123
-      responses:
-        "2XX":
-          description: Return any 2xx response to acknowledge successful delivery.
-  members.updated:
-    post:
-      operationId: MemberUpdatedWebhook
-      tags:
-        - Members
-      summary: Member updated
-      description: >-
-        Sent when a member is updated, disabled, rejected, or expires for a merchant account.
-      x-object:
-        $ref: "#/components/schemas/Member"
-      x-object-type: member
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Event'
-            examples:
-              updated:
-                summary: A member updated webhook event.
-                value:
-                  id: evt_membership_456
-                  type: members.updated
-                  created_at: "2026-05-14T09:15:00Z"
-                  object:
-                    id: mem_123
-                    type: member
-                    url: https://api.sumup.com/v0.1/merchants/MC0DE/members/mem_123
-      responses:
-        "2XX":
-          description: Return any 2xx response to acknowledge successful delivery.
-  members.deleted:
-    post:
-      operationId: MemberDeletedWebhook
-      tags:
-        - Members
-      summary: Member deleted
-      description: >-
-        Sent when a member is deleted from a merchant account.
-      x-object:
-        $ref: "#/components/schemas/Member"
-      x-object-type: member
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Event'
-            examples:
-              deleted:
-                summary: A member deleted webhook event.
-                value:
-                  id: evt_membership_789
-                  type: members.deleted
-                  created_at: "2026-05-14T10:45:00Z"
-                  object:
-                    id: mem_123
-                    type: member
-                    url: https://api.sumup.com/v0.1/merchants/MC0DE/members/mem_123
-      responses:
-        "2XX":
-          description: Return any 2xx response to acknowledge successful delivery.
