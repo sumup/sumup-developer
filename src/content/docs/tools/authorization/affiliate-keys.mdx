@@ -31,21 +31,24 @@ Affiliate keys are not an authorization mechanism. Use them together with either
 
 ## Example Usage
 
-The Solo Terminal API includes the Affiliate Key in the [Reader Checkout Request](https://developer.sumup.com/api/readers/create-checkout) under the affiliate section:
+The Solo Terminal API includes the Affiliate Key in the [Reader Checkout Request](/api/readers/create-checkout/) under the `affiliate` object. This payload is for `POST /v0.1/merchants/{merchant_code}/readers/{reader_id}/checkout` (Cloud API), not for mobile SDKs.
 
-- `app_id`: This is the aforementioned application ID.
-- `key`: This is the Affiliate key unique to each account and mandatory for every merchant in their checkout requests.
+- `app_id`: Application ID assigned to the Affiliate Key.
+- `key`: Affiliate key for the partner account.
+- `foreign_transaction_id`: Your unique transaction identifier (required when sending `affiliate`).
 
 ```json
 {
+  "total_amount": {
+    "currency": "EUR",
+    "minor_unit": 2,
+    "value": 1000
+  },
+  "description": "Test Transaction",
   "affiliate": {
     "app_id": "your_application_id",
-    "key": "your_affiliate_key"
-  },
-  "checkout": {
-    "amount": 10.0,
-    "currency": "EUR",
-    "description": "Test Transaction"
+    "key": "your_affiliate_key",
+    "foreign_transaction_id": "your_unique_transaction_id"
   }
 }
 ```
