@@ -26,9 +26,9 @@ export async function markdownComponents(): Promise<ComponentMap> {
       revision: "1",
       render: ({ attrs }) => `### ${attrs.title}`,
     },
-    LinkButton: {
+    Button: {
       revision: "1",
-      render: ({ attrs, children }) => `[${children.trim()}](${attrs.href})`,
+      render: ({ attrs }) => `[${attrs.label}](${attrs.href})`,
     },
     Video: {
       revision: "1",

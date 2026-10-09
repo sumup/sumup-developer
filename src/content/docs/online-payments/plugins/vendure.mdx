@@ -5,6 +5,8 @@ sidebar:
   order: 55
 ---
 
+import { ExternalLink } from "@sumup-oss/icons";
+
 The [SumUp plugin for Vendure](https://github.com/sumup/sumup-plugin-vendure) adds SumUp as a payment integration for [Vendure](https://vendure.io/). It creates SumUp checkouts from Vendure's payment flow while keeping your SumUp credentials on the server side.
 
 The plugin supports:
@@ -18,19 +20,23 @@ The plugin supports:
   terminal or other card-present integrations.
 :::
 
-<LinkButton
+<Button
   href="https://github.com/sumup/sumup-plugin-vendure"
-  icon="external"
->
-  View Vendure Plugin Repository
-</LinkButton>
+  label="View Vendure Plugin Repository"
+  variant="primary"
+  navigationIcon={ExternalLink}
+  target="_blank"
+  rel="noopener noreferrer"
+/>
 
-<LinkButton
+<Button
   href="https://docs.vendure.io/plugins/sumup"
-  icon="external"
->
-  View Vendure Plugin Docs
-</LinkButton>
+  label="View Vendure Plugin Docs"
+  variant="primary"
+  navigationIcon={ExternalLink}
+  target="_blank"
+  rel="noopener noreferrer"
+/>
 
 ## Prerequisites
 
