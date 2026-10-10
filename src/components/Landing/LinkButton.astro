@@ -1,0 +1,69 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+interface Props extends HTMLAttributes<"a"> {
+  href: string;
+  variant?: "primary" | "secondary" | "minimal";
+  icon?: string;
+}
+
+const {
+  href,
+  variant = "primary",
+  icon,
+  class: className,
+  ...attributes
+} = Astro.props;
+const external = /^https?:\/\//.test(href);
+---
+
+<a
+  href={href}
+  class:list={["link-button", variant, className]}
+  target={external ? "_blank" : attributes.target}
+  rel={external ? "noopener noreferrer" : attributes.rel}
+  {...attributes}
+>
+  <slot />
+  {icon === "external" && <span aria-hidden="true">↗</span>}
+</a>
+
+<style>
+  .link-button {
+    display: inline-flex;
+    min-height: 2.75rem;
+    gap: var(--cui-spacings-byte);
+    align-items: center;
+    padding: 0 var(--cui-spacings-mega);
+    border: 1px solid transparent;
+    border-radius: var(--cui-border-radius-byte);
+    font-weight: var(--cui-font-weight-semibold);
+    text-decoration: none;
+  }
+
+  .primary {
+    color: var(--cui-fg-on-strong);
+    background: var(--cui-bg-strong);
+  }
+
+  .primary:hover {
+    color: var(--cui-fg-on-strong-hovered);
+    background: var(--cui-bg-strong-hovered);
+  }
+
+  .secondary {
+    color: var(--cui-fg-normal);
+    background: var(--cui-bg-normal);
+    border-color: var(--cui-border-normal);
+  }
+
+  .secondary:hover,
+  .minimal:hover {
+    background: var(--cui-bg-subtle-hovered);
+  }
+
+  .minimal {
+    color: var(--cui-fg-normal);
+    background: transparent;
+  }
+</style>
