@@ -10,6 +10,9 @@
 /img/*
   Cache-Control: public, max-age=604800
 
+/og/*
+  Cache-Control: public, max-age=3600, must-revalidate
+
 /*.md
   X-Robots-Tag: noindex
 
