@@ -8498,14 +8498,7 @@
       "ReaderPaymentResponse": {
         "properties": {
           "data": {
-            "allOf": [
-              {
-                "type": "object"
-              },
-              {
-                "$ref": "#/components/schemas/ReaderPaymentResponseData"
-              }
-            ]
+            "$ref": "#/components/schemas/ReaderPaymentResponseData"
           }
         },
         "type": "object"
