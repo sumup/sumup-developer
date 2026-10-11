@@ -1,5 +1,8 @@
 import { getCollection } from "astro:content";
 import { createElement } from "react";
+import slugify from "@sindresorhus/slugify";
+import { apiTopLevelPaths } from "../../lib/openapi/routes";
+import { orderedTagEntriesCached } from "../../lib/openapi/tags";
 
 import SumUpBlackData from "../../assets/fonts/sumup-black-latin-s.ttf";
 import SumUpNarrowMediumData from "../../assets/fonts/sumup-narrow-latin-s-medium.ttf";
@@ -7,10 +10,10 @@ import SumUpNarrowRegularData from "../../assets/fonts/sumup-narrow-latin-s-regu
 import { createOgImageResponse } from "../../utils/ogImageResponse";
 
 interface Props {
-  params: { slog?: string };
+  props: { title: string; description: string | null };
 }
 
-export const prerender = false;
+export const prerender = true;
 
 // Overrides for pages that are not backend by content collections.
 const staticPageMetadata = new Map<
@@ -88,52 +91,67 @@ function createFontStack(primary: string | null) {
     : "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
 }
 
-async function resolvePageMetadata(path: string) {
-  const normalizedPath = path.replace(/^\/+|\/+$/g, "");
+export async function getStaticPaths() {
   const defaultMetadata = staticPageMetadata.get("")!;
   const changelogMetadata = staticPageMetadata.get("changelog")!;
-
   const docs = await getCollection("docs");
-  const doc = docs.find((entry) => entry.id === (normalizedPath || "index"));
-  if (doc) {
-    return {
+  const changelog = await getCollection("changelog");
+  const metadata = new Map<string, Props["props"]>(staticPageMetadata);
+
+  // Preserve the existing default cards for custom API and 404 pages.
+  for (const path of [
+    "index",
+    "404",
+    "api",
+    ...apiTopLevelPaths.map((path) => `api/${path}`),
+  ]) {
+    metadata.set(path, defaultMetadata);
+  }
+
+  for (const [tag, operations] of orderedTagEntriesCached) {
+    metadata.set(`api/${tag}`, defaultMetadata);
+    for (const operation of operations) {
+      metadata.set(`api/${tag}/${operation.slug}`, defaultMetadata);
+    }
+  }
+
+  for (const entry of changelog) {
+    metadata.set(`changelog/${entry.id}`, changelogMetadata);
+    for (const tag of entry.data.tags) {
+      metadata.set(`changelog/tags/${slugify(tag)}`, changelogMetadata);
+    }
+  }
+
+  for (const doc of docs) {
+    metadata.set(doc.id, {
       title: doc.data.title,
       description: doc.data.description ?? null,
-    };
+    });
   }
+  metadata.set("", metadata.get("index")!);
 
-  if (
-    normalizedPath === "changelog" ||
-    normalizedPath.startsWith("changelog/")
-  ) {
-    return changelogMetadata;
-  }
-
-  const staticData = staticPageMetadata.get(normalizedPath);
-  if (staticData) {
-    return staticData;
-  }
-
-  return defaultMetadata;
+  return [...metadata].map(([slog, props]) => ({
+    params: { slog: slog || undefined },
+    props,
+  }));
 }
 
-export async function GET({ params }: Props) {
-  const { title, description } = await resolvePageMetadata(params.slog ?? "");
+// Reuse font buffers so Satori can cache parsed fonts across generated cards.
+const sumUpBlack = toSupportedFontData(SumUpBlackData, "SumUp Black");
+const sumUpNarrowMedium = toSupportedFontData(
+  SumUpNarrowMediumData,
+  "SumUp Narrow Medium",
+);
+const sumUpNarrowRegular = toSupportedFontData(
+  SumUpNarrowRegularData,
+  "SumUp Narrow Regular",
+);
+const blackFontFamily = createFontStack(sumUpBlack ? "SumUp Black" : null);
+const narrowFontFamily = createFontStack(
+  sumUpNarrowRegular || sumUpNarrowMedium ? "SumUp Narrow" : null,
+);
 
-  const sumUpBlack = toSupportedFontData(SumUpBlackData, "SumUp Black");
-  const sumUpNarrowMedium = toSupportedFontData(
-    SumUpNarrowMediumData,
-    "SumUp Narrow Medium",
-  );
-  const sumUpNarrowRegular = toSupportedFontData(
-    SumUpNarrowRegularData,
-    "SumUp Narrow Regular",
-  );
-  const blackFontFamily = createFontStack(sumUpBlack ? "SumUp Black" : null);
-  const narrowFontFamily = createFontStack(
-    sumUpNarrowRegular || sumUpNarrowMedium ? "SumUp Narrow" : null,
-  );
-
+export async function GET({ props: { title, description } }: Props) {
   const card = createElement(
     "div",
     {

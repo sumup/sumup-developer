@@ -1,7 +1,5 @@
-import { Resvg, initWasm } from "@resvg/resvg-wasm";
+import { Resvg } from "@resvg/resvg-js";
 import satori from "satori";
-
-import resvgWasm from "@resvg/resvg-wasm/index_bg.wasm";
 
 import type { ReactNode } from "react";
 import type { Font, SatoriOptions } from "satori";
@@ -16,33 +14,10 @@ type OgImageResponseOptions = {
   statusText?: string;
 };
 
-let resvgInitPromise: Promise<void> | undefined;
-let resvgInitialized = false;
-
-async function ensureResvg() {
-  if (resvgInitialized) {
-    return;
-  }
-
-  resvgInitPromise ??= initWasm(resvgWasm).then(
-    () => {
-      resvgInitialized = true;
-    },
-    (error: unknown) => {
-      resvgInitPromise = undefined;
-      throw error;
-    },
-  );
-
-  await resvgInitPromise;
-}
-
 export async function createOgImageResponse(
   element: ReactNode,
   options: OgImageResponseOptions,
 ) {
-  await ensureResvg();
-
   const svg = await satori(element, {
     width: options.width,
     height: options.height,
@@ -67,7 +42,7 @@ export async function createOgImageResponse(
       "Content-Type": "image/png",
       "Cache-Control": options.debug
         ? "no-cache, no-store"
-        : "public, immutable, no-transform, max-age=31536000",
+        : "public, max-age=3600, must-revalidate",
       ...options.headers,
     },
     status: options.status ?? 200,
