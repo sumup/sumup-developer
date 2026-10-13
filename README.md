@@ -56,13 +56,28 @@ Open `http://localhost:3000` in a browser. Most content and component changes ap
 
 Run the checks that match your change before opening a pull request:
 
-| Command | Purpose |
-| ------- | ------- |
-| `npm run check` | Validate Astro, TypeScript, and content schemas |
-| `npm run lint` | Lint source files and Markdown |
-| `npm run test` | Run the Vitest test suite |
-| `npm run build` | Create the production Cloudflare build |
-| `npm run linkcheck` | Build the site and validate internal links |
+| Command             | Purpose                                         |
+| ------------------- | ----------------------------------------------- |
+| `npm run check`     | Validate Astro, TypeScript, and content schemas |
+| `npm run lint`      | Lint source files and Markdown                  |
+| `npm run test`      | Run the Vitest test suite                       |
+| `npm run build`     | Create the production Cloudflare build          |
+| `npm run linkcheck` | Build the site and validate internal links      |
+
+## Cloudflare Previews
+
+Cloudflare Workers Builds deploys `main` to production and uses Worker Previews for other branches. Preview URLs are available in Cloudflare and posted to pull requests after a successful build.
+
+To deploy a preview from a local branch with Cloudflare credentials:
+
+```bash
+npm run build
+npx wrangler preview
+```
+
+The `previews` block in `wrangler.jsonc` enables the preview configuration. The Astro adapter adds the asset and session bindings. Preview build variables are configured separately from production in Cloudflare, including the Marketing Cloud settings used by the contact form. Configure test credentials and endpoints there when testing form submissions.
+
+Branches created before the preview migration should rebase onto the updated `main` to pick up the Wrangler upgrade and preview configuration.
 
 ## API Specs
 

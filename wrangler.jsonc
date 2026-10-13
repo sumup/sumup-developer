@@ -5,6 +5,8 @@
   "compatibility_flags": ["nodejs_compat"],
   "workers_dev": true,
   "preview_urls": true,
+  // The Astro adapter adds preview bindings, including SESSION.
+  "previews": {},
   "upload_source_maps": true,
   "assets": {
     "directory": "./dist",
