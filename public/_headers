@@ -1,6 +1,10 @@
 /*
   Access-Control-Allow-Origin: *
 
+# Exclude preview URLs and the workers.dev alias from search indexing.
+https://:version.:subdomain.workers.dev/*
+  X-Robots-Tag: noindex, nofollow
+
 /
   Link: </api/>; rel="service-doc"
 
