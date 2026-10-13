@@ -187,6 +187,7 @@ const head = (): NonNullable<StarlightUserConfig["head"]> => {
 };
 
 export default defineConfig({
+  session: false,
   adapter: cloudflare({
     imageService: "compile",
     prerenderEnvironment: "node",

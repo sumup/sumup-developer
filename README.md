@@ -56,13 +56,13 @@ Open `http://localhost:3000` in a browser. Most content and component changes ap
 
 Run the checks that match your change before opening a pull request:
 
-| Command | Purpose |
-| ------- | ------- |
-| `npm run check` | Validate Astro, TypeScript, and content schemas |
-| `npm run lint` | Lint source files and Markdown |
-| `npm run test` | Run the Vitest test suite |
-| `npm run build` | Create the production Cloudflare build |
-| `npm run linkcheck` | Build the site and validate internal links |
+| Command             | Purpose                                         |
+| ------------------- | ----------------------------------------------- |
+| `npm run check`     | Validate Astro, TypeScript, and content schemas |
+| `npm run lint`      | Lint source files and Markdown                  |
+| `npm run test`      | Run the Vitest test suite                       |
+| `npm run build`     | Create the production Cloudflare build          |
+| `npm run linkcheck` | Build the site and validate internal links      |
 
 ## API Specs
 
