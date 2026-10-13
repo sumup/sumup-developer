@@ -1,0 +1,7 @@
+interface:
+  display_name: "Upgrade SumUp"
+  short_description: "Plan SumUp API and SDK upgrades."
+  icon_small: "./assets/small-logo.svg"
+  icon_large: "./assets/large-logo.png"
+  brand_color: "#fbfbf9"
+  default_prompt: "Use $upgrade-sumup to plan a safe SumUp SDK or API upgrade."

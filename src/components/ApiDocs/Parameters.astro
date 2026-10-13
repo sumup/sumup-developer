@@ -31,7 +31,7 @@ const { parameters = [], kind } = Astro.props;
               ))}
             </div>
           )}
-          {p.description && <Markdown>{p.description}</Markdown>}
+          {p.description && <Markdown text={p.description} />}
           {"example" in schema && (
             <div>
               Example: <code dir="auto">{JSON.stringify(schema.example)}</code>

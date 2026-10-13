@@ -270,7 +270,7 @@ const formattedPermissions = (operation["x-permissions"] || [])
         {"x-deprecation-notice" in operation && (
           <div class="notice">
             <Callout type="caution">
-              <Markdown>{operation["x-deprecation-notice"]}</Markdown>
+              <Markdown text={operation["x-deprecation-notice"]} />
             </Callout>
           </div>
         )}

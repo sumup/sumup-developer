@@ -2,15 +2,12 @@ import { readFile } from "node:fs/promises";
 import { markdownComponents } from "./src/lib/markdownComponents";
 
 import cloudflare from "@astrojs/cloudflare";
-import { satteri } from "@astrojs/markdown-satteri";
-import { tableScroll } from "@cloudflare/nimbus-docs/markdown";
-import callouts from "./src/plugins/satteri/callouts";
 import externalLinks from "./src/plugins/satteri/external-links";
+import tableScroll from "./src/plugins/satteri/table-scroll";
 import react from "@astrojs/react";
 import nimbus, {
   defineConfig as defineNimbusConfig,
 } from "@cloudflare/nimbus-docs";
-import treelight from "./src/plugins/satteri/treelight";
 import mermaid from "astro-mermaid";
 import { defineConfig } from "astro/config";
 import { loadEnv } from "vite";
@@ -192,7 +189,9 @@ export default defineConfig({
     imageService: "compile",
     prerenderEnvironment: "node",
   }),
-  markdown: { syntaxHighlight: false },
+  markdown: {
+    syntaxHighlight: { type: "shiki", excludeLangs: ["mermaid"] },
+  },
   experimental: {
     contentIntellisense: true,
   },
@@ -201,16 +200,8 @@ export default defineConfig({
     defaultStrategy: "hover",
   },
   vite: {
-    environments: {
-      // Treelight's grammar packages are native ESM with embedded WASM. Let
-      // Vite load them directly instead of discovering and re-bundling them
-      // during the first prerendered page request, which invalidates Astro's
-      // active prerender bundle in development.
-      prerender: {
-        optimizeDeps: { noDiscovery: true },
-      },
-    },
     resolve: {
+      dedupe: ["react", "react-dom"],
       noExternal: ["@sumup-oss/circuit-ui", "@sumup-oss/illustrations"],
     },
     plugins: [rawFonts([".woff2", ".woff", ".ttf", ".otf"])],
@@ -220,13 +211,17 @@ export default defineConfig({
     nimbus(head, {
       icons: false,
       admonitions: false,
+      mdx: { optimize: true },
       markdown: {
         componentMap: await markdownComponents(),
-        processor: satteri({
-          features: { directive: true, gfm: true, smartPunctuation: true },
-          mdastPlugins: [callouts],
-          hastPlugins: [externalLinks, tableScroll(), treelight],
-        }),
+        hastPlugins: [externalLinks, tableScroll],
+      },
+      sitemap: {
+        // Custom tag archives set noindex outside Nimbus's content collections.
+        serialize: (item) =>
+          new URL(item.url).pathname.startsWith("/changelog/tags/")
+            ? undefined
+            : item,
       },
       rules: {
         "nimbus/frontmatter-shape": "error",
@@ -235,30 +230,6 @@ export default defineConfig({
         "nimbus/no-self-host-url": "error",
       },
     }),
-    // Astro 7 restarts Vite in place. Refresh Nimbus's in-memory Markdown
-    // registry after content config reloads, and keep Markdown fresh on edits.
-    // Cloudflare also caches modules in a separate prerender environment.
-    {
-      name: "refresh-nimbus-content",
-      hooks: {
-        "astro:server:setup": ({ server, refreshContent }) => {
-          if (!refreshContent) return;
-          let refreshed: Promise<void> | undefined;
-          server.watcher.add(`${server.config.root}/src/content`);
-          server.watcher.on("all", (_event, file) => {
-            if (/[\\/]src[\\/]content[\\/]/.test(file)) refreshed = undefined;
-          });
-          server.middlewares.use((_request, _response, next) => {
-            refreshed ??= refreshContent({}).then(() => {
-              for (const environment of Object.values(server.environments)) {
-                environment.moduleGraph.invalidateAll();
-              }
-            });
-            refreshed.then(() => next(), next);
-          });
-        },
-      },
-    },
     mermaid({ autoTheme: true }),
   ],
   server: {

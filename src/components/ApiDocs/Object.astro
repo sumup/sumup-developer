@@ -26,7 +26,7 @@ const schema = resolveSchema(obj);
         {`The ${schema.title || ""} object`}
       </Headline>
       {schema.description && (
-        <Markdown class="description">{schema.description}</Markdown>
+        <Markdown class="description" text={schema.description} />
       )}
       <Schema kind="Attributes" schema={schema} />
     </div>

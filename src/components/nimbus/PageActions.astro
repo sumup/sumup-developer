@@ -2,6 +2,7 @@
 import Checkmark from "@sumup-oss/icons/checkmark_24.svg";
 import Copy from "@sumup-oss/icons/copy_24.svg";
 import File from "@sumup-oss/icons/file_24.svg";
+import Sparkles from "@sumup-oss/icons/sparkles_24.svg";
 import Time from "@sumup-oss/icons/time_24.svg";
 
 interface Props {
@@ -63,6 +64,15 @@ const formattedDate = lastUpdated?.toLocaleDateString("en-GB", {
   >
     <File aria-hidden="true" />
     View as Markdown
+  </a>
+
+  <span class="separator" aria-hidden="true">
+    |
+  </span>
+
+  <a href="/tools/llms/setup/">
+    <Sparkles aria-hidden="true" />
+    Set up AI assistant
   </a>
 </div>
 

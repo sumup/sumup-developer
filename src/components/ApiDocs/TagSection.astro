@@ -91,7 +91,7 @@ const coreObjectSections = coreObjects.map((schema, index) => {
       {deprecationNotice && (
         <div class="notice">
           <Callout type="caution">
-            <Markdown>{deprecationNotice}</Markdown>
+            <Markdown text={deprecationNotice} />
           </Callout>
         </div>
       )}

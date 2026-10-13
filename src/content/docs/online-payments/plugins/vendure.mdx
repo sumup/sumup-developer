@@ -5,6 +5,8 @@ sidebar:
   order: 55
 ---
 
+import Callout from "@components/content/Callout";
+
 import { ExternalLink } from "@sumup-oss/icons";
 
 The [SumUp plugin for Vendure](https://github.com/sumup/sumup-plugin-vendure) adds SumUp as a payment integration for [Vendure](https://vendure.io/). It creates SumUp checkouts from Vendure's payment flow while keeping your SumUp credentials on the server side.
@@ -15,10 +17,10 @@ The plugin supports:
 - Widget-oriented storefront integrations that use a returned `checkoutId`
 - Webhook-driven payment updates through Vendure's payment flow
 
-:::note
+<Callout type="note" title="Note">
   The plugin supports SumUp online payment flows only. It does not support
   terminal or other card-present integrations.
-:::
+</Callout>
 
 <Button
   href="https://github.com/sumup/sumup-plugin-vendure"
@@ -222,7 +224,7 @@ Before enabling the plugin in production, verify the following in a sandbox envi
 - SumUp's deliberate failure path with amount `11`
 - Expired or canceled checkouts mapping cleanly back into Vendure payment state
 
-:::note
+<Callout type="note" title="Note">
   The plugin does not add Admin UI extensions or extend Vendure's GraphQL
   schema. It uses the standard `addPaymentToOrder` payment metadata flow.
-:::
+</Callout>

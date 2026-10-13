@@ -5,6 +5,8 @@ sidebar:
   order: 2
 ---
 
+import Callout from "@components/content/Callout";
+
 import Image from '@components/content/Image.astro';
 
 Get your first in-person payment running quickly.
@@ -30,9 +32,9 @@ To test without real money, create a sandbox merchant account from the SumUp Das
 
 </Steps>
 
-:::note
+<Callout type="note" title="Note">
 If you don't have a sandbox account yet, [sign up for a developer account](https://me.sumup.com/signup?signup_intent=developer). This starts you with a sandbox merchant account.
-:::
+</Callout>
 
 If you use native login in the Android or iOS SDK, we recommend creating a managed user account in your sandbox merchant and logging in with that user's credentials. Alternatively, set your sandbox merchant account as your existing user's default before logging in. See [merchant account setup for native SDK login](/terminal-payments/#users-with-multiple-merchant-accounts). Selecting an account in the Dashboard account switcher alone does not select it for native SDK login.
 
@@ -83,9 +85,9 @@ Best for lightweight legacy mobile integrations that hand off checkout to the Su
 
 </Steps>
 
-:::note
+<Callout type="note" title="Note">
 Use a unique transaction reference such as `foreignTransactionId` or `foreign-tx-id` for each payment. That prevents duplicate transaction conflicts and makes reconciliation easier.
-:::
+</Callout>
 
 ## Next Steps
 

@@ -17,17 +17,14 @@ interface Props {
 
 const { sidebar = false, sidebarSections = false } = Astro.props;
 const pathname = Astro.url.pathname;
-const activeSection =
-  pathname === "/"
-    ? undefined
-    : pathname.startsWith("/api")
-      ? "api"
-      : pathname.startsWith("/changelog")
-        ? "changelog"
-        : "docs";
+const activeSection = pathname.startsWith("/api")
+  ? "api"
+  : pathname.startsWith("/changelog")
+    ? "changelog"
+    : "docs";
 
 const navigation = [
-  { id: "docs", label: "Docs", href: "/docs/" },
+  { id: "docs", label: "Docs", href: "/" },
   { id: "api", label: "API", href: "/api/" },
   { id: "changelog", label: "Changelog", href: "/changelog/" },
 ];

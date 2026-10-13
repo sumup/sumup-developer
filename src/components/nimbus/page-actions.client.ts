@@ -2,7 +2,7 @@ import { mount } from "@cloudflare/nimbus-docs/client";
 
 const COPY_LABEL = "Copy as Markdown";
 
-function initPageActions(root: HTMLElement) {
+export function initPageActions(root: HTMLElement) {
   const button = root.querySelector<HTMLButtonElement>(
     "[data-page-actions-copy]",
   );
@@ -44,20 +44,25 @@ function initPageActions(root: HTMLElement) {
     button.disabled = true;
 
     try {
-      // Construct ClipboardItem during the click gesture so this works in Safari.
-      const item = new ClipboardItem({
-        "text/plain": fetch(markdownUrl)
-          .then((response) => {
-            if (!response.ok) {
-              throw new Error(`Markdown request failed: ${response.status}`);
-            }
-            return response.text();
-          })
-          .then((markdown) => new Blob([markdown], { type: "text/plain" })),
+      const markdown = fetch(markdownUrl).then((response) => {
+        if (!response.ok) {
+          throw new Error(`Markdown request failed: ${response.status}`);
+        }
+        return response.text();
       });
-
-      navigator.clipboard
-        .write([item])
+      // Construct ClipboardItem during the click gesture so this works in Safari.
+      // Older browsers can still copy through writeText.
+      const write =
+        typeof ClipboardItem !== "undefined" && navigator.clipboard?.write
+          ? navigator.clipboard.write([
+              new ClipboardItem({
+                "text/plain": markdown.then(
+                  (text) => new Blob([text], { type: "text/plain" }),
+                ),
+              }),
+            ])
+          : markdown.then((text) => navigator.clipboard.writeText(text));
+      write
         .then(
           () => showState("copied"),
           () => showState("error"),
