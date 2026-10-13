@@ -2,7 +2,9 @@ import type { Loader, LoaderContext } from "astro/loaders";
 import { readFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import { OpenAPIV3, type OpenAPIV3_1 } from "openapi-types";
+import { renderMarkdown as renderFragment } from "@cloudflare/nimbus-docs/markdown";
 import {
+  getMarkdownDescriptionId,
   getOperationDescriptionId,
   getTagDescriptionId,
 } from "@lib/openapiContent";
@@ -67,6 +69,34 @@ async function syncDescriptions({
   // collection if a file watcher observes an incomplete write.
   store.clear();
 
+  // Compile all reference fragments in the content loader, keeping the native
+  // Markdown processor out of the Cloudflare request bundle.
+  const fragments = new Set<string>();
+  const collect = (value: unknown) => {
+    if (!value || typeof value !== "object") return;
+    for (const [key, child] of Object.entries(value)) {
+      if (
+        (key === "description" || key === "x-deprecation-notice") &&
+        typeof child === "string"
+      ) {
+        fragments.add(child);
+      } else {
+        collect(child);
+      }
+    }
+  };
+  collect(document);
+  for (const body of fragments) {
+    const id = getMarkdownDescriptionId(body);
+    store.set({
+      id,
+      data: await parseData({ id, data: { kind: "fragment", name: id } }),
+      body,
+      digest: generateDigest(body),
+      rendered: { html: renderFragment(body) },
+    });
+  }
+
   for (const tag of document.tags ?? []) {
     const id = getTagDescriptionId(tag.name);
     const body = tag.description ?? "";
@@ -114,7 +144,7 @@ async function syncDescriptions({
         body,
         digest: generateDigest(body),
         // Route OpenAPI descriptions through Astro's configured Satteri
-        // processor, including the callout directive plugin.
+        // processor.
         rendered: await renderMarkdown(body),
       });
     }

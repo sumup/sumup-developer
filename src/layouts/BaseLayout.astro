@@ -5,7 +5,6 @@ import "@sumup-oss/design-tokens/dynamic.css";
 import "@sumup-oss/circuit-ui/styles.css";
 import "@sumup-oss/illustrations/styles.css";
 import "../styles/callout.css";
-import "@treelight/plugin-astro/styles.css";
 import "../styles/global.css";
 import "../styles/prose.css";
 import "../styles/code.css";
@@ -13,7 +12,7 @@ import "../styles/code.css";
 import {
   getCollectionLlmsUrl,
   getVersionStatus,
-} from "@cloudflare/nimbus-docs";
+} from "@cloudflare/nimbus-docs/runtime";
 import NimbusHead from "@cloudflare/nimbus-docs/components/NimbusHead.astro";
 import type { BasePageProps } from "@cloudflare/nimbus-docs/types";
 import { config } from "virtual:nimbus/config";
@@ -110,10 +109,10 @@ const llmsUrl = Astro.site ? new URL(llmsPath, Astro.site).href : llmsPath;
     {config.search !== false && <SearchDialog />}
 
     <script>
-      import { headingAnchors } from "@cloudflare/nimbus-docs/client";
-      import "@treelight/plugin-astro/copy";
+      import { codeCopy, headingAnchors } from "@cloudflare/nimbus-docs/client";
 
       headingAnchors();
+      codeCopy();
     </script>
     <script
       is:inline

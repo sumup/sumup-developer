@@ -1,8 +1,5 @@
-import { getCollection } from "astro:content";
+import { getIndexedEntries } from "@cloudflare/nimbus-docs/runtime";
 import { createElement } from "react";
-import slugify from "@sindresorhus/slugify";
-import { apiTopLevelPaths } from "../../lib/openapi/routes";
-import { orderedTagEntriesCached } from "../../lib/openapi/tags";
 
 import SumUpBlackData from "../../assets/fonts/sumup-black-latin-s.ttf";
 import SumUpNarrowMediumData from "../../assets/fonts/sumup-narrow-latin-s-medium.ttf";
@@ -15,7 +12,7 @@ interface Props {
 
 export const prerender = true;
 
-// Overrides for pages that are not backend by content collections.
+// Cards for standalone pages; API and changelog pages reuse these fallbacks.
 const staticPageMetadata = new Map<
   string,
   {
@@ -24,7 +21,7 @@ const staticPageMetadata = new Map<
   }
 >([
   [
-    "",
+    "index",
     {
       title: "SumUp Developer",
       description:
@@ -92,48 +89,17 @@ function createFontStack(primary: string | null) {
 }
 
 export async function getStaticPaths() {
-  const defaultMetadata = staticPageMetadata.get("")!;
-  const changelogMetadata = staticPageMetadata.get("changelog")!;
-  const docs = await getCollection("docs");
-  const changelog = await getCollection("_changelog");
   const metadata = new Map<string, Props["props"]>(staticPageMetadata);
 
-  // Preserve the existing default cards for custom API and 404 pages.
-  for (const path of [
-    "index",
-    "404",
-    "api",
-    ...apiTopLevelPaths.map((path) => `api/${path}`),
-  ]) {
-    metadata.set(path, defaultMetadata);
-  }
-
-  for (const [tag, operations] of orderedTagEntriesCached) {
-    metadata.set(`api/${tag}`, defaultMetadata);
-    for (const operation of operations) {
-      metadata.set(`api/${tag}/${operation.slug}`, defaultMetadata);
-    }
-  }
-
-  for (const entry of changelog) {
-    metadata.set(`changelog/${entry.id}`, changelogMetadata);
-    for (const tag of entry.data.tags) {
-      metadata.set(`changelog/tags/${slugify(tag)}`, changelogMetadata);
-    }
-  }
-
-  for (const doc of docs) {
-    metadata.set(doc.id, {
-      title: doc.data.title,
-      description: doc.data.description ?? null,
+  // Use the same public inventory and URLs as Nimbus's HTML and Markdown routes.
+  for (const page of await getIndexedEntries()) {
+    metadata.set(page.ogImageUrl.slice("/og/".length, -".png".length), {
+      title: page.title,
+      description: page.description ?? null,
     });
   }
-  metadata.set("", metadata.get("index")!);
 
-  return [...metadata].map(([slog, props]) => ({
-    params: { slog: slog || undefined },
-    props,
-  }));
+  return [...metadata].map(([slog, props]) => ({ params: { slog }, props }));
 }
 
 // Reuse font buffers so Satori can cache parsed fonts across generated cards.

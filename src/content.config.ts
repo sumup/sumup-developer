@@ -26,6 +26,7 @@ const changelog = defineCollection({
 const apiDescriptions = defineCollection({
   loader: openapiDescriptionsLoader(),
   schema: z.discriminatedUnion("kind", [
+    z.object({ kind: z.literal("fragment"), name: z.string() }),
     z.object({
       kind: z.literal("tag"),
       name: z.string(),

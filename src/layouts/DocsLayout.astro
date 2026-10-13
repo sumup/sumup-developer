@@ -6,6 +6,7 @@ import Header from "@components/nimbus/Header.astro";
 import PageActions from "@components/nimbus/PageActions.astro";
 import PageFooter from "@components/nimbus/PageFooter.astro";
 import Sidebar from "@components/nimbus/Sidebar.astro";
+import ImageZoom from "@components/nimbus/ImageZoom.astro";
 import TableOfContents from "@components/nimbus/TableOfContents.astro";
 
 import BaseLayout from "./BaseLayout.astro";
@@ -178,6 +179,7 @@ const toc = headings === false ? [] : headings;
       )}
     </div>
   </div>
+  <ImageZoom />
 </BaseLayout>
 
 <style>

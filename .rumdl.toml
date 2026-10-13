@@ -1,4 +1,6 @@
 [global]
+# Imported upstream content is maintained in sumup-skills.
+exclude = ["skills/**"]
 # Keep legacy long lines and preserve alignment in code examples.
 disable = ["MD013", "MD034", "MD064"]
 

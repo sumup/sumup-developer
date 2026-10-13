@@ -54,14 +54,12 @@ const arrayAttributesSchema =
   {"x-deprecation-notice" in propertySchema && (
     <div class="notice">
       <Callout type="caution">
-        <Markdown>{propertySchema["x-deprecation-notice"]}</Markdown>
+        <Markdown text={propertySchema["x-deprecation-notice"]} />
       </Callout>
     </div>
   )}
-  {propertySchema.description && (
-    <Markdown>{propertySchema.description}</Markdown>
-  )}
-  {arrayItemDescription && <Markdown>{arrayItemDescription}</Markdown>}
+  {propertySchema.description && <Markdown text={propertySchema.description} />}
+  {arrayItemDescription && <Markdown text={arrayItemDescription} />}
   {objectAttributesSchema && (
     <Attributes schema={propertySchema} kind={attributeKind} />
   )}

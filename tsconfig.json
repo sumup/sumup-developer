@@ -9,6 +9,7 @@
     ],
     "verbatimModuleSyntax": true,
     "paths": {
+      "@/*": ["./src/*"],
       "@components/*": ["./src/components/*"],
       "@assets/*": ["./src/assets/*"],
       "@types/*": ["./src/types/*"],

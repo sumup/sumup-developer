@@ -37,7 +37,7 @@ const sectionAttrs = (id: ApiTopSection) =>
 <section id="introduction" {...sectionAttrs("introduction")}>
   <LRGrid>
     <div class="info">
-      <Markdown>{doc.info.description}</Markdown>
+      <Markdown text={doc.info.description} />
       <div class="spec-links">
         <Button
           size="s"

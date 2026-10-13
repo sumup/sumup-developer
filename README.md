@@ -81,15 +81,41 @@ Keep reference tables in Markdown. `SearchableTable.astro` adds browser filterin
 without hiding the source data from agents or requiring JavaScript to read it.
 Project components that generate content use `src/lib/markdownComponents.ts`;
 shared data drives both their HTML and Markdown representations.
+Every component used in docs must have a renderer or an explicit preservation
+policy in that module. Agent validation checks component coverage and compares
+rendered code blocks, including generated examples, with both Markdown outputs.
+Bump a renderer's revision when its output logic changes; generated renderers
+should include their source data in the revision to invalidate cached output.
 
 `npm run check:agent-docs` checks the built output against every authored code
 example and verifies the full bundle, canonical URLs, and API contract. It runs
-as part of `npm run validate`. `src/lib/cleanMarkdown.ts` corrects Nimbus 0.15's
-MDX import leakage and code indentation loss through supported endpoint wrappers.
-Remove this compatibility code once Nimbus preserves these cases and the checks
-still pass.
+as part of `npm run validate`. Nimbus owns Markdown conversion, sitemap dates,
+and skill archive generation. The postbuild
+discovery step adds our OpenAPI and MCP routes to Nimbus's generated catalogs.
+Nimbus owns discovery-file CORS and content types. Keep owner header rules
+disjoint from those generated rules: Cloudflare combines overlapping values.
+Agent validation rejects duplicated CORS/content types in the built output.
 
-Dependency compatibility exceptions: Astro Check and TypeScript ESLint currently
-require TypeScript 6; the React lint plugin requires ESLint 9, so the Astro lint
-plugin remains on its ESLint 9-compatible release. Satori's `fflate` dependency
-is overridden to 0.8.3 to address the ZIP64 advisory while retaining current Satori.
+`npm run check:redirects` validates every explicit redirect destination and
+fragment, including rules unused by current pages, and rejects duplicate sources,
+loops, and static rules after dynamic rules. It runs in `npm run linkcheck`.
+Remove redirects for retired endpoints without a documented replacement instead
+of pointing them at an unrelated API operation.
+
+With Nimbus 0.18 and our Cloudflare/Node development environment, Markdown
+alternates remain cached after content edits. Restart the dev server to refresh
+them. HTML changes refresh normally; production builds regenerate all alternates.
+
+Skills are imported verbatim from the commit in `agent-skills.source.json`.
+Run `npm run sync:agent-skills` to reproduce them, or add
+`-- --source /path/to/sumup-skills` to use an existing Git checkout offline.
+The command reads the pinned Git tree and ignores uncommitted source edits.
+To publish an upstream change, review and update the pinned revision, sync, and
+commit the lock and imported `skills/` files together. Builds need no source
+checkout or network access: Nimbus packages the checked-in sources into
+deterministic archives and publishes their discovery index and SHA-256 digests.
+
+Security overrides: Satori's `fflate` is pinned to 0.8.3 for the ZIP64 fix;
+Mermaid's KaTeX is pinned to 0.18.2 for its trust-handling fix, until Mermaid's
+supported dependency range includes a patched release. Validate Mermaid diagrams
+when updating that override.

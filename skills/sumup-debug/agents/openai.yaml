@@ -1,0 +1,7 @@
+interface:
+  display_name: "SumUp Debug"
+  short_description: "Troubleshoot SumUp integration failures."
+  icon_small: "./assets/small-logo.svg"
+  icon_large: "./assets/large-logo.png"
+  brand_color: "#fbfbf9"
+  default_prompt: "Use $sumup-debug to troubleshoot my SumUp integration issue."

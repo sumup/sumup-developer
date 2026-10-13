@@ -9,20 +9,9 @@ export const addDocsHome = (
   {
     type: "link",
     label: "Home",
-    href: "/docs/",
-    isCurrent: normalizePath(currentPath) === "/docs",
+    href: "/",
+    isCurrent: normalizePath(currentPath) === "/",
     order: -1,
   },
   ...items,
 ];
-
-export const expandSidebarGroups = (items: SidebarItem[]): SidebarItem[] =>
-  items.map((item) =>
-    item.type === "group"
-      ? {
-          ...item,
-          collapsed: false,
-          children: expandSidebarGroups(item.children),
-        }
-      : item,
-  );

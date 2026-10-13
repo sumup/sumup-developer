@@ -143,6 +143,11 @@
   margin: 0;
 }
 
+.nb-table-scroll:focus-visible {
+  outline: 2px solid var(--cui-border-accent);
+  outline-offset: 2px;
+}
+
 /* Circuit UI owns the Callout's appearance; these only support rich MDX body content. */
 [data-callout] > :last-child {
   min-width: 0;
@@ -150,4 +155,12 @@
 
 [data-callout] :is(ul, ol) {
   padding-inline-start: 1.5rem;
+}
+.docs-content img[role="button"] {
+  cursor: zoom-in;
+}
+
+.docs-content img[role="button"]:focus-visible {
+  outline: 2px solid var(--cui-border-focus);
+  outline-offset: 4px;
 }

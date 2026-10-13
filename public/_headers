@@ -1,29 +1,36 @@
-/*
-  Access-Control-Allow-Origin: *
+# Nimbus owns CORS and content types for its discovery catalogs and skills.
+# Keep these owner rules disjoint: Cloudflare combines overlapping values.
 
 # Exclude preview URLs and the workers.dev alias from search indexing.
 https://:version.:subdomain.workers.dev/*
   X-Robots-Tag: noindex, nofollow
 
 /
-  Link: </api/>; rel="service-doc"
+  Access-Control-Allow-Origin: *
+  Link: </api/>; rel="service-doc", </openapi.json>; rel="service-desc"; type="application/vnd.oai.openapi+json", </llms.txt>; rel="describedby"; type="text/plain", </index.md>; rel="alternate"; type="text/markdown"
 
 /_astro/*
+  Access-Control-Allow-Origin: *
   Cache-Control: public, max-age=604800, immutable
 
 /img/*
+  Access-Control-Allow-Origin: *
   Cache-Control: public, max-age=604800
 
 /og/*
+  Access-Control-Allow-Origin: *
   Cache-Control: public, max-age=3600, must-revalidate
 
 /*.md
+  Access-Control-Allow-Origin: *
   X-Robots-Tag: noindex
 
 /*.mdx
+  Access-Control-Allow-Origin: *
   X-Robots-Tag: noindex
 
 /*.txt
+  Access-Control-Allow-Origin: *
   X-Robots-Tag: noindex
 
 /*/index.md
@@ -31,7 +38,6 @@ https://:version.:subdomain.workers.dev/*
 
 /*/index.mdx
   Content-Type: text/markdown; charset=utf-8
-  X-Robots-Tag: noindex
 
 /llms.txt
   Content-Type: text/plain; charset=utf-8
@@ -39,11 +45,25 @@ https://:version.:subdomain.workers.dev/*
 /llms-full.txt
   Content-Type: text/plain; charset=utf-8
 
-/llms-small.txt
+/index.md
+  Content-Type: text/markdown; charset=utf-8
+
+/*/llms.txt
   Content-Type: text/plain; charset=utf-8
 
-/.well-known/agent-skills/index.json
-  Content-Type: application/json; charset=utf-8
+/*/
+  Access-Control-Allow-Origin: *
+
+/openapi.json
+  Access-Control-Allow-Origin: *
+
+/sitemap*.xml
+  Access-Control-Allow-Origin: *
 
 /.well-known/mcp/server-card.json
-  Content-Type: application/json; charset=utf-8
+  Access-Control-Allow-Origin: *
+  Content-Type: application/mcp-server-card+json
+  Cache-Control: public, max-age=3600
+
+/.well-known/ai-catalog.json
+  Cache-Control: public, max-age=3600
