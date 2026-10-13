@@ -1,7 +1,8 @@
 ---
-title: Go
+title: Cloud API for SumUp Go
 description: Pair a SumUp Go reader and process remote in-person payments via the Cloud API.
 sidebar:
+  label: Go
   order: 4
 ---
 
@@ -26,8 +27,8 @@ The Cloud API integration supports:
 
 ## Prerequisites
 
-- Your device must be authorized to use the Cloud API. [Refer to the authorization guide](/tools/authorization/) and implement the method that best fits your use case. An API key should be sufficient if you do not plan to delegate access to third parties.
-- You must [create an Affiliate Key](/tools/authorization/affiliate-keys/) for your app, as SumUp Cloud API requires this key in payment requests.
+- Your EPS must be authorized to use the Cloud API. [Refer to the authorization guide](/tools/authorization/) and implement the method that best fits your use case. An API key should be sufficient if you do not plan to delegate access to third parties. With OAuth, request the `readers.write`, `payments`, and `transactions.history` scopes.
+- We recommend keeping the Go terminals plugged in when using the Cloud API.
 - A Go reader is available in [Australia, Mexico, and Canada](/terminal-payments/readers/go/). Examples on this page use **CAD**.
 
 ## Pairing Go Reader via Cloud API
@@ -46,13 +47,15 @@ sequenceDiagram
     participant B as Cloud API
     participant C as Your EPS
     autonumber
-    A ->> A: generate pairing code
+    A ->> B: generate pairing code
     C ->> B: Pair Reader using code
     B ->> C: Return Reader ID
     B ->> A: Display confirmation message
     C ->> B: Start payment on Reader
+    B ->> C: Return transaction code
     B ->> A: Initiate payment
     A ->> A: Present payment to customer
+    C ->> B: Poll the transaction status
 ```
 
 ### Generate Pairing Code
@@ -63,13 +66,33 @@ To initiate a payment on the Go reader, it must be enrolled with the merchant ac
 The pairing process has an expiration time of 5 minutes. If any issue occurs, the process must be restarted.
 :::
 
-On the Go reader, open the integrations flow and generate a pairing code. Copy the code displayed on the reader screen—you need it to pair the reader from your EPS.
+To generate a pairing code on the Go reader:
+
+<Steps>
+
+1. On the login screen, tap the **Connections** icon.
+2. Select **API** and tap **Connect**.
+3. Copy the pairing code displayed on the reader screen — you need it to pair the reader from your EPS.
+
+</Steps>
 
 ### Pair the Card Reader with Pairing Code
 
 <Steps>
 
-1. Send a request to the [Create Reader endpoint](/api/readers/create).
+1. Send the pairing code and a name for the reader to the [Create Reader endpoint](/api/readers/create). The `id` in the response is the reader ID you use to start payments.
+
+   ```bash
+   curl -X POST \
+     https://api.sumup.com/v0.1/merchants/$SUMUP_MERCHANT_CODE/readers \
+     -H "Authorization: Bearer $SUMUP_API_KEY" \
+     -H 'Content-Type: application/json' \
+     -d '{
+           "pairing_code": "4WLFDSBF",
+           "name": "Frontdesk"
+         }'
+   ```
+
 2. Verify pairing confirmation on the reader screen. It appears for a short while, after which the reader returns to the idle screen.
 
 </Steps>
@@ -80,122 +103,7 @@ The Cloud API lets you manage transactions and readers connected to your account
 
 ### Initiate Transaction
 
-Initiate a payment on a paired Go reader. Use `client_transaction_id` as an idempotency key: retrying the request with the same value returns the result of the original payment instead of creating a duplicate.
-
-<Tabs syncKey="backend_lang">
-  <TabItem label="cURL" icon="seti:powershell">
-    ```bash
-    curl -X POST \
-      https://api.sumup.com/v0/merchants/$SUMUP_MERCHANT_CODE/readers/$READER_ID/go-checkout \
-      -H "Authorization: Bearer $SUMUP_API_KEY" \
-      -H 'Content-Type: application/json' \
-      -d '{
-            "client_transaction_id": "19e12390-72cf-4f9f-80b5-b0c8a67fa43f",
-            "total_amount": {
-              "currency": "CAD",
-              "value": 1500
-            }
-          }'
-    ```
-  </TabItem>
-  <TabItem label="JavaScript" icon="seti:javascript">
-    ```ts
-    const payment = await client.readers.createGoCheckout(merchantCode, readerId, {
-      client_transaction_id: "19e12390-72cf-4f9f-80b5-b0c8a67fa43f",
-      total_amount: {
-        currency: "CAD",
-        value: 1500,
-      },
-    });
-    ```
-  </TabItem>
-  <TabItem label=".NET" icon="seti:c-sharp">
-    ```csharp
-    var payment = await client.Readers.CreateGoCheckoutAsync(
-        merchantCode,
-        readerId,
-        new ReaderPaymentRequestParams
-        {
-            ClientTransactionId = "19e12390-72cf-4f9f-80b5-b0c8a67fa43f",
-            TotalAmount = new Amount
-            {
-                Currency = "CAD",
-                Value = 1500,
-            },
-        });
-    ```
-  </TabItem>
-  <TabItem label="Java" icon="seti:java">
-    ```java
-    var payment = client.readers().createGoCheckout(
-        merchantCode,
-        readerId,
-        ReaderPaymentRequestParams.builder()
-            .clientTransactionId("19e12390-72cf-4f9f-80b5-b0c8a67fa43f")
-            .totalAmount(Amount.builder()
-                .currency("CAD")
-                .value(1500L)
-                .build())
-            .build()
-    );
-    ```
-  </TabItem>
-  <TabItem label="Go" icon="seti:go">
-    ```go
-    payment, err := client.Readers.CreateGoCheckout(ctx, merchantCode, readerID, sumup.ReadersCreateGoCheckoutParams{
-        ClientTransactionID: "19e12390-72cf-4f9f-80b5-b0c8a67fa43f",
-        TotalAmount: sumup.Amount{
-            Currency: "CAD",
-            Value:    1500,
-        },
-    })
-    ```
-  </TabItem>
-  <TabItem label="Python" icon="seti:python">
-    ```py
-    payment = await client.readers.create_go_checkout(
-        merchant_code,
-        reader_id,
-        client_transaction_id="19e12390-72cf-4f9f-80b5-b0c8a67fa43f",
-        total_amount={
-            "currency": "CAD",
-            "value": 1500,
-        },
-    )
-    ```
-  </TabItem>
-  <TabItem label="Rust" icon="seti:rust">
-    ```rust
-    let payment = client.readers().create_go_checkout(
-        &merchant_code,
-        &reader_id,
-        ReaderPaymentRequestParams {
-            client_transaction_id: "19e12390-72cf-4f9f-80b5-b0c8a67fa43f".into(),
-            total_amount: Amount {
-                currency: "CAD".into(),
-                value: 1_500,
-            },
-            affiliate: None,
-            tip_amount: None,
-        },
-    ).await?;
-    ```
-  </TabItem>
-</Tabs>
-
-Important notes:
-
-- The target device must be online, otherwise the payment request is not accepted.
-- You need to send the Affiliate Key in the request.
-- The response includes a `transaction_code` you can use to look up the final transaction status.
-
-Read the [Create Go Reader Payment API endpoint documentation](/api/readers/create-go-checkout) for details on the API request, examples, and parameter descriptions.
-
-### Tipping
-
-Go supports tipping only when your EPS includes a `tip_amount` in the payment request. The tip is set by your system before the payment is sent to the reader—it is not entered on the Go terminal.
-
-Include `tip_amount` as an optional field in minor units (for example, `200` for CAD 2.00). The amount charged on the reader is the sum of `total_amount.value` and `tip_amount`.
+Initiate a payment on a paired Go reader. `client_transaction_id` is your identifier for the payment: generate a new value, such as a UUID, for every payment and store it before you send the request.
 
 ```bash
 curl -X POST \
@@ -207,6 +115,35 @@ curl -X POST \
         "total_amount": {
           "currency": "CAD",
           "value": 1500
+        }
+      }'
+```
+
+Important notes:
+
+- The target device must be online, otherwise the payment request is not accepted.
+- `client_transaction_id` is an idempotency key. If a request times out or fails with a network error, retry it with the same value: you get the original payment back instead of charging the customer twice.
+- You can identify your integration by sending your [Affiliate Key](/tools/authorization/affiliate-keys/) in the optional `affiliate` object.
+- The response includes a `transaction_code` you can use to look up the final transaction status.
+
+Read the [Create Go Reader Payment API endpoint documentation](/api/readers/create-go-checkout) for details on the API request, examples, and parameter descriptions.
+
+### Tipping
+
+Go supports tipping only when your EPS includes a `tip_amount` in the payment request. The tip is set by your system before the payment is sent to the reader — it is not entered on the Go terminal.
+
+`total_amount.value` is the amount charged on the reader, in minor units, and it already includes the tip. `tip_amount` is the portion of that total that is a tip, in the same minor units. For a CAD 15.00 sale and a CAD 2.00 tip, set `total_amount.value` to `1700` and `tip_amount` to `200`.
+
+```bash
+curl -X POST \
+  https://api.sumup.com/v0/merchants/$SUMUP_MERCHANT_CODE/readers/$READER_ID/go-checkout \
+  -H "Authorization: Bearer $SUMUP_API_KEY" \
+  -H 'Content-Type: application/json' \
+  -d '{
+        "client_transaction_id": "19e12390-72cf-4f9f-80b5-b0c8a67fa43f",
+        "total_amount": {
+          "currency": "CAD",
+          "value": 1700
         },
         "tip_amount": 200
       }'
@@ -214,9 +151,9 @@ curl -X POST \
 
 ### Receive Transaction Results
 
-Payment processing is asynchronous. The go-checkout response confirms that the payment was accepted and returns a `transaction_code`—not that the payment succeeded. Poll the [Retrieve a transaction endpoint](/api/transactions/get) until the transaction reaches a final state.
+Payment processing is asynchronous. The go-checkout response confirms that the payment was accepted and returns a `transaction_code` — not that the payment succeeded. Poll the [Retrieve a transaction endpoint](/api/transactions/get) until the transaction reaches a final state.
 
-Use either `transaction_code` from the go-checkout response or the `client_transaction_id` you supplied when initiating the payment:
+Look up the transaction by the `transaction_code` from the go-checkout response:
 
 <Tabs syncKey="backend_lang">
   <TabItem label="cURL" icon="seti:powershell">
@@ -277,9 +214,16 @@ Use either `transaction_code` from the go-checkout response or the `client_trans
   </TabItem>
 </Tabs>
 
-Check the `status` field on the transaction resource. A value of `SUCCESSFUL` means the payment completed; other values indicate the payment is still pending or has failed.
+Alternatively, pass the `client_transaction_id` you sent in the go-checkout request:
 
-Use `client_transaction_id` to match the polled transaction against the payment you started—it holds the same value you sent in the go-checkout request.
+```bash
+curl "https://api.sumup.com/v2.1/merchants/$SUMUP_MERCHANT_CODE/transactions?client_transaction_id=$CLIENT_TRANSACTION_ID" \
+  -H "Authorization: Bearer $SUMUP_API_KEY"
+```
+
+Check the `status` field on the transaction resource. `SUCCESSFUL` means the payment completed, `FAILED` and `CANCELLED` are final, and `PENDING` means the customer has not finished the payment yet.
+
+The transaction may not be available immediately after the go-checkout request. If the lookup returns `404 Not Found`, keep polling — it does not mean the payment failed. Poll at a fixed interval, such as every 2 seconds, rather than in a tight loop.
 
 ### List Connected Readers
 
@@ -326,37 +270,18 @@ List all readers connected to your merchant account.
 
 Read the [List API endpoint documentation](/api/readers/list) for details on the API request, examples, and parameter descriptions.
 
-### Check Reader Pairing
-
-Check the pairing status of a specific reader.
-
-Read the [Retrieve a Reader endpoint documentation](/api/readers/get) for details on the API request, examples, and parameter descriptions.
-
-### Update Reader
-
-Update the data of a specific reader.
-
-Check the [Update a Reader endpoint documentation](/api/readers/update) for details on the API request, examples, and parameter descriptions.
-
-### Delete Reader
-
-Delete a reader from the Cloud API.
-
-Check the [Delete a Reader endpoint documentation](/api/readers/delete) for details on the API request, examples, and parameter descriptions.
-
 ## Unpairing Go Reader
 
-Unpairing is only possible from your EPS via the Readers API. The Go reader does not expose an unpair action in its UI—it can only refresh its pairing status to detect whether it is still paired.
+Unpairing is only possible from your EPS via the Readers API. The Go reader does not expose an unpair action in its UI — it can only refresh its pairing status to detect whether it is still paired.
 
 To unpair a reader from the merchant account:
 
 <Steps>
 
 1. Send a request to the [Delete a Reader endpoint](/api/readers/delete).
+2. On the Go reader, tap the refresh icon to update the pairing status. The reader returns to the unpaired state.
 
 </Steps>
-
-After the reader is deleted, the Go terminal detects the change the next time it refreshes its pairing status and returns to the unpaired state.
 
 ## What's Next?
 
