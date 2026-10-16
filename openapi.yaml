@@ -5821,6 +5821,7 @@ components:
       enum:
         - ALELO
         - AMEX
+        - BANCOMAT
         - CONECS
         - CUP
         - DINERS
@@ -5835,6 +5836,7 @@ components:
         - MAESTRO
         - MASTERCARD
         - PLUXEE
+        - SUMUP
         - SWILE
         - TICKET
         - VISA
@@ -6193,12 +6195,12 @@ components:
           example: 19e12390-72cf-4f9f-80b5-b0c8a67fa43f
           type: string
         tip_amount:
-          description: Optional tip amount in minor units, added on top of total_amount.
-          example: 100
+          description: Portion of total_amount that is a tip, in minor units.
+          example: 200
           type: integer
         total_amount:
           allOf:
-            - description: Amount structure. The amount is represented as an integer value altogether with the currency and the minor unit. For example, MXN 10.00 is represented as value 1000 with minor unit of 2.
+            - description: Amount charged on the reader, including any tip. The amount is represented as an integer value altogether with the currency and the minor unit. For example, MXN 10.00 is represented as value 1000 with minor unit of 2.
               example:
                 currency: MXN
                 value: 1000
