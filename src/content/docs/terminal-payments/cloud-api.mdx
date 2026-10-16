@@ -9,6 +9,7 @@ import Callout from "@components/content/Callout";
 
 import Video from '@components/content/Video.astro';
 import SoloScreen from '@components/content/SoloScreen.astro';
+import CheckoutLifecycle from '@components/Diagrams/CheckoutLifecycle';
 
 The Cloud API lets you start a transaction from a Point of Sale (POS) running on any platform (Windows, iOS, Linux, Android, Web-based, etc.) capable of sending HTTPS requests and complete that transaction via a Solo reader.
 
@@ -126,6 +127,10 @@ Solo card reader screen. You will need this code to pair your Solo reader with y
 ## Using Paired Reader
 
 Cloud API lets you manage transactions and readers connected to your account.
+
+Explore a successful or failed checkout below. The order stays unpaid until your application receives the final transaction result.
+
+<CheckoutLifecycle client:visible />
 
 ### Initiate Transaction
 

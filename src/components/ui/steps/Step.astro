@@ -2,19 +2,19 @@
 /** A single step inside <Steps>. */
 import type { HTMLAttributes } from "astro/types";
 
-interface Props extends HTMLAttributes<"div"> {
+interface Props extends HTMLAttributes<"li"> {
   title?: string;
 }
 
 const { title, class: className, ...attributes } = Astro.props;
 ---
 
-<div data-step class={className} {...attributes}>
+<li data-step class={className} {...attributes}>
   {title && <p class="step-title">{title}</p>}
   <div class="step-content">
     <slot />
   </div>
-</div>
+</li>
 
 <style>
   .step-title {

@@ -2,6 +2,7 @@
 import { getCollection, render } from "astro:content";
 import MarkdownContent from "@components/MarkdownContent.astro";
 import StandaloneLayout from "../layouts/StandaloneLayout.astro";
+import { components } from "../components";
 
 const posts = await getCollection("_help");
 ---
@@ -15,7 +16,7 @@ const posts = await getCollection("_help");
           <summary>{post.data.title}</summary>
           <div class="content">
             <MarkdownContent>
-              <Content />
+              <Content components={components} />
             </MarkdownContent>
           </div>
         </details>

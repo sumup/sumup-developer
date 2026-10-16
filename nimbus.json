@@ -1,10 +1,10 @@
 {
   "$schema": "https://nimbus-docs.com/schema/nimbus.json",
   "version": null,
-  "templatesTag": null,
-  "variant": null,
+  "lastReviewedNimbusVersion": "0.19.0",
+  "templatesTag": "templates-v0.8.0",
+  "variant": "starter",
   "registry": "https://nimbus-docs.com/registry",
-  "reconstructed": true,
   "install": {
     "root": "src",
     "aliases": {
@@ -13,11 +13,101 @@
   },
   "components": [
     {
+      "slug": "aside",
+      "type": "registry:ui",
+      "version": "0.19.0",
+      "source": "https://nimbus-docs.com/registry",
+      "hash": "sha256:26777a6258c37d878cfe49d9cc65712f662a8a907b61e9707e846cd4ec7bd06e",
+      "files": ["src/components/nimbus/Aside.astro"],
+      "modified": true
+    },
+    {
+      "slug": "badge",
+      "type": "registry:ui",
+      "version": "0.19.0",
+      "source": "https://nimbus-docs.com/registry",
+      "hash": "sha256:e669f897502627072821658493c11d68aba00af5c0a4856d7f1b2badb8c8ac40",
+      "files": ["src/components/nimbus/Badge.astro"],
+      "modified": true
+    },
+    {
+      "slug": "copy-prompt",
+      "type": "registry:ui",
+      "version": "0.19.0",
+      "source": "https://nimbus-docs.com/registry",
+      "hash": "sha256:ea82722dcfff5754ba50eee7163bb8a1d33d8e449b066522bfb295748b69b6f1",
+      "files": [
+        "src/components/nimbus/CopyPrompt.astro",
+        "src/components/nimbus/copy-prompt.client.ts"
+      ],
+      "modified": true
+    },
+    {
+      "slug": "image-zoom",
+      "type": "registry:ui",
+      "version": "0.19.0",
+      "source": "https://nimbus-docs.com/registry",
+      "hash": "sha256:8f91c38e1fc92fcbc31592ea676b56801ff29cd7511344c0e0b71d4114e49afc",
+      "files": [
+        "src/components/nimbus/ImageZoom.astro",
+        "src/components/nimbus/image-zoom.client.ts"
+      ],
+      "modified": true
+    },
+    {
+      "slug": "page-actions",
+      "type": "registry:ui",
+      "version": "0.19.0",
+      "source": "https://nimbus-docs.com/registry",
+      "hash": "sha256:af34554fe25dec546c8e1411d985e48d52659744f9a03ead9a3b282ea130a4c1",
+      "files": [
+        "src/components/nimbus/PageActions.astro",
+        "src/components/nimbus/page-actions.client.ts"
+      ],
+      "modified": true
+    },
+    {
+      "slug": "pagination",
+      "type": "registry:ui",
+      "version": "0.19.0",
+      "source": "https://nimbus-docs.com/registry",
+      "hash": "sha256:4774f88a71e134759faf409114f5d8efdbfa6dd963214815a990667cdf3771c3",
+      "files": ["src/components/nimbus/Pagination.astro"],
+      "modified": true
+    },
+    {
+      "slug": "search",
+      "type": "registry:ui",
+      "version": "0.19.0",
+      "source": "https://nimbus-docs.com/registry",
+      "hash": "sha256:ea9577cc06f36161ca078503c326a72edbe4187f2d95bee637371d7669e1daf4",
+      "files": [
+        "src/components/nimbus/SearchDialog.astro",
+        "src/components/nimbus/search.client.ts"
+      ],
+      "modified": true
+    },
+    {
+      "slug": "sidebar",
+      "type": "registry:ui",
+      "version": "0.19.0",
+      "source": "https://nimbus-docs.com/registry",
+      "hash": "sha256:58119c898b74a0973a8adc7ea58f8340db416fda29a787c994634f0c06fbf236",
+      "files": [
+        "src/components/nimbus/Sidebar.astro",
+        "src/components/nimbus/SidebarGroup.astro",
+        "src/components/nimbus/SidebarLink.astro",
+        "src/components/nimbus/sidebar.client.ts",
+        "src/components/nimbus/sidebar.css"
+      ],
+      "modified": true
+    },
+    {
       "slug": "steps",
       "type": "registry:ui",
-      "version": "0.8.2",
+      "version": "0.19.0",
       "source": "https://nimbus-docs.com/registry",
-      "hash": "sha256:80f99f91316886f985ef94061509e212496c88fc561734ad882054e4d6c3a040",
+      "hash": "sha256:b33ee61af7d30717b505bc09370e477cb230e16ae0f93713595188fdcb44eb11",
       "files": [
         "src/components/ui/steps/Step.astro",
         "src/components/ui/steps/Steps.astro",
@@ -25,7 +115,36 @@
         "src/components/ui/steps/steps.client.ts"
       ],
       "modified": true
+    },
+    {
+      "slug": "tabs",
+      "type": "registry:ui",
+      "version": "0.19.0",
+      "source": "https://nimbus-docs.com/registry",
+      "hash": "sha256:e6b75eb23e600145ddb631e1168e574275d1b9247c990de78cd7376bda21abf4",
+      "files": [
+        "src/components/nimbus/Tabs.astro",
+        "src/components/nimbus/TabItem.astro",
+        "src/components/nimbus/tabs.client.ts"
+      ],
+      "modified": true
+    },
+    {
+      "slug": "toc",
+      "type": "registry:ui",
+      "version": "0.19.0",
+      "source": "https://nimbus-docs.com/registry",
+      "hash": "sha256:24cc5204fb08639efd8fbd485b376e55759e0a6b7066ccb69d41f0d73b819d50",
+      "files": [
+        "src/components/nimbus/TableOfContents.astro",
+        "src/components/nimbus/table-of-contents.client.ts"
+      ],
+      "modified": true
     }
   ],
-  "lastReviewedNimbusVersion": "0.18.0"
+  "upstreamReview": {
+    "frameworkVersion": "0.19.0",
+    "adoptedBaseline": true,
+    "note": "The template tag is a reviewed comparison baseline, not the original scaffold version. See README.md for the customized component mappings."
+  }
 }

@@ -75,7 +75,7 @@ const markdownLinks = (tree) => {
 const reachable = (href, base) => {
   const url = new URL(href, base);
   if (url.origin !== siteOrigin) return;
-  assert(site.resolve(url)?.file, `${base}: missing agent target ${href}`);
+  assert(site.resolve(url), `${base}: missing agent target ${href}`);
 };
 let indexes = 0;
 for (const file of site.files.filter((file) => file.endsWith("/llms.txt"))) {
@@ -92,6 +92,14 @@ for (const file of site.files.filter((file) => file.endsWith("/llms.txt"))) {
 let alternates = 0;
 for (const file of site.htmlFiles) {
   const page = await site.page(file);
+  // API fragments keep their separate CommonMark renderer until the API review.
+  if (!site.outputPath(file).startsWith("api/")) {
+    assert.deepEqual(
+      page.rawAdmonitions,
+      [],
+      `${file}: unrendered callout directives`,
+    );
+  }
   for (const href of [page.markdownUrl, page.llmsUrl].filter(Boolean)) {
     reachable(href, site.urlForFile(file));
     alternates++;

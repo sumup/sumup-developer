@@ -50,6 +50,7 @@ const head = defineNimbusConfig({
   editPattern: "https://github.com/sumup/sumup-developer/edit/main/{path}",
   socialImage: "/og/index.png",
   socialImageAlt: "SumUp Developer documentation preview",
+  agents: { mcp: true },
   sidebar: {
     defaultCollapsed: true,
     items: [
@@ -210,7 +211,6 @@ export default defineConfig({
     react(),
     nimbus(head, {
       icons: false,
-      admonitions: false,
       mdx: { optimize: true },
       markdown: {
         componentMap: await markdownComponents(),

@@ -5,6 +5,7 @@ import {
   getDocsStaticPaths,
   getEditUrl,
   getLastUpdated,
+  getPrevNext,
   getRouteFlags,
   getSidebar,
   getTOC,
@@ -33,6 +34,10 @@ const breadcrumbs = await getBreadcrumbs(currentPath, {
 });
 const editUrl = await getEditUrl(entry);
 const lastUpdated = entry.data.lastUpdated ?? (await getLastUpdated(entry));
+const prevNext = await getPrevNext(currentPath, {
+  sidebarTree: sidebar === false ? [] : sidebar,
+  overrides: { prev: entry.data.prev, next: entry.data.next },
+});
 const tocConfig = entry.data.tableOfContents;
 const toc =
   tocEnabled && tocConfig !== false ? getTOC(headings, tocConfig) : false;
@@ -44,7 +49,7 @@ const toc =
   sidebar={sidebar}
   headings={toc}
   breadcrumbs={breadcrumbs}
-  prevNext={{}}
+  prevNext={prevNext}
   head={entry.data.head}
   searchable={entry.data.searchable}
   noindex={entry.data.noindex}

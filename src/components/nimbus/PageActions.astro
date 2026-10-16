@@ -4,6 +4,7 @@ import Copy from "@sumup-oss/icons/copy_24.svg";
 import File from "@sumup-oss/icons/file_24.svg";
 import Sparkles from "@sumup-oss/icons/sparkles_24.svg";
 import Time from "@sumup-oss/icons/time_24.svg";
+import { capabilities } from "virtual:nimbus/agent-capabilities";
 
 interface Props {
   markdownUrl: string;
@@ -74,6 +75,20 @@ const formattedDate = lastUpdated?.toLocaleDateString("en-GB", {
     <Sparkles aria-hidden="true" />
     Set up AI assistant
   </a>
+
+  {capabilities.mcpUrl && (
+    <>
+      <span class="separator" aria-hidden="true">
+        |
+      </span>
+      <button type="button" data-docs-mcp-url={capabilities.mcpUrl}>
+        <Copy aria-hidden="true" />
+        <span data-docs-mcp-label aria-live="polite">
+          Copy docs MCP URL
+        </span>
+      </button>
+    </>
+  )}
 </div>
 
 <script>

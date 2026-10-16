@@ -56,14 +56,15 @@ Open `http://localhost:3000` in a browser. Most content and component changes ap
 
 Run the checks that match your change before opening a pull request:
 
-| Command             | Purpose                                         |
-| ------------------- | ----------------------------------------------- |
-| `npm run check`     | Validate Astro, TypeScript, and content schemas |
-| `npm run lint`      | Lint source files and Markdown                  |
-| `npm run test`      | Run the Vitest test suite                       |
-| `npm run build`     | Create the production Cloudflare build          |
-| `npm run linkcheck` | Build the site and validate internal links      |
-| `npm run validate`  | Run the complete CI validation sequence         |
+| Command                | Purpose                                                 |
+| ---------------------- | ------------------------------------------------------- |
+| `npm run check`        | Validate Astro, TypeScript, and content schemas         |
+| `npm run check:nimbus` | Validate Nimbus configuration, adapters, and migrations |
+| `npm run lint`         | Lint source files and Markdown                          |
+| `npm run test`         | Run the Vitest test suite                               |
+| `npm run build`        | Create the production Cloudflare build                  |
+| `npm run linkcheck`    | Build the site and validate internal links              |
+| `npm run validate`     | Run the complete CI validation sequence                 |
 
 ## API Specs
 
@@ -102,9 +103,17 @@ loops, and static rules after dynamic rules. It runs in `npm run linkcheck`.
 Remove redirects for retired endpoints without a documented replacement instead
 of pointing them at an unrelated API operation.
 
-With Nimbus 0.18 and our Cloudflare/Node development environment, Markdown
-alternates remain cached after content edits. Restart the dev server to refresh
-them. HTML changes refresh normally; production builds regenerate all alternates.
+The documentation MCP server at `https://developer.sumup.com/mcp` exposes
+`list_pages` and `get_page` without authentication. Nimbus serves it and its
+`/mcp/server-card` route through the Worker while guide pages remain prerendered.
+The SumUp account-tools server at `https://mcp.sumup.com/mcp` remains separate
+and uses OAuth. Validate documentation MCP changes against the built Worker:
+check `tools/list`, then call both tools and verify the returned Markdown.
+
+The Cloud API checkout walkthrough uses Nimbus's headless React `Diagram` and
+`usePhase` helpers with SumUp styles. Its shared step data also produces the
+Markdown version; keep the two representations aligned when adding diagrams.
+Use `client:visible` and keep the explanation readable before hydration.
 
 Skills are imported verbatim from the commit in `agent-skills.source.json`.
 Run `npm run sync:agent-skills` to reproduce them, or add
@@ -115,7 +124,32 @@ commit the lock and imported `skills/` files together. Builds need no source
 checkout or network access: Nimbus packages the checked-in sources into
 deterministic archives and publishes their discovery index and SHA-256 digests.
 
-Security overrides: Satori's `fflate` is pinned to 0.8.3 for the ZIP64 fix;
-Mermaid's KaTeX is pinned to 0.18.2 for its trust-handling fix, until Mermaid's
-supported dependency range includes a patched release. Validate Mermaid diagrams
-when updating that override.
+Security overrides: Mermaid's KaTeX is pinned to 0.19.0 until Mermaid's supported
+dependency range includes a patched release. Validate Mermaid diagrams when
+updating that override.
+
+## Updating Nimbus
+
+Run `npm run check:nimbus` before accepting dependency upgrades. In particular,
+stay within Nimbus's supported Astro adapter range even when a newer adapter
+builds successfully. Run `nimbus-docs migrate` and complete its reviews, then
+use `nimbus-docs outdated --json` to inspect upstream changes.
+
+This portal adopted Nimbus through a custom migration. Its original scaffold
+version is unknown, so `nimbus.json` keeps `version: null`. The recorded
+`templates-v0.8.0` tag is an explicit comparison baseline reviewed against Nimbus
+0.19, rather than a claim that the portal was scaffolded from that release.
+The layouts, fonts, styles, homepage, navigation, and API renderer intentionally
+keep the SumUp design. Optional starter features are adopted individually.
+
+Registry entries in `nimbus.json` record reviewed upstream hashes and the paths
+of our customized copies. Most live under `src/components/nimbus/`, rather than
+the registry's `src/components/ui/<slug>/` directories. Compare the corresponding
+registry item before updating these files; do not install a second copy at its
+default path or overwrite our styles. Steps stays at the registry's normal path
+and follows its ordered-list semantics. Custom diagrams use the framework's
+headless hooks directly and are owned by this repository.
+
+After merging upstream behavior, update the relevant reviewed baseline and run
+`npm run validate`. A baseline update means the upstream changes were reviewed;
+it does not mean our customized files should match the starter byte for byte.

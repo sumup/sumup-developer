@@ -118,3 +118,12 @@ it("keeps generated Java install snippets and the default setup prompt intact", 
     agentSetupPrompt,
   ]);
 });
+
+it("publishes the interactive checkout's asynchronous flow and both final outcomes", () => {
+  const markdown = convert("<CheckoutLifecycle client:visible />");
+  expect(markdown).toContain("Acceptance does not confirm payment");
+  expect(markdown).toContain("client_transaction_id");
+  expect(markdown).toContain("For successful, mark the matching order paid");
+  expect(markdown).toContain("For failed, keep it unpaid");
+  expect(markdown).not.toContain("<CheckoutLifecycle");
+});

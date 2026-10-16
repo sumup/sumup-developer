@@ -19,6 +19,8 @@ export async function renderedSite(outputRoot) {
   const files = await listFiles(outputRoot);
   const outputPath = (file) => relative(outputRoot, file).split(sep).join("/");
   const generated = new Set(files.map(outputPath));
+  // Nimbus's documentation MCP card is served by the Worker, not an asset.
+  const dynamicRoutes = new Set(["/mcp", "/mcp/server-card"]);
   const redirects = (await readFile(join(outputRoot, "_redirects"), "utf8"))
     .split("\n")
     .filter((line) => line.trim() && !line.trim().startsWith("#"))
@@ -56,6 +58,7 @@ export async function renderedSite(outputRoot) {
         ? [path, `${path.replace(/\/$/, "")}/index.html`, `${path}.html`]
         : ["index.html"];
       const file = candidates.find((candidate) => generated.has(candidate));
+      if (!file && dynamicRoutes.has(url.pathname)) return { url };
       return file ? { file: join(outputRoot, file), url } : undefined;
     }
     return { url }; // An explicitly configured external redirect is a valid local link.
@@ -73,6 +76,13 @@ export async function renderedSite(outputRoot) {
       links: Array.from(document.querySelectorAll("a[href]"), (anchor) =>
         anchor.getAttribute("href"),
       ),
+      rawAdmonitions: Array.from(document.querySelectorAll("main p"))
+        .map((node) => node.textContent)
+        .filter((text) =>
+          /^\s*:::(?:note|tip|caution|warning|danger|info|important)\b/.test(
+            text,
+          ),
+        ),
       ids: new Set(
         Array.from(
           document.querySelectorAll("[id], a[name]"),

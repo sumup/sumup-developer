@@ -5,6 +5,7 @@ import { ArrowSlanted, Help, Info } from "@sumup-oss/icons";
 import Header from "@components/nimbus/Header.astro";
 import PageActions from "@components/nimbus/PageActions.astro";
 import PageFooter from "@components/nimbus/PageFooter.astro";
+import Pagination from "@components/nimbus/Pagination.astro";
 import Sidebar from "@components/nimbus/Sidebar.astro";
 import ImageZoom from "@components/nimbus/ImageZoom.astro";
 import TableOfContents from "@components/nimbus/TableOfContents.astro";
@@ -28,6 +29,7 @@ const {
   sidebarSections = true,
   headings,
   breadcrumbs,
+  prevNext,
   searchable,
   noindex,
   markdownUrl,
@@ -168,6 +170,7 @@ const toc = headings === false ? [] : headings;
             <slot />
           </article>
 
+          <Pagination {...prevNext} />
           {showFooter && <PageFooter />}
         </div>
       </main>

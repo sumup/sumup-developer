@@ -7,6 +7,14 @@ interface Props extends HTMLAttributes<"div"> {
 }
 
 const { start, class: className, ...attributes } = Astro.props;
+// Match Nimbus 0.19's list semantics while keeping the portal's styling.
+const content = await Astro.slots.render("default");
+const firstStep = content.search(
+  /<li\b(?:[^>"']|"[^"]*"|'[^']*')*\sdata-step\b/,
+);
+const stepMode = firstStep !== -1;
+const lead = stepMode ? content.slice(0, firstStep) : "";
+const steps = stepMode ? content.slice(firstStep) : content;
 ---
 
 <div
@@ -15,7 +23,13 @@ const { start, class: className, ...attributes } = Astro.props;
   style={start !== undefined ? `--steps-start: ${start};` : undefined}
   {...attributes}
 >
-  <slot />
+  {lead.trim() && <div class="steps-intro" set:html={lead} />}
+  {stepMode ? (
+    // eslint-disable-next-line astro/jsx-a11y/no-redundant-roles -- Safari needs the explicit role when list-style is none.
+    <ol role="list" set:html={steps} />
+  ) : (
+    <Fragment set:html={steps} />
+  )}
 </div>
 
 <script>
@@ -29,15 +43,14 @@ const { start, class: className, ...attributes } = Astro.props;
     counter-reset: step calc(var(--_start) - 1);
   }
 
-  .steps :global(ol) {
+  .steps > :global(ol) {
     margin: 0;
     padding: 0;
     counter-reset: step calc(var(--_start) - 1);
     list-style: none;
   }
 
-  .steps :global(ol > li),
-  .steps :global([data-step]) {
+  .steps > :global(ol > li) {
     position: relative;
     min-height: 1.75rem;
     margin: 0;
@@ -46,18 +59,15 @@ const { start, class: className, ...attributes } = Astro.props;
     counter-increment: step;
   }
 
-  .steps :global(ol > li:last-child),
-  .steps :global([data-step]:last-child) {
+  .steps > :global(ol > li:last-child) {
     padding-bottom: 0;
   }
 
-  .steps :global(ol > li > * + *),
-  .steps :global([data-step] > * + *) {
+  .steps > :global(ol > li > * + *) {
     margin-top: var(--cui-spacings-byte);
   }
 
-  .steps :global(ol > li)::before,
-  .steps :global([data-step])::before {
+  .steps > :global(ol > li)::before {
     position: absolute;
     top: 0;
     left: 0;
@@ -75,8 +85,7 @@ const { start, class: className, ...attributes } = Astro.props;
     place-items: center;
   }
 
-  .steps :global(ol > li:not(:last-child))::after,
-  .steps :global([data-step]:not(:last-child))::after {
+  .steps > :global(ol > li:not(:last-child))::after {
     position: absolute;
     top: 1.75rem;
     bottom: 0;
@@ -86,11 +95,14 @@ const { start, class: className, ...attributes } = Astro.props;
     content: "";
   }
 
-  .steps :global(ol > li > p:first-child > strong:only-child) {
+  .steps > :global(ol > li > p:first-child > strong:only-child) {
     color: var(--cui-fg-normal);
   }
 
-  .steps :global(ol > li > p) {
+  .steps > :global(ol > li > p) {
     margin: 0;
+  }
+  .steps-intro {
+    margin-block-end: var(--cui-spacings-mega);
   }
 </style>

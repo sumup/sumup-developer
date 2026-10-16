@@ -4,6 +4,7 @@ import { readers } from "./readers.ts";
 import { javaInstallExamples } from "./sdks/javaInstallExamples.ts";
 import { getJavaSdkVersion } from "./sdks/javaSdkVersion.ts";
 import { agentSetupPrompt } from "./agentSetup.ts";
+import { checkoutLifecycle } from "./checkoutLifecycle.ts";
 
 type ComponentMap = NonNullable<
   NonNullable<NimbusIntegrationOptions["markdown"]>["componentMap"]
@@ -38,6 +39,16 @@ export function createMarkdownComponents(javaVersion: string): ComponentMap {
       }`,
   };
   return {
+    CheckoutLifecycle: {
+      revision: JSON.stringify(checkoutLifecycle),
+      render: () =>
+        checkoutLifecycle
+          .map(
+            (step, index) =>
+              `${index + 1}. **${step.title}** (${step.actor}): ${step.description}`,
+          )
+          .join("\n"),
+    },
     Badge: { revision: "1", render: ({ attrs }) => text(attrs.text) },
     Callout: {
       revision: "1",

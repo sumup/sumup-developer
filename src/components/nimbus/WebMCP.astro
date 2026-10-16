@@ -1,0 +1,25 @@
+---
+import { capabilities, options } from "virtual:nimbus/agent-capabilities";
+---
+
+{capabilities.search === "pagefind" && (
+  <meta
+    name="nimbus-webmcp"
+    content={JSON.stringify({
+      ...options,
+      search: capabilities.search,
+      versions: capabilities.versions,
+    })}
+  />
+)}
+
+<script>
+  import {
+    initDocumentationWebMcp,
+    mount,
+  } from "@cloudflare/nimbus-docs/client";
+
+  mount('meta[name="nimbus-webmcp"]', (element) =>
+    initDocumentationWebMcp(JSON.parse((element as HTMLMetaElement).content)),
+  );
+</script>
