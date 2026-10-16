@@ -19,6 +19,7 @@ import { config } from "virtual:nimbus/config";
 
 import AgentDirective from "@components/nimbus/AgentDirective.astro";
 import SearchDialog from "@components/nimbus/SearchDialog.astro";
+import WebMCP from "@components/nimbus/WebMCP.astro";
 
 type Props = BasePageProps;
 
@@ -97,6 +98,7 @@ const llmsUrl = Astro.site ? new URL(llmsPath, Astro.site).href : llmsPath;
       collection={collection}
       entryId={entryId}
     />
+    <WebMCP />
   </head>
   <body>
     <a class="skip-link" href="#main-content">
