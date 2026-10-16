@@ -34,57 +34,49 @@ const schema = resolveSchema(obj);
   class:list={["schema", { nested, collapsable, collapsed }]}
   data-pagefind-ignore
 >
-  {
-    nested && (
-      <div class="header">
-        <div class="close">
-          <Close size="16" />
-          &nbsp;Close
-        </div>
-        <div>{schema.title || kind}</div>
-        <div />
+  {nested && (
+    <div class="header">
+      <div class="close">
+        <Close size="16" />
+        &nbsp;Close
       </div>
-    )
-  }
-  {
-    collapsable && (
-      <div class="header">
-        <div class="icon">
-          <ChevronDown size="16" />
-        </div>
-        <Headline as="h3">{schema.title || kind}</Headline>
+      <div>{schema.title || kind}</div>
+      <div />
+    </div>
+  )}
+  {collapsable && (
+    <div class="header">
+      <div class="icon">
+        <ChevronDown size="16" />
       </div>
-    )
-  }
+      <Headline as="h3">{schema.title || kind}</Headline>
+    </div>
+  )}
   {title && <SectionHeading>{title}</SectionHeading>}
-  {
-    schema.type === "array" &&
-      "items" in schema &&
-      (() => {
-        const attributesSchema = getRenderableAttributesSchema(schema.items);
+  {schema.type === "array" &&
+    "items" in schema &&
+    (() => {
+      const attributesSchema = getRenderableAttributesSchema(schema.items);
 
-        return (
-          <div>
-            <ParameterName name={""} def={schema} required={false} />
-            {attributesSchema && (
-              <Attributes schema={attributesSchema} kind={"Attributes"} />
-            )}
-          </div>
-        );
-      })()
-  }
+      return (
+        <div>
+          <ParameterName name={""} def={schema} required={false} />
+          {attributesSchema && (
+            <Attributes schema={attributesSchema} kind={"Attributes"} />
+          )}
+        </div>
+      );
+    })()}
   <ul class:list={[{ nested }]}>
-    {
-      Object.entries(schema.properties || {}).map(([name, def]) => {
-        return (
-          <SchemaPropertyRow
-            name={name}
-            def={def}
-            required={!!schema.required?.includes(name)}
-          />
-        );
-      })
-    }
+    {Object.entries(schema.properties || {}).map(([name, def]) => {
+      return (
+        <SchemaPropertyRow
+          name={name}
+          def={def}
+          required={!!schema.required?.includes(name)}
+        />
+      );
+    })}
   </ul>
 </div>
 

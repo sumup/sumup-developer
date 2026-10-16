@@ -1,0 +1,408 @@
+---
+import type { DocsPageProps } from "@cloudflare/nimbus-docs/types";
+import { ArrowSlanted, Help, Info } from "@sumup-oss/icons";
+
+import Header from "@components/nimbus/Header.astro";
+import PageActions from "@components/nimbus/PageActions.astro";
+import PageFooter from "@components/nimbus/PageFooter.astro";
+import Sidebar from "@components/nimbus/Sidebar.astro";
+import ImageZoom from "@components/nimbus/ImageZoom.astro";
+import TableOfContents from "@components/nimbus/TableOfContents.astro";
+
+import BaseLayout from "./BaseLayout.astro";
+
+interface Props extends DocsPageProps {
+  sidebarSections?: boolean;
+  links?: Array<{ title: string; href: string }>;
+  wide?: boolean;
+  hideTitle?: boolean;
+  hideDescription?: boolean;
+  prose?: boolean;
+  showFooter?: boolean;
+}
+
+const {
+  title,
+  description,
+  sidebar,
+  sidebarSections = true,
+  headings,
+  breadcrumbs,
+  searchable,
+  noindex,
+  markdownUrl,
+  socialImage,
+  lastUpdated,
+  editUrl,
+  draft,
+  collection,
+  entryId,
+  head,
+  links = [],
+  wide = false,
+  hideTitle = false,
+  hideDescription = false,
+  prose = true,
+  showFooter = true,
+} = Astro.props;
+
+const effectiveSearchable = searchable ?? !noindex;
+const pagefindAttributes = effectiveSearchable
+  ? { "data-pagefind-body": "" }
+  : { "data-pagefind-ignore": "" };
+const showSidebar = sidebar !== false;
+const toc = headings === false ? [] : headings;
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  noindex={noindex || draft}
+  markdownUrl={markdownUrl}
+  socialImage={socialImage}
+  lastUpdated={lastUpdated}
+  head={head}
+  collection={collection}
+  entryId={entryId}
+>
+  <div class="page-shell">
+    <Header sidebar={sidebar} sidebarSections={sidebarSections} />
+    <div
+      class:list={[
+        "docs-grid",
+        wide && "wide",
+        !showSidebar && "no-sidebar",
+        toc.length === 0 && "no-toc",
+      ]}
+    >
+      {showSidebar && (
+        <aside class="docs-sidebar" data-portal-sidebar>
+          <nav aria-label="Documentation">
+            <Sidebar items={sidebar} sections={sidebarSections} persist />
+          </nav>
+          <div class="sidebar-footer">
+            <a href="/help/">
+              <Help aria-hidden="true" />
+              Help
+            </a>
+            <a
+              href="https://status.sumup.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Info aria-hidden="true" />
+              Status
+            </a>
+          </div>
+        </aside>
+      )}
+
+      <main id="main-content" class="docs-main">
+        <div class="content-column" {...pagefindAttributes}>
+          {breadcrumbs.length > 1 && (
+            <nav class="breadcrumbs" aria-label="Breadcrumbs">
+              <ol>
+                {breadcrumbs.map((item, index) => (
+                  <li>
+                    {item.href &&
+                    (index < breadcrumbs.length - 1 ||
+                      breadcrumbs.length === 2) ? (
+                      <a
+                        href={item.href}
+                        aria-current={
+                          index === breadcrumbs.length - 1 ? "page" : undefined
+                        }
+                      >
+                        {item.label}
+                      </a>
+                    ) : (
+                      <span aria-current="page">{item.label}</span>
+                    )}
+                  </li>
+                ))}
+              </ol>
+            </nav>
+          )}
+
+          {!hideTitle && (
+            <header class="page-heading">
+              <div class="title-row">
+                <h1 id="_top" data-pagefind-meta="title">
+                  {title}
+                </h1>
+                {draft && <span class="draft-badge">Draft</span>}
+              </div>
+              {description && !hideDescription && <p>{description}</p>}
+              {links.length > 0 && (
+                <div class="page-links">
+                  {links.map((link) => {
+                    const external = /^https?:\/\//.test(link.href);
+                    return (
+                      <a
+                        href={link.href}
+                        target={external ? "_blank" : undefined}
+                        rel={external ? "noopener noreferrer" : undefined}
+                      >
+                        {link.title}
+                        {external && (
+                          <ArrowSlanted size="16" aria-hidden="true" />
+                        )}
+                      </a>
+                    );
+                  })}
+                </div>
+              )}
+              {markdownUrl && (
+                <div class="page-actions">
+                  <PageActions
+                    markdownUrl={markdownUrl}
+                    lastUpdated={lastUpdated}
+                  />
+                </div>
+              )}
+              {toc.length > 0 && <TableOfContents headings={toc} mobile />}
+            </header>
+          )}
+
+          <article class:list={[prose && "docs-content"]}>
+            <slot />
+          </article>
+
+          {showFooter && <PageFooter />}
+        </div>
+      </main>
+
+      {toc.length > 0 && (
+        <aside class="docs-toc">
+          <TableOfContents headings={toc} editUrl={editUrl} />
+        </aside>
+      )}
+    </div>
+  </div>
+  <ImageZoom />
+</BaseLayout>
+
+<style>
+  .page-shell {
+    min-height: 100vh;
+  }
+
+  .docs-grid {
+    display: grid;
+    width: 100%;
+    min-height: calc(100vh - var(--portal-header-height));
+    grid-template-columns:
+      var(--portal-sidebar-width) minmax(0, 1fr)
+      var(--portal-toc-width);
+  }
+
+  .docs-grid.no-sidebar {
+    grid-template-columns: minmax(0, 1fr) var(--portal-toc-width);
+  }
+
+  .docs-grid.no-toc {
+    grid-template-columns: var(--portal-sidebar-width) minmax(0, 1fr);
+  }
+
+  .docs-grid.no-sidebar.no-toc {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .docs-sidebar,
+  .docs-toc {
+    position: sticky;
+    top: var(--portal-header-height);
+    height: calc(100vh - var(--portal-header-height));
+    overflow-y: auto;
+  }
+
+  .docs-sidebar {
+    display: flex;
+    flex-direction: column;
+    border-inline-end: 1px solid var(--cui-border-divider);
+    overflow: hidden;
+  }
+
+  .docs-sidebar > nav {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    padding: var(--cui-spacings-mega) var(--cui-spacings-mega) 0;
+  }
+
+  .sidebar-footer {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cui-spacings-bit);
+    padding: var(--cui-spacings-mega);
+  }
+
+  .sidebar-footer a {
+    display: flex;
+    align-items: center;
+    gap: var(--cui-spacings-byte);
+    padding: var(--cui-spacings-bit) var(--cui-spacings-byte);
+    color: var(--cui-fg-normal);
+    border-radius: var(--cui-border-radius-bit);
+    font-size: var(--cui-compact-s-font-size);
+    line-height: var(--cui-compact-s-line-height);
+    font-weight: var(--cui-font-weight-semibold);
+    line-height: var(--cui-body-s-line-height);
+    text-decoration: none;
+    transition:
+      color var(--cui-transitions-default),
+      background-color var(--cui-transitions-default);
+  }
+
+  .sidebar-footer a:hover {
+    color: var(--cui-fg-normal-hovered);
+    background: var(--cui-bg-normal-hovered);
+  }
+
+  .sidebar-footer a:active {
+    color: var(--cui-fg-normal-pressed);
+    background: var(--cui-bg-normal-pressed);
+  }
+
+  .sidebar-footer a :global(svg) {
+    width: 1.125rem;
+    height: 1.125rem;
+    flex: none;
+  }
+
+  .docs-main {
+    min-width: 0;
+  }
+
+  .content-column {
+    width: 100%;
+    max-width: calc(var(--portal-content-width) + 3rem);
+    margin: 0 auto;
+    padding: var(--cui-spacings-giga) 1.5rem var(--cui-spacings-exa);
+  }
+
+  .wide .content-column {
+    max-width: none;
+  }
+
+  .docs-toc {
+    padding: var(--cui-spacings-giga) var(--cui-spacings-mega);
+  }
+
+  .breadcrumbs ol {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--cui-spacings-bit);
+    margin: 0 0 var(--cui-spacings-kilo);
+    padding: 0;
+    color: var(--cui-fg-subtle);
+    list-style: none;
+    font-size: var(--cui-body-s-font-size);
+  }
+
+  .breadcrumbs li:not(:last-child)::after {
+    content: "/";
+    margin-inline-start: var(--cui-spacings-bit);
+  }
+
+  .breadcrumbs a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .breadcrumbs a[aria-current="page"],
+  .breadcrumbs span[aria-current="page"] {
+    font-weight: var(--cui-font-weight-semibold);
+    color: var(--cui-fg-normal);
+  }
+
+  .page-heading {
+    margin: var(--cui-spacings-mega) 0 var(--cui-spacings-giga);
+  }
+
+  .title-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--cui-spacings-kilo);
+    align-items: center;
+  }
+
+  .page-heading h1 {
+    margin: 0;
+    font-family: "SumUp Black", "SumUp Black fallback", sans-serif;
+    font-size: var(--cui-headline-l-font-size);
+    line-height: var(--cui-headline-l-line-height);
+    text-wrap: balance;
+  }
+
+  .page-heading > p {
+    max-width: 52rem;
+    margin: var(--cui-spacings-mega) 0 0;
+    color: var(--cui-fg-subtle);
+    font-size: var(--cui-body-l-font-size);
+    line-height: var(--cui-body-l-line-height);
+    text-wrap: pretty;
+  }
+
+  .draft-badge {
+    padding: var(--cui-spacings-bit) var(--cui-spacings-byte);
+    color: var(--cui-fg-warning);
+    background: var(--cui-bg-warning);
+    border-radius: var(--cui-border-radius-pill);
+    font-size: var(--cui-body-s-font-size);
+  }
+
+  .page-links,
+  .page-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--cui-spacings-kilo);
+    margin-top: var(--cui-spacings-mega);
+  }
+
+  .page-links a {
+    display: inline-flex;
+    min-height: 2.5rem;
+    gap: var(--cui-spacings-bit);
+    align-items: center;
+    padding: 0 var(--cui-spacings-mega);
+    color: var(--cui-fg-on-strong);
+    background: var(--cui-bg-strong);
+    border-radius: var(--cui-border-radius-byte);
+    font-weight: var(--cui-font-weight-semibold);
+    text-decoration: none;
+  }
+
+  .page-links a:hover {
+    background: var(--cui-bg-strong-hovered);
+  }
+
+  @media (max-width: 76rem) {
+    .docs-grid,
+    .docs-grid.no-sidebar {
+      grid-template-columns: var(--portal-sidebar-width) minmax(0, 1fr);
+    }
+
+    .docs-toc {
+      display: none;
+    }
+  }
+
+  @media (max-width: 60rem) {
+    .docs-grid,
+    .docs-grid.no-sidebar {
+      display: block;
+    }
+
+    .docs-sidebar {
+      display: none;
+    }
+  }
+
+  @media (max-width: 42rem) {
+    .content-column {
+      padding: var(--cui-spacings-mega) var(--cui-spacings-kilo)
+        var(--cui-spacings-exa);
+    }
+  }
+</style>

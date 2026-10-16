@@ -1,0 +1,31 @@
+{
+  "$schema": "https://nimbus-docs.com/schema/nimbus.json",
+  "version": null,
+  "templatesTag": null,
+  "variant": null,
+  "registry": "https://nimbus-docs.com/registry",
+  "reconstructed": true,
+  "install": {
+    "root": "src",
+    "aliases": {
+      "@/*": "src/*"
+    }
+  },
+  "components": [
+    {
+      "slug": "steps",
+      "type": "registry:ui",
+      "version": "0.8.2",
+      "source": "https://nimbus-docs.com/registry",
+      "hash": "sha256:80f99f91316886f985ef94061509e212496c88fc561734ad882054e4d6c3a040",
+      "files": [
+        "src/components/ui/steps/Step.astro",
+        "src/components/ui/steps/Steps.astro",
+        "src/components/ui/steps/index.ts",
+        "src/components/ui/steps/steps.client.ts"
+      ],
+      "modified": true
+    }
+  ],
+  "lastReviewedNimbusVersion": "0.18.0"
+}

@@ -1,18 +1,24 @@
 ---
-import { markdownToHtml } from "satteri";
-import MarkdownContent from "@components/MarkdownContent.astro";
+import { getEntry } from "astro:content";
+import { getMarkdownDescriptionId } from "@lib/openapiContent";
 
 interface Props {
   class?: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  children: any;
+  text?: unknown;
 }
 
-const { class: className } = Astro.props;
-const slot = await Astro.slots.render("default");
-const { html } = markdownToHtml(slot);
+const { class: className, text } = Astro.props;
+const source = typeof text === "string" ? text : "";
+const entry = source
+  ? await getEntry("_apiDescriptions", getMarkdownDescriptionId(source))
+  : undefined;
+if (source && !entry)
+  throw new Error(
+    "API Markdown fragment is missing from the content collection",
+  );
+const html = entry?.rendered?.html ?? "";
 ---
 
-<MarkdownContent class={className}>
+<div class:list={["docs-content", className]}>
   <Fragment set:html={html} />
-</MarkdownContent>
+</div>

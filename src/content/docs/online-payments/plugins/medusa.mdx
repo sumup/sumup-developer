@@ -5,7 +5,9 @@ sidebar:
   order: 54
 ---
 
-import { LinkButton } from "@astrojs/starlight/components";
+import Callout from "@components/content/Callout";
+
+import { ExternalLink } from "@sumup-oss/icons";
 
 The [SumUp plugin for Medusa](https://github.com/sumup/sumup-plugin-medusa) adds SumUp as a payment provider for [Medusa v2](https://medusajs.com/). It lets your Medusa backend create and manage SumUp online checkouts while keeping your SumUp credentials on the server side.
 
@@ -16,17 +18,19 @@ The plugin supports:
 - Refunds through SumUp transactions
 - Medusa payment webhooks for asynchronous status updates
 
-:::note
+<Callout type="note" title="Note">
   The plugin supports SumUp online payment flows only. It does not support
   terminal or other card-present integrations.
-:::
+</Callout>
 
-<LinkButton
+<Button
   href="https://github.com/sumup/sumup-plugin-medusa"
-  icon="external"
->
-  View Medusa Plugin Repository
-</LinkButton>
+  label="View Medusa Plugin Repository"
+  variant="primary"
+  navigationIcon={ExternalLink}
+  target="_blank"
+  rel="noopener noreferrer"
+/>
 
 ## Prerequisites
 
@@ -157,7 +161,7 @@ Before enabling the plugin in production, verify the following in a sandbox envi
 - SumUp's deliberate failure path with amount `11`
 - Expired or canceled checkouts mapping cleanly back into Medusa session state
 
-:::note
+<Callout type="note" title="Note">
   Minimal storefront and Docker example projects are available in the plugin
   repository if you want a working reference implementation.
-:::
+</Callout>

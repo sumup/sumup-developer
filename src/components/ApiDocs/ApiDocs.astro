@@ -36,7 +36,7 @@ const target = tagSlug
       btn.addEventListener("click", () => {
         const lang = (btn as HTMLElement).dataset.lang;
         if (lang) {
-          setCurrentLanguage(lang);
+          setCurrentLanguage(lang, btn);
         }
       });
     });
@@ -86,7 +86,7 @@ const target = tagSlug
 
   .specs :global(.api-docs-sticky) {
     position: sticky;
-    top: calc(var(--sl-nav-height) + var(--cui-spacings-kilo));
+    top: calc(var(--portal-header-height) + var(--cui-spacings-kilo));
   }
 
   h1 {

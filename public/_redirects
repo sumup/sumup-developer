@@ -1,3 +1,7 @@
+# Consolidated documentation homepage
+/docs                                                                       / 301
+/docs/                                                                      / 301
+
 # AI assistant setup
 /tools/llms/plugins                                                         /tools/llms/setup/ 301
 /tools/llms/plugins/                                                        /tools/llms/setup/ 301
@@ -63,6 +67,9 @@
 /docs/online-payments/plugins/prestashop/                                    /online-payments/plugins/prestashop
 
 # Online Payments - General
+/online-payments/apm/introduction                                            /online-payments/apm/ 301
+/online-payments/features/3ds                                                /online-payments/3ds/ 301
+/affiliate-keys                                                             /tools/authorization/affiliate-keys/ 301
 /online-payments/introduction/webhooks/                                      /online-payments/webhooks
 /online-payments/introduction/response-handling/                             /online-payments/guides/response-handling
 /online-payments/introduction/register-app/                                  /tools/authorization/oauth/
@@ -80,7 +87,7 @@
 /online-payments/guides/single-payment/index.md                             /online-payments/checkouts
 /docs/single-payment/                                                        /online-payments/checkouts
 /docs/refund/                                                                /online-payments/guides/refund
-/docs/recurring-payments/                                                    /online-payments/guides/recurring-payments
+/docs/recurring-payments/                                                   /online-payments/guides/tokenization-with-payment-sdk/ 301
 /docs/online-payments/guides/single-payment/                                 /online-payments/checkouts
 
 # Online Payments - APM
@@ -121,20 +128,7 @@
 /docs/online-payments/features/open-banking/                                 /resources/open-banking
 
 # Webhooks
-/webhooks/create/                                                            /tools/webhooks
-
-# API - Subaccounts
-/docs/api/update-sub-account/                                                /api/subaccounts/update-sub-account
-/docs/api/update-a-subaccount/                                               /api/subaccounts/update-sub-account
-/docs/api/subaccounts/                                                       /api/subaccounts
-/docs/api/retrieve-an-account/                                               /api/subaccounts
-/docs/api/list-subaccounts/                                                  /api/subaccounts/list-sub-accounts
-/docs/api/list-sub-accounts/                                                 /api/subaccounts/list-sub-accounts
-/docs/api/get-account/                                                       /api/subaccounts
-/docs/api/deactivate-sub-account/                                            /api/subaccounts/deactivate-sub-account
-/docs/api/deactivate-a-subaccount/                                           /api/subaccounts/deactivate-sub-account
-/docs/api/create-sub-account/                                                /api/subaccounts/create-sub-account
-/docs/api/create-a-subaccount/                                               /api/subaccounts/create-sub-account
+/webhooks/create/                                                           /online-payments/webhooks/ 301
 
 # API - Customers
 /docs/api/update-customer/                                                   /api/customers/update
@@ -172,17 +166,9 @@
 /docs/api/create-a-checkout/                                                 /api/checkouts/create
 
 # API - Merchant
-/docs/api/retrieve-dba/                                                      /api/merchant/get-doing-business-as
-/docs/api/retrieve-a-personal-profile/                                       /api/merchant/get-personal-profile
-/docs/api/retrieve-a-merchant-profile/                                       /api/merchant/get-merchant-profile
-/docs/api/merchant/                                                          /api/merchant
-/docs/api/list-settings/                                                     /api/merchant/get-settings
-/docs/api/list-bank-accounts/                                                /api/merchant/list-bank-accounts
-/docs/api/get-settings/                                                      /api/merchant/get-settings
-/docs/api/get-personal-profile/                                              /api/merchant/get-personal-profile
-/docs/api/get-merchant-profile/                                              /api/merchant/get
-/docs/api/get-doing-business-as/                                             /api/merchant/get-doing-business-as
-/api/get-doing-business-as/                                                  /api/merchant/get-doing-business-as
+/docs/api/retrieve-a-merchant-profile/                                      /api/merchants/ 301
+/docs/api/merchant/                                                         /api/merchants/ 301
+/docs/api/get-merchant-profile/                                             /api/merchants/get/ 301
 
 # API - Receipts
 /docs/api/retrieve-receipt-details/                                          /api/receipts/get

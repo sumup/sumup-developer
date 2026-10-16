@@ -4,6 +4,7 @@ dist/
 
 # generated types
 .astro/
+.nimbus/
 
 # dependencies
 node_modules/

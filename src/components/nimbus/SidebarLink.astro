@@ -1,0 +1,22 @@
+---
+import type { SidebarItem } from "@cloudflare/nimbus-docs/types";
+
+interface Props {
+  item: Exclude<SidebarItem, { type: "group" }>;
+}
+
+const { item } = Astro.props;
+const external = item.type === "external";
+const badge = typeof item.badge === "string" ? item.badge : item.badge?.text;
+---
+
+<a
+  href={item.href}
+  aria-current={!external && item.isCurrent ? "page" : undefined}
+  target={external ? "_blank" : undefined}
+  rel={external ? "noopener noreferrer" : undefined}
+  {...(!external && item.attrs)}
+>
+  <span>{item.label}</span>
+  {badge && <small>{badge}</small>}
+</a>
