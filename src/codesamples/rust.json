@@ -3,7 +3,7 @@
   "language": "rust",
   "sdk": {
     "module": "sumup",
-    "version": "0.5.13"
+    "version": "0.5.14"
   },
   "openAPIVersion": "1.0.0",
   "samples": [
@@ -24,7 +24,7 @@
       "description": "Standard request body for creating a checkout",
       "httpMethod": "POST",
       "path": "/v0.1/checkouts",
-      "sample": "use sumup::{Authorization, Client};\n#[tokio::main]\nasync fn main() {\n    let client = Client::default()\n        .with_authorization(Authorization::api_key(\"sup_sk_test_...\"));\n    let body = sumup::resources::checkouts::CreateRequest {\n        amount: 10.1f32,\n        checkout_reference: \"f00a8f74-b05d-4605-bd73-2a901bae5802\".to_string(),\n        currency: sumup::resources::common::Currency::EUR,\n        customer_id: None,\n        description: Some(\"Purchase\".to_string()),\n        hosted_checkout: None,\n        merchant_code: \"MH4H92C7\".to_string(),\n        purpose: None,\n        redirect_url: Some(\"https://sumup.com\".to_string()),\n        return_url: None,\n        valid_until: Some(\n            sumup::Nullable::Value(\n                \"2020-02-29T10:56:56+00:00\".parse().expect(\"valid date\"),\n            ),\n        ),\n    };\n    let response = client.checkouts().create(body).await.expect(\"create request failed\");\n    println!(\"{response:#?}\");\n}\n"
+      "sample": "use sumup::{Authorization, Client};\n#[tokio::main]\nasync fn main() {\n    let client = Client::default()\n        .with_authorization(Authorization::api_key(\"sup_sk_test_...\"));\n    let body = sumup::resources::checkouts::CreateRequest {\n        amount: 10.1f32,\n        checkout_reference: \"f00a8f74-b05d-4605-bd73-2a901bae5802\".to_string(),\n        currency: sumup::resources::common::Currency::EUR,\n        customer_id: None,\n        description: Some(\"Purchase\".to_string()),\n        hosted_checkout: None,\n        merchant_code: \"MH4H92C7\".to_string(),\n        purpose: None,\n        redirect_url: Some(\"https://sumup.com\".to_string()),\n        return_url: None,\n        valid_until: Some(\n            sumup::Nullable::Value(\"2030-12-31T23:59:59Z\".parse().expect(\"valid date\")),\n        ),\n    };\n    let response = client.checkouts().create(body).await.expect(\"create request failed\");\n    println!(\"{response:#?}\");\n}\n"
     },
     {
       "id": "CreateCheckout.Checkout3DS",
@@ -60,7 +60,7 @@
       "id": "CreateCustomer",
       "operationId": "CreateCustomer",
       "summary": "Create a customer",
-      "description": "Creates a new saved customer resource which you can later manipulate and save payment instruments to.",
+      "description": "Creates a customer using the `customer_id` you supply. Choose an identifier that maps to the payer in your own system and reuse it when retrieving the customer or associating checkouts and saved payment instruments with them.",
       "httpMethod": "POST",
       "path": "/v0.1/customers",
       "sample": "use sumup::{Authorization, Client};\n#[tokio::main]\nasync fn main() {\n    let client = Client::default()\n        .with_authorization(Authorization::api_key(\"sup_sk_test_...\"));\n    let body = sumup::resources::customers::CreateRequest {\n        customer_id: \"831ff8d4cd5958ab5670\".to_string(),\n        personal_details: None,\n    };\n    let response = client.customers().create(body).await.expect(\"create request failed\");\n    println!(\"{response:#?}\");\n}\n"
@@ -78,7 +78,7 @@
       "id": "CreateMerchantMember",
       "operationId": "CreateMerchantMember",
       "summary": "Create a member",
-      "description": "Create a merchant member.",
+      "description": "Adds a member to the merchant account with the specified roles.\n\nBy default, sends an invitation email to the provided address. The recipient must accept the invitation to join the account.\nWhen `is_managed_user` is `true`, creates a managed user with the provided password and optional nickname and assigns the roles directly, without sending an invitation.",
       "httpMethod": "POST",
       "path": "/v0.1/merchants/{merchant_code}/members",
       "sample": "use sumup::{Authorization, Client};\n#[tokio::main]\nasync fn main() {\n    let client = Client::default()\n        .with_authorization(Authorization::api_key(\"sup_sk_test_...\"));\n    let body = sumup::resources::members::CreateRequest {\n        attributes: None,\n        email: \"karl.berg@example.com\".to_string(),\n        is_managed_user: None,\n        metadata: None,\n        nickname: None,\n        password: None,\n        roles: vec![\"role_employee\".to_string()],\n    };\n    let response = client\n        .members()\n        .create(\"MERCHANT_CODE\", body)\n        .await\n        .expect(\"create request failed\");\n    println!(\"{response:#?}\");\n}\n"
@@ -168,7 +168,7 @@
       "id": "GetCheckout",
       "operationId": "GetCheckout",
       "summary": "Retrieve a checkout",
-      "description": "Retrieves an identified checkout resource. Use this request after processing a checkout to confirm its status and inform the end user respectively.",
+      "description": "Retrieves a checkout by its SumUp `checkout_id`. After processing a payment, returning from a redirect, or receiving a checkout notification, retrieve the checkout to confirm its current `status` before updating your order or displaying the payment outcome to the payer.",
       "httpMethod": "GET",
       "path": "/v0.1/checkouts/{checkout_id}",
       "sample": "use sumup::{Authorization, Client};\n#[tokio::main]\nasync fn main() {\n    let client = Client::default()\n        .with_authorization(Authorization::api_key(\"sup_sk_test_...\"));\n    let response = client\n        .checkouts()\n        .get(\"CHECKOUT_ID\")\n        .await\n        .expect(\"get request failed\");\n    println!(\"{response:#?}\");\n}\n"
@@ -177,7 +177,7 @@
       "id": "GetCustomer",
       "operationId": "GetCustomer",
       "summary": "Retrieve a customer",
-      "description": "Retrieves an identified saved customer resource through the unique `customer_id` parameter, generated upon customer creation.",
+      "description": "Retrieves a saved customer using the `customer_id` you supplied when creating the customer.",
       "httpMethod": "GET",
       "path": "/v0.1/customers/{customer_id}",
       "sample": "use sumup::{Authorization, Client};\n#[tokio::main]\nasync fn main() {\n    let client = Client::default()\n        .with_authorization(Authorization::api_key(\"sup_sk_test_...\"));\n    let response = client\n        .customers()\n        .get(\"CUSTOMER_ID\")\n        .await\n        .expect(\"get request failed\");\n    println!(\"{response:#?}\");\n}\n"
@@ -213,7 +213,7 @@
       "id": "GetPaymentMethods",
       "operationId": "GetPaymentMethods",
       "summary": "Get available payment methods",
-      "description": "Get payment methods available for the given merchant to use with a checkout.",
+      "description": "Lists the payment methods available to the merchant for checkout payments. Use the optional amount and currency filters to check eligibility for a particular payment before presenting payment options to the payer.",
       "httpMethod": "GET",
       "path": "/v0.1/merchants/{merchant_code}/payment-methods",
       "sample": "use sumup::{Authorization, Client};\n#[tokio::main]\nasync fn main() {\n    let client = Client::default()\n        .with_authorization(Authorization::api_key(\"sup_sk_test_...\"));\n    let response = client\n        .checkouts()\n        .list_available_payment_methods(\"MERCHANT_CODE\", Default::default())\n        .await\n        .expect(\"list_available_payment_methods request failed\");\n    println!(\"{response:#?}\");\n}\n"
@@ -258,7 +258,7 @@
       "id": "GetReceipt",
       "operationId": "GetReceipt",
       "summary": "Retrieve receipt details",
-      "description": "Retrieves receipt specific data for a transaction.",
+      "description": "Retrieves structured receipt data for a transaction belonging to the merchant specified by `mid`. The path accepts either the SumUp transaction ID or transaction code. Provide `tx_event_id` to include a specific transaction event, such as a refund, on the receipt.",
       "httpMethod": "GET",
       "path": "/v1.1/receipts/{transaction_id}",
       "sample": "use sumup::{Authorization, Client};\n#[tokio::main]\nasync fn main() {\n    let client = Client::default()\n        .with_authorization(Authorization::api_key(\"sup_sk_test_...\"));\n    let response = client\n        .receipts()\n        .get(\"TRANSACTION_ID\", Default::default())\n        .await\n        .expect(\"get request failed\");\n    println!(\"{response:#?}\");\n}\n"
@@ -348,7 +348,7 @@
       "id": "ListTransactionsV2.1",
       "operationId": "ListTransactionsV2.1",
       "summary": "List transactions",
-      "description": "Lists detailed history of all transactions associated with the merchant profile.",
+      "description": "Lists transaction history for the merchant, with optional filters for payment type, status, and date range. The response contains the current page in `items` and pagination query strings in `links`.\n\nTo request another page, use the query string from the relevant link's `href` with this history endpoint. Use `changes_since` when retrieving transactions modified since a previous synchronization, including transactions created earlier whose status has changed.",
       "httpMethod": "GET",
       "path": "/v2.1/merchants/{merchant_code}/transactions/history",
       "sample": "use sumup::{Authorization, Client};\n#[tokio::main]\nasync fn main() {\n    let client = Client::default()\n        .with_authorization(Authorization::api_key(\"sup_sk_test_...\"));\n    let response = client\n        .transactions()\n        .list(\"MERCHANT_CODE\", Default::default())\n        .await\n        .expect(\"list request failed\");\n    println!(\"{response:#?}\");\n}\n"
@@ -408,7 +408,7 @@
       "operationId": "RefundTransaction",
       "example": "default",
       "summary": "Refund a transaction",
-      "description": "Refunds an identified transaction either in full or partially.",
+      "description": "Refunds a transaction identified by its SumUp transaction ID. Omit the request body to request a full refund, or provide `amount` for a partial refund in the transaction's currency.\n\nRetrieve the transaction afterwards to inspect its refunded amount and refund events. The transaction must be eligible for a refund; see the error responses for invalid amounts, permissions, and processing failures.",
       "httpMethod": "POST",
       "path": "/v1.0/merchants/{merchant_code}/payments/{transaction_id}/refunds",
       "sample": "use sumup::{Authorization, Client};\n#[tokio::main]\nasync fn main() {\n    let client = Client::default()\n        .with_authorization(Authorization::api_key(\"sup_sk_test_...\"));\n    let body = sumup::resources::transactions::RefundRequest {\n        amount: Some(5f32),\n    };\n    let response = client\n        .transactions()\n        .refund(\"MERCHANT_CODE\", \"TRANSACTION_ID\", Some(body))\n        .await\n        .expect(\"refund request failed\");\n    println!(\"{response:#?}\");\n}\n"
@@ -418,10 +418,10 @@
       "operationId": "UpdateCheckout",
       "example": "default",
       "summary": "Update a checkout",
-      "description": "Updates an identified checkout resource.",
+      "description": "Updates the amount, currency, description, reference, expiration, or customer associated with an existing checkout. Only the supplied fields are updated.\n\nThis request changes the checkout details; it does not charge a payment instrument. Process the checkout separately to attempt a payment.",
       "httpMethod": "PATCH",
       "path": "/v0.1/checkouts/{checkout_id}",
-      "sample": "use sumup::{Authorization, Client};\n#[tokio::main]\nasync fn main() {\n    let client = Client::default()\n        .with_authorization(Authorization::api_key(\"sup_sk_test_...\"));\n    let body = sumup::resources::checkouts::UpdateRequest {\n        amount: Some(12.5f32),\n        checkout_reference: Some(\"f00a8f74-b05d-4605-bd73-2a901bae5802\".to_string()),\n        currency: Some(sumup::resources::common::Currency::EUR),\n        customer_id: Some(\"831ff8d4cd5958ab5670\".to_string()),\n        description: Some(\"Updated purchase\".to_string()),\n        valid_until: Some(\n            sumup::Nullable::Value(\n                \"2020-02-29T10:56:56+00:00\".parse().expect(\"valid date\"),\n            ),\n        ),\n    };\n    let response = client\n        .checkouts()\n        .update(\"CHECKOUT_ID\", body)\n        .await\n        .expect(\"update request failed\");\n    println!(\"{response:#?}\");\n}\n"
+      "sample": "use sumup::{Authorization, Client};\n#[tokio::main]\nasync fn main() {\n    let client = Client::default()\n        .with_authorization(Authorization::api_key(\"sup_sk_test_...\"));\n    let body = sumup::resources::checkouts::UpdateRequest {\n        amount: Some(12.5f32),\n        checkout_reference: Some(\"f00a8f74-b05d-4605-bd73-2a901bae5802\".to_string()),\n        currency: Some(sumup::resources::common::Currency::EUR),\n        customer_id: Some(\"831ff8d4cd5958ab5670\".to_string()),\n        description: Some(\"Updated purchase\".to_string()),\n        valid_until: Some(\n            sumup::Nullable::Value(\"2030-12-31T23:59:59Z\".parse().expect(\"valid date\")),\n        ),\n    };\n    let response = client\n        .checkouts()\n        .update(\"CHECKOUT_ID\", body)\n        .await\n        .expect(\"update request failed\");\n    println!(\"{response:#?}\");\n}\n"
     },
     {
       "id": "UpdateCustomer",
@@ -436,7 +436,7 @@
       "id": "UpdateMerchantMember",
       "operationId": "UpdateMerchantMember",
       "summary": "Update a member",
-      "description": "Update the merchant member.",
+      "description": "Updates a merchant member and returns the updated member.\n\nProviding `roles` replaces the member's assigned roles and can grant or revoke access. Providing `metadata` replaces the entire metadata object.\nFor managed users, `user.nickname` changes the display name and `user.password` replaces the password. Updating the password also enables the managed user account.",
       "httpMethod": "PUT",
       "path": "/v0.1/merchants/{merchant_code}/members/{member_id}",
       "sample": "use sumup::{Authorization, Client};\n#[tokio::main]\nasync fn main() {\n    let client = Client::default()\n        .with_authorization(Authorization::api_key(\"sup_sk_test_...\"));\n    let body = sumup::resources::members::UpdateRequest {\n        ..Default::default()\n    };\n    let response = client\n        .members()\n        .update(\"MERCHANT_CODE\", \"MEMBER_ID\", body)\n        .await\n        .expect(\"update request failed\");\n    println!(\"{response:#?}\");\n}\n"
@@ -445,7 +445,7 @@
       "id": "UpdateMerchantRole",
       "operationId": "UpdateMerchantRole",
       "summary": "Update a role",
-      "description": "Update a custom role.",
+      "description": "Updates a custom role's name, description, or permissions and returns the updated role.\n\nProviding `permissions` replaces the role's permission list and changes the access granted to members assigned to that role. Omitted fields remain unchanged.",
       "httpMethod": "PATCH",
       "path": "/v0.1/merchants/{merchant_code}/roles/{role_id}",
       "sample": "use sumup::{Authorization, Client};\n#[tokio::main]\nasync fn main() {\n    let client = Client::default()\n        .with_authorization(Authorization::api_key(\"sup_sk_test_...\"));\n    let body = sumup::resources::roles::UpdateRequest {\n        name: Some(\"Senior Shop Manager III\".to_string()),\n        permissions: Some(\n            vec![\n                \"catalog_edit\".to_string(), \"taxes_access\".to_string(), \"members_edit\"\n                .to_string()\n            ],\n        ),\n        ..Default::default()\n    };\n    let response = client\n        .roles()\n        .update(\"MERCHANT_CODE\", \"ROLE_ID\", body)\n        .await\n        .expect(\"update request failed\");\n    println!(\"{response:#?}\");\n}\n"
@@ -454,7 +454,7 @@
       "id": "UpdateReader",
       "operationId": "UpdateReader",
       "summary": "Update a Reader",
-      "description": "Update a Reader.",
+      "description": "Updates a reader's name or metadata and returns the updated reader.\n\nProviding `metadata` replaces the entire metadata object; include all entries that should be retained. Omitted fields remain unchanged.",
       "httpMethod": "PATCH",
       "path": "/v0.1/merchants/{merchant_code}/readers/{reader_id}",
       "sample": "use sumup::{Authorization, Client};\n#[tokio::main]\nasync fn main() {\n    let client = Client::default()\n        .with_authorization(Authorization::api_key(\"sup_sk_test_...\"));\n    let body = sumup::resources::readers::UpdateRequest {\n        ..Default::default()\n    };\n    let response = client\n        .readers()\n        .update(\"MERCHANT_CODE\", \"READER_ID\", body)\n        .await\n        .expect(\"update request failed\");\n    println!(\"{response:#?}\");\n}\n"
