@@ -3,7 +3,7 @@
   "language": "java",
   "sdk": {
     "module": "com.sumup:sumup-sdk",
-    "version": "0.1.0"
+    "version": "0.1.1"
   },
   "openAPIVersion": "1.0.0",
   "samples": [
@@ -24,7 +24,7 @@
       "description": "Standard request body for creating a checkout",
       "httpMethod": "POST",
       "path": "/v0.1/checkouts",
-      "sample": "import com.sumup.sdk.SumUpClient;\n\npublic final class CreateCheckoutCheckoutSample {\n  public static void main(String[] args) throws Exception {\n    var client = new SumUpClient();\n\n    var result = client.checkouts().create(\n            com.sumup.sdk.models.CheckoutCreateRequest.builder()\n                .amount(10.1f)\n                .checkoutReference(\"f00a8f74-b05d-4605-bd73-2a901bae5802\")\n                .currency(com.sumup.sdk.models.Currency.of(\"EUR\"))\n                .description(\"Purchase\")\n                .merchantCode(\"MH4H92C7\")\n                .redirectUrl(\"https://sumup.com\")\n                .validUntil(java.time.OffsetDateTime.parse(\"2020-02-29T10:56:56+00:00\"))\n                .build()\n        );\n    System.out.println(result);\n  }\n}\n"
+      "sample": "import com.sumup.sdk.SumUpClient;\n\npublic final class CreateCheckoutCheckoutSample {\n  public static void main(String[] args) throws Exception {\n    var client = new SumUpClient();\n\n    var result = client.checkouts().create(\n            com.sumup.sdk.models.CheckoutCreateRequest.builder()\n                .amount(10.1f)\n                .checkoutReference(\"f00a8f74-b05d-4605-bd73-2a901bae5802\")\n                .currency(com.sumup.sdk.models.Currency.of(\"EUR\"))\n                .description(\"Purchase\")\n                .merchantCode(\"MH4H92C7\")\n                .redirectUrl(\"https://sumup.com\")\n                .validUntil(java.time.OffsetDateTime.parse(\"2030-12-31T23:59:59Z\"))\n                .build()\n        );\n    System.out.println(result);\n  }\n}\n"
     },
     {
       "id": "CreateCheckout.Checkout3DS",
@@ -60,7 +60,7 @@
       "id": "CreateCustomer",
       "operationId": "CreateCustomer",
       "summary": "Create a customer",
-      "description": "Creates a new saved customer resource which you can later manipulate and save payment instruments to.",
+      "description": "Creates a customer using the `customer_id` you supply. Choose an identifier that maps to the payer in your own system and reuse it when retrieving the customer or associating checkouts and saved payment instruments with them.",
       "httpMethod": "POST",
       "path": "/v0.1/customers",
       "sample": "import com.sumup.sdk.SumUpClient;\n\npublic final class CreateCustomerSample {\n  public static void main(String[] args) throws Exception {\n    var client = new SumUpClient();\n\n    var result = client.customers().create(\n            com.sumup.sdk.models.Customer.builder()\n                .customerId(\"831ff8d4cd5958ab5670\")\n                .build()\n        );\n    System.out.println(result);\n  }\n}\n"
@@ -72,13 +72,13 @@
       "description": "Initiates a payment on the SumUp Go terminal identified by the reader ID.\n\nUse `client_transaction_id` as an idempotency key: retrying the request with the same value returns the result of the original payment instead of creating a duplicate.",
       "httpMethod": "POST",
       "path": "/v0/merchants/{merchant_code}/readers/{reader_id}/go-checkout",
-      "sample": "import com.sumup.sdk.SumUpClient;\n\npublic final class CreateGoReaderCheckoutSample {\n  public static void main(String[] args) throws Exception {\n    var client = new SumUpClient();\n\n    var result = client.readers().createGoCheckout(\n            \"MK10CL2A\",\n            \"rdr_3MSAFM23CK82VSTT4BN6RWSQ65\",\n            com.sumup.sdk.models.ReaderPaymentRequestParams.builder()\n                .clientTransactionId(\"19e12390-72cf-4f9f-80b5-b0c8a67fa43f\")\n                .totalAmount(com.sumup.sdk.models.Amount.builder()\n                .currency(\"MXN\")\n                .value(1000L)\n                .build())\n                .build()\n        );\n    System.out.println(result);\n  }\n}\n"
+      "sample": "import com.sumup.sdk.SumUpClient;\n\npublic final class CreateGoReaderCheckoutSample {\n  public static void main(String[] args) throws Exception {\n    var client = new SumUpClient();\n\n    var result = client.readers().createGoCheckout(\n            \"MK10CL2A\",\n            \"rdr_3MSAFM23CK82VSTT4BN6RWSQ65\",\n            com.sumup.sdk.models.ReaderPaymentRequestParams.builder()\n                .clientTransactionId(\"19e12390-72cf-4f9f-80b5-b0c8a67fa43f\")\n                .totalAmount(com.sumup.sdk.models.ReaderPaymentRequestParamsTotalAmount.builder()\n                .currency(\"MXN\")\n                .value(1000L)\n                .build())\n                .build()\n        );\n    System.out.println(result);\n  }\n}\n"
     },
     {
       "id": "CreateMerchantMember",
       "operationId": "CreateMerchantMember",
       "summary": "Create a member",
-      "description": "Create a merchant member.",
+      "description": "Adds a member to the merchant account with the specified roles.\n\nBy default, sends an invitation email to the provided address. The recipient must accept the invitation to join the account.\nWhen `is_managed_user` is `true`, creates a managed user with the provided password and optional nickname and assigns the roles directly, without sending an invitation.",
       "httpMethod": "POST",
       "path": "/v0.1/merchants/{merchant_code}/members",
       "sample": "import com.sumup.sdk.SumUpClient;\n\npublic final class CreateMerchantMemberSample {\n  public static void main(String[] args) throws Exception {\n    var client = new SumUpClient();\n\n    var result = client.members().create(\n            \"MK10CL2A\",\n            com.sumup.sdk.models.CreateMerchantMemberRequest.builder()\n                .email(\"karl.berg@example.com\")\n                .roles(java.util.List.of(\"role_employee\"))\n                .build()\n        );\n    System.out.println(result);\n  }\n}\n"
@@ -168,7 +168,7 @@
       "id": "GetCheckout",
       "operationId": "GetCheckout",
       "summary": "Retrieve a checkout",
-      "description": "Retrieves an identified checkout resource. Use this request after processing a checkout to confirm its status and inform the end user respectively.",
+      "description": "Retrieves a checkout by its SumUp `checkout_id`. After processing a payment, returning from a redirect, or receiving a checkout notification, retrieve the checkout to confirm its current `status` before updating your order or displaying the payment outcome to the payer.",
       "httpMethod": "GET",
       "path": "/v0.1/checkouts/{checkout_id}",
       "sample": "import com.sumup.sdk.SumUpClient;\n\npublic final class GetCheckoutSample {\n  public static void main(String[] args) throws Exception {\n    var client = new SumUpClient();\n\n    var result = client.checkouts().get(\n            \"4e425463-3e1b-431d-83fa-1e51c2925e99\"\n        );\n    System.out.println(result);\n  }\n}\n"
@@ -177,7 +177,7 @@
       "id": "GetCustomer",
       "operationId": "GetCustomer",
       "summary": "Retrieve a customer",
-      "description": "Retrieves an identified saved customer resource through the unique `customer_id` parameter, generated upon customer creation.",
+      "description": "Retrieves a saved customer using the `customer_id` you supplied when creating the customer.",
       "httpMethod": "GET",
       "path": "/v0.1/customers/{customer_id}",
       "sample": "import com.sumup.sdk.SumUpClient;\n\npublic final class GetCustomerSample {\n  public static void main(String[] args) throws Exception {\n    var client = new SumUpClient();\n\n    var result = client.customers().get(\n            \"831ff8d4cd5958ab5670\"\n        );\n    System.out.println(result);\n  }\n}\n"
@@ -213,7 +213,7 @@
       "id": "GetPaymentMethods",
       "operationId": "GetPaymentMethods",
       "summary": "Get available payment methods",
-      "description": "Get payment methods available for the given merchant to use with a checkout.",
+      "description": "Lists the payment methods available to the merchant for checkout payments. Use the optional amount and currency filters to check eligibility for a particular payment before presenting payment options to the payer.",
       "httpMethod": "GET",
       "path": "/v0.1/merchants/{merchant_code}/payment-methods",
       "sample": "import com.sumup.sdk.SumUpClient;\n\npublic final class GetPaymentMethodsSample {\n  public static void main(String[] args) throws Exception {\n    var client = new SumUpClient();\n\n    var result = client.checkouts().listAvailablePaymentMethods(\n            \"MH4H92C7\"\n        );\n    System.out.println(result);\n  }\n}\n"
@@ -258,7 +258,7 @@
       "id": "GetReceipt",
       "operationId": "GetReceipt",
       "summary": "Retrieve receipt details",
-      "description": "Retrieves receipt specific data for a transaction.",
+      "description": "Retrieves structured receipt data for a transaction belonging to the merchant specified by `mid`. The path accepts either the SumUp transaction ID or transaction code. Provide `tx_event_id` to include a specific transaction event, such as a refund, on the receipt.",
       "httpMethod": "GET",
       "path": "/v1.1/receipts/{transaction_id}",
       "sample": "import com.sumup.sdk.SumUpClient;\n\npublic final class GetReceiptSample {\n  public static void main(String[] args) throws Exception {\n    var client = new SumUpClient();\n\n    var result = client.receipts().get(\n            \"410fc44a-5956-44e1-b5cc-19c6f8d727a4\",\n            \"MH4H92C7\"\n        );\n    System.out.println(result);\n  }\n}\n"
@@ -348,7 +348,7 @@
       "id": "ListTransactionsV2.1",
       "operationId": "ListTransactionsV2.1",
       "summary": "List transactions",
-      "description": "Lists detailed history of all transactions associated with the merchant profile.",
+      "description": "Lists transaction history for the merchant, with optional filters for payment type, status, and date range. The response contains the current page in `items` and pagination query strings in `links`.\n\nTo request another page, use the query string from the relevant link's `href` with this history endpoint. Use `changes_since` when retrieving transactions modified since a previous synchronization, including transactions created earlier whose status has changed.",
       "httpMethod": "GET",
       "path": "/v2.1/merchants/{merchant_code}/transactions/history",
       "sample": "import com.sumup.sdk.SumUpClient;\n\npublic final class ListTransactionsV21Sample {\n  public static void main(String[] args) throws Exception {\n    var client = new SumUpClient();\n\n    var result = client.transactions().list(\n            \"MH4H92C7\"\n        );\n    System.out.println(result);\n  }\n}\n"
@@ -407,7 +407,7 @@
       "id": "RefundTransaction",
       "operationId": "RefundTransaction",
       "summary": "Refund a transaction",
-      "description": "Refunds an identified transaction either in full or partially.",
+      "description": "Refunds a transaction identified by its SumUp transaction ID. Omit the request body to request a full refund, or provide `amount` for a partial refund in the transaction's currency.\n\nRetrieve the transaction afterwards to inspect its refunded amount and refund events. The transaction must be eligible for a refund; see the error responses for invalid amounts, permissions, and processing failures.",
       "httpMethod": "POST",
       "path": "/v1.0/merchants/{merchant_code}/payments/{transaction_id}/refunds",
       "sample": "import com.sumup.sdk.SumUpClient;\n\npublic final class RefundTransactionSample {\n  public static void main(String[] args) throws Exception {\n    var client = new SumUpClient();\n\n    var result = client.transactions().refund(\n            \"MH4H92C7\",\n            \"4ffb8dfc-7f2b-413d-a497-2ad00766585e\",\n            com.sumup.sdk.models.RefundTransactionRequest.builder()\n                .amount(5.0f)\n                .build()\n        );\n    System.out.println(result);\n  }\n}\n"
@@ -416,10 +416,10 @@
       "id": "UpdateCheckout",
       "operationId": "UpdateCheckout",
       "summary": "Update a checkout",
-      "description": "Updates an identified checkout resource.",
+      "description": "Updates the amount, currency, description, reference, expiration, or customer associated with an existing checkout. Only the supplied fields are updated.\n\nThis request changes the checkout details; it does not charge a payment instrument. Process the checkout separately to attempt a payment.",
       "httpMethod": "PATCH",
       "path": "/v0.1/checkouts/{checkout_id}",
-      "sample": "import com.sumup.sdk.SumUpClient;\n\npublic final class UpdateCheckoutSample {\n  public static void main(String[] args) throws Exception {\n    var client = new SumUpClient();\n\n    var result = client.checkouts().update(\n            \"4e425463-3e1b-431d-83fa-1e51c2925e99\",\n            com.sumup.sdk.models.CheckoutUpdateRequest.builder()\n                .amount(12.5f)\n                .checkoutReference(\"f00a8f74-b05d-4605-bd73-2a901bae5802\")\n                .currency(com.sumup.sdk.models.Currency.of(\"EUR\"))\n                .customerId(\"831ff8d4cd5958ab5670\")\n                .description(\"Updated purchase\")\n                .validUntil(java.time.OffsetDateTime.parse(\"2020-02-29T10:56:56+00:00\"))\n                .build()\n        );\n    System.out.println(result);\n  }\n}\n"
+      "sample": "import com.sumup.sdk.SumUpClient;\n\npublic final class UpdateCheckoutSample {\n  public static void main(String[] args) throws Exception {\n    var client = new SumUpClient();\n\n    var result = client.checkouts().update(\n            \"4e425463-3e1b-431d-83fa-1e51c2925e99\",\n            com.sumup.sdk.models.CheckoutUpdateRequest.builder()\n                .amount(12.5f)\n                .checkoutReference(\"f00a8f74-b05d-4605-bd73-2a901bae5802\")\n                .currency(com.sumup.sdk.models.Currency.of(\"EUR\"))\n                .customerId(\"831ff8d4cd5958ab5670\")\n                .description(\"Updated purchase\")\n                .validUntil(java.time.OffsetDateTime.parse(\"2030-12-31T23:59:59Z\"))\n                .build()\n        );\n    System.out.println(result);\n  }\n}\n"
     },
     {
       "id": "UpdateCustomer",
@@ -434,7 +434,7 @@
       "id": "UpdateMerchantMember",
       "operationId": "UpdateMerchantMember",
       "summary": "Update a member",
-      "description": "Update the merchant member.",
+      "description": "Updates a merchant member and returns the updated member.\n\nProviding `roles` replaces the member's assigned roles and can grant or revoke access. Providing `metadata` replaces the entire metadata object.\nFor managed users, `user.nickname` changes the display name and `user.password` replaces the password. Updating the password also enables the managed user account.",
       "httpMethod": "PUT",
       "path": "/v0.1/merchants/{merchant_code}/members/{member_id}",
       "sample": "import com.sumup.sdk.SumUpClient;\n\npublic final class UpdateMerchantMemberSample {\n  public static void main(String[] args) throws Exception {\n    var client = new SumUpClient();\n\n    var result = client.members().update(\n            \"mem_WZsm7QTPhVrompscmPhoGTXXcrd58fr9MOhP\",\n            \"MK10CL2A\",\n            com.sumup.sdk.models.UpdateMerchantMemberRequest.builder()\n                .build()\n        );\n    System.out.println(result);\n  }\n}\n"
@@ -443,7 +443,7 @@
       "id": "UpdateMerchantRole",
       "operationId": "UpdateMerchantRole",
       "summary": "Update a role",
-      "description": "Update a custom role.",
+      "description": "Updates a custom role's name, description, or permissions and returns the updated role.\n\nProviding `permissions` replaces the role's permission list and changes the access granted to members assigned to that role. Omitted fields remain unchanged.",
       "httpMethod": "PATCH",
       "path": "/v0.1/merchants/{merchant_code}/roles/{role_id}",
       "sample": "import com.sumup.sdk.SumUpClient;\n\npublic final class UpdateMerchantRoleSample {\n  public static void main(String[] args) throws Exception {\n    var client = new SumUpClient();\n\n    var result = client.roles().update(\n            \"MK10CL2A\",\n            \"role_WZsm7QTPhVrompscmPhoGTXXcrd58fr9MOhP\",\n            com.sumup.sdk.models.UpdateMerchantRoleRequest.builder()\n                .name(\"Senior Shop Manager III\")\n                .permissions(java.util.List.of(\"catalog_edit\", \"taxes_access\", \"members_edit\"))\n                .build()\n        );\n    System.out.println(result);\n  }\n}\n"
@@ -452,7 +452,7 @@
       "id": "UpdateReader",
       "operationId": "UpdateReader",
       "summary": "Update a Reader",
-      "description": "Update a Reader.",
+      "description": "Updates a reader's name or metadata and returns the updated reader.\n\nProviding `metadata` replaces the entire metadata object; include all entries that should be retained. Omitted fields remain unchanged.",
       "httpMethod": "PATCH",
       "path": "/v0.1/merchants/{merchant_code}/readers/{reader_id}",
       "sample": "import com.sumup.sdk.SumUpClient;\n\npublic final class UpdateReaderSample {\n  public static void main(String[] args) throws Exception {\n    var client = new SumUpClient();\n\n    var result = client.readers().update(\n            \"MK10CL2A\",\n            \"rdr_3MSAFM23CK82VSTT4BN6RWSQ65\",\n            com.sumup.sdk.models.UpdateReaderRequest.builder()\n                .build()\n        );\n    System.out.println(result);\n  }\n}\n"
