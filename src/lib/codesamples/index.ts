@@ -2,12 +2,12 @@ import cliSamples from "../../codesamples/cli.json";
 import dotnetSamples from "../../codesamples/dotnet.json";
 import goSamples from "../../codesamples/go.json";
 import javaSamples from "../../codesamples/java.json";
+import phpSamples from "../../codesamples/php.json";
 import pythonSamples from "../../codesamples/python.json";
 import rustSamples from "../../codesamples/rust.json";
 import typescriptSamples from "../../codesamples/typescript.json";
 import type { OperationObject } from "../../types/openapi";
 import { curl } from "./curl";
-import { php } from "./php";
 
 type CodeSamples = {
   language: string;
@@ -61,6 +61,7 @@ const cli = fromVendoredSamples(cliSamples);
 const dotnet = fromVendoredSamples(dotnetSamples);
 const go = fromVendoredSamples(goSamples);
 const java = fromVendoredSamples(javaSamples);
+const php = fromVendoredSamples(phpSamples);
 const python = fromVendoredSamples(pythonSamples);
 const rust = fromVendoredSamples(rustSamples);
 const typescript = fromVendoredSamples(typescriptSamples);

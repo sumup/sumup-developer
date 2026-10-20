@@ -4,6 +4,7 @@ import cliSamples from "../../codesamples/cli.json";
 import dotnetSamples from "../../codesamples/dotnet.json";
 import goSamples from "../../codesamples/go.json";
 import javaSamples from "../../codesamples/java.json";
+import phpSamples from "../../codesamples/php.json";
 import pythonSamples from "../../codesamples/python.json";
 import rustSamples from "../../codesamples/rust.json";
 import typescriptSamples from "../../codesamples/typescript.json";
@@ -87,6 +88,7 @@ describe("code samples", () => {
     [".NET", dotnet, dotnetSamples],
     ["Go", go, goSamples],
     ["Java", java, javaSamples],
+    ["PHP", php, phpSamples],
     ["Rust", rust, rustSamples],
     ["TypeScript", typescript, typescriptSamples],
     ["CLI", cli, cliSamples],
@@ -110,17 +112,8 @@ describe("code samples", () => {
     expect(() => cli(operation)).toThrow(
       "Missing bash code sample for UnknownOperation",
     );
-  });
-
-  it("php sample uses the SumUp PHP SDK", () => {
-    expect(php(checkoutOperation)).toBe(
-      `$sumup = new \\SumUp\\SumUp();
-
-$result = $sumup->checkouts->create('MC123', [
-  'amount' => 1000,
-  'currency' => 'EUR',
-  'description' => 'Online order #42',
-]);`,
+    expect(() => php(operation)).toThrow(
+      "Missing php code sample for UnknownOperation",
     );
   });
 
