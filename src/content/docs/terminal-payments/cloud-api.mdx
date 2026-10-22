@@ -345,6 +345,60 @@ There is no confirmation of the termination.
 
 Read the [Terminate Checkout API endpoint documentation](/api/readers/terminate-checkout) for details on the API request, examples, and parameter descriptions.
 
+### Reader Settings (Menu Lock)
+
+For unattended Solo deployments, you can require a 4-digit passcode before anyone can open the reader menu. Configure menu lock remotely with the reader settings endpoints.
+
+Menu lock is available for Solo readers paired via the Cloud API. It is not supported on Solo Lite.
+
+#### Update Reader Settings
+
+Send a `PATCH` request to enable or disable menu lock and set the passcode. The request is applied on the reader only after the device acknowledges it.
+
+```bash
+curl -X PATCH \
+  https://api.sumup.com/v0.1/merchants/$SUMUP_MERCHANT_CODE/readers/$READER_ID/settings \
+  -H "Authorization: Bearer $SUMUP_API_KEY" \
+  -H 'Content-Type: application/json' \
+  -d '{
+        "menu_lock": {
+          "enabled": true,
+          "passcode": "1234"
+        }
+      }'
+```
+
+`PATCH` is partial: send only the fields you want to change. For example, you can update `passcode` without sending `enabled`, or set `enabled` to `false` to deactivate menu lock while keeping the stored passcode.
+
+#### Get Reader Settings
+
+Retrieve the current menu lock settings for a reader.
+
+```bash
+curl \
+  https://api.sumup.com/v0.1/merchants/$SUMUP_MERCHANT_CODE/readers/$READER_ID/settings \
+  -H "Authorization: Bearer $SUMUP_API_KEY"
+```
+
+Example response:
+
+```json
+{
+  "menu_lock": {
+    "enabled": true,
+    "passcode": "1234"
+  }
+}
+```
+
+When the reader is online, the response reflects the settings reported by the device. When the reader is offline, the response returns the last stored menu lock configuration.
+
+Important notes:
+
+- The target device must be online for `PATCH`, otherwise the update is rejected. A successful response means the reader applied the settings.
+- `passcode` must be a 4-digit numeric string (for example `"1234"`). If you enable menu lock without providing a passcode, the reader uses `"0000"`.
+- On the Solo reader, when menu lock is enabled, opening the menu prompts for the passcode on the lock screen. Entering the correct code unlocks the menu; an incorrect code shows an error and allows retry.
+
 ### List Connected Readers
 
 List all readers connected to your merchant account.
