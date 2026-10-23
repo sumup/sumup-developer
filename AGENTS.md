@@ -16,7 +16,7 @@ The portal uses Astro with Nimbus. Application source sits in `src/`, with `page
 
 ## Coding Style & Naming Conventions
 
-Prettier (project defaults) handles whitespace, so commit formatted files rather than manual styling. Stick to TypeScript where possible; Astro islands may embed React components. Name components and directories in PascalCase (`src/components/LogoSlider`), utility modules in camelCase (`src/utils/formats.ts`), and content files in kebab-case (`src/content/docs/payments-overview.mdx`). Favor SumUp design tokens and Circuit UI primitives; extend `src/styles/portal.css` and `src/styles/prose.css` sparingly. Do not add Tailwind.
+Prettier (project defaults) handles whitespace, so commit formatted files rather than manual styling. Stick to TypeScript where possible; Astro islands may embed React components. Name components and directories in PascalCase (`src/components/LogoSlider`), utility modules in camelCase (`src/utils/formats.ts`), and content files in kebab-case (`src/content/docs/payments-overview.mdx`). Favor SumUp design tokens and Circuit UI primitives; extend `src/styles/portal.css` and `src/styles/prose.css` sparingly. The API reference uses Nimbus’s Tailwind theme under `src/components/ApiReference/`. Keep Tailwind out of other portal components.
 
 ## Docs Frontmatter Requirements
 

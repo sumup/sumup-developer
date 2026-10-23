@@ -1,6 +1,7 @@
 ---
 import type { SidebarItem } from "@cloudflare/nimbus-docs/types";
 import MobileNavigation from "./MobileNavigation.astro";
+import { primaryNavigation as navigation } from "@lib/navigation";
 import { SumUpLogo } from "@sumup-oss/circuit-ui";
 import {
   ArrowSlanted,
@@ -13,21 +14,21 @@ import {
 interface Props {
   sidebar?: SidebarItem[] | false;
   sidebarSections?: boolean;
+  /** Nimbus's API layout owns its navigation drawer. */
+  apiNavigation?: boolean;
 }
 
-const { sidebar = false, sidebarSections = false } = Astro.props;
+const {
+  sidebar = false,
+  sidebarSections = false,
+  apiNavigation = false,
+} = Astro.props;
 const pathname = Astro.url.pathname;
 const activeSection = pathname.startsWith("/api")
   ? "api"
   : pathname.startsWith("/changelog")
     ? "changelog"
     : "docs";
-
-const navigation = [
-  { id: "docs", label: "Docs", href: "/" },
-  { id: "api", label: "API", href: "/api/" },
-  { id: "changelog", label: "Changelog", href: "/changelog/" },
-];
 ---
 
 <header class="portal-header">
@@ -83,9 +84,10 @@ const navigation = [
       <button
         class="icon-button mobile-menu-button"
         type="button"
-        data-mobile-menu-button
+        data-mobile-menu-button={apiNavigation ? undefined : ""}
+        data-menu-btn={apiNavigation ? "" : undefined}
         aria-expanded="false"
-        aria-controls="mobile-navigation"
+        aria-controls={apiNavigation ? undefined : "mobile-navigation"}
         aria-haspopup="dialog"
         aria-label="Open navigation"
       >
@@ -95,12 +97,14 @@ const navigation = [
   </div>
 </header>
 
-<MobileNavigation
-  sidebar={sidebar}
-  sidebarSections={sidebarSections}
-  navigation={navigation}
-  activeSection={activeSection}
-/>
+{!apiNavigation && (
+  <MobileNavigation
+    sidebar={sidebar}
+    sidebarSections={sidebarSections}
+    navigation={navigation}
+    activeSection={activeSection}
+  />
+)}
 
 <script>
   const applyShortcutLabel = () => {

@@ -61,6 +61,23 @@ describe("search dialog", () => {
     expect(results()).toEqual(["latest"]);
   });
 
+  it("closes on Escape even when the search input contains a query", () => {
+    dialog.close = vi.fn(() => {
+      dialog.open = false;
+    });
+    dialog.openSearch?.();
+    type("checkout");
+    input.dispatchEvent(
+      new KeyboardEvent("keydown", {
+        key: "Escape",
+        bubbles: true,
+        cancelable: true,
+      }),
+    );
+    expect(dialog.open).toBe(false);
+    expect(dialog.close).toHaveBeenCalledOnce();
+  });
+
   it("invalidates a request immediately when the input is cleared", async () => {
     const pending = Promise.withResolvers<SearchResult[]>();
     search.mockReturnValue(pending.promise);

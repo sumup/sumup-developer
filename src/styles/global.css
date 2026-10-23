@@ -20,7 +20,7 @@ body {
   min-height: 100vh;
   color: var(--cui-fg-normal);
   background: var(--cui-bg-normal);
-  font-family: "SumUp Narrow", "SumUp Narrow fallback", sans-serif;
+  font-family: var(--cui-font-stack-default);
   font-size: var(--cui-body-m-font-size);
   line-height: var(--cui-body-m-line-height);
   text-rendering: optimizeLegibility;

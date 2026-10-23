@@ -1,5 +1,7 @@
 import { readFile } from "node:fs/promises";
 import { markdownComponents } from "./src/lib/markdownComponents";
+import { createApiReference } from "./src/lib/api/reference";
+import tailwindcss from "@tailwindcss/vite";
 
 import cloudflare from "@astrojs/cloudflare";
 import externalLinks from "./src/plugins/satteri/external-links";
@@ -39,6 +41,8 @@ function rawFonts(extensions: string[]): Plugin {
   };
 }
 
+const apiReference = createApiReference();
+
 const head = defineNimbusConfig({
   site: "https://developer.sumup.com",
   title: "SumUp Developer",
@@ -51,6 +55,23 @@ const head = defineNimbusConfig({
   socialImage: "/og/index.png",
   socialImageAlt: "SumUp Developer documentation preview",
   agents: { mcp: true },
+  api: [
+    {
+      collection: "api",
+      label: "SumUp API",
+      spec: apiReference.spec,
+      requireOperationId: true,
+      schemaPages: true,
+      routes: {
+        convention: "resource-action-v2",
+        operations: apiReference.operations,
+      },
+      samples: { generate: ["curl"], keepGenerated: ["curl"] },
+      extensions: ["x-beta"],
+      // Keep /openapi.json as the authoritative, unmodified public contract.
+      publishSpec: false,
+    },
+  ],
   sidebar: {
     defaultCollapsed: true,
     items: [
@@ -205,12 +226,13 @@ export default defineConfig({
       dedupe: ["react", "react-dom"],
       noExternal: ["@sumup-oss/circuit-ui", "@sumup-oss/illustrations"],
     },
-    plugins: [rawFonts([".woff2", ".woff", ".ttf", ".otf"])],
+    plugins: [tailwindcss(), rawFonts([".woff2", ".woff", ".ttf", ".otf"])],
   },
   integrations: [
     react(),
     nimbus(head, {
-      icons: false,
+      // Stock API components use Nimbus's Phosphor icons.
+      icons: { include: { ph: ["*"] } },
       mdx: { optimize: true },
       markdown: {
         componentMap: await markdownComponents(),

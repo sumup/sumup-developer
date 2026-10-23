@@ -92,14 +92,11 @@ for (const file of site.files.filter((file) => file.endsWith("/llms.txt"))) {
 let alternates = 0;
 for (const file of site.htmlFiles) {
   const page = await site.page(file);
-  // API fragments keep their separate CommonMark renderer until the API review.
-  if (!site.outputPath(file).startsWith("api/")) {
-    assert.deepEqual(
-      page.rawAdmonitions,
-      [],
-      `${file}: unrendered callout directives`,
-    );
-  }
+  assert.deepEqual(
+    page.rawAdmonitions,
+    [],
+    `${file}: unrendered callout directives`,
+  );
   for (const href of [page.markdownUrl, page.llmsUrl].filter(Boolean)) {
     reachable(href, site.urlForFile(file));
     alternates++;
@@ -252,6 +249,54 @@ for await (const file of glob("src/content/docs/**/*.{md,mdx}")) {
   );
   pages++;
 }
+let apiPages = 0;
+for (const file of site.htmlFiles.filter((file) =>
+  site.outputPath(file).startsWith("api/"),
+)) {
+  const path = site.outputPath(file).replace(/index\.html$/, "");
+  const markdown = await readFile(join(output, path, "index.md"), "utf8");
+  const bundled = fullSections.get(`${siteOrigin}/${path}`);
+  assert(bundled, `${path}: missing API page from the full bundle`);
+  const publishedCode = codeBlocks(markdownToMdast(markdown));
+  const bundledCode = codeBlocks(markdownToMdast(bundled));
+  for (const code of (await site.page(file)).codeBlocks) {
+    const sameCode = (candidate) =>
+      candidate.replace(/\n$/, "") === code.replace(/\n$/, "");
+    assert(
+      publishedCode.some(sameCode),
+      `${path}: API example missing from Markdown`,
+    );
+    assert(
+      bundledCode.some(sameCode),
+      `${path}: API example missing from the full bundle`,
+    );
+  }
+  for (const href of markdownLinks(markdownToMdast(markdown)))
+    reachable(href, `${siteOrigin}/${path}`);
+  apiPages++;
+}
+assert(apiPages > 0, "No Nimbus API pages were built");
+const coordinates = JSON.parse(
+  await readFile(join(output, "nimbus-api/coordinates.json"), "utf8"),
+);
+const apiCoordinates = coordinates.collections["api"];
+assert(apiCoordinates?.pages.length > 0, "Missing API citation coordinates");
+for (const group of apiCoordinates.pages) {
+  const target = site.resolve(new URL(group.url, siteOrigin));
+  assert(target?.file, `Missing API coordinate page: ${group.url}`);
+  const page = await site.page(target.file);
+  for (const [coordinate, fragment] of Object.entries(group.entries)) {
+    if (fragment === null) continue;
+    const anchor = fragment === 0 ? coordinate : fragment;
+    assert(
+      page.ids.has(anchor),
+      `${group.url}: citation ${coordinate} points at missing #${anchor}`,
+    );
+  }
+}
+console.log(
+  `Verified ${apiPages} Nimbus API pages and their rendered examples in Markdown and the full bundle.`,
+);
 const contract = JSON.parse(
   await readFile(join(output, "openapi.json"), "utf8"),
 );

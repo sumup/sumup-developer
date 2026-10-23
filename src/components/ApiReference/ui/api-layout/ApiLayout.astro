@@ -1,0 +1,294 @@
+---
+/**
+ * ApiLayout — the three-column reference shell (nav · content · code rail),
+ * composing ApiSidebar + ApiFieldList + ApiCodeRail. It renders any
+ * `ApiPageProps` by kind, reading the frozen view-model only. Drop it inside a
+ * page that provides the document shell; widths inherit the site's layout
+ * tokens (`--nb-sidebar-width`, `--nb-content-max`, `--nb-code-rail-width`).
+ */
+import MobileNavigation from "@components/nimbus/MobileNavigation.astro";
+import { primaryNavigation } from "@lib/navigation";
+import { ApiSidebar } from "@/components/ApiReference/ui/api-sidebar";
+import ApiMethodChip from "@/components/ApiReference/ui/api-sidebar/ApiMethodChip.astro";
+import {
+  SidebarFilter,
+  SidebarLink,
+} from "@/components/ApiReference/ui/sidebar";
+import { ApiCodeRail } from "@/components/ApiReference/ui/api-code-rail";
+import { Banner } from "@/components/ApiReference/ui/banner";
+import { Pagination } from "@/components/ApiReference/ui/pagination";
+import ApiBody from "./ApiBody.astro";
+import { TOC } from "@/components/ApiReference/ui/toc";
+import { cn } from "@/components/ApiReference/lib/cn";
+import {
+  getApiVersionHead,
+  getVersionStatus,
+  navBuildId,
+  navStateScript,
+  withBase,
+} from "@cloudflare/nimbus-docs/runtime";
+import type { ApiNav, ApiPageProps } from "@cloudflare/nimbus-docs/api";
+import type { TOCItem } from "@cloudflare/nimbus-docs/types";
+import type { ApiHome } from "@cloudflare/nimbus-docs/runtime";
+
+interface Props {
+  page: ApiPageProps;
+  nav: ApiNav;
+  /** API family + this page's version/coordinate — enables the version
+   *  picker and the deprecated-version banner. Omit for an unversioned API. */
+  collection?: string;
+  version?: string | null;
+  coordinate?: string;
+  /** On the API home and its later parts, from `getApiRoute`: the part to
+   *  show, and every part. */
+  home?: ApiHome;
+}
+
+const { page, nav, collection, version, coordinate, home } = Astro.props;
+const homePart = home && home.part.number > 1;
+// Sidebar state is shared per API version, across both sidebar copies. The
+// base keeps two sites on one origin apart.
+const navKey = `${import.meta.env.BASE_URL}|${nav.collection}${version ? `@${version}` : ""}`;
+
+const versionStatus =
+  collection && version
+    ? await getVersionStatus(`${collection}@${version}`)
+    : null;
+const currentSiblingUrl =
+  collection && version && coordinate
+    ? ((await getApiVersionHead(collection, version, coordinate, Astro.request))
+        ?.canonical?.url ?? null)
+    : null;
+const currentSiblingHref = withBase(
+  currentSiblingUrl ?? "/",
+  import.meta.env.BASE_URL,
+);
+
+// The rail column is reserved ONLY when it has content — a request sample or a
+// response example (mirrors ApiCodeRail's own gate). A bodyless GET with no
+// samples otherwise pins an empty sticky column at the page's right edge.
+// "On this page" for the API home: its tag groups and their sections. A link
+// to a part that hasn't loaded yet loads the list up to it.
+const tocHeadings: TOCItem[] =
+  page.kind === "api" && !homePart
+    ? [
+        ...page.index.groups.flatMap((group) => [
+          ...(group.label
+            ? [{ depth: 2, text: group.label, slug: group.anchor }]
+            : []),
+          ...group.sections.map((section) => ({
+            depth: group.label ? 3 : 2,
+            text: section.ref.label,
+            slug: section.anchor,
+          })),
+        ]),
+        ...(page.index.operations.length > 0
+          ? [{ depth: 2, text: "Other endpoints", slug: "endpoints" }]
+          : []),
+        ...(page.index.webhooks.length > 0
+          ? [{ depth: 2, text: "Webhooks", slug: "webhooks" }]
+          : []),
+      ]
+    : [];
+
+const hasRail =
+  page.kind === "operation" &&
+  (page.samples.length > 0 ||
+    page.responses.some((r) => r.example !== undefined));
+
+const pagefindAttrs: Record<string, string> = {};
+const pagefindDeprecated =
+  !versionStatus?.isHidden && Boolean(versionStatus?.isDeprecated);
+// A later part of the API home repeats the home's list.
+if (versionStatus?.isHidden || homePart) {
+  pagefindAttrs["data-pagefind-ignore"] = "";
+} else {
+  pagefindAttrs["data-pagefind-body"] = "";
+  if (versionStatus) {
+    pagefindAttrs["data-pagefind-filter"] = `version:${versionStatus.version}`;
+  }
+}
+---
+
+<MobileNavigation
+  sidebar={false}
+  navigation={primaryNavigation}
+  activeSection="api"
+  apiNavigation
+>
+  <div slot="sidebar" data-nb-api-drawer-slot></div>
+</MobileNavigation>
+
+<div class="flex w-full">
+  {/* The rail keeps its open groups and scroll across pages: the inline script
+      below restores them before paint, and `initNavSidebar` records them. It is
+      excluded from the page transition so it never fades or replays. */}
+  <aside
+    aria-label="Sidebar"
+    transition:name="nb-api-sidebar"
+    transition:animate="none"
+    class="sticky top-(--nb-header-height) hidden h-[calc(100vh-var(--nb-header-height))] w-(--nb-sidebar-width) shrink-0 flex-col border-e border-border bg-background min-[70.0625rem]:flex"
+  >
+    <div
+      data-nb-api-tree
+      data-nb-nav-state={navKey}
+      data-nb-nav-build={navBuildId}
+      data-nb-nav-scroller="nav"
+      class="min-h-0 flex-1 overflow-y-auto overscroll-contain"
+    >
+      {/* A full tree filters in place, as the docs sidebar does. An on-demand
+          tree holds only part of the API, so its filter searches the
+          version's page list instead (`api-nav-filter.client`). */}
+      <div
+        class="px-0 pb-0 pt-4 min-[70.0625rem]:px-4 min-[70.0625rem]:pb-12 min-[70.0625rem]:pt-5"
+        data-nb-sidebar={nav.listHref ? undefined : ""}
+      >
+        <SidebarFilter
+          data-nb-nav-list={
+            nav.listHref && withBase(nav.listHref, import.meta.env.BASE_URL)
+          }
+        />
+        {nav.listHref && (
+          <>
+            <p
+              data-nb-nav-status
+              role="status"
+              class="px-3 pb-2 text-xs text-muted-foreground empty:p-0"
+            ></p>
+            <ul
+              data-nb-nav-results
+              hidden
+              class="flex list-none flex-col gap-0.5 p-0"
+            ></ul>
+            <template data-nb-nav-result>
+              <li>
+                <SidebarLink label="" href="/">
+                  <ApiMethodChip slot="leading" method="GET" display="label" />
+                </SidebarLink>
+              </li>
+            </template>
+          </>
+        )}
+        <ApiSidebar items={nav.items} />
+      </div>
+    </div>
+    <div class="pointer-events-none sticky bottom-0 h-8 bg-gradient-to-t from-background to-transparent"></div>
+  </aside>
+  {/* Inline and unbundled (the data attribute keeps Astro from hoisting it) so it
+      runs before the page paints and before the disclosures mount. */}
+  <script is:inline data-api-nav-restore set:html={navStateScript} />
+  {/* Reserve both desktop tracks before the streamed body/rail HTML arrives.
+      Flex only reserves the rail's width once its later sibling is parsed,
+      making long API bodies reflow sideways during navigation. */}
+  <div
+    data-api-layout
+    class={cn(
+      "flex min-w-0 flex-1 flex-col",
+      !hasRail && tocHeadings.length > 0 && "xl:flex-row",
+      hasRail &&
+        "min-[90rem]:grid min-[90rem]:grid-cols-[minmax(0,1fr)_29rem] 2xl:grid-cols-[minmax(0,1fr)_var(--nb-code-rail-width)]",
+    )}
+  >
+    <main
+      id="main-content"
+      tabindex="-1"
+      class="min-w-0 flex-1"
+      {...pagefindAttrs}
+    >
+      <div class="mx-auto max-w-(--nb-content-max) px-6 pt-8 pb-12">
+        {pagefindDeprecated && (
+          <span hidden data-pagefind-filter="status:deprecated"></span>
+        )}
+        {versionStatus?.isDeprecated && (
+          <div data-pagefind-ignore>
+            <Banner
+              variant="caution"
+              class="mt-0 mb-6"
+              content={`<strong>${versionStatus.version}</strong> is deprecated. <a href="${currentSiblingHref}">See the latest version</a>.`}
+            />
+          </div>
+        )}
+        <ApiBody page={page} home={home} />
+        {nav.prevNext && !hasRail && (
+          <Pagination prevNext={nav.prevNext} data-pagefind-ignore />
+        )}
+      </div>
+    </main>
+
+    {/* Below 90rem the rail reflows inline beneath the body (samples are unique
+        content, so unlike the TOC they stay in the no-JS HTML for crawlability);
+        at 90rem+ it becomes the sticky right column. The left padding keeps overflow-y-auto
+        from clipping the LayerCard's outset ring at the scroll edge. */}
+    {!hasRail && tocHeadings.length > 0 && (
+      <aside
+        aria-label="On this page"
+        data-nb-toc-scroll-host
+        class="hidden xl:block w-(--nb-toc-width) shrink-0 sticky top-14 h-[calc(100vh-3.5rem)] overflow-y-auto"
+      >
+        <div class="pt-8 pb-8 ps-8 pe-6">
+          <TOC headings={tocHeadings} />
+        </div>
+      </aside>
+    )}
+
+    {hasRail && (
+      <div class="mx-auto w-full max-w-(--nb-content-max) px-6 pb-12 min-[90rem]:col-start-2 min-[90rem]:row-span-2 min-[90rem]:row-start-1 min-[90rem]:mx-0 min-[90rem]:max-w-none min-[90rem]:sticky min-[90rem]:top-14 min-[90rem]:h-[calc(100vh-3.5rem)] min-[90rem]:w-[29rem] min-[90rem]:shrink-0 min-[90rem]:overflow-y-auto min-[90rem]:pt-8 min-[90rem]:pe-6 min-[90rem]:pb-8 min-[90rem]:ps-1 2xl:w-(--nb-code-rail-width)">
+        <ApiCodeRail
+          responses={page.responses}
+          samples={page.samples}
+          title={page.title}
+          method={page.method}
+          coordinate={page.coordinate}
+        />
+      </div>
+    )}
+
+    {/* With a rail, previous/next sits after it, so on narrow screens the
+        samples come before it; from 90rem it returns under the body. */}
+    {hasRail && nav.prevNext && (
+      <div class="mx-auto w-full max-w-(--nb-content-max) px-6 pb-12 -mt-12 min-[90rem]:col-start-1 min-[90rem]:row-start-2">
+        <Pagination prevNext={nav.prevNext} data-pagefind-ignore />
+      </div>
+    )}
+  </div>
+</div>
+
+<script>
+  import { mount, initNavSidebar } from "@cloudflare/nimbus-docs/client";
+  import "@/components/ApiReference/ui/sidebar/sidebar.client";
+  import "@/components/ApiReference/ui/api-sidebar/api-nav-filter.client";
+
+  mount("[data-nb-nav-state]", initNavSidebar);
+
+  // Keep Nimbus's one navigation tree, borrowing the portal's mobile menu.
+  mount("[data-api-navigation]", (root) => {
+    if (!(root instanceof HTMLDialogElement)) return () => {};
+    const trigger =
+      document.querySelector<HTMLButtonElement>("[data-menu-btn]");
+    const tree = document.querySelector<HTMLElement>("[data-nb-api-tree]");
+    const slot = root.querySelector<HTMLElement>("[data-nb-api-drawer-slot]");
+    const rail = tree?.parentElement;
+    const next = tree?.nextElementSibling ?? null;
+    if (!trigger || !tree || !slot || !rail) return () => {};
+    trigger.setAttribute("aria-controls", root.id);
+    const restore = () => {
+      rail.insertBefore(tree, next);
+      trigger.setAttribute("aria-expanded", "false");
+    };
+    const open = () => {
+      slot.append(tree);
+      root.showModal();
+      trigger.setAttribute("aria-expanded", "true");
+      root
+        .querySelector<HTMLButtonElement>("[data-close-mobile-menu]")
+        ?.focus();
+    };
+    trigger.addEventListener("click", open);
+    root.addEventListener("close", restore);
+    return () => {
+      trigger.removeEventListener("click", open);
+      root.removeEventListener("close", restore);
+      restore();
+    };
+  });
+</script>

@@ -1,0 +1,82 @@
+/* Nimbus's API components use the portal's Circuit tokens in both modes. */
+:root {
+  --nb-background: var(--cui-bg-normal);
+  --nb-foreground: var(--cui-fg-normal);
+  --nb-card: var(--cui-bg-normal);
+  --nb-card-foreground: var(--cui-fg-normal);
+  --nb-muted: var(--cui-bg-subtle);
+  --nb-muted-foreground: var(--cui-fg-subtle);
+  --nb-accent: var(--cui-bg-normal-hovered);
+  --nb-accent-foreground: var(--cui-fg-normal-hovered);
+  --nb-primary: var(--cui-bg-strong);
+  --nb-primary-foreground: var(--cui-fg-on-strong);
+  --nb-primary-hover: var(--cui-bg-strong-hovered);
+  --nb-brand: var(--cui-fg-normal);
+  --nb-brand-wash: var(--cui-bg-subtle);
+  --nb-border: var(--cui-border-divider);
+  --nb-border-strong: var(--cui-border-normal);
+  --nb-selected: var(--cui-bg-highlight);
+  --nb-code-tint: var(--cui-bg-subtle);
+  --nb-ring: var(--cui-border-focus);
+
+  --nb-info: var(--cui-fg-accent);
+  --nb-info-foreground: var(--cui-fg-accent);
+  --nb-info-muted: var(--cui-bg-highlight);
+  --nb-success: var(--cui-fg-success);
+  --nb-success-foreground: var(--cui-fg-success);
+  --nb-success-muted: var(--cui-bg-success);
+  --nb-warning: var(--cui-fg-warning);
+  --nb-warning-foreground: var(--cui-fg-warning);
+  --nb-warning-muted: var(--cui-bg-warning);
+  --nb-danger: var(--cui-fg-danger);
+  --nb-danger-foreground: var(--cui-fg-danger);
+  --nb-danger-muted: var(--cui-bg-danger);
+
+  --nb-m-get: var(--nb-success);
+  --nb-m-get-tint: var(--nb-success-muted);
+  --nb-m-get-line: color-mix(in srgb, var(--nb-success) 25%, transparent);
+  --nb-m-post: var(--nb-info);
+  --nb-m-post-tint: var(--nb-info-muted);
+  --nb-m-post-line: color-mix(in srgb, var(--nb-info) 25%, transparent);
+  --nb-m-put: var(--nb-warning);
+  --nb-m-put-tint: var(--nb-warning-muted);
+  --nb-m-put-line: color-mix(in srgb, var(--nb-warning) 25%, transparent);
+  --nb-m-delete: var(--nb-danger);
+  --nb-m-delete-tint: var(--nb-danger-muted);
+  --nb-m-delete-line: color-mix(in srgb, var(--nb-danger) 25%, transparent);
+  --nb-m-other: var(--nb-muted-foreground);
+  --nb-m-other-tint: var(--nb-accent);
+  --nb-m-other-line: var(--nb-border);
+
+  --nb-header-height: var(--portal-header-height);
+  --nb-sidebar-width: var(--portal-sidebar-width);
+  --nb-toc-width: var(--portal-toc-width);
+  --nb-content-max: var(--portal-content-width);
+  --nb-code-rail-width: 34rem;
+  --nb-font-sans: var(--cui-font-stack-default);
+  --nb-font-mono: var(--cui-font-stack-mono);
+  --nb-h1-size: var(--cui-headline-l-font-size);
+  --nb-h1-leading: var(--cui-headline-l-line-height);
+  --nb-h1-weight: var(--cui-font-weight-regular);
+  --nb-h1-tracking: normal;
+  --nb-h2-size: var(--cui-headline-m-font-size);
+  --nb-h2-leading: var(--cui-headline-m-line-height);
+  --nb-h2-weight: var(--cui-font-weight-semibold);
+  --nb-h2-tracking: normal;
+  --nb-h3-size: var(--cui-headline-s-font-size);
+  --nb-h3-leading: var(--cui-headline-s-line-height);
+  --nb-h3-weight: var(--cui-font-weight-semibold);
+  --nb-h3-tracking: normal;
+  --nb-h4-weight: var(--cui-font-weight-semibold);
+  --nb-radius: var(--cui-border-radius-byte);
+  --nb-radius-sm: var(--cui-border-radius-bit);
+  --nb-shadow-sm: none;
+  --nb-shadow: none;
+  --nb-shadow-lg: 0 1rem 3rem
+    color-mix(in srgb, var(--cui-fg-normal) 20%, transparent);
+}
+
+#main-content h1 {
+  font-family: var(--cui-font-stack-display);
+  line-height: var(--nb-h1-leading);
+}

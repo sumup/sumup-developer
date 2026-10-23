@@ -17,6 +17,7 @@ interface Props {
   navigation: Array<{ id: string; label: string; href: string }>;
   activeSection?: string;
   sidebarSections?: boolean;
+  apiNavigation?: boolean;
 }
 
 const {
@@ -24,12 +25,14 @@ const {
   navigation,
   activeSection,
   sidebarSections = false,
+  apiNavigation = false,
 } = Astro.props;
 ---
 
 <dialog
   id="mobile-navigation"
   data-mobile-sidebar
+  data-api-navigation={apiNavigation ? "" : undefined}
   class="mobile-navigation"
   aria-label="Site navigation"
 >
@@ -54,7 +57,10 @@ const {
         <span>Search documentation</span>
       </button>
       <nav
-        class:list={["primary-navigation", !sidebar && "standalone"]}
+        class:list={[
+          "primary-navigation",
+          !sidebar && !Astro.slots.has("sidebar") && "standalone",
+        ]}
         aria-label="Primary navigation"
       >
         {navigation.map((item) => (
@@ -66,9 +72,11 @@ const {
           </a>
         ))}
       </nav>
-      {sidebar && (
+      {(sidebar || Astro.slots.has("sidebar")) && (
         <nav class="mobile-docs" aria-label="Documentation">
-          <Sidebar items={sidebar} sections={sidebarSections} />
+          <slot name="sidebar">
+            {sidebar && <Sidebar items={sidebar} sections={sidebarSections} />}
+          </slot>
         </nav>
       )}
     </div>
