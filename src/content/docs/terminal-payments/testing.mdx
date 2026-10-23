@@ -20,8 +20,10 @@ For online payments, use the [online payment testing guide](/online-payments/tes
 
 You do not need the test card numbers used for online payments. The payment amount determines the simulated result once the card has been read and the payment is submitted. Card-reading and device errors can still prevent the payment from reaching that point.
 
-:::note
+:::caution
 The sandbox merchant account determines whether a payment uses real funds. Make sure your app or API request uses the sandbox merchant, even if you have already selected it in the Dashboard.
+
+For native login in the Android or iOS SDK, we recommend using a managed user account created in your sandbox merchant. Alternatively, set the sandbox merchant account as your existing user's default before logging in. Follow the [merchant account setup for native SDK login](/terminal-payments/#users-with-multiple-merchant-accounts).
 :::
 
 ## Test Successful Payments

@@ -97,6 +97,10 @@ public class SampleApplication extends Application {
 
 ### Logging Merchant In and Out
 
+:::caution
+Native login uses the user's default merchant account and does not offer an account selector. For users with access to multiple merchant accounts, we recommend using a managed user account created in the intended merchant. Alternatively, set the default merchant account before logging in. See [merchant account setup for native SDK login](/terminal-payments/#users-with-multiple-merchant-accounts).
+:::
+
 Before calling any features of the Android SDK, a registered SumUp merchant account needs to be logged in. Log in by supplying your Affiliate Key ([create one](/tools/authorization/affiliate-keys) if necessary):
 
 ```java
