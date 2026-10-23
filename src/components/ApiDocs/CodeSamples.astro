@@ -1,0 +1,288 @@
+---
+import type { ApiOperationPage } from "@cloudflare/nimbus-docs/api";
+import { Select } from "@sumup-oss/circuit-ui";
+import MethodStatus from "./MethodStatus.astro";
+
+type Props = Pick<
+  ApiOperationPage,
+  "samples" | "responses" | "method" | "title" | "coordinate"
+>;
+const { responses, method, title, coordinate } = Astro.props;
+// A generated HTTP request works without choosing or installing an SDK.
+const samples = [...Astro.props.samples].sort(
+  (a, b) => Number(b.label === "cURL") - Number(a.label === "cURL"),
+);
+const examples = responses.flatMap((response) =>
+  response.example
+    ? [{ status: response.status, example: response.example }]
+    : [],
+);
+if (
+  [...samples, ...examples.map(({ example }) => example)].some(
+    (example) => !example.highlightedHtml,
+  )
+) {
+  throw new Error("Nimbus API samples were not prepared during content sync.");
+}
+const options = samples.map((sample) => ({
+  label: sample.label,
+  value: sample.id,
+}));
+const responseId = `api-sample-responses-${encodeURIComponent(coordinate)}`;
+---
+
+{(samples.length > 0 || examples.length > 0) && (
+  <aside
+    class="code-samples"
+    aria-label="Code samples"
+    data-pagefind-ignore="all"
+  >
+    {samples.length > 0 && (
+      <section
+        class="request-samples"
+        data-api-samples
+        aria-label="Request samples"
+      >
+        <header class="sample-header request-header">
+          <div class="request-title">
+            <MethodStatus method={method} />
+            <h2 title={title}>{title}</h2>
+          </div>
+          <div class="sample-select">
+            <Select
+              size="s"
+              label="Code sample"
+              hideLabel
+              options={options}
+              defaultValue={samples[0].id}
+              disabled
+              data-api-sample-select
+            />
+          </div>
+        </header>
+        <div class="request-body sample-body">
+          {samples.map((sample, i) => (
+            <div
+              data-api-sample={sample.id}
+              data-api-language={sample.lang}
+              hidden={i !== 0}
+            >
+              <Fragment set:html={sample.highlightedHtml} />
+            </div>
+          ))}
+        </div>
+        <script is:inline data-api-samples-restore>
+          // Restore the preferred sample while parsing, before deferred scripts
+          // or the first paint. Inactive samples are already hidden by the HTML.
+          (() => {
+            const root = document.currentScript.parentElement;
+            const panels = [...root.querySelectorAll("[data-api-sample]")];
+            const find = (value) =>
+              panels.find((panel) => panel.dataset.apiSample === value) ??
+              panels.find(
+                (panel) =>
+                  panel.dataset.apiLanguage.toLowerCase() ===
+                  value.toLowerCase(),
+              );
+            let saved = "";
+            try {
+              saved = localStorage.getItem("nb-api-code-rail__lang") ?? "";
+            } catch {
+              // Storage is optional; the URL or default sample still works.
+            }
+            const linked =
+              new URL(location.href).searchParams.get("lang") ?? "";
+            const selected = find(linked) ?? find(saved) ?? panels[0];
+            for (const panel of panels) panel.hidden = panel !== selected;
+            root.querySelector("[data-api-sample-select]").value =
+              selected.dataset.apiSample;
+            root.setAttribute("data-api-samples-restored", "");
+          })();
+        </script>
+      </section>
+    )}
+    {examples.length > 0 && (
+      <section
+        class="response-samples"
+        data-api-response-samples
+        aria-label="Response examples"
+      >
+        <header class="sample-header response-header">
+          <h2>Response example</h2>
+          <div
+            class="response-statuses"
+            role="tablist"
+            aria-label="Response status"
+          >
+            {examples.map(({ status }, i) => (
+              <button
+                type="button"
+                role="tab"
+                id={`${responseId}-tab-${i}`}
+                aria-controls={`${responseId}-panel-${i}`}
+                aria-selected={i === 0 ? "true" : "false"}
+                tabindex={i === 0 ? 0 : -1}
+                data-api-response-trigger
+                disabled
+                data-status-class={status[0]}
+              >
+                {status}
+              </button>
+            ))}
+          </div>
+        </header>
+        {examples.map(({ example }, i) => (
+          <div
+            role="tabpanel"
+            id={`${responseId}-panel-${i}`}
+            aria-labelledby={`${responseId}-tab-${i}`}
+            data-api-response-panel
+            hidden={i !== 0}
+          >
+            <div class="sample-body response-body">
+              <Fragment set:html={example.highlightedHtml} />
+            </div>
+          </div>
+        ))}
+      </section>
+    )}
+  </aside>
+)}
+
+<script>
+  import "./samples.client";
+</script>
+
+<style>
+  .code-samples {
+    min-width: 0;
+    padding: var(--cui-spacings-bit);
+    border: 1px solid var(--cui-border-subtle);
+    border-radius: var(--cui-border-radius-byte);
+    background: var(--code-frame-header-background);
+    font-size: var(--portal-font-size-mono);
+  }
+  .request-samples,
+  .response-samples {
+    position: relative;
+    min-width: 0;
+  }
+  .sample-header {
+    display: flex;
+    gap: var(--cui-spacings-byte);
+    align-items: center;
+    justify-content: space-between;
+    min-height: 3rem;
+    padding: var(--cui-spacings-byte) 2.75rem var(--cui-spacings-byte)
+      var(--cui-spacings-byte);
+  }
+  .request-title {
+    display: flex;
+    flex: 1;
+    min-width: 0;
+    align-items: center;
+    gap: var(--cui-spacings-bit);
+  }
+  .request-title :global([data-http-method]) {
+    flex-shrink: 0;
+  }
+  h2 {
+    min-width: 0;
+    font: inherit;
+    font-weight: var(--cui-font-weight-semibold);
+  }
+  .request-title h2 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .sample-select {
+    flex-shrink: 0;
+    max-width: 9rem;
+  }
+  .sample-select :global(select) {
+    font-size: var(--portal-font-size-mono);
+  }
+  .request-body {
+    overflow: hidden;
+    border: 1px solid var(--cui-border-subtle);
+    border-radius: var(--cui-border-radius-byte);
+    background: var(--code-frame-background);
+  }
+  .response-header {
+    flex-wrap: wrap;
+  }
+  .response-statuses {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--cui-spacings-bit);
+    padding: var(--cui-spacings-bit);
+    border-radius: var(--cui-border-radius-bit);
+    background: var(--cui-bg-subtle);
+  }
+  .response-statuses button {
+    padding: 0 var(--cui-spacings-bit);
+    border: 1px solid transparent;
+    border-radius: var(--cui-border-radius-bit);
+    color: var(--cui-fg-subtle);
+    background: transparent;
+    font: inherit;
+    font-family: var(--cui-font-stack-mono);
+    line-height: 1.5;
+    cursor: pointer;
+  }
+  .response-statuses button:hover {
+    color: var(--cui-fg-normal);
+  }
+  .response-statuses button[aria-selected="true"] {
+    border-color: var(--cui-border-subtle);
+    color: var(--cui-fg-normal);
+    background: var(--cui-bg-normal);
+  }
+  .response-statuses [data-status-class="2"][aria-selected="true"] {
+    color: var(--cui-fg-success);
+  }
+  .response-statuses
+    :is(
+      [data-status-class="4"],
+      [data-status-class="5"]
+    )[aria-selected="true"] {
+    color: var(--cui-fg-danger);
+  }
+  .response-statuses button:focus-visible {
+    outline: 2px solid var(--cui-border-focus);
+    outline-offset: 2px;
+  }
+  /* As in Nimbus, the native copy button escapes the figure into its header. */
+  .sample-body :global(.nb-code-figure) {
+    position: static !important;
+    margin: 0;
+    overflow: visible;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+  }
+  .sample-body :global(.nb-code-figure[data-nb-lang]::before) {
+    content: none;
+  }
+  .sample-body :global(pre.astro-code) {
+    max-height: 28rem;
+    padding: var(--cui-spacings-kilo);
+    line-height: 1.25rem;
+  }
+  .response-body :global(pre.astro-code) {
+    max-height: 20rem;
+  }
+  .sample-body :global(.nb-code-copy) {
+    top: var(--cui-spacings-byte);
+    right: var(--cui-spacings-byte);
+    width: 2rem;
+    height: 2rem;
+    opacity: 1;
+    border-color: transparent;
+    background: transparent;
+  }
+  .sample-body :global(.nb-code-copy:hover) {
+    background: var(--cui-bg-subtle);
+  }
+</style>

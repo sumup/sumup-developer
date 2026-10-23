@@ -1,0 +1,25 @@
+---
+import { Status, type StatusProps } from "@sumup-oss/circuit-ui";
+
+interface Props {
+  method: string;
+}
+
+const method = Astro.props.method.toUpperCase();
+const colors: Record<string, StatusProps["color"]> = {
+  GET: "confirm",
+  HEAD: "confirm",
+  POST: "promo",
+  PUT: "notify",
+  PATCH: "notify",
+  DELETE: "alert",
+};
+---
+
+<Status
+  as="span"
+  variant="pill"
+  color={colors[method] ?? "neutral"}
+  data-http-method={method}
+  children={method}
+/>

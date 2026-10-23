@@ -11,7 +11,7 @@ const { src, alt, title } = Astro.props;
   <figcaption>{title || alt}</figcaption>
 </figure>
 
-<style lang="scss">
+<style>
   figure {
     display: block;
     text-align: center;
@@ -20,7 +20,7 @@ const { src, alt, title } = Astro.props;
   .wrap {
     margin: 0 auto;
     max-width: 400px;
-    aspect-ratio: 1 / 1;
+    aspect-ratio: 1/1;
   }
 
   .screen {
@@ -29,7 +29,7 @@ const { src, alt, title } = Astro.props;
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;
-    aspect-ratio: 1 / 1;
+    aspect-ratio: 1/1;
     padding: 11%;
   }
 

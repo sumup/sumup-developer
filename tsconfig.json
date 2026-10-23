@@ -12,12 +12,7 @@
       "@/*": ["./src/*"],
       "@components/*": ["./src/components/*"],
       "@assets/*": ["./src/assets/*"],
-      "@types/*": ["./src/types/*"],
-      "@lib/*": ["./src/lib/*"],
-      "@services/*": ["./src/services/*"],
-      "@hooks/*": ["./src/hooks/*"],
-      "@api/*": ["./src/api/*"],
-      "src/*": ["./src/*"]
+      "@lib/*": ["./src/lib/*"]
     }
   },
   "exclude": ["dist"]

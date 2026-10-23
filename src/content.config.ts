@@ -1,8 +1,7 @@
-import { docsCollection } from "@cloudflare/nimbus-docs/content";
+import { apiCollection, docsCollection } from "@cloudflare/nimbus-docs/content";
 import { defineCollection } from "astro:content";
 import { glob } from "astro/loaders";
 import { z } from "astro/zod";
-import { openapiDescriptionsLoader } from "./loaders/openapiDescriptions";
 
 const help = defineCollection({
   loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/help" }),
@@ -23,24 +22,8 @@ const changelog = defineCollection({
   }),
 });
 
-const apiDescriptions = defineCollection({
-  loader: openapiDescriptionsLoader(),
-  schema: z.discriminatedUnion("kind", [
-    z.object({ kind: z.literal("fragment"), name: z.string() }),
-    z.object({
-      kind: z.literal("tag"),
-      name: z.string(),
-    }),
-    z.object({
-      kind: z.literal("operation"),
-      name: z.string(),
-      method: z.string(),
-      path: z.string(),
-    }),
-  ]),
-});
-
 export const collections = {
+  api: defineCollection(apiCollection()),
   docs: defineCollection(
     docsCollection({
       schemaFields: {
@@ -58,9 +41,7 @@ export const collections = {
       },
     }),
   ),
-  // These collections are rendered by custom portal routes. The leading
-  // underscore keeps Nimbus from generating docs-style agent routes for them.
-  _apiDescriptions: apiDescriptions,
+  // These collections are rendered by custom portal routes.
   _help: help,
   _changelog: changelog,
 };

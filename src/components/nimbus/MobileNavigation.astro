@@ -17,6 +17,7 @@ interface Props {
   navigation: Array<{ id: string; label: string; href: string }>;
   activeSection?: string;
   sidebarSections?: boolean;
+  sidebarFilter?: boolean;
 }
 
 const {
@@ -24,6 +25,7 @@ const {
   navigation,
   activeSection,
   sidebarSections = false,
+  sidebarFilter = false,
 } = Astro.props;
 ---
 
@@ -68,7 +70,11 @@ const {
       </nav>
       {sidebar && (
         <nav class="mobile-docs" aria-label="Documentation">
-          <Sidebar items={sidebar} sections={sidebarSections} />
+          <Sidebar
+            items={sidebar}
+            sections={sidebarSections}
+            filter={sidebarFilter}
+          />
         </nav>
       )}
     </div>
@@ -132,6 +138,16 @@ const {
           .querySelector<HTMLButtonElement>("[data-close-mobile-menu]")
           ?.focus();
         trigger.setAttribute("aria-expanded", "true");
+      },
+      { signal },
+    );
+    dialog.addEventListener(
+      "keydown",
+      (event) => {
+        if (event.key === "Escape") {
+          event.preventDefault();
+          dialog.close();
+        }
       },
       { signal },
     );

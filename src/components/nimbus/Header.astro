@@ -1,7 +1,8 @@
 ---
 import type { SidebarItem } from "@cloudflare/nimbus-docs/types";
 import MobileNavigation from "./MobileNavigation.astro";
-import { SumUpLogo } from "@sumup-oss/circuit-ui";
+import { primaryNavigation as navigation } from "@lib/navigation";
+import { SumUpLogo, Body } from "@sumup-oss/circuit-ui";
 import {
   ArrowSlanted,
   HamburgerMenu,
@@ -13,28 +14,30 @@ import {
 interface Props {
   sidebar?: SidebarItem[] | false;
   sidebarSections?: boolean;
+  sidebarFilter?: boolean;
 }
 
-const { sidebar = false, sidebarSections = false } = Astro.props;
+const {
+  sidebar = false,
+  sidebarSections = false,
+  sidebarFilter = false,
+} = Astro.props;
 const pathname = Astro.url.pathname;
 const activeSection = pathname.startsWith("/api")
   ? "api"
   : pathname.startsWith("/changelog")
     ? "changelog"
     : "docs";
-
-const navigation = [
-  { id: "docs", label: "Docs", href: "/" },
-  { id: "api", label: "API", href: "/api/" },
-  { id: "changelog", label: "Changelog", href: "/changelog/" },
-];
 ---
 
 <header class="portal-header">
   <div class="header-inner">
     <a href="/" class="brand" aria-label="SumUp Developer home">
-      <SumUpLogo size="s" variant="short" />
-      <span translate="no">Developer</span>
+      <SumUpLogo size="s" variant="full" />
+      <div class="divider" />
+      <Body className="name" as="span" size="s" weight="bold" translate="no">
+        Docs
+      </Body>
     </a>
 
     <nav class="desktop-navigation" aria-label="Primary navigation">
@@ -98,6 +101,7 @@ const navigation = [
 <MobileNavigation
   sidebar={sidebar}
   sidebarSections={sidebarSections}
+  sidebarFilter={sidebarFilter}
   navigation={navigation}
   activeSection={activeSection}
 />
@@ -154,8 +158,6 @@ const navigation = [
 
   .brand {
     display: inline-flex;
-    flex: none;
-    gap: var(--cui-spacings-byte);
     align-items: center;
     color: var(--cui-fg-normal);
     font-size: var(--cui-headline-s-font-size);
@@ -168,6 +170,16 @@ const navigation = [
   .brand :global(svg) {
     width: auto;
     height: 1.5rem;
+  }
+
+  .brand .divider {
+    margin: 0 13px;
+    border: var(--cui-border-width-kilo) solid var(--cui-border-strong);
+    height: 1rem;
+  }
+
+  .brand .name {
+    text-transform: uppercase;
   }
 
   .desktop-navigation {

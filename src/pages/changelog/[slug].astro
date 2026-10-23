@@ -46,7 +46,7 @@ const { Content } = await render(entry);
   </div>
 </StandaloneLayout>
 
-<style lang="scss">
+<style>
   .meta {
     margin-top: var(--cui-spacings-giga);
     display: flex;
@@ -61,7 +61,7 @@ const { Content } = await render(entry);
   }
 
   .metaItem:not(:last-child)::after {
-    content: "\00B7";
+    content: "·";
     margin: 0 var(--cui-spacings-byte);
   }
 

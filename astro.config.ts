@@ -1,5 +1,6 @@
 import { readFile } from "node:fs/promises";
 import { markdownComponents } from "./src/lib/markdownComponents";
+import { apiReference } from "./src/lib/api/reference";
 
 import cloudflare from "@astrojs/cloudflare";
 import externalLinks from "./src/plugins/satteri/external-links";
@@ -51,6 +52,23 @@ const head = defineNimbusConfig({
   socialImage: "/og/index.png",
   socialImageAlt: "SumUp Developer documentation preview",
   agents: { mcp: true },
+  api: [
+    {
+      collection: "api",
+      label: "SumUp API",
+      spec: apiReference.spec,
+      requireOperationId: true,
+      schemaPages: true,
+      routes: {
+        convention: "resource-action-v2",
+        operations: apiReference.operations,
+      },
+      samples: { generate: ["curl"], keepGenerated: ["curl"] },
+      extensions: ["x-beta"],
+      // Keep /openapi.json as the authoritative, unmodified public contract.
+      publishSpec: false,
+    },
+  ],
   sidebar: {
     defaultCollapsed: true,
     items: [
@@ -192,6 +210,10 @@ export default defineConfig({
   }),
   markdown: {
     syntaxHighlight: { type: "shiki", excludeLangs: ["mermaid"] },
+    shikiConfig: {
+      themes: { light: "github-light", dark: "github-dark" },
+      defaultColor: false,
+    },
   },
   experimental: {
     contentIntellisense: true,
@@ -210,7 +232,6 @@ export default defineConfig({
   integrations: [
     react(),
     nimbus(head, {
-      icons: false,
       mdx: { optimize: true },
       markdown: {
         componentMap: await markdownComponents(),

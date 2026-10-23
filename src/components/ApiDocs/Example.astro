@@ -1,17 +1,28 @@
 ---
-import { schemaToExample } from "@lib/openapi";
-import type { OpenAPIV3_1 } from "openapi-types";
-import { CodeBlock } from "@components/Code";
-
-type Props = { name: string; schema: OpenAPIV3_1.SchemaObject };
-const { name, schema } = Astro.props;
-
-const example = schemaToExample(schema);
+import type { ApiExampleView } from "@cloudflare/nimbus-docs/api";
+interface Props {
+  example: ApiExampleView;
+  title?: string;
+}
+const { example, title } = Astro.props;
+if (!example.highlightedHtml)
+  throw new Error("Nimbus API example was not prepared during content sync.");
 ---
 
-<CodeBlock
-  data-pagefind-ignore="all"
-  title={name}
-  language="json"
-  code={JSON.stringify(example, null, 2)}
-/>
+<div class="api-example" data-pagefind-ignore="all">
+  {title && <p class="example-title">{title}</p>}
+  <Fragment set:html={example.highlightedHtml} />
+</div>
+<style>
+  .api-example {
+    min-width: 0;
+  }
+  .example-title {
+    margin-bottom: var(--cui-spacings-byte);
+    font-weight: var(--cui-font-weight-semibold);
+    font-size: var(--cui-body-s-font-size);
+  }
+  .api-example :global(.nb-code-figure) {
+    margin: 0;
+  }
+</style>

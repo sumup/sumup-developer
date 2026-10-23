@@ -14,7 +14,7 @@ const { title, src, class: cls, ...props } = Astro.props;
   <img src={src} alt={title} {...props} />
 </div>
 
-<style lang="scss">
+<style>
   .logo {
     shape-rendering: crispEdges;
     text-rendering: optimizeLegibility;
@@ -29,22 +29,18 @@ const { title, src, class: cls, ...props } = Astro.props;
     html[data-color-scheme="light"] .logo {
       filter: none;
     }
-
     html:not([data-color-scheme="light"]) .logo {
       filter: invert(100%);
     }
   }
-
   @media (prefers-color-scheme: light) {
     html[data-color-scheme="dark"] .logo {
       filter: invert(100%);
     }
-
     html:not([data-color-scheme="dark"]) .logo {
       filter: none;
     }
   }
-
   .logo:hover {
     opacity: 1;
   }

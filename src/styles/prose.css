@@ -73,7 +73,7 @@
     background: var(--cui-bg-subtle);
     border: 1px solid var(--cui-border-subtle);
     border-radius: var(--cui-border-radius-bit);
-    font-size: 0.9em;
+    font-size: var(--portal-font-size-mono);
     overflow-wrap: anywhere;
     white-space: normal;
   }

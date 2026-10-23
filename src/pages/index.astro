@@ -182,35 +182,9 @@ const sidebar = await getSidebar("/", {
   }
 </style>
 
-<style lang="scss">
-  ul {
-    list-style-type: none;
-    padding-left: 0;
-    margin-top: var(--cui-spacings-mega);
-
-    li {
-      margin-bottom: 10px;
-    }
-  }
-
+<style>
   section {
     margin: var(--cui-spacings-exa) 0;
-
-    @media screen and (min-width: 941px) {
-      &:nth-child(even) {
-        .image {
-          grid-area: right;
-        }
-
-        .text {
-          grid-area: left;
-        }
-      }
-    }
-  }
-
-  h3 {
-    margin-bottom: var(--cui-spacings-giga);
   }
 
   section :global(h2) {
@@ -228,19 +202,14 @@ const sidebar = await getSidebar("/", {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     grid-gap: var(--cui-spacings-giga);
-
-    & > div {
-      margin-bottom: var(--cui-spacings-mega);
-    }
-
-    @media screen and (max-width: 940px) {
+  }
+  .callouts > div {
+    margin-bottom: var(--cui-spacings-mega);
+  }
+  @media screen and (max-width: 940px) {
+    .callouts {
       grid-template-columns: 1fr;
     }
-  }
-
-  .antifraud img {
-    width: 56px;
-    margin-bottom: var(--cui-spacings-kilo);
   }
 
   .antifraud .callouts {

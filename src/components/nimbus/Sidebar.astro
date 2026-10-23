@@ -12,6 +12,7 @@ interface Props {
   sections?: boolean;
   /** Persist open state for this sidebar instance (desktop only). */
   persist?: boolean;
+  filter?: boolean;
 }
 
 const {
@@ -20,16 +21,29 @@ const {
   path = "",
   sections = false,
   persist = false,
+  filter = false,
 } = Astro.props;
 ---
 
+{filter && (
+  <label class="sidebar-filter">
+    <span class="visually-hidden">Filter API navigation</span>
+    <input
+      type="search"
+      placeholder="Filter API navigation"
+      aria-label="Filter API navigation"
+      data-sidebar-filter
+    />
+  </label>
+)}
 <ul
   data-sidebar
+  data-sidebar-filterable={filter ? "" : undefined}
   data-sidebar-persist={persist ? "" : undefined}
   class:list={[
     "sidebar-list",
     level === 0 && "top-level",
-    level > 1 && "nested",
+    level > 0 && "nested",
   ]}
 >
   {items.map((item) => (
@@ -51,3 +65,20 @@ const {
 <script>
   import "./sidebar.client";
 </script>
+
+<style>
+  .sidebar-filter {
+    display: block;
+    margin-bottom: var(--cui-spacings-kilo);
+  }
+  input {
+    width: 100%;
+    padding: var(--cui-spacings-byte);
+    border: 1px solid var(--cui-border-normal);
+    border-radius: var(--cui-border-radius-byte);
+    background: var(--cui-bg-normal);
+    color: var(--cui-fg-normal);
+    font: inherit;
+    font-size: var(--cui-body-s-font-size);
+  }
+</style>

@@ -92,14 +92,11 @@ for (const file of site.files.filter((file) => file.endsWith("/llms.txt"))) {
 let alternates = 0;
 for (const file of site.htmlFiles) {
   const page = await site.page(file);
-  // API fragments keep their separate CommonMark renderer until the API review.
-  if (!site.outputPath(file).startsWith("api/")) {
-    assert.deepEqual(
-      page.rawAdmonitions,
-      [],
-      `${file}: unrendered callout directives`,
-    );
-  }
+  assert.deepEqual(
+    page.rawAdmonitions,
+    [],
+    `${file}: unrendered callout directives`,
+  );
   for (const href of [page.markdownUrl, page.llmsUrl].filter(Boolean)) {
     reachable(href, site.urlForFile(file));
     alternates++;
@@ -252,8 +249,96 @@ for await (const file of glob("src/content/docs/**/*.{md,mdx}")) {
   );
   pages++;
 }
+let apiPages = 0;
+for (const file of site.htmlFiles.filter((file) =>
+  site.outputPath(file).startsWith("api/"),
+)) {
+  const path = site.outputPath(file).replace(/index\.html$/, "");
+  const markdown = await readFile(join(output, path, "index.md"), "utf8");
+  const bundled = fullSections.get(`${siteOrigin}/${path}`);
+  assert(bundled, `${path}: missing API page from the full bundle`);
+  const publishedCode = codeBlocks(markdownToMdast(markdown));
+  const bundledCode = codeBlocks(markdownToMdast(bundled));
+  for (const code of (await site.page(file)).codeBlocks) {
+    const sameCode = (candidate) =>
+      candidate.replace(/\n$/, "") === code.replace(/\n$/, "");
+    assert(
+      publishedCode.some(sameCode),
+      `${path}: API example missing from Markdown`,
+    );
+    assert(
+      bundledCode.some(sameCode),
+      `${path}: API example missing from the full bundle`,
+    );
+  }
+  for (const href of markdownLinks(markdownToMdast(markdown)))
+    reachable(href, `${siteOrigin}/${path}`);
+  apiPages++;
+}
+assert(apiPages > 0, "No Nimbus API pages were built");
+const apiOverview = site.resolve(new URL("/api/", siteOrigin));
+assert(apiOverview?.file, "Missing API overview");
+const tagDescriptions = (await site.page(apiOverview.file))
+  .apiIndexDescriptions;
+assert(
+  tagDescriptions.length > 0,
+  "Missing tag descriptions in the API overview",
+);
+for (const description of tagDescriptions) {
+  assert(description.href, "An API overview tag description has no page link");
+  const target = site.resolve(new URL(description.href, siteOrigin));
+  assert(target?.file, `Missing tag page: ${description.href}`);
+  assert.deepEqual(
+    description.prose,
+    (await site.page(target.file)).apiDescription,
+    `${description.href}: overview and tag page must preserve the same description text, Markdown structure, and links`,
+  );
+}
+console.log(
+  `Verified Markdown rendering matches across ${tagDescriptions.length} API overview and tag-page descriptions.`,
+);
+const coordinates = JSON.parse(
+  await readFile(join(output, "nimbus-api/coordinates.json"), "utf8"),
+);
+const apiCoordinates = coordinates.collections["api"];
+assert(apiCoordinates?.pages.length > 0, "Missing API citation coordinates");
+for (const group of apiCoordinates.pages) {
+  const target = site.resolve(new URL(group.url, siteOrigin));
+  assert(target?.file, `Missing API coordinate page: ${group.url}`);
+  const page = await site.page(target.file);
+  for (const [coordinate, fragment] of Object.entries(group.entries)) {
+    if (fragment === null) continue;
+    const anchor = fragment === 0 ? coordinate : fragment;
+    assert(
+      page.ids.has(anchor),
+      `${group.url}: citation ${coordinate} points at missing #${anchor}`,
+    );
+  }
+}
+console.log(
+  `Verified ${apiPages} Nimbus API pages and their rendered examples in Markdown and the full bundle.`,
+);
 const contract = JSON.parse(
   await readFile(join(output, "openapi.json"), "utf8"),
+);
+assert.equal(
+  site.resolve(new URL("/api/openapi.json", siteOrigin))?.url.pathname,
+  "/openapi.json",
+  "The API's OpenAPI URL must resolve to the original public contract",
+);
+const apiCatalog = JSON.parse(
+  await readFile(join(output, ".well-known/api-catalog"), "utf8"),
+);
+const apiCatalogEntry = apiCatalog.linkset.find(
+  (entry) => entry.anchor === `${siteOrigin}/api/`,
+);
+assert(
+  apiCatalogEntry?.["service-desc"]?.some(
+    (link) =>
+      link.href === `${siteOrigin}/openapi.json` &&
+      link.type === "application/vnd.oai.openapi+json",
+  ),
+  "The API catalog must advertise the original public OpenAPI contract",
 );
 assert(
   JSON.stringify(contract) ===

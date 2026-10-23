@@ -16,7 +16,7 @@ import {
   InputField,
   SelectField,
   TextAreaField,
-} from "@components/Forms/Forms/Input";
+} from "@components/Forms/Fields";
 
 type CountryOption = SelectOption & {
   countryCode?: FlagProps["countryCode"];

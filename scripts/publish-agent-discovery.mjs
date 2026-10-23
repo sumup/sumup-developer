@@ -1,6 +1,11 @@
 import assert from "node:assert/strict";
 import { readFile, writeFile } from "node:fs/promises";
 
+const contract = {
+  href: "https://developer.sumup.com/openapi.json",
+  type: "application/vnd.oai.openapi+json",
+};
+
 // Extend Nimbus's generated discovery with the portal-owned API and MCP routes.
 const entries = [
   {
@@ -14,8 +19,8 @@ const entries = [
     identifier: "urn:air:developer.sumup.com:api:sumup",
     displayName: "SumUp OpenAPI specification",
     description: "The complete SumUp API contract.",
-    type: "application/vnd.oai.openapi+json",
-    url: "https://developer.sumup.com/openapi.json",
+    type: contract.type,
+    url: contract.href,
   },
 ];
 for (const name of ["ard.json", "ai-catalog.json"]) {
@@ -29,3 +34,22 @@ for (const name of ["ard.json", "ai-catalog.json"]) {
   ];
   await writeFile(path, `${JSON.stringify(catalog, null, 2)}\n`);
 }
+
+// Nimbus's input is enriched for documentation. Advertise the original public
+// contract alongside its generated documentation links instead of that input.
+const apiCatalogPath = new URL(
+  "../dist/client/.well-known/api-catalog",
+  import.meta.url,
+);
+const apiCatalog = JSON.parse(await readFile(apiCatalogPath, "utf8"));
+const reference = apiCatalog.linkset.find(
+  (entry) => entry.anchor === "https://developer.sumup.com/api/",
+);
+assert(reference, "Missing SumUp API reference in the generated API catalog");
+reference["service-desc"] = [
+  ...(reference["service-desc"] ?? []).filter(
+    (link) => link.href !== contract.href,
+  ),
+  contract,
+];
+await writeFile(apiCatalogPath, `${JSON.stringify(apiCatalog, null, 2)}\n`);

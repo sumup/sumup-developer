@@ -309,12 +309,12 @@ If there are connectivity issues and the transaction status can not be retrieved
 
 #### Transaction Identifier
 
-The `foreignTransactionID` identifier will be associated with the transaction and can be used to retrieve details related to the transaction. See the [Transactions API](/api/transactions/) for details. Please make sure that this ID is unique within the scope of the SumUp merchant account and sub-accounts. It must not be longer than 128 characters.
+The `foreignTransactionID` identifier will be associated with the transaction and can be used to retrieve details related to the transaction. See the [Transactions API](/api/tags/transactions/) for details. Please make sure that this ID is unique within the scope of the SumUp merchant account and sub-accounts. It must not be longer than 128 characters.
 The foreignTransactionID is available when the callback activity is called: `SumUpAPI.Param.FOREIGN_TRANSACTION_ID`
 
 #### Skip Success Screen
 
-To skip the success screen shown at the end of a successful transaction, the `skipSuccessScreen` parameter can be used. When using this parameter, your application is responsible for displaying the transaction result to the customer. In combination with the Receipts API your application can also send your own receipts; see the [Receipts API](/api/receipts/) for details. Please note success screens will still be shown when using the SumUp Air Lite readers.
+To skip the success screen shown at the end of a successful transaction, the `skipSuccessScreen` parameter can be used. When using this parameter, your application is responsible for displaying the transaction result to the customer. In combination with the Receipts API your application can also send your own receipts; see the [Receipts API](/api/tags/receipts/) for details. Please note success screens will still be shown when using the SumUp Air Lite readers.
 
 #### Skip Failed Screen
 
@@ -406,7 +406,7 @@ The following functions are handled by the [SumUp APIs](/api/):
 - [Refunds](/api/transactions/refund/)
 - [Transaction history](/api/transactions/list/)
 - [Receipts](/api/receipts/get/)
-- [Account management](/api/merchants/)
+- [Account management](/api/tags/merchants/)
 - [Online Payments](/online-payments/)
 
 ## Community

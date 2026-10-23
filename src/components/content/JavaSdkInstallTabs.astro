@@ -1,15 +1,21 @@
 ---
 import { Tabs, TabItem } from "@components/nimbus";
-import { CodeBlock } from "@components/Code";
+import Code from "@components/Code/Code.astro";
 import { getJavaSdkVersion } from "@lib/sdks/javaSdkVersion";
 import { javaInstallExamples } from "@lib/sdks/javaInstallExamples";
 const examples = javaInstallExamples(await getJavaSdkVersion());
 ---
 
-<Tabs>
+<Tabs class="install-examples">
   {examples.map(({ label, language, code }) => (
     <TabItem label={label}>
-      <CodeBlock language={language} code={code} />
+      <Code lang={language} code={code} />
     </TabItem>
   ))}
 </Tabs>
+
+<style>
+  .install-examples :global(.nb-code-figure) {
+    margin: 0;
+  }
+</style>

@@ -14,6 +14,7 @@ import BaseLayout from "./BaseLayout.astro";
 
 interface Props extends DocsPageProps {
   sidebarSections?: boolean;
+  sidebarFilter?: boolean;
   links?: Array<{ title: string; href: string }>;
   wide?: boolean;
   hideTitle?: boolean;
@@ -27,6 +28,7 @@ const {
   description,
   sidebar,
   sidebarSections = true,
+  sidebarFilter = false,
   headings,
   breadcrumbs,
   prevNext,
@@ -34,6 +36,9 @@ const {
   noindex,
   markdownUrl,
   socialImage,
+  socialImageSize,
+  apiVersion,
+  coordinate,
   lastUpdated,
   editUrl,
   draft,
@@ -62,13 +67,20 @@ const toc = headings === false ? [] : headings;
   noindex={noindex || draft}
   markdownUrl={markdownUrl}
   socialImage={socialImage}
+  socialImageSize={socialImageSize}
+  apiVersion={apiVersion}
+  coordinate={coordinate}
   lastUpdated={lastUpdated}
   head={head}
   collection={collection}
   entryId={entryId}
 >
   <div class="page-shell">
-    <Header sidebar={sidebar} sidebarSections={sidebarSections} />
+    <Header
+      sidebar={sidebar}
+      sidebarSections={sidebarSections}
+      sidebarFilter={sidebarFilter}
+    />
     <div
       class:list={[
         "docs-grid",
@@ -80,7 +92,12 @@ const toc = headings === false ? [] : headings;
       {showSidebar && (
         <aside class="docs-sidebar" data-portal-sidebar>
           <nav aria-label="Documentation">
-            <Sidebar items={sidebar} sections={sidebarSections} persist />
+            <Sidebar
+              items={sidebar}
+              sections={sidebarSections}
+              filter={sidebarFilter}
+              persist
+            />
           </nav>
           <div class="sidebar-footer">
             <a href="/help/">
@@ -332,7 +349,7 @@ const toc = headings === false ? [] : headings;
 
   .page-heading h1 {
     margin: 0;
-    font-family: "SumUp Black", "SumUp Black fallback", sans-serif;
+    font-family: var(--cui-font-stack-display);
     font-size: var(--cui-headline-l-font-size);
     line-height: var(--cui-headline-l-line-height);
     text-wrap: balance;

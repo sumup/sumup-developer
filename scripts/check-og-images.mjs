@@ -1,22 +1,11 @@
 import assert from "node:assert/strict";
-import { readdir, readFile } from "node:fs/promises";
+import { readFile } from "node:fs/promises";
 import { join, relative, resolve } from "node:path";
 import { JSDOM } from "jsdom";
+import { listFiles } from "./lib/files.mjs";
 
 const outputRoot = resolve(process.argv[2] ?? "dist/client");
 const siteOrigin = "https://developer.sumup.com";
-
-async function listFiles(directory) {
-  const entries = await readdir(directory, { withFileTypes: true });
-  return (
-    await Promise.all(
-      entries.map((entry) => {
-        const path = join(directory, entry.name);
-        return entry.isDirectory() ? listFiles(path) : [path];
-      }),
-    )
-  ).flat();
-}
 
 const files = await listFiles(outputRoot);
 const images = files.filter(

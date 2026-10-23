@@ -199,7 +199,10 @@ export function initSearchDialog(
   dialog.addEventListener(
     "keydown",
     (event) => {
-      if (event.key === "ArrowDown") {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        dialog.close();
+      } else if (event.key === "ArrowDown") {
         event.preventDefault();
         setActive(activeIndex + 1);
       } else if (event.key === "ArrowUp") {

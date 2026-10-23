@@ -29,13 +29,18 @@ const {
   noindex,
   markdownUrl,
   socialImage,
+  socialImageSize,
   lastUpdated,
   head = [],
   collection,
   entryId,
+  apiVersion,
+  coordinate,
 } = Astro.props;
 
-const versionStatus = collection ? await getVersionStatus(collection) : null;
+const versionKey =
+  apiVersion && collection ? `${collection}@${apiVersion}` : collection;
+const versionStatus = versionKey ? await getVersionStatus(versionKey) : null;
 const llmsPath = collection
   ? await getCollectionLlmsUrl(collection)
   : "/llms.txt";
@@ -93,10 +98,13 @@ const llmsUrl = Astro.site ? new URL(llmsPath, Astro.site).href : llmsPath;
       noindex={noindex}
       markdownUrl={markdownUrl}
       socialImage={socialImage}
+      socialImageSize={socialImageSize}
       lastUpdated={lastUpdated}
       head={head}
       collection={collection}
       entryId={entryId}
+      apiVersion={apiVersion}
+      coordinate={coordinate}
     />
     <WebMCP />
   </head>

@@ -1,21 +1,27 @@
-import { readdir, readFile } from "node:fs/promises";
+import { readFile } from "node:fs/promises";
 import { join, relative, sep } from "node:path";
 import { JSDOM } from "jsdom";
+import { listFiles } from "./files.mjs";
 
 export const siteOrigin = "https://developer.sumup.com";
 
+function proseSignature(element) {
+  if (!element) return undefined;
+  return {
+    text: element.textContent.replace(/\s+/g, " ").trim(),
+    structure: Array.from(
+      element.querySelectorAll(
+        "p, ul, ol, li, blockquote, pre, code, strong, em, table, h1, h2, h3, h4, h5, h6",
+      ),
+      (node) => node.tagName,
+    ),
+    links: Array.from(element.querySelectorAll("a[href]"), (link) =>
+      link.getAttribute("href"),
+    ),
+  };
+}
+
 export async function renderedSite(outputRoot) {
-  async function listFiles(directory) {
-    const entries = await readdir(directory, { withFileTypes: true });
-    return (
-      await Promise.all(
-        entries.map((entry) => {
-          const path = join(directory, entry.name);
-          return entry.isDirectory() ? listFiles(path) : [path];
-        }),
-      )
-    ).flat();
-  }
   const files = await listFiles(outputRoot);
   const outputPath = (file) => relative(outputRoot, file).split(sep).join("/");
   const generated = new Set(files.map(outputPath));
@@ -69,6 +75,18 @@ export async function renderedSite(outputRoot) {
     const dom = new JSDOM(await readFile(file, "utf8"));
     const document = dom.window.document;
     const result = {
+      apiDescription: proseSignature(
+        document.querySelector(".api-docs > .docs-content"),
+      ),
+      apiIndexDescriptions: Array.from(
+        document.querySelectorAll(".index-section"),
+        (section) => ({
+          href: section
+            .querySelector(":scope > h2 > a, :scope > h3 > a")
+            ?.getAttribute("href"),
+          prose: proseSignature(section.querySelector(":scope > .description")),
+        }),
+      ),
       codeBlocks: Array.from(
         document.querySelectorAll("main pre code"),
         (code) => code.textContent,

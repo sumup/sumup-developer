@@ -98,3 +98,29 @@ describe("sidebar persistence", () => {
     expect(document.querySelector("details")!.open).toBe(false);
   });
 });
+
+it("filters collapsed navigation groups and restores their open state when cleared", async () => {
+  const { initSidebarFilter } = await import("./sidebar.client");
+  document.body.innerHTML = `<label><input data-sidebar-filter></label><ul>
+    <li><details><summary>Checkouts</summary><ul><li><a>Create checkout POST</a></li><li><a>Retrieve checkout GET</a></li></ul></details></li>
+    <li><details open><summary>Readers</summary><ul><li><a>List readers GET</a></li></ul></details></li>
+  </ul>`;
+  const root = document.querySelector("ul")!;
+  const input = document.querySelector("input")!;
+  const groups = root.querySelectorAll("details");
+  const stop = initSidebarFilter(root);
+  input.value = "create";
+  input.dispatchEvent(new Event("input"));
+  expect(groups[0].open).toBe(true);
+  expect((root.children[1] as HTMLElement).hidden).toBe(true);
+  expect(
+    (groups[0].querySelector("ul")!.children[1] as HTMLElement).hidden,
+  ).toBe(true);
+  input.value = "";
+  input.dispatchEvent(new Event("input"));
+  expect(groups[0].open).toBe(false);
+  expect(groups[1].open).toBe(true);
+  expect((root.children[1] as HTMLElement).hidden).toBe(false);
+  stop();
+  document.body.replaceChildren();
+});

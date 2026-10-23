@@ -138,12 +138,12 @@
 /docs/api/get-customer/                                                      /api/customers/get
 /docs/api/deactivate-payment-instrument/                                     /api/customers/deactivate-payment-instrument
 /docs/api/deactivate-a-payment-instrument/                                   /api/customers/deactivate-payment-instrument
-/docs/api/customers/                                                         /api/customers
+/docs/api/customers/                                                         /api/tags/customers/
 /docs/api/create-customer/                                                   /api/customers/create
 /docs/api/create-a-customer/                                                 /api/customers/create
 
 # API - Transactions
-/docs/api/transactions/                                                      /api/transactions
+/docs/api/transactions/                                                      /api/tags/transactions/
 /docs/api/retrieve-a-transaction/                                            /api/transactions/get
 /docs/api/refund-transaction/                                                /api/transactions/refund
 /docs/api/refund-a-transaction/                                              /api/transactions/refund
@@ -161,22 +161,22 @@
 /docs/api/get-available-payment-methods/                                     /api/checkouts/list-available-payment-methods
 /docs/api/deactivate-checkout/                                               /api/checkouts/deactivate
 /docs/api/deactivate-a-checkout/                                             /api/checkouts/deactivate
-/docs/api/checkouts/                                                         /api/checkouts
+/docs/api/checkouts/                                                         /api/tags/checkouts/
 /docs/api/create-checkout/                                                   /api/checkouts/create
 /docs/api/create-a-checkout/                                                 /api/checkouts/create
 
 # API - Merchant
-/docs/api/retrieve-a-merchant-profile/                                      /api/merchants/ 301
-/docs/api/merchant/                                                         /api/merchants/ 301
+/docs/api/retrieve-a-merchant-profile/                                      /api/tags/merchants/ 301
+/docs/api/merchant/                                                         /api/tags/merchants/ 301
 /docs/api/get-merchant-profile/                                             /api/merchants/get/ 301
 
 # API - Receipts
 /docs/api/retrieve-receipt-details/                                          /api/receipts/get
-/docs/api/receipts/                                                          /api/receipts
+/docs/api/receipts/                                                          /api/tags/receipts/
 /docs/api/get-receipt/                                                       /api/receipts/get
 
 # API - Payouts
-/docs/api/payouts/                                                           /api/payouts
+/docs/api/payouts/                                                           /api/tags/payouts/
 /docs/api/list-payouts/                                                      /api/payouts/list
 
 # API - Authorization (deprecated endpoints)
@@ -225,6 +225,39 @@
 /docs/problem/problem/400-payment-method-not-allowed                         /problem/payment-method-not-allowed
 /docs/problem/problem/400-multiple-invalid-parameters                        /problem/multiple-invalid-parameters
 /docs/problem/problem/400-invalid-parameter                                  /problem/invalid-parameter
+
+# Nimbus API migration
+/api/openapi.json /openapi.json 301
+/api/sdks /tools/sdks/ 301
+/api/sdks/ /tools/sdks/ 301
+/api/authentication /tools/authorization/ 301
+/api/authentication/ /tools/authorization/ 301
+/api/errors /tools/errors/ 301
+/api/errors/ /tools/errors/ 301
+/api/checkouts /api/tags/checkouts/ 301
+/api/checkouts/ /api/tags/checkouts/ 301
+/api/customers /api/tags/customers/ 301
+/api/customers/ /api/tags/customers/ 301
+/api/transactions /api/tags/transactions/ 301
+/api/transactions/ /api/tags/transactions/ 301
+/api/payouts /api/tags/payouts/ 301
+/api/payouts/ /api/tags/payouts/ 301
+/api/receipts /api/tags/receipts/ 301
+/api/receipts/ /api/tags/receipts/ 301
+/api/readers /api/tags/readers/ 301
+/api/readers/ /api/tags/readers/ 301
+/api/members /api/tags/members/ 301
+/api/members/ /api/tags/members/ 301
+/api/memberships /api/tags/memberships/ 301
+/api/memberships/ /api/tags/memberships/ 301
+/api/roles /api/tags/roles/ 301
+/api/roles/ /api/tags/roles/ 301
+/api/merchants /api/tags/merchants/ 301
+/api/merchants/ /api/tags/merchants/ 301
+/api-preview /api/ 301
+/api-preview/ /api/ 301
+
+/api-preview/* /api/:splat 301
 
 # Catch-all for old docs structure
 /docs/*                                                                      /:splat

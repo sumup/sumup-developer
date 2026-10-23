@@ -16,7 +16,14 @@ The portal uses Astro with Nimbus. Application source sits in `src/`, with `page
 
 ## Coding Style & Naming Conventions
 
-Prettier (project defaults) handles whitespace, so commit formatted files rather than manual styling. Stick to TypeScript where possible; Astro islands may embed React components. Name components and directories in PascalCase (`src/components/LogoSlider`), utility modules in camelCase (`src/utils/formats.ts`), and content files in kebab-case (`src/content/docs/payments-overview.mdx`). Favor SumUp design tokens and Circuit UI primitives; extend `src/styles/portal.css` and `src/styles/prose.css` sparingly. Do not add Tailwind.
+Prettier (project defaults) handles whitespace, so commit formatted files rather than manual styling. Stick to TypeScript where possible; Astro islands may embed React components. Name components and directories in PascalCase (`src/components/LogoSlider`), utility modules in camelCase (`src/utils/formats.ts`), and content files in kebab-case (`src/content/docs/payments-overview.mdx`). Favor SumUp design tokens and Circuit UI primitives; extend `src/styles/portal.css` and `src/styles/prose.css` sparingly. The API reference uses repository-owned Circuit components under `src/components/ApiDocs/`, consuming Nimbus’s prepared API model. Keep API parsing and example generation in Nimbus; use shared portal styles and headless client helpers for rendering.
+
+## Nimbus Ownership
+
+- Use Nimbus for documentation and API models, metadata, Markdown/agent publishing, and shared headless helpers. Use its public exports.
+- Own the presentation in this repository: Astro layouts, Circuit components, styles, and browser interactions. Review registry UI changes selectively instead of replacing the portal's theme.
+- Keep SumUp-specific API adaptations in `src/lib/api/reference.ts` and component-to-Markdown mappings in `src/lib/markdownComponents.ts`. Consume prepared models in the renderer; leave schema resolution and example generation to Nimbus.
+- Review framework upgrades against the published output contract with `npm run validate`. Check affected browser interactions and documentation MCP calls separately when those integrations change.
 
 ## Docs Frontmatter Requirements
 
