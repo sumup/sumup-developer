@@ -2,7 +2,7 @@
 title: Cloud API
 description: Details on using Solo card readers and processing remote in-person payments via the Cloud API.
 sidebar:
-  order: 3
+  order: 4
 ---
 
 import { Steps, Tabs, TabItem } from '@astrojs/starlight/components';
@@ -12,7 +12,7 @@ import SoloScreen from '@components/content/SoloScreen.astro';
 The Cloud API lets you start a transaction from a Point of Sale (POS) running on any platform (Windows, iOS, Linux, Android, Web-based, etc.) capable of sending HTTPS requests and complete that transaction via a Solo reader.
 
 :::tip
-You can start building with the Cloud API before you order or receive a physical Solo reader. Use [Virtual Solo](https://virtual-solo.sumup.com) together with a [sandbox merchant account](/terminal-payments/quickstart/#sandbox-merchant-account) to test the pairing and checkout flow first, then switch to a physical reader later to validate hardware-specific behavior. See [Solo Virtual Terminal](#solo-virtual-terminal) for the supported limitations.
+You can start building with the Cloud API before you order or receive a Solo reader. Use [Virtual Solo](https://virtual-solo.sumup.com) and a [sandbox merchant account](/terminal-payments/quickstart/#sandbox-merchant-account) to test the pairing and checkout flow. See the [Virtual Solo testing guide](#solo-virtual-terminal) for supported features and limitations.
 :::
 
 Key advantages include:
@@ -39,11 +39,15 @@ The Cloud API integration supports:
 
   To disconnect Wi-Fi, navigate to **Connections** > **Wi-Fi** and disable Wi-Fi using the on-screen slider.
 
-## Solo Virtual Terminal
+## Testing
 
-If you don’t have a Solo reader yet, you can try out the flow using the [Virtual Solo](https://virtual-solo.sumup.com) with a [SumUp sandbox merchant account](/terminal-payments/quickstart/#sandbox-merchant-account).
+Follow the [in-person payment testing guide](/terminal-payments/testing/) to test successful payments and simulate specific decline reasons using a sandbox merchant account.
 
-Virtual Solo works like the real device but with some limitations. The following actions are not supported virtually:
+### Solo Virtual Terminal
+
+You can also test your Cloud API integration without a card reader using [Virtual Solo](https://virtual-solo.sumup.com) with a [SumUp sandbox merchant account](/terminal-payments/quickstart/#sandbox-merchant-account).
+
+Virtual Solo simulates a Solo card reader so you can test pairing and checkout flows. Use a Solo reader to test card reading and other device behavior. The following actions are not supported by Virtual Solo:
 
 - Physical card insertion or tap simulation (since there is no physical Solo device)
 - Real funds transfer (sandbox merchant accounts only)
@@ -283,9 +287,11 @@ The `status` field is either `successful` or `failed`. Use `client_transaction_i
 
 #### Failure Reason
 
-When `status` is `failed`, the payload includes an additional `failure_reason` field describing why the transaction did not go through, so you can surface a meaningful message to the cashier or customer instead of a generic error.
+When `status` is `failed`, the payload may include a `failure_reason` field describing why the transaction did not go through. Use this information to help diagnose failed payments.
 
 Treat the value as free-form text: do not match on exact strings, as new reasons can be introduced at any time.
+
+Do not display `failure_reason` directly to customers. Choose an appropriate customer-facing message instead. For lost-card or stolen-card declines, show a generic payment-declined message.
 
 :::note
 `failure_reason` is only sent for failed transactions. It is omitted from the payload entirely—rather than sent as `null`—for successful transactions, and when no reason is available.

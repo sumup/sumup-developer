@@ -40,6 +40,8 @@ The iOS SDK includes a [Sample App](https://github.com/sumup/sumup-ios-sdk/tree/
 
 Use the shared [Quickstart sandbox setup](/terminal-payments/quickstart/#sandbox-merchant-account) to create and test with a sandbox merchant account before integrating the iOS SDK.
 
+Follow the [in-person payment testing guide](/terminal-payments/testing/) to test successful payments and simulate declines.
+
 ### Compatibility
 
 * The SDK supports all device orientations on iPad and portrait on iPhone. Feel free to support other orientations on iPhone but please keep in mind that the SDK's UI will be presented in portrait on iPhone. See `UISupportedInterfaceOrientations` in the sample app's `Info.plist` or the "General" tab in Xcode's Target Editor.
@@ -321,6 +323,10 @@ SumUp can issue Access Tokens in accordance with the OAuth 2.0 Authorization Cod
 If you want to use the View Controller embedded in the SDK, this section explains how to do it. Please note that OAuth 2.0 Authorization Code Flow is supported and recommended, and the View Controller may become deprecated in the future.
 
 #### Logging the User In
+
+:::caution
+Native login uses the user's default merchant account and does not offer an account selector. For users with access to multiple merchant accounts, we recommend using a managed user account created in the intended merchant. Alternatively, set the default merchant account before logging in. See [merchant account setup for native SDK login](/terminal-payments/#users-with-multiple-merchant-accounts).
+:::
 
 Following app authentication, a registered SumUp merchant account needs to be logged in. Present a login screen from your UIViewController:
 

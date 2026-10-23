@@ -48,6 +48,8 @@ Sensitive card data is never passed to or stored on the merchant's phone. All da
 
 Use the shared [Quickstart sandbox setup](/terminal-payments/quickstart/#sandbox-merchant-account) to create and test with a sandbox merchant account before integrating the Android SDK.
 
+Follow the [in-person payment testing guide](/terminal-payments/testing/) to test successful payments and simulate declines.
+
 ## Compatibility
 
 Starting with firmware version 1.0.1.84, Air card readers with serial numbers starting with 108, 109 or later require SDK version 4.0.0 and later. Please update to the latest SDK version if you need to support these readers.
@@ -94,6 +96,10 @@ public class SampleApplication extends Application {
 ```
 
 ### Logging Merchant In and Out
+
+:::caution
+Native login uses the user's default merchant account and does not offer an account selector. For users with access to multiple merchant accounts, we recommend using a managed user account created in the intended merchant. Alternatively, set the default merchant account before logging in. See [merchant account setup for native SDK login](/terminal-payments/#users-with-multiple-merchant-accounts).
+:::
 
 Before calling any features of the Android SDK, a registered SumUp merchant account needs to be logged in. Log in by supplying your Affiliate Key ([create one](/tools/authorization/affiliate-keys) if necessary):
 

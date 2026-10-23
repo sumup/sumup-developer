@@ -9,11 +9,29 @@ sidebar:
 import ReaderGallery from '@components/content/ReaderGallery.astro';
 import Confirm from '@components/content/Confirm.astro';
 
-SumUp's in-person payment products let you accept card payments face-to-face using physical card readers or Tap to Pay on a mobile device. You can integrate them into your own app or system using our [Reader SDKs](/terminal-payments/sdks/), [Cloud API](/terminal-payments/cloud-api/), or, for legacy app handoff flows, [Payment Switch](/terminal-payments/payment-switch/).
+SumUp lets you accept in-person payments (also called card-present payments) using a card reader or Tap to Pay on a mobile device. You can integrate them into your own app or system using our [Reader SDKs](/terminal-payments/sdks/), [Cloud API](/terminal-payments/cloud-api/), or, for legacy app handoff flows, [Payment Switch](/terminal-payments/payment-switch/).
 
 This section helps you choose the right integration, understand reader compatibility, and get to your first payment quickly.
 
 Need device-specific details? Browse the [reader guides](/terminal-payments/readers/).
+
+## Users with Multiple Merchant Accounts
+
+:::caution
+If you have access to multiple merchant accounts, native login in the Android and iOS SDKs uses your default merchant account. The SDKs do not offer a merchant account selector.
+
+**Recommended: use a managed user account.** In the SumUp Dashboard, select the merchant account you want to use, then [create a managed user account](https://me.sumup.com/members/add?type=managed) for that merchant. Log in through the SDK using the managed user's credentials. For testing, create the managed user in your sandbox merchant account.
+
+**Alternative: set the default merchant account.** If you cannot create a managed user account or need to use your existing user account:
+
+1. Open [Accounts in the SumUp Dashboard](https://me.sumup.com/settings/accounts), under your user settings.
+2. Find the merchant account you want to use, open its options menu, and select **Set as default**.
+3. Log in through the SDK. If you are already logged in, log out first.
+
+When testing with your existing user account, set your sandbox merchant account as the default before logging in.
+
+You are responsible for verifying that the appropriate account is set as the default merchant account.
+:::
 
 ## How It Works
 
@@ -77,6 +95,7 @@ Once a reader processes its first transaction with a merchant account from a spe
 ## Next Steps
 
 - Ready to build? Start with the [Quickstart](/terminal-payments/quickstart/).
+- Ready to test? Use the [in-person payment testing guide](/terminal-payments/testing/) for sandbox setup and simulated payment results.
 - Building a native mobile app? Go to the [Reader SDKs](/terminal-payments/sdks/).
 - Building a server-driven or multi-platform POS? Use the [Cloud API](/terminal-payments/cloud-api/).
 - Only need an app-to-app handoff? Review [Payment Switch](/terminal-payments/payment-switch/).
