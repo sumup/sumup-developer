@@ -1,0 +1,53 @@
+---
+import type { SidebarItem } from "@cloudflare/nimbus-docs/types";
+import SidebarGroup from "./SidebarGroup.astro";
+import SidebarLink from "./SidebarLink.astro";
+import "./sidebar.css";
+
+interface Props {
+  items: SidebarItem[];
+  level?: number;
+  path?: string;
+  /** Render this list's groups as section headings instead of disclosures. */
+  sections?: boolean;
+  /** Persist open state for this sidebar instance (desktop only). */
+  persist?: boolean;
+}
+
+const {
+  items,
+  level = 0,
+  path = "",
+  sections = false,
+  persist = false,
+} = Astro.props;
+---
+
+<ul
+  data-sidebar
+  data-sidebar-persist={persist ? "" : undefined}
+  class:list={[
+    "sidebar-list",
+    level === 0 && "top-level",
+    level > 1 && "nested",
+  ]}
+>
+  {items.map((item) => (
+    <li>
+      {item.type === "group" ? (
+        <SidebarGroup
+          item={item}
+          level={level}
+          path={`${path}/${item.label}`}
+          collapsible={!sections}
+        />
+      ) : (
+        <SidebarLink item={item} />
+      )}
+    </li>
+  ))}
+</ul>
+
+<script>
+  import "./sidebar.client";
+</script>

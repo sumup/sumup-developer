@@ -1,0 +1,44 @@
+---
+import Button from "@components/Button";
+import { agentSetupPrompt } from "@lib/agentSetup";
+import { Body } from "@sumup-oss/circuit-ui";
+
+interface Props {
+  text?: string;
+}
+const { text = agentSetupPrompt } = Astro.props;
+---
+
+<div class="copy-prompt" data-copy-prompt>
+  <Body size="s" className="prompt-text" data-copy-prompt-text>
+    {text}
+  </Body>
+  <Button
+    type="button"
+    variant="secondary"
+    label="Copy setup prompt"
+    data-copy-prompt-button
+  />
+  <Body as="span" size="s" data-copy-prompt-status role="status" />
+</div>
+
+<script>
+  import "./copy-prompt.client";
+</script>
+
+<style>
+  .copy-prompt {
+    padding: var(--cui-spacings-mega);
+    background: var(--cui-bg-subtle);
+    border: 1px solid var(--cui-border-divider);
+    border-radius: var(--cui-border-radius-mega);
+  }
+  .copy-prompt :global(.prompt-text) {
+    margin: 0 0 var(--cui-spacings-mega);
+    overflow-wrap: anywhere;
+  }
+  .copy-prompt :global([data-copy-prompt-status]) {
+    display: inline-block;
+    margin-inline-start: var(--cui-spacings-mega);
+  }
+</style>

@@ -10,10 +10,14 @@ const { logos } = Astro.props;
 
 <div class="brandsSlider">
   <span>
-    {logos.map((logo) => <Logo {...logo} class="brandsLogo" />)}
+    {logos.map((logo) => (
+      <Logo {...logo} class="brandsLogo" />
+    ))}
   </span>
   <span aria-hidden="true">
-    {logos.map((logo) => <Logo {...logo} class="brandsLogo" />)}
+    {logos.map((logo) => (
+      <Logo {...logo} class="brandsLogo" />
+    ))}
   </span>
 </div>
 

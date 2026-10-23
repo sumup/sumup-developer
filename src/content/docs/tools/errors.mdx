@@ -1,0 +1,53 @@
+---
+title: API errors
+description: Understand SumUp API error responses, HTTP status codes, and Problem Details.
+sidebar:
+  order: 50
+---
+
+SumUp APIs use HTTP status codes to indicate whether a request succeeded. Each operation's [API reference](/api/) documents its responses and response schemas.
+
+## Problem Details
+
+Newer APIs use [Problem Details (RFC 9457)](https://www.rfc-editor.org/rfc/rfc9457.html) for error responses. Some APIs support both `application/problem+json` and `application/json` for backwards compatibility.
+
+If you do not use a SumUp SDK, send the following header to request the Problem Details format where it is supported:
+
+```http
+Accept: application/problem+json, application/json
+```
+
+A Problem Details response can include the following fields:
+
+- `type`: a URI identifying the problem type.
+- `title`: a short summary of the problem.
+- `status`: the HTTP status code.
+- `detail`: an explanation specific to this occurrence.
+- `instance`: a URI identifying the specific occurrence.
+
+Additional fields may be present. See the [Problem schema](/api/schemas/Problem/) for the complete definition.
+
+```json
+{
+  "type": "https://developer.sumup.com/problem/not-found",
+  "title": "Requested resource couldn't be found.",
+  "status": 404,
+  "detail": "The requested resource doesn't exist or does not belong to you."
+}
+```
+
+## HTTP status codes
+
+| Status | Meaning | When it is returned |
+| ------ | ------- | ------------------- |
+| `200` | OK | The request finished successfully. |
+| `400` | Bad Request | The payload is invalid, incomplete, or does not match the API contract. |
+| `401` | Unauthorized | Authentication is missing or the credentials are invalid. |
+| `402` | Request Failed | The request format is valid, but it could not be completed. |
+| `403` | Forbidden | The authenticated caller does not have permission for this operation. |
+| `404` | Not Found | The requested endpoint or resource could not be located. |
+| `409` | Conflict | The request conflicts with the current resource state. |
+| `422` | Unprocessable Entity | The payload is syntactically valid, but semantic validation failed. |
+| `424` | External Dependency Failed | A required upstream service failed, so the request could not finish. |
+| `429` | Too Many Requests | Rate limits were exceeded. Retry with exponential backoff. |
+| `5xx` | Server Errors | An issue occurred on SumUp's side. |

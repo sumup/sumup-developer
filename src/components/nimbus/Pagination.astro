@@ -1,0 +1,86 @@
+---
+import type { PrevNext } from "@cloudflare/nimbus-docs/types";
+import { ArrowLeft, ArrowRight } from "@sumup-oss/icons";
+
+type Props = PrevNext;
+const { prev, next } = Astro.props;
+---
+
+{(prev || next) && (
+  <nav
+    class="pagination"
+    aria-label="Previous and next pages"
+    data-pagefind-ignore
+  >
+    {prev && (
+      <a href={prev.href} rel="prev">
+        <ArrowLeft aria-hidden="true" />
+        <span>
+          <span class="direction">Previous</span>
+          {prev.label}
+        </span>
+      </a>
+    )}
+    {next && (
+      <a href={next.href} rel="next">
+        <span>
+          <span class="direction">Next</span>
+          {next.label}
+        </span>
+        <ArrowRight aria-hidden="true" />
+      </a>
+    )}
+  </nav>
+)}
+
+<style>
+  .pagination {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--cui-spacings-mega);
+    margin-block-start: var(--cui-spacings-exa);
+  }
+  a {
+    display: flex;
+    align-items: center;
+    gap: var(--cui-spacings-kilo);
+    padding: var(--cui-spacings-mega);
+    border: var(--cui-border-width-kilo) solid var(--cui-border-normal);
+    border-radius: var(--cui-border-radius-mega);
+    color: var(--cui-fg-normal);
+    font-weight: var(--cui-font-weight-semibold);
+    text-decoration: none;
+  }
+  a:hover {
+    background: var(--cui-bg-normal-hovered);
+  }
+  a:focus-visible {
+    outline: 2px solid var(--cui-border-accent);
+    outline-offset: 2px;
+  }
+  a[rel="next"] {
+    grid-column: 2;
+    justify-content: flex-end;
+    text-align: end;
+  }
+  .direction {
+    display: block;
+    margin-block-end: var(--cui-spacings-bit);
+    color: var(--cui-fg-subtle);
+    font-size: var(--cui-body-s-font-size);
+    font-weight: var(--cui-font-weight-regular);
+  }
+  a :global(svg) {
+    flex: none;
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+  @media (max-width: 30rem) {
+    .pagination {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    a[rel="next"] {
+      grid-column: 1;
+    }
+  }
+</style>

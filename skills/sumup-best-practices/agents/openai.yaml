@@ -1,0 +1,7 @@
+interface:
+  display_name: "SumUp Best Practices"
+  short_description: "Choose the right SumUp integration path."
+  icon_small: "./assets/small-logo.svg"
+  icon_large: "./assets/large-logo.png"
+  brand_color: "#fbfbf9"
+  default_prompt: "Use $sumup-best-practices to choose the right SumUp integration path."

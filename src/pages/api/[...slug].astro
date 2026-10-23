@@ -1,0 +1,54 @@
+---
+import {
+  getApiRoute,
+  getApiStaticPaths,
+} from "@cloudflare/nimbus-docs/runtime";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Header from "@components/nimbus/Header.astro";
+import "../../components/ApiReference/styles/globals.css";
+import LegacyLinks from "@components/ApiReference/LegacyLinks.astro";
+import { createApiReference } from "@lib/api/reference";
+import {
+  API_HOME_CHUNK_SIZE,
+  ApiLayout,
+} from "@components/ApiReference/ui/api-layout";
+
+export const prerender = true;
+export const getStaticPaths = getApiStaticPaths("api", {
+  homeChunkSize: API_HOME_CHUNK_SIZE,
+});
+
+const result = await getApiRoute(Astro, "api", {
+  homeChunkSize: API_HOME_CHUNK_SIZE,
+});
+if (result instanceof Response) return result;
+const { page, nav, collection, version, coordinate, home } = result;
+const part = home && home.part.number > 1 ? home.part : undefined;
+const pathname = new URL(page.href, Astro.url).pathname;
+---
+
+<BaseLayout
+  title={
+    part
+      ? `${page.title}: endpoints ${part.start}–${part.end} · API`
+      : page.title
+  }
+  description="SumUp API reference and SDK code samples."
+  markdownUrl={page.markdownHref}
+  socialImage={`/og${pathname.replace(/\/$/, "")}.png`}
+  noindex={part !== undefined}
+  collection={collection}
+  apiVersion={version ?? undefined}
+  coordinate={coordinate}
+>
+  <Header apiNavigation />
+  <ApiLayout
+    page={page}
+    nav={nav}
+    collection={collection}
+    version={version}
+    coordinate={coordinate}
+    home={home}
+  />
+  <LegacyLinks links={createApiReference().legacyLinks} />
+</BaseLayout>

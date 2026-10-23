@@ -1,0 +1,617 @@
+{
+  "frameworkVersion": "0.19.0",
+  "templatesTag": "templates-v0.8.0",
+  "registry": "https://nimbus-docs.com/registry",
+  "note": "Nimbus API components use the shared portal shell and Circuit theme tokens. Imports are remapped into this folder. Property groups start collapsed; layout breakpoints align with the portal header; compatibility edits satisfy portal lint rules.",
+  "components": [
+    {
+      "name": "api-code-rail",
+      "version": "0.19.0",
+      "files": [
+        {
+          "path": "src/components/ApiReference/ui/api-code-rail/ApiCodeRail.astro",
+          "upstreamPath": "components/ui/api-code-rail/ApiCodeRail.astro",
+          "sha256": "92fed11d92fc4d3f5e15741cb226704335197f04f864d2211df531ec48b8613f"
+        },
+        {
+          "path": "src/components/ApiReference/ui/api-code-rail/code-rail.client.ts",
+          "upstreamPath": "components/ui/api-code-rail/code-rail.client.ts",
+          "sha256": "e460f5ed2895b64153cac02a7c51918435496aa6139eb413bddf5c16a9863bdb"
+        },
+        {
+          "path": "src/components/ApiReference/ui/api-code-rail/code-rail.css",
+          "upstreamPath": "components/ui/api-code-rail/code-rail.css",
+          "sha256": "3fe78830f81bd692834fde2165414be9a815037209d8ffe1a4adf3500bc9151f"
+        },
+        {
+          "path": "src/components/ApiReference/ui/api-code-rail/index.ts",
+          "upstreamPath": "components/ui/api-code-rail/index.ts",
+          "sha256": "e42620fbe3b0b530139aa50748cab8f4521a58a2522515696d212f11381f2a98"
+        }
+      ]
+    },
+    {
+      "name": "api-field-row",
+      "version": "0.19.0",
+      "files": [
+        {
+          "path": "src/components/ApiReference/ui/api-field-row/ApiFieldList.astro",
+          "upstreamPath": "components/ui/api-field-row/ApiFieldList.astro",
+          "sha256": "cc400943531f5c8d32a7d4558f8de5eff6bda39a0ae1807560a5da1aeed6ee1a"
+        },
+        {
+          "path": "src/components/ApiReference/ui/api-field-row/ApiFieldRow.astro",
+          "upstreamPath": "components/ui/api-field-row/ApiFieldRow.astro",
+          "sha256": "5b6bced35cb72c32451d5fcc8166c3b42e72b0a526fad2613057365a0fb863d9"
+        },
+        {
+          "path": "src/components/ApiReference/ui/api-field-row/ApiUnionExplorer.astro",
+          "upstreamPath": "components/ui/api-field-row/ApiUnionExplorer.astro",
+          "sha256": "73084f8b2bde5abe2adb765df3b0ed4afb6c51aaee88fb3496d84a078953d0b2"
+        },
+        {
+          "path": "src/components/ApiReference/ui/api-field-row/api-field-row.client.ts",
+          "upstreamPath": "components/ui/api-field-row/api-field-row.client.ts",
+          "sha256": "c6622936f6f652556f0b138785f1ca8795576a4e8f802526db4603e5962201ba"
+        },
+        {
+          "path": "src/components/ApiReference/ui/api-field-row/field-list.css",
+          "upstreamPath": "components/ui/api-field-row/field-list.css",
+          "sha256": "5419b59655d8bd95c8d2c3a9a4e60ea0bd756ce873b06b9021cd847bb0cdc19b"
+        },
+        {
+          "path": "src/components/ApiReference/ui/api-field-row/index.ts",
+          "upstreamPath": "components/ui/api-field-row/index.ts",
+          "sha256": "48442d96649611ff858e93ad18155e267ba7137ef5dfb9d6e83420d9fff50cb2"
+        },
+        {
+          "path": "src/components/ApiReference/ui/api-field-row/type-display.ts",
+          "upstreamPath": "components/ui/api-field-row/type-display.ts",
+          "sha256": "f572ebafa6775316008c1186075060b333df58d2a04242ce521773a0f04cd18f"
+        }
+      ]
+    },
+    {
+      "name": "api-layout",
+      "version": "0.19.0",
+      "files": [
+        {
+          "path": "src/components/ApiReference/ui/api-layout/ApiBody.astro",
+          "upstreamPath": "components/ui/api-layout/ApiBody.astro",
+          "sha256": "e494d7e104230efbe1c9d511f4d188cd8f906c74a21ac6fc88a1eb40a2bd19c1"
+        },
+        {
+          "path": "src/components/ApiReference/ui/api-layout/ApiEndpointCard.astro",
+          "upstreamPath": "components/ui/api-layout/ApiEndpointCard.astro",
+          "sha256": "c2c9452b6437ab28b2bc0e05eef46adb7d0b8d7fa00b03a8a86a0bb1a950c33e"
+        },
+        {
+          "path": "src/components/ApiReference/ui/api-layout/ApiHome.astro",
+          "upstreamPath": "components/ui/api-layout/ApiHome.astro",
+          "sha256": "1faab0929f99a40dbdb21a6931fc3cc6f7803cbace5f8c13b570fdaabe600780"
+        },
+        {
+          "path": "src/components/ApiReference/ui/api-layout/ApiHomeChunk.astro",
+          "upstreamPath": "components/ui/api-layout/ApiHomeChunk.astro",
+          "sha256": "cef7d05de7afe020533d99caf47dd4d6af3f5d00f9221570d11bfcd649bee479"
+        },
+        {
+          "path": "src/components/ApiReference/ui/api-layout/ApiLayout.astro",
+          "upstreamPath": "components/ui/api-layout/ApiLayout.astro",
+          "sha256": "b69a947c22e3e2f353c059127e8884ca193738122b929d31351189131bfa8f8b"
+        },
+        {
+          "path": "src/components/ApiReference/ui/api-layout/ApiOperationList.astro",
+          "upstreamPath": "components/ui/api-layout/ApiOperationList.astro",
+          "sha256": "583e40d40d7f03eaa81a276513f2ae80eeec176026277fb092f587913e7d893c"
+        },
+        {
+          "path": "src/components/ApiReference/ui/api-layout/auth.ts",
+          "upstreamPath": "components/ui/api-layout/auth.ts",
+          "sha256": "11f778ac6e5836488b4984e33ed7b4267b6cb58aee6b6e7c03e5af4d892b8903"
+        },
+        {
+          "path": "src/components/ApiReference/ui/api-layout/home.ts",
+          "upstreamPath": "components/ui/api-layout/home.ts",
+          "sha256": "43f3cead23c5f82f3e0794e50568286acb8c7eec8a0a258eddf71adeff4beb4a"
+        },
+        {
+          "path": "src/components/ApiReference/ui/api-layout/index.ts",
+          "upstreamPath": "components/ui/api-layout/index.ts",
+          "sha256": "0015f42dc002939832a70dbf40b7866b6a005afda4631b0e3cbe500bae04d130"
+        },
+        {
+          "path": "src/components/ApiReference/ui/api-layout/request-examples.client.ts",
+          "upstreamPath": "components/ui/api-layout/request-examples.client.ts",
+          "sha256": "d658f5fadff046fd74b4c97f9748547397fdd1d0b4028540849dbd313c4680a3"
+        },
+        {
+          "path": "src/components/ApiReference/ui/api-layout/responses.client.ts",
+          "upstreamPath": "components/ui/api-layout/responses.client.ts",
+          "sha256": "b3de1837790b97a2ddc4e2589238a4fc64dbd4e2c1a08af0a6cfd30539940bfc"
+        }
+      ]
+    },
+    {
+      "name": "api-sidebar",
+      "version": "0.19.0",
+      "files": [
+        {
+          "path": "src/components/ApiReference/ui/api-sidebar/ApiMethodChip.astro",
+          "upstreamPath": "components/ui/api-sidebar/ApiMethodChip.astro",
+          "sha256": "c40ee4ee67b0f2b66db30760756d0bc1fb3f4d37a3046272f1663dc7a9d7988d"
+        },
+        {
+          "path": "src/components/ApiReference/ui/api-sidebar/ApiSidebar.astro",
+          "upstreamPath": "components/ui/api-sidebar/ApiSidebar.astro",
+          "sha256": "64ae08b7d41823f9f6b7aa76ce0a5772006dcbf895cc19af25c7be076fbe10dc"
+        },
+        {
+          "path": "src/components/ApiReference/ui/api-sidebar/ApiSidebarItem.astro",
+          "upstreamPath": "components/ui/api-sidebar/ApiSidebarItem.astro",
+          "sha256": "a9a7c97c61ab7f6b0b4b4582e4448f40abbf0567b353b7d3744c546192b19588"
+        },
+        {
+          "path": "src/components/ApiReference/ui/api-sidebar/api-nav-filter.client.ts",
+          "upstreamPath": "components/ui/api-sidebar/api-nav-filter.client.ts",
+          "sha256": "099654abe0d02aa2c12b8da40f08be46858e2fb4f552cfc640965e915e258c74"
+        },
+        {
+          "path": "src/components/ApiReference/ui/api-sidebar/index.ts",
+          "upstreamPath": "components/ui/api-sidebar/index.ts",
+          "sha256": "1d027fa7b01ffaa4461b0b0165d2fcb7bed9fa0f44dac72d5fc3e4c275877573"
+        },
+        {
+          "path": "src/components/ApiReference/ui/api-sidebar/method.ts",
+          "upstreamPath": "components/ui/api-sidebar/method.ts",
+          "sha256": "5b68e560c4c2729e569ac03468269c31c1d16468651061730e77dbea9900c130"
+        }
+      ]
+    },
+    {
+      "name": "badge",
+      "version": "0.19.0",
+      "files": [
+        {
+          "path": "src/components/ApiReference/ui/badge/Badge.astro",
+          "upstreamPath": "components/ui/badge/Badge.astro",
+          "sha256": "c7a65d59cb580afddcae3d954d28c068974c588e29670fe7d5649d8bd6e99805"
+        },
+        {
+          "path": "src/components/ApiReference/ui/badge/index.ts",
+          "upstreamPath": "components/ui/badge/index.ts",
+          "sha256": "8d2e6960a2ce09587e11c4ac1ab68d11b288c9df7b7946431dd3b3d26e8436b2"
+        }
+      ]
+    },
+    {
+      "name": "banner",
+      "version": "0.19.0",
+      "files": [
+        {
+          "path": "src/components/ApiReference/ui/banner/Banner.astro",
+          "upstreamPath": "components/ui/banner/Banner.astro",
+          "sha256": "ef016ab35e723488c5467b3437631f8f05e2f387b467b543cf260eca798136e8"
+        },
+        {
+          "path": "src/components/ApiReference/ui/banner/banner.client.ts",
+          "upstreamPath": "components/ui/banner/banner.client.ts",
+          "sha256": "c3a61ef78e1df881a06338247623907b63ef30251925a2172459e69a94202fb6"
+        },
+        {
+          "path": "src/components/ApiReference/ui/banner/index.ts",
+          "upstreamPath": "components/ui/banner/index.ts",
+          "sha256": "916c7b79a17b41fa38a217fe92f191ed6427558bfc1be603f1e4c88d3b297370"
+        }
+      ]
+    },
+    {
+      "name": "breadcrumbs",
+      "version": "0.19.0",
+      "files": [
+        {
+          "path": "src/components/ApiReference/ui/breadcrumbs/Breadcrumbs.astro",
+          "upstreamPath": "components/ui/breadcrumbs/Breadcrumbs.astro",
+          "sha256": "97c31b8718777141e3a5b974367c6a6731f2f8e4adcc2d24ccb1b66e2405c8d1"
+        },
+        {
+          "path": "src/components/ApiReference/ui/breadcrumbs/index.ts",
+          "upstreamPath": "components/ui/breadcrumbs/index.ts",
+          "sha256": "3138bbdb2434d2fd28a7b1840a0a4a12ce3a747b8e4355784400ab378fec839b"
+        }
+      ]
+    },
+    {
+      "name": "button",
+      "version": "0.19.0",
+      "files": [
+        {
+          "path": "src/components/ApiReference/ui/button/Button.astro",
+          "upstreamPath": "components/ui/button/Button.astro",
+          "sha256": "401e72fef58a71168512e7d25003efb4ab233b8943b4fd04d096243511f9f120"
+        },
+        {
+          "path": "src/components/ApiReference/ui/button/index.ts",
+          "upstreamPath": "components/ui/button/index.ts",
+          "sha256": "22da1dd9c10d6769cf71b890d59fc99d22edf4fb997bf73e66617ad0c7f814e4"
+        },
+        {
+          "path": "src/components/ApiReference/ui/button/variants.ts",
+          "upstreamPath": "components/ui/button/variants.ts",
+          "sha256": "47d4bf941799163c85365d5e96b69230ccb135616d6d8c5271a2b157abe756c0"
+        }
+      ]
+    },
+    {
+      "name": "cn",
+      "version": "0.19.0",
+      "files": [
+        {
+          "path": "src/components/ApiReference/lib/cn.ts",
+          "upstreamPath": "lib/cn.ts",
+          "sha256": "4575f5bcc29804b00c7cc1e3090aec2194b462bdd3c33a5620dc47d09bfe26d8"
+        }
+      ]
+    },
+    {
+      "name": "collapsible",
+      "version": "0.19.0",
+      "files": [
+        {
+          "path": "src/components/ApiReference/ui/collapsible/Collapsible.astro",
+          "upstreamPath": "components/ui/collapsible/Collapsible.astro",
+          "sha256": "148476eea68d73e8ac8874797dab242efcbb3ab1c92f5c2eefb7326965fc4e60"
+        },
+        {
+          "path": "src/components/ApiReference/ui/collapsible/CollapsibleContent.astro",
+          "upstreamPath": "components/ui/collapsible/CollapsibleContent.astro",
+          "sha256": "51bedf24e5a9404f18f1801c6c9cbdcdccba829abfb9c7279a6e202177cd6106"
+        },
+        {
+          "path": "src/components/ApiReference/ui/collapsible/CollapsibleTrigger.astro",
+          "upstreamPath": "components/ui/collapsible/CollapsibleTrigger.astro",
+          "sha256": "7d59886fd63bd29717a09227eb53e77efa383338fec9913b838926fb424307bf"
+        },
+        {
+          "path": "src/components/ApiReference/ui/collapsible/collapsible.client.ts",
+          "upstreamPath": "components/ui/collapsible/collapsible.client.ts",
+          "sha256": "fb861d33e17cc5db74bd6a932269d3cff6775ce17959509f97e211eba25708bd"
+        },
+        {
+          "path": "src/components/ApiReference/ui/collapsible/index.ts",
+          "upstreamPath": "components/ui/collapsible/index.ts",
+          "sha256": "ee9f123942f7e2348f4e6ea3b42e52e55964c77e5fedb2ab24b7bfae75b0bbfd"
+        }
+      ]
+    },
+    {
+      "name": "dialog",
+      "version": "0.19.0",
+      "files": [
+        {
+          "path": "src/components/ApiReference/ui/dialog/Dialog.astro",
+          "upstreamPath": "components/ui/dialog/Dialog.astro",
+          "sha256": "091792e32d2e66a17872bc75dba6dbc3adc74241af45819ac9a7894c36ccd230"
+        },
+        {
+          "path": "src/components/ApiReference/ui/dialog/DialogClose.astro",
+          "upstreamPath": "components/ui/dialog/DialogClose.astro",
+          "sha256": "7b3b7815b51bb7d42b5f93997bec9ba8752dc088eb30fa4439b17bee9736ecc7"
+        },
+        {
+          "path": "src/components/ApiReference/ui/dialog/DialogContent.astro",
+          "upstreamPath": "components/ui/dialog/DialogContent.astro",
+          "sha256": "dbf7371eb6d2671aed211ae8f8d4fddbc759ba535a36c8d7c12e593b8d04b598"
+        },
+        {
+          "path": "src/components/ApiReference/ui/dialog/dialog-close.client.ts",
+          "upstreamPath": "components/ui/dialog/dialog-close.client.ts",
+          "sha256": "39ebcfb6439e05c3bb7958e84d5f7e300018587f502b7a8c97191ff37dc3a275"
+        },
+        {
+          "path": "src/components/ApiReference/ui/dialog/dialog.client.ts",
+          "upstreamPath": "components/ui/dialog/dialog.client.ts",
+          "sha256": "6404935523f184525b8fb2e38509dcb998c6ea663c10a4958e5b52fa1f9e0259"
+        },
+        {
+          "path": "src/components/ApiReference/ui/dialog/index.ts",
+          "upstreamPath": "components/ui/dialog/index.ts",
+          "sha256": "1a7596e501a0c3129c9da111e6dc51e4a6d00a860b0a57aee89c23a42e5c42dd"
+        }
+      ]
+    },
+    {
+      "name": "layer-card",
+      "version": "0.19.0",
+      "files": [
+        {
+          "path": "src/components/ApiReference/ui/layer-card/LayerCard.astro",
+          "upstreamPath": "components/ui/layer-card/LayerCard.astro",
+          "sha256": "0803c1f9fe69649466526a7266e64a1cf83edf7a8d06978fb2629e57f961bb9d"
+        },
+        {
+          "path": "src/components/ApiReference/ui/layer-card/LayerCardContent.astro",
+          "upstreamPath": "components/ui/layer-card/LayerCardContent.astro",
+          "sha256": "702b2d01f6219fa4feb02ca14475bdb6ad8736c4e800b24a30f3b65495c22638"
+        },
+        {
+          "path": "src/components/ApiReference/ui/layer-card/LayerCardHeader.astro",
+          "upstreamPath": "components/ui/layer-card/LayerCardHeader.astro",
+          "sha256": "97bf782f09930c2e7a6158531f20291d2acf6830d0b61c0ec233c2f5d5b0db53"
+        },
+        {
+          "path": "src/components/ApiReference/ui/layer-card/index.ts",
+          "upstreamPath": "components/ui/layer-card/index.ts",
+          "sha256": "165fe2d8ac54c9dd5679725bb6767e11bf57c3301b5c630a8ec9afa6ae47bc8e"
+        }
+      ]
+    },
+    {
+      "name": "link-button",
+      "version": "0.19.0",
+      "files": [
+        {
+          "path": "src/components/ApiReference/ui/link-button/LinkButton.astro",
+          "upstreamPath": "components/ui/link-button/LinkButton.astro",
+          "sha256": "2abca699e590f4cfd297636caa127140a0b11ec1717e66fcdf3c0cd97b364d86"
+        },
+        {
+          "path": "src/components/ApiReference/ui/link-button/index.ts",
+          "upstreamPath": "components/ui/link-button/index.ts",
+          "sha256": "a213a7f14438f969db0fed576bb583b46f02bbf2c42651f0d870bce50491ea06"
+        }
+      ]
+    },
+    {
+      "name": "page-actions",
+      "version": "0.19.0",
+      "files": [
+        {
+          "path": "src/components/ApiReference/ui/page-actions/PageActions.astro",
+          "upstreamPath": "components/ui/page-actions/PageActions.astro",
+          "sha256": "08ac7bdf7b46ac4894a9139f35ca89a2c6a3f156f4fe893f05a255f1d7fdba0f"
+        },
+        {
+          "path": "src/components/ApiReference/ui/page-actions/index.ts",
+          "upstreamPath": "components/ui/page-actions/index.ts",
+          "sha256": "727755b0d9e6e9f239b6fb372661901b649170135a10d02b6757db3985c073cd"
+        },
+        {
+          "path": "src/components/ApiReference/ui/page-actions/page-actions.client.ts",
+          "upstreamPath": "components/ui/page-actions/page-actions.client.ts",
+          "sha256": "b11ce647c5bca463f086c46ee9b703715b41cf1b5d44bf330caf051ddb4583cc"
+        }
+      ]
+    },
+    {
+      "name": "pagination",
+      "version": "0.19.0",
+      "files": [
+        {
+          "path": "src/components/ApiReference/ui/pagination/Pagination.astro",
+          "upstreamPath": "components/ui/pagination/Pagination.astro",
+          "sha256": "0429c94c1d33b36043083a13497ae334e50b24c2f16548c3d587f8661ea03a3e"
+        },
+        {
+          "path": "src/components/ApiReference/ui/pagination/PaginationKey.astro",
+          "upstreamPath": "components/ui/pagination/PaginationKey.astro",
+          "sha256": "862c2d088f6a1c5d1f88134a1cb391bd9b58d8ed0870f85425fb6e619b2278ef"
+        },
+        {
+          "path": "src/components/ApiReference/ui/pagination/PaginationLink.astro",
+          "upstreamPath": "components/ui/pagination/PaginationLink.astro",
+          "sha256": "3a54023a27297913de445dba4c875e76d1abbdbe11015fc34561430bcab8bd1d"
+        },
+        {
+          "path": "src/components/ApiReference/ui/pagination/index.ts",
+          "upstreamPath": "components/ui/pagination/index.ts",
+          "sha256": "a56cc406fa1d608dc4b1b174de1c4d9b8fed3559e8a3bc23d9bc7d13af52683d"
+        },
+        {
+          "path": "src/components/ApiReference/ui/pagination/pagination.client.ts",
+          "upstreamPath": "components/ui/pagination/pagination.client.ts",
+          "sha256": "2a5b7cc123810ec8670ae09f58404a870c41d795b110bde5208af1bead4f0715"
+        }
+      ]
+    },
+    {
+      "name": "popover",
+      "version": "0.19.0",
+      "files": [
+        {
+          "path": "src/components/ApiReference/ui/popover/Popover.astro",
+          "upstreamPath": "components/ui/popover/Popover.astro",
+          "sha256": "e17e73037fb07134a905181a53507396825a0295ce6624d3d604d92836b4993b"
+        },
+        {
+          "path": "src/components/ApiReference/ui/popover/PopoverContent.astro",
+          "upstreamPath": "components/ui/popover/PopoverContent.astro",
+          "sha256": "11df5954a76f0e8be53f5a87402683dd26381d984f42f6beb9f2d4e99b94254f"
+        },
+        {
+          "path": "src/components/ApiReference/ui/popover/PopoverTrigger.astro",
+          "upstreamPath": "components/ui/popover/PopoverTrigger.astro",
+          "sha256": "51ebfe033cadd5a287657eca1aa39ff201739dc885415dff37e278da42ebfb83"
+        },
+        {
+          "path": "src/components/ApiReference/ui/popover/index.ts",
+          "upstreamPath": "components/ui/popover/index.ts",
+          "sha256": "3ebe8e8356065dc37af316224a4b266c80234641eea82c29b8c6e7e3d372c5fc"
+        },
+        {
+          "path": "src/components/ApiReference/ui/popover/popover.client.ts",
+          "upstreamPath": "components/ui/popover/popover.client.ts",
+          "sha256": "63255680808d8ce01b59dcfd041c1e66e3b7ccde8ea5fc04e9149fabdf15ca3e"
+        }
+      ]
+    },
+    {
+      "name": "search",
+      "version": "0.19.0",
+      "files": [
+        {
+          "path": "src/components/ApiReference/ui/search/SearchDialog.astro",
+          "upstreamPath": "components/ui/search/SearchDialog.astro",
+          "sha256": "9c7cc6e1bfdbce61c1f45b3460dc38cdab59fc7684ac230f77c6b615cca1c1a1"
+        },
+        {
+          "path": "src/components/ApiReference/ui/search/SearchTrigger.astro",
+          "upstreamPath": "components/ui/search/SearchTrigger.astro",
+          "sha256": "f26a9458b35a9750b945bbabb31f4ab0202c97df74acb029344e553385173761"
+        },
+        {
+          "path": "src/components/ApiReference/ui/search/index.ts",
+          "upstreamPath": "components/ui/search/index.ts",
+          "sha256": "ca5060013a6d4e4b4af815e2bdba8f2e410ca004513419989a6aa50cf4fb20e7"
+        },
+        {
+          "path": "src/components/ApiReference/ui/search/providers/pagefind.ts",
+          "upstreamPath": "components/ui/search/providers/pagefind.ts",
+          "sha256": "3b06704a0dc2ff37b9a22f74169d6d7cd94f8dcd087d047dba65a169460daf57"
+        },
+        {
+          "path": "src/components/ApiReference/ui/search/search-trigger.client.ts",
+          "upstreamPath": "components/ui/search/search-trigger.client.ts",
+          "sha256": "cf34145bab97b12804a68715fa29d6cd23e95e535c26789ec18c0ff14872bef0"
+        },
+        {
+          "path": "src/components/ApiReference/ui/search/search.client.ts",
+          "upstreamPath": "components/ui/search/search.client.ts",
+          "sha256": "e536f56d4ece2d67b32f0cf9f69fce47cea70d0fa3c344ec3884b817c307075a"
+        }
+      ]
+    },
+    {
+      "name": "sidebar",
+      "version": "0.19.0",
+      "files": [
+        {
+          "path": "src/components/ApiReference/ui/sidebar/Sidebar.astro",
+          "upstreamPath": "components/ui/sidebar/Sidebar.astro",
+          "sha256": "d5c621f295cee439a804ccbf4ea5d8d493a6cf7a110f19a1e4e0d28df4079ae7"
+        },
+        {
+          "path": "src/components/ApiReference/ui/sidebar/SidebarFilter.astro",
+          "upstreamPath": "components/ui/sidebar/SidebarFilter.astro",
+          "sha256": "7e5400e2088d9d3bd145b1cf0087c53fac8c03488fe76603c569824a0424b6df"
+        },
+        {
+          "path": "src/components/ApiReference/ui/sidebar/SidebarGroup.astro",
+          "upstreamPath": "components/ui/sidebar/SidebarGroup.astro",
+          "sha256": "c7d993b93190032cdacf508afeca8198ebd2e49fb8dab9252c1fcc568bb55eaf"
+        },
+        {
+          "path": "src/components/ApiReference/ui/sidebar/SidebarGroupHeader.astro",
+          "upstreamPath": "components/ui/sidebar/SidebarGroupHeader.astro",
+          "sha256": "4d6be34a92311fd76372eded6a5a3c1f6150df7ed2203035e49938363689cbb6"
+        },
+        {
+          "path": "src/components/ApiReference/ui/sidebar/SidebarLink.astro",
+          "upstreamPath": "components/ui/sidebar/SidebarLink.astro",
+          "sha256": "d9bcf8c3ba21e4faa869c6d4c87521268f0412004ce5c29de898b370486eb293"
+        },
+        {
+          "path": "src/components/ApiReference/ui/sidebar/index.ts",
+          "upstreamPath": "components/ui/sidebar/index.ts",
+          "sha256": "5ed239f52335926ede7b519b1f5761732896952b5676549d5fdc215aa091d607"
+        },
+        {
+          "path": "src/components/ApiReference/ui/sidebar/sidebar.client.ts",
+          "upstreamPath": "components/ui/sidebar/sidebar.client.ts",
+          "sha256": "b81a1e5b26a8607e378f3cd7f03c2fe3e257408c4437cfacf5a266f99519f7dc"
+        }
+      ]
+    },
+    {
+      "name": "theme-toggle",
+      "version": "0.19.0",
+      "files": [
+        {
+          "path": "src/components/ApiReference/ui/theme-toggle/ThemeToggle.astro",
+          "upstreamPath": "components/ui/theme-toggle/ThemeToggle.astro",
+          "sha256": "230d8832b4eb803c80a4fe425df1c6cc15a2e07bdff4ea98121c42825d8f2f7c"
+        },
+        {
+          "path": "src/components/ApiReference/ui/theme-toggle/index.ts",
+          "upstreamPath": "components/ui/theme-toggle/index.ts",
+          "sha256": "cdd11413f68145fa2bd175bf1294bbc7132e650437584588c30b9ec483a89532"
+        },
+        {
+          "path": "src/components/ApiReference/ui/theme-toggle/theme-toggle.client.ts",
+          "upstreamPath": "components/ui/theme-toggle/theme-toggle.client.ts",
+          "sha256": "aea06c1c22241e60514ba1e616fb816ab6761b18c8ac92938b54508efbc02f6e"
+        }
+      ]
+    },
+    {
+      "name": "toc",
+      "version": "0.19.0",
+      "files": [
+        {
+          "path": "src/components/ApiReference/ui/toc/MobileTOC.astro",
+          "upstreamPath": "components/ui/toc/MobileTOC.astro",
+          "sha256": "022163257a3948b05a6296e26d97ffdaf1d562bfadb279cbfd8af1c69ba42c68"
+        },
+        {
+          "path": "src/components/ApiReference/ui/toc/TOC.astro",
+          "upstreamPath": "components/ui/toc/TOC.astro",
+          "sha256": "1763632b2d7375ae0ac17514d243f5b72426e306319b99141b5c1f00656a0122"
+        },
+        {
+          "path": "src/components/ApiReference/ui/toc/index.ts",
+          "upstreamPath": "components/ui/toc/index.ts",
+          "sha256": "110fcf03764bee6f39c081cea6bb46a34bae7ffda2181b39f32f9fad47e3a763"
+        },
+        {
+          "path": "src/components/ApiReference/ui/toc/mobile-toc.client.ts",
+          "upstreamPath": "components/ui/toc/mobile-toc.client.ts",
+          "sha256": "c67703977f51ed149c751f709f48c4955896684df2435528c10479ae3233b9e6"
+        },
+        {
+          "path": "src/components/ApiReference/ui/toc/toc.client.ts",
+          "upstreamPath": "components/ui/toc/toc.client.ts",
+          "sha256": "aeced664bc0d693c1527b1c49a5b1d660f0363b7fefc1a6f268fdb880ffbd965"
+        }
+      ]
+    },
+    {
+      "name": "variants",
+      "version": "0.19.0",
+      "files": [
+        {
+          "path": "src/components/ApiReference/lib/variants.ts",
+          "upstreamPath": "lib/variants.ts",
+          "sha256": "6cfabfb4cb2c40af237e5974a16f300863353e6963a4f8518767f998c6b30435"
+        }
+      ]
+    },
+    {
+      "name": "version-switcher",
+      "version": "0.19.0",
+      "files": [
+        {
+          "path": "src/components/ApiReference/ui/version-switcher/README.md",
+          "upstreamPath": "components/ui/version-switcher/README.md",
+          "sha256": "5d28b9a8bd8f696efb1a518a5d56435fddb53d865af008df9cea4a5c80029a59"
+        },
+        {
+          "path": "src/components/ApiReference/ui/version-switcher/VersionSwitcher.astro",
+          "upstreamPath": "components/ui/version-switcher/VersionSwitcher.astro",
+          "sha256": "acdbd5e2da6a77df70db0cf461b4bc7c94cd87355d4b17c22695ce48afdd243c"
+        },
+        {
+          "path": "src/components/ApiReference/ui/version-switcher/index.ts",
+          "upstreamPath": "components/ui/version-switcher/index.ts",
+          "sha256": "32762ad0d535d1bcaca0babda65e812cc245df2b40e9bc2408ec39f8f16e5289"
+        }
+      ]
+    }
+  ],
+  "starterFiles": [
+    {
+      "path": "src/components/ApiReference/styles/globals.css",
+      "upstreamPath": "styles/globals.css",
+      "sha256": "3ac14686567c1f8de3023c27ef64fc4ff6dc81e23f53876cc9c47b6b479a34f5"
+    }
+  ]
+}

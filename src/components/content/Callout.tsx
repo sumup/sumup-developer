@@ -31,6 +31,7 @@ export default function Callout({
   children,
   className,
   type = "note",
+  title,
   ...props
 }: Props) {
   const config = calloutConfig[type];
@@ -40,12 +41,19 @@ export default function Callout({
   const Icon = config.icon;
 
   return (
-    <div {...props} className={classes}>
+    <div {...props} className={classes} data-prose="off">
       <div className="sumup-callout__icon">
         <Icon aria-hidden="true" size="24" />
       </div>
       <span className="visually-hidden">{config.iconLabel}</span>
-      <div className="sumup-callout__content">{children}</div>
+      <div className="sumup-callout__content">
+        {title && (
+          <p className="sumup-callout__title" aria-hidden="true">
+            {title}
+          </p>
+        )}
+        {children}
+      </div>
     </div>
   );
 }

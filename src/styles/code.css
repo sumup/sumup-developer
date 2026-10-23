@@ -1,0 +1,164 @@
+:root {
+  --code-frame-background: light-dark(#fff, #0d1117);
+}
+
+.nb-code-figure {
+  position: relative;
+  max-width: 100%;
+  margin: var(--cui-spacings-mega) 0;
+  overflow: hidden;
+  background: var(--code-frame-background);
+  border: var(--cui-border-width-kilo) solid var(--cui-border-subtle);
+  border-radius: var(--cui-border-radius-byte);
+}
+
+pre.astro-code {
+  max-width: 100%;
+  max-height: min(68vh, 62.5rem);
+  padding: var(--cui-spacings-kilo) var(--cui-spacings-mega);
+  margin: 0;
+  overflow: auto;
+  border: 0;
+  border-radius: 0;
+  color: var(--cui-fg-normal);
+  font-family: var(--cui-font-stack-mono);
+  font-size: 0.875rem;
+  line-height: 1.625;
+  scrollbar-width: thin;
+}
+
+pre.astro-code code {
+  display: block;
+  width: max-content;
+  min-width: 100%;
+  padding: 0;
+  background: transparent;
+  white-space: pre;
+}
+
+/* Nimbus emits these shared token variables in /_nimbus/shiki.css. */
+pre.astro-code span {
+  color: var(--shiki-light, inherit);
+}
+
+[data-mode="dark"] pre.astro-code span {
+  color: var(--shiki-dark, inherit);
+}
+
+.nb-code-title {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--cui-spacings-mega);
+  padding: var(--cui-spacings-kilo) var(--cui-spacings-mega);
+  border-bottom: var(--cui-border-width-kilo) solid var(--cui-border-subtle);
+  color: var(--cui-fg-normal);
+  font-size: var(--cui-body-s-font-size);
+  font-weight: var(--cui-font-weight-semibold);
+}
+
+.nb-code-title-name {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.nb-code-title-lang {
+  color: var(--cui-fg-subtle);
+}
+
+.nb-code-copy {
+  position: absolute;
+  top: var(--cui-spacings-byte);
+  right: var(--cui-spacings-byte);
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  padding: 0;
+  color: var(--cui-fg-subtle);
+  background: var(--cui-bg-subtle);
+  border: var(--cui-border-width-kilo) solid var(--cui-border-subtle);
+  border-radius: var(--cui-border-radius-bit);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity var(--cui-transitions-default);
+}
+
+.nb-code-figure:hover .nb-code-copy,
+.nb-code-copy:focus-visible {
+  opacity: 1;
+}
+
+.nb-code-figure-titled .nb-code-copy {
+  top: 3rem;
+}
+
+.nb-code-copy:hover {
+  color: var(--cui-fg-normal);
+  background: var(--cui-bg-subtle-hovered);
+}
+
+.nb-code-copy:focus-visible {
+  outline: 2px solid var(--cui-border-focus);
+  outline-offset: 2px;
+}
+
+.nb-code-copy svg {
+  width: 0.875rem;
+  height: 0.875rem;
+}
+
+.nb-code-copy[data-state="copied"] {
+  color: var(--cui-fg-success);
+}
+
+pre.astro-code .line {
+  display: inline-block;
+  min-width: 100%;
+}
+
+pre.astro-code .line.highlighted,
+pre.astro-code .highlighted-word {
+  background: var(--cui-bg-highlight);
+}
+
+pre.astro-code .line.diff.add {
+  background: var(--cui-bg-success);
+}
+
+pre.astro-code .line.diff.remove,
+pre.astro-code .line.error {
+  background: var(--cui-bg-danger);
+}
+
+pre.astro-code .line.warning {
+  background: var(--cui-bg-warning);
+}
+
+pre.astro-code.has-focused .line:not(.focused) {
+  opacity: 0.5;
+}
+
+pre.astro-code.has-focused:hover .line:not(.focused) {
+  opacity: 1;
+}
+
+pre.astro-code[data-nb-wrap] code {
+  width: 100%;
+  min-width: 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.codeblock .nb-code-figure {
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+}
+
+@media (hover: none) {
+  .nb-code-copy {
+    opacity: 1;
+  }
+}
