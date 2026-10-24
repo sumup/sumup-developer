@@ -1185,24 +1185,7 @@ paths:
               schema:
                 oneOf:
                   - $ref: '#/components/schemas/ErrorExtended'
-                  - type: object
-                    required:
-                      - instance
-                      - error_code
-                      - error_message
-                    properties:
-                      instance:
-                        type: string
-                        description: Unique identifier of this error occurrence.
-                        example: 32a44c6c-85d3-49e8-86bf-a5bba98c4621
-                      error_code:
-                        type: string
-                        description: Platform code for the error.
-                        example: INVALID
-                      error_message:
-                        type: string
-                        description: Short description of the error.
-                        example: customer_id
+                  - $ref: '#/components/schemas/CustomerValidationError'
               examples:
                 Missing_Customer_ID:
                   description: The required customer identifier is missing.
@@ -3853,6 +3836,12 @@ paths:
 
 
         **Note**: If the target device is a Solo, it must be in version 3.3.24.3 or higher.
+
+
+        **Affiliate metadata**: Optionally include an `affiliate` object to attach integrator metadata to the payment.
+        When provided, the affiliate key is validated against Identity Admin, stored server-side for approximately 600 seconds,
+        and merged into the downstream payment when the reader starts the transaction using the returned `client_transaction_id`.
+        Affiliate metadata is not sent to the device during checkout creation.
       operationId: CreateReaderCheckout
       parameters:
         - description: Merchant Code
@@ -3886,14 +3875,18 @@ paths:
         '400':
           content:
             application/json:
+              example:
+                errors:
+                  detail: Invalid affiliate key.
+                  type: INVALID_AFFILIATE_KEY
               schema:
                 $ref: '#/components/schemas/CreateReaderCheckoutError'
             application/problem+json:
               example:
-                detail: Bad Request
+                detail: Invalid affiliate key.
                 status: 400
-                title: Bad Request
-                type: https://developer.sumup.com/problem/bad-request
+                title: Invalid Affiliate Key
+                type: https://developer.sumup.com/problem/invalid-affiliate-key
               schema:
                 $ref: '#/components/schemas/Problem'
           description: Response when given params (or one of them) are invalid
@@ -3931,11 +3924,19 @@ paths:
               schema:
                 $ref: '#/components/schemas/CreateReaderCheckoutUnprocessableEntity'
             application/problem+json:
-              example:
-                detail: Validation failed
-                status: 422
-                title: Unprocessable Entity
-                type: https://developer.sumup.com/problem/validation-error
+              examples:
+                PaymentMethodNotAllowed:
+                  value:
+                    detail: Payment method not allowed for this merchant.
+                    status: 422
+                    title: Payment Method Not Allowed
+                    type: https://developer.sumup.com/problem/payment-method-not-allowed
+                ValidationError:
+                  value:
+                    detail: Validation failed
+                    status: 422
+                    title: Unprocessable Content
+                    type: https://developer.sumup.com/problem/validation-error
               schema:
                 $ref: '#/components/schemas/Problem'
           description: Response when given params (or one of them) are invalid
@@ -4786,6 +4787,27 @@ components:
           example: 831ff8d4cd5958ab5670
         personal_details:
           $ref: '#/components/schemas/PersonalDetails'
+    CustomerValidationError:
+      title: Customer Validation Error
+      description: Details of a customer validation error.
+      type: object
+      required:
+        - instance
+        - error_code
+        - error_message
+      properties:
+        instance:
+          type: string
+          description: Unique identifier of this error occurrence.
+          example: 32a44c6c-85d3-49e8-86bf-a5bba98c4621
+        error_code:
+          type: string
+          description: Platform code for the error.
+          example: INVALID
+        error_message:
+          type: string
+          description: Short description of the error.
+          example: customer_id
     Error:
       title: Error
       type: object
@@ -7320,6 +7342,12 @@ components:
             errors:
               installments:
                 - is invalid
+        PaymentMethodNotAllowed:
+          description: Error returned when the requested payment method is not supported for the merchant (e.g. pix for non-BR merchants).
+          value:
+            errors:
+              detail: Payment method not allowed for this merchant.
+              type: PAYMENT_METHOD_NOT_ALLOWED
         ReaderBusy:
           description: Error returned when a checkout was requested in the last 60 seconds.
           value:
@@ -7366,6 +7394,7 @@ components:
           client_transaction_id: 00e33a36-c99b-4cb2-b635-b90c1455c9c8
           created_at: 2026-07-07T20:41:16.315434Z
           installments: 1
+          payment_failure_reason:
           payment_status: pending
           payment_type: card
           reader_firmware_version: 3.3.3.21
@@ -7381,10 +7410,11 @@ components:
         data:
           properties:
             card_type:
-              description: Type of the card. Required for some countries
+              description: Type of the card, or null when no card type was specified.
               enum:
                 - credit
                 - debit
+                -
               nullable: true
               type: string
             checkout_id:
@@ -7482,6 +7512,7 @@ components:
             - reader_firmware_version
             - installments
             - payment_status
+            - payment_failure_reason
             - valid_until
             - created_at
             - updated_at
@@ -7613,6 +7644,8 @@ components:
             type:
               description: Key indicating type of error
               enum:
+                - INVALID_AFFILIATE_KEY
+                - APP_OUTDATED
                 - INVALID_BEARER_TOKEN
                 - INVALID_USER_AGENT
                 - NOT_ENOUGH_UNPAID_PAYOUTS
@@ -7640,9 +7673,13 @@ components:
               type: string
             client_transaction_id:
               description: |
-                The client transaction ID is a unique identifier for the transaction that is generated for the client.
+                **SumUp API flow.** Unique identifier for this checkout-generated transaction.
 
-                It can be used later to fetch the transaction details via the [Transactions API](https://developer.sumup.com/api/transactions/get).
+                Pass this value as `terminal.client_id` when the reader creates the terminal so
+                checkout metadata (including affiliate sent here) is merged into the payment.
+
+                SDK clients do not use this field for affiliate metadata; they send affiliate in
+                `terminal.affiliate` on `POST /api/terminals` instead.
               example: 3fa85f64-5717-4562-b3fc-2c963f66afa6
               type: string
           required:
@@ -7677,7 +7714,11 @@ components:
       title: Unauthorized
       type: object
     CreateReaderCheckoutRequest:
-      description: Reader Checkout
+      description: |
+        Reader Checkout request for SumUp API clients.
+
+        SumUp API integrators send affiliate metadata in the `affiliate` field below. SDK clients
+        use `POST /api/terminals` with `terminal.affiliate` instead.
       example:
         aade:
           provider_id: '123'
@@ -7687,7 +7728,9 @@ components:
           app_id: com.example.app
           foreign_transaction_id: '123456'
           key: ef7b684a-d6f4-4e93-9b1b-6acdd6564a8e
-          tags: {}
+          tags:
+            custom_key_1: custom_value_1
+            custom_key_2: custom_value_2
         card_type: debit
         description: This is a description...
         installments: 1
@@ -7725,49 +7768,61 @@ components:
             - signature_data
           type: object
         affiliate:
-          description: |
-            Affiliate metadata for the transaction.
-            It is a field that allow for integrators to track the source of the transaction.
-          nullable: true
-          properties:
-            app_id:
-              description: |
-                Application ID of the affiliate.
-                It is a unique identifier for the application and should be set by the integrator in the [Affiliate Keys](https://developer.sumup.com/affiliate-keys) page.
-              example: com.example.app
-              type: string
-            foreign_transaction_id:
-              description: |
-                Foreign transaction ID of the affiliate.
-                It is a unique identifier for the transaction.
-                It can be used later to fetch the transaction details via the [Transactions API](https://developer.sumup.com/api/transactions/get).
-              example: 19e12390-72cf-4f9f-80b5-b0c8a67fa43f
-              type: string
-            key:
-              description: |
-                Key of the affiliate.
-                It is a unique identifier for the key  and should be generated by the integrator in the [Affiliate Keys](https://developer.sumup.com/affiliate-keys) page.
-              example: 123e4567-e89b-12d3-a456-426614174000
-              type: string
-            tags:
-              additionalProperties: true
-              description: |
-                Additional metadata for the transaction.
-                It is key-value object that can be associated with the transaction.
-              example:
-                custom_key_1: custom_value_1
-                custom_key_2: custom_value_2
+          allOf:
+            - description: |
+                Shared affiliate metadata fields.
+
+                Where to send this object depends on the client type: SDK clients use
+                `terminal.affiliate` on `POST /api/terminals`; SumUp API clients use the
+                `affiliate` field on Reader Checkout.
+              nullable: true
+              properties:
+                app_id:
+                  description: |
+                    Integrator application identifier from the [Affiliate Keys](https://developer.sumup.com/affiliate-keys) page.
+                    Required when the affiliate object is provided.
+                  example: com.example.app
+                  type: string
+                foreign_transaction_id:
+                  description: |
+                    Integrator-owned transaction reference. Optional.
+                    Forwarded to terminal-hub and can be used later to fetch the transaction via the [Transactions API](https://developer.sumup.com/api/transactions/get).
+                  example: 19e12390-72cf-4f9f-80b5-b0c8a67fa43f
+                  type: string
+                key:
+                  description: |
+                    Affiliate key generated in the [Affiliate Keys](https://developer.sumup.com/affiliate-keys) page.
+                    Required when the affiliate object is provided. Validated against Identity Admin when both `app_id` and `key` are present.
+                  example: 123e4567-e89b-12d3-a456-426614174000
+                  type: string
+                tags:
+                  additionalProperties: true
+                  description: |
+                    Optional key-value metadata associated with the transaction.
+                    Forwarded to terminal-hub together with the payment.
+                  example:
+                    custom_key_1: custom_value_1
+                    custom_key_2: custom_value_2
+                  type: object
+              required:
+                - app_id
+                - key
+              title: Affiliate
               type: object
-          required:
-            - app_id
-            - key
-            - foreign_transaction_id
-          title: Affiliate
-          type: object
+          description: |
+            **SumUp API clients:** affiliate ingress for Reader Checkout.
+
+            Send integrator metadata here when creating a checkout. When `app_id` and `key` are both
+            present, the key is validated against Identity Admin, stored server-side, and merged into
+            the payment when the reader starts the transaction using the returned `client_transaction_id`
+            as `terminal.client_id`.
+
+            SDK clients send affiliate on `POST /api/terminals` instead.
+          nullable: true
         card_type:
           description: |
             The card type of the card used for the transaction.
-            Is is required only for some countries (e.g: Brazil).
+            It is required only for some countries (e.g: Brazil).
           enum:
             - credit
             - debit
@@ -7782,12 +7837,24 @@ components:
             It may vary according to the merchant country.
             For example, in Brazil, the maximum number of installments is 12.
 
-            Omit if the merchant country does support installments.
+            Omit if the merchant country does not support installments.
             Otherwise, the checkout will be rejected.
           example: 1
           minimum: 1
           nullable: true
           type: integer
+        payment_type:
+          default: card
+          description: |
+            The payment method type for the transaction. Defaults to `card`.
+
+            Use `pix` to initiate a Pix QR-code payment flow on the device.
+            Pix is only supported for Brazilian merchants; other merchants will receive a 422 error.
+          enum:
+            - card
+            - pix
+          example: card
+          type: string
         return_url:
           description: |
             Webhook URL to which the payment result will be sent.
@@ -7797,14 +7864,19 @@ components:
           type: string
         tip_rates:
           description: |
-            List of tipping rates to be displayed to the cardholder.
-            The rates are in percentage and should be between 0.01 and 0.99.
-            The list should be sorted in ascending order.
+            Exactly three distinct tipping rates to be displayed to the cardholder.
+            Each rate is a fraction between 0.01 and 1.00 in increments of 0.01.
+            The rates are sorted in ascending order by the server.
           items:
             format: float
+            maximum: 1
+            minimum: 0.01
             multipleOf: 0.01
             type: number
+          maxItems: 3
+          minItems: 3
           type: array
+          uniqueItems: true
         tip_timeout:
           default: 30
           description: |
