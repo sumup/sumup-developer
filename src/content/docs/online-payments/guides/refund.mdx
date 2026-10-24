@@ -74,6 +74,7 @@ Example request:
 
     checkout, err := client.Checkouts.Get(ctx, "4ebc2ed7-bb8c-4d4d-a110-08fd31301bf2")
     ```
+
   </TabItem>
   <TabItem label="Python" icon="seti:python">
     ```py
@@ -158,6 +159,7 @@ Example request for the transaction with identifier `664200af-2b62-4142-9c73-a2a
 
     err := client.Transactions.Refund(ctx, "19aa3cca-89f6-42d2-b462-463b0b53e959", sumup.TransactionsRefundParams{})
     ```
+
   </TabItem>
   <TabItem label="Python" icon="seti:python">
     ```py
@@ -168,6 +170,7 @@ Example request for the transaction with identifier `664200af-2b62-4142-9c73-a2a
         RefundTransactionBody(),
     )
     ```
+
   </TabItem>
   <TabItem label="Rust" icon="seti:rust">
     ```rust
@@ -239,6 +242,7 @@ Example request for a partial refund for the amount of 24.42 EUR:
     	Amount: &amount,
     })
     ```
+
   </TabItem>
   <TabItem label="Python" icon="seti:python">
     ```py
@@ -249,6 +253,7 @@ Example request for a partial refund for the amount of 24.42 EUR:
         RefundTransactionBody(amount=24.42),
     )
     ```
+
   </TabItem>
   <TabItem label="Rust" icon="seti:rust">
     ```rust
@@ -262,6 +267,7 @@ Example request for a partial refund for the amount of 24.42 EUR:
         )
         .await?;
     ```
+
   </TabItem>
   <TabItem label="PHP" icon="seti:php">
     ```php

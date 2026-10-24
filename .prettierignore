@@ -1,5 +1,4 @@
 dist/
-.rumdl_cache/
 .wrangler/
 .astro/
 .nimbus/

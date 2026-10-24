@@ -94,6 +94,10 @@ export async function renderedSite(outputRoot) {
       links: Array.from(document.querySelectorAll("a[href]"), (anchor) =>
         anchor.getAttribute("href"),
       ),
+      images: Array.from(document.querySelectorAll("img"), (image) => ({
+        src: image.getAttribute("src"),
+        alt: image.getAttribute("alt"),
+      })),
       rawAdmonitions: Array.from(document.querySelectorAll("main p"))
         .map((node) => node.textContent)
         .filter((text) =>

@@ -34,13 +34,13 @@ To request access, contact us through the [contact form](/contact).
 
 ## Platform Availability
 
-| Capability | Android SDK | iOS SDK |
-| --- | --- | --- |
-| Offline Transactions | <Confirm /> Supported | <Confirm /> Supported |
-| Tap to Pay | ❌ Not supported | ❌ Not supported |
-| Supported card schemes | Visa, Mastercard | Visa, Mastercard |
-| Solo firmware | 3.3.31.0 or higher | 3.3.31.0 or higher |
-| Solo Lite firmware | 2.2.1.25 or higher | 2.2.1.25 or higher |
+| Capability             | Android SDK           | iOS SDK               |
+| ---------------------- | --------------------- | --------------------- |
+| Offline Transactions   | <Confirm /> Supported | <Confirm /> Supported |
+| Tap to Pay             | ❌ Not supported      | ❌ Not supported      |
+| Supported card schemes | Visa, Mastercard      | Visa, Mastercard      |
+| Solo firmware          | 3.3.31.0 or higher    | 3.3.31.0 or higher    |
+| Solo Lite firmware     | 2.2.1.25 or higher    | 2.2.1.25 or higher    |
 
 ## Geographic Availability
 
@@ -51,24 +51,24 @@ Offline Transactions are currently supported in Europe through Worldpay.
 <Tabs syncKey="mobile_platform">
   <TabItem label="Android">
 
-| Requirement | Minimum |
-| --- | --- |
-| Android OS | Android 8 |
-| Card reader (Solo) | Firmware 3.3.31.0 or higher |
+| Requirement             | Minimum                     |
+| ----------------------- | --------------------------- |
+| Android OS              | Android 8                   |
+| Card reader (Solo)      | Firmware 3.3.31.0 or higher |
 | Card reader (Solo Lite) | Firmware 2.2.1.25 or higher |
-| Supported card schemes | Visa, Mastercard |
+| Supported card schemes  | Visa, Mastercard            |
 
   </TabItem>
   <TabItem label="iOS">
 
-| Requirement | Minimum |
-| --- | --- |
-| iOS version | 16.0 or higher |
-| Secure Enclave | Required |
-| Free storage | 10 MB recommended |
-| Card reader (Solo) | Firmware 3.3.31.0 or higher |
+| Requirement             | Minimum                     |
+| ----------------------- | --------------------------- |
+| iOS version             | 16.0 or higher              |
+| Secure Enclave          | Required                    |
+| Free storage            | 10 MB recommended           |
+| Card reader (Solo)      | Firmware 3.3.31.0 or higher |
 | Card reader (Solo Lite) | Firmware 2.2.1.25 or higher |
-| Supported card schemes | Visa, Mastercard |
+| Supported card schemes  | Visa, Mastercard            |
 
   </TabItem>
 </Tabs>
@@ -77,12 +77,12 @@ Offline Transactions are currently supported in Europe through Worldpay.
 
 Offline Transactions follow four phases: preparation, activation, offline payment acceptance, and reconciliation.
 
-| Phase | What happens |
-| --- | --- |
-| **Preparation** | The SDK downloads offline rules and merchant limits while the device is online. |
-| **Activation** | Your app starts an offline session. |
-| **Offline window** | Transactions are validated locally, signed, and stored securely on device. |
-| **Reconciliation** | Stored transactions are uploaded to SumUp when connectivity returns. |
+| Phase              | What happens                                                                    |
+| ------------------ | ------------------------------------------------------------------------------- |
+| **Preparation**    | The SDK downloads offline rules and merchant limits while the device is online. |
+| **Activation**     | Your app starts an offline session.                                             |
+| **Offline window** | Transactions are validated locally, signed, and stored securely on device.      |
+| **Reconciliation** | Stored transactions are uploaded to SumUp when connectivity returns.            |
 
 ## Preparation
 
@@ -94,6 +94,7 @@ Before going offline, sync the latest offline rules and limits while the device 
 - Internet required: Yes
 
 If you skip this step, `startOfflineSession(...)` can fail with `OfflineLimitsAbsent`.
+
   </TabItem>
   <TabItem label="iOS">
     - Method: `setupOfflineSession`
@@ -152,6 +153,7 @@ When connectivity returns, upload stored transactions as soon as possible.
 - End session: `SumUpAPI.stopOfflineSession(StopOfflineSessionCallback callback)`
 
 Stopping the session also triggers an upload attempt.
+
   </TabItem>
   <TabItem label="iOS">
     - Manual upload: `uploadOfflineSession`
@@ -161,13 +163,13 @@ Stopping the session also triggers an upload attempt.
 
 ## Android API Summary
 
-| API | Purpose | Internet required |
-| --- | --- | --- |
-| `SumUpAPI.updateOfflineSecurityPatch(...)` | Download the latest offline rules and limits | Yes |
-| `SumUpAPI.startOfflineSession(...)` | Start an offline session | No |
-| `SumUpAPI.stopOfflineSession(...)` | Stop the session and trigger upload | No |
-| `SumUpAPI.uploadOfflineTransactions(...)` | Upload stored offline transactions manually | Yes |
-| `SumUpAPI.fetchCurrentOfflineSession(...)` | Inspect current session status | No |
+| API                                        | Purpose                                      | Internet required |
+| ------------------------------------------ | -------------------------------------------- | ----------------- |
+| `SumUpAPI.updateOfflineSecurityPatch(...)` | Download the latest offline rules and limits | Yes               |
+| `SumUpAPI.startOfflineSession(...)`        | Start an offline session                     | No                |
+| `SumUpAPI.stopOfflineSession(...)`         | Stop the session and trigger upload          | No                |
+| `SumUpAPI.uploadOfflineTransactions(...)`  | Upload stored offline transactions manually  | Yes               |
+| `SumUpAPI.fetchCurrentOfflineSession(...)` | Inspect current session status               | No                |
 
 ## Android Integration Example
 
@@ -211,13 +213,13 @@ SumUpAPI.stopOfflineSession(new StopOfflineSessionCallback() {
 
 ## Common Failure Modes
 
-| Scenario | Behavior |
-| --- | --- |
-| Preparation step skipped or failed | Session start can fail because offline limits are missing |
-| Reader switched mid-session | Offline processing is suspended until a new session is started |
-| Session expired | New offline transactions are rejected |
-| Cumulative limit reached | New offline transactions are rejected until stored transactions are uploaded |
-| Concurrent offline API calls | Not supported on Android; keep calls serial |
+| Scenario                           | Behavior                                                                     |
+| ---------------------------------- | ---------------------------------------------------------------------------- |
+| Preparation step skipped or failed | Session start can fail because offline limits are missing                    |
+| Reader switched mid-session        | Offline processing is suspended until a new session is started               |
+| Session expired                    | New offline transactions are rejected                                        |
+| Cumulative limit reached           | New offline transactions are rejected until stored transactions are uploaded |
+| Concurrent offline API calls       | Not supported on Android; keep calls serial                                  |
 
 ## Testing
 

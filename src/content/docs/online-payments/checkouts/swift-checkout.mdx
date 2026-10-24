@@ -192,6 +192,7 @@ To protect user privacy, browsers might hide non-essential and sensitive details
 The extent of information provided can vary based on the chosen browser and payment method, leading to certain fields being absent. For example, the displayed shipping address might be limited to the city, state, country, and ZIP code.
 
 The full shipping address is disclosed only in the `PaymentResponse` object after the payment is authorized by the account holder.
+
 </Callout>
 
 #### `onShippingOptionsChange`
@@ -416,6 +417,9 @@ The Swift Checkout SDK returns a series of Errors depending on the event that ha
 
 ## Apple Pay Setup
 
+{/* Each payment method has its own prerequisites; preserve the existing unique anchors. */}
+{/* nimbus-rule-disable-next-line nimbus/duplicate-heading-text */}
+
 ### Prerequisites
 
 - [Verify your domain with Apple Pay](#verify-your-domain-with-apple-pay), both in development and production
@@ -434,9 +438,13 @@ To use Apple Pay, verify every domain and subdomain where you display an Apple P
 You don't need to create an Apple Merchant ID or Certificate Signing Request (CSR) to use Apple Pay with the Swift Checkout SDK.
 
 Use the verification file downloaded from your SumUp profile. Make sure it is publicly accessible at the URL above without adding a file extension.
+
 </Callout>
 
 ## Google Pay Setup
+
+{/* Each payment method has its own prerequisites; preserve the existing unique anchors. */}
+{/* nimbus-rule-disable-next-line nimbus/duplicate-heading-text */}
 
 ### Prerequisites
 

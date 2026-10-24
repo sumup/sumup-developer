@@ -60,11 +60,29 @@ Run the checks that match your change before opening a pull request:
 | ---------------------- | ------------------------------------------------------- |
 | `npm run check`        | Validate Astro, TypeScript, and content schemas         |
 | `npm run check:nimbus` | Validate Nimbus configuration, adapters, and migrations |
-| `npm run lint`         | Lint source files and Markdown                          |
+| `npm run format:check` | Check source and Markdown/MDX formatting                |
+| `npm run lint`         | Lint application source                                 |
+| `npm run lint:nimbus`  | Check MDX structure and links after building            |
 | `npm run test`         | Run the Vitest test suite                               |
 | `npm run build`        | Create the production Cloudflare build                  |
 | `npm run linkcheck`    | Build the site and validate internal links              |
 | `npm run validate`     | Run the complete CI validation sequence                 |
+
+All authored website content under `src/content/` uses MDX, including changelog
+and help entries. Repository documents such as this README and imported skills
+remain Markdown.
+
+Prettier handles source formatting, including Markdown tables and list spacing.
+It preserves prose wrapping and leaves embedded code examples unchanged. Nimbus
+checks heading structure, duplicate headings, code-block languages, shell prompt
+prefixes, frontmatter, images, and internal links. `npm run linkcheck` also checks
+rendered link targets and fragments, rejects empty links, and requires image alt
+attributes; explicitly decorative images can use `alt=""`.
+
+These checks replace the separate Markdown linter. Its Markdown-only editorial
+restrictions, such as forbidding inline HTML in MDX or treating a bold paragraph
+as a heading error, are not carried over. Keep new checks focused on formatting,
+accessibility, and working documentation.
 
 ## API Specs
 
@@ -180,10 +198,10 @@ use `nimbus-docs outdated --json` to inspect upstream changes.
 
 Keep the ownership boundary explicit during upgrades:
 
-| Layer | Responsibility |
-| --- | --- |
-| Nimbus | Documentation/API models, metadata, Markdown and agent publishing, and headless client helpers |
-| Portal | Astro layouts and routes, Circuit presentation, and browser interactions |
+| Layer       | Responsibility                                                                                                                                               |
+| ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Nimbus      | Documentation/API models, metadata, Markdown and agent publishing, and headless client helpers                                                               |
+| Portal      | Astro layouts and routes, Circuit presentation, and browser interactions                                                                                     |
 | Integration | SumUp API adaptations in `src/lib/api/reference.ts`, component-to-Markdown mappings in `src/lib/markdownComponents.ts`, and compatibility/discovery adapters |
 
 Adopt upstream features for a concrete portal requirement. Registry and starter

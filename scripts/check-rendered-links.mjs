@@ -6,10 +6,26 @@ if (!site.htmlFiles.length) throw new Error("No rendered HTML pages found.");
 const failures = new Set();
 let checkedLinks = 0;
 let checkedFragments = 0;
+let checkedImages = 0;
 for (const file of site.htmlFiles) {
   const source = site.outputPath(file);
   const document = await site.page(file);
+  for (const image of document.images) {
+    checkedImages++;
+    if (image.alt === null)
+      failures.add(
+        `${source}: image ${image.src} is missing an alt attribute (use alt="" for decorative images)`,
+      );
+    else if (image.alt.length > 0 && !image.alt.trim())
+      failures.add(
+        `${source}: image ${image.src} has whitespace-only alt text`,
+      );
+  }
   for (const href of document.links) {
+    if (!href.trim() || href.trim() === "#") {
+      failures.add(`${source}: empty link destination ${JSON.stringify(href)}`);
+      continue;
+    }
     const url = new URL(href, site.urlForFile(file));
     if (url.origin !== siteOrigin) continue;
     checkedLinks++;
@@ -32,7 +48,7 @@ for (const file of site.htmlFiles) {
   }
 }
 if (failures.size) {
-  console.error("Invalid links found in rendered pages:");
+  console.error("Invalid links or images found in rendered pages:");
   console.error(
     [...failures]
       .sort()
@@ -42,6 +58,6 @@ if (failures.size) {
   process.exitCode = 1;
 } else {
   console.log(
-    `Checked ${checkedLinks} internal links and ${checkedFragments} fragments across ${site.htmlFiles.length} rendered pages.`,
+    `Checked ${checkedLinks} internal links and ${checkedFragments} fragments across ${site.htmlFiles.length} rendered pages; checked ${checkedImages} image alt attributes.`,
   );
 }

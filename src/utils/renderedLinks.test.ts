@@ -45,3 +45,27 @@ it.each(["/missing/", "/guide/#missing", "/loop"])(
     expect(check).toThrow();
   },
 );
+
+it.each(["", "   ", "#"])("rejects an empty link destination: %j", (href) => {
+  writeFileSync(
+    join(output, "index.html"),
+    `<a href="${href}">Empty target</a>`,
+  );
+  expect(check).toThrow();
+});
+
+it.each([
+  '<img src="/meaningful.png">',
+  '<img src="/meaningful.png" alt="   ">',
+])("rejects an image without an explicit alternative: %s", (image) => {
+  writeFileSync(join(output, "index.html"), image);
+  expect(check).toThrow();
+});
+
+it("accepts descriptive alt text and explicitly decorative images", () => {
+  writeFileSync(
+    join(output, "index.html"),
+    '<img src="/reader.png" alt="Solo card reader"><img src="/decoration.png" alt="">',
+  );
+  expect(check()).toContain("checked 2 image alt attributes");
+});

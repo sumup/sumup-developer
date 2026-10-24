@@ -38,16 +38,16 @@ Additional fields may be present. See the [Problem schema](/api/schemas/Problem/
 
 ## HTTP status codes
 
-| Status | Meaning | When it is returned |
-| ------ | ------- | ------------------- |
-| `200` | OK | The request finished successfully. |
-| `400` | Bad Request | The payload is invalid, incomplete, or does not match the API contract. |
-| `401` | Unauthorized | Authentication is missing or the credentials are invalid. |
-| `402` | Request Failed | The request format is valid, but it could not be completed. |
-| `403` | Forbidden | The authenticated caller does not have permission for this operation. |
-| `404` | Not Found | The requested endpoint or resource could not be located. |
-| `409` | Conflict | The request conflicts with the current resource state. |
-| `422` | Unprocessable Entity | The payload is syntactically valid, but semantic validation failed. |
-| `424` | External Dependency Failed | A required upstream service failed, so the request could not finish. |
-| `429` | Too Many Requests | Rate limits were exceeded. Retry with exponential backoff. |
-| `5xx` | Server Errors | An issue occurred on SumUp's side. |
+| Status | Meaning                    | When it is returned                                                     |
+| ------ | -------------------------- | ----------------------------------------------------------------------- |
+| `200`  | OK                         | The request finished successfully.                                      |
+| `400`  | Bad Request                | The payload is invalid, incomplete, or does not match the API contract. |
+| `401`  | Unauthorized               | Authentication is missing or the credentials are invalid.               |
+| `402`  | Request Failed             | The request format is valid, but it could not be completed.             |
+| `403`  | Forbidden                  | The authenticated caller does not have permission for this operation.   |
+| `404`  | Not Found                  | The requested endpoint or resource could not be located.                |
+| `409`  | Conflict                   | The request conflicts with the current resource state.                  |
+| `422`  | Unprocessable Entity       | The payload is syntactically valid, but semantic validation failed.     |
+| `424`  | External Dependency Failed | A required upstream service failed, so the request could not finish.    |
+| `429`  | Too Many Requests          | Rate limits were exceeded. Retry with exponential backoff.              |
+| `5xx`  | Server Errors              | An issue occurred on SumUp's side.                                      |
