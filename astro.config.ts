@@ -1,4 +1,3 @@
-import { readFile } from "node:fs/promises";
 import { markdownComponents } from "./src/lib/markdownComponents";
 import { apiReference } from "./src/lib/api/reference";
 
@@ -12,33 +11,12 @@ import nimbus, {
 import mermaid from "astro-mermaid";
 import { defineConfig } from "astro/config";
 import { loadEnv } from "vite";
-import type { Plugin } from "vite";
 
 const { PUBLIC_ONETRUST_DOMAIN_ID, PUBLIC_GA_TAG_ID } = loadEnv(
   process.env.NODE_ENV || "",
   process.cwd(),
   "",
 );
-
-function rawFonts(extensions: string[]): Plugin {
-  const pattern = new RegExp(
-    `\\.(${extensions.map((extension) => extension.replace(/^\./, "")).join("|")})$`,
-  );
-
-  return {
-    name: "raw-fonts",
-    enforce: "pre",
-    async load(id) {
-      if (!pattern.test(id)) {
-        return null;
-      }
-
-      const source = await readFile(id);
-      const bytes = Array.from(source);
-      return `export default new Uint8Array([${bytes.join(",")}]);`;
-    },
-  };
-}
 
 const head = defineNimbusConfig({
   site: "https://developer.sumup.com",
@@ -227,7 +205,6 @@ export default defineConfig({
       dedupe: ["react", "react-dom"],
       noExternal: ["@sumup-oss/circuit-ui", "@sumup-oss/illustrations"],
     },
-    plugins: [rawFonts([".woff2", ".woff", ".ttf", ".otf"])],
   },
   integrations: [
     react(),

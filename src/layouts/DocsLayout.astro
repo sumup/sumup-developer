@@ -1,4 +1,9 @@
 ---
+import {
+  navBuildId,
+  navStateScript,
+  sidebarHash,
+} from "@cloudflare/nimbus-docs/runtime";
 import type { DocsPageProps } from "@cloudflare/nimbus-docs/types";
 import { ArrowSlanted, Help, Info } from "@sumup-oss/icons";
 
@@ -91,12 +96,16 @@ const toc = headings === false ? [] : headings;
     >
       {showSidebar && (
         <aside class="docs-sidebar" data-portal-sidebar>
-          <nav aria-label="Documentation">
+          <nav
+            aria-label="Documentation"
+            data-nb-nav-state={sidebarHash(sidebar)}
+            data-nb-nav-scroller="desktop"
+            data-nb-nav-build={navBuildId}
+          >
             <Sidebar
               items={sidebar}
               sections={sidebarSections}
               filter={sidebarFilter}
-              persist
             />
           </nav>
           <div class="sidebar-footer">
@@ -115,6 +124,7 @@ const toc = headings === false ? [] : headings;
           </div>
         </aside>
       )}
+      {showSidebar && <script is:inline set:html={navStateScript} />}
 
       <main id="main-content" class="docs-main">
         <div class="content-column" {...pagefindAttributes}>

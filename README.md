@@ -56,17 +56,20 @@ Open `http://localhost:3000` in a browser. Most content and component changes ap
 
 Run the checks that match your change before opening a pull request:
 
-| Command                | Purpose                                                 |
-| ---------------------- | ------------------------------------------------------- |
-| `npm run check`        | Validate Astro, TypeScript, and content schemas         |
-| `npm run check:nimbus` | Validate Nimbus configuration, adapters, and migrations |
-| `npm run format:check` | Check source and Markdown/MDX formatting                |
-| `npm run lint`         | Lint application source                                 |
-| `npm run lint:nimbus`  | Check MDX structure and links after building            |
-| `npm run test`         | Run the Vitest test suite                               |
-| `npm run build`        | Create the production Cloudflare build                  |
-| `npm run linkcheck`    | Build the site and validate internal links              |
-| `npm run validate`     | Run the complete CI validation sequence                 |
+| Command                 | Purpose                                                 |
+| ----------------------- | ------------------------------------------------------- |
+| `npm run check`         | Validate Astro, TypeScript, and content schemas         |
+| `npm run check:nimbus`  | Validate Nimbus configuration, adapters, and migrations |
+| `npm run format:check`  | Check source and Markdown/MDX formatting                |
+| `npm run lint`          | Lint application source                                 |
+| `npm run lint:nimbus`   | Check MDX structure and links after building            |
+| `npm run test`          | Run the Vitest test suite                               |
+| `npm run build`         | Build and validate generated pages and agent outputs    |
+| `npm run linkcheck`     | Build the site and validate internal links              |
+| `npm run check:site`    | Validate an existing build with a shared HTML cache     |
+| `npm run test:worker`   | Smoke-test the built Cloudflare Worker locally          |
+| `npm run lint:spelling` | Check authored content with the typos CLI               |
+| `npm run validate`      | Run checks, tests, a build, and Worker smoke tests      |
 
 All authored website content under `src/content/` uses MDX, including changelog
 and help entries. Repository documents such as this README and imported skills
@@ -78,6 +81,22 @@ checks heading structure, duplicate headings, code-block languages, shell prompt
 prefixes, frontmatter, images, and internal links. `npm run linkcheck` also checks
 rendered link targets and fragments, rejects empty links, and requires image alt
 attributes; explicitly decorative images can use `alt=""`.
+
+Every build runs the OG, redirect, rendered-link, and agent-output checks through
+`check:site`, sharing one parsed HTML cache. The individual check commands remain
+available for focused diagnosis. Website source files must use `.mdx`; the build
+rejects stray `.md` files under `src/content/`.
+
+`test:worker` uses Wrangler's local workerd test harness against
+`dist/server/wrangler.json`. It checks API HTML/Markdown, the public OpenAPI
+redirect, missing API routes, and documentation MCP without deploying or calling
+the payment API. Run `npm run build` first, or use `npm run validate` to build and
+test together.
+
+CI also runs the pinned `typos` spelling check. To run it locally, install the
+[typos CLI](https://github.com/crate-ci/typos#install) and use
+`npm run lint:spelling`. Keep exceptions in `_typos.toml` scoped to genuine
+identifiers or localized terms; fix spelling errors in the content.
 
 These checks replace the separate Markdown linter. Its Markdown-only editorial
 restrictions, such as forbidding inline HTML in MDX or treating a bold paragraph
@@ -209,8 +228,8 @@ visual changes are optional; keep the shared Circuit rendering. Validate API
 URLs, SDK samples, citation anchors, Markdown/full-bundle content, and discovery
 outputs with `npm run validate`. This also compares tag descriptions in the API
 overview with their dedicated pages, including Markdown structure and links.
-For affected UI, check desktop/mobile and both themes. For documentation MCP
-changes, also exercise the built Worker's tools as described above.
+For affected UI, check desktop/mobile and both themes. The Worker smoke tests exercise documentation MCP on every validation run.
+For changes to MCP behavior, also check the affected tools and responses.
 
 This portal adopted Nimbus through a custom migration. Its original scaffold
 version is unknown, so `nimbus.json` keeps `version: null`. The recorded

@@ -34,10 +34,16 @@ jobs:
           cache: npm
 
       - name: Setup npm
-        run: npm install --global npm@12.2.1
+        run: npm install --global "$(node -p 'require("./package.json").packageManager')"
 
       - name: Install dependencies
         run: npm ci
+
+      - name: Check spelling
+        uses: crate-ci/typos@d43b6c087ac471e2ea7b8af622ff15f05c0c365b # v1.50.1
+        with:
+          files: src/content
+          config: ./_typos.toml
 
       - name: Validate
         run: npm run validate

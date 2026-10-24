@@ -27,17 +27,17 @@ export async function renderedSite(outputRoot) {
   const generated = new Set(files.map(outputPath));
   // Nimbus's documentation MCP card is served by the Worker, not an asset.
   const dynamicRoutes = new Set(["/mcp", "/mcp/server-card"]);
-  const redirects = (await readFile(join(outputRoot, "_redirects"), "utf8"))
-    .split("\n")
-    .filter((line) => line.trim() && !line.trim().startsWith("#"))
-    .map((line) => {
-      const [from, to, status = "302"] = line.trim().split(/\s+/);
-      const pattern = from
-        .split("*")
-        .map((part) => part.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"))
-        .join("(.*)");
-      return { from: new RegExp(`^${pattern}$`), to, status: Number(status) };
-    });
+  const redirectLines = (await readFile(join(outputRoot, "_redirects"), "utf8"))
+    .split(/\r?\n/)
+    .filter((line) => line.trim() && !line.trim().startsWith("#"));
+  const redirects = redirectLines.map((line) => {
+    const [from, to, status = "302"] = line.trim().split(/\s+/);
+    const pattern = from
+      .split("*")
+      .map((part) => part.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"))
+      .join("(.*)");
+    return { from: new RegExp(`^${pattern}$`), to, status: Number(status) };
+  });
   function resolve(url) {
     const seen = new Set();
     while (url.origin === siteOrigin) {
@@ -117,6 +117,9 @@ export async function renderedSite(outputRoot) {
       llmsUrl: document
         .querySelector('link[rel="alternate"][title="LLM index"]')
         ?.getAttribute("href"),
+      ogImageUrl: document
+        .querySelector('meta[property="og:image"]')
+        ?.getAttribute("content"),
       canonical: document
         .querySelector('link[rel="canonical"]')
         ?.getAttribute("href"),
@@ -135,6 +138,8 @@ export async function renderedSite(outputRoot) {
   const urlForFile = (file) =>
     new URL(`/${outputPath(file).replace(/index\.html$/, "")}`, siteOrigin);
   return {
+    outputRoot,
+    redirectLines,
     files,
     htmlFiles: files.filter((file) => file.endsWith(".html")),
     outputPath,

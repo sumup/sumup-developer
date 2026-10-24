@@ -7,13 +7,15 @@ The portal uses Astro with Nimbus. Application source sits in `src/`, with `page
 ## Build, Test, and Development Commands
 
 - `npm run dev` — watch mode with Hot Module Reloading; use when authoring docs or components.
-- `npm run build` — production Astro build targeting Cloudflare; ensure it succeeds before merging.
+- `npm run build` — production Astro build targeting Cloudflare, followed by the shared built-site checks; ensure it succeeds before merging.
 - `npm run check` — runs `astro check` for Astro, TypeScript, and content schema validation.
 - `npm run lint` — runs ESLint for application source; required before pushing structural changes.
 - `npm run format` — formats source, styles, data, and Markdown/MDX with Prettier.
 - `npm run lint:nimbus` — checks MDX structure, frontmatter, images, and links; run after building.
 - `npm run linkcheck` — builds, runs Nimbus's internal-link checks, and validates rendered API links.
-- `npm run validate` — runs the complete CI validation sequence.
+- `npm run test:worker` — runs local workerd smoke tests against an existing build.
+- `npm run lint:spelling` — checks content with the typos CLI; CI installs the pinned checker.
+- `npm run validate` — runs source checks, tests, the production build, and Worker smoke tests.
 
 ## Coding Style & Naming Conventions
 
@@ -51,12 +53,13 @@ For files in `src/content/docs/`, include frontmatter at the top of every page.
 
 ## Testing Guidelines
 
-CI runs `npm run validate`. When editing MDX content, preview via `npm run dev` to verify navigation, sidebar ordering, and snippet rendering. The repository has a focused Vitest suite for runtime helpers; document any additional manual verification steps in the pull request when UI behavior changes.
+CI runs `npm run validate`. When editing MDX content, preview via `npm run dev` to verify navigation, sidebar ordering, and snippet rendering. The repository has a focused Vitest suite for runtime helpers and built-Worker smoke tests using Wrangler’s test harness; document any additional manual verification steps in the pull request when UI behavior changes.
 
 ## Content Validation
 
 - Prettier owns Markdown/MDX formatting. Preserve prose wrapping and keep embedded code formatting disabled so examples retain their authored contents.
 - Nimbus owns source structure checks: heading hierarchy, duplicate headings, fenced code languages, and shell prompt prefixes, alongside frontmatter and link checks.
+- CI checks authored content with `typos`. Keep localized-term exceptions scoped in `_typos.toml`; fix real spelling errors.
 - Fix content issues rather than adding exclusions. Run `npm run format:check` and `npm run linkcheck` after content changes.
 - Rendered-site validation checks link targets/fragments, empty link destinations, and image alt attributes across all pages. Use `alt=""` explicitly for decorative images.
 

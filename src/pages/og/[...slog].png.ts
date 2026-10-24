@@ -1,9 +1,7 @@
 import { getIndexedEntries } from "@cloudflare/nimbus-docs/runtime";
 import { createElement } from "react";
 
-import SumUpBlackData from "../../assets/fonts/sumup-black-latin-s.ttf";
-import SumUpNarrowMediumData from "../../assets/fonts/sumup-narrow-latin-s-medium.ttf";
-import SumUpNarrowRegularData from "../../assets/fonts/sumup-narrow-latin-s-regular.ttf";
+import { readFile } from "node:fs/promises";
 import { createOgImageResponse } from "../../utils/ogImageResponse";
 
 interface Props {
@@ -53,41 +51,6 @@ const staticPageMetadata = new Map<
   ],
 ]);
 
-function getOpenTypeSignature(data: Uint8Array) {
-  return String.fromCharCode(...data.subarray(0, 4));
-}
-
-function toArrayBuffer(data: Uint8Array) {
-  return data.buffer.slice(
-    data.byteOffset,
-    data.byteOffset + data.byteLength,
-  ) as ArrayBuffer;
-}
-
-function toSupportedFontData(data: Uint8Array | string, label: string) {
-  if (typeof data === "string") {
-    console.warn(
-      `[og] ${label} resolved to an asset URL instead of raw font bytes. Falling back to the default font.`,
-    );
-    return null;
-  }
-
-  if (getOpenTypeSignature(data) === "wOF2") {
-    console.warn(
-      `[og] ${label} uses WOFF2, which Satori does not support. Falling back to the default font.`,
-    );
-    return null;
-  }
-
-  return toArrayBuffer(data);
-}
-
-function createFontStack(primary: string | null) {
-  return primary
-    ? `'${primary}', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif`
-    : "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
-}
-
 export async function getStaticPaths() {
   const metadata = new Map<string, Props["props"]>(staticPageMetadata);
 
@@ -102,20 +65,18 @@ export async function getStaticPaths() {
   return [...metadata].map(([slog, props]) => ({ params: { slog }, props }));
 }
 
-// Reuse font buffers so Satori can cache parsed fonts across generated cards.
-const sumUpBlack = toSupportedFontData(SumUpBlackData, "SumUp Black");
-const sumUpNarrowMedium = toSupportedFontData(
-  SumUpNarrowMediumData,
-  "SumUp Narrow Medium",
+// Prerendered in Node: read once and reuse the font buffers across cards.
+const [sumUpBlack, sumUpNarrowMedium, sumUpNarrowRegular] = await Promise.all(
+  [
+    "sumup-black-latin-s.ttf",
+    "sumup-narrow-latin-s-medium.ttf",
+    "sumup-narrow-latin-s-regular.ttf",
+  ].map((name) => readFile(`src/assets/fonts/${name}`)),
 );
-const sumUpNarrowRegular = toSupportedFontData(
-  SumUpNarrowRegularData,
-  "SumUp Narrow Regular",
-);
-const blackFontFamily = createFontStack(sumUpBlack ? "SumUp Black" : null);
-const narrowFontFamily = createFontStack(
-  sumUpNarrowRegular || sumUpNarrowMedium ? "SumUp Narrow" : null,
-);
+const blackFontFamily =
+  "'SumUp Black', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
+const narrowFontFamily =
+  "'SumUp Narrow', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
 
 export async function GET({ props: { title, description } }: Props) {
   const card = createElement(
@@ -249,36 +210,19 @@ export async function GET({ props: { title, description } }: Props) {
     height: 630,
     debug: false,
     fonts: [
-      ...(sumUpBlack
-        ? [
-            {
-              name: "SumUp Black",
-              data: sumUpBlack,
-              style: "normal" as const,
-              weight: 700 as const,
-            },
-          ]
-        : []),
-      ...(sumUpNarrowRegular
-        ? [
-            {
-              name: "SumUp Narrow",
-              data: sumUpNarrowRegular,
-              style: "normal" as const,
-              weight: 400 as const,
-            },
-          ]
-        : []),
-      ...(sumUpNarrowMedium
-        ? [
-            {
-              name: "SumUp Narrow",
-              data: sumUpNarrowMedium,
-              style: "normal" as const,
-              weight: 500 as const,
-            },
-          ]
-        : []),
+      { name: "SumUp Black", data: sumUpBlack, style: "normal", weight: 700 },
+      {
+        name: "SumUp Narrow",
+        data: sumUpNarrowRegular,
+        style: "normal",
+        weight: 400,
+      },
+      {
+        name: "SumUp Narrow",
+        data: sumUpNarrowMedium,
+        style: "normal",
+        weight: 500,
+      },
     ],
   });
 }

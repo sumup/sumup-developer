@@ -30,8 +30,7 @@ const Heading = collapsible ? "summary" : "h2";
   class:list={[!collapsible && "sidebar-section"]}
   {...(collapsible && {
     open: isActive || item.collapsed !== true,
-    "data-sidebar-group": "",
-    "data-sidebar-key": item.indexHref ?? path,
+    "data-nb-nav-group": item.indexHref ?? path,
     "data-has-active": isActive ? "true" : undefined,
   })}
 >

@@ -1,0 +1,24 @@
+[default]
+# Example tokens and hashes are opaque identifiers, not prose.
+extend-ignore-identifiers-re = ["[A-Za-z0-9+/_-]{20,}={0,2}"]
+
+[type.glossary]
+extend-glob = ["merchant.mdx", "address.mdx"]
+
+[type.glossary.extend-words]
+# Localized legal names, address examples, and business registry identifiers.
+acn = "acn"
+alle = "alle"
+comercial = "comercial"
+ein = "ein"
+entreprise = "entreprise"
+individuales = "individuales"
+individuel = "individuel"
+linke = "linke"
+numer = "numer"
+oder = "oder"
+pn = "pn"
+registre = "registre"
+regon = "regon"
+stichting = "stichting"
+sur = "sur"
