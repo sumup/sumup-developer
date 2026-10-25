@@ -2,12 +2,13 @@
 import { getSidebar } from "@cloudflare/nimbus-docs/runtime";
 import DocsLayout from "../layouts/DocsLayout.astro";
 import { addDocsHome } from "../utils/docsSidebar";
-import Brands from "@components/Landing/Brands.astro";
 import Button from "@components/Button";
-import GetStarted from "@components/Landing/GetStarted.astro";
+import CopyPrompt from "@components/nimbus/CopyPrompt.astro";
+import ApiExamples from "@components/Landing/ApiExamples.astro";
+import Products from "@components/Landing/Products.astro";
+import Platform from "@components/Landing/Platform.astro";
 import PaymentScenes from "@components/Landing/PaymentScenes.astro";
-import { Body, Display, Headline } from "@sumup-oss/circuit-ui";
-import { InterestOnBalance, NoCosts, SecurePayments } from "@sumup-oss/icons";
+import { Body, Display } from "@sumup-oss/circuit-ui";
 
 const sidebar = await getSidebar("/", {
   collection: "docs",
@@ -45,13 +46,13 @@ const sidebar = await getSidebar("/", {
           APIs, SDKs, and guides for accepting payments online and in person.
           Choose your integration and start building in a sandbox.
         </Body>
-        <div class="hero-actions">
+        <div class="hero-actions" id="build-with-ai">
           <Button
-            href="#start-building"
+            href="/get-started/"
             variant="primary"
             label="Start building"
           />
-          <Button href="/api/" variant="secondary" label="Explore the API" />
+          <CopyPrompt compact />
         </div>
       </div>
       <div class="hero-visual" aria-hidden="true">
@@ -67,42 +68,9 @@ const sidebar = await getSidebar("/", {
         <PaymentScenes />
       </div>
     </header>
-    <GetStarted />
-    <section class="antifraud">
-      <div class="content">
-        <Headline as="h2" size="m">
-          Our Anti-fraud Protection
-        </Headline>
-        <div class="callouts">
-          <div>
-            <SecurePayments aria-hidden="true" className="icon" />
-            <Body>
-              We’re committed to protecting you from fraud, chargebacks and
-              headaches
-            </Body>
-          </div>
-          <div>
-            <InterestOnBalance aria-hidden="true" className="icon" />
-            <Body>
-              We use advanced artificial intelligence to constantly monitor
-              transactions for unusual activity
-            </Body>
-          </div>
-          <div>
-            <NoCosts aria-hidden="true" className="icon" />
-            <Body>
-              All of our anti-fraud protection is included at no additional cost
-            </Body>
-          </div>
-        </div>
-      </div>
-    </section>
-    <section class="brands">
-      <Headline as="h2" size="m">
-        Brands That Build With SumUp
-      </Headline>
-      <Brands />
-    </section>
+    <ApiExamples />
+    <Products />
+    <Platform />
   </div>
 </DocsLayout>
 
@@ -150,10 +118,17 @@ const sidebar = await getSidebar("/", {
 
   .hero-actions {
     display: flex;
+    align-items: flex-start;
     justify-content: flex-start;
     flex-wrap: wrap;
     gap: var(--cui-spacings-kilo);
     margin-top: var(--cui-spacings-giga);
+    scroll-margin-top: calc(var(--portal-header-height) + 1.5rem);
+  }
+
+  .hero-actions :global(.copy-prompt) {
+    min-width: 0;
+    max-width: 100%;
   }
 
   .hero :global(.subtitle) {
@@ -179,45 +154,5 @@ const sidebar = await getSidebar("/", {
       font-size: var(--cui-body-m-font-size);
       line-height: var(--cui-body-m-line-height);
     }
-  }
-</style>
-
-<style>
-  section {
-    margin: var(--cui-spacings-exa) 0;
-  }
-
-  section :global(h2) {
-    margin-bottom: var(--cui-spacings-giga) !important;
-  }
-
-  .icon {
-    width: 48px;
-    height: 48px;
-    margin-bottom: var(--cui-spacings-mega);
-  }
-
-  .callouts {
-    margin: var(--cui-spacings-zetta) 0;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-gap: var(--cui-spacings-giga);
-  }
-  .callouts > div {
-    margin-bottom: var(--cui-spacings-mega);
-  }
-  @media screen and (max-width: 940px) {
-    .callouts {
-      grid-template-columns: 1fr;
-    }
-  }
-
-  .antifraud .callouts {
-    text-align: center;
-  }
-
-  .brands {
-    overflow: hidden;
-    padding: var(--cui-spacings-zetta) 0;
   }
 </style>

@@ -10,6 +10,7 @@ import Callout from "@components/content/Callout";
 import Video from '@components/content/Video.astro';
 import SoloScreen from '@components/content/SoloScreen.astro';
 import CheckoutLifecycle from '@components/Diagrams/CheckoutLifecycle';
+import PairingSequence from '@components/Diagrams/PairingSequence';
 
 The Cloud API lets you start a transaction from a Point of Sale (POS) running on any platform (Windows, iOS, Linux, Android, Web-based, etc.) capable of sending HTTPS requests and complete that transaction via a Solo reader.
 
@@ -68,21 +69,7 @@ The Cloud API acts as a bridge between your application and the Solo reader. It 
 
 Once the Solo reader is paired to your SumUp account, your application can initiate a card charge request. SumUp handles the rest, providing a seamless payment experience where all card data is encrypted end-to-end. Transaction results are available in real-time via webhooks.
 
-```mermaid
-sequenceDiagram
-    title: Cloud API Overview
-    participant A as Solo Reader
-    participant B as Cloud API
-    participant C as Your Device
-    autonumber
-    A ->> A: generate pairing code
-    C ->> B: Pair Reader using code
-    B ->> C: Return Reader ID
-    B ->> A: Display confirmation message
-    C ->> B: Start Checkout on Reader
-    B ->> A: Initiate Checkout
-    A ->> A: Present Checkout to Customer
-```
+<PairingSequence client:visible />
 
 ### Log out of Solo
 

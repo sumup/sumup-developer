@@ -2,12 +2,29 @@
 import type { ApiOperationPage } from "@cloudflare/nimbus-docs/api";
 import { Select } from "@sumup-oss/circuit-ui";
 import MethodStatus from "./MethodStatus.astro";
+import Code from "@components/Code/Code.astro";
 
 type Props = Pick<
   ApiOperationPage,
-  "samples" | "responses" | "method" | "title" | "coordinate"
->;
-const { responses, method, title, coordinate } = Astro.props;
+  "samples" | "responses" | "title" | "coordinate"
+> & {
+  method?: string;
+  headingLevel?: 2 | 3 | 4;
+  compact?: boolean;
+  responseTitle?: string;
+  showResponseStatus?: boolean;
+};
+const {
+  responses,
+  method,
+  title,
+  coordinate,
+  headingLevel = 2,
+  compact = false,
+  responseTitle = "Response example",
+  showResponseStatus = true,
+} = Astro.props;
+const Heading = `h${headingLevel}` as "h2" | "h3" | "h4";
 // A generated HTTP request works without choosing or installing an SDK.
 const samples = [...Astro.props.samples].sort(
   (a, b) => Number(b.label === "cURL") - Number(a.label === "cURL"),
@@ -17,13 +34,10 @@ const examples = responses.flatMap((response) =>
     ? [{ status: response.status, example: response.example }]
     : [],
 );
-if (
-  [...samples, ...examples.map(({ example }) => example)].some(
-    (example) => !example.highlightedHtml,
-  )
-) {
-  throw new Error("Nimbus API samples were not prepared during content sync.");
-}
+// Multiple responses always retain tabs so each example remains accessible.
+const responseTabs = showResponseStatus || examples.length > 1;
+// API routes provide prepared HTML; other pages can render the same model
+// through the portal's standard Nimbus-themed Code component.
 const options = samples.map((sample) => ({
   label: sample.label,
   value: sample.id,
@@ -33,7 +47,7 @@ const responseId = `api-sample-responses-${encodeURIComponent(coordinate)}`;
 
 {(samples.length > 0 || examples.length > 0) && (
   <aside
-    class="code-samples"
+    class:list={["code-samples", { compact }]}
     aria-label="Code samples"
     data-pagefind-ignore="all"
   >
@@ -45,20 +59,24 @@ const responseId = `api-sample-responses-${encodeURIComponent(coordinate)}`;
       >
         <header class="sample-header request-header">
           <div class="request-title">
-            <MethodStatus method={method} />
-            <h2 title={title}>{title}</h2>
+            {method && <MethodStatus method={method} />}
+            <Heading title={title}>{title}</Heading>
           </div>
-          <div class="sample-select">
-            <Select
-              size="s"
-              label="Code sample"
-              hideLabel
-              options={options}
-              defaultValue={samples[0].id}
-              disabled
-              data-api-sample-select
-            />
-          </div>
+          {samples.length > 1 ? (
+            <div class="sample-select">
+              <Select
+                size="s"
+                label="Code sample"
+                hideLabel
+                options={options}
+                defaultValue={samples[0].id}
+                disabled
+                data-api-sample-select
+              />
+            </div>
+          ) : (
+            <span class="sample-language">{samples[0].label}</span>
+          )}
         </header>
         <div class="request-body sample-body">
           {samples.map((sample, i) => (
@@ -67,7 +85,14 @@ const responseId = `api-sample-responses-${encodeURIComponent(coordinate)}`;
               data-api-language={sample.lang}
               hidden={i !== 0}
             >
-              <Fragment set:html={sample.highlightedHtml} />
+              {sample.highlightedHtml ? (
+                <Fragment set:html={sample.highlightedHtml} />
+              ) : (
+                <Code
+                  code={sample.source}
+                  lang={sample.lang === "curl" ? "bash" : sample.lang}
+                />
+              )}
             </div>
           ))}
         </div>
@@ -94,8 +119,8 @@ const responseId = `api-sample-responses-${encodeURIComponent(coordinate)}`;
               new URL(location.href).searchParams.get("lang") ?? "";
             const selected = find(linked) ?? find(saved) ?? panels[0];
             for (const panel of panels) panel.hidden = panel !== selected;
-            root.querySelector("[data-api-sample-select]").value =
-              selected.dataset.apiSample;
+            const select = root.querySelector("[data-api-sample-select]");
+            if (select) select.value = selected.dataset.apiSample;
             root.setAttribute("data-api-samples-restored", "");
           })();
         </script>
@@ -104,43 +129,59 @@ const responseId = `api-sample-responses-${encodeURIComponent(coordinate)}`;
     {examples.length > 0 && (
       <section
         class="response-samples"
-        data-api-response-samples
+        data-api-response-samples={responseTabs ? "" : undefined}
         aria-label="Response examples"
       >
         <header class="sample-header response-header">
-          <h2>Response example</h2>
-          <div
-            class="response-statuses"
-            role="tablist"
-            aria-label="Response status"
-          >
-            {examples.map(({ status }, i) => (
-              <button
-                type="button"
-                role="tab"
-                id={`${responseId}-tab-${i}`}
-                aria-controls={`${responseId}-panel-${i}`}
-                aria-selected={i === 0 ? "true" : "false"}
-                tabindex={i === 0 ? 0 : -1}
-                data-api-response-trigger
-                disabled
-                data-status-class={status[0]}
-              >
-                {status}
-              </button>
-            ))}
-          </div>
+          <Heading>{responseTitle}</Heading>
+          {responseTabs && (
+            <div
+              class="response-statuses"
+              role="tablist"
+              aria-label="Response status"
+            >
+              {examples.map(({ status }, i) => (
+                <button
+                  type="button"
+                  role="tab"
+                  id={`${responseId}-tab-${i}`}
+                  aria-controls={`${responseId}-panel-${i}`}
+                  aria-selected={i === 0 ? "true" : "false"}
+                  tabindex={i === 0 ? 0 : -1}
+                  data-api-response-trigger
+                  disabled
+                  data-status-class={status[0]}
+                >
+                  {status}
+                </button>
+              ))}
+            </div>
+          )}
         </header>
         {examples.map(({ example }, i) => (
           <div
-            role="tabpanel"
+            role={responseTabs ? "tabpanel" : undefined}
             id={`${responseId}-panel-${i}`}
-            aria-labelledby={`${responseId}-tab-${i}`}
+            aria-labelledby={
+              responseTabs ? `${responseId}-tab-${i}` : undefined
+            }
             data-api-response-panel
             hidden={i !== 0}
           >
             <div class="sample-body response-body">
-              <Fragment set:html={example.highlightedHtml} />
+              {example.highlightedHtml ? (
+                <Fragment set:html={example.highlightedHtml} />
+              ) : (
+                <Code
+                  code={
+                    typeof example.value === "string" &&
+                    !example.mediaType.includes("json")
+                      ? example.value
+                      : JSON.stringify(example.value, null, 2)
+                  }
+                  lang={example.mediaType.includes("json") ? "json" : "text"}
+                />
+              )}
             </div>
           </div>
         ))}
@@ -186,12 +227,12 @@ const responseId = `api-sample-responses-${encodeURIComponent(coordinate)}`;
   .request-title :global([data-http-method]) {
     flex-shrink: 0;
   }
-  h2 {
+  :is(h2, h3, h4) {
     min-width: 0;
     font: inherit;
     font-weight: var(--cui-font-weight-semibold);
   }
-  .request-title h2 {
+  .request-title :is(h2, h3, h4) {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -199,6 +240,10 @@ const responseId = `api-sample-responses-${encodeURIComponent(coordinate)}`;
   .sample-select {
     flex-shrink: 0;
     max-width: 9rem;
+  }
+  .sample-language {
+    color: var(--cui-fg-subtle);
+    font-size: var(--portal-font-size-mono);
   }
   .sample-select :global(select) {
     font-size: var(--portal-font-size-mono);
@@ -272,6 +317,13 @@ const responseId = `api-sample-responses-${encodeURIComponent(coordinate)}`;
   }
   .response-body :global(pre.astro-code) {
     max-height: 20rem;
+  }
+  .compact .request-body :global(pre.astro-code) {
+    min-height: 12rem;
+    max-height: 20rem;
+  }
+  .compact .response-body :global(pre.astro-code) {
+    max-height: 12rem;
   }
   .sample-body :global(.nb-code-copy) {
     top: var(--cui-spacings-byte);

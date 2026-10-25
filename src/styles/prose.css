@@ -107,18 +107,37 @@
 
   &:where(table) {
     width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: var(--cui-body-s-font-size);
+    line-height: var(--cui-body-s-line-height);
   }
 
   &:where(th, td) {
     padding: var(--cui-spacings-kilo);
     text-align: start;
     vertical-align: top;
-    border: 1px solid var(--cui-border-divider);
+    border-block-end: 1px solid var(--cui-border-divider);
   }
 
   &:where(th) {
     background: var(--cui-bg-subtle);
-    font-weight: var(--cui-font-weight-bold);
+    font-weight: var(--cui-font-weight-semibold);
+    white-space: nowrap;
+  }
+
+  /* Count visible rows so filtered tables keep their alternating backgrounds. */
+  &:where(tbody > tr:nth-child(even of :not([hidden]))) {
+    background: var(--cui-bg-subtle);
+  }
+
+  &:where(tbody > tr:hover) {
+    background: var(--cui-bg-normal-hovered);
+  }
+
+  &:where(table > :last-child > tr:nth-last-child(1 of :not([hidden])) > th),
+  &:where(table > :last-child > tr:nth-last-child(1 of :not([hidden])) > td) {
+    border-block-end: 0;
   }
 
   &:where(.heading-anchor) {
@@ -137,6 +156,8 @@
 .nb-table-scroll {
   max-width: 100%;
   overflow-x: auto;
+  border: 1px solid var(--cui-border-divider);
+  border-radius: var(--cui-border-radius-byte);
 }
 
 .nb-table-scroll > table {

@@ -8,7 +8,6 @@ import react from "@astrojs/react";
 import nimbus, {
   defineConfig as defineNimbusConfig,
 } from "@cloudflare/nimbus-docs";
-import mermaid from "astro-mermaid";
 import { defineConfig } from "astro/config";
 import { loadEnv } from "vite";
 
@@ -50,6 +49,7 @@ const head = defineNimbusConfig({
   sidebar: {
     defaultCollapsed: true,
     items: [
+      { label: "Get started", link: "/get-started/" },
       {
         label: "In-person Payments",
         segment: "terminal-payments",
@@ -187,7 +187,7 @@ export default defineConfig({
     prerenderEnvironment: "node",
   }),
   markdown: {
-    syntaxHighlight: { type: "shiki", excludeLangs: ["mermaid"] },
+    syntaxHighlight: { type: "shiki" },
     shikiConfig: {
       themes: { light: "github-light", dark: "github-dark" },
       defaultColor: false,
@@ -233,7 +233,6 @@ export default defineConfig({
         "nimbus/code-block-prompt-prefix": "error",
       },
     }),
-    mermaid({ autoTheme: true }),
   ],
   server: {
     port: 3000,

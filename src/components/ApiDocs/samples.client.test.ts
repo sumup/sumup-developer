@@ -87,6 +87,31 @@ it("keeps the pre-paint selection when the deferred controller attaches", () => 
   ).toBe(false);
 });
 
+it("keeps the chosen language across multiple task panels without resetting an exact sample variant", () => {
+  const first = samples();
+  const second = first.cloneNode(true) as HTMLElement;
+  document.body.append(second);
+  const stopFirst = destroy;
+  const stopSecond = initSamples(second);
+  destroy = () => {
+    stopFirst?.();
+    stopSecond();
+  };
+  const source = first.querySelector("select")!;
+  const target = second.querySelector("select")!;
+  source.value = "python-2";
+  source.dispatchEvent(new Event("change"));
+  expect(source.value).toBe("python-2");
+  expect(target.value).toBe("python");
+  source.value = "curl";
+  source.dispatchEvent(new Event("change"));
+  expect(target.value).toBe("curl");
+  stopSecond();
+  source.value = "python";
+  source.dispatchEvent(new Event("change"));
+  expect(target.value).toBe("curl");
+});
+
 it("switches response examples by keyboard without changing the request sample", () => {
   const request = samples();
   const select = request.querySelector("select")!;

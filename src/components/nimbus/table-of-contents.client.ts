@@ -3,7 +3,7 @@ import { mount } from "@cloudflare/nimbus-docs/client";
 const READING_LINE = 0.25;
 const BOTTOM_EPSILON = 2;
 
-function initTableOfContents(root: HTMLElement) {
+export function initTableOfContents(root: HTMLElement) {
   const links = Array.from(
     root.querySelectorAll<HTMLAnchorElement>("[data-toc-link]"),
   );
@@ -107,8 +107,10 @@ function initTableOfContents(root: HTMLElement) {
         window.scrollTo({ top: 0, behavior });
       } else {
         target?.scrollIntoView({ behavior, block: "start" });
-        history.replaceState(null, "", `#${select.value}`);
       }
+      const url = new URL(location.href);
+      url.hash = select.value === "_top" ? "" : select.value;
+      history.replaceState(history.state, "", url);
     },
     { signal: controller.signal },
   );

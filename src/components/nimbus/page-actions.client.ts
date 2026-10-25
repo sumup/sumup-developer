@@ -20,25 +20,6 @@ export function initPageActions(root: HTMLElement) {
   }
 
   let resetTimer: number | undefined;
-  let mcpResetTimer: number | undefined;
-  const mcpButton = root.querySelector<HTMLButtonElement>(
-    "[data-docs-mcp-url]",
-  );
-  const mcpLabel = mcpButton?.querySelector("[data-docs-mcp-label]");
-  const copyMcpUrl = async () => {
-    if (!mcpButton?.dataset.docsMcpUrl || !mcpLabel) return;
-    window.clearTimeout(mcpResetTimer);
-    try {
-      await navigator.clipboard.writeText(mcpButton.dataset.docsMcpUrl);
-      mcpLabel.textContent = "Copied!";
-    } catch {
-      mcpLabel.textContent = "Couldn't copy";
-    }
-    mcpResetTimer = window.setTimeout(() => {
-      mcpLabel.textContent = "Copy docs MCP URL";
-    }, 1500);
-  };
-
   const showState = (state: "copied" | "error") => {
     copyIcon?.toggleAttribute("hidden", state === "copied");
     checkIcon?.toggleAttribute("hidden", state !== "copied");
@@ -95,12 +76,9 @@ export function initPageActions(root: HTMLElement) {
   };
 
   button.addEventListener("click", handleCopy);
-  mcpButton?.addEventListener("click", copyMcpUrl);
 
   return () => {
     button.removeEventListener("click", handleCopy);
-    mcpButton?.removeEventListener("click", copyMcpUrl);
-    window.clearTimeout(mcpResetTimer);
     if (resetTimer) {
       window.clearTimeout(resetTimer);
     }

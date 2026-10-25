@@ -1,39 +1,93 @@
-import { Diagram, useDiagram, usePhase } from "@cloudflare/nimbus-docs/react";
-import { useEffect, useState } from "react";
+import { Diagram } from "@cloudflare/nimbus-docs/react";
+import { Status } from "@sumup-oss/circuit-ui";
+import {
+  CardReaderSolo,
+  Code,
+  Laptop,
+  type IconComponentType,
+} from "@sumup-oss/icons";
+import { useState, type ReactNode } from "react";
 import {
   checkoutLifecycle,
   checkoutOutcomes,
 } from "../../lib/checkoutLifecycle";
 import styles from "./CheckoutLifecycle.module.css";
+import shared from "./Diagram.module.css";
+import DiagramControls from "./DiagramControls";
+import { useWalkthrough } from "./useWalkthrough";
+
+const phaseLabels = ["Create", "Accept", "Pay", "Result", "Update"];
+
+function ActorCard({
+  icon: Icon,
+  title,
+  description,
+  active,
+  children,
+}: {
+  icon: IconComponentType<"24">;
+  title: string;
+  description: string;
+  active: boolean;
+  children: ReactNode;
+}) {
+  return (
+    <div className={styles.node} data-active={active}>
+      <span className={styles.icon}>
+        <Icon size="24" />
+      </span>
+      <strong>{title}</strong>
+      <span className={styles.nodeDescription}>{description}</span>
+      {children}
+    </div>
+  );
+}
+
+function Connection({
+  active,
+  reverse,
+  label,
+}: {
+  active: boolean;
+  reverse: boolean;
+  label: string;
+}) {
+  return (
+    <div
+      className={styles.connector}
+      data-active={active}
+      data-reverse={reverse}
+    >
+      <span className={styles.connectionLabel}>{label}</span>
+      <span className={styles.packet} />
+    </div>
+  );
+}
 
 function Walkthrough() {
-  const diagram = useDiagram()!;
+  const walkthrough = useWalkthrough(checkoutLifecycle);
+  const { diagram, active, complete, playing, selectStep } = walkthrough;
+  const ready = diagram.visible;
   const [outcome, setOutcome] =
     useState<keyof typeof checkoutOutcomes>("successful");
-  const { current, running, start, goto } = usePhase({
-    steps: checkoutLifecycle.map(({ id }) => ({ id, hold: 3000 })),
-    autoplay: false,
-    loop: false,
-  });
-  const active = Math.max(
-    0,
-    checkoutLifecycle.findIndex(({ id }) => id === current),
-  );
-  const complete = active === checkoutLifecycle.length - 1;
-  useEffect(() => {
-    if (complete && diagram.playing) diagram.toggle();
-  }, [complete, diagram]);
-  const selectStep = (id: string) => {
-    if (diagram.playing) diagram.toggle();
-    goto(id);
-  };
+  const paid = complete && outcome === "successful";
+  const step = checkoutLifecycle[active];
+  const result =
+    outcome === "successful" ? "Payment successful" : "Payment failed";
 
   return (
-    <div className={styles.content} data-checkout-lifecycle>
-      <div className={styles.toolbar}>
+    <div
+      ref={walkthrough.surfaceRef}
+      className={shared.content}
+      data-checkout-lifecycle
+      data-prose="off"
+    >
+      <div className={shared.toolbar}>
+        <span className={shared.eyebrow}>Checkout lifecycle</span>
         <label>
           Example result
           <select
+            disabled={!ready}
             value={outcome}
             onChange={(event) =>
               setOutcome(event.target.value as keyof typeof checkoutOutcomes)
@@ -43,76 +97,127 @@ function Walkthrough() {
             <option value="failed">Failed</option>
           </select>
         </label>
-        <div className={styles.controls}>
-          {!diagram.reducedMotion && (
-            <button
-              type="button"
-              onClick={() => {
-                if (complete) {
-                  goto(checkoutLifecycle[0].id);
-                  if (!diagram.playing) diagram.toggle();
-                } else if (!running) {
-                  start();
-                  if (!diagram.playing) diagram.toggle();
-                } else diagram.toggle();
-              }}
+      </div>
+
+      <div className={shared.canvas}>
+        <div className={styles.scene} data-playing={playing} aria-hidden="true">
+          <ActorCard
+            icon={Laptop}
+            title="Your application"
+            description="Creates and tracks the order"
+            active={active !== 2}
+          >
+            <Status
+              as="span"
+              variant="pill"
+              color={paid ? "confirm" : "neutral"}
             >
-              {complete
-                ? "Replay walkthrough"
-                : !running
-                  ? "Play walkthrough"
-                  : diagram.playing
-                    ? "Pause"
-                    : "Resume"}
-            </button>
-          )}
-          <button type="button" onClick={diagram.reset}>
-            Reset
-          </button>
+              {paid ? "Order paid" : "Order unpaid"}
+            </Status>
+          </ActorCard>
+          <Connection
+            active={active === 0 || active === 1 || active === 3}
+            reverse={active !== 0}
+            label={
+              active === 0 ? "Checkout" : active === 1 ? "Accepted" : "Webhook"
+            }
+          />
+          <ActorCard
+            icon={Code}
+            title="SumUp Cloud API"
+            description="Connects your app and reader"
+            active={active < 4}
+          >
+            <span className={styles.nodeState}>
+              {active < 2
+                ? "Accepts the request"
+                : active === 2
+                  ? "Processes the payment"
+                  : "Delivers the result"}
+            </span>
+          </ActorCard>
+          <Connection
+            active={active === 2}
+            reverse={active > 2}
+            label={active > 2 ? "Result" : "Payment"}
+          />
+          <ActorCard
+            icon={CardReaderSolo}
+            title="Solo reader"
+            description="Collects the customer’s payment"
+            active={active === 2}
+          >
+            <Status
+              as="span"
+              variant="pill"
+              color={
+                active > 2
+                  ? outcome === "successful"
+                    ? "confirm"
+                    : "alert"
+                  : "neutral"
+              }
+            >
+              {active > 2 ? result : active === 2 ? "Taking payment" : "Ready"}
+            </Status>
+          </ActorCard>
         </div>
       </div>
 
-      <ol className={styles.steps}>
-        {checkoutLifecycle.map((step, index) => (
+      <ol className={styles.steps} aria-label="Checkout steps">
+        {checkoutLifecycle.map((item, index) => (
           <li
-            key={step.id}
+            key={item.id}
             data-active={index === active}
             data-complete={index < active}
           >
             <button
               type="button"
+              disabled={!ready}
               aria-current={index === active ? "step" : undefined}
-              aria-describedby={`${diagram.id}-${step.id}`}
-              onClick={() => selectStep(step.id)}
+              aria-label={`Step ${index + 1}: ${item.title}`}
+              aria-controls={`${diagram.id}-description`}
+              onClick={() => selectStep(index)}
             >
               <span className={styles.number} aria-hidden="true">
                 {index + 1}
               </span>
-              <span>
-                <span className={styles.actor}>{step.actor}</span>
-                <strong>{step.title}</strong>
-              </span>
+              <span>{phaseLabels[index]}</span>
             </button>
-            <p id={`${diagram.id}-${step.id}`}>
-              {step.id === "order"
-                ? checkoutOutcomes[outcome]
-                : step.description}
-            </p>
           </li>
         ))}
       </ol>
 
-      <div className={styles.status} role="status">
-        <span>
-          Step {active + 1} of {checkoutLifecycle.length}
-        </span>
-        <strong data-order-paid={complete && outcome === "successful"}>
-          {complete && outcome === "successful" ? "Order paid" : "Order unpaid"}
-        </strong>
+      <div
+        id={`${diagram.id}-description`}
+        className={shared.description}
+        role="status"
+        aria-atomic="true"
+      >
+        <span className={shared.actor}>{step.actor}</span>
+        <strong>{step.title}</strong>
+        <p>{complete ? checkoutOutcomes[outcome] : step.description}</p>
       </div>
-      <p className={styles.caption}>
-        Choose any step to explore it, or play the walkthrough. This example
-        sends no payment requests.
+
+      <div className={shared.transport}>
+        <Status as="span" variant="pill" color={paid ? "confirm" : "neutral"}>
+          {paid ? "Order paid" : "Order unpaid"}
+        </Status>
+        <DiagramControls walkthrough={walkthrough} />
+      </div>
+      <details className={shared.transcript}>
+        <summary>Read all steps</summary>
+        <ol>
+          {checkoutLifecycle.map((item) => (
+            <li key={item.id}>
+              <strong>{item.title}.</strong> {item.description}
+            </li>
+          ))}
+        </ol>
+      </details>
+      <p className={shared.caption}>
+        Explore each step, or play the walkthrough. This example sends no
+        payment requests.
       </p>
     </div>
   );
@@ -120,7 +225,7 @@ function Walkthrough() {
 
 export default function CheckoutLifecycle() {
   return (
-    <Diagram label="Cloud API checkout lifecycle" className={styles.diagram}>
+    <Diagram label="Cloud API checkout lifecycle" className={shared.diagram}>
       <Walkthrough />
     </Diagram>
   );

@@ -1,25 +1,7 @@
 import slugify from "@sindresorhus/slugify";
 import source from "../../../openapi.json";
-import cli from "../../codesamples/cli.json";
-import dotnet from "../../codesamples/dotnet.json";
-import go from "../../codesamples/go.json";
-import java from "../../codesamples/java.json";
-import php from "../../codesamples/php.json";
-import python from "../../codesamples/python.json";
-import rust from "../../codesamples/rust.json";
-import typescript from "../../codesamples/typescript.json";
+import { getSdkCodeSamples } from "./codeSamples";
 import operationPaths from "./operationPaths.json";
-
-const languages = [
-  ["CLI", cli],
-  ["JavaScript", typescript],
-  [".NET", dotnet],
-  ["Java", java],
-  ["Python", python],
-  ["PHP", php],
-  ["Go", go],
-  ["Rust", rust],
-] as const;
 
 type Operation = {
   operationId: string;
@@ -120,17 +102,9 @@ export function createApiReference() {
       const legacyAnchor = operations[operation.operationId].replace("/", "-");
       legacyLinks[legacyAnchor] = `/api/${operations[operation.operationId]}/`;
       legacyLinks[`${legacyAnchor}-heading`] = legacyLinks[legacyAnchor];
-      operation["x-codeSamples"] = languages.map(([label, samples]) => {
-        // Match the current reference's first vendored variant per language.
-        const sample = samples.samples.find(
-          (sample) => sample.operationId === operation.operationId,
-        );
-        if (!sample)
-          throw new Error(
-            `Missing ${label} sample for ${operation.operationId}`,
-          );
-        return { lang: samples.language, label, source: sample.sample };
-      });
+      operation["x-codeSamples"] = getSdkCodeSamples(operation.operationId).map(
+        ({ lang, label, source }) => ({ lang, label, source }),
+      );
 
       // Nimbus's agent Markdown does not render vendor extensions. Include
       // access requirements in the derived description so agents see them too.

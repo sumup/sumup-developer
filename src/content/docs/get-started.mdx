@@ -1,0 +1,57 @@
+---
+title: Get started
+description: Choose a SumUp payment integration, set up a sandbox merchant, and make your first online or in-person test payment.
+sidebar:
+  order: 0
+tableOfContents:
+  maxHeadingLevel: 2
+---
+
+Choose the payment experience you want to build, then follow its integration guide. Start in a sandbox so you can test payments without moving real money.
+
+## Choose your integration
+
+### Accept payments online
+
+| You want to…                                | Start with                                                                                                                            |
+| ------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| Send customers to a ready-made payment page | [Hosted Checkout](/online-payments/checkouts/hosted-checkout/) — create a checkout on your server and redirect the customer to SumUp. |
+| Keep checkout on your website               | [Payment Widget](/online-payments/checkouts/card-widget/) — embed SumUp’s payment form and let it collect payment details.            |
+| Offer an accelerated wallet checkout        | [Swift Checkout](/online-payments/checkouts/swift-checkout/) — add Apple Pay and Google Pay to your website.                          |
+| Add payments to an e-commerce platform      | [Plugins](/online-payments/plugins/) — use an integration for WooCommerce, PrestaShop, Wix, Medusa, or Vendure.                       |
+
+For a first website integration, start with Hosted Checkout. Choose the Payment Widget when you need an embedded form. To charge returning customers, build on the widget with [saved cards and recurring payments](/online-payments/guides/tokenization-with-payment-sdk/).
+
+### Accept payments in person
+
+| You want to…                                                  | Start with                                                                                                   |
+| ------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| Control a card reader from a native mobile app                | [Reader SDKs](/terminal-payments/sdks/) — integrate payment acceptance into your Android or iOS app.         |
+| Start reader payments from a backend, web app, or desktop POS | [Cloud API](/terminal-payments/cloud-api/) — control a reader through HTTPS requests.                        |
+| Accept contactless payments without a separate reader         | [Tap to Pay](/terminal-payments/readers/tap-to-pay/) — use a compatible phone and the SDK for your platform. |
+
+The [in-person quickstart](/terminal-payments/quickstart/) walks through setup and your first payment. Check [reader compatibility](/terminal-payments/#reader-compatibility) and market availability before choosing hardware or an SDK.
+
+## Set up a sandbox
+
+[Create a developer account](https://me.sumup.com/signup?signup_intent=developer) to start with a sandbox merchant account. If you already have a SumUp account, [create a sandbox merchant in Developer Settings](/online-payments/#getting-a-sandbox-merchant-account).
+
+Use the sandbox merchant’s credentials and merchant code when testing. For native SDK login, follow the [merchant account setup guide](/terminal-payments/#users-with-multiple-merchant-accounts) to make sure you sign in to the sandbox merchant.
+
+You can try Cloud API pairing and payments without a physical reader using [Virtual Solo](/terminal-payments/cloud-api/#solo-virtual-terminal).
+
+## Choose your credentials
+
+- **Your own merchant account:** use an [API key](/tools/authorization/api-keys/) for server-to-server API calls.
+- **Other merchants connect to your application:** use [OAuth 2.0](/tools/authorization/oauth/) so each merchant can grant access.
+- **In-person integrations:** follow your integration guide to configure an [affiliate key](/tools/authorization/affiliate-keys/) and any required permissions. An affiliate key identifies your integration; it does not replace API authorization or SDK merchant login.
+
+Keep secret API keys and OAuth client secrets on your server. Create online checkouts there, then let Hosted Checkout, the Payment Widget, or an SDK collect payment details.
+
+## Make your first test payment
+
+Follow your chosen integration guide, then use the [online payment testing guide](/online-payments/testing/) or [in-person payment testing guide](/terminal-payments/testing/) to test successful payments, declines, and cancellation.
+
+Use a unique reference for each payment attempt. Verify the final payment result before fulfilling an order, and handle repeated callbacks without fulfilling the same order twice.
+
+For backend API calls, use a [server-side SDK](/tools/sdks/) or explore the [API reference](/api/). If you work with a coding assistant, [set up SumUp skills and MCP tools](/tools/llms/setup/) to give it current integration guidance.

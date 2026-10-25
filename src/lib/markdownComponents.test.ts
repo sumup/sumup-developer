@@ -127,3 +127,16 @@ it("publishes the interactive checkout's asynchronous flow and both final outcom
   expect(markdown).toContain("For failed, keep it unpaid");
   expect(markdown).not.toContain("<CheckoutLifecycle");
 });
+
+it("publishes all pairing sequence messages, their direction, and the asynchronous handoff", () => {
+  const markdown = convert("<PairingSequence client:visible />");
+  const list = nodes(markdown).find((node) => node.type === "list");
+  expect(list?.children).toHaveLength(7);
+  expect(markdown).toContain("Your application → Cloud API");
+  expect(markdown).toContain("Cloud API → Your application");
+  expect(markdown).toContain("Cloud API → Solo reader");
+  expect(markdown).toContain("expires after five minutes");
+  expect(markdown).toContain("Starting a checkout is asynchronous");
+  expect(markdown).toContain("final payment result");
+  expect(markdown).not.toContain("<PairingSequence");
+});

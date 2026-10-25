@@ -22,6 +22,7 @@ interface Props extends DocsPageProps {
   sidebarFilter?: boolean;
   links?: Array<{ title: string; href: string }>;
   wide?: boolean;
+  contentWidth?: string;
   hideTitle?: boolean;
   hideDescription?: boolean;
   prose?: boolean;
@@ -52,6 +53,7 @@ const {
   head,
   links = [],
   wide = false,
+  contentWidth,
   hideTitle = false,
   hideDescription = false,
   prose = true,
@@ -127,7 +129,15 @@ const toc = headings === false ? [] : headings;
       {showSidebar && <script is:inline set:html={navStateScript} />}
 
       <main id="main-content" class="docs-main">
-        <div class="content-column" {...pagefindAttributes}>
+        <div
+          class="content-column"
+          style={
+            contentWidth
+              ? { "--portal-content-width": contentWidth }
+              : undefined
+          }
+          {...pagefindAttributes}
+        >
           {breadcrumbs.length > 1 && (
             <nav class="breadcrumbs" aria-label="Breadcrumbs">
               <ol>

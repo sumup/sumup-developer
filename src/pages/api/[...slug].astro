@@ -53,7 +53,7 @@ const pathname = new URL(page.href, Astro.url).pathname;
   headings={false}
   breadcrumbs={[...page.breadcrumbs, { label: page.title }]}
   prevNext={nav.prevNext ?? {}}
-  wide
+  contentWidth="84rem"
   prose={false}
 >
   <ApiDocs page={page} home={home} />

@@ -5,6 +5,11 @@ import { javaInstallExamples } from "./sdks/javaInstallExamples.ts";
 import { getJavaSdkVersion } from "./sdks/javaSdkVersion.ts";
 import { agentSetupPrompt } from "./agentSetup.ts";
 import { checkoutLifecycle } from "./checkoutLifecycle.ts";
+import {
+  pairingActors,
+  pairingActorLabel,
+  pairingSequence,
+} from "./pairingSequence.ts";
 
 type ComponentMap = NonNullable<
   NonNullable<NimbusIntegrationOptions["markdown"]>["componentMap"]
@@ -39,6 +44,19 @@ export function createMarkdownComponents(javaVersion: string): ComponentMap {
       }`,
   };
   return {
+    PairingSequence: {
+      revision: JSON.stringify({
+        actors: pairingActors,
+        steps: pairingSequence,
+      }),
+      render: () =>
+        pairingSequence
+          .map(
+            (step, index) =>
+              `${index + 1}. **${step.title}** (${pairingActorLabel(step)}): ${step.description}`,
+          )
+          .join("\n"),
+    },
     CheckoutLifecycle: {
       revision: JSON.stringify(checkoutLifecycle),
       render: () =>

@@ -1,6 +1,7 @@
 import { initTabs, mount, writeUrlParam } from "@cloudflare/nimbus-docs/client";
 
 const STORAGE_KEY = "nb-api-code-rail__lang";
+const LANGUAGE_EVENT = "portal-api-sample-language";
 
 export function initSamples(root: HTMLElement): () => void {
   const select = root.querySelector<HTMLSelectElement>(
@@ -36,15 +37,28 @@ export function initSamples(root: HTMLElement): () => void {
       /* Storage is optional. */
     }
     writeUrlParam("lang", select.value);
+    window.dispatchEvent(
+      new CustomEvent(LANGUAGE_EVENT, {
+        detail: { language: panel.dataset.apiLanguage, origin: root },
+      }),
+    );
   };
   const storage = (event: StorageEvent) => {
     if (event.key === STORAGE_KEY && event.newValue) show(find(event.newValue));
   };
+  const language = (event: Event) => {
+    const { language, origin } = (
+      event as CustomEvent<{ language: string; origin: HTMLElement }>
+    ).detail;
+    if (origin !== root) show(find(language));
+  };
   select.addEventListener("change", change);
   window.addEventListener("storage", storage);
+  window.addEventListener(LANGUAGE_EVENT, language);
   return () => {
     select.removeEventListener("change", change);
     window.removeEventListener("storage", storage);
+    window.removeEventListener(LANGUAGE_EVENT, language);
   };
 }
 mount("[data-api-samples]", initSamples);

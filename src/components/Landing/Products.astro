@@ -1,0 +1,154 @@
+---
+import {
+  BrowserSecure,
+  CardReaderSolo,
+  Code,
+  OnlineIntegrations,
+  PaymentMethods,
+  RecurringTransfer,
+  TapToPay,
+  UploadCloud,
+} from "@sumup-oss/icons";
+import { Body, Headline } from "@sumup-oss/circuit-ui";
+
+const products = [
+  {
+    icon: BrowserSecure,
+    title: "Hosted Checkout",
+    description: "Send customers to a SumUp-hosted payment page.",
+    href: "/online-payments/checkouts/hosted-checkout/",
+  },
+  {
+    icon: Code,
+    title: "Payment Widget",
+    description: "Embed a payment form in your website.",
+    href: "/online-payments/checkouts/card-widget/",
+  },
+  {
+    icon: PaymentMethods,
+    title: "Swift Checkout",
+    description: "Offer Apple Pay and Google Pay on your website.",
+    href: "/online-payments/checkouts/swift-checkout/",
+  },
+  {
+    icon: OnlineIntegrations,
+    title: "Plugins",
+    description: "Add payments to your e-commerce platform.",
+    href: "/online-payments/plugins/",
+  },
+  {
+    icon: CardReaderSolo,
+    title: "Reader SDKs",
+    description: "Connect your Android or iOS app to a card reader.",
+    href: "/terminal-payments/sdks/",
+  },
+  {
+    icon: UploadCloud,
+    title: "Cloud API",
+    description: "Start reader payments from any backend.",
+    href: "/terminal-payments/cloud-api/",
+  },
+  {
+    icon: TapToPay,
+    title: "Tap to Pay",
+    description: "Accept contactless payments on a compatible phone.",
+    href: "/terminal-payments/readers/tap-to-pay/",
+  },
+  {
+    icon: RecurringTransfer,
+    title: "Recurring payments",
+    description: "Save customer cards for future payments.",
+    href: "/online-payments/guides/tokenization-with-payment-sdk/",
+  },
+];
+---
+
+<section id="start-building" aria-labelledby="start-building-heading">
+  <Headline as="h2" size="m" id="start-building-heading">
+    Product
+  </Headline>
+  <Body color="subtle" className="section-description">
+    Explore integrations for online and in-person payments.
+  </Body>
+
+  <ul class="products" id="payment-integrations">
+    {products.map(({ icon: Icon, title, description, href }) => (
+      <li>
+        <a class="product" href={href}>
+          <span class="product-icon">
+            <Icon size="24" aria-hidden="true" />
+          </span>
+          <Headline as="h3" size="s" className="product-title">
+            {title}
+          </Headline>
+          <Body size="s" color="subtle" className="product-description">
+            {description}
+          </Body>
+        </a>
+      </li>
+    ))}
+  </ul>
+</section>
+
+<style>
+  section {
+    container-type: inline-size;
+    margin-block: var(--cui-spacings-exa);
+    padding-top: var(--cui-spacings-exa);
+    border-top: 1px solid var(--cui-border-divider);
+    scroll-margin-top: calc(var(--portal-header-height) + 1.5rem);
+  }
+  section :global(.section-description) {
+    margin: var(--cui-spacings-kilo) 0 var(--cui-spacings-giga);
+  }
+  .products {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--cui-spacings-mega);
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    scroll-margin-top: calc(var(--portal-header-height) + 1.5rem);
+  }
+  .product {
+    display: block;
+    height: 100%;
+    padding: var(--cui-spacings-mega);
+    border: 1px solid var(--cui-border-divider);
+    border-radius: var(--cui-border-radius-mega);
+    color: var(--cui-fg-normal);
+    text-decoration: none;
+  }
+  .product:hover {
+    background: var(--cui-bg-normal-hovered);
+  }
+  .product-icon {
+    display: grid;
+    place-items: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    margin-bottom: var(--cui-spacings-mega);
+    border-radius: var(--cui-border-radius-byte);
+    background: var(--cui-bg-subtle);
+  }
+  .product :global(.product-title) {
+    margin: 0 0 var(--cui-spacings-byte);
+  }
+  .product :global(.product-description) {
+    margin: 0;
+  }
+  .product:hover :global(.product-title) {
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+  @container (max-width: 55rem) {
+    .products {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @container (max-width: 30rem) {
+    .products {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

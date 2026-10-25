@@ -14,7 +14,7 @@ const { searchPlaceholder = "Search table" } = Astro.props;
   </label>
   <!-- Scrollable tables must be focusable for keyboard scrolling. -->
   <div
-    class="table-scroll"
+    class="table-scroll nb-table-scroll"
     tabindex={0}
     role="region"
     aria-label={searchPlaceholder}
@@ -73,15 +73,19 @@ const { searchPlaceholder = "Search table" } = Astro.props;
     outline-offset: 2px;
   }
   .table-scroll {
+    margin-block: 0;
     max-height: 420px;
     overflow: auto;
   }
   .table-scroll :global(.nb-table-scroll) {
     overflow: visible;
+    margin-block: 0;
+    border: 0;
+    border-radius: 0;
   }
   .table-scroll :global(th) {
     position: sticky;
     top: 0;
-    background: var(--cui-bg-normal);
+    z-index: 1;
   }
 </style>

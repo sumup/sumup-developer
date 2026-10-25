@@ -13,7 +13,8 @@ export function initCopyPrompt(root: HTMLElement) {
       await navigator.clipboard.writeText(prompt.textContent ?? "");
       status.textContent = "Copied!";
     } catch {
-      status.textContent = "Couldn't copy. Select and copy the prompt above.";
+      prompt.hidden = false;
+      status.textContent = "Couldn't copy. Select and copy the prompt.";
     } finally {
       button.disabled = false;
     }

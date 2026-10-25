@@ -10,7 +10,6 @@ afterEach(() => {
 function setup() {
   document.body.innerHTML = `<div data-markdown-url="/guide/index.md">
     <button data-page-actions-copy><span data-page-actions-label>Copy as Markdown</span></button>
-    <button data-docs-mcp-url="https://developer.sumup.com/mcp"><span data-docs-mcp-label>Copy docs MCP URL</span></button>
   </div>`;
   const destroy = initPageActions(document.querySelector("div")!);
   return { destroy, button: document.querySelector("button")! };
@@ -29,25 +28,6 @@ it("copies Markdown with writeText when ClipboardItem is unavailable", async () 
   await vi.waitFor(() => expect(button.textContent).toBe("Copied!"));
   expect(writeText).toHaveBeenCalledWith("# Guide");
   expect(button.disabled).toBe(false);
-  destroy();
-});
-
-it("copies the public documentation MCP URL without fetching page content", async () => {
-  const fetch = vi.fn();
-  vi.stubGlobal("fetch", fetch);
-  const writeText = vi.fn().mockResolvedValue(undefined);
-  Object.defineProperty(navigator, "clipboard", {
-    configurable: true,
-    value: { writeText },
-  });
-  const { destroy } = setup();
-  const button = document.querySelector<HTMLButtonElement>(
-    "[data-docs-mcp-url]",
-  )!;
-  button.click();
-  await vi.waitFor(() => expect(button.textContent).toBe("Copied!"));
-  expect(writeText).toHaveBeenCalledWith("https://developer.sumup.com/mcp");
-  expect(fetch).not.toHaveBeenCalled();
   destroy();
 });
 

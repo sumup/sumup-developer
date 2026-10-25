@@ -5,4 +5,7 @@ dist/
 openapi.yaml
 openapi.json
 # Imported verbatim from the pinned upstream skills tree.
-skills/
+/skills/
+# Imported verbatim from the pinned Nimbus source revision.
+.agents/references/nimbus/*.md
+!.agents/references/nimbus/README.md

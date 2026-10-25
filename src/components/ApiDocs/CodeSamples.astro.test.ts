@@ -57,6 +57,62 @@ it("shows only the default request and response with stable controls before Java
     doc.querySelectorAll("[data-api-response-trigger]:disabled"),
   ).toHaveLength(2);
   expect(doc.querySelector(".sample-label, header [hidden]")).toBeNull();
+  expect(
+    doc.querySelector("[data-http-method]")?.getAttribute("data-http-method"),
+  ).toBe("POST");
+  dom.window.close();
+});
+
+it("renders named homepage examples without HTTP badges or orphaned response tabs", async () => {
+  const renderers = await loadRenderers([getContainerRenderer()]);
+  const container = await AstroContainer.create({ renderers });
+  const html = await container.renderToString(CodeSamples, {
+    props: {
+      title: "Create a hosted checkout",
+      responseTitle: "Created checkout",
+      showResponseStatus: false,
+      coordinate: "homepage.hosted-checkout",
+      headingLevel: 4,
+      compact: true,
+      samples: [
+        {
+          id: "typescript",
+          lang: "typescript",
+          label: "JavaScript",
+          source: "createCheckout()",
+          highlightedHtml: "<pre><code>createCheckout()</code></pre>",
+        },
+      ],
+      responses: [
+        {
+          status: "201",
+          coordinate: "homepage.response.201",
+          anchor: "response-201",
+          fields: [],
+          example: {
+            mediaType: "application/json",
+            value: { id: "test-checkout" },
+            highlightedHtml: '<pre><code>{"id":"test-checkout"}</code></pre>',
+          },
+        },
+      ],
+    },
+  });
+  const dom = new JSDOM(html);
+  const doc = dom.window.document;
+  expect(
+    [...doc.querySelectorAll("h4")].map((heading) => heading.textContent),
+  ).toEqual(["Create a hosted checkout", "Created checkout"]);
+  expect(
+    doc.querySelector(
+      "[data-http-method], [data-api-response-trigger], [data-api-response-samples]",
+    ),
+  ).toBeNull();
+  const response = doc.querySelector<HTMLElement>("[data-api-response-panel]")!;
+  expect(response.hidden).toBe(false);
+  expect(response.getAttribute("role")).toBeNull();
+  expect(response.getAttribute("aria-labelledby")).toBeNull();
+  expect(response.textContent).toContain("test-checkout");
   dom.window.close();
 });
 

@@ -30,6 +30,9 @@ pre.astro-code {
   background: transparent;
   font-family: var(--cui-font-stack-mono);
   font-size: var(--portal-font-size-mono);
+  /* Keep mobile browsers from inflating wide code; page zoom still works. */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
   line-height: 1.625;
   tab-size: 4;
   scrollbar-width: thin;

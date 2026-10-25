@@ -1,0 +1,108 @@
+---
+import { Body, Headline } from "@sumup-oss/circuit-ui";
+
+const resources = [
+  {
+    title: "SDKs & CLI",
+    description: "Use your preferred language or work from the command line.",
+    href: "/tools/sdks/",
+  },
+  {
+    title: "API reference",
+    description: "Explore endpoints, request examples, and responses.",
+    href: "/api/",
+  },
+  {
+    title: "Authorization",
+    description: "Find the credentials your integration needs.",
+    href: "/tools/authorization/",
+  },
+  {
+    title: "AI assistant setup",
+    description: "Connect your assistant to SumUp docs, skills, and tools.",
+    href: "/tools/llms/setup/",
+  },
+];
+---
+
+<section class="platform" id="platform" aria-labelledby="platform-heading">
+  <Headline as="h2" size="m" id="platform-heading">
+    Platform
+  </Headline>
+  <Body color="subtle" className="section-description">
+    Tools and shared services for building and running your integration.
+  </Body>
+  <ul
+    class="resource-links"
+    aria-label="Developer resources"
+    id="developer-resources-heading"
+  >
+    {resources.map(({ title, description, href }) => (
+      <li>
+        <a class="resource" href={href}>
+          <Headline as="h3" size="s" className="resource-title">
+            {title}
+          </Headline>
+          <Body size="s" color="subtle" className="resource-description">
+            {description}
+          </Body>
+        </a>
+      </li>
+    ))}
+  </ul>
+</section>
+
+<style>
+  .platform {
+    container-type: inline-size;
+    margin-block: var(--cui-spacings-exa);
+    padding-top: var(--cui-spacings-exa);
+    border-top: 1px solid var(--cui-border-divider);
+    scroll-margin-top: calc(var(--portal-header-height) + 1.5rem);
+  }
+  section :global(.section-description) {
+    max-width: 42rem;
+    margin: var(--cui-spacings-kilo) 0 var(--cui-spacings-giga);
+    text-wrap: pretty;
+  }
+  .resource-links {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--cui-spacings-mega);
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .resource {
+    display: block;
+    height: 100%;
+    padding: var(--cui-spacings-mega);
+    border: 1px solid var(--cui-border-divider);
+    border-radius: var(--cui-border-radius-mega);
+    color: var(--cui-fg-normal);
+    text-decoration: none;
+  }
+  .resource:hover {
+    background: var(--cui-bg-normal-hovered);
+  }
+  .resource:hover :global(.resource-title) {
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+  .resource :global(.resource-title) {
+    margin: 0 0 var(--cui-spacings-byte);
+  }
+  .resource :global(.resource-description) {
+    margin: 0;
+  }
+  @container (max-width: 55rem) {
+    .resource-links {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @container (max-width: 30rem) {
+    .resource-links {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

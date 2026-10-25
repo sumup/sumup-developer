@@ -2,24 +2,47 @@
 import Button from "@components/Button";
 import { agentSetupPrompt } from "@lib/agentSetup";
 import { Body } from "@sumup-oss/circuit-ui";
+import AgentLogos from "./AgentLogos";
 
 interface Props {
   text?: string;
+  compact?: boolean;
 }
-const { text = agentSetupPrompt } = Astro.props;
+const { text = agentSetupPrompt, compact = false } = Astro.props;
 ---
 
-<div class="copy-prompt" data-copy-prompt>
-  <Body size="s" className="prompt-text" data-copy-prompt-text>
-    {text}
-  </Body>
-  <Button
-    type="button"
-    variant="secondary"
-    label="Copy setup prompt"
-    data-copy-prompt-button
-  />
-  <Body as="span" size="s" data-copy-prompt-status role="status" />
+<div class:list={["copy-prompt", { compact }]} data-copy-prompt>
+  {compact ? (
+    <>
+      <div class="copy-controls">
+        <Button
+          type="button"
+          variant="secondary"
+          label="Copy setup prompt"
+          icon={AgentLogos}
+          title="Set up Claude Code, Codex, Cursor, or another supported assistant"
+          data-copy-prompt-button
+        />
+        <Body as="span" size="s" data-copy-prompt-status role="status" />
+      </div>
+      <Body size="s" className="prompt-text" data-copy-prompt-text hidden>
+        {text}
+      </Body>
+    </>
+  ) : (
+    <>
+      <Body size="s" className="prompt-text" data-copy-prompt-text>
+        {text}
+      </Body>
+      <Button
+        type="button"
+        variant="secondary"
+        label="Copy setup prompt"
+        data-copy-prompt-button
+      />
+      <Body as="span" size="s" data-copy-prompt-status role="status" />
+    </>
+  )}
 </div>
 
 <script>
@@ -40,5 +63,33 @@ const { text = agentSetupPrompt } = Astro.props;
   .copy-prompt :global([data-copy-prompt-status]) {
     display: inline-block;
     margin-inline-start: var(--cui-spacings-mega);
+  }
+
+  .copy-prompt.compact {
+    padding: 0;
+    border: 0;
+    background: transparent;
+  }
+
+  .copy-controls {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--cui-spacings-bit);
+  }
+
+  .copy-controls {
+    flex-wrap: wrap;
+  }
+
+  .copy-controls :global([data-copy-prompt-status]) {
+    margin: 0;
+  }
+
+  .compact :global(.prompt-text) {
+    margin: var(--cui-spacings-kilo) 0 0;
+    padding: var(--cui-spacings-mega);
+    border: 1px solid var(--cui-border-divider);
+    border-radius: var(--cui-border-radius-mega);
+    background: var(--cui-bg-subtle);
   }
 </style>
