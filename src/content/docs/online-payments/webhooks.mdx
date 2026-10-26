@@ -13,7 +13,7 @@ Follow [Confirm a payment and update your order](/online-payments/guides/confirm
 
 ## Events
 
-This integration sends `CHECKOUT_STATUS_CHANGED` events. Subscribe by setting `return_url` during [checkout creation](/api/checkouts/create/). Cloud API reader payments use a [different event payload](/terminal-payments/cloud-api/#receive-transaction-results).
+This integration sends `CHECKOUT_STATUS_CHANGED` events. Subscribe by setting `return_url` during [checkout creation](/api/checkouts/create/). Cloud API reader payments use a [different event payload](/terminal-payments/cloud-api/payments/#receive-transaction-results).
 
 Ignore event types your application does not recognize and acknowledge them successfully. New event types can be introduced later.
 

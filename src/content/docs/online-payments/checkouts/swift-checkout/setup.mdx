@@ -1,0 +1,74 @@
+---
+title: Set up Swift Checkout
+description: Load the web SDK and configure a public merchant key for wallet payments.
+sidebar:
+  order: 1
+  label: Set up the SDK
+---
+
+import Callout from "@components/content/Callout";
+
+Swift Checkout is a web SDK for Apple Pay and Google Pay. These examples use JavaScript in a browser. Create checkouts and keep secret API credentials on your server.
+
+## Prerequisites
+
+- Add a payment method to your browser or wallet. For example, you can save a card in Chrome, add a card to your Apple Wallet for Safari and iOS
+- Serve your application over HTTPS. This is a requirement both in development and in production environments. One way to get up and running is to use a service like [ngrok](https://ngrok.com/)
+
+Currently available payment methods through Swift Checkout SDK:
+
+<Callout type="caution" title="Caution">
+  For pages that have a strict Content Security Policy (CSP) visit the [Handling CSP](/online-payments/checkouts/card-widget/#handling-strict-content-security-policies) instructions.
+</Callout>
+
+- [Apple Pay](/online-payments/checkouts/swift-checkout/wallets/#apple-pay-setup)
+- [Google Pay](/online-payments/checkouts/swift-checkout/wallets/#google-pay-setup)
+
+## SumUp Swift Checkout SDK setup
+
+Include the SDK.js in your page as shown below:
+
+```html
+<script src="https://js.sumup.com/swift-checkout/v1/sdk.js"></script>
+
+<div id="express-checkout-container">
+  <!-- Wallet buttons are mounted here. -->
+</div>
+<p id="payment-message" role="status"></p>
+```
+
+Or with JavaScript:
+
+```javascript
+function injectScript() {
+  return new Promise((resolve) => {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.onload = function () {
+      resolve(window.SumUp);
+    };
+    script.src = "https://js.sumup.com/swift-checkout/v1/sdk.js";
+    document.body.appendChild(script);
+  });
+}
+```
+
+Once the script is loaded, a new SumUp object is injected into the window instance representing SumUp SDK namespace, which contains the SwiftCheckout client.
+
+## Obtaining a public API key
+
+To obtain a public API key, go to the [API keys page](https://me.sumup.com/settings/api-keys) in the SumUp Dashboard. Your public merchant key will be automatically generated with a value such as `sup_pk_0x98lsJhJAs...u5kvg`.
+
+## SumUp Swift Checkout client
+
+```javascript
+const swiftCheckoutClient = new window.SumUp.SwiftCheckout(
+  "sup_pk_0x98lsJhJAs...u5kvg",
+);
+```
+
+The client contains a set of objects to render a payment element UI, request payment authorization and process a payment using SumUp’s API.
+
+## Next step
+
+[Accept a wallet payment](/online-payments/checkouts/swift-checkout/payments/). Complete the [wallet onboarding steps](/online-payments/checkouts/swift-checkout/wallets/) for the payment methods you will offer.

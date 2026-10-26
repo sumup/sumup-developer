@@ -1,0 +1,86 @@
+---
+title: Set up Cloud API and pair a reader
+description: Configure authorization and pair a Solo reader with your merchant account.
+sidebar:
+  order: 1
+  label: Set up and pair a reader
+---
+
+import Callout from "@components/content/Callout";
+import Video from '@components/content/Video.astro';
+import SoloScreen from '@components/content/SoloScreen.astro';
+import PairingSequence from '@components/Diagrams/PairingSequence';
+
+Use Cloud API to control a Solo reader from your backend over HTTPS. Both your backend and the reader need internet access; they can use different networks.
+
+## Prerequisites
+
+- Authorize server requests for the merchant with an [API key or OAuth access token](/tools/authorization/). Keep secret credentials on your server.
+- You must [create an Affiliate Key](/tools/authorization/affiliate-keys/) for your app, as SumUp Cloud API requires this key in checkout requests.
+- We strongly recommend keeping the Solo terminal plugged in when using the Cloud API.
+- If you want to use mobile data, ensure you are not connected to Wi-Fi. Disconnect from Wi-Fi if necessary—when both mobile data and Wi-Fi are available, the Solo reader will always use Wi-Fi.
+
+  To disconnect Wi-Fi, navigate to **Connections** > **Wi-Fi** and disable Wi-Fi using the on-screen slider.
+
+## Pairing Solo reader via Cloud API
+
+The Cloud API acts as a bridge between your application and the Solo reader. It supports two main processes:
+
+- Pairing a Solo reader to your account
+- Taking in-person payments via Solo
+
+After pairing, your backend can start a reader checkout and receive its final transaction result through the checkout callback URL.
+
+<PairingSequence client:visible />
+
+### Log out of Solo
+
+The Cloud API pairing process is only available for logged-out users. If you're logged in to your merchant account, do the following:
+
+1. Open the top-side menu on your Solo.
+2. Select **Settings**. The **Device settings** menu opens.
+3. Go to the **About** section.
+4. Select **Log out**. Solo should now display the login screen.
+
+### Generate pairing code
+
+To initiate a payment on the Solo card reader, it must be enrolled with the merchant account. This enrollment, called reader pairing, starts on the card reader by generating a pairing code and finishes when your device completes a pairing request using the Cloud API with that code. Both your application and Solo reader must be connected to the internet (not necessarily the same network).
+
+<Callout type="note" title="Note">
+The pairing process has an expiration time of 5 minutes, if any issue occurs, the
+process must be restarted.
+</Callout>
+
+1. Turn on the Solo card reader.
+2. Make sure you're not logged in. [Log out from your Solo card reader](/terminal-payments/cloud-api/setup/#log-out-of-solo) if you are.
+3. Open the top menu drawer
+4. Go to **Connections** and connect to Wi-Fi (connecting is skipped in the short video below).
+5. Select **API**.
+6. Click **Connect**. The pairing code is generated.
+7. Copy the pairing code displayed on the
+   Solo card reader screen. You will need this code to pair your Solo reader with your device.
+
+<Video src="/img/guides/pair_solo.mp4" trackSrc="/img/guides/pair_solo.vtt" width="400px" height="400px" />
+
+### Pair the card reader with pairing code
+
+<Steps>
+
+1. Send a request to the [Create Reader endpoint](/api/readers/create). Use the code displayed by the reader or Virtual Solo:
+
+   ```bash
+   curl "https://api.sumup.com/v0.1/merchants/$SUMUP_MERCHANT_CODE/readers" \
+     -H "Authorization: Bearer $SUMUP_API_KEY" \
+     -H "Content-Type: application/json" \
+     -d '{"pairing_code":"PAIRING_CODE","name":"Checkout desk"}'
+   ```
+
+2. Verify pairing confirmation on the reader screen. It appears for a short while, after which the reader returns to the idle screen.
+
+</Steps>
+
+<SoloScreen src="/img/guides/solo-pairing-step-7.png" alt="Solo device API pairing confirmation screen." />
+
+## Next step
+
+[Accept a reader payment](/terminal-payments/cloud-api/payments/). To test without hardware, [use Virtual Solo](/terminal-payments/cloud-api/testing/).

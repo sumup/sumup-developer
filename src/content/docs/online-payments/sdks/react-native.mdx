@@ -22,7 +22,7 @@ This guide uses the alpha release `@sumup/react-native-checkout@0.0.0-alpha.4`. 
 
 Before you start, you need:
 
-- A [sandbox merchant account](/online-payments/#getting-a-sandbox-merchant-account) and the [online test cards](/online-payments/testing/).
+- A [sandbox merchant account](/tools/sandbox/) and the [online test cards](/online-payments/testing/).
 - A backend that creates checkouts for your orders and keeps secret API keys or OAuth client secrets on the server. Use an [API key](/tools/authorization/api-keys/) for your own merchant or [OAuth](/tools/authorization/oauth/) when other merchants connect to your app.
 - Your merchant's public key, beginning with `sup_pk_`, from [Developer Settings](https://me.sumup.com/settings/api-keys).
 - A React Native app with access to its native iOS and Android projects.
@@ -280,7 +280,7 @@ The sheet can complete, fail, or be cancelled. The example handles both returned
 
 ### Save a Card for Future Usage
 
-To save a card, create a customer and a checkout with `purpose: "SETUP_RECURRING_PAYMENT"` and that customer's `customer_id` on your server. Follow the [saved-card guide](/online-payments/guides/tokenization-with-payment-sdk/) for the backend flow and permission requirements.
+To save a card, create a customer and a checkout with `purpose: "SETUP_RECURRING_PAYMENT"` and that customer's `customer_id` on your server. Follow the [saved-card guide](/online-payments/guides/saved-cards/) for the backend flow and permission requirements.
 
 Use `initSaveCardSheet` and `presentSaveCardSheet` from `useSumUp()` in a component under `SumUpProvider`:
 

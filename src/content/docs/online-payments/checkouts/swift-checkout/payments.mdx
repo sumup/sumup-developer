@@ -1,0 +1,129 @@
+---
+title: Accept a wallet payment
+description: Show wallet buttons, authorize a payment, and process a checkout created by your server.
+sidebar:
+  order: 2
+  label: Accept a payment
+---
+
+First [load the SDK and configure your public key](/online-payments/checkouts/swift-checkout/setup/), then complete [Apple Pay or Google Pay onboarding](/online-payments/checkouts/swift-checkout/wallets/). The complete example below expects your backend to create a fresh checkout for order `123` at `POST /api/orders/123/checkout` and return its `id`. Your server must use the stored order amount and merchant; the example uses `10.00 EUR`.
+
+## Requesting payment authorization
+
+The wallet dialog lets the customer review the amount, choose a card and shipping address, and authorize the payment. Authorization alone does not complete the payment.
+
+In the button's `onSubmit` handler, call `paymentRequest.show`. After the customer authorizes the payment, it resolves with a `PaymentResponse` to pass to `processCheckout`.
+
+```js
+buttons.onSubmit((paymentMethodEvent) => {
+  paymentRequest
+    .show(paymentMethodEvent)
+    .then(() => {
+      // Continue with processCheckout using a checkout ID from your server.
+    });
+});
+```
+
+To understand more about the PaymentResponse objects see Mozilla's official [PaymentResponse - Web APIs](https://developer.mozilla.org/en-US/docs/Web/API/PaymentResponse) documentation.
+
+## Processing an authorized payment request
+
+Create the checkout on your backend, where you can keep the secret API key and read the order amount from trusted storage. Return its ID to the browser.
+
+Call `swiftCheckoutClient.processCheckout` with the checkout ID and the `PaymentResponse` from the wallet:
+
+```js
+paymentRequest
+  .show(paymentMethodEvent)
+  .then(async (paymentResponse) => {
+    const response = await fetch("/api/orders/123/checkout", { method: "POST" });
+    if (!response.ok) throw new Error("Could not create checkout");
+    const { id: checkoutId } = await response.json();
+
+    return swiftCheckoutClient.processCheckout(checkoutId, paymentResponse);
+  })
+  .then(console.log)
+  .catch(console.error);
+```
+
+## The complete implementation
+
+```js
+const swiftCheckoutClient = new window.SumUp.SwiftCheckout(
+  "sup_pk_YOUR_PUBLIC_KEY",
+);
+
+const paymentRequest = swiftCheckoutClient.paymentRequest({
+  countryCode: "DE",
+  total: {
+    label: "Order 123",
+    amount: {
+      currency: "EUR",
+      value: "10.00",
+    },
+  },
+});
+
+const buttons = swiftCheckoutClient.elements({
+  label: "pay",
+});
+
+const paymentMessage = document.querySelector("#payment-message");
+function showPaymentMessage(message) {
+  if (paymentMessage) paymentMessage.textContent = message;
+}
+buttons.onSubmit((paymentMethodEvent) => {
+  paymentRequest
+    .show(paymentMethodEvent)
+    .then(async (paymentResponse) => {
+      const response = await fetch("/api/orders/123/checkout", { method: "POST" });
+      if (!response.ok) throw new Error("Could not create checkout");
+      const { id: checkoutId } = await response.json();
+
+      return swiftCheckoutClient.processCheckout(checkoutId, paymentResponse);
+    })
+    .then((result) => {
+      if (result.status === "PAID") {
+        window.location.href = "/orders/123";
+      } else {
+        showPaymentMessage("Payment not confirmed. Check your order status before trying again.");
+      }
+    })
+    .catch((error) => {
+      if (
+        error instanceof SumUp.SwiftCheckout.Errors.PaymentRequestCancelledError
+      ) {
+        showPaymentMessage("Payment cancelled.");
+      } else {
+        showPaymentMessage("Payment result unavailable. Check your order status before trying again.");
+      }
+    });
+});
+
+async function mountWalletButtons() {
+  try {
+    if (!(await paymentRequest.canMakePayment())) {
+      showPaymentMessage("No wallet is available. Choose another payment method.");
+      return;
+    }
+    const paymentMethods = await paymentRequest.availablePaymentMethods();
+    buttons.mount({
+      paymentMethods,
+      container: document.querySelector("#express-checkout-container"),
+    });
+  } catch {
+    showPaymentMessage("Could not load wallet payment methods. Please try again.");
+  }
+}
+
+void mountWalletButtons();
+```
+
+## Verify the payment
+
+Test with a supported wallet and a sandbox merchant. After the browser flow, [confirm the checkout on your server](/online-payments/guides/confirm-payment/) before fulfilling the order. Keep an alternative checkout method available when the browser cannot offer a wallet.
+
+## Next steps
+
+- [Configure payment requests and buttons](/online-payments/checkouts/swift-checkout/reference/).
+- [Test payment results and authentication](/online-payments/testing/).

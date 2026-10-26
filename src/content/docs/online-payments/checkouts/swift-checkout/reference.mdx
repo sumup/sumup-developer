@@ -1,0 +1,250 @@
+---
+title: Swift Checkout reference
+description: Look up payment request fields, wallet button options, shipping callbacks, and errors.
+sidebar:
+  order: 4
+  label: Reference
+---
+
+import Callout from "@components/content/Callout";
+
+Use this page to look up options and methods. For the complete flow, follow [Accept a wallet payment](/online-payments/checkouts/swift-checkout/payments/).
+
+## Payment request object
+
+The payment request object requests payment authorizations made with various payment methods. It requires an argument that contains a set of details, information about the requested transaction to be processed, that will be presented to the user to authorize the payment later.
+
+Payment request object arguments consist of:
+
+- `countryCode`: Represents the country or region of the merchant’s principle place of business.
+- `total`: Represents what is about to be paid by the user, E.g. a summary of an order. It requires a `label` and an `amount`. Set `amount.currency` to the currency code and `amount.value` to a string in major units, using a period (`.`) as the decimal separator. The value string must match: `^[0-9]+(\.[0-9][0-9])?$`
+
+Optional:
+
+- `locale`: Represents the locale the text "Pay with \{\{payment method\}\}" will be displayed with in the buttons.
+
+```js
+const paymentRequest = swiftCheckoutClient.paymentRequest({
+  countryCode: "DE",
+  locale: "de-DE",
+  total: {
+    label: "My goods",
+    amount: { currency: "EUR", value: "65.00" },
+  },
+});
+```
+
+- `shippingOptions`: Represents a collection of shipping methods the end user can select from to receive their purchased goods. The initial `shippingOptions` list can be later modified according to the shipping address the user selects in the payment dialog.
+
+```js
+const paymentRequest = swiftCheckoutClient.paymentRequest({
+  shippingOptions: [
+    {
+      id: "post",
+      label: "postal service",
+      amount: { currency: "EUR", value: "0.00" },
+      description: "free post",
+    },
+  ],
+});
+```
+
+This object is an analogue to the [PaymentRequest - Web APIs](https://developer.mozilla.org/en-US/docs/Web/API/PaymentRequest/PaymentRequest).
+
+The payment request instance contains the logic related to **checking payment method availability and showing** the payment method dialogue once the user interacts with a **payment element**.
+
+## Payment request interface
+
+All methods in the payment request object are asynchronous. Listed below are the payment request methods and their usage:
+
+### `canMakePayment`
+
+Checks if the given merchant public key has access to at least one payment method and checks the payment method availability in the given environment (browser). Returns a promise that resolves in a `boolean`.
+
+### `availablePaymentMethods`
+
+Returns the available payment methods for a merchant. Returns a promise that resolves in an `array` of objects representing each available payment method.
+
+### `show`
+
+Shows the payment authorization dialogue for a given payment method. It requires an object containing a `paymentMethod`, which defines the selected payment method. This method is usually used along with the `PaymentElement`'s `onSubmit` event.
+
+The `show` method resolves with a `AuthorizedPayment`, which contains the `details` shared by the user once they authorize the payment request. The property `details` contains `paymentMethod`, `contactInformation`, `shippingAddress` and may contain `shippingOptions`.
+
+A `PaymentRequestCancelledError` will be thrown when the user rejects or cancels the transaction.
+
+```js
+paymentRequest
+  .show({ paymentMethod: "apple_pay" })
+  .then(processCheckoutAttempt)
+  .then(handleResponse)
+  .catch((error) => {
+    if (
+      error instanceof SumUp.SwiftCheckout.Errors.PaymentRequestCancelledError
+    ) {
+      console.log("Cancelled by the user");
+    } else {
+      throw error;
+    }
+  });
+```
+
+### `abort`
+
+Terminates a payment request before it is processed. Once a payment request has been terminated using this method, the payment request will not be processed and the payment dialogue will be closed.
+
+```js
+if (someCustomCheck()) {
+  try {
+    await paymentRequest.abort(); // will throw an error.
+    console.log("Payment request aborted due to my custom reason.");
+  } catch (e) {
+    console.error(
+      "Unable to abort, because the user is currently in the process of paying.",
+    );
+  }
+}
+```
+
+<Callout type="note" title="Note">
+  The `abort` method should only be used if the payment request has not yet been processed. Attempting to cancel a payment request after it has been processed may result in unexpected behavior.
+</Callout>
+
+### `onShippingAddressChange`
+
+Allows adding an event handler which will be triggered every time the user changes their shipping address. The handler can optionally provide a return value to change the following in the payment dialog:
+
+- `total`
+- `shippingOptions`
+
+```js
+paymentRequest.onShippingAddressChange(async (newShippingAddress) => {
+  const { total, shippingOptions } =
+    await someAsyncOperation(newShippingAddress);
+
+  return {
+    total,
+    shippingOptions,
+  };
+});
+```
+
+<Callout type="note" title="Note">
+To protect user privacy, browsers might hide non-essential and sensitive details from the shipping address, and only provide data required for shipping cost estimation.
+
+The extent of information provided can vary based on the chosen browser and payment method, leading to certain fields being absent. For example, the displayed shipping address might be limited to the city, state, country, and ZIP code.
+
+The full shipping address is disclosed only in the `PaymentResponse` object after the payment is authorized by the account holder.
+
+</Callout>
+
+### `onShippingOptionsChange`
+
+Allows adding an event handler which will be triggered every time the user changes their shipping option choice. The handler can optionally provide a return value to change the following in the payment dialog:
+
+- `total`
+- `shippingAddress`
+- `shippingOptions`
+
+```js
+paymentRequest.onShippingOptionsChange(async (selectedShippingOption) => {
+  const { newTotal, newShippingAddress, newShippingOptions } = await someAsyncOperation(
+    total
+    shippingOption,
+  );
+
+  return {
+    total,
+    shippingAddress,
+    shippingOptions,
+  };
+});
+```
+
+## Payment element builder
+
+In order to request a payment, you need to create a UI element. The SDK provides a built-in PaymentElement UI builder, which allows you to create and configure the payment buttons.
+
+_Each payment button can be rendered individually as well._
+
+The Swift Elements Builder allows you to attach an `onSubmit` handler, which will be called once the user clicks on one of the buttons rendered by it. You can pass a `label` option to `elements()` to control the wallet button text, and the `mount` method accepts a `paymentMethods` array to filter the payment methods you want to offer. The arguments passed during `mount`, will render one or more buttons:
+
+```js
+const buttons = swiftCheckoutClient.elements({
+  label: "book",
+});
+buttons
+  .onSubmit((paymentEvent) => console.log(paymentEvent))
+  .mount({
+    paymentMethods: [
+      { id: "apple_pay" },
+      { id: "google_pay" },
+      // See `paymentRequest.availablePaymentMethods()` for all available payment methods
+    ],
+    container: document.querySelector("#express-checkout-container"),
+  });
+```
+
+### `label`
+
+Sets the action text used by the rendered Apple Pay and Google Pay buttons. The supported values are `book`, `buy`, `checkout`, `donate`, `order`, `pay`, `plain`, and `subscribe`.
+
+Use the following labels depending on the checkout context:
+
+- `book` for reservations, appointments, and other booking flows
+- `buy` for standard ecommerce purchases
+- `checkout` when you want the wallet button to match a broader checkout step
+- `donate` for donation and contribution flows
+- `order` for order-placement flows such as food ordering or fulfillment
+- `pay` for paying an existing amount due, such as an invoice or bill
+- `plain` for a minimal wallet-branded button without extra action text
+- `subscribe` for subscription and recurring purchase flows
+
+Label rendering depends on wallet and browser support. For example, `label: "book"` can be used to show booking-oriented Apple Pay and Google Pay buttons where supported. On Google Pay, `buy`, `pay`, and `plain` can also show the card brand and last four digits when the user's payment method is an eligible card.
+
+<Callout type="caution" title="Caution">
+  Apple Pay has additional requirements for donation flows. Before using `label: "donate"` with Apple Pay, make sure your organization is approved to accept donations with Apple Pay and use the donation-specific Apple Pay setup described in Apple’s [Apple Pay for Donations](https://developer.apple.com/apple-pay/nonprofits/) guide.
+</Callout>
+
+### Rendering buttons for available payment methods
+
+Once the UI and Payment Request are configured, you have to check the availability of Swift payment methods and `mount` them into the page.
+
+The SDK checks several factors to determine if a given payment method is available:
+
+- Is the payment method available for the given merchant?
+- Is the payment method available on the browser?
+- Is the wallet/card ready to accept payment requests?
+
+After checking if making payments is possible, render the payment element into a given placeholder as shown below:
+
+```js
+paymentRequest.canMakePayment().then((isAvailable) => {
+  if (isAvailable) {
+    paymentRequest.availablePaymentMethods().then((paymentMethods) => {
+      buttons.mount({
+        paymentMethods,
+        container: document.querySelector("#express-checkout-container"),
+      });
+    });
+  } else {
+    console.error("No payment method available!");
+  }
+});
+```
+
+## Error handling
+
+The Swift Checkout SDK returns a series of Errors depending on the event that has taken place. You can use the errors to customise the user experience and communicate error causes as you see fit.
+
+- `PaymentRequestCancelledError` is thrown when the end user closes the open payment dialog or presses the button `esc`.
+
+- `PaymentRequestInvalidActionError` is thrown when the end user has submitted the payment dialog and then attempted to cancel the payment. Once the payment form is submitted the payment can no longer be cancelled.
+
+- `PaymentRequestInternalError` is thrown when attempting to handle the payment request in a forbidden manner. Reasons that you may receive include the following codes, available in the `code` field of the Error object:
+  - `SHIPPING_CONTACT_SELECTION`
+  - `SHIPPING_ADDRESS_SELECTION`
+  - `SHIPPING_METHOD_SELECTION`
+  - `INTERNAL_VALIDATION`
+  - `COMPLETE_PAYMENT`
+  - `UNKNOWN`

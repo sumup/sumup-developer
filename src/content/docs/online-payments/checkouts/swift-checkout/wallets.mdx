@@ -1,0 +1,88 @@
+---
+title: Set up Apple Pay and Google Pay
+description: Register your domains and configure wallet-specific settings for Swift Checkout.
+sidebar:
+  order: 3
+  label: Set up wallets
+---
+
+import Callout from "@components/content/Callout";
+
+Complete wallet onboarding before testing the [payment flow](/online-payments/checkouts/swift-checkout/payments/). Use the same merchant and domain configuration that your website will use.
+
+## Apple Pay setup
+
+{/* Each payment method has its own prerequisites; preserve the existing unique anchors. */}
+{/* nimbus-rule-disable-next-line nimbus/duplicate-heading-text */}
+
+### Prerequisites
+
+- [Verify your domain with Apple Pay](/online-payments/checkouts/swift-checkout/wallets/#verify-your-domain-with-apple-pay), both in development and production
+- For Apple Pay [additional configurations](/online-payments/checkouts/swift-checkout/wallets/#apple-pay-setup) are required, including macOS 10.12.1+ or iOS 10.1+
+
+### Verify your domain with Apple Pay
+
+To use Apple Pay, verify every domain and subdomain where you display an Apple Pay button, both in development and production.
+
+1. Open [Apple Pay settings in your SumUp profile](https://me.sumup.com/settings/apple-pay).
+2. Click **Add Domain**.
+3. Click **Download domain verification file** to download the domain association file.
+4. Host the file at `https://[DOMAIN_NAME]/.well-known/apple-developer-merchantid-domain-association`, replacing `[DOMAIN_NAME]` with your domain or subdomain.
+
+<Callout type="note" title="Note">
+You don't need to create an Apple Merchant ID or Certificate Signing Request (CSR) to use Apple Pay with the Swift Checkout SDK.
+
+Use the verification file downloaded from your SumUp profile. Make sure it is publicly accessible at the URL above without adding a file extension.
+
+</Callout>
+
+## Google Pay setup
+
+{/* Each payment method has its own prerequisites; preserve the existing unique anchors. */}
+{/* nimbus-rule-disable-next-line nimbus/duplicate-heading-text */}
+
+### Prerequisites
+
+- [Request production access](https://pay.google.com/business/console/) to Google Pay for your domain name
+- Adhere to the [Google Pay requirements](https://developers.google.com/pay/api/web/guides/setup#get-started)
+- Review [Google Pay API terms of service](https://payments.developers.google.com/terms/sellertos)
+
+### Google Pay specific parameters
+
+Add Google Pay's merchant settings to the payment request, alongside the country and total from the [payment example](/online-payments/checkouts/swift-checkout/payments/):
+
+- [`merchantInfo` object](https://developers.google.com/pay/api/web/reference/request-objects#MerchantInfo) with the following keys:
+  - `merchantId`- unique identifier provided to you by Google once you [register your domain](https://pay.google.com/business/console/) with them
+  - `merchantName`- your merchant name
+
+  Here’s an example of how the merchantInfo object is included in a Google Pay payment request:
+
+  ```js
+  const paymentRequest = swiftCheckoutClient.paymentRequest({
+    methodData: [
+      {
+        supportedMethods: "google_pay",
+        data: {
+          merchantInfo: {
+            merchantId: "123456789123456789",
+            merchantName: "Example Merchant",
+          },
+        },
+      },
+    ],
+  });
+  ```
+
+### Validating your domain with Google Pay
+
+In order to use Google Pay you need to validate your domain with Google. This process requires rendering a nonfunctional Google Pay button on your website and providing them with screenshots of your checkout flow.
+
+To render a Google Pay button on your shop in demo mode, you need to add the `#sumup:google-pay-demo-mode` hash to the page's URL.
+
+Once the hash has been applied you can proceed with the domain validation steps:
+
+1. Create an account in the [Google Pay console](https://pay.google.com/business/console)
+2. Go to the **Google Pay API** tabitem in your Google Pay console
+3. Navigate to the **Integrate with your website** and click on **+ Add website**
+4. Fill out the form with the requested information (domain name, buyflow screenshots, etc.)
+5. At the top of the page click on **Submit for approval**

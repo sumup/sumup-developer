@@ -1,40 +1,21 @@
 ---
-title: Custom Integrations
-description: Integration guides for building with SumUp SDKs and APIs.
+title: Payment guides
+description: Confirm payments, manage saved cards, issue refunds, and recover from API errors.
 sidebar:
   label: Overview
   order: 90
 icon: article
 ---
 
-import Callout from "@components/content/Callout";
+Manage payments after choosing a [checkout integration](/online-payments/checkouts/).
 
-import Image from '@components/content/Image.astro';
+## Manage the payment lifecycle
 
-Guides in this section cover the basics of SumUp APIs, allowing you to develop a custom integration if SumUp products don't fully support your use case.
+- [Confirm a payment and update your order](/online-payments/guides/confirm-payment/).
+- [Refund a transaction](/online-payments/guides/refund/).
+- [Save cards and charge them later](/online-payments/guides/saved-cards/).
+- [Handle API errors and uncertain results](/online-payments/guides/response-handling/).
 
 ## Getting a Sandbox Merchant Account
 
-Create a sandbox merchant account to test APIs without real money:
-
-<Steps>
-
-1. Log in to your SumUp account.
-2. Open [Developer Settings](https://me.sumup.com/settings/developer?tab=sandboxes).
-3. In the **Sandboxes** tab, create a sandbox merchant account if you do not have one yet.
-
-</Steps>
-
-<Callout type="note" title="Note">
-If you don't have a sandbox account yet, [sign up for a developer account](https://me.sumup.com/signup?signup_intent=developer). This starts you with a sandbox merchant account.
-</Callout>
-
-<Image alt="A screenshot of the account selection dropdown in the SumUp dashboard with the sandbox merchant account highlighted with red circle" src="/img/guides/test_acc.png" width="40%" />
-
-With your sandbox merchant account, begin making API calls with real data. Sandbox merchant accounts **do not** process transactions with real funds. The sandbox merchant account has a different ID and displays a clear warning. Requests with a value of 11 (in any currency) always fail by design, to test failed transaction scenarios.
-
-<Image alt="A screenshot of the dashboard with sandbox merchant account selected" src="/img/guides/test-account-warning.png" width="100%" />
-
-When finished experimenting with the sandbox merchant account, switch back to a regular account for business purposes.
-
-SumUp provides official SDKs for JavaScript, Go, Python, Java, PHP, .NET, and Rust, as well as the [SumUp CLI](/tools/cli/) for working from a terminal. Visit the [SDKs overview page](/tools/sdks/) to choose the client that fits your stack.
+[Create a sandbox merchant](/tools/sandbox/) and use the [online testing guide](/online-payments/testing/) before processing live payments.

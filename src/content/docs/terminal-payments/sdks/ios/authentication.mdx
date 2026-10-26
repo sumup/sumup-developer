@@ -48,7 +48,7 @@ The SDK can also display its own login screen. This is the native login used in 
 ### Logging the user in
 
 :::caution
-Native login uses the user's default merchant account and does not offer an account selector. For users with access to multiple merchant accounts, we recommend using a managed user account created in the intended merchant. Alternatively, set the default merchant account before logging in. See [merchant account setup for native SDK login](/terminal-payments/quickstart/#users-with-multiple-merchant-accounts).
+Native login uses the user's default merchant account and does not offer an account selector. For users with access to multiple merchant accounts, we recommend using a managed user account created in the intended merchant. Alternatively, set the default merchant account before logging in. See [merchant account setup for native SDK login](/tools/sandbox/#choose-the-account-for-native-sdk-login).
 :::
 
 Present the login screen from a visible `UIViewController`. Only continue when `success` is true. The merchant can cancel without an error, and the SDK also returns `success = false` if a merchant is already logged in.

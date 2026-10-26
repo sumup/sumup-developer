@@ -1,0 +1,134 @@
+---
+title: Create a customer
+description: Create a customer with your own identifier before saving a payment card.
+sidebar:
+  order: 1
+  label: Create a customer
+---
+
+## Creating customer
+
+Create a customer with an ID from your own system. Keep that `customer_id` for card setup and subsequent payments. It is the only field required by the [Customer schema](/api/schemas/Customer/).
+
+The examples below assume a configured [server-side SDK client](/tools/sdks/). Run these requests on your server, where your secret API key or OAuth access token is stored.
+
+<Tabs syncKey="backend_lang">
+<TabItem label="cURL">
+
+```bash
+curl https://api.sumup.com/v0.1/customers \
+  -H "Authorization: Bearer $SUMUP_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"customer_id":"MYCUSTOMERID-123"}'
+```
+
+</TabItem>
+<TabItem label="JavaScript">
+
+```ts
+const customer = await client.customers.create({
+  customer_id: "MYCUSTOMERID-123",
+});
+```
+
+</TabItem>
+<TabItem label=".NET">
+
+```csharp
+var response = await client.Customers.CreateAsync(new Customer
+{
+    CustomerId = "MYCUSTOMERID-123",
+});
+```
+
+</TabItem>
+<TabItem label="Java">
+
+```java
+var customer = client.customers().create(
+    Customer.builder().customerId("MYCUSTOMERID-123").build()
+);
+```
+
+</TabItem>
+<TabItem label="Go">
+
+```go
+import (
+    "context"
+    "fmt"
+
+    "github.com/sumup/sumup-go"
+)
+
+func createCustomer(ctx context.Context, client *sumup.Client) (*sumup.Customer, error) {
+    customer, err := client.Customers.Create(ctx, sumup.CustomersCreateParams{
+        CustomerID: "MYCUSTOMERID-123",
+    })
+    if err != nil {
+        return nil, fmt.Errorf("create customer: %w", err)
+    }
+    return customer, nil
+}
+```
+
+</TabItem>
+<TabItem label="Python">
+
+```py
+customer = client.customers.create({"customer_id": "MYCUSTOMERID-123"})
+```
+
+</TabItem>
+<TabItem label="Rust">
+
+```rust
+let customer = client
+    .customers()
+    .create(sumup::resources::customers::Customer {
+        customer_id: "MYCUSTOMERID-123".into(),
+        personal_details: None,
+    })
+    .await?;
+```
+
+</TabItem>
+<TabItem label="PHP">
+
+```php
+$customer = $sumup->customers->create([
+    'customer_id' => 'MYCUSTOMERID-123',
+]);
+```
+
+</TabItem>
+</Tabs>
+
+A successful request returns `201 Created` with the customer resource. Handle any SDK error before continuing to card setup.
+
+### Optional personal details
+
+Add `personal_details` only when your integration needs those details. The API fields are `birth_date`, `line_1`, and `line_2`; use the names in the [PersonalDetails schema](/api/schemas/PersonalDetails/).
+
+For example, this is a valid customer request with optional details:
+
+```json
+{
+  "customer_id": "MYCUSTOMERID-123",
+  "personal_details": {
+    "email": "customer@example.com",
+    "birth_date": "1990-01-15",
+    "address": {
+      "country": "DE",
+      "line_1": "Example Street 1",
+      "line_2": "Apartment 2"
+    }
+  }
+}
+```
+
+Continue with the same `customer_id` when creating the card-setup checkout.
+
+## Next step
+
+[Save the customer's card](/online-payments/guides/saved-cards/save-card/) using the same `customer_id`.

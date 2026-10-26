@@ -1,0 +1,102 @@
+---
+title: Manage Cloud API readers
+description: List paired readers, check their status, update their details, and unpair them.
+sidebar:
+  order: 4
+  label: Manage readers
+---
+
+These operations apply to readers paired with your merchant. Follow the [setup and pairing guide](/terminal-payments/cloud-api/setup/) before managing a reader.
+
+## List connected readers
+
+List all readers connected to your merchant account.
+
+<Tabs syncKey="backend_lang">
+  <TabItem label="cURL" icon="seti:powershell">
+    ```bash
+    curl https://api.sumup.com/v0.1/merchants/$SUMUP_MERCHANT_CODE/readers \
+      -H "Authorization: Bearer $SUMUP_API_KEY"
+    ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+    ```ts
+    const readers = await client.readers.list(merchantCode)
+    ```
+  </TabItem>
+  <TabItem label=".NET" icon="seti:c-sharp">
+    ```csharp
+    var readers = await client.Readers.ListAsync(merchantCode);
+    ```
+  </TabItem>
+  <TabItem label="Java" icon="seti:java">
+    ```java
+    var readers = client.readers().listReaders(merchantCode);
+    ```
+  </TabItem>
+  <TabItem label="Go" icon="seti:go">
+    ```go
+    readers, err := client.Readers.List(ctx, merchantCode)
+    ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+    ```py
+    readers = await client.readers.list(merchant_code)
+    ```
+  </TabItem>
+  <TabItem label="Rust" icon="seti:rust">
+    ```rust
+    let readers = client.readers().list(&merchant_code).await?;
+    ```
+  </TabItem>
+</Tabs>
+
+Read the [List API endpoint documentation](/api/readers/list) for details on the API request, examples, and parameter descriptions.
+
+## Check reader pairing
+
+Check the pairing status of a specific reader.
+
+Read the [Retrieve a Reader endpoint documentation](/api/readers/get) for details on the API request, examples, and parameter descriptions.
+
+## Get reader status
+
+Get the last known status for a Reader
+
+Read the [Get Reader Status endpoint documentation](/api/readers/get-status) for details on the API request, examples, and parameter descriptions.
+
+## Update reader
+
+Update the data of a specific reader.
+
+Check the [Update a Reader endpoint documentation](/api/readers/update) for details on the API request, examples, and parameter descriptions.
+
+## Delete reader
+
+Delete a reader from the Cloud API. After doing this, you also need to physically disconnect the reader using its menu.
+
+Check the [Delete a Reader endpoint documentation](/api/readers/delete) for details on the API request, examples, and parameter descriptions.
+
+## Unpairing Solo reader
+
+In order to unpair a reader from the merchant account, two steps are required:
+
+1. [Delete Reader](/terminal-payments/cloud-api/readers/#delete-reader) from the Merchant account (via Readers API).
+2. [Disconnect Reader](/terminal-payments/cloud-api/readers/#disconnect-reader-physically) (manually via Solo).
+
+### Disconnect reader physically
+
+<Steps>
+
+1. Open the menu drawer on your Solo.
+2. Go to **Connections**.
+3. Select **API** from the menu.
+4. Tap on **Disconnect**.
+
+</Steps>
+
+Your Solo device is now disconnected.
+
+## API reference
+
+[Look up all reader operations and request fields](/api/tags/readers/).
