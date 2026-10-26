@@ -348,7 +348,7 @@ Read the [Terminate Checkout API endpoint documentation](/api/readers/terminate-
 
 For unattended Solo deployments, you can require a 4-digit passcode before anyone can open the reader menu. Configure menu lock remotely with the reader settings endpoints.
 
-Menu lock is available for Solo readers paired via the Cloud API. It is not supported on Solo Lite.
+Menu lock is available only on Solo readers running version 3.3.44 that are paired via the Cloud API. It is not supported on Solo Lite.
 
 #### Update Reader Settings
 
@@ -528,6 +528,7 @@ When the reader is online, the response reflects the settings reported by the de
 
 Important notes:
 
+- Menu lock requires Solo version 3.3.44.
 - The target device must be online for `PATCH`, otherwise the update is rejected. A successful response means the reader applied the settings.
 - `passcode` must be a 4-digit numeric string (for example `"1234"`). When enabling menu lock on a reader that does not already have a passcode, include `passcode` in the same request.
 - On the Solo reader, when menu lock is enabled, opening the menu prompts for the passcode on the lock screen. Entering the correct code unlocks the menu; an incorrect code shows an error and allows retry.
