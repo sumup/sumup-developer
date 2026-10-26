@@ -116,6 +116,6 @@ describe("built documentation Worker", { timeout: 60_000 }, () => {
     assert(!result.isError);
     const page = JSON.parse(result.content[0].text);
     assert.match(page.content, /Process a checkout/);
-    assert.match(page.content, /<\?php/);
+    assert.match(page.content, /```php\n/);
   });
 });
