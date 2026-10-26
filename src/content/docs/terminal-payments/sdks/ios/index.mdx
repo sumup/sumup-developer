@@ -1,0 +1,45 @@
+---
+title: iOS
+description: Choose an integration guide for SumUp in-person payments on iOS.
+sidebar:
+  order: 11
+  label: Overview
+---
+
+import Image from '@components/content/Image.astro';
+
+The iOS SDK supports Bluetooth card readers and Tap to Pay on iPhone in the same package.
+
+Start with the [quickstart](/terminal-payments/sdks/ios/quickstart/) to take your first sandbox payment with a card reader.
+
+## Integration guides
+
+- [Set up the SDK](/terminal-payments/sdks/ios/setup/)
+- [Authenticate a merchant](/terminal-payments/sdks/ios/authentication/)
+- [Connect and manage readers](/terminal-payments/sdks/ios/readers/)
+- [Accept reader payments](/terminal-payments/sdks/ios/payments/)
+- [Accept Tap to Pay payments](/terminal-payments/sdks/ios/tap-to-pay/)
+- [Reference and errors](/terminal-payments/sdks/ios/reference/)
+
+## Testing and offline payments
+
+- [Set up a sandbox merchant](/terminal-payments/quickstart/#sandbox-merchant-account).
+- [Test successful payments and declines](/terminal-payments/testing/).
+- [Accept offline reader payments](/terminal-payments/offline-payments/). Tap to Pay does not support offline payments.
+
+## Sample app
+
+A [sample app](https://github.com/sumup/sumup-ios-sdk/tree/master/SampleApp) is provided in the SDK repository. It demonstrates SDK setup, login, checkout, and card reader settings in a minimal Swift project.
+
+To run it, clone the [repository](https://github.com/sumup/sumup-ios-sdk) and open `SampleApp/SumUpSDKSampleApp.xcodeproj` in Xcode.
+
+<Image alt="Sample app transaction" src="/img/guides/ios-sdk_sample-app-transaction.gif" width="40%" />
+
+## Out of scope
+
+The following functions are handled by the [SumUp APIs](/api/):
+
+- [Refunds](/api/transactions/refund/)
+- [Transaction history](/api/transactions/list/)
+- [Receipts](/api/receipts/get/)
+- [Account management](/api/tags/merchants/)

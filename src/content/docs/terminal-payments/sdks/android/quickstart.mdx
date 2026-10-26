@@ -1,0 +1,147 @@
+---
+title: Android quickstart
+description: Install the Android reader SDK and take your first sandbox payment with a Bluetooth card reader.
+sidebar:
+  label: Quickstart
+  order: 1
+---
+
+Take a sandbox payment with a Bluetooth card reader in an Android app using Kotlin and the Activity Result API. For payments without a reader, use the separate [Tap to Pay on Android SDK](/terminal-payments/sdks/android/tap-to-pay/).
+
+## Prerequisites
+
+- An Android app meeting the reader SDK's [build requirements](/terminal-payments/sdks/android/setup/#requirements), with an activity extending `ComponentActivity` or `AppCompatActivity`.
+- A physical Android device and a supported [SumUp card reader](/terminal-payments/readers/).
+- A physical debit or credit card and a [sandbox merchant account](/terminal-payments/quickstart/#sandbox-merchant-account) using EUR for this example.
+- A managed user created in that sandbox merchant for native login. Alternatively, [set the sandbox merchant as your default](/terminal-payments/quickstart/#users-with-multiple-merchant-accounts).
+- An [Affiliate Key](/tools/authorization/affiliate-keys/) linked to your Android application ID.
+
+## 1. Install the SDK
+
+Add the SumUp repository to your project's `settings.gradle.kts`:
+
+```kotlin
+dependencyResolutionManagement {
+    repositories {
+        google()
+        mavenCentral()
+        maven { url = uri("https://maven.sumup.com/releases") }
+    }
+}
+```
+
+Add the reader SDK to your app module's `build.gradle.kts`, then sync the project:
+
+```kotlin
+dependencies {
+    implementation("com.sumup:merchant-sdk:7.1.0")
+}
+```
+
+## 2. Initialize the SDK
+
+Initialize SumUp in your `Application` subclass:
+
+```kotlin
+import android.app.Application
+import com.sumup.reader.sdk.api.SumUpState
+
+class PaymentApplication : Application() {
+    override fun onCreate() {
+        super.onCreate()
+        SumUpState.init(this)
+    }
+}
+```
+
+Set `android:name=".PaymentApplication"` on the `<application>` element in your `AndroidManifest.xml`. Include your app's package declaration when creating the class.
+
+## 3. Register the payment result handler
+
+Add these imports and launchers to your activity. Register the launchers as properties, before the activity is started:
+
+```kotlin
+import android.util.Log
+import com.sumup.merchant.reader.api.SumUpAPI
+import com.sumup.merchant.reader.api.SumUpCardReaderPageContract
+import com.sumup.merchant.reader.api.SumUpCheckoutContract
+import com.sumup.merchant.reader.api.SumUpLogin
+import com.sumup.merchant.reader.api.SumUpLoginContract
+import com.sumup.merchant.reader.api.SumUpPayment
+import java.math.BigDecimal
+
+private val checkoutLauncher = registerForActivityResult(SumUpCheckoutContract()) { result ->
+    val data = result.data
+    val code = data?.getIntExtra(SumUpAPI.Response.RESULT_CODE, -1)
+    if (code == SumUpAPI.Response.ResultCode.SUCCESSFUL) {
+        Log.i("Payment", "Payment successful: ${data?.getStringExtra(SumUpAPI.Response.TX_CODE)}")
+    } else {
+        Log.i("Payment", data?.getStringExtra(SumUpAPI.Response.MESSAGE) ?: "Payment did not succeed")
+    }
+}
+```
+
+## 4. Pair the reader and prepare checkout
+
+Add this launcher and method to the same activity. After pairing your reader, close the reader settings to start the payment:
+
+```kotlin
+private val readerLauncher = registerForActivityResult(SumUpCardReaderPageContract()) { _ ->
+    if (SumUpAPI.isCardReaderConnected()) {
+        takePayment()
+    } else {
+        Log.i("Payment", "Connect your reader, then open reader settings to try again")
+    }
+}
+
+private fun takePayment() {
+    if (SumUpAPI.getCurrentMerchant()?.currency?.isoCode != "EUR") {
+        Log.i("Payment", "Log in to an EUR sandbox merchant before starting this example")
+        return
+    }
+
+    val payment = SumUpPayment.builder()
+        .total(BigDecimal("10.00"))
+        .currency(SumUpPayment.Currency.EUR)
+        .build()
+    checkoutLauncher.launch(payment)
+}
+```
+
+## 5. Log in and take a payment
+
+If a merchant is already logged in, [log out first](/terminal-payments/sdks/android/authentication/#logging-merchant-in-and-out). Confirm that you are using your sandbox merchant before continuing.
+
+Add this launcher to the activity. Replace `YOUR_AFFILIATE_KEY` and launch it from a button after the activity is started:
+
+```kotlin
+private val loginLauncher = registerForActivityResult(SumUpLoginContract()) { result ->
+    val code = result.data?.getIntExtra(SumUpAPI.Response.RESULT_CODE, -1)
+    if (code == SumUpAPI.Response.ResultCode.SUCCESSFUL) {
+        readerLauncher.launch(null)
+    } else {
+        Log.i("Payment", "Login did not succeed; check the SDK message and try again")
+    }
+}
+
+// In your button's click handler:
+loginLauncher.launch(SumUpLogin.builder("YOUR_AFFILIATE_KEY").build())
+```
+
+Sign in with your sandbox managed user's credentials, grant the requested permissions, and select your reader. When checkout starts, tap or insert your physical card and follow the reader's instructions. Confirm you are using the sandbox merchant before presenting the card.
+
+For production integrations, see [OAuth authentication](/terminal-payments/sdks/android/authentication/#transparent-authentication).
+
+## You should see
+
+The SDK displays a successful checkout, and Logcat shows:
+
+```text
+Payment successful: <transaction-code>
+```
+
+The sandbox merchant simulates the payment without moving real funds. The result handler receives a successful result code and the transaction code.
+
+## Next step
+
+[Accept reader payments](/terminal-payments/sdks/android/payments/) to handle checkout options and uncertain results. Use the [testing guide](/terminal-payments/testing/) to simulate declines.

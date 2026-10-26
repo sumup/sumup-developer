@@ -1,0 +1,303 @@
+---
+title: Tap to Pay on Android
+description: Install the separate Android Tap to Pay SDK, authenticate, and process contactless payments on a phone.
+sidebar:
+  order: 6
+  label: Tap to Pay on Android
+---
+
+import Callout from "@components/content/Callout";
+
+Tap to Pay on Android uses a separate SDK from the Bluetooth reader SDK. Its dependencies, authentication, payment events, and device security requirements are specific to this package.
+
+## Prerequisites
+
+- Kotlin version: **2.0 or later** (2.2.x recommended; required for SDK 1.1.6+)
+- `minSDK`: 30 or later
+- `targetSDK`/`compileSDK`: 36 or later
+- Android Gradle Plugin: 7.3.0 or later
+- Java 17 or later
+- [Core library desugaring](https://developer.android.com/studio/write/java8-support#library-desugaring) enabled (required since SDK version 1.1.1)
+- Maven repository credentials from SumUp. [Request SDK access](/contact) before starting the integration.
+- A Secret API key, if not using OAuth 2.0 authentication. You can generate a Secret API key on the [API keys page](https://me.sumup.com/settings/api-keys) in the SumUp Dashboard.
+
+### Hardware requirements
+
+- NFC-enabled Android device (emulators are not supported)
+- Android 11 or later
+
+## Integration
+
+You can use the sample app provided in the [GitHub repository](https://github.com/sumup/android-tap-to-pay) as a reference.
+
+<Callout type="note" title="Note">
+  If your app shuts down immediately upon start, try disconnecting your phone
+  and launching the app from your phone and not your IDE.
+</Callout>
+
+### Dependencies
+
+1. Add the following to the Gradle dependencies:
+
+   ```kotlin
+   allprojects {
+       repositories {
+           maven {
+               url = uri("https://maven.sumup.com/releases")
+           }
+           maven {
+               url = uri("https://tap-to-pay-sdk.fleet.live.sumup.net/")
+               credentials {
+                   username = "your_username"  // The maven credentials are provided by SumUp
+                   password = "your_password"
+               }
+           }
+           google()
+           mavenCentral()
+       }
+   }
+   ```
+
+2. Add the dependency to a module `build.gradle`:
+
+   ```kotlin
+   implementation("com.sumup.tap-to-pay:utopia-sdk:1.1.6")
+   ```
+
+3. Starting from SDK version 1.1.1, [core library desugaring](https://developer.android.com/studio/write/java8-support#library-desugaring) is required. Add the following to your module `build.gradle`:
+
+   ```kotlin
+   android {
+       compileOptions {
+           isCoreLibraryDesugaringEnabled = true
+       }
+   }
+
+   dependencies {
+       coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.5")
+   }
+   ```
+
+### Authentication
+
+Your app authenticates the merchant. Implement `AuthTokenProvider` to return the access token, then pass it to [`init`](/terminal-payments/sdks/android/tap-to-pay/#1-initialization). The SDK does not display a login screen.
+
+```kotlin
+interface AuthTokenProvider {
+    fun getAccessToken(): String
+}
+```
+
+Choose one of these authentication methods:
+
+1. Using the OAuth 2.0 [flow](/tools/authorization/oauth/#authorization-code-flow):
+   Use the authorization code flow to obtain a merchant access token. Return it from `AuthTokenProvider.getAccessToken()`. This is the recommended approach.
+
+2. Using API Key:
+   Create a key on the [API keys page](https://me.sumup.com/settings/api-keys) in the SumUp Dashboard. Return it from `AuthTokenProvider.getAccessToken()`.
+
+> ⚠️ **Important:**
+> Keep API keys in secure storage. Do not embed them in your app binary, commit them to source control, or include them in logs.
+
+### Using API
+
+The `TapToPay` interface provides methods to interact with the SDK. To get an implementation of the `TapToPay` interface, call:
+
+```kotlin
+val tapToPay = TapToPayApiProvider.provide(applicationContext)
+```
+
+Use your Android application context for `applicationContext`.
+
+The `TapToPay` interface has the following methods:
+
+#### 1. Initialization
+
+```kotlin
+suspend fun init(authTokenProvider: AuthTokenProvider): Result<Unit>
+```
+
+The `init` method initializes the session. The `AuthTokenProvider` interface is responsible for providing the access token to the SDK (see [Authentication](/terminal-payments/sdks/android/tap-to-pay/#authentication)).
+Call `init` once per app lifecycle, as early as possible after your app starts.
+
+Check the returned `Result` before starting a payment. Initialization returns `Result.Success` when the session is ready, or `Result.Failure` with an [exception](/terminal-payments/sdks/android/reference/#exceptions).
+
+#### 2. Start payment
+
+```kotlin
+fun startPayment(
+    checkoutData: CheckoutData,
+    skipSuccessScreen: Boolean = false,
+    timeoutCardWaitSeconds: Int? = null,
+): Flow<PaymentEvent>
+```
+
+The `startPayment` method initiates the payment process. It returns a `Flow` that emits `PaymentEvent` or throws an exception with an error message.
+
+Handle the payment events listed in the [Tap to Pay event reference](/terminal-payments/sdks/android/reference/#tap-to-pay-events), including success, cancellation, failure, and unknown results.
+
+##### Parameters
+
+`checkoutData` - The checkout data object.
+
+`skipSuccessScreen` - When `true`, the SDK closes the payment flow immediately after a successful transaction without showing the built-in success screen. The consumer app is then responsible for displaying its own success UI. Defaults to `false`.
+
+`timeoutCardWaitSeconds` - Maximum time (in seconds) the SDK waits for the cardholder to present a card during the "Tap card" step (SDK 1.1.5+). When `null` (the default), the SDK uses its built-in default of **240** seconds. Values are clamped to the supported range **\[60, 240\]** seconds.
+
+```kotlin
+data class CheckoutData(
+    val totalAmount: Long,
+    val tipsAmount: Long?,
+    val vatAmount: Long?,
+    val clientUniqueTransactionId: String,
+    val customItems: List<CustomItem>?,
+    val priceItems: List<PriceItem>?,
+    val products: List<ProductModel>?,
+    val processCardAs: ProcessCardAs?,
+    val affiliateData: AffiliateModel?
+) : Serializable
+```
+
+Where:
+
+- `totalAmount` - The amount expressed in the minor unit of the currency. Total amount includes tip amount and VAT amount.
+- `tipsAmount` - The amount of tips expressed in the minor unit of the currency. The total already includes the tip. Ignored if null.
+- `vatAmount` - The amount of VAT expressed in the minor unit of the currency. The total already includes VAT. Ignored if null.
+- `clientUniqueTransactionId` - A unique identifier for this payment attempt. You can use a random UUID.
+- `customItems` - The list of custom items. Set null if not used.
+- `priceItems` - The list of price items. Set null if not used.
+- `products` - The list of product items. Set null if not used.
+- `processCardAs` - The type of the card processing. The default value is `null`. The possible values are `ProcessCardAs.Credit(val instalments: Int)` and `ProcessCardAs.Debit`, where `instalments` is the number of installments. This parameter is optional and only applicable to some markets, such as Brazil, where the card type selection and installments are supported.
+- `affiliateData` - The affiliate data refers to tracking and attributing transactions to specific affiliates, integrators, or referral sources.
+
+**Amount format:** Provide amounts in the minor units expected by this SDK:
+These currencies use two decimal places: `AUD, BGN, BRL, CHF, CLP, COP, CZK, DKK, EUR, GBP, HRK, HUF, NOK, PEN, PLN, RON, SEK, USD`.
+
+For example, an amount of `$12.34` corresponds to a value of `1234`, `$11.00` corresponds to a value of `1100`.
+
+**HUF, CLP, and COP:** Although these amounts are displayed without decimal places, this SDK still expects you to multiply them by 100.
+
+For example, `Ft100` should be provided as `10000`.
+
+The `AffiliateModel` data type has the following parameters:
+
+```kotlin
+data class AffiliateModel(
+    val key: String,
+    val foreignTransactionId: String? = null,
+    val tags: Map<String, String>? = null
+) : Serializable
+```
+
+Where:
+
+- `key` - The primary identifier for the affiliate or integrator partner.
+- `foreignTransactionId` - An optional reference to an external transaction ID (from the integrator's system).
+- `tags` - Flexible key-value pairs for additional metadata about the transaction or affiliate.
+
+Create a payment with the required fields:
+
+```kotlin
+fun startPayment() {
+    tapToPay.startPayment(
+        checkoutData = CheckoutData(
+            totalAmount = 1234, // 12.34 EUR
+            clientUniqueTransactionId = "123",
+            tipsAmount = null,
+            vatAmount = null,
+            customItems = null,
+            priceItems = null,
+            processCardAs = null,
+        ),
+    ).collectLatest {
+        Log.d("Payment event: $it")
+    }
+}
+```
+
+To customize the payment flow behavior:
+
+```kotlin
+fun startPaymentCustomized() {
+    tapToPay.startPayment(
+        checkoutData = CheckoutData(
+            totalAmount = 1234, // 12.34 EUR
+            clientUniqueTransactionId = "123",
+            tipsAmount = null,
+            vatAmount = null,
+            customItems = null,
+            priceItems = null,
+            processCardAs = null,
+        ),
+        skipSuccessScreen = true,
+        timeoutCardWaitSeconds = 120, // wait 2 minutes for card tap
+    ).collectLatest {
+        Log.d("Payment event: $it")
+    }
+}
+```
+
+#### 3. Tear down
+
+```kotlin
+suspend fun tearDown(): Result<Unit>
+```
+
+Call `tearDown` when the user logs out or your app closes the SDK session. It logs out the merchant, clears keys and other sensitive data, and returns a `Result` indicating success or failure.
+
+## Testing the SDK
+
+SDK v1.1.0 and later supports sandbox merchant accounts. [Create a sandbox merchant](/terminal-payments/quickstart/#sandbox-merchant-account), then configure [OAuth 2.0](https://me.sumup.com/settings/oauth2-applications) or create an [API key](https://me.sumup.com/settings/api-keys) in that sandbox merchant. Provide its token through `AuthTokenProvider`.
+
+Follow the shared [payment testing guide](/terminal-payments/testing/) for successful payments and simulated declines. The device and build requirements below are specific to the Android Tap to Pay SDK.
+
+Sandbox merchant accounts allow debugging without moving real funds. Live payments require a build that is not debuggable, with USB debugging and developer options disabled on the device.
+
+Use a live merchant account only when you are ready to process real payments.
+
+Before testing in production, make sure of the following:
+
+1. Build the app with debugging disabled. Otherwise, the SDK's device security check fails and prevents payments.
+
+   ```kotlin
+      buildTypes {
+          release {
+              isDebuggable = false
+          }
+      }
+   ```
+
+2. You have USB debugging disabled on your device. Even if you install the app through a cable, disable the USB debugging after installation.
+3. You have Developer Mode disabled on your device. Even if you install the app through a cable, disable the Developer Mode after installation.
+
+On some devices (e.g. Samsung), you still have to disable USB debugging before disabling the Developer Mode.
+It is still possible to have a USB debugging enabled and Developer Mode disabled, but it depends on the device manufacturer.
+
+## Testing in specific regions
+
+### Brazil and Chile
+
+To test the Android Tap-to-Pay SDK in Brazil and Chile, you should set `processCardAs` for each transaction. For example:
+
+```kotlin
+tapToPay.startPayment(
+    CheckoutData(
+        totalAmount = amount,
+        clientUniqueTransactionId = UUID.randomUUID().toString(),
+        tipsAmount = null,
+        vatAmount = null,
+        customItems = null,
+        products = null,
+        priceItems = null,
+        processCardAs = ProcessCardAs.Credit(instalments = 5), // or ProcessCardAs.Debit
+        affiliateData = null
+    )
+)
+```
+
+Additionally, PIN verification for transactions is mandatory for these countries.
+However, the PIN entry screen will appear only if _Developer Options_ are _disabled_ on the device - otherwise, the transaction will fail with an error.
+
+## Next step
+
+[Look up Tap to Pay exceptions and error codes](/terminal-payments/sdks/android/reference/#exceptions).

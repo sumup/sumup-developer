@@ -1,0 +1,75 @@
+---
+title: Authenticate on Android
+description: Authenticate a merchant with the Android reader SDK using OAuth or native login.
+sidebar:
+  order: 3
+  label: Authenticate
+---
+
+import Callout from "@components/content/Callout";
+import Image from '@components/content/Image.astro';
+
+After [initializing the reader SDK](/terminal-payments/sdks/android/setup/), authenticate the merchant before opening reader settings or starting checkout.
+
+## Transparent authentication
+
+Use the [OAuth 2.0 authorization code flow](/tools/authorization/oauth/#authorization-code-flow) to obtain an access token for the merchant. Pass it to the SDK to log in without showing the SDK's login screen.
+
+```java
+SumUpLogin sumupLogin = SumUpLogin.builder(mAffiliateKey).accessToken("MY_ACCESS_TOKEN").build();
+SumUpAPI.openLoginActivity(MainActivity.this, sumupLogin, 1);
+```
+
+For information about how to obtain a token, please see the [Authorization Documentation](/tools/authorization/).
+
+If the token is invalid, `SumUpAPI.Response.ResultCode.ERROR_INVALID_TOKEN` is returned.
+
+## Retrieve data of the active merchant account
+
+Call `getCurrentMerchant()` to read the logged-in merchant's details. Check `isLoggedIn()` first.
+
+```java
+	if (!SumUpAPI.isLoggedIn()) {
+		// no merchant account currently logged in
+	} else {
+		Merchant currentMerchant = SumUpAPI.getCurrentMerchant();
+	}
+```
+
+## Logging merchant in and out
+
+:::caution
+Native login uses the user's default merchant account and does not offer an account selector. For users with access to multiple merchant accounts, we recommend using a managed user account created in the intended merchant. Alternatively, set the default merchant account before logging in. See [merchant account setup for native SDK login](/terminal-payments/quickstart/#users-with-multiple-merchant-accounts).
+:::
+
+To display the SDK's login screen, create a login request with your [Affiliate Key](/tools/authorization/affiliate-keys/):
+
+```java
+SumUpLogin sumupLogin = SumUpLogin.builder(mAffiliateKey).build();
+SumUpAPI.openLoginActivity(MainActivity.this, sumupLogin, 1);
+```
+
+To integrate with the Activity Result API, use `SumUpLoginContract`:
+
+```kotlin
+val loginLauncher = registerForActivityResult(SumUpLoginContract()) { result ->
+        // Login result
+    }
+loginLauncher.launch(sumupLogin)
+```
+
+<Image alt="Login screen" src="/img/guides/android_sdk_login.png" width="40%" />
+
+<Callout type="note" title="Note">
+  For new production integrations, use [OAuth authentication](/terminal-payments/sdks/android/authentication/#transparent-authentication).
+</Callout>
+
+Log out before switching merchant accounts:
+
+```java
+SumUpAPI.logout();
+```
+
+## Next step
+
+[Connect and manage a card reader](/terminal-payments/sdks/android/readers/). For the separate Tap to Pay SDK, use its [authentication instructions](/terminal-payments/sdks/android/tap-to-pay/#authentication).

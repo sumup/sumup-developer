@@ -1,0 +1,127 @@
+---
+title: Authenticate on iOS
+description: Log merchants in with OAuth or native login, inspect the active account, and log out.
+sidebar:
+  order: 3
+  label: Authenticate
+---
+
+import Image from '@components/content/Image.astro';
+
+Authenticate a merchant after [setting up the SDK](/terminal-payments/sdks/ios/setup/). Use the OAuth 2.0 authorization code flow for new integrations.
+
+## Implementing authentication with OAuth 2.0
+
+Use the [OAuth 2.0 authorization code flow](/tools/authorization/oauth/#authorization-code-flow) to obtain an access token for the merchant. The SDK does not support tokens from the client credentials flow.
+
+## Log in with an OAuth access token
+
+Pass the user-scoped access token obtained through your OAuth authorization code flow to the SDK. Client credentials tokens are not supported.
+
+<Tabs syncKey="ios_language">
+<TabItem label="Swift">
+
+```swift
+SumUpSDK.login(withToken: accessToken) { success, error in
+    guard success, error == nil else { return }
+    // The merchant is logged in. You can now start a checkout.
+}
+```
+
+</TabItem>
+<TabItem label="Objective-C">
+
+```objc
+[SMPSumUpSDK loginWithToken:accessToken completion:^(BOOL success, NSError *error) {
+    if (!success || error != nil) { return; }
+    // The merchant is logged in. You can now start a checkout.
+}];
+```
+
+</TabItem>
+</Tabs>
+
+## Implementing authentication with view controller
+
+The SDK can also display its own login screen. This is the native login used in the quickstart. Use OAuth for new production integrations.
+
+### Logging the user in
+
+:::caution
+Native login uses the user's default merchant account and does not offer an account selector. For users with access to multiple merchant accounts, we recommend using a managed user account created in the intended merchant. Alternatively, set the default merchant account before logging in. See [merchant account setup for native SDK login](/terminal-payments/quickstart/#users-with-multiple-merchant-accounts).
+:::
+
+Present the login screen from a visible `UIViewController`. Only continue when `success` is true. The merchant can cancel without an error, and the SDK also returns `success = false` if a merchant is already logged in.
+
+<Image alt="Login screen" src="/img/guides/ios-sdk_login.png" width="40%" />
+
+<Tabs syncKey="ios_language">
+<TabItem label="Swift">
+
+```swift
+SumUpSDK.presentLogin(from: self, animated: true) { success, error in
+    guard success, error == nil else {
+        print(error?.localizedDescription ?? "Login was cancelled or a merchant is already logged in")
+        return
+    }
+    print("Merchant logged in")
+}
+```
+
+</TabItem>
+<TabItem label="Objective-C">
+
+```objc
+[SMPSumUpSDK presentLoginFromViewController:self animated:YES
+                          completionBlock:^(BOOL success, NSError *error) {
+    if (!success || error) {
+        NSLog(@"%@", error.localizedDescription ?: @"Login was cancelled or a merchant is already logged in");
+        return;
+    }
+    NSLog(@"Merchant logged in");
+}];
+```
+
+</TabItem>
+</Tabs>
+
+### Logging the user out
+
+Log out before switching merchant accounts:
+
+<Tabs syncKey="ios_language">
+<TabItem label="Swift">
+
+```swift
+SumUpSDK.logout { success, error in
+    guard success, error == nil else {
+        print(error?.localizedDescription ?? "Logout did not succeed")
+        return
+    }
+    print("Merchant logged out")
+}
+```
+
+</TabItem>
+<TabItem label="Objective-C">
+
+```objc
+[SMPSumUpSDK logoutWithCompletionBlock:^(BOOL success, NSError *error) {
+    if (!success || error) {
+        NSLog(@"%@", error.localizedDescription ?: @"Logout did not succeed");
+        return;
+    }
+    NSLog(@"Merchant logged out");
+}];
+```
+
+</TabItem>
+</Tabs>
+
+## Verify the account
+
+Check `SumUpSDK.currentMerchant` and its `currencyCode` before creating a checkout. For the native login flow, verify that you are using the intended sandbox or live merchant.
+
+## Next step
+
+[Connect and manage a card reader](/terminal-payments/sdks/ios/readers/), or [activate Tap to Pay on iPhone](/terminal-payments/sdks/ios/tap-to-pay/).

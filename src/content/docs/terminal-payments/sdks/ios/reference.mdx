@@ -1,0 +1,605 @@
+---
+title: iOS SDK reference
+description: Look up authentication and checkout signatures, request properties, Tap to Pay methods, and error codes.
+sidebar:
+  order: 7
+  label: Reference and errors
+---
+
+import Image from '@components/content/Image.astro';
+
+This reference covers the signatures and checkout properties used by the iOS guides. For a working integration, start with the [quickstart](/terminal-payments/sdks/ios/quickstart/). The SDK headers are distributed in [SumUpSDK.xcframework](https://github.com/sumup/sumup-ios-sdk).
+
+## Authentication - component definitions
+
+The SDK accepts a merchant's OAuth access token or presents its own login screen. Use the [authentication guide](/terminal-payments/sdks/ios/authentication/) to choose and implement a login flow.
+
+### Login access token (OAuth 2.0)
+
+```objc
+/**
+ *  Logs in a merchant with an access token acquired via /tools/authorization/oauth/.
+ *  You must implement the "Authorization code flow", the "Client credentials flow" is not supported.
+ *  Make sure that no user is logged in already when calling this method.
+ *
+ *  @param aToken a user-scoped access token
+ *  @param block  a completion block that will run after login has succeeded/failed
+ */
++ (void)loginWithToken:(NSString *)aToken completion:(nullable SMPCompletionBlock)block;
+```
+
+### Login view controller
+
+```objc
+/**
+ *  Presents the login modally from the given view controller.
+ *
+ *  The login is automatically dismissed if login was successful or cancelled by the user.
+ *  If error is nil and success is NO, the user cancelled the login.
+ *  Errors are handled internally and usually do not need any display to the user.
+ *  Does nothing if merchant is already logged in (calls completion block with success=NO, error=nil).
+ *
+ *  @param fromViewController The UIViewController instance from which the login should be presented modally.
+ *  @param animated Pass YES to animate the transition.
+ *  @param block The completion block is called after each login attempt.
+ */
++ (void)presentLoginFromViewController:(UIViewController *)fromViewController
+                              animated:(BOOL)animated
+                       completionBlock:(nullable SMPCompletionBlock)block;
+```
+
+### Logout
+
+```objc
+/**
+ *  Performs a logout of the current merchant and resets the remembered password.
+ *
+ *  @param block The completion block is called once the logout has finished.
+ */
++ (void)logoutWithCompletionBlock:(nullable SMPCompletionBlock)block;
+```
+
+## Payment checkout definitions
+
+- In order to prepare a SumUp card terminal for checkout, `prepareForCheckout` can be called in advance. A registered SumUp merchant account needs to be logged in, and the card terminal must already be setup.
+  You should use this method to let the SDK know that the user is most
+  likely starting a checkout attempt soon; for example when entering an amount or adding products to a shopping cart. This allows the SDK to take appropriate measures, like attempting to wake a connected card terminal.
+- When logged in you can let merchants check and update their card reader settings. Merchants can select their preferred card terminal and set up a
+  new one if needed. The preferences available to a merchant depend on their
+  respective account settings.
+- Present Checkout View is the main checkout request definition.
+
+For usage examples, see [reader management](/terminal-payments/sdks/ios/readers/) and [reader payments](/terminal-payments/sdks/ios/payments/).
+
+### Prepare for incoming checkout
+
+```objc
+/**
+ *  Can be called in advance when a checkout is imminent and a user is logged in.
+ *  You should use this method to let the SDK know that the user is most likely starting a
+ *  checkout attempt soon, e.g. when entering an amount or adding products to a shopping cart.
+ *  This allows the SDK to take appropriate measures, like attempting to wake a connected card terminal.
+ */
++ (void)prepareForCheckout;
+
+/**
+ *  Call in advance when you know that checkout will occur for the logged-in user.
+ *
+ *  Functionally the same as prepareForCheckout.
+ *  This version provides the option of supplying a SMPCompletionBlock where you can
+ *  dismiss custom UI, check the reader status or perform a checkout.
+ *
+ *  @param block The block is called at the end of the preparation after asking the reader to wake.
+ */
++ (void)prepareForCheckout:(nullable SMPCompletionBlock)block;
+```
+
+### Present card reader settings
+
+```objc
+/**
+ *  Presenting card reader settings allows the current merchant to switch to a different
+ *  card reader, view general information about the current card reader, and connect to it.
+ *  Can only be called when a merchant is logged in and checkout is not in progress.
+ *  The completion block will be executed once the screen has been dismissed.
+ *  If not successful an error will be provided, see SMPSumUpSDKError.
+ *
+ *  @param fromViewController The UIViewController instance from which the checkout should be presented modally.
+ *  @param animated           Pass YES to animate the transition.
+ *  @param block              The completion block is called after the view controller has been dismissed.
+ */
++ (void)presentCardReaderSettingsFromViewController:(UIViewController *)fromViewController
+                                           animated:(BOOL)animated
+                                         completion:(nullable SMPCompletionBlock)block;
+```
+
+### Present checkout view
+
+```objc
+/**
+ *  Presents a checkout view with all necessary steps to charge a customer.
+ *
+ *  @param request    The SMPCheckoutRequest encapsulates all transaction relevant data such as total amount, label, etc.
+ *  @param controller The UIViewController instance from which the checkout should be presented modally.
+ *  @param block      The completion block will be called when the view will be dismissed.
+ */
++ (void)checkoutWithRequest:(SMPCheckoutRequest *)request
+         fromViewController:(UIViewController *)controller
+                 completion:(nullable SMPCheckoutCompletionBlock)block;
+```
+
+## Checkout request properties
+
+The default payment method is a card reader. Set `paymentMethod` explicitly for Tap to Pay on iPhone.
+
+### Checkout request with any payment method
+
+```objc
+/**
+ *  Creates a new checkout request.
+ *
+ *  Be careful when creating the NSDecimalNumber to not falsely use the NSNumber class creator methods.
+ *
+ *  @param totalAmount The total amount to be charged to a customer. Cannot be nil.
+ *  @param title An optional title to be displayed in the merchant's history and on customer receipts.
+ *  @param currencyCode Currency Code in which the total should be charged (ISO 4217 code, see SMPCurrencyCode). Cannot be nil, has to match the currency of the merchant logged in. Use [[[SMPSumUpSDK currentMerchant] currencyCode] and ensure its length is not 0.
+ *
+ *  @return A new request object or nil if totalAmount or currencyCode are nil.
+ */
++ (SMPCheckoutRequest *)requestWithTotal:(NSDecimalNumber *)totalAmount
+                                   title:(nullable NSString *)title
+                            currencyCode:(NSString *)currencyCode
+                           paymentMethod:(SMPPaymentMethod)paymentMethod;
+```
+
+### Checkout request with card reader only
+
+```objc
+/**
+ *  Creates a new checkout request using a card reader as the method of payment.
+ *
+ *  Be careful when creating the NSDecimalNumber to not falsely use the NSNumber class creator methods.
+ *
+ *  @param totalAmount The total amount to be charged to a customer. Cannot be nil.
+ *  @param title An optional title to be displayed in the merchant's history and on customer receipts.
+ *  @param currencyCode Currency Code in which the total should be charged (ISO 4217 code, see SMPCurrencyCode). Cannot be nil, has to match the currency of the merchant logged in. Use [[[SMPSumUpSDK currentMerchant] currencyCode] and ensure its length is not 0.
+ *
+ *  @return A new request object or nil if totalAmount or currencyCode are nil.
+ */
++ (SMPCheckoutRequest *)requestWithTotal:(NSDecimalNumber *)totalAmount
+                                   title:(nullable NSString *)title
+                            currencyCode:(NSString *)currencyCode;
+```
+
+### Payment properties
+
+```objc
+/**
+ * The total amount to be charged to a customer.
+ */
+@property (nonatomic, strong, readonly, nullable) NSDecimalNumber *totalAmount;
+
+/// A title to be displayed in the merchant's history and on customer receipts.
+@property (nonatomic, strong, readonly, nullable) NSString *title;
+
+/**
+ * Currency code in which the total should be charged (ISO 4217 code, see SMPCurrencyCode).
+ */
+@property (nonatomic, strong, readonly, nullable) NSString *currencyCode;
+
+/**
+ * An (optional) ID to be associated with this transaction.
+ * See:
+ * https://docs.sumup.com/rest-api/#tag/Transactions
+ *
+ * on how to retrieve a transaction using this ID.
+ *
+ * This ID has to be unique in the scope of a SumUp merchant account and its sub-accounts.
+ * It must not be longer than 128 characters and can only contain printable ASCII characters.
+ */
+@property (nonatomic, copy, nullable) NSString *foreignTransactionID;
+
+/**
+ * An optional additional tip amount to be charged to a customer.
+ *
+ * @note This property will be ignored if the connected card reader supports the
+ * Tip-on-Card Reader (TCR) feature and if it is enabled by setting tipOnCardReaderIfAvailable to
+ * YES.
+ *
+ * Important: The customer may use a reader that does not support TCR. You must handle this
+ * case yourself in order to avoid no tip from being prompted.
+ *
+ * To do this:
+ *
+ * Before calling SMPSumUpSDK checkoutWithRequest:fromViewController:completion:,
+ * check SMPSumUpSDK.isTipOnCardReaderAvailable:
+ *
+ * - If NO, you should prompt the user for a tip amount yourself and set tipAmount
+ * - If YES, you may set tipOnCardReaderIfAvailable to YES.
+ * Do not prompt the user for a tip amount or set tipAmount if you do this.
+ *
+ * Will be added to the totalAmount. Must be greater than zero if set.
+ */
+@property (nonatomic, copy, nullable) NSDecimalNumber *tipAmount;
+
+/**
+ * Optional list of suggested tip percentages shown during checkout.
+ *
+ * Values are interpreted as whole-number percentages, for example, 15.33 is treated as 15%.
+ * Negative values are also ignored.
+ *
+ * The SDK evaluates only the first 3 elements provided in the array. Within this subset, any
+ * values that are duplicates or fall outside the 1-100 range are ignored.
+ *
+ * If the property is not set, or if the processed subset contains no valid values, the SDK reverts
+ * to the default suggestions: 10%, 15%, 20%.
+ *
+ * Note: Valid values are automatically displayed in ascending order.
+ *
+ * The "No Tip" option is always shown and is not part of this list.
+ *
+ * In Tip-on-Card Reader (TCR) mode, fewer than 3 values may be displayed
+ * depending on hardware support.
+ */
+@property (nonatomic, copy, nullable) NSArray<NSNumber *> *customTipRates;
+
+/**
+ * Enables Tip-on-Card Reader (TCR), if the feature is available.
+ *
+ * @note TCR prompts the customer directly on the card reader's display for a tip amount, rather
+ * than prompting for a tip amount on the iPhone or iPad display.
+ *
+ * Not all card readers support this feature. To find out if the feature is supported for the last-used
+ * card reader, check SMPSumUpSDK.isTipOnCardReaderAvailable.
+ *
+ * Setting this property to YES when the feature is not available will do nothing.
+ */
+@property (nonatomic, assign) BOOL tipOnCardReaderIfAvailable;
+
+/**
+ * An optional count for the display of the number of sale items throughout the checkout process.
+ *
+ * Default is zero which will hide the display of the item count.
+ *
+ * This value is currently not reflected in the merchant's history or the customer receipts.
+ */
+@property (nonatomic, assign) NSUInteger saleItemsCount;
+
+/**
+ * An optional flag to skip the confirmation screen in checkout.
+ * If set, the checkout will be dismissed w/o user interaction.
+ *
+ * Default is SMPSkipScreenOptionNone.
+ */
+@property (nonatomic, assign) SMPSkipScreenOptions skipScreenOptions;
+
+/**
+ * The method of payment to use during checkout; for example, a bluetooth-connected card
+ * reader, or Tap to Pay on iPhone.
+ *
+ * Defaults to `SMPPaymentMethodCardReader`.
+ */
+@property (nonatomic, assign) SMPPaymentMethod paymentMethod;
+
+/**
+ * Some cards contain multiple applications. Use `processAs` to allow the customer to
+ * control which application is used to process the transaction, e.g. credit or debit.
+ *
+ * To do this, display a UI that asks the user to select either Credit or Debit.
+ * If they choose Credit, there should also be a way for them to enter the number of
+ * installments, which you should assign to `numberOfInstallments`
+ *
+ * Warning: The transaction will fail if `isProcessAsRequired` on `SMPSumUpSDK`  is `YES` but `processAs` is
+ * `SMPProcessAsNotSet`.
+ *
+ * Defaults to `SMPProcessAsNotSet`.
+ */
+@property (nonatomic, assign) SMPProcessAs processAs;
+
+/**
+ * Some markets allow the customer to pay in installments. Ignored unless `processAs` is set to `SMPProcessAsCredit`.
+ */
+@property (nonatomic, assign) NSInteger numberOfInstallments;
+
+/**
+ * Automatically close the checkout if the user stops on the Send Receipt screen without manually dismissing it.
+ * This can be useful for kiosk environments where users might walk away without manually closing the Send Receipt screen.
+ *
+ * If the user starts entering a phone number or email address on the Send Receipt screen, this duration will automatically
+ * increase to 60 seconds after the last edit is made.
+ *
+ * If set to 0.0, the Send Receipt screen remains on-screen forever or until the user dismisses it.
+ */
+@property (nonatomic, assign) NSTimeInterval successScreenTimeout;
+```
+
+## Checkout errors
+
+SDK errors use `SumUpSDKErrorDomain` in Swift and `SMPSumUpSDKErrorDomain` in Objective-C. Check both the domain and code when handling an error; see the [payment guide](/terminal-payments/sdks/ios/payments/#implement-full-checkout) for a complete callback.
+
+### Error codes in Objective-C
+
+```objc
+NS_SWIFT_NAME(SumUpSDKErrorDomain)
+extern NSString * const SMPSumUpSDKErrorDomain;
+/**
+ *  The error codes returned from the SDK
+ */
+typedef NS_ENUM(NSInteger, SMPSumUpSDKError) {
+    /// General error
+    SMPSumUpSDKErrorGeneral                        = 0,
+    /// The merchant's account is not activated
+    SMPSumUpSDKErrorActivationNeeded               = 1,
+    /// General error with the merchant's account
+    SMPSumUpSDKErrorAccountGeneral                 = 20,
+    /// The merchant is not logged in to their account
+    SMPSumUpSDKErrorAccountNotLoggedIn             = 21,
+    /// A merchant is logged in already. Call logout before logging in again.
+    SMPSumUpSDKErrorAccountIsLoggedIn              = 22,
+    /// General checkout error
+    SMPSumUpSDKErrorCheckoutGeneral                = 50,
+    /// Another checkout process is currently in progress.
+    SMPSumUpSDKErrorCheckoutInProgress             = 51,
+    /// The currency code specified in the checkout request does not match that of the current merchant.
+    SMPSumUpSDKErrorCheckoutCurrencyCodeMismatch   = 52,
+    /// The foreign transaction ID specified in the checkout request has already been used.
+    SMPSumUpSDKErrorDuplicateForeignID             = 53,
+    /// The access token is invalid. Login to get a valid access token.
+    SMPSumUpSDKErrorInvalidAccessToken             = 54,
+    /// The amount entered contains invalid number of decimals.
+    SMPSumUpSDKErrorInvalidAmountDecimals          = 55,
+    /// The processAs property of CheckoutRequest is not valid
+    SMPSumUpSDKErrorInvalidProcessAs               = 56,
+    /// The numberOfInstallments property of CheckoutRequest is not valid
+    SMPSumUpSDKErrorInvalidNumberOfInstallments    = 57,
+    /// Reader wake error during Prepare for Checkout process.
+    /// Includes when a reader has never been paired.
+    SMPSumUpSDKErrorPrepareCheckoutReaderWakeFailed = 60,
+    /// Tap to Pay on iPhone payment method is not available for the current merchant. This may be
+    /// because the payment method is not available in their country.
+    SMPSumUpSDKErrorTapToPayNotAvailable           = 100,
+    /// Tap to Pay on iPhone: activation is required. Call `presentTapToPayActivationFromViewController:animated:completionBlock:`.
+    SMPSumUpSDKErrorTapToPayActivationNeeded       = 101,
+    /// Tap to Pay on iPhone: an unspecified error occurred
+    SMPSumUpSDKErrorTapToPayInternalError          = 102,
+    /// Tap to Pay on iPhone requires an iPhone XS or later and does not work on iPads.
+    SMPSumUpSDKErrorTapToPayMinHardwareNotMet      = 103,
+    /// Tap to Pay on iPhone requires a newer version of iOS; please check the documentation for the
+    /// minimum supported version.
+    SMPSumUpSDKErrorTapToPayiOSVersionTooOld       = 104,
+    /// Tap to Pay on iPhone has some other (unspecified) requirement(s) that are not met.
+    SMPSumUpSDKErrorTapToPayRequirementsNotMet     = 105,
+} NS_SWIFT_NAME(SumUpSDKError);
+```
+
+### Error codes in Swift
+
+```swift
+public enum SumUpSDKError : Int, @unchecked Sendable {
+    /// General error
+    case general = 0
+
+    /// The merchant's account is not activated
+    case activationNeeded = 1
+
+    /// General error with the merchant's account
+    case accountGeneral = 20
+
+    /// The merchant is not logged in to their account
+    case accountNotLoggedIn = 21
+
+    /// A merchant is logged in already. Call logout before logging in again.
+    case accountIsLoggedIn = 22
+
+    /// General checkout error
+    case checkoutGeneral = 50
+
+    /// Another checkout process is currently in progress.
+    case checkoutInProgress = 51
+
+    /// The currency code specified in the checkout request does not match that of the current merchant.
+    case checkoutCurrencyCodeMismatch = 52
+
+    /// The foreign transaction ID specified in the checkout request has already been used.
+    case duplicateForeignID = 53
+
+    /// The access token is invalid. Login to get a valid access token.
+    case invalidAccessToken = 54
+
+    /// The amount entered contains invalid number of decimals.
+    case invalidAmountDecimals = 55
+
+    /// The processAs property of CheckoutRequest is not valid
+    case invalidProcessAs = 56
+
+    /// The numberOfInstallments property of CheckoutRequest is not valid
+    case invalidNumberOfInstallments = 57
+
+    /// Reader wake error during Prepare for Checkout process.
+    /// Includes when a reader has never been paired.
+    case prepareCheckoutReaderWakeFailed = 60
+
+    /// Tap to Pay on iPhone payment method is not available for the current merchant. This may be
+    /// because the payment method is not available in their country.
+    case tapToPayNotAvailable = 100
+
+    /// Tap to Pay on iPhone: activation is required. Call `presentTapToPayActivationFromViewController:animated:completionBlock:`.
+    case tapToPayActivationNeeded = 101
+
+    /// Tap to Pay on iPhone: an unspecified error occurred
+    case tapToPayInternalError = 102
+
+    /// Tap to Pay on iPhone requires an iPhone XS or later and does not work on iPads.
+    case tapToPayMinHardwareNotMet = 103
+
+    /// Tap to Pay on iPhone requires a newer version of iOS; please check the documentation for the
+    /// minimum supported version.
+    case tapToPayiOSVersionTooOld = 104
+
+    /// Tap to Pay on iPhone has some other (unspecified) requirement(s) that are not met.
+    case tapToPayRequirementsNotMet = 105
+}
+```
+
+## Tap to Pay methods
+
+The SDK provides completion-handler and async versions of its Tap to Pay methods.
+
+### Tap to Pay methods in Swift
+
+```swift
+/**
+ *  Checks whether the Tap to Pay on iPhone payment method is available for the current merchant and whether or
+ *  not it requires activation to be performed via a call to
+ *  `presentTapToPayActivationFromViewController:animated:completionBlock:`.
+ *
+ *  For the merchant to be able to use this payment method the following must be true:
+ *
+ *    - The feature must be available in the merchant's country
+ *
+ *    - It must be activated. This is where the merchant's Apple ID is linked with their SumUp account and the
+ *      iPhone is prepared to work as a card reader. As this can take a minute or so the first time, the
+ *      merchant is shown a UI that introduces them to the feature as it initializes in the background.
+ *
+ *  The merchant must be logged in before you call this method.
+ *
+ *  @param availability YES if the feature is available for the current merchant and it's OK to start activation.
+ *  @param isActivated  YES if activation has already been done for this device and merchant account
+ */
+open class func checkTapToPayAvailability(completion block: @escaping (Bool, Bool, (any Error)?) -> Void)
+
+/**
+ *  Checks whether the Tap to Pay on iPhone payment method is available for the current merchant and whether or
+ *  not it requires activation to be performed via a call to
+ *  `presentTapToPayActivationFromViewController:animated:completionBlock:`.
+ *
+ *  For the merchant to be able to use this payment method the following must be true:
+ *
+ *    - The feature must be available in the merchant's country
+ *
+ *    - It must be activated. This is where the merchant's Apple ID is linked with their SumUp account and the
+ *      iPhone is prepared to work as a card reader. As this can take a minute or so the first time, the
+ *      merchant is shown a UI that introduces them to the feature as it initializes in the background.
+ *
+ *  The merchant must be logged in before you call this method.
+ *
+ *  @param availability YES if the feature is available for the current merchant and it's OK to start activation.
+ *  @param isActivated  YES if activation has already been done for this device and merchant account
+ */
+open class func checkTapToPayAvailability() async throws -> (Bool, Bool)
+
+/**
+ *  Performs activation for Tap to Pay on iPhone. This prepares the device, introduces the merchant to the
+ *  feature and links their Apple ID to their SumUp account (which will require confirmation from the merchant.)
+ *
+ *  Call `checkTapToPayAvailability:` before calling this method to find out if this payment method is available
+ *  and if activation is needed.
+ *
+ *  The merchant must be logged in before you call this method.
+ *
+ *  Tap to Pay on iPhone requirements:
+ *
+ *  - The hosting app must have the `com.apple.developer.proximity-reader.payment.acceptance`
+ *    entitlement.
+ *
+ *  - The merchant must have a supported iPhone model running a supported iOS version.
+ *    See the requirements above, as the minimum iOS version changes over time.
+ *    The feature does not work with iPads.
+ *
+ *  @param fromViewController The UIViewController instance from which the UI should be presented modally.
+ *  @param animated           Pass YES to animate the transition.
+ *  @param block              The completion block is called after the view controller has been dismissed.
+ */
+open class func presentTapToPayActivation(from fromViewController: UIViewController, animated: Bool, completionBlock block: SMPCompletionBlock? = nil)
+
+/**
+ *  Performs activation for Tap to Pay on iPhone. This prepares the device, introduces the merchant to the
+ *  feature and links their Apple ID to their SumUp account (which will require confirmation from the merchant.)
+ *
+ *  Call `checkTapToPayAvailability:` before calling this method to find out if this payment method is available
+ *  and if activation is needed.
+ *
+ *  The merchant must be logged in before you call this method.
+ *
+ *  Tap to Pay on iPhone requirements:
+ *
+ *  - The hosting app must have the `com.apple.developer.proximity-reader.payment.acceptance`
+ *    entitlement.
+ *
+ *  - The merchant must have a supported iPhone model running a supported iOS version.
+ *    See the requirements above, as the minimum iOS version changes over time.
+ *    The feature does not work with iPads.
+ *
+ *  @param fromViewController The UIViewController instance from which the UI should be presented modally.
+ *  @param animated           Pass YES to animate the transition.
+ *  @param block              The completion block is called after the view controller has been dismissed.
+ */
+open class func presentTapToPayActivation(from fromViewController: UIViewController, animated: Bool) async throws -> Bool
+```
+
+### Tap to Pay methods in Objective-C
+
+```objc
+/**
+ *  Checks whether the Tap to Pay on iPhone payment method is available for the current merchant and whether or
+ *  not it requires activation to be performed via a call to
+ *  `presentTapToPayActivationFromViewController:animated:completionBlock:`.
+ *
+ *  For the merchant to be able to use this payment method the following must be true:
+ *
+ *    - The feature must be available in the merchant's country
+ *
+ *    - It must be activated. This is where the merchant's Apple ID is linked with their SumUp account and the
+ *      iPhone is prepared to work as a card reader. As this can take a minute or so the first time, the
+ *      merchant is shown a UI that introduces them to the feature as it initializes in the background.
+ *
+ *  The merchant must be logged in before you call this method.
+ *
+ *  @param availability YES if the feature is available for the current merchant and it's OK to start activation.
+ *  @param isActivated  YES if activation has already been done for this device and merchant account
+ */
++ (void)checkTapToPayAvailability:(void (^ _Nonnull)(BOOL isAvailable, BOOL isActivated, NSError * _Nullable error))block NS_SWIFT_NAME(checkTapToPayAvailability(completion:));
+
+/**
+ *  Performs activation for Tap to Pay on iPhone. This prepares the device, introduces the merchant to the
+ *  feature and links their Apple ID to their SumUp account (which will require confirmation from the merchant.)
+ *
+ *  Call `checkTapToPayAvailability:` before calling this method to find out if this payment method is available
+ *  and if activation is needed.
+ *
+ *  The merchant must be logged in before you call this method.
+ *
+ *  Tap to Pay on iPhone requirements:
+ *
+ *  - The hosting app must have the `com.apple.developer.proximity-reader.payment.acceptance`
+ *    entitlement.
+ *
+ *  - The merchant must have a supported iPhone model running a supported iOS version.
+ *    See the requirements above, as the minimum iOS version changes over time.
+ *    The feature does not work with iPads.
+ *
+ *  @param fromViewController The UIViewController instance from which the UI should be presented modally.
+ *  @param animated           Pass YES to animate the transition.
+ *  @param block              The completion block is called after the view controller has been dismissed.
+ */
++ (void)presentTapToPayActivationFromViewController:(UIViewController *)fromViewController
+                                           animated:(BOOL)animated
+                                    completionBlock:(nullable SMPCompletionBlock)block;
+```
+
+## SDK structure
+
+The SDK provides Objective-C headers. Xcode also displays the corresponding Swift types. The table below outlines the interfaces in the SDK and their purpose.
+
+| Header (Swift alias)                       | Purpose                                                                                                                                                                                                 |
+| ------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| SMPSumUpSDK.h (SumUpSDK)                   | Includes methods and properties for handling authentication, initial SDK setup, presenting checkout view, and testing your integration. Bundles all other headers and serves as the main SDK interface. |
+| SMPCheckoutRequest.h (CheckoutRequest)     | Includes methods and properties handling checkout requests, such as amounts, currencies, and payment methods                                                                                            |
+| SMPCheckoutResult.h (CheckoutResult)       | Handles checkout result structure, including status and transaction code                                                                                                                                |
+| SMPCurrencyCodes.h                         | Defines available currency codes                                                                                                                                                                        |
+| SMPMerchant.h (Merchant)                   | Describes a Merchant, including Merchant Code (identifier) and currency used by merchant                                                                                                                |
+| SMPReaderStatus.h                          | Reader information: battery level, serial number, model type, and active state                                                                                                                          |
+| SMPReaderType.h (ReaderType)               | Enumeration of card reader models: Unknown, Pin Plus, 3G, Air, Solo, Solo Lite                                                                                                                          |
+| SMPOfflineSessionDetails.h                 | Offline session state: remaining time, transaction counts, total approved amount                                                                                                                        |
+| SMPSkipScreenOptions.h (SkipScreenOptions) | Describes options allowing to skip transaction confirmation screen                                                                                                                                      |
+| SumUpSDK.h                                 | Declares project version                                                                                                                                                                                |

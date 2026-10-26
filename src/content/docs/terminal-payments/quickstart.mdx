@@ -1,6 +1,6 @@
 ---
-title: Quickstart
-description: Get your first in-person payment running with the right SumUp integration path and the prerequisites for testing.
+title: Get started
+description: Set up a sandbox merchant account, then follow the guide for your in-person payment integration.
 sidebar:
   order: 2
 ---
@@ -9,7 +9,7 @@ import Callout from "@components/content/Callout";
 
 import Image from '@components/content/Image.astro';
 
-Get your first in-person payment running quickly.
+Set up a sandbox merchant account before following your platform's integration guide. If you have not chosen an integration, [compare the available paths](/terminal-payments/#choose-your-integration).
 
 ## Prerequisites
 
@@ -36,7 +36,7 @@ To test without real money, create a sandbox merchant account from the SumUp Das
 If you don't have a sandbox account yet, [sign up for a developer account](https://me.sumup.com/signup?signup_intent=developer). This starts you with a sandbox merchant account.
 </Callout>
 
-If you use native login in the Android or iOS SDK, we recommend creating a managed user account in your sandbox merchant and logging in with that user's credentials. Alternatively, set your sandbox merchant account as your existing user's default before logging in. See [merchant account setup for native SDK login](/terminal-payments/#users-with-multiple-merchant-accounts). Selecting an account in the Dashboard account switcher alone does not select it for native SDK login.
+If you use native login in the Android or iOS SDK, we recommend creating a managed user account in your sandbox merchant and logging in with that user's credentials. Alternatively, set your sandbox merchant account as your existing user's default before logging in. See [merchant account setup for native SDK login](/terminal-payments/quickstart/#users-with-multiple-merchant-accounts). Selecting an account in the Dashboard account switcher alone does not select it for native SDK login.
 
 <Image alt="A screenshot of the account selection dropdown in the SumUp dashboard with the sandbox merchant account highlighted with red circle" src="/img/guides/test_acc.png" width="40%" />
 
@@ -44,20 +44,34 @@ Sandbox accounts do not process real funds. They have a separate merchant ID and
 
 <Image alt="A screenshot of the dashboard with sandbox merchant account selected" src="/img/guides/test-account-warning.png" width="100%" />
 
+## Users with Multiple Merchant Accounts
+
+:::caution
+If you have access to multiple merchant accounts, native login in the Android and iOS SDKs uses your default merchant account. The SDKs do not offer a merchant account selector.
+
+**Recommended: use a managed user account.** In the SumUp Dashboard, select the merchant account you want to use, then [create a managed user account](https://me.sumup.com/members/add?type=managed) for that merchant. Log in through the SDK using the managed user's credentials. For testing, create the managed user in your sandbox merchant account.
+
+**Alternative: set the default merchant account.** If you cannot create a managed user account or need to use your existing user account:
+
+1. Open [Accounts in the SumUp Dashboard](https://me.sumup.com/settings/accounts), under your user settings.
+2. Find the merchant account you want to use, open its options menu, and select **Set as default**.
+3. Log in through the SDK. If you are already logged in, log out first.
+
+When testing with your existing user account, set your sandbox merchant account as the default before logging in.
+
+You are responsible for verifying that the appropriate account is set as the default merchant account.
+:::
+
 ## Choose Your Path
 
 ### Reader SDKs
 
-Best for native Android and iOS apps that want more control over the payment experience.
+Take your first sandbox reader payment with a complete platform quickstart:
 
-<Steps>
+- [iOS quickstart](/terminal-payments/sdks/ios/quickstart/)
+- [Android quickstart](/terminal-payments/sdks/android/quickstart/)
 
-1. Install the SDK for [Android SDK](/terminal-payments/sdks/android-sdk/), [iOS SDK](/terminal-payments/sdks/ios-sdk/), or [Android Tap-to-Pay SDK](/terminal-payments/sdks/android-ttp/).
-2. Authenticate the merchant.
-3. Pair a reader over Bluetooth, or initialize Tap to Pay on device.
-4. Start a payment and handle the result in your app.
-
-</Steps>
+For payments without a card reader, follow [Tap to Pay on iPhone](/terminal-payments/sdks/ios/tap-to-pay/) or the separate [Tap to Pay on Android SDK](/terminal-payments/sdks/android/tap-to-pay/).
 
 ### Cloud API
 

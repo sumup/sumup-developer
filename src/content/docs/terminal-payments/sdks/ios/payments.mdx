@@ -1,0 +1,168 @@
+---
+title: Accept reader payments on iOS
+description: Create a checkout, handle the result, and configure tipping and regional payment options.
+sidebar:
+  order: 5
+  label: Accept reader payments
+---
+
+import Callout from "@components/content/Callout";
+
+Start a reader checkout after [setting up the SDK](/terminal-payments/sdks/ios/setup/), [authenticating](/terminal-payments/sdks/ios/authentication/), and [pairing a reader](/terminal-payments/sdks/ios/readers/). For a minimal payment example, use the [iOS quickstart](/terminal-payments/sdks/ios/quickstart/).
+
+The examples below are methods in your app's `UIViewController`. They use the SDK directly and do not require sample-app controls. See the [checkout reference](/terminal-payments/sdks/ios/reference/) for request properties, method signatures, and error codes.
+
+## Implement full checkout
+
+1. Read the currency from the logged-in merchant. The checkout currency must match it.
+2. Create a request with the amount to charge. Use `NSDecimalNumber` to represent the amount.
+3. If `isProcessAsRequired` is true, ask the customer to [choose credit or debit](#creditdebit-selection-processas-property) before starting checkout. For credit payments in those markets, also ask for the number of installments.
+4. Start checkout and check the result in its completion handler. Save the transaction code when one is returned.
+
+The examples accept the amount and the customer's credit/debit selection as arguments. Use `ProcessAs.notSet` in Swift or `SMPProcessAsNotSet` in Objective-C when selection is not required. The installments argument is only used for credit payments.
+
+<Tabs syncKey="ios_language">
+<TabItem label="Swift">
+
+```swift
+private func requestCheckout(
+    total: NSDecimalNumber,
+    processAs: ProcessAs = .notSet,
+    installments: Int = 1
+) {
+    guard let currencyCode = SumUpSDK.currentMerchant?.currencyCode else {
+        print("Log in before starting a payment")
+        return
+    }
+    guard !SumUpSDK.isProcessAsRequired || processAs != .notSet else {
+        print("Ask the customer to choose credit or debit before starting checkout")
+        return
+    }
+
+    let request = CheckoutRequest(total: total, title: nil, currencyCode: currencyCode)
+    request.foreignTransactionID = UUID().uuidString
+    request.processAs = processAs
+    if processAs == .credit {
+        request.numberOfInstallments = installments
+    }
+
+    SumUpSDK.checkout(with: request, from: self) { result, error in
+        if let error {
+            print("Checkout error: \(error.localizedDescription)")
+            return
+        }
+        guard let result, result.success else {
+            print("Payment did not succeed")
+            return
+        }
+        print("Payment successful: \(result.transactionCode ?? "")")
+    }
+}
+```
+
+</TabItem>
+<TabItem label="Objective-C">
+
+```objc
+- (void)requestCheckoutWithTotal:(NSDecimalNumber *)total
+                      processAs:(SMPProcessAs)processAs
+                   installments:(NSInteger)installments {
+    NSString *currencyCode = SMPSumUpSDK.currentMerchant.currencyCode;
+    if (currencyCode.length == 0) {
+        NSLog(@"Log in before starting a payment");
+        return;
+    }
+    if (SMPSumUpSDK.isProcessAsRequired && processAs == SMPProcessAsNotSet) {
+        NSLog(@"Ask the customer to choose credit or debit before starting checkout");
+        return;
+    }
+
+    SMPCheckoutRequest *request = [SMPCheckoutRequest requestWithTotal:total
+                                                              title:nil
+                                                       currencyCode:currencyCode];
+    request.foreignTransactionID = NSUUID.UUID.UUIDString;
+    request.processAs = processAs;
+    if (processAs == SMPProcessAsCredit) {
+        request.numberOfInstallments = installments;
+    }
+
+    [SMPSumUpSDK checkoutWithRequest:request fromViewController:self
+                         completion:^(SMPCheckoutResult *result, NSError *error) {
+        if (error) {
+            NSLog(@"Checkout error: %@", error.localizedDescription);
+            return;
+        }
+        if (!result.success) {
+            NSLog(@"Payment did not succeed");
+            return;
+        }
+        NSLog(@"Payment successful: %@", result.transactionCode ?: @"");
+    }];
+}
+```
+
+</TabItem>
+</Tabs>
+
+Keep your order reference associated with `foreignTransactionID`. If a connection problem leaves the result uncertain, use the [Transactions API](/api/transactions/get/) to check the transaction before starting another payment. Pass the reference as the `foreign_transaction_id` query parameter.
+
+## Note on tipping
+
+Choose one of these tipping options before starting checkout:
+
+<Steps>
+
+1. No tip: leave `tipAmount` unset.
+2. Tip in your app: ask for the tip amount in your own interface, then set `tipAmount` on the request. The tip is added to the payment amount and shown separately during checkout.
+3. Tip on the reader: let the customer choose a tip on the reader's screen.
+
+   <Callout type="caution" title="Caution">
+
+   Check `SMPSumUpSDK.isTipOnCardReaderAvailable` for the last-used reader before enabling reader tipping:
+
+   Configure the checkout request before calling `checkoutWithRequest:fromViewController:completion:`:
+
+   - If NO, you should prompt the user for a tip amount yourself and set tipAmount on `SMPCheckoutRequest`
+   - If YES, you may set `tipOnCardReaderIfAvailable` on `SMPCheckoutRequest` to YES. Do not prompt the user for a tip amount or set tipAmount if you do this.
+
+   </Callout>
+
+</Steps>
+
+## Credit/Debit selection (processAs property)
+
+In some markets, a card can support both credit and debit. Your app must ask the customer which to use before starting checkout.
+
+For countries that do not require credit/debit selection, you can set the `processAs` property of `SMPCheckoutRequest` to `SMPProcessAsNotSet`.
+
+<Callout type="caution" title="Caution">
+
+- For countries that require credit/debit selection, using `SMPProcessAsNotSet` will cause the transaction to fail.
+- Not all countries support `processAs`. Setting `processAs` for unsupported countries may cause the transaction to fail. Currently supported countries are: Brazil, Chile and Colombia.
+
+</Callout>
+
+Check `SMPSumUpSDK.isProcessAsRequired` to find out whether the merchant's country requires this choice.
+
+If needed, your app should set the `processAs` property of `SMPCheckoutRequest` to `SMPProcessAsCredit` or `SMPProcessAsDebit` after showing its own UI that prompts the customer to select Credit or Debit.
+
+SDK 6.0 and earlier presented two screens during the checkout that prompted the user to select Credit or Debit, and if Credit, to also choose the number of installments. This behavior was previously available via `SMPProcessAsPromptUser`.
+
+<Callout type="caution" title="Caution">
+
+`SMPProcessAsPromptUser` is deprecated. A future SDK version will treat it as `SMPProcessAsNotSet`, causing the transaction to fail if the merchant's country requires credit/debit selection. It is not supported for Tap to Pay on iPhone payments and will produce an error. Migrate to the programmatic approach above (`SMPProcessAsCredit` / `SMPProcessAsDebit`).
+
+</Callout>
+
+### Installments
+
+When `SMPProcessAsCredit` is used, you should obtain the number of installments from the customer using your own UI. Assign the positive, non-zero value to `numberOfInstallments` on `SMPCheckoutRequest`.
+
+## Verify the payment
+
+Check `CheckoutResult.success` before treating the order as paid, and save the transaction code when one is returned. Test success, declines, and interrupted connections with the [in-person payment testing guide](/terminal-payments/testing/).
+
+## Next steps
+
+- [Read checkout properties and errors](/terminal-payments/sdks/ios/reference/).
+- [Accept offline payments](/terminal-payments/offline-payments/).
