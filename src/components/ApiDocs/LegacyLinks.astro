@@ -1,0 +1,49 @@
+---
+interface Props {
+  links: Record<string, string>;
+}
+const { links } = Astro.props;
+---
+
+<script
+  type="application/json"
+  data-api-legacy-links
+  set:html={JSON.stringify(links).replaceAll("<", "\\u003c")}
+/>
+<script>
+  import { mount } from "@cloudflare/nimbus-docs/client";
+
+  // The old reference put operations and objects together on resource pages.
+  // Fragments never reach the server, so resolve those bookmarks in the browser.
+  mount("[data-api-legacy-links]", (element) => {
+    const links: Record<string, string> = JSON.parse(
+      element.textContent || "{}",
+    );
+    const follow = () => {
+      let fragment: string;
+      try {
+        fragment = decodeURIComponent(location.hash.slice(1));
+      } catch {
+        return;
+      }
+      if (document.getElementById(fragment)) return;
+      const href = links[fragment];
+      if (!href) return;
+      const target = new URL(href, location.href);
+      target.search = location.search;
+      if (target.pathname === location.pathname) {
+        history.replaceState(
+          history.state,
+          "",
+          target.pathname + location.search,
+        );
+        window.scrollTo(0, 0);
+      } else {
+        location.replace(target.href);
+      }
+    };
+    follow();
+    window.addEventListener("hashchange", follow);
+    return () => window.removeEventListener("hashchange", follow);
+  });
+</script>

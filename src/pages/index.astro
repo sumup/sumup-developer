@@ -1,303 +1,158 @@
 ---
-import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
-import type { StarlightPageProps } from "@astrojs/starlight/props";
-import Brands from "@components/Landing/Brands.astro";
-import { Headline, ListItem } from "@sumup-oss/circuit-ui";
-import {
-  Globe,
-  Apps,
-  CardIn,
-  VirtualTerminal,
-  Code,
-  Customise,
-  File,
-  InterestOnBalance,
-  Key,
-  NoCosts,
-  Play,
-  SecurePayments,
-  Sparkles,
-} from "@sumup-oss/icons";
+import { getSidebar } from "@cloudflare/nimbus-docs/runtime";
+import DocsLayout from "../layouts/DocsLayout.astro";
+import { addDocsHome } from "../utils/docsSidebar";
+import Button from "@components/Button";
+import CopyPrompt from "@components/nimbus/CopyPrompt.astro";
+import ApiExamples from "@components/Landing/ApiExamples.astro";
+import Products from "@components/Landing/Products.astro";
+import Platform from "@components/Landing/Platform.astro";
+import PaymentScenes from "@components/Landing/PaymentScenes.astro";
+import { Body, Display } from "@sumup-oss/circuit-ui";
 
-const props = {
-  frontmatter: {
-    title: "SumUp Developer Portal",
-    description:
-      "Welcome to SumUp portal for developers. We’ve got everything you need to build your own payment acceptance solutions for your business.",
-    tableOfContents: false,
-    hero: {
-      title: "SumUp developer platform",
-    },
-  },
-  custom: true,
-} as StarlightPageProps;
+const sidebar = await getSidebar("/", {
+  collection: "docs",
+  transform: ({ tree }) => addDocsHome(tree, "/"),
+});
 ---
 
-<StarlightPage {...props}>
-  <main>
-    <section>
-      <section>
-        <Headline as="h2" className="header">Accept Online Payments</Headline>
-        <div class="button-links">
-          <ListItem
-            href="/online-payments/"
-            variant="navigation"
-            label="Accept Your First Online Payment"
-            details="Create and verify a checkout with a sandbox merchant account."
-            leadingComponent={Play}
-          />
-          <ListItem
-            variant="navigation"
-            leadingComponent={Customise}
-            href="/online-payments/checkouts/"
-            label="Choose a Checkout Experience"
-            details="Compare hosted, embedded, web, and mobile checkout options."
-          />
-          <ListItem
-            variant="navigation"
-            leadingComponent={Globe}
-            href="/online-payments/payment-methods/"
-            label="Offer More Payment Methods"
-            details="Discover the methods available to a merchant and checkout."
-          />
-          <ListItem
-            variant="navigation"
-            leadingComponent={SecurePayments}
-            href="/online-payments/testing/"
-            label="Test Your Integration"
-            details="Exercise successful, failed, and 3D Secure payment flows."
-          />
-        </div>
-      </section>
-      <section>
-        <Headline as="h2" className="header">Accept In-Person Payments</Headline
+<DocsLayout
+  title="SumUp Developer Portal"
+  description="Start building with SumUp APIs and SDKs. Choose an integration, create a sandbox, and make your first online or in-person payment."
+  sidebar={sidebar}
+  headings={false}
+  breadcrumbs={[]}
+  prevNext={{}}
+  socialImage="/og/index.png"
+  markdownUrl="/index.md"
+  hideTitle
+  prose={false}
+  wide
+>
+  <div class="homepage">
+    <header class="hero">
+      <div class="hero-copy">
+        <Display
+          as="h1"
+          size="m"
+          weight="black"
+          id="_top"
+          className="title"
+          data-pagefind-meta="title"
         >
-        <div class="button-links">
-          <ListItem
-            variant="navigation"
-            leadingComponent={CardIn}
-            href="/terminal-payments/"
-            label="Choose an In-Person Integration"
-            details="Compare mobile SDKs, the Cloud API, and legacy app handoff."
+          Build payments with SumUp
+        </Display>
+        <Body size="l" color="subtle" className="subtitle">
+          APIs, SDKs, and guides for accepting payments online and in person.
+          Choose your integration and start building in a sandbox.
+        </Body>
+        <div class="hero-actions" id="build-with-ai">
+          <Button
+            href="/get-started/"
+            variant="primary"
+            label="Start building"
           />
-          <ListItem
-            variant="navigation"
-            leadingComponent={Play}
-            href="/terminal-payments/quickstart/"
-            label="Accept Your First In-Person Payment"
-            details="Prepare a merchant account, device, and integration for testing."
-          />
-          <ListItem
-            variant="navigation"
-            leadingComponent={Code}
-            href="/terminal-payments/sdks/"
-            label="Build a Native Mobile Flow"
-            details="Accept payments in Android and iOS apps with SumUp SDKs."
-          />
-          <ListItem
-            variant="navigation"
-            leadingComponent={VirtualTerminal}
-            href="/terminal-payments/cloud-api/"
-            label="Connect a Standalone Reader"
-            details="Control a supported reader from a server or any platform."
-          />
-        </div>
-      </section>
-      <section>
-        <Headline as="h2" className="header">Build and Operate</Headline>
-        <div class="button-links">
-          <ListItem
-            variant="navigation"
-            href="/tools/authorization/"
-            leadingComponent={Key}
-            label="Set Up Authorization"
-            details="Choose and protect the credentials for your integration."
-          />
-          <ListItem
-            variant="navigation"
-            leadingComponent={Apps}
-            href="/tools/sdks/"
-            label="Call APIs with an SDK or CLI"
-            details="Use an official client library or work directly from your terminal."
-          />
-          <ListItem
-            variant="navigation"
-            href="/api/"
-            leadingComponent={File}
-            label="Use the API Reference"
-            details="Look up endpoints, request fields, responses, and errors."
-          />
-          <ListItem
-            variant="navigation"
-            href="/tools/llms/"
-            leadingComponent={Sparkles}
-            label="Build with AI"
-            details="Give coding assistants current SumUp documentation and tools."
-          />
-        </div>
-      </section>
-    </section>
-    <section class="antifraud">
-      <div class="content">
-        <h2>Our Anti-fraud Protection</h2>
-        <div class="callouts">
-          <div>
-            <SecurePayments aria-hidden="true" className="icon" />
-            <p>
-              We’re committed to protecting you from fraud, chargebacks and
-              headaches
-            </p>
-          </div>
-          <div>
-            <InterestOnBalance aria-hidden="true" className="icon" />
-            <p>
-              We use advanced artificial intelligence to constantly monitor
-              transactions for unusual activity
-            </p>
-          </div>
-          <div>
-            <NoCosts aria-hidden="true" className="icon" />
-            <p>
-              All of our anti-fraud protection is included at no additional cost
-            </p>
-          </div>
+          <CopyPrompt compact />
         </div>
       </div>
-    </section>
-    <section class="brands">
-      <h2>Brands That Build With SumUp</h2>
-      <Brands />
-    </section>
-  </main>
-</StarlightPage>
+      <div class="hero-visual" aria-hidden="true">
+        <img
+          class="hero-sky"
+          src="/img/landing/sumup-sky-v01.webp"
+          alt=""
+          width="960"
+          height="640"
+          fetchpriority="high"
+          decoding="async"
+        />
+        <PaymentScenes />
+      </div>
+    </header>
+    <ApiExamples />
+    <Products />
+    <Platform />
+  </div>
+</DocsLayout>
 
 <style>
-  :root {
-    --sl-content-width: 68rem !important;
-  }
-</style>
-
-<style lang="scss">
-  ul {
-    list-style-type: none;
-    padding-left: 0;
-    margin-top: var(--cui-spacings-mega);
-
-    li {
-      margin-bottom: 10px;
-    }
+  .homepage {
+    container-type: inline-size;
+    max-width: 68rem;
+    margin: 0 auto;
   }
 
-  section {
-    margin: var(--cui-spacings-exa) 0;
-
-    a {
-      color: var(--cui-fg-accent);
-
-      &:hover {
-        text-decoration: underline;
-      }
-    }
-
-    @media screen and (min-width: 941px) {
-      &:nth-child(even) {
-        .image {
-          grid-area: right;
-        }
-
-        .text {
-          grid-area: left;
-        }
-      }
-    }
-  }
-
-  h3 {
-    margin-bottom: var(--cui-spacings-giga);
-  }
-
-  section :global(h2) {
-    margin-bottom: var(--cui-spacings-giga) !important;
-  }
-
-  .icon {
-    width: 48px;
-    height: 48px;
-    margin-bottom: var(--cui-spacings-mega);
-  }
-
-  .callouts {
-    margin: var(--cui-spacings-zetta) 0;
+  .hero {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-gap: var(--cui-spacings-giga);
-
-    & > div {
-      margin-bottom: var(--cui-spacings-mega);
-    }
-
-    @media screen and (max-width: 940px) {
-      grid-template-columns: 1fr;
-    }
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+    align-items: center;
+    gap: var(--cui-spacings-giga);
+    margin: var(--cui-spacings-giga) 0 var(--cui-spacings-exa);
+    text-align: left;
   }
 
-  .antifraud img {
-    width: 56px;
-    margin-bottom: var(--cui-spacings-kilo);
+  .hero-copy {
+    min-width: 0;
   }
 
-  .antifraud .callouts {
-    text-align: center;
-  }
-
-  .links {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-gap: var(--cui-spacings-giga);
-    ul {
-      li {
-        margin-bottom: var(--cui-spacings-bit);
-      }
-    }
-    & > div {
-      margin-bottom: var(--cui-spacings-giga);
-    }
-    @media screen and (max-width: 940px) {
-      grid-template-columns: 1fr 1fr;
-    }
-    @media screen and (max-width: 600px) {
-      grid-template-columns: 1fr;
-    }
-  }
-
-  .brands {
+  .hero-visual {
+    position: relative;
+    isolation: isolate;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: 28rem;
+    aspect-ratio: 1;
+    padding: clamp(1rem, 2.5vw, 2rem);
+    justify-self: end;
     overflow: hidden;
-    padding: var(--cui-spacings-zetta) 0;
+    border-radius: var(--cui-border-radius-mega);
   }
 
-  .card-grid {
-    display: grid;
-    gap: 1rem;
-
-    & > :global(*) {
-      margin-top: 0 !important;
-    }
-
-    @media (min-width: 50rem) {
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 1.5rem;
-    }
+  .hero-sky {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 
-  .button-links {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
+  .hero-actions {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    flex-wrap: wrap;
     gap: var(--cui-spacings-kilo);
+    margin-top: var(--cui-spacings-giga);
+    scroll-margin-top: calc(var(--portal-header-height) + 1.5rem);
   }
 
-  @media (max-width: 1279px) {
-    .button-links {
+  .hero-actions :global(.copy-prompt) {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .hero :global(.subtitle) {
+    margin-top: var(--cui-spacings-kilo);
+  }
+
+  @container (max-width: 48rem) {
+    .hero {
       grid-template-columns: 1fr;
+    }
+
+    .hero-visual {
+      justify-self: start;
+    }
+  }
+
+  @media (max-width: 61.25rem) {
+    .hero :global(.title) {
+      font-size: var(--cui-headline-l-font-size);
+      line-height: var(--cui-headline-l-line-height);
+    }
+    .hero :global(.subtitle) {
+      font-size: var(--cui-body-m-font-size);
+      line-height: var(--cui-body-m-line-height);
     }
   }
 </style>

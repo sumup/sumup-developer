@@ -1,555 +1,236 @@
 ---
-import { Badge, Tabs, TabItem } from "@astrojs/starlight/components";
-import Callout from "@components/content/Callout";
-import Markdown from "@components/Markdown.astro";
+import type { ApiOperationPage } from "@cloudflare/nimbus-docs/api";
+import { Tabs, TabItem } from "@components/nimbus";
 import MarkdownContent from "@components/MarkdownContent.astro";
-import { formatSlug } from "@lib/helpers";
-import { resolveReference } from "@lib/openapi";
-import { getOperationDescriptionId } from "@lib/openapiContent";
-import { Headline, Body, Anchor } from "@sumup-oss/circuit-ui";
-import type { HTMLAttributes } from "astro/types";
-import { getEntry, render } from "astro:content";
-import type { OpenAPIV3_1 } from "openapi-types";
-import type {
-  OperationObject,
-  PermissionRequirements,
-} from "src/types/openapi";
-import Example from "./Example.astro";
-import ExampleRequest from "./ExampleRequest.astro";
-import { CodeBlock, MultiCode } from "@components/Code";
 import LRGrid from "./LRGrid.astro";
-import OperationEndpoint from "./OperationEndpoint.astro";
-import Parameters from "./Parameters.astro";
-import Schema from "./Schema.astro";
 import SectionHeading from "./SectionHeading.astro";
-
-interface Props extends HTMLAttributes<"section"> {
-  operation: OperationObject;
-  coreObjects?: (OpenAPIV3_1.SchemaObject | OpenAPIV3_1.ReferenceObject)[];
+import Schema from "./Schema.astro";
+import Example from "./Example.astro";
+import CodeSamples from "./CodeSamples.astro";
+import OperationEndpoint from "./OperationEndpoint.astro";
+interface Props {
+  page: ApiOperationPage;
 }
-
-const { operation, coreObjects = [], ...props } = Astro.props;
-// OpenAPI descriptions are content entries so they use the same configured
-// Markdown pipeline as authored docs instead of a component-local parser.
-const descriptionEntry = operation.operationId
-  ? await getEntry(
-      "apiDescriptions",
-      getOperationDescriptionId(operation.operationId),
-    )
-  : undefined;
-
-if (operation.description && !descriptionEntry) {
-  throw new Error(
-    `Missing Markdown content entry for operation ${operation.operationId ?? "without an operationId"}`,
-  );
-}
-
-const Description = descriptionEntry
-  ? (await render(descriptionEntry)).Content
-  : undefined;
-
-const isParameterObject = (
-  object: OpenAPIV3_1.ParameterObject | OpenAPIV3_1.ReferenceObject,
-): object is OpenAPIV3_1.ParameterObject => "name" in object;
-
-const isRequestBody = (
-  object:
-    OpenAPIV3_1.RequestBodyObject | OpenAPIV3_1.ReferenceObject | undefined,
-): object is OpenAPIV3_1.RequestBodyObject => !!object && !("$ref" in object);
-
-const successResponseContentTypes: readonly string[] = [
-  "application/json",
-  "application/problem+json",
-] as const;
-
-const errorResponseContentTypes: readonly string[] = [
-  "application/problem+json",
-  "application/json",
-] as const;
-
-const findResponseContent = (
-  response: OpenAPIV3_1.ResponseObject,
-  contentTypes = successResponseContentTypes,
-) => {
-  for (const contentType of contentTypes) {
-    const mediaType = response.content?.[contentType];
-    if (mediaType) {
-      return { contentType, mediaType };
-    }
-  }
-  return undefined;
-};
-
-const findSchemaReferences = (
-  schema: OpenAPIV3_1.SchemaObject | OpenAPIV3_1.ReferenceObject | undefined,
-): string[] => {
-  if (!schema) return [];
-  if ("$ref" in schema) return [schema.$ref];
-
-  const refs = new Set<string>();
-  const addRefs = (
-    child: OpenAPIV3_1.SchemaObject | OpenAPIV3_1.ReferenceObject | undefined,
-  ) => {
-    findSchemaReferences(child).forEach((ref) => refs.add(ref));
-  };
-
-  if ("items" in schema) {
-    addRefs(schema.items);
-  }
-  if ("properties" in schema && schema.properties) {
-    Object.values(schema.properties).forEach(addRefs);
-  }
-  if ("allOf" in schema && schema.allOf) {
-    schema.allOf.forEach(addRefs);
-  }
-  if ("anyOf" in schema && schema.anyOf) {
-    schema.anyOf.forEach(addRefs);
-  }
-  if ("oneOf" in schema && schema.oneOf) {
-    schema.oneOf.forEach(addRefs);
-  }
-  if ("additionalProperties" in schema && schema.additionalProperties) {
-    if (typeof schema.additionalProperties === "object") {
-      addRefs(schema.additionalProperties);
-    }
-  }
-
-  return Array.from(refs);
-};
-
-const getObjectNameFromRef = (ref: string): string =>
-  ref.split("/").pop() || "";
-
-const coreObjectByRef = new Map(
-  coreObjects
-    .filter((obj): obj is OpenAPIV3_1.ReferenceObject => "$ref" in obj)
-    .map((obj) => {
-      const objectName = getObjectNameFromRef(obj.$ref);
-
-      return [
-        obj.$ref,
-        {
-          name: objectName,
-          href: `#${operation.tagSlug}-object-${formatSlug(objectName)}`,
-        },
-      ] as const;
-    }),
-);
-
-const findSuccessResponse = (responses?: OpenAPIV3_1.ResponsesObject) => {
-  if (!responses) return undefined;
-  let success =
-    Object.entries(responses).find(([code]) => code.startsWith("2"))?.[1] ??
-    null;
-  if (!success) return undefined;
-  if ("$ref" in success) {
-    success = resolveReference<OpenAPIV3_1.ResponseObject>(success.$ref);
-  }
-  if (!success) return undefined;
-  const successContent = findResponseContent(success);
-  if (!successContent) return undefined;
-
-  return {
-    ...successContent.mediaType,
-    contentType: successContent.contentType,
-    description: success.description,
-  };
-};
-
-const getResponseObject = (
-  response: OpenAPIV3_1.ResponseObject | OpenAPIV3_1.ReferenceObject,
-) => {
-  if ("$ref" in response) {
-    return resolveReference<OpenAPIV3_1.ResponseObject>(response.$ref);
-  }
-  return response;
-};
-
-const getFirstExampleValue = (
-  content: OpenAPIV3_1.MediaTypeObject | undefined,
-): unknown => {
-  if (!content) return undefined;
-  if ("example" in content && content.example !== undefined) {
-    return content.example;
-  }
-
-  if (!content.examples) return undefined;
-  const firstExample = Object.values(content.examples)[0];
-  if (!firstExample) return undefined;
-  if ("$ref" in firstExample) return undefined;
-  if ("value" in firstExample) return firstExample.value;
-
-  return undefined;
-};
-
-const successResponse = findSuccessResponse(operation.responses);
-const successResponseCoreObjects = successResponse?.schema
-  ? findSchemaReferences(successResponse.schema).flatMap((ref) => {
-      const coreObject = coreObjectByRef.get(ref);
-      return coreObject ? [coreObject] : [];
-    })
-  : [];
-const errorResponses = Object.entries(operation.responses || {}).flatMap(
-  ([status, response]) => {
-    if (status.startsWith("2")) return [];
-
-    const responseObject = getResponseObject(response);
-    const responseContent =
-      responseObject &&
-      findResponseContent(responseObject, errorResponseContentTypes);
-
-    if (!responseContent?.mediaType?.schema) return [];
-
-    return [
-      {
-        status,
-        description: responseObject?.description,
-        contentType: responseContent.contentType,
-        schema: responseContent.mediaType.schema,
-        example: getFirstExampleValue(responseContent.mediaType),
-      },
-    ];
-  },
-);
-
-const pathParams = operation.parameters
-  ?.filter(isParameterObject)
-  .filter((p) => p.in === "path");
-
-const queryParams = operation.parameters
-  ?.filter(isParameterObject)
-  .filter((p) => p.in === "query");
-
-const formatPermission = (
-  permission: PermissionRequirements[0],
-): string | undefined => {
-  if (typeof permission === "string") {
-    return permission;
-  }
-  return permission["relation"];
-};
-
-const formattedPermissions = (operation["x-permissions"] || [])
-  .map((permission) => formatPermission(permission))
-  .filter((permission): permission is string => Boolean(permission));
+const { page } = Astro.props;
+const bodyExists =
+  page.body.length > 0 ||
+  page.bodyUnion ||
+  page.bodyMediaType ||
+  page.bodyDescriptionHtml;
 ---
 
-<section id={`${operation.tagSlug}-${operation.slug}`} {...props}>
-  <LRGrid>
-    <div>
-      <div
-        class="info"
-        data-pagefind-operation={operation.summary}
-        data-pagefind-meta="operation[data-pagefind-operation]"
+<LRGrid>
+  <div class="operation-content">
+    <OperationEndpoint operation={page} />
+    {page.descriptionHtml && (
+      <MarkdownContent set:html={page.descriptionHtml} />
+    )}
+    {page.auth.length > 0 && (
+      <section class="authorization">
+        <SectionHeading as="h2">Authorization</SectionHeading>
+        <p>
+          {page.auth.some((alternative) => alternative.length === 0)
+            ? "Authentication is optional. When provided, use one of:"
+            : page.auth.length > 1
+              ? "Use one of the following alternatives:"
+              : "Required authentication:"}
+        </p>
+        <ul>
+          {page.auth.map((alternative) => (
+            <li>
+              {alternative.length === 0
+                ? "No authentication"
+                : alternative.map((scheme, i) => (
+                    <>
+                      {i > 0 && " and "}
+                      <code>{scheme.scheme}</code>
+                      {scheme.scopes.length > 0 && (
+                        <>
+                          {" "}
+                          with scopes{" "}
+                          {scheme.scopes.map((scope) => (
+                            <code>{scope}</code>
+                          ))}
+                        </>
+                      )}
+                    </>
+                  ))}
+            </li>
+          ))}
+        </ul>
+        <a href="/tools/authorization/">Authorization guide</a>
+      </section>
+    )}
+    {page.parameters.map((group) => (
+      <Schema
+        fields={group.fields}
+        title={group.label}
+        anchor={group.anchor}
+        truncated={group.truncated}
+      />
+    ))}
+    {bodyExists && (
+      <Schema
+        fields={page.body}
+        title="Body parameters"
+        union={page.bodyUnion}
+        mediaType={page.bodyMediaType}
+        required={page.bodyRequired}
+        descriptionHtml={page.bodyDescriptionHtml}
+        truncated={page.bodyTruncated}
+      />
+    )}
+    {page.requestExamples && page.requestExamples.length > 0 && (
+      <section>
+        <SectionHeading as="h2">Request examples</SectionHeading>
+        <Tabs>
+          {page.requestExamples.map((example) => (
+            <TabItem label={example.label}>
+              {example.description && <p>{example.description}</p>}
+              <Example example={example} title={example.label} />
+            </TabItem>
+          ))}
+        </Tabs>
+      </section>
+    )}
+    {!page.samples.length && !page.requestExamples?.length && page.example && (
+      <Example example={page.example} title="Request example" />
+    )}
+    {page.additionalBodies?.map((body) => (
+      <Schema
+        fields={body.fields}
+        title="Body parameters"
+        anchor={body.anchor}
+        union={body.union}
+        mediaType={body.mediaType}
+        required={page.bodyRequired}
+        truncated={body.truncated}
       >
-        <Anchor
-          href={`/api/${operation.tagSlug}`}
-          data-scroll-to={operation.tagSlug}
-          className="tag-link"
-          data-pagefind-ignore
-          size="s"
-        >
-          {operation.tag}
-        </Anchor>
-        <Headline
-          as="h2"
-          id={`${operation.tagSlug}-${operation.slug}-heading`}
-          size="m"
-          data-pagefind-meta="title"
-          className="headline"
-        >
-          {operation.summary}
-          {
-            operation.deprecated && (
-              <Badge variant="caution" text="Deprecated" data-pagefind-ignore />
-            )
-          }
-          {
-            operation["x-beta"] && (
-              <Badge variant="tip" text="Beta" data-pagefind-ignore />
-            )
-          }
-        </Headline>
-        <OperationEndpoint class="operation-endpoint" operation={operation} />
-        {
-          "x-deprecation-notice" in operation && (
-            <div class="notice">
-              <Callout type="caution">
-                <Markdown>{operation["x-deprecation-notice"]}</Markdown>
-              </Callout>
-            </div>
-          )
-        }
-        {
-          operation.description && Description && (
-            <MarkdownContent class="description">
-              <Description />
-            </MarkdownContent>
-          )
-        }
-        {
-          operation["x-scopes"] && operation["x-scopes"].length > 0 && (
-            <div class="scopes" data-pagefind-ignore>
-              Requires one of scopes:
-              {operation["x-scopes"].map((scope) => (
-                <code dir="auto">{scope}</code>
-              ))}
-            </div>
-          )
-        }
-        {
-          formattedPermissions.length > 0 && (
-            <div class="permissions" data-pagefind-ignore>
-              Required permissions:
-              {formattedPermissions.map((permission) => (
-                <code dir="auto">{permission}</code>
-              ))}
-            </div>
-          )
-        }
-      </div>
-      {
-        pathParams && pathParams.length > 0 && (
-          <Parameters kind="Path Parameters" parameters={pathParams} />
-        )
-      }
-      {
-        queryParams && queryParams.length > 0 && (
-          <Parameters kind="Query Parameters" parameters={queryParams} />
-        )
-      }
-      {
-        isRequestBody(operation.requestBody) &&
-          "application/json" in operation.requestBody.content &&
-          !!operation.requestBody.content["application/json"].schema && (
+        {body.example && <Example example={body.example} />}
+      </Schema>
+    ))}
+    <section class="responses" data-api-responses>
+      <SectionHeading as="h2">Responses</SectionHeading>
+      {page.responses.map((response) => {
+        const Response = /^[45]/.test(response.status) ? "details" : "section";
+        const Heading = Response === "details" ? "summary" : "h3";
+        return (
+          <Response id={response.anchor} class="response">
+            <Heading class="response-heading">
+              {response.status}
+              {response.mediaType && <span>{response.mediaType}</span>}
+            </Heading>
+            {response.descriptionHtml && (
+              <MarkdownContent set:html={response.descriptionHtml} />
+            )}
+            {response.headers && response.headers.length > 0 && (
+              <Schema fields={response.headers} title="Headers" />
+            )}
             <Schema
-              kind="Body Parameters"
-              title="Body Parameters"
-              schema={operation.requestBody.content["application/json"].schema}
+              fields={response.fields}
+              union={response.bodyUnion}
+              truncated={response.truncated}
             />
-          )
-      }
-      <SectionHeading>Response</SectionHeading>
-      {
-        successResponse?.schema ? (
-          <>
-            {(successResponse.description ||
-              successResponseCoreObjects.length > 0) && (
-              <Body size="s" className="response-description">
-                {successResponse.description}
-                {successResponse.description &&
-                  successResponseCoreObjects.length > 0 &&
-                  " "}
-                {successResponseCoreObjects.length > 0 && (
-                  <>
-                    See{" "}
-                    {successResponseCoreObjects.map((coreObject, index) => (
-                      <>
-                        {index > 0 && ", "}
-                        <Anchor
-                          size="s"
-                          weight="bold"
-                          href={coreObject.href}
-                          data-pagefind-ignore
-                        >
-                          {coreObject.name} object
-                        </Anchor>
-                      </>
-                    ))}
-                    .
-                  </>
-                )}
-              </Body>
+            {!response.mediaType && (
+              <p class="empty-response">Returns an empty response.</p>
             )}
-            <Schema kind="Response" schema={successResponse.schema} />
-          </>
-        ) : (
-          <Body size="s" className="response-description">
-            Returns empty response.
-          </Body>
-        )
-      }
-    </div>
-    <div class="examples api-docs-stack-mega">
-      <div class="example-request">
-        <ExampleRequest operation={operation} />
-      </div>
-      {
-        successResponse && (
-          <div class="example-response api-docs-sticky">
-            {successResponse.example && (
-              <CodeBlock
-                data-pagefind-ignore="all"
-                title="Response"
-                language="json"
-                code={JSON.stringify(successResponse.example, null, 2)}
-              />
-            )}
-            {successResponse.examples && (
-              <MultiCode
-                data-pagefind-ignore="all"
-                options={Object.entries(successResponse.examples).map(
-                  ([key, value]) => ({
-                    label: key,
-                    code: JSON.stringify(
-                      "value" in value ? value.value : "",
-                      null,
-                      2,
-                    ),
-                    lang: "json",
-                  }),
-                )}
+            {response.additionalMedia?.map((body) => (
+              <Schema
+                fields={body.fields}
+                title={body.mediaType}
+                anchor={body.anchor}
+                union={body.union}
+                truncated={body.truncated}
               >
-                <div slot="left">Response</div>
-              </MultiCode>
-            )}
-            {!successResponse.example &&
-              !successResponse.examples &&
-              successResponse.schema && (
-                <Example
-                  name={`${operation.summary} response`}
-                  schema={successResponse.schema}
-                />
-              )}
-          </div>
-        )
-      }
+                {body.example && <Example example={body.example} />}
+              </Schema>
+            ))}
+          </Response>
+        );
+      })}
+    </section>
+  </div>
+  <div class="examples">
+    <div class="example-stack">
+      <CodeSamples
+        samples={page.samples}
+        responses={page.responses}
+        method={page.method}
+        title={page.title}
+        coordinate={page.coordinate}
+      />
     </div>
-  </LRGrid>
-  {
-    errorResponses.length > 0 && (
-      <LRGrid class="error-responses">
-        <div>
-          <Tabs syncKey="errors">
-            {errorResponses.map((errorResponse) => (
-              <TabItem label={`Error ${errorResponse.status}`}>
-                <Body size="s" className="content-type">
-                  Content-Type:{" "}
-                  <code dir="auto">{errorResponse.contentType}</code>
-                </Body>
-                {errorResponse.description && (
-                  <Body size="s">{errorResponse.description}</Body>
-                )}
-                <Schema
-                  kind={`Error ${errorResponse.status}`}
-                  schema={errorResponse.schema}
-                />
-              </TabItem>
-            ))}
-          </Tabs>
-        </div>
-        <div class="error-example error-example-panels api-docs-sticky">
-          <Tabs syncKey="errors">
-            {errorResponses.map((errorResponse) => (
-              <TabItem label={`Error ${errorResponse.status}`}>
-                {errorResponse.example !== undefined ? (
-                  <CodeBlock
-                    data-pagefind-ignore="all"
-                    title={`Error ${errorResponse.status}`}
-                    language="json"
-                    code={JSON.stringify(errorResponse.example, null, 2)}
-                  />
-                ) : (
-                  <Example
-                    name={`Error ${errorResponse.status}`}
-                    schema={errorResponse.schema}
-                  />
-                )}
-              </TabItem>
-            ))}
-          </Tabs>
-        </div>
-      </LRGrid>
-    )
-  }
-</section>
-
+  </div>
+</LRGrid>
 <style>
-  h2 {
-    margin: 0 0 var(--cui-spacings-mega);
-  }
-
-  h2 > div {
-    margin-left: var(--cui-spacings-kilo);
-  }
-
-  .info {
-    margin: var(--cui-spacings-giga) 0 var(--cui-spacings-tera);
-  }
-
-  .description {
-    margin: var(--cui-spacings-giga) 0;
-  }
-
-  .scopes,
-  .permissions {
-    font-size: var(--cui-body-s-font-size);
-    line-height: var(--cui-body-s-line-height);
+  .operation-content {
+    min-width: 0;
     display: flex;
-    gap: 0 var(--cui-spacings-byte);
-    flex-wrap: wrap;
+    flex-direction: column;
+    gap: var(--cui-spacings-giga);
   }
-
+  .authorization p {
+    margin-block: var(--cui-spacings-byte);
+  }
+  .authorization ul {
+    padding-left: var(--cui-spacings-giga);
+    margin-block: var(--cui-spacings-byte);
+  }
+  .authorization code + code {
+    margin-left: var(--cui-spacings-byte);
+  }
   .examples {
-    margin-top: var(--cui-spacings-exa);
     position: relative;
+    min-width: 0;
   }
-
-  :global(.tag-link) {
-    display: block;
+  .example-stack {
+    position: sticky;
+    top: calc(var(--portal-header-height) + var(--cui-spacings-giga));
+    display: flex;
+    flex-direction: column;
+    gap: var(--cui-spacings-giga);
+  }
+  .example-stack > :global(*) {
+    flex-shrink: 0;
+  }
+  @media (min-width: 76.001rem) {
+    .example-stack {
+      max-height: calc(
+        100vh - var(--portal-header-height) - 2 * var(--cui-spacings-giga)
+      );
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      scrollbar-width: thin;
+    }
+  }
+  .response {
+    margin-top: var(--cui-spacings-mega);
+    scroll-margin-top: calc(var(--portal-header-height) + 1.5rem);
+  }
+  .response-heading {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--cui-spacings-byte);
+    font-size: var(--portal-font-size-mono);
+    font-family: var(--cui-font-stack-mono);
+  }
+  .response-heading span {
+    font-family: var(--cui-font-stack-default);
     color: var(--cui-fg-subtle);
     font-size: var(--cui-body-s-font-size);
-    line-height: var(--cui-body-s-line-height);
-    margin-bottom: var(--cui-spacings-byte);
-    text-decoration: none;
   }
-
-  .tag-link:hover {
-    text-decoration: underline;
+  summary {
+    cursor: pointer;
+    padding-block: var(--cui-spacings-byte);
   }
-
-  .headline {
-    margin-bottom: var(--cui-spacings-kilo);
+  summary::before {
+    content: "▸";
   }
-
-  .operation-endpoint {
-    font-size: var(--cui-body-s-font-size);
-    line-height: var(--cui-body-s-line-height);
-    margin: var(--cui-spacings-byte) 0 var(--cui-spacings-giga);
+  details[open] > summary::before {
+    content: "▾";
   }
-
-  .error-responses {
-    margin-top: var(--cui-spacings-giga);
-  }
-
-  .error-responses :global(starlight-tabs [role="tablist"]) {
-    border-bottom-width: 1px;
-    font-size: var(--cui-body-s-font-size);
-    line-height: var(--cui-body-s-line-height);
-  }
-
-  .error-responses :global(starlight-tabs .tab > [role="tab"]) {
-    box-shadow: 0 1px 0 var(--sl-tab-color-border);
-  }
-
-  .content-type {
-    margin-bottom: var(--cui-spacings-mega);
-  }
-
-  .error-example {
-    align-self: start;
-  }
-
-  .error-example-panels :global(starlight-tabs > .tablist-wrapper),
-  .error-example-panels :global(starlight-tabs [role="tablist"]) {
-    display: none !important;
-  }
-
-  .error-example-panels :global(starlight-tabs > [role="tabpanel"]) {
-    margin-top: 0;
-  }
-
-  .response-description {
-    margin: var(--cui-spacings-mega) 0;
+  .empty-response {
+    color: var(--cui-fg-subtle);
   }
 </style>

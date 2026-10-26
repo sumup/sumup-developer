@@ -1,0 +1,90 @@
+---
+import type { ApiIndexChunk } from "@cloudflare/nimbus-docs/runtime";
+import { renderMarkdown } from "@cloudflare/nimbus-docs/markdown";
+import MarkdownContent from "@components/MarkdownContent.astro";
+import EndpointList from "./EndpointList.astro";
+interface Props {
+  chunk: ApiIndexChunk;
+  grouped: boolean;
+}
+const { chunk, grouped } = Astro.props;
+---
+
+<div class="api-index">
+  {chunk.groups.map((group) => (
+    <section data-api-endpoint-group>
+      {(group.label || grouped) && (
+        <h2 id={group.anchor}>
+          {group.ref ? (
+            <a href={group.ref.href}>{group.label ?? "More"}</a>
+          ) : (
+            (group.label ?? "More")
+          )}
+          {group.continued && " (continued)"}
+        </h2>
+      )}
+      {group.operations.length > 0 && (
+        <EndpointList operations={group.operations} />
+      )}
+      {group.sections.map((section) => {
+        const Heading = group.label || grouped ? "h3" : "h2";
+        return (
+          <section class="index-section" data-api-endpoint-group>
+            <Heading id={section.anchor}>
+              <a href={section.ref.href}>{section.ref.label}</a>
+              {section.continued && " (continued)"}
+            </Heading>
+            {section.description && (
+              <MarkdownContent
+                class="description"
+                set:html={renderMarkdown(section.description)}
+              />
+            )}
+            <EndpointList operations={section.operations} />
+          </section>
+        );
+      })}
+    </section>
+  ))}
+  {chunk.operations && (
+    <section data-api-endpoint-group>
+      <h2 id={chunk.operations.anchor}>Other endpoints</h2>
+      <EndpointList operations={chunk.operations.operations} />
+    </section>
+  )}
+  {chunk.webhooks && (
+    <section data-api-endpoint-group>
+      <h2 id={chunk.webhooks.anchor}>Webhooks</h2>
+      <EndpointList operations={chunk.webhooks.operations} />
+    </section>
+  )}
+</div>
+<style>
+  .api-index {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cui-spacings-giga);
+  }
+  h2 {
+    margin-top: var(--cui-spacings-giga);
+    font-size: var(--cui-headline-m-font-size);
+  }
+  h3 {
+    margin-top: var(--cui-spacings-giga);
+    font-size: var(--cui-headline-s-font-size);
+  }
+  h2,
+  h3 {
+    scroll-margin-top: calc(var(--portal-header-height) + 1.5rem);
+  }
+  a {
+    color: var(--cui-fg-normal);
+    text-decoration: none;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+  .index-section > :global(.description) {
+    margin-top: var(--cui-spacings-byte);
+  }
+</style>

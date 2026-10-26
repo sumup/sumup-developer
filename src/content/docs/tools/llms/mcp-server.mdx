@@ -22,19 +22,21 @@ Use the server to:
 
 Clients that support MCP resources can read:
 
-| Resource | URI |
-| --- | --- |
-| Developer documentation index | `https://developer.sumup.com/llms.txt` |
-| API OpenAPI specification | `https://developer.sumup.com/openapi.json` |
+| Resource                      | URI                                        |
+| ----------------------------- | ------------------------------------------ |
+| Developer documentation index | `https://developer.sumup.com/llms.txt`     |
+| API OpenAPI specification     | `https://developer.sumup.com/openapi.json` |
 
-The documentation index points to guides available as Markdown. Clients without resource support can read the [documentation index](/llms.txt) and the [OpenAPI specification from the SumUp OpenAPI repository](https://raw.githubusercontent.com/sumup/sumup-openapi/refs/heads/main/openapi.json) directly.
+{/* Custom Astro endpoint, verified by check:agent-docs. */}
+{/* nimbus-rule-disable-next-line nimbus/internal-link */}
+The documentation index points to guides and API reference pages available as Markdown, including SDK samples. Clients without resource support can read the [documentation index](/llms.txt), the [API reference index](/api/llms.txt), and the [OpenAPI specification](/openapi.json) directly.
 
 ## Authentication
 
-| Setup | Authentication | Requirements |
-| --- | --- | --- |
-| Hosted server at `https://mcp.sumup.com/mcp` | Sign in with SumUp through OAuth | A client that supports Streamable HTTP and OAuth |
-| Local `@sumup/mcp` process | SumUp API key in `SUMUP_API_KEY` | Node.js 22 or later and a client that supports stdio |
+| Setup                                        | Authentication                   | Requirements                                         |
+| -------------------------------------------- | -------------------------------- | ---------------------------------------------------- |
+| Hosted server at `https://mcp.sumup.com/mcp` | Sign in with SumUp through OAuth | A client that supports Streamable HTTP and OAuth     |
+| Local `@sumup/mcp` process                   | SumUp API key in `SUMUP_API_KEY` | Node.js 22 or later and a client that supports stdio |
 
 ### Connect the Hosted Server
 

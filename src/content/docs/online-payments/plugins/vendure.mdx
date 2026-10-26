@@ -5,7 +5,9 @@ sidebar:
   order: 55
 ---
 
-import { LinkButton } from "@astrojs/starlight/components";
+import Callout from "@components/content/Callout";
+
+import { ExternalLink } from "@sumup-oss/icons";
 
 The [SumUp plugin for Vendure](https://github.com/sumup/sumup-plugin-vendure) adds SumUp as a payment integration for [Vendure](https://vendure.io/). It creates SumUp checkouts from Vendure's payment flow while keeping your SumUp credentials on the server side.
 
@@ -15,24 +17,30 @@ The plugin supports:
 - Widget-oriented storefront integrations that use a returned `checkoutId`
 - Webhook-driven payment updates through Vendure's payment flow
 
-:::note
+<Callout type="note" title="Note">
   The plugin supports SumUp online payment flows only. It does not support
   terminal or other card-present integrations.
-:::
+</Callout>
 
-<LinkButton
+<Button
   href="https://github.com/sumup/sumup-plugin-vendure"
-  icon="external"
->
-  View Vendure Plugin Repository
-</LinkButton>
+  label="View Vendure Plugin Repository"
+  variant="primary"
+  navigationIcon={ExternalLink}
+  target="_blank"
+  externalLabel="Opens in a new tab"
+  rel="noopener noreferrer"
+/>
 
-<LinkButton
+<Button
   href="https://docs.vendure.io/plugins/sumup"
-  icon="external"
->
-  View Vendure Plugin Docs
-</LinkButton>
+  label="View Vendure Plugin Docs"
+  variant="primary"
+  navigationIcon={ExternalLink}
+  target="_blank"
+  externalLabel="Opens in a new tab"
+  rel="noopener noreferrer"
+/>
 
 ## Prerequisites
 
@@ -174,29 +182,29 @@ When SumUp calls this endpoint, the plugin re-fetches the checkout from SumUp an
 
 The plugin exposes these fields in `payments[].metadata.public`:
 
-| Field | Description |
-| --- | --- |
-| `checkoutId` | SumUp checkout ID |
-| `checkoutReference` | Merchant checkout reference sent to SumUp |
-| `checkoutMode` | `hosted` or `widget` |
+| Field               | Description                                |
+| ------------------- | ------------------------------------------ |
+| `checkoutId`        | SumUp checkout ID                          |
+| `checkoutReference` | Merchant checkout reference sent to SumUp  |
+| `checkoutMode`      | `hosted` or `widget`                       |
 | `hostedCheckoutUrl` | Hosted Checkout URL when SumUp returns one |
-| `redirectUrl` | Redirect URL associated with the checkout |
+| `redirectUrl`       | Redirect URL associated with the checkout  |
 
 ## Configuration Options
 
-| Option | Required | Description |
-| --- | --- | --- |
-| `apiKey` | Yes | SumUp API key or access token. Keep it server-side. |
-| `merchantCode` | Yes | SumUp merchant code that receives the payment. |
-| `defaultLanguageCode` | No | Language used for the handler description shown in Vendure. |
-| `checkoutMode` | No | Default checkout mode: `hosted` or `widget`. Defaults to `hosted`. |
-| `returnUrl` | No | Backend callback URL used by SumUp for checkout status updates. |
-| `redirectUrl` | No | URL the shopper is sent to after redirect-based payment flows. |
-| `paymentDescription` | No | Default SumUp checkout description. |
-| `timeout` | No | SumUp SDK request timeout in milliseconds. |
-| `maxRetries` | No | SumUp SDK retry count. |
-| `supportedCurrencies` | No | Override the built-in supported currency allowlist. |
-| `client` | No | Inject a custom SumUp client implementation. Useful for tests. |
+| Option                | Required | Description                                                        |
+| --------------------- | -------- | ------------------------------------------------------------------ |
+| `apiKey`              | Yes      | SumUp API key or access token. Keep it server-side.                |
+| `merchantCode`        | Yes      | SumUp merchant code that receives the payment.                     |
+| `defaultLanguageCode` | No       | Language used for the handler description shown in Vendure.        |
+| `checkoutMode`        | No       | Default checkout mode: `hosted` or `widget`. Defaults to `hosted`. |
+| `returnUrl`           | No       | Backend callback URL used by SumUp for checkout status updates.    |
+| `redirectUrl`         | No       | URL the shopper is sent to after redirect-based payment flows.     |
+| `paymentDescription`  | No       | Default SumUp checkout description.                                |
+| `timeout`             | No       | SumUp SDK request timeout in milliseconds.                         |
+| `maxRetries`          | No       | SumUp SDK retry count.                                             |
+| `supportedCurrencies` | No       | Override the built-in supported currency allowlist.                |
+| `client`              | No       | Inject a custom SumUp client implementation. Useful for tests.     |
 
 ## Payment State Mapping
 
@@ -218,7 +226,7 @@ Before enabling the plugin in production, verify the following in a sandbox envi
 - SumUp's deliberate failure path with amount `11`
 - Expired or canceled checkouts mapping cleanly back into Vendure payment state
 
-:::note
+<Callout type="note" title="Note">
   The plugin does not add Admin UI extensions or extend Vendure's GraphQL
   schema. It uses the standard `addPaymentToOrder` payment metadata flow.
-:::
+</Callout>

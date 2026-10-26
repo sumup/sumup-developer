@@ -1,4 +1,4 @@
-import { fetchLatestGithubTag } from "./fetchLatestGithubTag";
+import { fetchLatestGithubTag } from "./fetchLatestGithubTag.ts";
 
 const JAVA_SDK_VERSION_FALLBACK = "0.0.6";
 

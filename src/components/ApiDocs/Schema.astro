@@ -1,220 +1,132 @@
 ---
-import { resolveSchema } from "@lib/openapi";
-import { Headline } from "@sumup-oss/circuit-ui";
-import { ChevronDown, Close } from "@sumup-oss/icons";
-import type { OpenAPIV3_1 } from "openapi-types";
-import Attributes from "./Attributes.astro";
-import ParameterName from "./ParameterName.astro";
-import SchemaPropertyRow from "./SchemaPropertyRow.astro";
+import type { ApiFieldView, ApiUnionView } from "@cloudflare/nimbus-docs/api";
+import MarkdownContent from "@components/MarkdownContent.astro";
 import SectionHeading from "./SectionHeading.astro";
-import { getRenderableAttributesSchema } from "./schemaUtils";
-
-export interface Props {
-  kind: string;
+import SchemaPropertyRow from "./SchemaPropertyRow.astro";
+import Union from "./Union.astro";
+import { isExpandable } from "./schemaUtils";
+interface Props {
+  fields: ApiFieldView[];
   title?: string;
-  schema: OpenAPIV3_1.SchemaObject | OpenAPIV3_1.ReferenceObject;
+  anchor?: string;
+  union?: ApiUnionView;
   nested?: boolean;
-  collapsable?: boolean;
-  collapsed?: boolean;
+  mediaType?: string;
+  required?: boolean;
+  descriptionHtml?: string;
+  truncated?: { total: number };
 }
-
 const {
-  kind,
+  fields,
   title,
-  schema: obj,
-  nested,
-  collapsable,
-  collapsed,
+  anchor,
+  union,
+  nested = false,
+  mediaType,
+  required,
+  descriptionHtml,
+  truncated,
 } = Astro.props;
-
-const schema = resolveSchema(obj);
+const expandable = Boolean(union || fields.some(isExpandable));
 ---
 
-<div
-  class:list={["schema", { nested, collapsable, collapsed }]}
-  data-pagefind-ignore
+<section
+  id={anchor}
+  class:list={["schema", nested && "nested"]}
+  data-api-fields={nested ? undefined : ""}
 >
-  {
-    nested && (
-      <div class="header">
-        <div class="close">
-          <Close size="16" />
-          &nbsp;Close
-        </div>
-        <div>{schema.title || kind}</div>
-        <div />
-      </div>
-    )
-  }
-  {
-    collapsable && (
-      <div class="header">
-        <div class="icon">
-          <ChevronDown size="16" />
-        </div>
-        <Headline as="h3">{schema.title || kind}</Headline>
-      </div>
-    )
-  }
-  {title && <SectionHeading>{title}</SectionHeading>}
-  {
-    schema.type === "array" &&
-      "items" in schema &&
-      (() => {
-        const attributesSchema = getRenderableAttributesSchema(schema.items);
-
-        return (
-          <div>
-            <ParameterName name={""} def={schema} required={false} />
-            {attributesSchema && (
-              <Attributes schema={attributesSchema} kind={"Attributes"} />
-            )}
-          </div>
-        );
-      })()
-  }
-  <ul class:list={[{ nested }]}>
-    {
-      Object.entries(schema.properties || {}).map(([name, def]) => {
-        return (
-          <SchemaPropertyRow
-            name={name}
-            def={def}
-            required={!!schema.required?.includes(name)}
-          />
-        );
-      })
-    }
-  </ul>
-</div>
-
+  {(title ||
+    mediaType ||
+    required !== undefined ||
+    (expandable && !nested)) && (
+    <div class="schema-heading">
+      {title && <SectionHeading as="h2">{title}</SectionHeading>}
+      {mediaType && <code class="media-type">{mediaType}</code>}
+      {required !== undefined && (
+        <span class="requirement">{required ? "required" : "optional"}</span>
+      )}
+      {expandable && !nested && (
+        <button
+          type="button"
+          hidden
+          data-api-toggle-all
+          data-nb-expanded="false"
+        >
+          <span class="expand-label">Expand all</span>
+          <span class="collapse-label">Collapse all</span>
+        </button>
+      )}
+    </div>
+  )}
+  {descriptionHtml && <MarkdownContent set:html={descriptionHtml} />}
+  {union ? (
+    <Union union={union} />
+  ) : (
+    <ul class="properties">
+      {fields.map((field) => (
+        <SchemaPropertyRow field={field} />
+      ))}
+    </ul>
+  )}
+  {truncated && truncated.total > fields.length && (
+    <p>{truncated.total - fields.length} additional properties omitted.</p>
+  )}
+  <slot />
+</section>
+<script>
+  import "./fields.client";
+</script>
 <style>
-  :global(.schema p) {
-    margin-bottom: var(--cui-spacings-bit);
-  }
-
   .schema {
-    margin-bottom: var(--cui-spacings-giga);
-    font-size: var(--cui-body-s-font-size);
-    line-height: var(--cui-body-s-line-height);
+    min-width: 0;
+    scroll-margin-top: calc(var(--portal-header-height) + 1.5rem);
   }
-
-  .schema.nested {
-    margin-bottom: 0;
-  }
-
-  .collapsable > .header {
+  .schema-heading {
     display: flex;
-    flex-direction: row;
-    align-items: center;
-    cursor: pointer;
-  }
-  .collapsable > .header .icon {
-    padding-top: var(--cui-spacings-bit);
-    width: var(--cui-spacings-giga);
-    display: flex;
-    align-items: center;
-    justify-content: baseline;
-  }
-  .collapsable > .header .icon :global(svg) {
-    transition: 0.1s ease-in-out;
-  }
-  .collapsable > .header :global(h3) {
-    width: 100%;
-  }
-  .collapsable.collapsed {
-    margin-bottom: 0;
-  }
-  .collapsable.collapsed ul {
-    display: none;
-  }
-  .collapsable.collapsed > .header :global(h3) {
-    border: none;
-  }
-  .collapsable.collapsed :global(.icon svg) {
-    transform: rotate(-90deg);
-  }
-  .collapsable .icon.open {
-    display: none;
-  }
-  .collapsable > .icon.close {
-    display: block;
-  }
-
-  .nested > .header {
-    border-bottom: var(--cui-border-width-kilo) solid var(--cui-border-subtle);
-    padding: var(--cui-spacings-bit) var(--cui-spacings-byte);
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    flex-wrap: wrap;
+    align-items: baseline;
     gap: var(--cui-spacings-byte);
-    justify-items: center;
-    justify-content: space-between;
-  }
-
-  .nested > .header .close {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-self: start;
-    cursor: pointer;
-    color: var(--cui-fg-subtle);
-  }
-
-  .nested > .header .close:hover {
-    color: var(--cui-fg-subtle-hovered);
-  }
-
-  .body {
-    margin-bottom: var(--cui-spacings-kilo);
-  }
-
-  ul {
-    list-style: none;
-    padding: 0;
-  }
-  ul.nested {
-    margin: 0 var(--cui-spacings-mega);
-  }
-
-  ul li {
-    width: 100%;
-    padding: var(--cui-spacings-kilo) 0;
-  }
-  ul li:last-child {
-    border-bottom: none;
-  }
-  h3 {
-    margin-top: var(--cui-spacings-mega);
+    margin-bottom: var(--cui-spacings-byte);
     padding-bottom: var(--cui-spacings-byte);
-    border-bottom: var(--cui-border-width-kilo) solid var(--cui-border-subtle);
-    font-size: 1rem;
+    border-bottom: 1px solid var(--cui-border-subtle);
+  }
+  .schema-heading :global(h2) {
+    margin: 0;
+    font-size: var(--cui-headline-s-font-size);
+  }
+  .properties {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .media-type,
+  .requirement {
+    font-size: var(--cui-body-s-font-size);
+    color: var(--cui-fg-subtle);
+    overflow-wrap: anywhere;
+  }
+  .media-type {
+    font-size: var(--portal-font-size-mono);
+  }
+  button {
+    margin-inline-start: auto;
+    padding: var(--cui-spacings-bit) var(--cui-spacings-byte);
+    border: 1px solid var(--cui-border-normal);
+    border-radius: var(--cui-border-radius-byte);
+    color: var(--cui-fg-normal);
+    background: var(--cui-bg-normal);
+    font: inherit;
+    font-size: var(--cui-body-s-font-size);
+    cursor: pointer;
+  }
+  button:hover {
+    background: var(--cui-bg-normal-hovered);
+  }
+  .collapse-label,
+  [data-nb-expanded="true"] .expand-label {
+    display: none;
+  }
+  [data-nb-expanded="true"] .collapse-label {
+    display: inline;
   }
 </style>
-
-<script>
-  const initSchemas = () => {
-    const buttons = document.querySelectorAll<HTMLElement>(".nested .close");
-    buttons.forEach((button) => {
-      if (button.dataset.initialized) return;
-      button.dataset.initialized = "true";
-      button.addEventListener("click", () => {
-        const grandParentElement = button.closest(".open");
-        grandParentElement?.classList.remove("open");
-      });
-    });
-
-    const chevrons = document.querySelectorAll<HTMLElement>(
-      ".collapsable > .header",
-    );
-    chevrons.forEach((chevron) => {
-      if (chevron.dataset.initialized) return;
-      chevron.dataset.initialized = "true";
-      chevron.addEventListener("click", () => {
-        chevron.parentElement?.classList.toggle("collapsed");
-      });
-    });
-  };
-
-  initSchemas();
-  document.addEventListener("astro:page-load", initSchemas);
-</script>

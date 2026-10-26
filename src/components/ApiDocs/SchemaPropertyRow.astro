@@ -1,116 +1,168 @@
 ---
-import Callout from "@components/content/Callout";
-import Markdown from "@components/Markdown.astro";
-import { resolveSchema } from "@lib/openapi";
-import type { OpenAPIV3_1 } from "openapi-types";
-import Attributes from "./Attributes.astro";
-import ParameterName from "./ParameterName.astro";
-import {
-  getRenderableAttributesSchema,
-  getSchemaEnumValues,
-  isNonArraySchemaObject,
-} from "./schemaUtils";
-
-type Props = {
-  name: string;
-  def: OpenAPIV3_1.SchemaObject | OpenAPIV3_1.ReferenceObject;
-  required: boolean;
-};
-
-const { name, def, required } = Astro.props;
-const propertySchema = resolveSchema(def);
-const enumValues = getSchemaEnumValues(propertySchema);
-const attributeKind = propertySchema.title || "Attributes";
-const arrayItemSchema =
-  propertySchema.type === "array" && "items" in propertySchema
-    ? resolveSchema(propertySchema.items)
-    : null;
-const arrayItemDescription =
-  propertySchema.type === "array" &&
-  !propertySchema.description &&
-  arrayItemSchema?.description
-    ? arrayItemSchema.description
-    : undefined;
-const objectAttributesSchema =
-  propertySchema.type === "object"
-    ? getRenderableAttributesSchema(propertySchema)
-    : null;
-const arrayAttributesSchema =
-  propertySchema.type === "array" && "items" in propertySchema
-    ? getRenderableAttributesSchema(propertySchema.items)
-    : null;
+import type { ApiFieldView } from "@cloudflare/nimbus-docs/api";
+import MarkdownContent from "@components/MarkdownContent.astro";
+import Schema from "./Schema.astro";
+import Union from "./Union.astro";
+import { constraintPairs, displayValue, isExpandable } from "./schemaUtils";
+interface Props {
+  field: ApiFieldView;
+}
+const { field } = Astro.props;
+const refs = field.typeRefs ?? (field.typeRef ? [field.typeRef] : []);
+const omitted = field.childCount - field.children.length;
 ---
 
-<li>
-  <ParameterName name={name} def={propertySchema} required={required} />
-  {
-    enumValues && (
-      <div class="enum">
-        <span>Options:&nbsp;</span>
-        {enumValues.map((value) => (
-          <code dir="auto">{value}</code>
-        ))}
+<li id={field.anchor} class="property">
+  <div class="parameter">
+    <a
+      class="name"
+      href={`#${field.anchor}`}
+      aria-label={`Link to ${field.name}`}
+    >
+      {field.name}
+    </a>
+    <span class="type">{field.type}</span>
+    {field.required && <span class="required">required</span>}
+    {field.nullable && <span>nullable</span>}
+    {field.deprecated && <span class="required">deprecated</span>}
+  </div>
+  {refs.length > 0 && (
+    <div class="type-links">
+      {refs.map((ref) => (
+        <a href={ref.href}>{ref.label}</a>
+      ))}
+    </div>
+  )}
+  {field.enum && (
+    <div class="constraints">
+      <span>Options:</span>
+      {field.enum.map((value) => (
+        <code>{displayValue(value)}</code>
+      ))}
+    </div>
+  )}
+  <div class="constraints">
+    {constraintPairs(field.constraints).map(([name, value]) => (
+      <span>
+        {name}: <code>{value}</code>
+      </span>
+    ))}
+    {field.default !== undefined && (
+      <span>
+        default: <code>{displayValue(field.default)}</code>
+      </span>
+    )}
+  </div>
+  {field.descriptionHtml ? (
+    <MarkdownContent set:html={field.descriptionHtml} />
+  ) : (
+    field.description && <p>{field.description}</p>
+  )}
+  {field.example !== undefined && (
+    <p class="example">
+      Example: <code>{displayValue(field.example)}</code>
+    </p>
+  )}
+  {isExpandable(field) && (
+    <details class="attributes">
+      <summary>
+        {field.union
+          ? `${field.union.variants.length} variants`
+          : `Show ${field.childCount} ${field.childCount === 1 ? "property" : "properties"}`}
+      </summary>
+      <div class="attributes-body">
+        {field.union ? (
+          <Union union={field.union} />
+        ) : (
+          <Schema fields={field.children} nested />
+        )}
+        {field.truncated && (
+          <p class="truncated">
+            {omitted > 0
+              ? `${omitted} more properties. `
+              : "Further nesting is omitted. "}
+            {field.link ? (
+              <a href={field.link.href}>View {field.link.label}</a>
+            ) : (
+              "See the linked schema for the full definition."
+            )}
+          </p>
+        )}
       </div>
-    )
-  }
-  {
-    "x-deprecation-notice" in propertySchema && (
-      <div class="notice">
-        <Callout type="caution">
-          <Markdown>{propertySchema["x-deprecation-notice"]}</Markdown>
-        </Callout>
-      </div>
-    )
-  }
-  {
-    propertySchema.description && (
-      <Markdown>{propertySchema.description}</Markdown>
-    )
-  }
-  {arrayItemDescription && <Markdown>{arrayItemDescription}</Markdown>}
-  {
-    objectAttributesSchema && (
-      <Attributes schema={propertySchema} kind={attributeKind} />
-    )
-  }
-  {
-    arrayAttributesSchema && (
-      <Attributes schema={arrayAttributesSchema} kind={attributeKind} />
-    )
-  }
-  {
-    isNonArraySchemaObject(propertySchema) && propertySchema.example && (
-      <div class="example">
-        Example:{" "}
-        <code dir="auto">{JSON.stringify(propertySchema.example)}</code>
-      </div>
-    )
-  }
+    </details>
+  )}
 </li>
-
 <style>
-  li {
-    width: 100%;
+  .property {
+    min-width: 0;
     padding: var(--cui-spacings-kilo) 0;
+    border-bottom: 1px solid var(--cui-border-divider);
+    scroll-margin-top: calc(var(--portal-header-height) + 1.5rem);
+    overflow-wrap: anywhere;
   }
-
-  li:last-child {
-    border-bottom: none;
+  .property:last-child {
+    border-bottom: 0;
   }
-
-  .notice {
-    margin: var(--cui-spacings-mega) 0;
-  }
-
-  .enum {
-    margin-bottom: var(--cui-spacings-bit);
-    display: inline-flex;
-    flex-direction: row;
+  .parameter {
+    display: flex;
     flex-wrap: wrap;
-    gap: var(--cui-spacings-bit);
+    align-items: baseline;
+    gap: var(--cui-spacings-bit) var(--cui-spacings-byte);
+    margin-bottom: var(--cui-spacings-bit);
   }
-
+  .name {
+    color: var(--cui-fg-normal);
+    font-family: var(--cui-font-stack-mono);
+    font-size: var(--portal-font-size-mono);
+    font-weight: var(--cui-font-weight-semibold);
+    text-decoration: none;
+  }
+  .name:hover,
+  .name:focus-visible {
+    text-decoration: underline;
+  }
+  .type,
+  .constraints,
+  .example,
+  .truncated {
+    color: var(--cui-fg-subtle);
+    font-size: var(--cui-body-s-font-size);
+  }
+  .required {
+    color: var(--cui-fg-warning);
+    font-size: var(--cui-body-s-font-size);
+  }
+  .constraints,
+  .type-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--cui-spacings-bit) var(--cui-spacings-byte);
+  }
+  .constraints:empty {
+    display: none;
+  }
+  .type-links,
   .example {
-    margin-top: var(--cui-spacings-byte);
+    margin-block: var(--cui-spacings-bit);
+  }
+  code {
+    font-family: var(--cui-font-stack-mono);
+  }
+  .attributes {
+    margin-top: var(--cui-spacings-kilo);
+    border: 1px solid var(--cui-border-subtle);
+    border-radius: var(--cui-border-radius-byte);
+  }
+  summary {
+    width: fit-content;
+    padding: var(--cui-spacings-bit) var(--cui-spacings-byte);
+    cursor: pointer;
+    font-size: var(--cui-body-s-font-size);
+  }
+  summary:hover {
+    background: transparent;
+  }
+  .attributes-body {
+    padding: 0 var(--cui-spacings-kilo) var(--cui-spacings-byte);
   }
 </style>

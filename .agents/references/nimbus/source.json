@@ -1,0 +1,16 @@
+{
+  "repository": "https://github.com/cloudflare/nimbus",
+  "revision": "c3aa96fa57d52911fa395cd052f7bb9acffd9952",
+  "path": "apps/www/registry/features",
+  "recipes": [
+    "overview",
+    "quickstart",
+    "tutorial",
+    "how-to",
+    "concept",
+    "reference",
+    "example",
+    "troubleshooting",
+    "changelog"
+  ]
+}

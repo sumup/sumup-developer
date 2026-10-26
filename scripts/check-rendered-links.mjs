@@ -1,114 +1,72 @@
-import { readdir, readFile } from "node:fs/promises";
-import { join, relative, resolve, sep } from "node:path";
+import { resolve } from "node:path";
+import { renderedSite, siteOrigin } from "./lib/rendered-site.mjs";
 
-import { JSDOM } from "jsdom";
-
-const siteOrigin = "https://developer.sumup.com";
-const outputRoot = resolve(process.argv[2] ?? "dist/client");
-const apiRoot = join(outputRoot, "api");
-
-async function listFiles(directory) {
-  const entries = await readdir(directory, { withFileTypes: true });
-  const files = await Promise.all(
-    entries.map((entry) => {
-      const path = join(directory, entry.name);
-      return entry.isDirectory() ? listFiles(path) : [path];
-    }),
-  );
-
-  return files.flat();
-}
-
-function outputPath(file) {
-  return relative(outputRoot, file).split(sep).join("/");
-}
-
-function generatedFileCandidates(pathname) {
-  const path = decodeURIComponent(pathname).replace(/^\/+/, "");
-
-  if (!path) {
-    return ["index.html"];
-  }
-
-  if (path.endsWith("/")) {
-    return [`${path}index.html`];
-  }
-
-  return [path, `${path}/index.html`, `${path}.html`];
-}
-
-const outputFiles = await listFiles(outputRoot);
-const generatedFiles = new Set(outputFiles.map(outputPath));
-const apiPages = outputFiles.filter(
-  (file) => file.startsWith(`${apiRoot}${sep}`) && file.endsWith(".html"),
-);
-
-if (apiPages.length === 0) {
-  throw new Error(`No rendered API reference pages found in ${apiRoot}`);
-}
-
-const documentCache = new Map();
-
-async function getDocument(file) {
-  let document = documentCache.get(file);
-
-  if (!document) {
-    const html = await readFile(file, "utf8");
-    document = new JSDOM(html).window.document;
-    documentCache.set(file, document);
-  }
-
-  return document;
-}
-
-function resolveGeneratedFile(pathname) {
-  const candidate = generatedFileCandidates(pathname).find((file) =>
-    generatedFiles.has(file),
-  );
-
-  return candidate ? join(outputRoot, candidate) : undefined;
-}
-
-const failures = new Set();
-let checkedLinks = 0;
-
-for (const page of apiPages) {
-  const document = await getDocument(page);
-  const source = outputPath(page);
-
-  for (const anchor of document.querySelectorAll("a[href]")) {
-    const href = anchor.getAttribute("href");
-
-    if (!href?.startsWith("/")) {
-      continue;
+export async function checkRenderedLinks(site) {
+  if (!site.htmlFiles.length) throw new Error("No rendered HTML pages found.");
+  const failures = new Set();
+  let checkedLinks = 0;
+  let checkedFragments = 0;
+  let checkedImages = 0;
+  for (const file of site.htmlFiles) {
+    const source = site.outputPath(file);
+    const document = await site.page(file);
+    for (const image of document.images) {
+      checkedImages++;
+      if (image.alt === null)
+        failures.add(
+          `${source}: image ${image.src} is missing an alt attribute (use alt="" for decorative images)`,
+        );
+      else if (image.alt.length > 0 && !image.alt.trim())
+        failures.add(
+          `${source}: image ${image.src} has whitespace-only alt text`,
+        );
     }
-
-    const url = new URL(href, siteOrigin);
-
-    if (url.origin !== siteOrigin) {
-      continue;
-    }
-
-    checkedLinks += 1;
-    const target = resolveGeneratedFile(url.pathname);
-
-    if (!target) {
-      failures.add(`${source}: ${href} (target does not exist)`);
+    for (const href of document.links) {
+      if (!href.trim() || href.trim() === "#") {
+        failures.add(
+          `${source}: empty link destination ${JSON.stringify(href)}`,
+        );
+        continue;
+      }
+      const url = new URL(href, site.urlForFile(file));
+      if (url.origin !== siteOrigin) continue;
+      checkedLinks++;
+      const target = site.resolve(url);
+      if (!target) {
+        failures.add(
+          `${source}: ${href} (target does not exist or redirect loops)`,
+        );
+        continue;
+      }
+      // Text-fragment directives don't require a DOM id.
+      const fragment = decodeURIComponent(
+        target.url.hash.slice(1).split(":~:")[0],
+      );
+      if (!fragment || !target.file?.endsWith(".html")) continue;
+      checkedFragments++;
+      const targetPage = await site.page(target.file);
+      if (!targetPage.ids.has(fragment))
+        failures.add(
+          `${source}: ${href} (fragment #${fragment} does not exist)`,
+        );
     }
   }
+  if (failures.size) {
+    throw new Error(
+      `Invalid links or images found in rendered pages:\n${[...failures]
+        .sort()
+        .map((failure) => `- ${failure}`)
+        .join("\n")}`,
+    );
+  } else {
+    console.log(
+      `Checked ${checkedLinks} internal links and ${checkedFragments} fragments across ${site.htmlFiles.length} rendered pages; checked ${checkedImages} image alt attributes.`,
+    );
+  }
 }
 
-if (failures.size > 0) {
-  console.error("Invalid links found in the rendered API reference:");
-  console.error(
-    [...failures]
-      .sort()
-      .map((failure) => `- ${failure}`)
-      .join("\n"),
-  );
-  process.exitCode = 1;
-} else {
-  console.log(
-    `Checked ${checkedLinks} internal links across ${apiPages.length} rendered API reference pages.`,
+if (import.meta.main) {
+  await checkRenderedLinks(
+    await renderedSite(resolve(process.argv[2] ?? "dist/client")),
   );
 }

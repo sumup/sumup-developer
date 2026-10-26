@@ -1,124 +1,192 @@
 ---
-import TopSections from "./TopSections.astro";
-import TagDocs from "./TagDocs.astro";
-
-export interface Props {
-  class?: string;
-  tagSlug?: string;
-  operationSlug?: string;
-  topSection?: "introduction" | "sdks" | "authentication" | "errors";
+import type { ApiPageProps } from "@cloudflare/nimbus-docs/api";
+import type { ApiHome } from "@cloudflare/nimbus-docs/runtime";
+import MarkdownContent from "@components/MarkdownContent.astro";
+import Operation from "./Operation.astro";
+import Schema from "./Schema.astro";
+import ApiIndex from "./ApiIndex.astro";
+import EndpointList from "./EndpointList.astro";
+import { constraintPairs, displayValue } from "./schemaUtils";
+interface Props {
+  page: ApiPageProps;
+  home?: ApiHome;
 }
-
-const { class: className, tagSlug, operationSlug, topSection } = Astro.props;
-const target = tagSlug
-  ? operationSlug
-    ? `${tagSlug}/${operationSlug}`
-    : tagSlug
-  : topSection;
+const { page, home } = Astro.props;
+const nextPart = home?.parts[home.part.number];
 ---
 
-<article class={className} data-selected-operation={target}>
-  <div class="specs">
-    {!tagSlug && <TopSections topSection={topSection} />}
-    {tagSlug && <TagDocs tagSlug={tagSlug} operationSlug={operationSlug} />}
-  </div>
-</article>
-
+<div
+  class="api-docs"
+  data-api-endpoint-index={
+    page.kind === "api" || page.kind === "section" ? "" : undefined
+  }
+>
+  {page.deprecated && (
+    <div class="deprecation" role="note">
+      <strong>Deprecated.</strong>
+      {page.deprecation?.successor && (
+        <>
+          {" "}
+          Use{" "}
+          <a href={page.deprecation.successor.href}>
+            {page.deprecation.successor.label}
+          </a>{" "}
+          instead.
+        </>
+      )}
+      {page.deprecation?.migrationHref && (
+        <>
+          {" "}
+          Read the <a href={page.deprecation.migrationHref}>migration guide</a>.
+        </>
+      )}
+    </div>
+  )}
+  {(page.kind === "api" || page.kind === "section") && (
+    <div class="endpoint-filter">
+      <label hidden>
+        <span class="visually-hidden">Filter endpoints on this page</span>
+        <input
+          type="search"
+          data-api-endpoint-filter
+          placeholder="Filter endpoints on this page"
+        />
+      </label>
+      <p role="status" data-api-endpoint-status></p>
+    </div>
+  )}
+  {page.kind === "operation" ? (
+    <Operation page={page} />
+  ) : (
+    <>
+      {page.descriptionHtml && (!home || home.part.number === 1) && (
+        <MarkdownContent set:html={page.descriptionHtml} />
+      )}
+      {page.kind === "schema" && (
+        <>
+          {page.scalar && (
+            <section class="scalar">
+              <p>
+                Type: <code>{page.scalar.type}</code>
+                {page.scalar.nullable && " (nullable)"}
+              </p>
+              {page.scalar.enum && (
+                <p>
+                  Options:{" "}
+                  {page.scalar.enum.map((value) => (
+                    <code>{displayValue(value)} </code>
+                  ))}
+                </p>
+              )}
+              {constraintPairs(page.scalar.constraints).map(([key, value]) => (
+                <p>
+                  {key}: <code>{value}</code>
+                </p>
+              ))}
+              {page.scalar.default !== undefined && (
+                <p>
+                  Default: <code>{displayValue(page.scalar.default)}</code>
+                </p>
+              )}
+              {page.scalar.example !== undefined && (
+                <p>
+                  Example: <code>{displayValue(page.scalar.example)}</code>
+                </p>
+              )}
+            </section>
+          )}
+          {(page.fields.length > 0 || page.union) && (
+            <Schema
+              title="Fields"
+              fields={page.fields}
+              union={page.union}
+              truncated={page.truncated}
+            />
+          )}
+        </>
+      )}
+      {page.kind === "section" && (
+        <>
+          <EndpointList operations={page.operations} />
+          {page.sections && page.sections.length > 0 && (
+            <ul>
+              {page.sections.map((section) => (
+                <li>
+                  <a href={section.href}>{section.label}</a>
+                </li>
+              ))}
+            </ul>
+          )}
+        </>
+      )}
+      {page.kind === "api" && (
+        <>
+          {page.servers.length > 0 && (!home || home.part.number === 1) && (
+            <section>
+              <h2>Base URL</h2>
+              {page.servers.map((server) => (
+                <p>
+                  <code>{server}</code>
+                </p>
+              ))}
+            </section>
+          )}
+          {home && (
+            <ApiIndex
+              chunk={home.part}
+              grouped={page.index.groups.some((group) => group.label !== null)}
+            />
+          )}
+          {nextPart && (
+            <a href={nextPart.href} rel="next">
+              Next: endpoints {nextPart.start}–{nextPart.end} of {home?.total}
+            </a>
+          )}
+        </>
+      )}
+    </>
+  )}
+</div>
 <script>
-  import { setCurrentLanguage } from "@lib/code";
-
-  const initApiDocsUI = () => {
-    document.querySelectorAll("button[data-lang]").forEach((btn) => {
-      if ((btn as HTMLElement).dataset.languageHandlerBound === "true") {
-        return;
-      }
-      (btn as HTMLElement).dataset.languageHandlerBound = "true";
-      btn.addEventListener("click", () => {
-        const lang = (btn as HTMLElement).dataset.lang;
-        if (lang) {
-          setCurrentLanguage(lang);
-        }
-      });
-    });
-  };
-
-  document.addEventListener("astro:page-load", initApiDocsUI);
+  import "./endpoint-filter.client";
 </script>
-
 <style>
-  .specs {
-    flex-grow: 1;
-  }
-
-  .specs section:last-child {
-    padding-top: 0;
-  }
-
-  .specs :global(h2) {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: var(--cui-spacings-byte);
-  }
-
-  .specs :global(section) {
-    border-bottom: var(--cui-border-width-kilo) solid var(--cui-border-subtle);
-    padding: var(--cui-spacings-giga) 0;
+  .endpoint-filter input {
     width: 100%;
-  }
-
-  .specs :global(section:first-child) {
-    padding-top: 0;
-  }
-
-  .specs :global(section:last-child) {
-    border-bottom: none;
-    padding-bottom: 0;
-  }
-
-  .specs :global(.api-docs-stack-mega > * + *) {
-    margin-top: var(--cui-spacings-mega);
-  }
-
-  .specs :global(.api-docs-codeblock-stack .codeblock + .codeblock) {
-    margin-top: var(--cui-spacings-mega);
-  }
-
-  .specs :global(.api-docs-sticky) {
-    position: sticky;
-    top: calc(var(--sl-nav-height) + var(--cui-spacings-kilo));
-  }
-
-  h1 {
-    margin: var(--cui-spacings-giga) 0;
-  }
-
-  .lang-switch {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: var(--cui-spacings-kilo);
-  }
-
-  .lang-option {
-    display: flex;
-    align-items: center;
-    gap: var(--cui-spacings-byte);
-    padding: var(--cui-spacings-bit) var(--cui-spacings-byte);
-    border: none;
+    max-width: 32rem;
+    padding: var(--cui-spacings-byte) var(--cui-spacings-kilo);
+    border: 1px solid var(--cui-border-normal);
     border-radius: var(--cui-border-radius-byte);
-    text-decoration: none;
-    color: inherit;
-    cursor: pointer;
-    justify-self: stretch;
-    background-color: var(--cui-bg-subtle);
+    background: var(--cui-bg-normal);
+    color: var(--cui-fg-normal);
+    font: inherit;
+  }
+  [data-api-endpoint-status] {
+    color: var(--cui-fg-subtle);
     font-size: var(--cui-body-s-font-size);
-    line-height: var(--cui-body-s-line-height);
-    font-weight: var(--cui-font-weight-semibold);
+    margin-top: var(--cui-spacings-byte);
+  }
+  [data-api-endpoint-status]:empty {
+    display: none;
   }
 
-  .lang-option:hover {
-    background: var(--cui-bg-strong);
-    color: var(--cui-fg-on-strong-hovered);
+  .api-docs {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: var(--cui-spacings-giga);
+  }
+  .deprecation {
+    padding: var(--cui-spacings-mega);
+    border-radius: var(--cui-border-radius-byte);
+    background: var(--cui-bg-warning);
+    color: var(--cui-fg-warning);
+  }
+  .scalar {
+    overflow-wrap: anywhere;
+  }
+  h2 {
+    font-size: var(--cui-headline-s-font-size);
+    margin-bottom: var(--cui-spacings-byte);
   }
 </style>

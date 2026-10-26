@@ -8,7 +8,8 @@ tableOfContents:
   maxHeadingLevel: 2
 ---
 
-import { Tabs, TabItem } from '@astrojs/starlight/components';
+import { Tabs, TabItem } from '@components/nimbus';
+import CopyPrompt from '@components/nimbus/CopyPrompt.astro';
 
 Set up your assistant to build SumUp integrations and work with your merchant account. Choose your assistant below, install the available package, and sign in with SumUp to use account tools.
 
@@ -18,6 +19,12 @@ The [SumUp plugin](https://github.com/sumup/sumup-skills) bundles two capabiliti
 - **MCP tools** let your assistant call SumUp APIs and read documentation resources. The hosted server at `https://mcp.sumup.com/mcp` uses OAuth: sign in with SumUp through your client when prompted.
 
 If you install a plugin, extension, or power that configures MCP, use its bundled connection. The direct MCP instructions are an alternative for clients without plugins or when you only need account tools. For API-key authentication or stdio-only clients, see [local MCP setup](/tools/llms/mcp-server/#run-the-local-server).
+
+## Ask Your Assistant to Help
+
+Copy the setup prompt and paste it into your assistant, or follow the client-specific instructions below:
+
+<CopyPrompt compact />
 
 ## Choose Your Assistant
 

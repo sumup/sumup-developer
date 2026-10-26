@@ -5,15 +5,18 @@ sidebar:
   order: 4
 ---
 
-import { Steps, Tabs, TabItem } from '@astrojs/starlight/components';
+import Callout from "@components/content/Callout";
+
 import Video from '@components/content/Video.astro';
 import SoloScreen from '@components/content/SoloScreen.astro';
+import CheckoutLifecycle from '@components/Diagrams/CheckoutLifecycle';
+import PairingSequence from '@components/Diagrams/PairingSequence';
 
 The Cloud API lets you start a transaction from a Point of Sale (POS) running on any platform (Windows, iOS, Linux, Android, Web-based, etc.) capable of sending HTTPS requests and complete that transaction via a Solo reader.
 
-:::tip
+<Callout type="tip" title="Tip">
 You can start building with the Cloud API before you order or receive a Solo reader. Use [Virtual Solo](https://virtual-solo.sumup.com) and a [sandbox merchant account](/terminal-payments/quickstart/#sandbox-merchant-account) to test the pairing and checkout flow. See the [Virtual Solo testing guide](#solo-virtual-terminal) for supported features and limitations.
-:::
+</Callout>
 
 Key advantages include:
 
@@ -66,21 +69,7 @@ The Cloud API acts as a bridge between your application and the Solo reader. It 
 
 Once the Solo reader is paired to your SumUp account, your application can initiate a card charge request. SumUp handles the rest, providing a seamless payment experience where all card data is encrypted end-to-end. Transaction results are available in real-time via webhooks.
 
-```mermaid
-sequenceDiagram
-    title: Cloud API Overview
-    participant A as Solo Reader
-    participant B as Cloud API
-    participant C as Your Device
-    autonumber
-    A ->> A: generate pairing code
-    C ->> B: Pair Reader using code
-    B ->> C: Return Reader ID
-    B ->> A: Display confirmation message
-    C ->> B: Start Checkout on Reader
-    B ->> A: Initiate Checkout
-    A ->> A: Present Checkout to Customer
-```
+<PairingSequence client:visible />
 
 ### Log out of Solo
 
@@ -95,10 +84,10 @@ The Cloud API pairing process is only available for logged-out users. If you're 
 
 To initiate a payment on the Solo card reader, it must be enrolled with the merchant account. This enrollment, called reader pairing, starts on the card reader by generating a pairing code and finishes when your device completes a pairing request using the Cloud API with that code. Both your application and Solo reader must be connected to the internet (not necessarily the same network).
 
-:::note
+<Callout type="note" title="Note">
 The pairing process has an expiration time of 5 minutes, if any issue occurs, the
 process must be restarted.
-:::
+</Callout>
 
 1. Turn on the Solo card reader.
 2. Make sure you're not logged in. [Log out from your Solo card reader](#log-out-of-solo) if you are.
@@ -107,7 +96,7 @@ process must be restarted.
 5. Select **API**.
 6. Click **Connect**. The pairing code is generated.
 7. Copy the pairing code displayed on the
-Solo card reader screen. You will need this code to pair your Solo reader with your device.
+   Solo card reader screen. You will need this code to pair your Solo reader with your device.
 
 <Video src="/img/guides/pair_solo.mp4" trackSrc="/img/guides/pair_solo.vtt" width="400px" height="400px" />
 
@@ -125,6 +114,10 @@ Solo card reader screen. You will need this code to pair your Solo reader with y
 ## Using Paired Reader
 
 Cloud API lets you manage transactions and readers connected to your account.
+
+Explore a successful or failed checkout below. The order stays unpaid until your application receives the final transaction result.
+
+<CheckoutLifecycle client:visible />
 
 ### Initiate Transaction
 
@@ -293,9 +286,9 @@ Treat the value as free-form text: do not match on exact strings, as new reasons
 
 Do not display `failure_reason` directly to customers. Choose an appropriate customer-facing message instead. For lost-card or stolen-card declines, show a generic payment-declined message.
 
-:::note
+<Callout type="note" title="Note">
 `failure_reason` is only sent for failed transactions. It is omitted from the payload entirely—rather than sent as `null`—for successful transactions, and when no reason is available.
-:::
+</Callout>
 
 ### Terminate Transaction
 
@@ -346,7 +339,7 @@ Important notes:
 
 - The target device must be online, otherwise termination won't be accepted.
 - This action is only possible if the device is waiting for cardholder action: waiting for card, waiting for PIN, etc.
-There is no confirmation of the termination.
+  There is no confirmation of the termination.
 - If a transaction is successfully terminated and `return_url` has been provided on Checkout, the transaction status is sent as `failed` to the provided URL. See [Receive Transaction Results](#receive-transaction-results).
 
 Read the [Terminate Checkout API endpoint documentation](/api/readers/terminate-checkout) for details on the API request, examples, and parameter descriptions.

@@ -6,7 +6,8 @@ sidebar:
   hidden: true
 ---
 
-import { Tabs, TabItem } from '@astrojs/starlight/components';
+import Callout from "@components/content/Callout";
+
 import Image from '@components/content/Image.astro';
 
 SumUp's React Native Payment SDK provides a payment sheet that is displayed on top of your app. It collects user payment details, confirms a payment, and saves a card for future usage. Moreover, it allows a user to use Apple Pay or Google Pay to process payments.
@@ -105,6 +106,7 @@ Initializing the SDK works by passing it a `checkout_id`. To [create a checkout]
     	RedirectURL:       &redirectURL,
     })
     ```
+
   </TabItem>
   <TabItem label="Python" icon="seti:python">
     ```py
@@ -122,6 +124,7 @@ Initializing the SDK works by passing it a `checkout_id`. To [create a checkout]
         )
     )
     ```
+
   </TabItem>
   <TabItem label="Rust" icon="seti:rust">
     ```rust
@@ -276,7 +279,7 @@ export default function MainScreen() {
 
 - `checkoutId` - described in section [Create a checkout](/online-payments/sdks/react-native/#create-a-checkout).
 
-*Optional*:
+_Optional_:
 
 - `customerId` - used for saving cards for future usage.
 - `language` - English and Sweden are supported (if undefined, react-native-localization will be used to check user device language).
@@ -441,6 +444,7 @@ To save a card for future usage, a customer should be created. It can be achieve
     	},
     })
     ```
+
   </TabItem>
   <TabItem label="Python" icon="seti:python">
     ```py
@@ -468,6 +472,7 @@ To save a card for future usage, a customer should be created. It can be achieve
         )
     )
     ```
+
   </TabItem>
   <TabItem label="Rust" icon="seti:rust">
     ```rust
@@ -557,9 +562,9 @@ await initPaymentSheet({
 
 ### Use Apple Pay
 
-:::caution
+<Callout type="caution" title="Caution">
 The backend doesn't process payments with Apple Pay and an error message will be displayed after attempting to pay with it.  This is a known issue and a fix is being worked on.
-:::
+</Callout>
 
 #### Register for an Apple Merchant ID
 

@@ -1,0 +1,71 @@
+---
+import type { ApiOperationRef } from "@cloudflare/nimbus-docs/api";
+import { renderMarkdown } from "@cloudflare/nimbus-docs/markdown";
+import MarkdownContent from "@components/MarkdownContent.astro";
+import MethodStatus from "./MethodStatus.astro";
+interface Props {
+  operations: ApiOperationRef[];
+}
+const { operations } = Astro.props;
+---
+
+<ul class="endpoints">
+  {operations.map((operation) => (
+    <li data-api-endpoint>
+      <a href={operation.href}>
+        <strong>{operation.label}</strong>
+        <span class="endpoint-signature">
+          <MethodStatus method={operation.method} />
+          <code>{operation.path}</code>
+        </span>
+        {operation.deprecated && <small>Deprecated</small>}
+      </a>
+      {operation.description && (
+        <MarkdownContent
+          class="description"
+          set:html={renderMarkdown(operation.description)}
+        />
+      )}
+    </li>
+  ))}
+</ul>
+<style>
+  .endpoints {
+    margin: var(--cui-spacings-kilo) 0;
+    padding: 0;
+    list-style: none;
+  }
+  li {
+    padding-block: var(--cui-spacings-kilo);
+    border-bottom: 1px solid var(--cui-border-divider);
+  }
+  a {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: var(--cui-spacings-bit);
+    color: var(--cui-fg-normal);
+    text-decoration: none;
+    overflow-wrap: anywhere;
+  }
+  a:hover strong {
+    text-decoration: underline;
+  }
+  .endpoint-signature {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--cui-spacings-byte);
+    font-size: var(--cui-body-s-font-size);
+    color: var(--cui-fg-subtle);
+  }
+  code {
+    font-family: var(--cui-font-stack-mono);
+  }
+  small {
+    color: var(--cui-fg-warning);
+  }
+  li > :global(.description) {
+    margin-top: var(--cui-spacings-byte);
+  }
+</style>

@@ -1,0 +1,43 @@
+---
+import Button from "@components/Button";
+---
+
+<dialog class="image-zoom" data-image-zoom aria-label="Enlarged image">
+  <form method="dialog">
+    <Button type="submit" variant="secondary" label="Close image" />
+  </form>
+  <img data-image-zoom-image alt="" />
+</dialog>
+
+<script>
+  import "./image-zoom.client";
+</script>
+
+<style>
+  .image-zoom {
+    max-width: 95vw;
+    max-height: 95vh;
+    padding: var(--cui-spacings-mega);
+    color: var(--cui-fg-normal);
+    background: var(--cui-bg-normal);
+    border: 1px solid var(--cui-border-subtle);
+    border-radius: var(--cui-border-radius-mega);
+  }
+  .image-zoom::backdrop {
+    background: rgb(0 0 0 / 70%);
+  }
+  form {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: var(--cui-spacings-kilo);
+  }
+  img {
+    display: block;
+    max-width: 100%;
+    max-height: calc(95vh - 7rem);
+    width: auto;
+    height: auto;
+    margin: auto;
+    object-fit: contain;
+  }
+</style>

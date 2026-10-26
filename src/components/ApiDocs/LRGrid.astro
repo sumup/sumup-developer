@@ -12,10 +12,10 @@ const { class: cls, ...attrs } = Astro.props;
   .lr-grid {
     width: 100%;
     display: grid;
-    grid-template-columns: calc(60% - var(--cui-spacings-tera)) calc(40%);
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
     grid-gap: var(--cui-spacings-tera);
   }
-  @media screen and (max-width: 960px) {
+  @media screen and (max-width: 76rem) {
     .lr-grid {
       grid-template-columns: 100%;
     }

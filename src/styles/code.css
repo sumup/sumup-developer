@@ -1,0 +1,242 @@
+:root {
+  /* The editor surfaces from Shiki's github-light / github-dark themes. */
+  --code-frame-background: light-dark(#fff, #24292e);
+  --code-frame-header-background: color-mix(
+    in srgb,
+    var(--cui-bg-subtle) 50%,
+    var(--code-frame-background)
+  );
+}
+
+.nb-code-figure {
+  position: relative;
+  max-width: 100%;
+  margin: var(--cui-spacings-mega) 0;
+  overflow: hidden;
+  background: var(--code-frame-background);
+  border: var(--cui-border-width-kilo) solid var(--cui-border-subtle);
+  border-radius: var(--cui-border-radius-byte);
+}
+
+pre.astro-code {
+  max-width: 100%;
+  max-height: min(68vh, 62.5rem);
+  padding: var(--cui-spacings-kilo) var(--cui-spacings-mega);
+  margin: 0;
+  overflow: auto;
+  border: 0;
+  border-radius: 0;
+  color: var(--cui-fg-normal);
+  background: transparent;
+  font-family: var(--cui-font-stack-mono);
+  font-size: var(--portal-font-size-mono);
+  /* Keep mobile browsers from inflating wide code; page zoom still works. */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  line-height: 1.625;
+  tab-size: 4;
+  scrollbar-width: thin;
+}
+
+pre.astro-code code {
+  display: block;
+  width: max-content;
+  min-width: 100%;
+  padding: 0;
+  background: transparent;
+  white-space: pre;
+  counter-reset: code-line;
+}
+
+/* Nimbus emits these shared token variables in /_nimbus/shiki.css. */
+pre.astro-code span {
+  color: var(--shiki-light, inherit);
+}
+
+[data-mode="dark"] pre.astro-code span {
+  color: var(--shiki-dark, inherit);
+}
+
+.nb-code-title {
+  display: flex;
+  align-items: center;
+  gap: var(--cui-spacings-byte);
+  min-height: 2.5rem;
+  padding: var(--cui-spacings-byte) 2.75rem var(--cui-spacings-byte)
+    var(--cui-spacings-kilo);
+  border-bottom: var(--cui-border-width-kilo) solid var(--cui-border-subtle);
+  background: var(--code-frame-header-background);
+  color: var(--cui-fg-normal);
+  font-family: var(--cui-font-stack-mono);
+  font-size: var(--portal-font-size-mono);
+  line-height: 1.5;
+}
+
+.nb-code-title-name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.nb-code-title-lang {
+  display: none;
+}
+
+/* Nimbus supplies the language; no client script is needed for the label. */
+.nb-code-figure[data-nb-lang]:not(.nb-code-figure-titled)::before {
+  content: attr(data-nb-lang);
+  position: absolute;
+  top: var(--cui-spacings-byte);
+  right: var(--cui-spacings-byte);
+  z-index: 1;
+  padding: 0 var(--cui-spacings-bit);
+  border-radius: var(--cui-border-radius-bit);
+  background: var(--code-frame-header-background);
+  color: var(--cui-fg-subtle);
+  font-family: var(--cui-font-stack-mono);
+  font-size: var(--portal-font-size-mono);
+  line-height: 1.75;
+  text-transform: uppercase;
+  pointer-events: none;
+  transition: opacity var(--cui-transitions-default);
+}
+
+.nb-code-figure[data-nb-lang]:not(.nb-code-figure-titled):is(
+    :hover,
+    :focus-within
+  )::before {
+  opacity: 0;
+}
+
+.nb-code-figure:is(
+    [data-nb-lang="text"],
+    [data-nb-lang="plaintext"],
+    [data-nb-lang="plain"],
+    [data-nb-lang="txt"]
+  )::before {
+  display: none;
+}
+
+.nb-code-figure:not(.nb-code-figure-titled) > pre.astro-code {
+  padding-right: 3.5rem;
+}
+
+.nb-code-copy {
+  position: absolute;
+  top: var(--cui-spacings-byte);
+  right: var(--cui-spacings-byte);
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  padding: 0;
+  color: var(--cui-fg-subtle);
+  background: var(--code-frame-background);
+  border: var(--cui-border-width-kilo) solid var(--cui-border-subtle);
+  border-radius: var(--cui-border-radius-bit);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity var(--cui-transitions-default);
+}
+
+.nb-code-figure:hover .nb-code-copy,
+.nb-code-figure:focus-within .nb-code-copy,
+.nb-code-copy:focus-visible {
+  opacity: 1;
+}
+
+.nb-code-figure-titled .nb-code-copy {
+  top: var(--cui-spacings-bit);
+  opacity: 1;
+  border-color: transparent;
+  background: transparent;
+}
+
+.nb-code-copy:hover {
+  color: var(--cui-fg-normal);
+  background: var(--code-frame-header-background);
+}
+
+.nb-code-copy:focus-visible {
+  outline: 2px solid var(--cui-border-focus);
+  outline-offset: 2px;
+}
+
+.nb-code-copy svg {
+  width: 0.875rem;
+  height: 0.875rem;
+}
+
+.nb-code-copy[data-state="copied"] {
+  color: var(--cui-fg-success);
+}
+
+pre.astro-code code > .line {
+  position: relative;
+  display: inline-block;
+  min-width: 100%;
+  /* Empty Shiki spans need a line box to keep their gutter numbers aligned. */
+  min-height: 1lh;
+  padding-inline-start: 4.5ch;
+  vertical-align: top;
+  counter-increment: code-line;
+}
+
+/* Generated numbers stay out of copied code and the accessibility text. */
+pre.astro-code code > .line::before {
+  content: counter(code-line) / "";
+  position: absolute;
+  inset-inline-start: 0;
+  width: 3ch;
+  color: var(--cui-fg-subtle);
+  text-align: end;
+  user-select: none;
+  pointer-events: none;
+}
+
+pre.astro-code .line.highlighted,
+pre.astro-code .highlighted-word {
+  background: var(--cui-bg-highlight);
+}
+
+pre.astro-code .line.diff.add {
+  background: var(--cui-bg-success);
+}
+
+pre.astro-code .line.diff.remove,
+pre.astro-code .line.error {
+  background: var(--cui-bg-danger);
+}
+
+pre.astro-code .line.warning {
+  background: var(--cui-bg-warning);
+}
+
+pre.astro-code.has-focused .line:not(.focused) {
+  opacity: 0.5;
+}
+
+pre.astro-code.has-focused:hover .line:not(.focused) {
+  opacity: 1;
+}
+
+pre.astro-code[data-nb-wrap] code {
+  width: 100%;
+  min-width: 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+@media (hover: none) {
+  .nb-code-copy {
+    opacity: 1;
+  }
+
+  .nb-code-figure[data-nb-lang]:not(.nb-code-figure-titled)::before {
+    display: none;
+  }
+}

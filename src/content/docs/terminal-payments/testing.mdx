@@ -38,31 +38,31 @@ Start a payment for `11.00 EUR` to simulate a declined payment. To test a specif
 
 Only the listed `42.xx` amounts trigger these declines. Other amounts starting with `42` do not necessarily fail.
 
-| Amount (EUR) | Simulated reason |
-| --- | --- |
-| `11.00` | Payment declined |
-| `42.01` | Refer to the card issuer |
-| `42.03` | Invalid merchant |
-| `42.05` | Payment declined |
-| `42.06` | Processing error |
-| `42.12` | Invalid transaction |
-| `42.13` | Invalid amount |
-| `42.14` | Invalid card number |
-| `42.41` | Lost card |
-| `42.43` | Stolen card |
-| `42.51` | Insufficient funds |
-| `42.54` | Expired card |
-| `42.55` | Incorrect PIN |
-| `42.60` | Retry PIN entry |
-| `42.61` | Card usage limit exceeded |
-| `42.65` | Card usage frequency limit exceeded |
-| `42.75` | PIN attempt limit exceeded |
-| `42.76` | Additional authentication required |
-| `42.78` | Retry by inserting the card |
-| `42.82` | Invalid card security code |
-| `42.91` | Processing timeout |
-| `42.92` | Unexpected processing response |
-| `42.96` | System malfunction |
+| Amount (EUR) | Simulated reason                    |
+| ------------ | ----------------------------------- |
+| `11.00`      | Payment declined                    |
+| `42.01`      | Refer to the card issuer            |
+| `42.03`      | Invalid merchant                    |
+| `42.05`      | Payment declined                    |
+| `42.06`      | Processing error                    |
+| `42.12`      | Invalid transaction                 |
+| `42.13`      | Invalid amount                      |
+| `42.14`      | Invalid card number                 |
+| `42.41`      | Lost card                           |
+| `42.43`      | Stolen card                         |
+| `42.51`      | Insufficient funds                  |
+| `42.54`      | Expired card                        |
+| `42.55`      | Incorrect PIN                       |
+| `42.60`      | Retry PIN entry                     |
+| `42.61`      | Card usage limit exceeded           |
+| `42.65`      | Card usage frequency limit exceeded |
+| `42.75`      | PIN attempt limit exceeded          |
+| `42.76`      | Additional authentication required  |
+| `42.78`      | Retry by inserting the card         |
+| `42.82`      | Invalid card security code          |
+| `42.91`      | Processing timeout                  |
+| `42.92`      | Unexpected processing response      |
+| `42.96`      | System malfunction                  |
 
 These amounts simulate the payment result. For example, `42.55 EUR` simulates an incorrect-PIN response without requiring you to enter an incorrect PIN, and `42.91 EUR` simulates a timeout response without disconnecting the reader.
 

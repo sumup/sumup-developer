@@ -5,7 +5,8 @@ sidebar:
   order: 12
 ---
 
-import { Steps } from "@astrojs/starlight/components";
+import Callout from "@components/content/Callout";
+
 import Image from "@components/content/Image.astro";
 
 The Android Tap-to-Pay SDK enables your mobile app to accept card-present contactless payments using only a smartphone, without any additional hardware. This guide explains how to integrate this functionality into your Android app.
@@ -36,10 +37,10 @@ The Android Tap-to-Pay SDK enables your mobile app to accept card-present contac
 
 You can use the sample app provided in the [GitHub repository](https://github.com/sumup/android-tap-to-pay) as a reference.
 
-:::note
+<Callout type="note" title="Note">
   If your app shuts down immediately upon start, try disconnecting your phone
   and launching the app from your phone and not your IDE.
-:::
+</Callout>
 
 ### Dependencies
 
@@ -359,19 +360,11 @@ With SDK v1.1.0 and later, you can use sandbox account for testing purposes.
 
 2. Create a Sandbox Account:
 
-   <Image
-   alt="Sandbox account"
-   src="/img/guides/utopia-sandboxes.png"
-   width="70%"
-   />
+   <Image alt="Sandbox account" src="/img/guides/utopia-sandboxes.png" width="70%" />
 
 3. In your new sandbox merchant account, create an [API key](https://me.sumup.com/settings/api-keys) or configure [OAuth 2.0](https://me.sumup.com/settings/oauth2-applications) for authentication.
 
-   <Image
-   alt="Authentication approaches"
-   src="/img/guides/utopia-auth-keys.png"
-   width="70%"
-   />
+   <Image alt="Authentication approaches" src="/img/guides/utopia-auth-keys.png" width="70%" />
 
 </Steps>
 

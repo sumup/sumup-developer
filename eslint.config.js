@@ -1,7 +1,7 @@
 import pluginJavaScript from "@eslint/js";
 import pluginAstro from "eslint-plugin-astro";
-import pluginReactA11y from "eslint-plugin-jsx-a11y";
-import pluginReact from "eslint-plugin-react";
+import pluginReactA11y from "eslint-plugin-jsx-a11y-x";
+import pluginReact from "eslint-plugin-react-x";
 import pluginTypeScript from "typescript-eslint";
 
 import globals from "globals";
@@ -21,12 +21,14 @@ export default [
   ...pluginAstro.configs["jsx-a11y-recommended"],
   {
     files: ["**/*.{js,mjs,cjs,jsx,mjsx,ts,tsx}"],
-    ...pluginReact.configs.flat.recommended,
-    ...pluginReactA11y.flatConfigs.recommended,
-    ...pluginReact.configs.flat["jsx-runtime"],
+    ...pluginReact.configs.recommended,
   },
   {
-    ignores: [".astro/", "dist/", ".wrangler/", ".github/"],
+    ...pluginReactA11y.configs.recommended,
+    files: ["**/*.{js,mjs,cjs,jsx,mjsx,ts,tsx}"],
+  },
+  {
+    ignores: [".astro/", "dist/", ".wrangler/", ".github/", "skills/"],
   },
   {
     rules: {

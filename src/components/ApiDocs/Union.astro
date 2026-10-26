@@ -1,0 +1,55 @@
+---
+import type { ApiUnionView } from "@cloudflare/nimbus-docs/api";
+import Schema from "./Schema.astro";
+interface Props {
+  union: ApiUnionView;
+}
+const { union } = Astro.props;
+const variants = union.mapping?.length
+  ? union.mapping.map((entry) => ({ ...entry.variant, value: entry.value }))
+  : union.variants.map((variant) => ({ ...variant, value: undefined }));
+---
+
+<div class="union">
+  <p>
+    {union.kind === "oneOf" ? "Exactly one of" : "One or more of"} the following
+    variants.
+    {union.discriminator && (
+      <>
+        {" "}
+        Selected by <code>{union.discriminator}</code>.
+      </>
+    )}
+  </p>
+  {variants.map((variant) => (
+    <details>
+      <summary>
+        {variant.value !== undefined ? `${variant.value}: ` : ""}
+        {variant.label}
+      </summary>
+      <div class="variant">
+        {variant.href && <a href={variant.href}>View {variant.label} schema</a>}
+        {variant.fields && <Schema fields={variant.fields} nested />}
+      </div>
+    </details>
+  ))}
+</div>
+<style>
+  p {
+    margin-block: var(--cui-spacings-kilo);
+    font-size: var(--cui-body-s-font-size);
+  }
+  details {
+    margin-block: var(--cui-spacings-byte);
+    border: 1px solid var(--cui-border-subtle);
+    border-radius: var(--cui-border-radius-byte);
+  }
+  summary {
+    padding: var(--cui-spacings-byte);
+    cursor: pointer;
+    overflow-wrap: anywhere;
+  }
+  .variant {
+    padding: 0 var(--cui-spacings-kilo) var(--cui-spacings-kilo);
+  }
+</style>

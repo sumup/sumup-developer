@@ -16,11 +16,10 @@ updates:
         patterns:
           - "astro"
           - "@astrojs/*"
-          - "starlight-*"
-      expressive-code:
+          - "@cloudflare/nimbus-docs"
+      docs-search:
         patterns:
-          - "@expressive-code/*"
-          - "*expressive-code*"
+          - "pagefind"
       eslint:
         patterns:
           - "eslint"

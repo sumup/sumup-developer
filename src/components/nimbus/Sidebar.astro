@@ -1,0 +1,80 @@
+---
+import type { SidebarItem } from "@cloudflare/nimbus-docs/types";
+import SidebarGroup from "./SidebarGroup.astro";
+import SidebarLink from "./SidebarLink.astro";
+import "./sidebar.css";
+
+interface Props {
+  items: SidebarItem[];
+  level?: number;
+  path?: string;
+  /** Render this list's groups as section headings instead of disclosures. */
+  sections?: boolean;
+  filter?: boolean;
+}
+
+const {
+  items,
+  level = 0,
+  path = "",
+  sections = false,
+  filter = false,
+} = Astro.props;
+---
+
+{filter && (
+  <label class="sidebar-filter">
+    <span class="visually-hidden">Filter API navigation</span>
+    <input
+      type="search"
+      placeholder="Filter API navigation"
+      aria-label="Filter API navigation"
+      data-sidebar-filter
+    />
+  </label>
+)}
+<ul
+  data-sidebar
+  data-sidebar-filterable={filter ? "" : undefined}
+  class:list={[
+    "sidebar-list",
+    level === 0 && "top-level",
+    level > 0 && "nested",
+  ]}
+>
+  {items.map((item) => (
+    <li>
+      {item.type === "group" ? (
+        <SidebarGroup
+          item={item}
+          level={level}
+          path={`${path}/${item.label}`}
+          collapsible={!sections}
+        />
+      ) : (
+        <SidebarLink item={item} />
+      )}
+    </li>
+  ))}
+</ul>
+
+<script>
+  import "./sidebar.client";
+</script>
+
+<style>
+  .sidebar-filter {
+    display: block;
+    margin-bottom: var(--cui-spacings-kilo);
+  }
+  input {
+    width: 100%;
+    padding: var(--cui-spacings-byte);
+    border: 1px solid var(--cui-border-normal);
+    border-radius: var(--cui-border-radius-byte);
+    background: var(--cui-bg-normal);
+    color: var(--cui-fg-normal);
+    font: inherit;
+    font-size: var(--cui-body-s-font-size);
+  }
+</style>
