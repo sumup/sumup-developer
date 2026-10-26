@@ -1,33 +1,316 @@
 ---
 title: Webhooks
-description: Webhooks notify your application about checkout status changes.
+description: Subscribe to signed SumUp events with event destinations, verify deliveries with an SDK, or use legacy checkout callbacks as a fallback.
 sidebar:
   order: 6
 ---
 
-import Callout from "@components/content/Callout";
+Create an event destination to receive signed HTTP POST notifications when something changes in your SumUp account. Choose the events your application needs, such as `checkouts.paid`, and verify incoming notifications with a [SumUp SDK](/tools/sdks/).
 
-Webhooks are a convenient approach to notify an application about relevant events that have taken place within another application.
+Event destinations are the recommended way to receive events. If you need the older checkout notification flow, see [legacy checkout callbacks](#legacy-checkout-callbacks).
 
-The event is similar to one in real-life, where you’re awaiting your favorite item to restock in a shop and ask a representative to notify you once it’s back. In this scenario, SumUp plays the role of the shop, the representative is the [SumUp APIs](/api) and the update seeker is your application.
+## Create an event destination
+
+Before you start, deploy an endpoint that accepts HTTP POST requests at a publicly accessible HTTPS URL, such as `https://example.com/events`. Localhost, private network addresses, and non-standard ports are not accepted as destination URLs.
+
+1. Open [Event destinations](https://me.sumup.com/settings/event-destinations) in your SumUp account.
+2. Select **Create event destination**.
+3. Enter a **name** and your endpoint's **URL**. Optionally, add a **description** to explain what the destination is used for.
+4. Choose the **events** to subscribe to. For example, select `checkouts.paid` to receive notifications about paid checkouts.
+5. Create the destination and obtain its signing secret. Store the secret securely on your server as `SUMUP_EVENT_SECRET`.
+6. Configure your receiver to verify signatures with that secret before processing events.
+
+The signing secret belongs to the destination. It is separate from the API key or OAuth access token you use to fetch resources. Event destinations apply to the account's subscribed events; you do not need to set `return_url` on each checkout.
 
 ## Events
 
-At this time our system only allows you to get notified about a status change for a checkout. To subscribe to an event, specify a `return_url` parameter upon [checkout creation](/api/checkouts/create).
+The event selector lists the available event types. Event families include:
 
-New events may be introduced at any time, without prior notice. Your application has to be able to cope with such. Our recommendation would be to silently ignore unknown events.
+| Resource  | Event types                                                                                         |
+| --------- | --------------------------------------------------------------------------------------------------- |
+| Checkouts | `checkouts.created`, `checkouts.updated`, `checkouts.paid`, `checkouts.failed`, `checkouts.expired` |
+| Sales     | `sales.completed`, `sales.updated`                                                                  |
+| Members   | `members.created`, `members.updated`, `members.deleted`                                             |
+| Readers   | `readers.created`, `readers.deleted`                                                                |
+| Roles     | `roles.created`, `roles.updated`, `roles.deleted`                                                   |
 
-## Handling a Webhook
+A notification contains a reference to the resource, rather than a full resource snapshot:
 
-Webhooks are delivered in the form of a HTTP POST request, to which your application should reply to as soon as possible. If the response takes longer, our system accepts this as a failed notification and retries it.
+```json
+{
+  "id": "event_01ARZ3NDEKTSV4RRFFQ69G5FAV",
+  "type": "checkouts.paid",
+  "created_at": "2026-10-15T12:00:00Z",
+  "object": {
+    "id": "e552de3b-1777-4c91-bdb8-756967678572",
+    "type": "checkout",
+    "url": "https://api.sumup.com/v0.1/checkouts/e552de3b-1777-4c91-bdb8-756967678572"
+  }
+}
+```
 
-Your application should return a valid, empty response with any `2xx` status code. Any response other than a `2xx` is treated as erroneous.
+Use the top-level `id` to identify and deduplicate the event. `object.id` identifies the checkout or other resource. Fetch the resource through the SDK when you need its details. The fetched resource represents its current state, which may have changed since the event occurred; deleted resources may no longer be available.
 
-<Callout type="note" title="Note">
-After receiving a webhook call, your application must **always** verify if the event really took place, by calling a relevant SumUp's API.
-</Callout>
+New event types may be added. Acknowledge and ignore types your application does not handle.
 
-Here's a sample of the webhook payload:
+## Handling a webhook
+
+1. Read the original request body bytes and the complete `X-SumUp-Webhook-Signature` header.
+2. Pass both to your SDK's event handler with the destination's signing secret. Verify before parsing or trusting the payload.
+3. Process the event idempotently, or durably enqueue it for processing. Persist processed event IDs so retries cannot repeat business actions.
+4. Return an empty `2xx` response, such as `204`, after successful processing or durable acceptance. Return a `5xx` response if processing fails and needs to be retried.
+
+Keep the receiver fast. If you queue events, verify them when they arrive, then process the verified payload from trusted storage. Do not reapply the delivery timestamp check after a long queue delay. Configure request body limits in your HTTP server.
+
+### Verify signatures
+
+The signature header has this format:
+
+```text
+X-SumUp-Webhook-Signature: t=<unix timestamp>,v1=<hex HMAC>
+```
+
+SumUp signs the exact bytes of `v1:<timestamp>:<raw body>` with HMAC-SHA256 using the destination's signing secret. The SDKs verify the signature and enforce a five-minute window around the signing timestamp. Keep your server clock synchronized. Do not parse and reserialize JSON before verification: even whitespace changes invalidate the signature.
+
+### SDK examples
+
+Install an SDK version that includes event handlers using its [installation guide](/tools/sdks/). Set `SUMUP_EVENT_SECRET` to your destination's signing secret and configure the SDK with an API key or OAuth access token authorized to read the referenced resources.
+
+These examples register a `readers.created` callback, fetch the current reader, and ignore unhandled event types. Subscribe to `readers.created` on your event destination to try them. They show the SDK portion of a receiver: call the function from your HTTP POST route with the unchanged body and signature header. Return `204` only if it succeeds. Reject signature or payload errors with `400`; return `500` for callback or resource-fetch failures. Add persistent deduplication before introducing business side effects.
+
+<Tabs syncKey="sdk-language">
+  <TabItem label="TypeScript / JavaScript">
+
+Configure `SUMUP_API_KEY` for resource fetches.
+
+```ts
+import SumUp from "@sumup/sdk";
+
+const client = new SumUp({ apiKey: process.env.SUMUP_API_KEY });
+const events = client.eventsHandler(
+  process.env.SUMUP_EVENT_SECRET!,
+  () => {},
+);
+events.on("readers.created", async (event) => {
+  const reader = await event.fetchObject();
+  console.info("Reader created", event.id, reader.id);
+});
+
+export async function receiveEvent(body: Uint8Array, signature: string) {
+  await events.handle(body, signature);
+}
+```
+
+With Express, use `express.raw({ type: "application/json", inflate: false })` before any JSON middleware. See the complete [Node.js receiver](https://github.com/sumup/sumup-ts/tree/main/examples/events-nodejs), or the [Bun](https://github.com/sumup/sumup-ts/tree/main/examples/events-bun) and [Deno](https://github.com/sumup/sumup-ts/tree/main/examples/events-deno) examples.
+
+  </TabItem>
+  <TabItem label="Python">
+
+Configure `SUMUP_API_KEY` for resource fetches.
+
+```py
+import os
+
+from sumup import Sumup
+from sumup.events import ReaderCreatedEvent
+
+client = Sumup(api_key=os.environ["SUMUP_API_KEY"])
+events = client.events_handler(os.environ["SUMUP_EVENT_SECRET"], lambda event: None)
+
+
+@events.on_reader_created
+def reader_created(event: ReaderCreatedEvent) -> None:
+    reader = event.fetch_object()
+    print("Reader created", event.id, reader.id)
+
+
+def receive_event(body: bytes, signature: str) -> None:
+    events.handle(body, signature)
+```
+
+For async servers, use `AsyncSumup`, async callbacks, `await events.handle(...)`, and `await event.fetch_object_async()`. See the complete [Flask](https://github.com/sumup/sumup-py/tree/main/examples/events-flask) and [FastAPI](https://github.com/sumup/sumup-py/tree/main/examples/events-fastapi) receivers.
+
+  </TabItem>
+  <TabItem label="PHP">
+
+Configure `SUMUP_API_KEY` for resource fetches.
+
+```php
+<?php
+
+require __DIR__ . '/vendor/autoload.php';
+
+use SumUp\Events\ReaderCreatedEvent;
+use SumUp\Events\EventNotification;
+use SumUp\SumUp;
+
+$client = new SumUp();
+$events = $client->eventsHandler(
+    getenv('SUMUP_EVENT_SECRET'),
+    static function (EventNotification $event): void {}
+)->onReaderCreated(static function (ReaderCreatedEvent $event): void {
+    $reader = $event->fetchObject();
+    error_log('Reader created: ' . $event->id . ' ' . $reader?->id);
+});
+
+function receiveEvent(string $body, string $signature): void
+{
+    global $events;
+    $events->handle($body, $signature);
+}
+```
+
+Read the body with `file_get_contents('php://input')` and the signature from `$_SERVER['HTTP_X_SUMUP_WEBHOOK_SIGNATURE']`. See the complete [PHP receiver](https://github.com/sumup/sumup-php/blob/main/examples/events.php).
+
+  </TabItem>
+  <TabItem label="Go">
+
+Configure `SUMUP_API_KEY` for resource fetches.
+
+```go
+package receiver
+
+import (
+    "context"
+    "os"
+
+    "github.com/sumup/sumup-go"
+)
+
+func ReceiveEvent(ctx context.Context, body []byte, signature string) error {
+    client := sumup.NewClient()
+    events, err := client.EventsHandler(
+        os.Getenv("SUMUP_EVENT_SECRET"),
+        func(context.Context, sumup.EventNotification) error { return nil },
+    )
+    if err != nil {
+        return err
+    }
+    if err := events.OnReaderCreated(func(ctx context.Context, event *sumup.ReaderCreatedEvent) error {
+        reader, err := event.FetchObject(ctx)
+        if err != nil {
+            return err
+        }
+        _ = reader // Apply idempotent business updates using event.ID.
+        return nil
+    }); err != nil {
+        return err
+    }
+    return events.Handle(ctx, body, signature)
+}
+```
+
+Use `http.MaxBytesReader` before `io.ReadAll` and read the signature with `r.Header.Get(sumup.EventSignatureHeader)`.
+
+  </TabItem>
+  <TabItem label="C# / .NET">
+
+Configure `SUMUP_ACCESS_TOKEN` for resource fetches.
+
+```csharp
+using System;
+using System.Threading;
+using System.Threading.Tasks;
+using SumUp;
+
+public static class EventReceiver
+{
+    public static async Task ReceiveEventAsync(
+        byte[] body, string signature, CancellationToken cancellationToken = default)
+    {
+        using var client = new SumUpClient();
+        var secret = Environment.GetEnvironmentVariable("SUMUP_EVENT_SECRET")
+            ?? throw new InvalidOperationException("Set SUMUP_EVENT_SECRET.");
+        var events = client.CreateEventsHandler(secret, (_, _) => Task.CompletedTask);
+        events.OnReaderCreated(async (notification, token) =>
+        {
+            var reader = await notification.FetchObjectAsync(cancellationToken: token);
+            Console.WriteLine($"Reader created: {notification.Id} {reader?.Id}");
+        });
+        await events.HandleAsync(body, signature, cancellationToken);
+    }
+}
+```
+
+Pass the bytes read from `HttpRequest.Body` and `request.Headers[EventSignature.HeaderName].ToString()`. See the complete [ASP.NET Core receiver](https://github.com/sumup/sumup-dotnet/tree/main/examples/Events).
+
+  </TabItem>
+  <TabItem label="Java">
+
+Configure `SUMUP_API_KEY` for resource fetches.
+
+```java
+import com.sumup.sdk.SumUpClient;
+
+public final class EventReceiver {
+    public static void receiveEvent(byte[] body, String signature) {
+        var client = new SumUpClient();
+        var events = client.eventsHandler(
+            System.getenv("SUMUP_EVENT_SECRET"), event -> {});
+        events.onReaderCreated(event -> {
+            var reader = event.fetchObject();
+            System.out.printf("Reader created: %s %s%n", event.id(), reader.id());
+        });
+        events.handle(body, signature);
+    }
+}
+```
+
+Read the original request bytes and the header named by `EventSignature.HEADER_NAME`. See the complete [Java HTTP receiver](https://github.com/sumup/sumup-java/tree/main/examples/events).
+
+  </TabItem>
+  <TabItem label="Rust">
+
+Configure `SUMUP_API_KEY` for resource fetches. Run this function in an async runtime such as Tokio.
+
+```rust
+use sumup::{Client, SdkError};
+use sumup::events::{EventNotification, FetchObject};
+
+pub async fn receive_event(
+    body: &[u8],
+    signature: &str,
+) -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
+    let client = Client::default();
+    let secret = std::env::var("SUMUP_EVENT_SECRET")?;
+    let mut events = client.events_handler(
+        &secret,
+        |_event: EventNotification, _client: Client| async {},
+    );
+    events.on_reader_created(|event, _client| async move {
+        let reader = event.fetch_object().await?;
+        println!("Reader created: {} {:?}", event.id, reader.id);
+        Ok::<(), SdkError>(())
+    })?;
+    events.handle(body, signature).await?;
+    Ok(())
+}
+```
+
+Pass the original request bytes and the header named by `sumup::events::SIGNATURE_HEADER`. See the complete [Axum receiver](https://github.com/sumup/sumup-rs/blob/main/examples/events.rs).
+
+  </TabItem>
+</Tabs>
+
+To verify your integration, trigger an event you subscribed to, such as pairing a reader for the `readers.created` examples above, or completing a checkout for `checkouts.paid`. Confirm that the matching callback runs and your receiver returns `2xx`. If verification fails, check that the receiver uses the destination's signing secret, reads the original body bytes, and has an accurate server clock.
+
+## Retries
+
+Event deliveries can repeat and can arrive out of order. Use the event `id` for deduplication, including manual redeliveries. Do not deduplicate by the signature or its timestamp: those can change with each attempt.
+
+A `2xx` response acknowledges delivery. Failed requests and other responses are retried with exponential backoff, starting at 5 seconds and capped at 10 minutes, until the attempt limit is reached. A `410 Gone` response deactivates the destination and stops delivery to it. Delivery is not an unlimited guarantee; monitor receiver failures and recover missed updates through the relevant API.
+
+## Legacy checkout callbacks
+
+Use checkout callbacks as a fallback if you cannot use event destinations. This older flow only notifies you about checkout status changes. It uses a different payload and does not use the event destination signature verification shown above.
+
+### Subscribe with `return_url`
+
+To subscribe, specify `return_url` when [creating a checkout](/api/checkouts/create). Set it to the URL of your server's callback endpoint.
+
+### Handle a legacy callback
+
+SumUp sends an HTTP POST request with this payload:
 
 ```json
 {
@@ -36,11 +319,17 @@ Here's a sample of the webhook payload:
 }
 ```
 
-## Retries
+Before acting on a callback, always [retrieve the checkout](/api/checkouts/get) through the authenticated API to verify its current status. The `id` is the checkout ID, not an event ID. Make your updates idempotent so repeated callbacks do not repeat business actions.
 
-When an erroneous response is received, a webhook delivery is retried with the following delays:
+Return a valid, empty `2xx` response promptly. A slow response or a response outside the `2xx` range is treated as a failed notification.
+
+### Legacy retries
+
+Failed legacy callbacks are retried with these delays:
 
 - 1 minute
 - 5 minutes
 - 20 minutes
 - 2 hours
+
+Use separate routes for signed event notifications and legacy callbacks so each route applies the correct payload handling and verification. If both flows are enabled, make business updates idempotent across both notification sources.
