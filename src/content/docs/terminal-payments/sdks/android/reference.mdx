@@ -1,0 +1,129 @@
+---
+title: Android SDK reference
+description: Look up reader checkout response fields, result codes, and Tap to Pay events and errors.
+sidebar:
+  order: 7
+  label: Reference and errors
+---
+
+The reader SDK and Tap to Pay SDK are separate packages. Use the response model for the SDK that started the payment.
+
+## Response fields
+
+Several response fields are available when the callback activity is called:
+
+| Property                                           | Type                                                   | Description / Possible Values                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| -------------------------------------------------- | ------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **SumUpAPI.Response.RESULT_CODE**                  | int                                                    | Possible Values:<br/>- SUCCESSFUL = 1<br/>- ERROR_TRANSACTION_FAILED = 2<br/>- ERROR_GEOLOCATION_REQUIRED = 3<br/>- ERROR_INVALID_PARAM = 4<br/>- ERROR_INVALID_TOKEN = 5<br/>- ERROR_NO_CONNECTIVITY = 6<br/>- ERROR_PERMISSION_DENIED = 7<br/>- ERROR_NOT_LOGGED_IN = 8<br/>- ERROR_DUPLICATE_FOREIGN_TX_ID = 9<br/>- ERROR_INVALID_AFFILIATE_KEY = 10<br/>- ERROR_ALREADY_LOGGED_IN = 11<br/>- ERROR_INVALID_AMOUNT_DECIMALS = 12<br/>- ERROR_API_LEVEL_TOO_LOW = 13<br/>- ERROR_CARD_READER_SETTINGS_OFF = 14<br/>- ERROR_UNKNOWN_TRANSACTION_STATUS = 15 |
+| **SumUpAPI.Response.MESSAGE**                      | String                                                 | A human readable message describing the result of the payment                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| **SumUpAPI.Response.TX_CODE**                      | String                                                 | The transaction code associated with the payment                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| **SumUpAPI.Response.TX_INFO**                      | Parcelable (com.sumup.merchant.Models.TransactionInfo) | Transaction info object containing information about the transaction:<br/>- Transaction Code<br/>- Merchant Code<br/>- Amount (including tip amount and VAT)<br/>- Tip amount<br/>- VAT<br/>- Currency (e.g. EUR)<br/>- Payment Status (PENDING \| SUCCESSFUL \| CANCELLED \| FAILED)<br/>- Payment Type (CASH \| POS \| ECOM \| UNKNOWN \| RECURRING \| BITCOIN \| BALANCE)<br/>- Entry Mode (e.g. CHIP)<br/>- Number of Installments<br/>- Card Type (e.g. MASTERCARD)<br/>- Last four digits of the card<br/>- Product information                         |
+| **SumUpAPI.Response.RECEIPT_SENT**                 | boolean                                                | true if a receipt was issued to the customer, false otherwise                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| **SumUpAPI.Response.CARD_READER_MODEL**            | String                                                 | The model of the card reader used for the transaction                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| **SumUpAPI.Response.CARD_READER_FIRMWARE_VERSION** | String                                                 | The firmware version of the card reader used for the transaction                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+
+Read these fields from the intent returned by `SumUpCheckoutContract`, rather than your activity's original launch intent. Inside its callback, where `result` is the returned activity result:
+
+```kotlin
+val data = result.data
+val resultCode = data?.getIntExtra(SumUpAPI.Response.RESULT_CODE, -1)
+val transactionCode = data?.getStringExtra(SumUpAPI.Response.TX_CODE)
+```
+
+See the [Android quickstart](/terminal-payments/sdks/android/quickstart/#3-register-the-payment-result-handler) for a complete result handler.
+
+## Tap to Pay events
+
+These events are emitted by the separate [Tap to Pay SDK](/terminal-payments/sdks/android/tap-to-pay/).
+
+The list of possible events:
+
+- `CardRequested` - the SDK is trying to detect a card, waiting for the cardholder to tap/present their card.
+- `CardPresented` - a card is detected.
+- `CVMRequested` - a CVM (Cardholder Verification Method) is requested. This event is fired when the card is detected and the SDK is waiting for the cardholder to enter the PIN.
+- `CVMPresented` - a CVM was entered by the cardholder. This event is fired upon completion of the CVM regardless if it was successful or not.
+- `TransactionDone(val paymentOutput: PaymentOutput)` - transaction was completed. `PaymentOutput` param is:
+
+  ```kotlin
+  data class PaymentOutput(
+      val txCode: String,
+      val serverTransactionId: String,
+      val cardType: String? = null,
+      val lastFour: String? = null,
+      val merchantCode: String? = null,
+      val cardScheme: String? = null
+  )
+  ```
+
+- `TransactionFailed(val paymentOutput: PaymentOutput?, val tapToPayException: TapToPayException?)` - transaction failed. It might happen due to many reasons, like attestation error, backend error, card reader error, and so on. The full list of errors is described in the [Exceptions](/terminal-payments/sdks/android/reference/#exceptions) section. `PaymentOutput` param might be null if the transaction failed before reaching the backend.
+- `TransactionCanceled(val paymentOutput: PaymentOutput?)` - transaction was cancelled by the user.
+- `TransactionResultUnknown(val paymentOutput: PaymentOutput?)` - transaction result is unknown. This might happen on remote calls, when there is no response due to timeout.
+- `PaymentFlowClosedSuccessfully(val paymentOutput: PaymentOutput, val shouldDisplayReceipt: Boolean = false)` - after a successful transaction, once the user dismisses the success screen (or when it is skipped via `skipSuccessScreen`), the flow closes and fires this event. The **Send receipt** button has been removed from the SDK success screen (SDK 1.1.6+); receipts must be handled by the host app if required. `shouldDisplayReceipt` is deprecated, always emitted as `false`, and will be removed in **1.1.7**.
+
+## Exceptions
+
+Tap to Pay methods can return `Result.Failure` with an exception. The exception type identifies whether the problem involves initialization, connectivity, payment processing, or device security.
+
+- `CommonException` - These exceptions cover scenarios such as initialization issues, registration problems, authentication failures, and required updates, providing a consistent and predictable way to handle errors across the system.
+- `NetworkException` - These exceptions represent network-related and communication errors encountered during SDK operation. They include issues such as interrupted connections, authentication problems, and server/client-side failures.
+- `PaymentException` - These exceptions represent errors related to the payment transaction flow, covering everything from preprocessing to final charge attempts. They include issues such as invalid payment actions, timeouts, incorrect amounts, unsupported card technologies, and unexpected states during card reading. Starting with SDK 1.1.6, when a presented card cannot be used the SDK prompts the cardholder to try another card; after repeated unsuccessful attempts the payment fails with `PaymentException.CardErrorNotAccepted` (code `1029`). If you use an exhaustive `when` on `PaymentException`, add a branch for this type.
+- `PaymentPreparationException` - These exceptions relate to the preparation and availability of the payment process. They indicate failures such as the unavailability of the payment function, issues during kernel setup, missing security-related data, and general checkout failures. These errors typically occur before or at the start of a transaction and prevent it from proceeding.
+- `AttestationException` - These exceptions represent errors related to the attestation process, which is crucial for ensuring the security and integrity of the payment environment. They include issues like enabled USB debugging, non secure device or network.
+- `TapToPayException.Unknown` - The Unknown exception represents an internal error that cannot be exposed externally. It acts as a fallback for unexpected or unclassified issues that occur within the SDK, ensuring sensitive or implementation-specific details are not leaked.
+
+## Error codes
+
+| **Base Type**                   | **Exception Type**          | **Error Code** | **Description**                                           |
+| ------------------------------- | --------------------------- | -------------- | --------------------------------------------------------- |
+| **CommonException**             | Parsing                     | 101            | Error occurred during parsing.                            |
+|                                 | Environment                 | 102            | Environment-related issue.                                |
+|                                 | NotRegisteredTerminal       | 103            | Terminal is not registered.                               |
+|                                 | AuthTokenProvider           | 105            | Authentication token issue.                               |
+|                                 | Update                      | 106            | Update is required.                                       |
+|                                 | SDKIsAlreadyInitialized     | 107            | SDK is already initialized.                               |
+|                                 | SDKIsNotInitialized         | 108            | SDK is not initialized.                                   |
+|                                 | SDKTearDown                 | 109            | SDK teardown process.                                     |
+|                                 | TerminalRegistration        | 110            | Terminal registration issue.                              |
+|                                 | MissingResult               | 111            | Missing result error.                                     |
+| **NetworkException**            | NetworkConnection           | 201            | General network error.                                    |
+|                                 | Authentication              | 202            | Authentication failure.                                   |
+|                                 | Server                      | 204            | Server-related issue.                                     |
+|                                 | Client                      | 205            | Client-related issue.                                     |
+|                                 | NetworkSecurity             | 206            | Secure network (mTLS) issue.                              |
+| **PaymentException**            | InvalidPaymentAction        | 1001           | Invalid payment action.                                   |
+|                                 | UncertainTransaction        | 1002           | Transaction status is uncertain.                          |
+|                                 | Timeout                     | 1003           | Payment process timed out.                                |
+|                                 | Preprocessing               | 1005           | Error during preprocessing.                               |
+|                                 | CombinationSelection        | 1006           | Error in combination selection.                           |
+|                                 | Transaction                 | 1007           | Transaction-related issue.                                |
+|                                 | ExtractPAN                  | 1008           | Error extracting PAN.                                     |
+|                                 | UnknownCVM                  | 1009           | Unknown Cardholder Verification Method.                   |
+|                                 | IncorrectAmount             | 1010           | Incorrect amount specified.                               |
+|                                 | UnsupportedCardTechnology   | 1011           | Unsupported card technology.                              |
+|                                 | UnexpectedCardReadState     | 1012           | Unexpected card read state.                               |
+|                                 | UnexpectedOutcome           | 1013           | Unexpected transaction outcome.                           |
+|                                 | IncorrectFormat             | 1014           | Card read process failed.                                 |
+|                                 | ReadEMVTagsException        | 1015           | Error reading EMV tags.                                   |
+|                                 | TechnoPollingStopped        | 1016           | Techno polling process stopped.                           |
+|                                 | CancelationFailed           | 1017           | Cancellation process failed.                              |
+|                                 | ChargeFailed                | 1018           | Charge process failed.                                    |
+|                                 | UnsupportedOnlinePin        | 1020           | Unsupported online PIN.                                   |
+|                                 | UnsupportedSignatureRequest | 1021           | Unsupported signature request.                            |
+|                                 | ErrorAction                 | 1022           | Error in payment action.                                  |
+|                                 | TransactionInterrupted      | 1023           | Transaction was interrupted.                              |
+|                                 | CardReadFailed              | 1024           | Card read failed.                                         |
+|                                 | DeclinedOutcome             | 1025           | Card declined.                                            |
+|                                 | EmptyCandidatesList         | 1026           | No candidates available.                                  |
+|                                 | UnknownKernel               | 1027           | Unknown kernel error.                                     |
+|                                 | OnlinePinFailed             | 1028           | Online PIN verification failed.                           |
+|                                 | CardErrorNotAccepted        | 1029           | Presented card cannot be used after retry attempts.       |
+| **PaymentPreparationException** | PaymentAvailability         | 1101           | Payment availability issue.                               |
+|                                 | KernelPreparation           | 1102           | Error during kernel preparation.                          |
+|                                 | EmptyAntireplayData         | 1103           | Antireplay data is empty.                                 |
+|                                 | CheckoutFailed              | 1104           | Checkout process failed.                                  |
+| **AttestationException**        | UsbDebuggingEnabled         | 301            | USB debugging enabled. Disable USB debugging.             |
+|                                 | AppDebuggable               | 302            | App is build as debuggable. Rebuild it as non debuggable. |
+|                                 | AdbSessionActive            | 303            | There is an active ADB session.                           |
+|                                 | DeviceSecurity              | 305            | The device is not secure.                                 |
+|                                 | NetworkSecurity             | 304            | The network is not secure.                                |
+| **TapToPayException**           | Unknown                     | 0              | An internal error that cannot be exposed externally       |

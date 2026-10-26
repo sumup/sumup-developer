@@ -1,0 +1,225 @@
+---
+title: Set up the iOS SDK
+description: Install the iOS SDK, register your app, and configure location and Bluetooth permissions.
+sidebar:
+  order: 2
+  label: Set up the SDK
+---
+
+import Callout from "@components/content/Callout";
+import Image from '@components/content/Image.astro';
+
+Configure your iOS app before authenticating a merchant or starting a payment. For a first sandbox payment, follow the [iOS quickstart](/terminal-payments/sdks/ios/quickstart/).
+
+## Prerequisites
+
+- A SumUp merchant account or a [sandbox merchant account](/terminal-payments/quickstart/#sandbox-merchant-account).
+- For reader payments, a SumUp card reader: Solo Lite, Solo, Air, 3G, or PIN+. Tap to Pay on iPhone does not require a reader.
+- An [Affiliate Key](/tools/authorization/affiliate-keys/) from your SumUp Dashboard.
+- Xcode 26.2 or later.
+- An iOS deployment target of 16.0 or later.
+- iPhone or iPad.
+- If your device is managed by an organization, make sure app installation is permitted.
+
+## Compatibility
+
+The SDK supports all orientations on iPad. On iPhone, it presents its payment screens in portrait, even if your app supports other orientations.
+
+## Match affiliate key to app Bundle ID
+
+The Affiliate Key identifies your app to the iOS SDK.
+
+1. Log in to SumUp with your merchant account and open the [Developer Settings](https://me.sumup.com/settings/developer) page.
+2. Create an Affiliate Key if you don't have one yet.
+3. Add your app's _Bundle ID_ in the SumUp portal's _Application ID_ field. The Bundle ID must match the one registered for your Affiliate Key.
+
+## Add property list keys to project
+
+The SDK needs location access to process payments and Bluetooth access to connect to readers. Add these permission descriptions to your app's `Info.plist`:
+
+```xml
+<key>NSLocationWhenInUseUsageDescription</key>
+<string>Location access is required to accept payments.</string>
+<key>NSBluetoothAlwaysUsageDescription</key>
+<string>Bluetooth is required to connect to your SumUp card reader.</string>
+```
+
+Check the [Sample App property list](https://github.com/sumup/sumup-ios-sdk/tree/master/SampleApp/SumUpSDKSampleApp/SumUpSDKSampleApp-Info.plist) for reference.
+
+<Callout type="note" title="Note">
+
+Translate these descriptions in a localized [InfoPlist.strings](https://github.com/sumup/sumup-ios-sdk/tree/master/SampleApp/SumUpSDKSampleApp/en.lproj/InfoPlist.strings) file.
+
+```txt
+/* Localized versions of Info.plist keys */
+
+"NSLocationWhenInUseUsageDescription" = "Location access is required to accept payments.";
+
+"NSBluetoothAlwaysUsageDescription" = "Bluetooth is required to connect to your SumUp card reader.";
+```
+
+For further information, see Apple's documentation on [NSLocationWhenInUseUsageDescription](https://developer.apple.com/documentation/bundleresources/information-property-list/nslocationwheninuseusagedescription) and [NSBluetoothAlwaysUsageDescription](https://developer.apple.com/documentation/bundleresources/information-property-list/nsbluetoothalwaysusagedescription).
+
+</Callout>
+
+## Location services requirement
+
+<Callout type="caution" title="Caution">
+
+**Mandatory Location Access**
+
+For security, compliance, and fraud prevention, the SumUp SDK **requires active location services** to process any transaction.
+
+If a user denies location permissions (e.g., selecting "Never" in the iOS settings), the SDK will be unable to validate the payment environment. This often results in a generic and misleading **"Server Error"** message on the UI or a `SMPSumUpSDKErrorCheckoutGeneral` (Error Code 50) in the callback.
+
+**Integration Best Practices:**
+
+- **Explicit Description:** Ensure your `NSLocationWhenInUseUsageDescription` clearly states that location is mandatory for processing card payments.
+- **Pre-flight Check:** We recommend checking the `CLLocationManager.authorizationStatus()` before calling the checkout method. If access is denied, guide the user to the system settings to enable it.
+- **User Guidance:** If you receive a General Error (50), verify the location permissions before retrying the transaction.
+
+</Callout>
+
+## Adding SDK framework to project
+
+The SumUp iOS SDK is provided as an XCFramework `SumUpSDK.xcframework` that contains
+the headers and bundles containing resources such as images and localizations. You can add the SDK binary manually or use a package manager such as Swift Package Manager or Cocoapods.
+
+<Callout type="caution" title="Caution">
+
+**Cocoapods support ending**
+
+Cocoapods will be making their registry service read-only after November 2026; because of this new releases of the SDK will not be published via Cocoapods after October 31st 2026.
+
+We encourage you to migrate your app to use Swift Package Manager before this deadline in order to be able to update to new versions as needed. Existing SDK versions on Cocoapods should not be affected.
+
+</Callout>
+
+Please follow the relevant instructions below to prepare your project:
+
+<Tabs syncKey="ios_installation">
+
+<TabItem label="Swift Package Manager">
+
+Use Swift Package Manager to add the SDK repository, then add its XCFramework to your app:
+
+<Steps>
+
+1. Add the package dependency to the repository `https://github.com/sumup/sumup-ios-sdk` (_File > Swift Packages > Add Package Dependency..._) with the version `Up to Next Major: 7.1.2`
+2. Leave the checkbox unchecked for the SumUpSDK at the integration popup (_Add Package to ...:_)
+3. From the Project Navigator, drag and drop the `SumUpSDK/Referenced Binaries/SumUpSDK.xcframework` to your Xcode project's "Frameworks, Libraries, and Embedded Content" on the General settings tab.
+4. Make sure the [required Info.plist keys](/terminal-payments/sdks/ios/setup/#add-property-list-keys-to-project) are present.
+
+</Steps>
+
+To learn more about adding Swift Package dependencies, please refer to the [official documentation](https://developer.apple.com/documentation/xcode/adding-package-dependencies-to-your-app).
+
+</TabItem>
+
+<TabItem label="Use XCFramework directly">
+
+<Steps>
+
+1. Drag and drop the `SumUpSDK.xcframework` to your Xcode project's "Frameworks,
+   Libraries, and Embedded Content" on the project General Settings tab.
+2. Make sure the [required Info.plist keys](/terminal-payments/sdks/ios/setup/#add-property-list-keys-to-project) are present.
+
+</Steps>
+
+</TabItem>
+
+<TabItem label="Cocoapods">
+
+```ruby
+target '<Your Target Name>' do
+    pod 'SumUpSDK', '~> 7.1.2'
+end
+```
+
+</TabItem>
+
+</Tabs>
+
+## Importing SDK
+
+To import the SDK in Objective-C source files, you can use `#import <SumUpSDK/SumUpSDK.h>`. If module
+support is enabled in your project, you can use `@import SumUpSDK;` instead.
+
+In Swift, use `import SumUpSDK`. You do not have to add any headers to your bridging header.
+
+## Initialization
+
+Call setup once, on the main thread, before using the SDK. Replace `YOUR_AFFILIATE_KEY` with your Affiliate Key. Setup can request location access, so call it when your app can explain why this permission is needed.
+
+<Image alt="Location permission required" src="/img/guides/ios-sdk_location-permission.png" width="40%" />
+
+<Tabs syncKey="ios_language">
+
+<TabItem label="Swift">
+
+```swift
+import SumUpSDK
+import UIKit
+
+@main
+class AppDelegate: UIResponder, UIApplicationDelegate {
+    var window: UIWindow?
+
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+
+        /*
+         *   This will setup the SumUpSDK.
+         *
+         *   You might consider moving this to a later point in your application's lifecycle,
+         *   as this will start updating for locations.
+         *
+         *   Also remember to provide the necessary usage descriptions in your info.plist
+         *   and to properly localize it, see the
+         *   Add Property List Keys to Project section.
+         *
+         *   Ensure to add the Bundle Identifier of your iOS app to your
+         *   Affiliate Key's Application identifiers in the SumUp developer portal.
+         */
+        SumUpSDK.setup(affiliateKey: "YOUR_AFFILIATE_KEY")
+        return true
+    }
+
+}
+```
+
+</TabItem>
+
+<TabItem label="Objective-C">
+
+```objc
+#import "SUSAppDelegate.h"
+#import <SumUpSDK/SumUpSDK.h>
+
+@implementation SUSAppDelegate
+
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    /*
+     *   This will setup the SumUpSDK.
+     *
+     *   You might consider moving this to a later point in your application's lifecycle,
+     *   as this will start updating for locations.
+     *
+     *   Also remember to provide the necessary usage descriptions in your info.plist
+     *   and to properly localize it, see the
+     *   Add Property List Keys to Project section.
+     *
+     *   Ensure to add the Bundle Identifier of your iOS app to your
+     *   Affiliate Key's Application identifiers in the SumUp developer portal.
+     */
+    [SMPSumUpSDK setupWithAffiliateKey:@"YOUR_AFFILIATE_KEY"];
+    return YES;
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+## Next step
+
+[Authenticate the merchant](/terminal-payments/sdks/ios/authentication/).

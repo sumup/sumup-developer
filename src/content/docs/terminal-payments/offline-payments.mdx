@@ -1,8 +1,8 @@
 ---
-title: Offline Transactions
+title: Offline payments
 description: Use store-and-forward offline transactions with the Android and iOS Reader SDKs, including requirements, lifecycle, and platform-specific APIs.
 sidebar:
-  order: 14
+  order: 4
 ---
 
 import Callout from "@components/content/Callout";
@@ -15,7 +15,7 @@ Offline Transactions is not enabled by default. Your organization must complete 
 
 Offline Transactions let merchants continue accepting card payments when internet connectivity is unavailable or unreliable. In this store-and-forward flow, card data is captured and cached securely on the device, then uploaded later for processing and authorization.
 
-The feature is available for the [Android SDK](/terminal-payments/sdks/android-sdk/) and [iOS SDK](/terminal-payments/sdks/ios-sdk/). It is not available for Tap to Pay.
+The feature is available for the [Android SDK](/terminal-payments/sdks/android/) and [iOS SDK](/terminal-payments/sdks/ios/). It is not available for Tap to Pay.
 
 <Callout type="caution" title="Caution">
 Offline transactions are provisionally approved on device without real-time authorization. The merchant bears the risk for transactions that are later declined during reconciliation.

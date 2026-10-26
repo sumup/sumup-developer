@@ -1,35 +1,42 @@
 ---
-title: SDKs
-description: Compare the mobile SDKs for in-person payments on Android and iOS, then continue to the platform-specific guides and offline transaction documentation.
+title: Mobile SDKs
+description: Choose the iOS or Android SDK guide for reader payments and Tap to Pay, with shared testing and offline payment guidance.
 icon: code
 sidebar:
   label: Overview
   order: 10
 ---
 
-The Reader SDKs let you embed SumUp in-person payment acceptance directly into your Android or iOS app. Your app can connect to a Bluetooth card reader or, depending on platform, use Tap to Pay on the device itself.
+Embed in-person payments in your mobile app with a Bluetooth card reader or Tap to Pay. Choose your platform, then follow its quickstart or the guide for your next task.
+
+## Start building
+
+| Platform | First reader payment                                              | Platform guides                                        | Payments without a reader                                            |
+| -------- | ----------------------------------------------------------------- | ------------------------------------------------------ | -------------------------------------------------------------------- |
+| iOS      | [iOS quickstart](/terminal-payments/sdks/ios/quickstart/)         | [iOS SDK](/terminal-payments/sdks/ios/)                | [Tap to Pay on iPhone](/terminal-payments/sdks/ios/tap-to-pay/)      |
+| Android  | [Android quickstart](/terminal-payments/sdks/android/quickstart/) | [Android reader SDK](/terminal-payments/sdks/android/) | [Tap to Pay on Android](/terminal-payments/sdks/android/tap-to-pay/) |
+
+Each platform section covers setup, authentication, reader management, payments, Tap to Pay, and reference material.
 
 ## Available SDKs
 
-| SDK                                                            | Platform | Readers supported              | Tap to Pay |
-| -------------------------------------------------------------- | -------- | ------------------------------ | ---------- |
-| [Android SDK](/terminal-payments/sdks/android-sdk/)            | Android  | Solo Lite, Solo, Air, 3G, PIN+ | No         |
-| [Android Tap-to-Pay SDK](/terminal-payments/sdks/android-ttp/) | Android  | —                              | Yes        |
-| [iOS SDK](/terminal-payments/sdks/ios-sdk/)                    | iOS      | Solo Lite, Solo, Air, 3G, PIN+ | Yes        |
+| SDK                                                                   | Readers supported              | Tap to Pay                      |
+| --------------------------------------------------------------------- | ------------------------------ | ------------------------------- |
+| [iOS SDK](/terminal-payments/sdks/ios/)                               | Solo Lite, Solo, Air, 3G, PIN+ | Included in the same SDK        |
+| [Android reader SDK](/terminal-payments/sdks/android/)                | Solo Lite, Solo, Air, 3G, PIN+ | Use the separate Tap to Pay SDK |
+| [Android Tap to Pay SDK](/terminal-payments/sdks/android/tap-to-pay/) | No external reader             | Yes                             |
 
 ## How It Works
 
-The SDK provides the payment UI and handles communication with the card reader. Your app initiates checkout, the SDK guides the merchant and customer through the payment flow, and the transaction result is returned to your app at the end.
+The SDK provides the payment UI and handles communication with the reader or the phone's payment interface. Your app starts checkout and handles the returned payment result.
 
 ## Shared Concepts
 
-- Start with the top-level [Quickstart](/terminal-payments/quickstart/) for a minimal first-payment flow.
-- Follow the [in-person payment testing guide](/terminal-payments/testing/) to test successful payments and simulate declines.
-- Use [Offline Transactions](/terminal-payments/sdks/offline-transactions/) if you need store-and-forward card payments when connectivity is unavailable.
-- Use the platform-specific guides for setup, permissions, authentication, and full checkout implementation details.
+- [Set up a sandbox merchant](/terminal-payments/quickstart/#sandbox-merchant-account) before taking test payments.
+- [Test successful payments and declines](/terminal-payments/testing/).
+- [Accept offline payments](/terminal-payments/offline-payments/) with a supported reader integration. Tap to Pay does not support offline payments.
 
 ## Platform Guides
 
-- [Android SDK](/terminal-payments/sdks/android-sdk/)
-- [Android Tap-to-Pay SDK](/terminal-payments/sdks/android-ttp/)
-- [iOS SDK](/terminal-payments/sdks/ios-sdk/)
+- [Build on iOS](/terminal-payments/sdks/ios/).
+- [Build on Android](/terminal-payments/sdks/android/).

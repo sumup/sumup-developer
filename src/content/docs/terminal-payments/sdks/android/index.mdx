@@ -1,0 +1,62 @@
+---
+title: Android
+description: Choose an integration guide for SumUp in-person payments on Android.
+sidebar:
+  order: 12
+  label: Overview
+---
+
+Use the Android reader SDK for Bluetooth card readers. Tap to Pay on Android uses a separate SDK with its own dependencies and authentication.
+
+Start with the [quickstart](/terminal-payments/sdks/android/quickstart/) to take your first sandbox payment with a card reader.
+
+## At a glance
+
+|                         |                                                                      |
+| ----------------------- | -------------------------------------------------------------------- |
+| Languages               | Kotlin and Java                                                      |
+| Reader SDK distribution | Maven (`com.sumup:merchant-sdk`)                                     |
+| Source and samples      | [Android SDK repository](https://github.com/sumup/sumup-android-sdk) |
+
+## Integration guides
+
+- [Set up the SDK](/terminal-payments/sdks/android/setup/)
+- [Authenticate a merchant](/terminal-payments/sdks/android/authentication/)
+- [Connect and manage readers](/terminal-payments/sdks/android/readers/)
+- [Accept reader payments](/terminal-payments/sdks/android/payments/)
+- [Accept Tap to Pay payments](/terminal-payments/sdks/android/tap-to-pay/)
+- [Reference and errors](/terminal-payments/sdks/android/reference/)
+
+## Testing and offline payments
+
+- [Set up a sandbox merchant](/terminal-payments/quickstart/#sandbox-merchant-account).
+- [Test successful payments and declines](/terminal-payments/testing/).
+- [Accept offline reader payments](/terminal-payments/offline-payments/). Tap to Pay does not support offline payments.
+
+## Sample app
+
+SumUp provides a sample app which implements main SDK components. You can find the app under [App directory](https://github.com/sumup/sumup-android-sdk/tree/master/app) of the repository.
+
+## Out of scope
+
+The following functions are handled by the [SumUp APIs](/api/):
+
+- [Refunds](/api/transactions/refund/)
+- [Transaction history](/api/transactions/list/)
+- [Receipts](/api/receipts/get/)
+- [Account management](/api/tags/merchants/)
+- [Online Payments](/online-payments/)
+
+## Community
+
+- **Questions?** Get in contact with our integration team through the [contact form](/contact).
+- **Found a bug?** [Open an issue](https://github.com/sumup/sumup-android-sdk/issues/new).
+  Please provide as much information as possible.
+
+## Changelog
+
+See the [SumUp Changelog](/changelog/) for updates.
+
+## License
+
+The SDK is available under the [Apache License 2.0](https://github.com/sumup/sumup-android-sdk/blob/master/LICENSE).

@@ -142,11 +142,11 @@ fun takePayment(activity: Activity) {
     links: [
       {
         label: "Learn more about the iOS SDK",
-        href: "/terminal-payments/sdks/ios-sdk/",
+        href: "/terminal-payments/sdks/ios/",
       },
       {
         label: "Learn more about the Android SDK",
-        href: "/terminal-payments/sdks/android-sdk/",
+        href: "/terminal-payments/sdks/android/",
       },
     ],
   },

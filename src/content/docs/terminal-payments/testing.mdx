@@ -5,7 +5,7 @@ sidebar:
   order: 3
 ---
 
-Use a sandbox merchant account to test your in-person payments integration without moving real money. The scenarios below use a SumUp card reader with the [Android SDK](/terminal-payments/sdks/android-sdk/), [iOS SDK](/terminal-payments/sdks/ios-sdk/), or [Cloud API](/terminal-payments/cloud-api/).
+Use a sandbox merchant account to test your in-person payments integration without moving real money. The scenarios below use a SumUp card reader with the [Android SDK](/terminal-payments/sdks/android/), [iOS SDK](/terminal-payments/sdks/ios/), or [Cloud API](/terminal-payments/cloud-api/).
 
 If you use the Cloud API, you can also test without a card reader using [Virtual Solo](/terminal-payments/cloud-api/#solo-virtual-terminal).
 
@@ -23,7 +23,7 @@ You do not need the test card numbers used for online payments. The payment amou
 :::caution
 The sandbox merchant account determines whether a payment uses real funds. Make sure your app or API request uses the sandbox merchant, even if you have already selected it in [the Dashboard](https://me.sumup.com/dashboard).
 
-For native login in the Android or iOS SDK, we recommend using a managed user account created in your sandbox merchant. Alternatively, set the sandbox merchant account as your [existing user's default merchant](https://me.sumup.com/settings/accounts) before logging in. Follow the [merchant account setup for native SDK login](/terminal-payments/#users-with-multiple-merchant-accounts).
+For native login in the Android or iOS SDK, we recommend using a managed user account created in your sandbox merchant. Alternatively, set the sandbox merchant account as your [existing user's default merchant](https://me.sumup.com/settings/accounts) before logging in. Follow the [merchant account setup for native SDK login](/terminal-payments/quickstart/#users-with-multiple-merchant-accounts).
 :::
 
 ## Test Successful Payments
@@ -97,4 +97,4 @@ The examples above use EUR, which has two decimal places. Use the amount format 
 
 Also test customer cancellation, a disconnected reader, and loss of connectivity separately. The special amounts above do not reproduce these device or connection conditions.
 
-For store-and-forward payments, follow the separate [offline transaction testing guidance](/terminal-payments/sdks/offline-transactions/#testing).
+For store-and-forward payments, follow the separate [offline transaction testing guidance](/terminal-payments/offline-payments/#testing).

@@ -7,6 +7,12 @@
 /tools/llms/plugins/                                                        /tools/llms/setup/ 301
 /tools/llms/plugins/index.md                                                /tools/llms/setup/index.md 301
 
+# Shared offline payment guide (keep fragments on the destination page).
+/terminal-payments/sdks/offline-transactions/                                /terminal-payments/offline-payments/ 301
+/terminal-payments/sdks/offline-transactions                                 /terminal-payments/offline-payments/ 301
+/terminal-payments/sdks/offline-transactions/index.md                        /terminal-payments/offline-payments/index.md 301
+/terminal-payments/sdks/offline-transactions/index.mdx                       /terminal-payments/offline-payments/index.mdx 301
+
 # SDKs redirects
 /tools/sdks/ios-sdk/                                                         /terminal-payments/sdks/ios-sdk
 /tools/sdks/android-ttp/                                                     /terminal-payments/sdks/android-ttp

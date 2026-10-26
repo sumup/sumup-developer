@@ -1,0 +1,101 @@
+---
+title: Set up the Android reader SDK
+description: Install and initialize the Android reader SDK and configure your app for reader payments.
+sidebar:
+  order: 2
+  label: Set up the SDK
+---
+
+import Callout from "@components/content/Callout";
+
+Use this SDK for Bluetooth card readers. [Tap to Pay on Android](/terminal-payments/sdks/android/tap-to-pay/) is a separate SDK with its own requirements and authentication.
+
+## Prerequisites
+
+- A SumUp merchant account or a [sandbox merchant account](/terminal-payments/quickstart/#sandbox-merchant-account)
+- A supported SumUp card reader: Solo, Solo Lite, Air, 3G, or PIN+
+- An [Affiliate Key](/tools/authorization/affiliate-keys/) linked to your Android application ID
+- Access to the [Android SDK repository](https://github.com/sumup/sumup-android-sdk)
+
+## Requirements
+
+| Requirement           | Minimum |
+| --------------------- | ------- |
+| `minSdkVersion`       | 26      |
+| `targetSdkVersion`    | 36      |
+| Android Gradle Plugin | 9.2.1   |
+| Kotlin                | 2.4.0   |
+| Java                  | 17      |
+
+## Compatibility
+
+Starting with firmware version 1.0.1.84, Air card readers with serial numbers starting with 108, 109 or later require SDK version 4.0.0 and later. Use SDK 4.0.0 or later for these readers.
+
+For store-and-forward payments when connectivity is unavailable, see [Offline payments](/terminal-payments/offline-payments/).
+
+## Adding dependencies
+
+1. Add the SumUp Maven repository to your project's Gradle configuration:
+
+   ```groovy
+   allprojects {
+     repositories {
+         maven { url 'https://maven.sumup.com/releases' }
+     }
+   }
+   ```
+
+2. Add the SDK dependency to your app module build file:
+
+   ```groovy
+   implementation 'com.sumup:merchant-sdk:7.1.0'
+   ```
+
+3. Sync your project.
+
+## Initializing sumup components
+
+Initialize the SumUp components in your app:
+
+```java
+public class SampleApplication extends Application {
+
+  @Override
+  public void onCreate() {
+    super.onCreate();
+    SumUpState.init(this);
+  }
+}
+```
+
+## Enable ProGuard
+
+```groovy
+   buildTypes {
+        release {
+            // All ProGuard rules required by the SumUp SDK are packaged with the library
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt')
+        }
+    }
+```
+
+## Use Google location services
+
+The SDK can use Google Location Services to improve location accuracy and reduce power consumption.
+
+To enable it, add this dependency to your app's `build.gradle`:
+
+```groovy
+implementation "com.google.android.gms:play-services-location:19.0.1"
+```
+
+If the dependency or Google Play Services is unavailable, the SDK uses Android's default location service.
+
+<Callout type="note" title="Note">
+  The example uses Google Location Services 19.0.1.
+</Callout>
+
+## Next step
+
+[Authenticate the merchant](/terminal-payments/sdks/android/authentication/).

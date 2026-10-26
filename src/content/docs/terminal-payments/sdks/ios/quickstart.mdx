@@ -1,0 +1,124 @@
+---
+title: iOS quickstart
+description: Install the iOS SDK and take your first sandbox payment with a Bluetooth card reader.
+sidebar:
+  label: Quickstart
+  order: 1
+---
+
+Take a sandbox payment with a Bluetooth card reader in a UIKit app. For payments without a reader, use the [Tap to Pay on iPhone guide](/terminal-payments/sdks/ios/tap-to-pay/).
+
+## Prerequisites
+
+- Xcode 26.2 or later, an iOS deployment target of 16.0 or later, and a physical iPhone or iPad.
+- A supported [SumUp card reader](/terminal-payments/readers/) and a physical debit or credit card.
+- A [sandbox merchant account](/terminal-payments/quickstart/#sandbox-merchant-account) using EUR for this example.
+- A managed user created in that sandbox merchant for native login. Alternatively, [set the sandbox merchant as your default](/terminal-payments/quickstart/#users-with-multiple-merchant-accounts).
+- An [Affiliate Key](/tools/authorization/affiliate-keys/) with your app's Bundle ID registered as its Application ID.
+
+## 1. Install the SDK
+
+In Xcode, select **File > Add Package Dependencies** and add `https://github.com/sumup/sumup-ios-sdk` with **Up to Next Major: 7.1.2**. Leave the SumUpSDK product unchecked in the integration dialog, then drag `SumUpSDK/Referenced Binaries/SumUpSDK.xcframework` from the Project Navigator to your target's **Frameworks, Libraries, and Embedded Content**.
+
+## 2. Configure permissions
+
+Add these entries to your app's `Info.plist`:
+
+```xml
+<key>NSLocationWhenInUseUsageDescription</key>
+<string>Location access is required to accept payments.</string>
+<key>NSBluetoothAlwaysUsageDescription</key>
+<string>Bluetooth is required to connect to your SumUp card reader.</string>
+```
+
+## 3. Initialize the SDK
+
+Call setup once, on the main thread, before using the SDK. Replace `YOUR_AFFILIATE_KEY` with your Affiliate Key:
+
+```swift
+import SumUpSDK
+
+SumUpSDK.setup(affiliateKey: "YOUR_AFFILIATE_KEY")
+```
+
+## 4. Log in to the sandbox merchant
+
+If a merchant is already logged in, [log out first](/terminal-payments/sdks/ios/authentication/#logging-the-user-out). Confirm that you are using your sandbox merchant before continuing.
+
+The following methods belong in your app's `UIViewController`. Call `logIn()` from a button after the view is visible. Sign in with your sandbox managed user's credentials and allow location and Bluetooth access.
+
+```swift
+import SumUpSDK
+import UIKit
+
+private func logIn() {
+    SumUpSDK.presentLogin(from: self, animated: true) { [weak self] success, error in
+        guard success, error == nil else {
+            print(error?.localizedDescription ?? "Login was cancelled or a merchant is already logged in")
+            return
+        }
+        self?.connectReader()
+    }
+}
+```
+
+This quickstart uses native login for sandbox testing. Use [OAuth authentication](/terminal-payments/sdks/ios/authentication/) for new production integrations.
+
+## 5. Pair the reader
+
+Add this method to the same view controller. Select your reader in the SDK settings. After pairing, close the settings to continue:
+
+```swift
+private func connectReader() {
+    SumUpSDK.presentCardReaderSettings(from: self, animated: true) { [weak self] success, error in
+        guard success, error == nil else {
+            print(error?.localizedDescription ?? "Reader settings could not be opened")
+            return
+        }
+        self?.takePayment()
+    }
+}
+```
+
+## 6. Take a payment
+
+Add this method to the same view controller. Confirm that `currentMerchant` belongs to your sandbox merchant before running it:
+
+```swift
+private func takePayment() {
+    guard SumUpSDK.currentMerchant?.currencyCode == "EUR" else {
+        print("Log in to an EUR sandbox merchant before starting this example")
+        return
+    }
+
+    let request = CheckoutRequest(
+        total: NSDecimalNumber(string: "10.00"),
+        title: nil,
+        currencyCode: "EUR"
+    )
+
+    SumUpSDK.checkout(with: request, from: self) { result, error in
+        guard error == nil, let result, result.success else {
+            print("Payment did not succeed")
+            return
+        }
+        print("Payment successful: \(result.transactionCode ?? "")")
+    }
+}
+```
+
+Tap or insert your physical card and follow the reader's instructions, including PIN entry when requested. A sandbox merchant simulates the payment result without moving real funds.
+
+## You should see
+
+The SDK displays a successful checkout, and Xcode's console shows:
+
+```text
+Payment successful: <transaction-code>
+```
+
+The callback confirms the sandbox payment succeeded and provides its transaction code.
+
+## Next step
+
+[Accept reader payments](/terminal-payments/sdks/ios/payments/) to handle checkout options and regional requirements. Use the [testing guide](/terminal-payments/testing/) to simulate declines.
