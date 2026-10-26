@@ -29,215 +29,126 @@ You will go through the following steps:
 
 ## Creating Customer
 
-A customer resource is a representation of a person or business paying for a product or service.
-It contains personal information such as name, contact details, postal address, as well as a unique identifier relevant to your business logic (`customer_id`).
+Create a customer with an ID from your own system. Keep that `customer_id` for card setup and subsequent payments. It is the only field required by the [Customer schema](/api/schemas/Customer/).
 
-1. Create a new customer resource with a POST request to the `https://api.sumup.com/v0.1/customers` endpoint:
+The examples below assume a configured [server-side SDK client](/tools/sdks/). Run these requests on your server, where your secret API key or OAuth access token is stored.
 
 <Tabs syncKey="backend_lang">
-  <TabItem label="cURL" icon="seti:powershell">
+<TabItem label="cURL">
+
 ```bash
-curl -X POST \
-  https://api.sumup.com/v0.1/customers \
+curl https://api.sumup.com/v0.1/customers \
   -H "Authorization: Bearer $SUMUP_API_KEY" \
-  -H 'Content-Type: application/json' \
-  -d '{
-  "customer_id": "MYCUSTOMERID-123",
-  "personal_details": {
-    "address": {
-      "city": "Venice",
-      "state": "California",
-      "country": "US",
-      "line1": "606 Venezia Ave",
-      "line2": "Front",
-      "postal_code": "90291"
-    },
-    "birthdate": "1949-11-11",
-    "email": "thedude@example.com",
-    "first_name": "Jeffrey",
-    "last_name": "Lebowski",
-    "phone": "+1 310-555-1234"
-  }
-}'
+  -H "Content-Type: application/json" \
+  -d '{"customer_id":"MYCUSTOMERID-123"}'
 ```
+
 </TabItem>
-  <TabItem label="JavaScript" icon="seti:javascript">
-    ```ts
-    const customer = await client.customers.create({
-      customer_id: "MYCUSTOMERID-123",
-      personal_details: {
-        first_name: "Jeffrey",
-        last_name: "Lebowski",
-        email: "thedude@example.com",
-        phone: "+1 310-555-1234",
-        birth_date: "1949-11-11",
-        address: {
-          city: "Venice",
-          state: "California",
-          country: "US",
-          line_1: "606 Venezia Ave",
-          line_2: "Front",
-          postal_code: "90291",
-        },
-      },
-    });
-    ```
-  </TabItem>
-  <TabItem label=".NET" icon="seti:c-sharp">
-    ```csharp
-    var customer = await client.Customers.CreateAsync(new Customer
-    {
-        CustomerId = "MYCUSTOMERID-123",
-        PersonalDetails = new PersonalDetails
-        {
-            FirstName = "Jeffrey",
-            LastName = "Lebowski",
-            Email = "thedude@example.com",
-            Phone = "+1 310-555-1234",
-            BirthDate = new System.DateTime(1949, 11, 11),
-            Address = new AddressLegacy
-            {
-                City = "Venice",
-                State = "California",
-                Country = "US",
-                Line1 = "606 Venezia Ave",
-                Line2 = "Front",
-                PostalCode = "90291",
-            },
-        },
-    });
-    ```
-  </TabItem>
-  <TabItem label="Java" icon="seti:java">
-    ```java
-    var customer = client.customers().createCustomer(
-        Customer.builder()
-            .customerId("MYCUSTOMERID-123")
-            .personalDetails(
-                PersonalDetails.builder()
-                    .firstName("Jeffrey")
-                    .lastName("Lebowski")
-                    .email("thedude@example.com")
-                    .phone("+1 310-555-1234")
-                    .birthDate(java.time.LocalDate.parse("1949-11-11"))
-                    .address(
-                        AddressLegacy.builder()
-                            .city("Venice")
-                            .state("California")
-                            .country("US")
-                            .line1("606 Venezia Ave")
-                            .line2("Front")
-                            .postalCode("90291")
-                            .build()
-                    )
-                    .build()
-            )
-            .build()
-    );
-    ```
-  </TabItem>
-  <TabItem label="Go" icon="seti:go">
-    ```go
-    str := func(v string) *string { return &v }
+<TabItem label="JavaScript">
 
+```ts
+const customer = await client.customers.create({
+  customer_id: "MYCUSTOMERID-123",
+});
+```
+
+</TabItem>
+<TabItem label=".NET">
+
+```csharp
+var response = await client.Customers.CreateAsync(new Customer
+{
+    CustomerId = "MYCUSTOMERID-123",
+});
+```
+
+</TabItem>
+<TabItem label="Java">
+
+```java
+var customer = client.customers().create(
+    Customer.builder().customerId("MYCUSTOMERID-123").build()
+);
+```
+
+</TabItem>
+<TabItem label="Go">
+
+```go
+import (
+    "context"
+    "fmt"
+
+    "github.com/sumup/sumup-go"
+)
+
+func createCustomer(ctx context.Context, client *sumup.Client) (*sumup.Customer, error) {
     customer, err := client.Customers.Create(ctx, sumup.CustomersCreateParams{
-    	CustomerID: "MYCUSTOMERID-123",
-    	PersonalDetails: &sumup.PersonalDetails{
-    		FirstName: str("Jeffrey"),
-    		LastName:  str("Lebowski"),
-    		Email:     str("thedude@example.com"),
-    		Phone:     str("+1 310-555-1234"),
-    		Address: &sumup.AddressLegacy{
-    			City:       str("Venice"),
-    			State:      str("California"),
-    			Country:    str("US"),
-    			Line1:      str("606 Venezia Ave"),
-    			Line2:      str("Front"),
-    			PostalCode: str("90291"),
-    		},
-    	},
+        CustomerID: "MYCUSTOMERID-123",
     })
-    ```
+    if err != nil {
+        return nil, fmt.Errorf("create customer: %w", err)
+    }
+    return customer, nil
+}
+```
 
-  </TabItem>
-  <TabItem label="Python" icon="seti:python">
-    ```py
-    from sumup.customers.resource import CreateCustomerBody
-    from sumup.customers.types import AddressLegacy, PersonalDetails
+</TabItem>
+<TabItem label="Python">
 
-    customer = client.customers.create(
-        CreateCustomerBody(
-            customer_id="MYCUSTOMERID-123",
-            personal_details=PersonalDetails(
-                first_name="Jeffrey",
-                last_name="Lebowski",
-                email="thedude@example.com",
-                phone="+1 310-555-1234",
-                birth_date="1949-11-11",
-                address=AddressLegacy(
-                    city="Venice",
-                    state="California",
-                    country="US",
-                    line_1="606 Venezia Ave",
-                    line_2="Front",
-                    postal_code="90291",
-                ),
-            ),
-        )
-    )
-    ```
+```py
+customer = client.customers.create({"customer_id": "MYCUSTOMERID-123"})
+```
 
-  </TabItem>
-  <TabItem label="Rust" icon="seti:rust">
-  ```rust
-    let customer = client
-        .customers()
-        .create(sumup::resources::customers::Customer {
-            customer_id: "MYCUSTOMERID-123".into(),
-            personal_details: Some(sumup::resources::common::PersonalDetails {
-                first_name: Some("Jeffrey".into()),
-                last_name: Some("Lebowski".into()),
-                email: Some("thedude@example.com".into()),
-                phone: Some("+1 310-555-1234".into()),
-                birth_date: None,
-                tax_id: None,
-                address: Some(sumup::resources::common::AddressLegacy {
-                    city: Some("Venice".into()),
-                    state: Some("California".into()),
-                    country: Some("US".into()),
-                    line_1: Some("606 Venezia Ave".into()),
-                    line_2: Some("Front".into()),
-                    postal_code: Some("90291".into()),
-                }),
-            }),
-        })
-        .await?;
-    ```
-  </TabItem>
-  <TabItem label="PHP" icon="seti:php">
-    ```php
-    $customer = $sumup->customers->create([
-        'customer_id' => 'MYCUSTOMERID-123',
-        'personal_details' => [
-            'first_name' => 'Jeffrey',
-            'last_name' => 'Lebowski',
-            'email' => 'thedude@example.com',
-            'phone' => '+1 310-555-1234',
-            'address' => [
-                'city' => 'Venice',
-                'state' => 'California',
-                'country' => 'US',
-                'line_1' => '606 Venezia Ave',
-                'line_2' => 'Front',
-                'postal_code' => '90291',
-            ],
-        ],
-    ]);
-    ```
-  </TabItem>
+</TabItem>
+<TabItem label="Rust">
+
+```rust
+let customer = client
+    .customers()
+    .create(sumup::resources::customers::Customer {
+        customer_id: "MYCUSTOMERID-123".into(),
+        personal_details: None,
+    })
+    .await?;
+```
+
+</TabItem>
+<TabItem label="PHP">
+
+```php
+$customer = $sumup->customers->create([
+    'customer_id' => 'MYCUSTOMERID-123',
+]);
+```
+
+</TabItem>
 </Tabs>
 
-You should expect a standard `201 Created` response, with the customer details you passed. For full details, see the [endpoint documentation](/api/customers/create). Having created the customer, we can now proceed to making a payment
+A successful request returns `201 Created` with the customer resource. Handle any SDK error before continuing to card setup.
+
+### Optional personal details
+
+Add `personal_details` only when your integration needs those details. The API fields are `birth_date`, `line_1`, and `line_2`; use the names in the [PersonalDetails schema](/api/schemas/PersonalDetails/).
+
+For example, this is a valid customer request with optional details:
+
+```json
+{
+  "customer_id": "MYCUSTOMERID-123",
+  "personal_details": {
+    "email": "customer@example.com",
+    "birth_date": "1990-01-15",
+    "address": {
+      "country": "DE",
+      "line_1": "Example Street 1",
+      "line_2": "Apartment 2"
+    }
+  }
+}
+```
+
+Continue with the same `customer_id` when creating the card-setup checkout.
 
 ## Creating Checkout to Save Card
 
