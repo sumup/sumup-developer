@@ -19,6 +19,8 @@ This is the lowest-effort way to launch an online checkout while keeping payment
   width="80%"
 />
 
+New to online payments? Follow the [Hosted Checkout quickstart](/online-payments/quickstart/) for a complete sandbox payment before configuring your website.
+
 ## Prerequisites
 
 - A [sandbox merchant account](/online-payments/#getting-a-sandbox-merchant-account) for test payments.
@@ -39,7 +41,9 @@ This is the lowest-effort way to launch an online checkout while keeping payment
 
 ## Create a Hosted Checkout
 
-Send a request to the [Create a checkout endpoint](/api/checkouts/create) with `hosted_checkout.enabled` set to `true`. If you want the success page to link back to your website, include `redirect_url` at the same time.
+Create a checkout with `hosted_checkout.enabled` set to `true`. Use a unique `checkout_reference` for each payment attempt.
+
+The SDK examples assume an authenticated client. For installation and client setup, follow the [Hosted Checkout quickstart](/online-payments/quickstart/).
 
 <Tabs syncKey="backend_lang">
   <TabItem label="cURL" icon="seti:powershell">
@@ -48,61 +52,46 @@ Send a request to the [Create a checkout endpoint](/api/checkouts/create) with `
       -H "Content-Type: application/json" \
       -H "Authorization: Bearer $SUMUP_API_KEY" \
       -d '{
-        "amount": 12.00,
-        "checkout_reference": "b50pr914-6k0e-3091-a592-890010285b3d",
+        "amount": 12,
+        "checkout_reference": "order-123",
         "currency": "EUR",
-        "description": "A sample checkout",
-        "merchant_code": "MCXXXXXX",
-        "redirect_url": "https://example.com/orders/123/complete",
+        "merchant_code": "YOUR_MERCHANT_CODE",
         "hosted_checkout": { "enabled": true }
       }'
     ```
   </TabItem>
   <TabItem label="JavaScript" icon="seti:javascript">
-    ```ts
+    ```js
     const checkout = await client.checkouts.create({
-      merchant_code: merchantCode,
-      amount: 12.0,
+      checkout_reference: "order-123",
+      amount: 12,
       currency: "EUR",
-      checkout_reference: "b50pr914-6k0e-3091-a592-890010285b3d",
-      description: "A sample checkout",
-      redirect_url: "https://example.com/orders/123/complete",
+      merchant_code: merchantCode,
       hosted_checkout: { enabled: true },
     });
     ```
   </TabItem>
   <TabItem label=".NET" icon="seti:c-sharp">
     ```csharp
-    var checkout = await client.Checkouts.CreateAsync(new CheckoutCreateRequest
+    var checkout = (await client.Checkouts.CreateAsync(new CheckoutCreateRequest
     {
-        MerchantCode = merchantCode,
+        CheckoutReference = "order-123",
         Amount = 12.0f,
         Currency = Currency.Eur,
-        CheckoutReference = "b50pr914-6k0e-3091-a592-890010285b3d",
-        Description = "A sample checkout",
-        RedirectUrl = "https://example.com/orders/123/complete",
-        HostedCheckout = new CheckoutCreateRequestHostedCheckout
-        {
-            Enabled = true,
-        },
-    });
+        MerchantCode = merchantCode,
+        HostedCheckout = new HostedCheckout { Enabled = true },
+    })).Data!;
     ```
   </TabItem>
   <TabItem label="Java" icon="seti:java">
     ```java
-    var checkout = client.checkouts().createCheckout(
+    var checkout = client.checkouts().create(
         CheckoutCreateRequest.builder()
-            .merchantCode(merchantCode)
+            .checkoutReference("order-123")
             .amount(12.0f)
             .currency(Currency.EUR)
-            .checkoutReference("b50pr914-6k0e-3091-a592-890010285b3d")
-            .description("A sample checkout")
-            .redirectUrl("https://example.com/orders/123/complete")
-            .hostedCheckout(
-                CheckoutCreateRequestHostedCheckout.builder()
-                    .enabled(true)
-                    .build()
-            )
+            .merchantCode(merchantCode)
+            .hostedCheckout(HostedCheckout.builder().enabled(true).build())
             .build()
     );
     ```
@@ -110,92 +99,61 @@ Send a request to the [Create a checkout endpoint](/api/checkouts/create) with `
   <TabItem label="Go" icon="seti:go">
     ```go
     checkout, err := client.Checkouts.Create(ctx, sumup.CheckoutsCreateParams{
-        MerchantCode:      merchantCode,
-        Amount:            12.0,
+        CheckoutReference: "order-123",
+        Amount:            12,
         Currency:          sumup.CurrencyEUR,
-        CheckoutReference: "b50pr914-6k0e-3091-a592-890010285b3d",
-        Description:       "A sample checkout",
-        RedirectURL:       "https://example.com/orders/123/complete",
-        HostedCheckout: &sumup.CheckoutHostedCheckout{
-            Enabled: true,
-        },
+        MerchantCode:      merchantCode,
+        HostedCheckout:    &sumup.HostedCheckout{Enabled: true},
     })
+    if err != nil {
+        return fmt.Errorf("create checkout: %w", err)
+    }
     ```
   </TabItem>
   <TabItem label="Python" icon="seti:python">
     ```py
     checkout = client.checkouts.create(
-        CreateCheckoutBody(
-            merchant_code=merchant_code,
-            amount=12.00,
-            currency="EUR",
-            checkout_reference="b50pr914-6k0e-3091-a592-890010285b3d",
-            description="A sample checkout",
-            redirect_url="https://example.com/orders/123/complete",
-            hosted_checkout={"enabled": True},
-        )
+        checkout_reference="order-123",
+        amount=12,
+        currency="EUR",
+        merchant_code=merchant_code,
+        hosted_checkout={"enabled": True},
     )
     ```
   </TabItem>
   <TabItem label="Rust" icon="seti:rust">
     ```rust
-    let checkout = client.checkouts().create(Some(CheckoutCreateRequest {
-        merchant_code,
-        amount: 12.,
-        currency: Currency::EUR,
-        checkout_reference: "b50pr914-6k0e-3091-a592-890010285b3d".into(),
-        description: Some("A sample checkout".into()),
-        redirect_url: Some("https://example.com/orders/123/complete".into()),
-        hosted_checkout: Some(CheckoutCreateRequestHostedCheckout {
-            enabled: true,
-        }),
-        return_url: None,
-        customer_id: None,
-        purpose: None,
-        id: None,
-        status: None,
-        date: None,
-        valid_until: None,
-        transactions: None,
-    })).await?;
+    let checkout = client.checkouts().create(
+        checkouts::CreateRequest::builder()
+            .checkout_reference("order-123")
+            .amount(12.0)
+            .currency(Currency::EUR)
+            .merchant_code(merchant_code)
+            .hosted_checkout(checkouts::HostedCheckout { enabled: true })
+            .build(),
+    ).await?;
     ```
   </TabItem>
   <TabItem label="PHP" icon="seti:php">
     ```php
-    $checkout = $sumup->checkouts->create([
-        'merchant_code' => $merchantCode,
-        'amount' => 12.00,
+    $checkout = $client->checkouts()->create([
+        'checkout_reference' => 'order-123',
+        'amount' => 12,
         'currency' => 'EUR',
-        'checkout_reference' => 'b50pr914-6k0e-3091-a592-890010285b3d',
-        'description' => 'A sample checkout',
-        'redirect_url' => 'https://example.com/orders/123/complete',
-        'hosted_checkout' => [
-            'enabled' => true,
-        ],
+        'merchant_code' => $merchantCode,
+        'hosted_checkout' => ['enabled' => true],
     ]);
     ```
   </TabItem>
 </Tabs>
 
-The response includes the hosted checkout configuration and the URL you send the customer to:
+The response includes the checkout ID and payment URL:
 
 ```json
 {
-  "amount": 12,
-  "checkout_reference": "b50pr914-6k0e-3091-a592-890010285b3d",
-  "checkout_type": "checkout",
-  "currency": "EUR",
-  "date": "2000-01-01T12:49:24.899+00:00",
-  "description": "A sample checkout",
-  "hosted_checkout": { "enabled": true },
-  "hosted_checkout_url": "https://checkout.sumup.com/pay/8f9316a3-cda9-42a9-9771-54d534315676",
   "id": "64553e20-3f0e-49e4-8af3-fd0eca86ce91",
-  "merchant_code": "MCXXXXXX",
-  "merchant_country": "DE",
-  "merchant_name": "Sample Shop",
-  "purpose": "CHECKOUT",
-  "status": "PENDING",
-  "transactions": []
+  "hosted_checkout_url": "https://checkout.sumup.com/pay/8f9316a3-cda9-42a9-9771-54d534315676",
+  "status": "PENDING"
 }
 ```
 
@@ -212,9 +170,16 @@ The business branding shown on Hosted Checkout, such as your business logo and i
 
 ## Configure the Return Flow
 
-If you want the success page to include a button back to your website, set `redirect_url` when you create the checkout, as shown in the examples above.
+Include these optional fields in the checkout creation request:
 
-If `redirect_url` is present, the success page shows a button that sends the customer back to your website.
+```json
+{
+  "redirect_url": "https://example.com/orders/123/complete",
+  "return_url": "https://example.com/webhooks/sumup"
+}
+```
+
+`redirect_url` adds a button on the success page that returns the customer to your website. `return_url` receives checkout status notifications on your server. See [webhook handling](/online-payments/webhooks/) to verify the payment before updating your order.
 
 ## Handle Payment Outcomes
 
