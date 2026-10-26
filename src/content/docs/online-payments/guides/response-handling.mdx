@@ -1,38 +1,42 @@
 ---
 title: Response Handling
-description: Explains how to interpret SumUp API responses.
+description: Interpret API responses, check uncertain payment results, and choose when a request can be retried safely.
 sidebar:
   order: 93
 ---
 
 ## Overview
 
-Once an API call is submitted to SumUp, you will receive a standard HTTP response informing you if your request has been successful or not. In most cases the HTTP codes are accompanied by a response body in [JSON](https://json.org/) format.
+An HTTP response tells you whether SumUp accepted or completed an API request. It does not always tell you whether the customer paid. Use the resource's payment status to make that decision.
 
-Codes in the `2xx` range indicate success,`4xx` range indicates errors where the information provided results in a failure. Codes in the `5xx` range are rare and indicate server-side errors.
+Each operation's [API reference](/api/) documents its response codes and body. See [API errors](/tools/errors/) for Problem Details and other error formats.
 
 ## Successful Requests
 
-Successfully processed requests return one of the following HTTP status codes: `200 OK`, `201 Created`, `202 Accepted`, `204 No Content`. Depending on the use case response bodies may not be present at all. A response body can look like this:
+| HTTP response    | What it means                                     | What to do next                                                              |
+| ---------------- | ------------------------------------------------- | ---------------------------------------------------------------------------- |
+| `200 OK`         | The request succeeded.                            | Read the response and check the resource's status.                           |
+| `201 Created`    | A resource was created.                           | Save its ID. A newly created checkout still needs to be paid.                |
+| `202 Accepted`   | Processing was accepted and may still be running. | Wait for the final result or retrieve the resource.                          |
+| `204 No Content` | The operation succeeded and has no response body. | Do not try to parse a JSON body. Follow the operation's documented behavior. |
 
-```json
-{
-  "next_step": {
-    "url": "https://dummy-3ds-gateway.com/cap?RID=1233&VAA=A",
-    "method": "POST",
-    "redirect_url": "https://mysite.com/completed_purchase",
-    "mechanism": "iframe",
-    "payload": {
-      "PaReq": "eJxVUttu2zAM/RXDr4MjyY5dO6BVuE27FZuDZHGG9VGRmMSFb/..f16+jLt/gPhUvGGw==",
-      "MD": "b1a536c0-29b9-11eb-adc1-0242ac120002"
-    }
-  }
-}
-```
+A checkout response can include `next_step`, meaning the customer needs to complete another action. Let your [checkout integration](/online-payments/checkouts/) handle that action, including any [3D Secure challenge](/online-payments/3ds/).
+
+For an online checkout, only treat `status: "PAID"` as confirmation of payment. A redirect, a widget callback, or an HTTP success code alone is not enough.
 
 ## Client-Side Issues
 
-`4xx` are occasions where you can take action to correct your application requests. Typically, these codes are returned upon user error, such as invalid API calls, incorrect values, missing parameters, etc. The response you receive will provide an indication to the root cause that triggered it. Here's an example of a `4xx` response:
+Read the error body before deciding whether to retry:
+
+| Response       | Next action                                                                                                                                                 |
+| -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `400` or `422` | Correct the request using the returned validation details. Repeating the same payload will not fix it.                                                      |
+| `401`          | Check the credential. If an OAuth token expired, [refresh it](/tools/authorization/oauth/#refresh-the-access-token) or ask the merchant to authorize again. |
+| `403`          | Check merchant access, permissions, and any required scope activation.                                                                                      |
+| `409`          | Inspect the conflicting resource or reference before creating another request.                                                                              |
+| `429`          | Wait before retrying. If the response includes `Retry-After`, follow it. Limit the number of attempts.                                                      |
+
+For example, this response identifies a missing merchant code:
 
 ```json
 {
@@ -44,4 +48,30 @@ Successfully processed requests return one of the following HTTP status codes: `
 
 ## Server-Side Issues
 
-`5xx` stand for server errors. Although rare, if you receive such code, we recommend retrying your request. Should the returned codes continue to be in the `5xx` range, [reach out to us](/contact).
+A timeout, lost connection, or `5xx` response can leave a payment result uncertain. The server might have processed the operation even though your application did not receive its result.
+
+Choose the next action based on the operation:
+
+| Operation                          | How to recover                                                                              |
+| ---------------------------------- | ------------------------------------------------------------------------------------------- |
+| Retrieve a checkout or transaction | Retry the read with a delay and a fixed attempt limit. Increase the delay between attempts. |
+| Create or process a payment        | Retrieve the existing checkout or transaction before submitting another payment.            |
+| Refund a transaction               | Inspect the transaction and its refund events before sending another refund request.        |
+
+Do not apply one automatic retry policy to every API call.
+
+### Check an uncertain payment
+
+1. Keep the resource IDs and your own payment-attempt reference with the order before processing payment.
+2. If an online checkout ID is known, [retrieve the checkout](/api/checkouts/get/). If checkout creation timed out before returning an ID, [list checkouts](/api/checkouts/list/) with the original `checkout_reference` to look for the existing resource.
+3. For an in-person payment, [retrieve the transaction](/api/transactions/get/) using the identifier supplied by your integration. Depending on the flow, this can be `foreign_transaction_id` or `client_transaction_id`.
+4. If payment succeeded, update the existing order. If it is still pending or the final result is unavailable, keep the order unpaid while you reconcile it.
+5. Start another payment attempt only after checking the previous attempt's result. Give each new attempt a unique reference and keep the link to the same order.
+
+For Cloud API, the initial response only confirms that the reader checkout was accepted. Follow the [Cloud API result flow](/terminal-payments/cloud-api/#receive-transaction-results) for its final result.
+
+### Check an uncertain refund
+
+Retrieve the transaction and inspect its refund events or refunded amount where available. Compare them with the refund your application requested. Use the [refund guide](/online-payments/guides/refund/) and the endpoint's documented response before deciding whether another refund is needed.
+
+If you still cannot establish the result, retain the IDs and references for reconciliation and [contact SumUp](/contact). Do not automatically repeat the payment or refund while its result is unknown.
