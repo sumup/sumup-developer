@@ -3,7 +3,7 @@
   "language": "python",
   "sdk": {
     "module": "sumup",
-    "version": "0.3.6"
+    "version": "0.4.0"
   },
   "openAPIVersion": "1.0.0",
   "samples": [
