@@ -1,12 +1,12 @@
 ---
 title: Online payment quickstart
-description: Create a Hosted Checkout, complete a sandbox payment, and verify the final checkout status.
+description: Take a sandbox payment with Hosted Checkout and confirm its status using your preferred SDK.
 sidebar:
   label: Quickstart
   order: 2
 ---
 
-Take a sandbox payment on a SumUp-hosted payment page. Your script creates the checkout, SumUp collects payment details, and you verify the result from your server or a trusted development terminal.
+Create a SumUp-hosted payment page, pay with a test card, and see the payment status in your terminal.
 
 ## Prerequisites
 
@@ -28,9 +28,11 @@ export SUMUP_API_KEY="YOUR_SANDBOX_SECRET_API_KEY"
 export SUMUP_MERCHANT_CODE="YOUR_SANDBOX_MERCHANT_CODE"
 ```
 
-## 2. Create a Hosted Checkout
+<span id="2-create-a-hosted-checkout"></span>
 
-Choose your language below. Each program creates a checkout when run without arguments. In step 4, you will pass its ID to the same program to retrieve the payment status.
+## 2. Create a payment page
+
+Choose your language, install the SDK, and save the example in the file shown above its code block. Run it in your terminal to create a payment page for `10.00 EUR`. The example waits while you pay in the browser, then checks the payment status.
 
 <Tabs syncKey="backend_lang">
 
@@ -43,28 +45,36 @@ Choose your language below. Each program creates a checkout when run without arg
     npm install @sumup/sdk@0.2.2
     ```
 
-    Save this program as `checkout.mjs`:
+    Create this file:
 
-    ```js
+    ```js title="checkout.mjs"
     import { randomUUID } from "node:crypto";
+    import { createInterface } from "node:readline/promises";
+    import { stdin, stdout } from "node:process";
     import SumUp from "@sumup/sdk";
 
     const client = new SumUp({ apiKey: process.env.SUMUP_API_KEY });
-    const checkoutId = process.argv[2];
+    const checkout = await client.checkouts.create({
+      checkout_reference: randomUUID(),
+      amount: 10,
+      currency: "EUR",
+      merchant_code: process.env.SUMUP_MERCHANT_CODE,
+      hosted_checkout: { enabled: true },
+    });
+    console.log("Checkout ID:", checkout.id);
+    console.log("Payment page:", checkout.hosted_checkout_url);
 
-    if (checkoutId) {
-      const checkout = await client.checkouts.get(checkoutId);
-      console.log("Status:", checkout.status);
-    } else {
-      const checkout = await client.checkouts.create({
-        checkout_reference: randomUUID(),
-        amount: 10,
-        currency: "EUR",
-        merchant_code: process.env.SUMUP_MERCHANT_CODE,
-        hosted_checkout: { enabled: true },
-      });
-      console.log("Checkout ID:", checkout.id);
-      console.log("Payment page:", checkout.hosted_checkout_url);
+    const terminal = createInterface({ input: stdin, output: stdout });
+    try {
+      while (true) {
+        console.log("After paying in your browser, press Enter to check the status.");
+        await terminal.question("");
+        const result = await client.checkouts.get(checkout.id);
+        console.log("Status:", result.status);
+        if (result.status !== "PENDING") break;
+      }
+    } finally {
+      terminal.close();
     }
     ```
 
@@ -86,9 +96,9 @@ Choose your language below. Each program creates a checkout when run without arg
     dotnet add package SumUp --version 0.0.21
     ```
 
-    Save this program as `Program.cs` (replace the generated file):
+    Replace the generated file with:
 
-    ```csharp
+    ```csharp title="Program.cs"
     using SumUp;
 
     using var client = new SumUpClient(new SumUpClientOptions
@@ -96,27 +106,27 @@ Choose your language below. Each program creates a checkout when run without arg
         AccessToken = Environment.GetEnvironmentVariable("SUMUP_API_KEY"),
     });
 
-    if (args.Length > 0)
+    var response = await client.Checkouts.CreateAsync(new CheckoutCreateRequest
     {
-        var response = await client.Checkouts.GetAsync(args[0]);
-        var checkout = response.Data
-            ?? throw new InvalidOperationException("Checkout not returned");
-        Console.WriteLine($"Status: {checkout.Status?.ToString().ToUpperInvariant()}");
-    }
-    else
+        CheckoutReference = Guid.NewGuid().ToString(),
+        Amount = 10.0f,
+        Currency = Currency.Eur,
+        MerchantCode = Environment.GetEnvironmentVariable("SUMUP_MERCHANT_CODE")!,
+        HostedCheckout = new HostedCheckout { Enabled = true },
+    });
+    var checkout = response.Data
+        ?? throw new InvalidOperationException("Checkout not returned");
+    Console.WriteLine($"Checkout ID: {checkout.Id}");
+    Console.WriteLine($"Payment page: {checkout.HostedCheckoutUrl}");
+
+    while (true)
     {
-        var response = await client.Checkouts.CreateAsync(new CheckoutCreateRequest
-        {
-            CheckoutReference = Guid.NewGuid().ToString(),
-            Amount = 10.0f,
-            Currency = Currency.Eur,
-            MerchantCode = Environment.GetEnvironmentVariable("SUMUP_MERCHANT_CODE")!,
-            HostedCheckout = new HostedCheckout { Enabled = true },
-        });
-        var checkout = response.Data
+        Console.WriteLine("After paying in your browser, press Enter to check the status.");
+        if (Console.ReadLine() is null) return;
+        var result = (await client.Checkouts.GetAsync(checkout.Id!)).Data
             ?? throw new InvalidOperationException("Checkout not returned");
-        Console.WriteLine($"Checkout ID: {checkout.Id}");
-        Console.WriteLine($"Payment page: {checkout.HostedCheckoutUrl}");
+        Console.WriteLine($"Status: {result.Status?.ToString().ToUpperInvariant()}");
+        if (result.Status != CheckoutSuccessStatus.Pending) break;
     }
     ```
 
@@ -131,9 +141,9 @@ Choose your language below. Each program creates a checkout when run without arg
   <TabItem label="Java" icon="seti:java">
     Use Java 17 or later and Gradle.
 
-    Save this as `build.gradle`:
+    Create this build file:
 
-    ```groovy
+    ```groovy title="build.gradle"
     plugins { id 'application' }
     repositories { mavenCentral() }
     dependencies { implementation 'com.sumup:sumup-sdk:0.1.2' }
@@ -146,22 +156,26 @@ Choose your language below. Each program creates a checkout when run without arg
     mkdir -p src/main/java
     ```
 
-    Save this program as `src/main/java/Checkout.java`. The JSON configuration maps Java field names to the API's snake-case names for SDK 0.1.2:
+    Create this source file:
 
-    ```java
+    ```java title="src/main/java/Checkout.java"
     import com.fasterxml.jackson.annotation.JsonInclude;
     import com.fasterxml.jackson.databind.DeserializationFeature;
     import com.fasterxml.jackson.databind.PropertyNamingStrategies;
     import com.fasterxml.jackson.databind.json.JsonMapper;
-    import com.sumup.sdk.core.ApiClient;
     import com.sumup.sdk.SumUpClient;
+    import com.sumup.sdk.core.ApiClient;
     import com.sumup.sdk.models.CheckoutCreateRequest;
+    import com.sumup.sdk.models.CheckoutSuccessStatus;
     import com.sumup.sdk.models.Currency;
     import com.sumup.sdk.models.HostedCheckout;
+    import java.io.BufferedReader;
+    import java.io.InputStreamReader;
     import java.util.UUID;
 
     public class Checkout {
         public static void main(String[] args) throws Exception {
+            // Use the API's JSON field names with SDK 0.1.2.
             var mapper = JsonMapper.builder()
                 .findAndAddModules()
                 .propertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE)
@@ -175,21 +189,25 @@ Choose your language below. Each program creates a checkout when run without arg
                     .build()
             ).build();
 
-            if (args.length > 0) {
-                var checkout = client.checkouts().get(args[0]);
-                System.out.println("Status: " + checkout.status());
-            } else {
-                var checkout = client.checkouts().create(
-                    CheckoutCreateRequest.builder()
-                        .checkoutReference(UUID.randomUUID().toString())
-                        .amount(10.0f)
-                        .currency(Currency.EUR)
-                        .merchantCode(System.getenv("SUMUP_MERCHANT_CODE"))
-                        .hostedCheckout(HostedCheckout.builder().enabled(true).build())
-                        .build()
-                );
-                System.out.println("Checkout ID: " + checkout.id());
-                System.out.println("Payment page: " + checkout.hostedCheckoutUrl());
+            var checkout = client.checkouts().create(
+                CheckoutCreateRequest.builder()
+                    .checkoutReference(UUID.randomUUID().toString())
+                    .amount(10.0f)
+                    .currency(Currency.EUR)
+                    .merchantCode(System.getenv("SUMUP_MERCHANT_CODE"))
+                    .hostedCheckout(HostedCheckout.builder().enabled(true).build())
+                    .build()
+            );
+            System.out.println("Checkout ID: " + checkout.id());
+            System.out.println("Payment page: " + checkout.hostedCheckoutUrl());
+
+            var terminal = new BufferedReader(new InputStreamReader(System.in));
+            while (true) {
+                System.out.println("After paying in your browser, press Enter to check the status.");
+                if (terminal.readLine() == null) return;
+                var result = client.checkouts().get(checkout.id());
+                System.out.println("Status: " + result.status());
+                if (!CheckoutSuccessStatus.PENDING.equals(result.status())) break;
             }
         }
     }
@@ -213,12 +231,13 @@ Choose your language below. Each program creates a checkout when run without arg
     go get github.com/sumup/sumup-go@v0.21.0
     ```
 
-    Save this program as `main.go`:
+    Create this file:
 
-    ```go
+    ```go title="main.go"
     package main
 
     import (
+        "bufio"
         "context"
         "crypto/rand"
         "fmt"
@@ -237,19 +256,6 @@ Choose your language below. Each program creates a checkout when run without arg
     func run() error {
         client := sumup.NewClient()
         ctx := context.Background()
-
-        if len(os.Args) > 1 {
-            checkout, err := client.Checkouts.Get(ctx, os.Args[1])
-            if err != nil {
-                return fmt.Errorf("get checkout: %w", err)
-            }
-            if checkout.Status == nil {
-                return fmt.Errorf("checkout status missing")
-            }
-            fmt.Println("Status:", *checkout.Status)
-            return nil
-        }
-
         checkout, err := client.Checkouts.Create(ctx, sumup.CheckoutsCreateParams{
             CheckoutReference: rand.Text(),
             Amount:            10,
@@ -265,7 +271,25 @@ Choose your language below. Each program creates a checkout when run without arg
         }
         fmt.Println("Checkout ID:", *checkout.ID)
         fmt.Println("Payment page:", *checkout.HostedCheckoutURL)
-        return nil
+
+        terminal := bufio.NewReader(os.Stdin)
+        for {
+            fmt.Println("After paying in your browser, press Enter to check the status.")
+            if _, err := terminal.ReadString('\n'); err != nil {
+                return fmt.Errorf("read terminal input: %w", err)
+            }
+            result, err := client.Checkouts.Get(ctx, *checkout.ID)
+            if err != nil {
+                return fmt.Errorf("get checkout: %w", err)
+            }
+            if result.Status == nil {
+                return fmt.Errorf("checkout status missing")
+            }
+            fmt.Println("Status:", *result.Status)
+            if *result.Status != sumup.CheckoutSuccessStatusPending {
+                return nil
+            }
+        }
     }
     ```
 
@@ -288,29 +312,32 @@ Choose your language below. Each program creates a checkout when run without arg
     python -m pip install sumup==0.4.0
     ```
 
-    Save this program as `checkout.py`:
+    Create this file:
 
-    ```py
+    ```py title="checkout.py"
     import os
-    import sys
     from uuid import uuid4
 
     from sumup import Sumup
 
     with Sumup(api_key=os.environ["SUMUP_API_KEY"]) as client:
-        if len(sys.argv) > 1:
-            checkout = client.checkouts.get(sys.argv[1])
-            print("Status:", checkout.status)
-        else:
-            checkout = client.checkouts.create(
-                checkout_reference=str(uuid4()),
-                amount=10,
-                currency="EUR",
-                merchant_code=os.environ["SUMUP_MERCHANT_CODE"],
-                hosted_checkout={"enabled": True},
-            )
-            print("Checkout ID:", checkout.id)
-            print("Payment page:", checkout.hosted_checkout_url)
+        checkout = client.checkouts.create(
+            checkout_reference=str(uuid4()),
+            amount=10,
+            currency="EUR",
+            merchant_code=os.environ["SUMUP_MERCHANT_CODE"],
+            hosted_checkout={"enabled": True},
+        )
+        print("Checkout ID:", checkout.id)
+        print("Payment page:", checkout.hosted_checkout_url)
+
+        while True:
+            print("After paying in your browser, press Enter to check the status.")
+            input()
+            result = client.checkouts.get(checkout.id)
+            print("Status:", result.status)
+            if result.status != "PENDING":
+                break
     ```
 
     Run it to create a checkout:
@@ -333,32 +360,39 @@ Choose your language below. Each program creates a checkout when run without arg
     cargo add uuid@1 --features v4
     ```
 
-    Save this program as `src/main.rs` (replace the generated file):
+    Replace the generated file with:
 
-    ```rust
+    ```rust title="src/main.rs"
     use sumup::{checkouts, Client, Currency};
     use uuid::Uuid;
 
     #[tokio::main]
     async fn main() -> Result<(), Box<dyn std::error::Error>> {
         let client = Client::default();
+        let checkout = client.checkouts().create(
+            checkouts::CreateRequest::builder()
+                .checkout_reference(Uuid::new_v4().to_string())
+                .amount(10.0)
+                .currency(Currency::EUR)
+                .merchant_code(std::env::var("SUMUP_MERCHANT_CODE")?)
+                .hosted_checkout(checkouts::HostedCheckout { enabled: true })
+                .build(),
+        ).await?;
+        let checkout_id = checkout.id.ok_or("Checkout ID missing")?;
+        println!("Checkout ID: {checkout_id}");
+        println!("Payment page: {}", checkout.hosted_checkout_url.ok_or("Payment page missing")?);
 
-        if let Some(checkout_id) = std::env::args().nth(1) {
-            let checkout = client.checkouts().get(checkout_id).await?;
-            let status = serde_json::to_value(checkout.status)?;
+        loop {
+            println!("After paying in your browser, press Enter to check the status.");
+            if std::io::stdin().read_line(&mut String::new())? == 0 {
+                break;
+            }
+            let result = client.checkouts().get(&checkout_id).await?;
+            let status = serde_json::to_value(result.status)?;
             println!("Status: {}", status.as_str().unwrap_or("UNKNOWN"));
-        } else {
-            let checkout = client.checkouts().create(
-                checkouts::CreateRequest::builder()
-                    .checkout_reference(Uuid::new_v4().to_string())
-                    .amount(10.0)
-                    .currency(Currency::EUR)
-                    .merchant_code(std::env::var("SUMUP_MERCHANT_CODE")?)
-                    .hosted_checkout(checkouts::HostedCheckout { enabled: true })
-                    .build(),
-            ).await?;
-            println!("Checkout ID: {}", checkout.id.ok_or("Checkout ID missing")?);
-            println!("Payment page: {}", checkout.hosted_checkout_url.ok_or("Payment page missing")?);
+            if status.as_str() != Some("PENDING") {
+                break;
+            }
         }
         Ok(())
     }
@@ -381,29 +415,30 @@ Choose your language below. Each program creates a checkout when run without arg
     composer require sumup/sumup-php:0.1.8
     ```
 
-    Save this program as `checkout.php`:
+    Create this file:
 
-    ```php
+    ```php title="checkout.php"
     <?php
 
     require __DIR__ . '/vendor/autoload.php';
 
     $client = new \SumUp\SumUp(getenv('SUMUP_API_KEY'));
+    $checkout = $client->checkouts()->create([
+        'checkout_reference' => bin2hex(random_bytes(16)),
+        'amount' => 10,
+        'currency' => 'EUR',
+        'merchant_code' => getenv('SUMUP_MERCHANT_CODE'),
+        'hosted_checkout' => ['enabled' => true],
+    ]);
+    echo 'Checkout ID: ', $checkout->id, PHP_EOL;
+    echo 'Payment page: ', $checkout->hostedCheckoutUrl, PHP_EOL;
 
-    if (isset($argv[1])) {
-        $checkout = $client->checkouts()->get($argv[1]);
-        echo 'Status: ', $checkout->status ?? 'UNKNOWN', PHP_EOL;
-    } else {
-        $checkout = $client->checkouts()->create([
-            'checkout_reference' => bin2hex(random_bytes(16)),
-            'amount' => 10,
-            'currency' => 'EUR',
-            'merchant_code' => getenv('SUMUP_MERCHANT_CODE'),
-            'hosted_checkout' => ['enabled' => true],
-        ]);
-        echo 'Checkout ID: ', $checkout->id, PHP_EOL;
-        echo 'Payment page: ', $checkout->hostedCheckoutUrl, PHP_EOL;
-    }
+    do {
+        echo 'After paying in your browser, press Enter to check the status.', PHP_EOL;
+        if (fgets(STDIN) === false) exit(1);
+        $result = $client->checkouts()->get($checkout->id);
+        echo 'Status: ', $result->status ?? 'UNKNOWN', PHP_EOL;
+    } while ($result->status === 'PENDING');
     ```
 
     Run it to create a checkout:
@@ -416,11 +451,21 @@ Choose your language below. Each program creates a checkout when run without arg
 
 </Tabs>
 
-The program prints a new checkout ID and its payment-page URL. Save both. Creating a checkout does not charge the customer.
+The example prints a checkout ID and payment-page URL, then waits for you:
 
-## 3. Complete the sandbox payment
+```text title="Terminal output"
+Checkout ID: <checkout-id>
+Payment page: https://checkout.sumup.com/pay/<payment-page-id>
+After paying in your browser, press Enter to check the status.
+```
 
-Open the returned payment-page URL in your browser and choose card payment. Use this [sandbox test card](/online-payments/testing/#test-successful-payments):
+Leave the example running. Creating the payment page does not charge the customer.
+
+<span id="3-complete-the-sandbox-payment"></span>
+
+## 3. Pay with a test card
+
+Open the payment-page URL from your terminal in a browser and choose card payment. Use this [sandbox test card](/online-payments/testing/#test-successful-payments):
 
 | Field           | Value                 |
 | --------------- | --------------------- |
@@ -431,71 +476,23 @@ Open the returned payment-page URL in your browser and choose card payment. Use 
 
 Submit the payment and follow any authentication instructions. The sandbox simulates the payment without moving real funds.
 
-## 4. Verify the result
+<span id="4-verify-the-result"></span>
 
-Set `CHECKOUT_ID` to the ID printed by your program:
+## 4. Confirm the payment
 
-```bash
-export CHECKOUT_ID="YOUR_CHECKOUT_ID"
-```
-
-Run the same program with that ID. This retrieves the existing checkout without creating a new one.
-
-<Tabs syncKey="backend_lang">
-
-  <TabItem label="JavaScript" icon="seti:javascript">
-    ```bash
-    node checkout.mjs "$CHECKOUT_ID"
-    ```
-  </TabItem>
-
-  <TabItem label=".NET" icon="seti:c-sharp">
-    ```bash
-    dotnet run -- "$CHECKOUT_ID"
-    ```
-  </TabItem>
-
-  <TabItem label="Java" icon="seti:java">
-    ```bash
-    gradle run --args="$CHECKOUT_ID"
-    ```
-  </TabItem>
-
-  <TabItem label="Go" icon="seti:go">
-    ```bash
-    go run main.go "$CHECKOUT_ID"
-    ```
-  </TabItem>
-
-  <TabItem label="Python" icon="seti:python">
-    ```bash
-    python checkout.py "$CHECKOUT_ID"
-    ```
-  </TabItem>
-
-  <TabItem label="Rust" icon="seti:rust">
-    ```bash
-    cargo run -- "$CHECKOUT_ID"
-    ```
-  </TabItem>
-
-  <TabItem label="PHP" icon="seti:php">
-    ```bash
-    php checkout.php "$CHECKOUT_ID"
-    ```
-  </TabItem>
-
-</Tabs>
+Return to the terminal where the example is running and press **Enter**. The example retrieves the same checkout from SumUp to check its current payment status.
 
 ## You should see
 
-The payment page shows success, and your program prints:
+The payment page shows success, and your terminal prints:
 
-```text
+```text title="Terminal output"
 Status: PAID
 ```
 
-If the status is still `PENDING`, finish the browser payment and retrieve the same checkout again. If it is `FAILED` or `EXPIRED`, use the [testing guide](/online-payments/testing/) to diagnose the result. A success page or browser redirect alone is not your backend's payment confirmation.
+If you see `PENDING`, leave the example running, finish the payment in your browser, and press **Enter** again. Each check reads the same checkout; it does not create another payment.
+
+If you see `FAILED` or `EXPIRED`, use the [testing guide](/online-payments/testing/) before starting again. Only `PAID` confirms a successful payment. In your application, check this status on your server before fulfilling an order.
 
 ## Next step
 
