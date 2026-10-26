@@ -51,7 +51,6 @@
     "check:agent-docs": "node scripts/check-agent-docs.mjs",
     "sync:agent-skills": "node scripts/sync-agent-skills.mjs",
     "postbuild": "node scripts/publish-agent-discovery.mjs && npm run check:site",
-    "check:og-images": "node scripts/check-og-images.mjs",
     "check:site": "node scripts/check-site.mjs",
     "test:worker": "node --test tests/worker.test.mjs",
     "lint:spelling": "typos src/content --config _typos.toml"

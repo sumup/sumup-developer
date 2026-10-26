@@ -79,6 +79,8 @@ const narrowFontFamily =
   "'SumUp Narrow', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
 
 export async function GET({ props: { title, description } }: Props) {
+  // API descriptions can contain full guides; cards use only the first paragraph.
+  const summary = description?.trim().split(/\r?\n\s*\r?\n/, 1)[0];
   const card = createElement(
     "div",
     {
@@ -180,7 +182,7 @@ export async function GET({ props: { title, description } }: Props) {
           },
           title,
         ),
-        ...(description
+        ...(summary
           ? [
               createElement(
                 "div",
@@ -197,7 +199,7 @@ export async function GET({ props: { title, description } }: Props) {
                     wordWrap: "break-word",
                   },
                 },
-                description,
+                summary,
               ),
             ]
           : []),

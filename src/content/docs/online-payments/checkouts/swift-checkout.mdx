@@ -106,9 +106,9 @@ const paymentRequest = swiftCheckoutClient.paymentRequest({
 });
 ```
 
-This object is an analogue to the [PaymentRequest - Web APIs](https://developer.mozilla.org/en-US/docs/Web/API/PaymentRequest/PaymentRequest).
+This object is an analog to the [PaymentRequest - Web APIs](https://developer.mozilla.org/en-US/docs/Web/API/PaymentRequest/PaymentRequest).
 
-The payment request instance contains the logic related to **checking payment method availability and showing** the payment method dialogue once the user interacts with a **payment element**.
+The payment request instance contains the logic related to **checking payment method availability and showing** the payment method dialog once the user interacts with a **payment element**.
 
 ### Payment Request Interface
 
@@ -124,7 +124,7 @@ Returns the available payment methods for a merchant. Returns a promise that res
 
 #### `show`
 
-Shows the payment authorization dialogue for a given payment method. It requires an object containing a `paymentMethod`, which defines the selected payment method. This method is usually used along with the `PaymentElement`'s `onSubmit` event.
+Shows the payment authorization dialog for a given payment method. It requires an object containing a `paymentMethod`, which defines the selected payment method. This method is usually used along with the `PaymentElement`'s `onSubmit` event.
 
 The `show` method resolves with a `AuthorizedPayment`, which contains the `details` shared by the user once they authorize the payment request. The property `details` contains `paymentMethod`, `contactInformation`, `shippingAddress` and may contain `shippingOptions`.
 
@@ -148,7 +148,7 @@ paymentRequest
 
 #### `abort`
 
-Terminates a payment request before it is processed. Once a payment request has been terminated using this method, the payment request will not be processed and the payment dialogue will be closed.
+Terminates a payment request before it is processed. Once a payment request has been terminated using this method, the payment request will not be processed and the payment dialog will be closed.
 
 ```js
 if (someCustomCheck()) {
@@ -292,9 +292,9 @@ paymentRequest.canMakePayment().then((isAvailable) => {
 
 ### Requesting Payment Authorization
 
-The authorization dialogue is where the user will review the payment requested, select a payment card and a shipping address. Finally, they can authorize the payment request to be **processed**.
+The authorization dialog is where the user will review the payment requested, select a payment card and a shipping address. Finally, they can authorize the payment request to be **processed**.
 
-Using the payment element builder, configure it to `show` the payment authorization dialogue from the Payment Request instance upon the `onSubmit` event. Once the user authorizes the payment the `show` method will resolve a `PaymentResponse` containing details about the payment authorization.
+Using the payment element builder, configure it to `show` the payment authorization dialog from the Payment Request instance upon the `onSubmit` event. Once the user authorizes the payment the `show` method will resolve a `PaymentResponse` containing details about the payment authorization.
 
 ```js
 buttons.onSubmit((paymentMethodEvent) => {
@@ -401,11 +401,11 @@ paymentRequest.canMakePayment().then((isAvailable) => {
 
 ## Error Handling
 
-The Swift Checkout SDK returns a series of Errors depending on the event that has taken place. You can use the errors to customise the user experience and communicate error causes as you see fit.
+The Swift Checkout SDK returns a series of Errors depending on the event that has taken place. You can use the errors to customize the user experience and communicate error causes as you see fit.
 
 - `PaymentRequestCancelledError` is thrown when the end user closes the open payment dialog or presses the button `esc`.
 
-- `PaymentRequestInvalidActionError` is thrown when the end user has submitted the payment dialog and then attempted to cancel the payment. Once the payment form is submitted the payment can no longer be cancelled.
+- `PaymentRequestInvalidActionError` is thrown when the end user has submitted the payment dialog and then attempted to cancel the payment. Once the payment form is submitted the payment can no longer be canceled.
 
 - `PaymentRequestInternalError` is thrown when attempting to handle the payment request in a forbidden manner. Reasons that you may receive include the following codes, available in the `code` field of the Error object:
   - `SHIPPING_CONTACT_SELECTION`
