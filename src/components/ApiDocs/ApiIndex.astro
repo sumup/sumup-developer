@@ -3,6 +3,7 @@ import type { ApiIndexChunk } from "@cloudflare/nimbus-docs/runtime";
 import { renderMarkdown } from "@cloudflare/nimbus-docs/markdown";
 import MarkdownContent from "@components/MarkdownContent.astro";
 import EndpointList from "./EndpointList.astro";
+import { apiReference } from "@lib/api/reference";
 interface Props {
   chunk: ApiIndexChunk;
   grouped: boolean;
@@ -37,7 +38,10 @@ const { chunk, grouped } = Astro.props;
             {section.description && (
               <MarkdownContent
                 class="description"
-                set:html={renderMarkdown(section.description)}
+                set:html={renderMarkdown(
+                  apiReference.tagOverviews[section.ref.href]?.description ??
+                    section.description,
+                )}
               />
             )}
             <EndpointList operations={section.operations} />

@@ -1,0 +1,55 @@
+---
+import type { ApiSchemaPage } from "@cloudflare/nimbus-docs/api";
+import Schema from "./Schema.astro";
+import { constraintPairs, displayValue } from "./schemaUtils";
+interface Props {
+  schema: ApiSchemaPage;
+}
+const { schema } = Astro.props;
+---
+
+{schema.scalar && (
+  <section class="scalar">
+    <p>
+      Type: <code>{schema.scalar.type}</code>
+      {schema.scalar.nullable && " (nullable)"}
+    </p>
+    {schema.scalar.enum && (
+      <p>
+        Options:{" "}
+        {schema.scalar.enum.map((value) => (
+          <code>{displayValue(value)} </code>
+        ))}
+      </p>
+    )}
+    {constraintPairs(schema.scalar.constraints).map(([key, value]) => (
+      <p>
+        {key}: <code>{value}</code>
+      </p>
+    ))}
+    {schema.scalar.default !== undefined && (
+      <p>
+        Default: <code>{displayValue(schema.scalar.default)}</code>
+      </p>
+    )}
+    {schema.scalar.example !== undefined && (
+      <p>
+        Example: <code>{displayValue(schema.scalar.example)}</code>
+      </p>
+    )}
+  </section>
+)}
+{(schema.fields.length > 0 || schema.union) && (
+  <Schema
+    title="Fields"
+    fields={schema.fields}
+    union={schema.union}
+    truncated={schema.truncated}
+  />
+)}
+
+<style>
+  .scalar {
+    overflow-wrap: anywhere;
+  }
+</style>

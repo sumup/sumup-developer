@@ -271,6 +271,47 @@
 /api-preview /api/ 301
 /api-preview/ /api/ 301
 
+# Schema pages are now embedded in tag overviews.
+/api/schemas/Checkout /api/tags/checkouts/#checkouts-object-checkout 301
+/api/schemas/Checkout/ /api/tags/checkouts/#checkouts-object-checkout 301
+/api/schemas/Checkout/index.md /api/tags/checkouts/index.md 301
+/api/schemas/Customer /api/tags/customers/#customers-object-customer 301
+/api/schemas/Customer/ /api/tags/customers/#customers-object-customer 301
+/api/schemas/Customer/index.md /api/tags/customers/index.md 301
+/api/schemas/FinancialPayouts /api/tags/payouts/#payouts-object-financial-payouts 301
+/api/schemas/FinancialPayouts/ /api/tags/payouts/#payouts-object-financial-payouts 301
+/api/schemas/FinancialPayouts/index.md /api/tags/payouts/index.md 301
+/api/schemas/Receipt /api/tags/receipts/#receipts-object-receipt 301
+/api/schemas/Receipt/ /api/tags/receipts/#receipts-object-receipt 301
+/api/schemas/Receipt/index.md /api/tags/receipts/index.md 301
+/api/schemas/Reader /api/tags/readers/#readers-object-reader 301
+/api/schemas/Reader/ /api/tags/readers/#readers-object-reader 301
+/api/schemas/Reader/index.md /api/tags/readers/index.md 301
+/api/schemas/Member /api/tags/members/#members-object-member 301
+/api/schemas/Member/ /api/tags/members/#members-object-member 301
+/api/schemas/Member/index.md /api/tags/members/index.md 301
+/api/schemas/Membership /api/tags/memberships/#memberships-object-membership 301
+/api/schemas/Membership/ /api/tags/memberships/#memberships-object-membership 301
+/api/schemas/Membership/index.md /api/tags/memberships/index.md 301
+/api/schemas/Role /api/tags/roles/#roles-object-role 301
+/api/schemas/Role/ /api/tags/roles/#roles-object-role 301
+/api/schemas/Role/index.md /api/tags/roles/index.md 301
+/api/schemas/Merchant /api/tags/merchants/#merchants-object-merchant 301
+/api/schemas/Merchant/ /api/tags/merchants/#merchants-object-merchant 301
+/api/schemas/Merchant/index.md /api/tags/merchants/index.md 301
+/api/schemas/Sale /api/tags/sales/#sales-object-sale 301
+/api/schemas/Sale/ /api/tags/sales/#sales-object-sale 301
+/api/schemas/Sale/index.md /api/tags/sales/index.md 301
+/api/schemas/PublicPaymentV10 /api/tags/sales/#sales-object-public-payment-v10 301
+/api/schemas/PublicPaymentV10/ /api/tags/sales/#sales-object-public-payment-v10 301
+/api/schemas/PublicPaymentV10/index.md /api/tags/sales/index.md 301
+/api/schemas/Token /api/tags/tokens/#tokens-object-token 301
+/api/schemas/Token/ /api/tags/tokens/#tokens-object-token 301
+/api/schemas/Token/index.md /api/tags/tokens/index.md 301
+/api/schemas /api/ 301
+/api/schemas/ /api/ 301
+
+/api/schemas/* /api/ 301
 /help/* https://help.sumup.com/ 301
 /api-preview/* /api/:splat 301
 

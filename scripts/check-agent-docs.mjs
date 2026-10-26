@@ -369,7 +369,7 @@ export async function checkAgentDocs(site) {
   );
   assert(
     JSON.stringify(contract) ===
-      JSON.stringify(JSON.parse(await readFile("openapi.json", "utf8"))),
+      JSON.stringify(JSON.parse(await readFile("openapi31.json", "utf8"))),
     "Published OpenAPI differs from the source contract",
   );
   assert(
