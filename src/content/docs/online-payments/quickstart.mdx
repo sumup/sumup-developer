@@ -1,0 +1,111 @@
+---
+title: Online payment quickstart
+description: Create a Hosted Checkout, complete a sandbox payment, and verify the final checkout status.
+sidebar:
+  label: Quickstart
+  order: 2
+---
+
+Take a sandbox payment on a SumUp-hosted payment page. Your script creates the checkout, SumUp collects payment details, and you verify the result from your server or a trusted development terminal.
+
+## Prerequisites
+
+- A [sandbox merchant account](/online-payments/#getting-a-sandbox-merchant-account) with EUR as its currency for this example.
+- A secret [API key](/tools/authorization/api-keys/) created in that sandbox merchant and its merchant code.
+- Node.js 24 or later and curl.
+
+Use the sandbox merchant's credentials throughout these steps. Selecting the sandbox in the Dashboard alone does not change the merchant used by your API key. Keep secret credentials on your server or development machine.
+
+## 1. Configure your credentials
+
+Set these variables in your terminal, replacing the placeholders:
+
+```bash
+export SUMUP_API_KEY="YOUR_SANDBOX_SECRET_API_KEY"
+export SUMUP_MERCHANT_CODE="YOUR_SANDBOX_MERCHANT_CODE"
+```
+
+## 2. Create a Hosted Checkout
+
+Save this script as `create-checkout.mjs`:
+
+```js
+import { randomUUID } from "node:crypto";
+
+const apiKey = process.env.SUMUP_API_KEY;
+const merchantCode = process.env.SUMUP_MERCHANT_CODE;
+if (!apiKey || !merchantCode) {
+  throw new Error("Set SUMUP_API_KEY and SUMUP_MERCHANT_CODE before running this script");
+}
+
+const response = await fetch("https://api.sumup.com/v0.1/checkouts", {
+  method: "POST",
+  headers: {
+    Authorization: `Bearer ${apiKey}`,
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({
+    checkout_reference: randomUUID(),
+    amount: 10,
+    currency: "EUR",
+    merchant_code: merchantCode,
+    hosted_checkout: { enabled: true },
+  }),
+});
+if (!response.ok) {
+  throw new Error(`Checkout creation failed with HTTP ${response.status}`);
+}
+const checkout = await response.json();
+console.log("Checkout ID:", checkout.id);
+console.log("Payment page:", checkout.hosted_checkout_url);
+```
+
+Run the script:
+
+```bash
+node create-checkout.mjs
+```
+
+It prints a new checkout ID and its payment-page URL. Save both. Creating a checkout does not charge the customer.
+
+## 3. Complete the sandbox payment
+
+Open the returned payment-page URL in your browser and choose card payment. Use this [sandbox test card](/online-payments/testing/#test-successful-payments):
+
+| Field           | Value                 |
+| --------------- | --------------------- |
+| Card number     | `4200 0000 0000 0091` |
+| Expiry          | Any future date       |
+| CVV             | `123`                 |
+| Cardholder name | Any name              |
+
+Submit the payment and follow any authentication instructions. The sandbox simulates the payment without moving real funds.
+
+## 4. Verify the result
+
+Set `CHECKOUT_ID` to the ID printed by the script, then retrieve it:
+
+```bash
+export CHECKOUT_ID="YOUR_CHECKOUT_ID"
+curl "https://api.sumup.com/v0.1/checkouts/$CHECKOUT_ID" \
+  -H "Authorization: Bearer $SUMUP_API_KEY"
+```
+
+## You should see
+
+The payment page shows success, and the retrieved checkout contains `status: "PAID"`. Relevant response fields look like this:
+
+```json
+{
+  "id": "YOUR_CHECKOUT_ID",
+  "amount": 10,
+  "currency": "EUR",
+  "status": "PAID"
+}
+```
+
+If the status is still `PENDING`, finish the browser payment and retrieve the same checkout again. If it is `FAILED` or `EXPIRED`, use the [testing guide](/online-payments/testing/) to diagnose the result. A success page or browser redirect alone is not your backend's payment confirmation.
+
+## Next step
+
+[Configure Hosted Checkout for your website](/online-payments/checkouts/hosted-checkout/) to set up the customer return flow and server notifications.
