@@ -274,7 +274,7 @@ export function PaymentScreen({ checkoutId }: PaymentScreenProps) {
 
 Run the app, open your payment screen with a fresh sandbox checkout, and select **Pay**. Enter an [online test card](/online-payments/testing/) and complete any authentication challenge.
 
-The sheet can complete, fail, or be cancelled. The example handles both returned SDK errors and rejected promises. Your backend must retrieve the checkout and verify its final status before marking the order paid. See [online payment webhooks](/online-payments/webhooks/) for server notifications.
+The sheet can complete, fail, or be cancelled. The example handles both returned SDK errors and rejected promises. Your backend must retrieve the checkout and verify its final status before marking the order paid. Follow [payment confirmation and order updates](/online-payments/guides/confirm-payment/) for server verification and notifications.
 
 ## Optional Integrations
 
