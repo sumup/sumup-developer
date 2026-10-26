@@ -1,24 +1,31 @@
 ---
 title: Online payment quickstart
-description: Take a sandbox payment with Hosted Checkout and confirm its status using your preferred SDK.
+description: Create a Hosted Checkout and confirm a sandbox payment through a server-side webhook.
 sidebar:
   label: Quickstart
   order: 2
 ---
 
-Create a SumUp-hosted payment page, pay with a test card, and see the payment status in your terminal.
+Create a SumUp-hosted payment page, pay with a test card, and let SumUp notify your server when the checkout changes. Your server retrieves the checkout before confirming payment.
 
 ## Prerequisites
 
-- A [sandbox merchant account](/online-payments/#getting-a-sandbox-merchant-account) with EUR as its currency for this example.
-- A secret [API key](/tools/authorization/api-keys/) created in that sandbox merchant and its merchant code.
-- The runtime and package manager for your chosen language, listed in step 2.
+- A [sandbox merchant account](/online-payments/#getting-a-sandbox-merchant-account) with EUR as its currency.
+- A secret [API key](/tools/authorization/api-keys/) from that merchant and its merchant code.
+- The runtime and package manager for your chosen language below, plus curl.
+- [cloudflared](https://developers.cloudflare.com/tunnel/get-started/quick-tunnels/) to give your local server a temporary public HTTPS URL.
 
-Use the sandbox merchant's credentials throughout these steps. Selecting the sandbox in the Dashboard alone does not change the merchant used by your API key. Keep secret credentials on your server or development machine.
+<span id="1-configure-your-credentials"></span>
 
-## 1. Configure your credentials
+## 1. Configure your credentials and callback URL
 
-Create a directory for this example, then set these variables in your terminal, replacing the placeholders:
+In a separate terminal, start a development tunnel and leave it running:
+
+```bash
+cloudflared tunnel --url http://127.0.0.1:3000
+```
+
+Copy the HTTPS URL it prints. In your working terminal, create an example directory and set these variables:
 
 ```bash
 mkdir sumup-quickstart
@@ -26,62 +33,98 @@ cd sumup-quickstart
 
 export SUMUP_API_KEY="YOUR_SANDBOX_SECRET_API_KEY"
 export SUMUP_MERCHANT_CODE="YOUR_SANDBOX_MERCHANT_CODE"
+export PUBLIC_URL="https://YOUR_TUNNEL.trycloudflare.com"
 ```
 
+Use sandbox credentials throughout. Keep the secret API key on your server. The tunnel must allow SumUp to send requests without a browser login.
+
 <span id="2-create-a-hosted-checkout"></span>
+<span id="2-create-a-payment-page"></span>
 
-## 2. Create a payment page
+## 2. Start your server
 
-Choose your language, install the SDK, and save the example in the file shown above its code block. Run it in your terminal to create a payment page for `10.00 EUR`. The example waits while you pay in the browser, then checks the payment status.
+Choose your language, install the SDK, and save each file shown below. The server exposes two routes:
+
+- `POST /checkout` creates a `10.00 EUR` checkout and saves its ID and reference for this demo.
+- `POST /webhooks/sumup` receives notifications and checks the saved checkout through the API. It prints a confirmation only for a matching `PAID` checkout, once per checkout.
+
+The checkout's `return_url` points to the webhook route through your tunnel. It is separate from `redirect_url`, which returns the customer's browser to your website.
 
 <Tabs syncKey="backend_lang">
 
   <TabItem label="JavaScript" icon="seti:javascript">
     Use Node.js 24 or later and npm.
 
-    Install the SDK in your example directory:
-
     ```bash
     npm install @sumup/sdk@0.2.2
     ```
 
-    Create this file:
-
-    ```js title="checkout.mjs"
+    ```js title="server.mjs"
+    import { createServer } from "node:http";
     import { randomUUID } from "node:crypto";
-    import { createInterface } from "node:readline/promises";
-    import { stdin, stdout } from "node:process";
     import SumUp from "@sumup/sdk";
 
     const client = new SumUp({ apiKey: process.env.SUMUP_API_KEY });
-    const checkout = await client.checkouts.create({
-      checkout_reference: randomUUID(),
-      amount: 10,
-      currency: "EUR",
-      merchant_code: process.env.SUMUP_MERCHANT_CODE,
-      hosted_checkout: { enabled: true },
-    });
-    console.log("Checkout ID:", checkout.id);
-    console.log("Payment page:", checkout.hosted_checkout_url);
+    const merchantCode = process.env.SUMUP_MERCHANT_CODE;
+    const returnUrl = `${process.env.PUBLIC_URL.replace(/\/$/, "")}/webhooks/sumup`;
+    const orders = new Map();
 
-    const terminal = createInterface({ input: stdin, output: stdout });
-    try {
-      while (true) {
-        console.log("After paying in your browser, press Enter to check the status.");
-        await terminal.question("");
-        const result = await client.checkouts.get(checkout.id);
-        console.log("Status:", result.status);
-        if (result.status !== "PENDING") break;
+    createServer(async (request, response) => {
+      try {
+        if (request.method === "POST" && request.url === "/checkout") {
+          const reference = randomUUID();
+          const checkout = await client.checkouts.create({
+            checkout_reference: reference,
+            amount: 10,
+            currency: "EUR",
+            merchant_code: merchantCode,
+            hosted_checkout: { enabled: true },
+            return_url: returnUrl,
+          });
+          orders.set(checkout.id, { reference, paid: false });
+          response.writeHead(201, { "Content-Type": "application/json" });
+          response.end(JSON.stringify({ id: checkout.id, hosted_checkout_url: checkout.hosted_checkout_url }));
+          return;
+        }
+        if (request.method !== "POST" || request.url !== "/webhooks/sumup") {
+          response.writeHead(404).end();
+          return;
+        }
+        let body = "";
+        for await (const chunk of request) {
+          body += chunk;
+          if (body.length > 4096) { response.writeHead(413).end(); return; }
+        }
+        let event;
+        try { event = JSON.parse(body); }
+        catch { response.writeHead(400).end(); return; }
+        if (event?.event_type !== "CHECKOUT_STATUS_CHANGED") {
+          response.writeHead(204).end();
+          return;
+        }
+        if (typeof event.id !== "string") { response.writeHead(400).end(); return; }
+        const order = orders.get(event.id);
+        if (!order) { response.writeHead(204).end(); return; }
+        const checkout = await client.checkouts.get(event.id);
+        if (checkout.id !== event.id || checkout.checkout_reference !== order.reference ||
+            checkout.merchant_code !== merchantCode || checkout.amount !== 10 || checkout.currency !== "EUR") {
+          throw new Error("Checkout does not match the saved order");
+        }
+        if (checkout.status === "PAID" && !order.paid) {
+          order.paid = true;
+          console.log("Payment confirmed:", checkout.id);
+        }
+        response.writeHead(204).end();
+      } catch {
+        response.writeHead(500).end();
       }
-    } finally {
-      terminal.close();
-    }
+    }).listen(3000, "127.0.0.1", () => console.log("Listening on http://127.0.0.1:3000"));
     ```
 
-    Run it to create a checkout:
+    Start the server and leave it running:
 
     ```bash
-    node checkout.mjs
+    node server.mjs
     ```
 
   </TabItem>
@@ -89,48 +132,71 @@ Choose your language, install the SDK, and save the example in the file shown ab
   <TabItem label=".NET" icon="seti:c-sharp">
     Use .NET SDK 8 or later.
 
-    Install the SDK in your example directory:
-
     ```bash
-    dotnet new console --name SumUpQuickstart --output .
+    dotnet new web --name SumUpQuickstart --output .
     dotnet add package SumUp --version 0.0.21
     ```
 
-    Replace the generated file with:
+    Replace the generated source file:
 
     ```csharp title="Program.cs"
+    using System.Collections.Concurrent;
+    using System.Text.Json;
     using SumUp;
 
+    var app = WebApplication.CreateBuilder(args).Build();
     using var client = new SumUpClient(new SumUpClientOptions
     {
         AccessToken = Environment.GetEnvironmentVariable("SUMUP_API_KEY"),
     });
+    var merchantCode = Environment.GetEnvironmentVariable("SUMUP_MERCHANT_CODE")!;
+    var returnUrl = Environment.GetEnvironmentVariable("PUBLIC_URL")!.TrimEnd('/') + "/webhooks/sumup";
+    var references = new ConcurrentDictionary<string, string>();
+    var confirmed = new ConcurrentDictionary<string, byte>();
 
-    var response = await client.Checkouts.CreateAsync(new CheckoutCreateRequest
+    app.MapPost("/checkout", async () =>
     {
-        CheckoutReference = Guid.NewGuid().ToString(),
-        Amount = 10.0f,
-        Currency = Currency.Eur,
-        MerchantCode = Environment.GetEnvironmentVariable("SUMUP_MERCHANT_CODE")!,
-        HostedCheckout = new HostedCheckout { Enabled = true },
+        var reference = Guid.NewGuid().ToString();
+        var checkout = (await client.Checkouts.CreateAsync(new CheckoutCreateRequest
+        {
+            CheckoutReference = reference,
+            Amount = 10.0f,
+            Currency = Currency.Eur,
+            MerchantCode = merchantCode,
+            HostedCheckout = new HostedCheckout { Enabled = true },
+            ReturnUrl = returnUrl,
+        })).Data ?? throw new InvalidOperationException("Checkout not returned");
+        references[checkout.Id!] = reference;
+        return Results.Json(new { id = checkout.Id, hosted_checkout_url = checkout.HostedCheckoutUrl }, statusCode: 201);
     });
-    var checkout = response.Data
-        ?? throw new InvalidOperationException("Checkout not returned");
-    Console.WriteLine($"Checkout ID: {checkout.Id}");
-    Console.WriteLine($"Payment page: {checkout.HostedCheckoutUrl}");
 
-    while (true)
+    app.MapPost("/webhooks/sumup", async (JsonElement message) =>
     {
-        Console.WriteLine("After paying in your browser, press Enter to check the status.");
-        if (Console.ReadLine() is null) return;
-        var result = (await client.Checkouts.GetAsync(checkout.Id!)).Data
-            ?? throw new InvalidOperationException("Checkout not returned");
-        Console.WriteLine($"Status: {result.Status?.ToString().ToUpperInvariant()}");
-        if (result.Status != CheckoutSuccessStatus.Pending) break;
-    }
+        if (message.ValueKind != JsonValueKind.Object) return Results.BadRequest();
+        if (!message.TryGetProperty("event_type", out var type) || type.GetString() != "CHECKOUT_STATUS_CHANGED")
+            return Results.NoContent();
+        if (!message.TryGetProperty("id", out var value) || value.ValueKind != JsonValueKind.String)
+            return Results.BadRequest();
+        var id = value.GetString()!;
+        if (!references.TryGetValue(id, out var reference)) return Results.NoContent();
+        try
+        {
+            var checkout = (await client.Checkouts.GetAsync(id)).Data
+                ?? throw new InvalidOperationException("Checkout not returned");
+            if (checkout.Id != id || checkout.CheckoutReference != reference ||
+                checkout.MerchantCode != merchantCode || checkout.Amount != 10.0f || checkout.Currency != Currency.Eur)
+                return Results.StatusCode(500);
+            if (checkout.Status == CheckoutSuccessStatus.Paid && confirmed.TryAdd(id, 0))
+                Console.WriteLine($"Payment confirmed: {id}");
+            return Results.NoContent();
+        }
+        catch { return Results.StatusCode(500); }
+    });
+
+    app.Run("http://127.0.0.1:3000");
     ```
 
-    Run it to create a checkout:
+    Start the server and leave it running:
 
     ```bash
     dotnet run
@@ -141,24 +207,18 @@ Choose your language, install the SDK, and save the example in the file shown ab
   <TabItem label="Java" icon="seti:java">
     Use Java 17 or later and Gradle.
 
-    Create this build file:
-
     ```groovy title="build.gradle"
     plugins { id 'application' }
     repositories { mavenCentral() }
     dependencies { implementation 'com.sumup:sumup-sdk:0.1.2' }
-    application { mainClass = 'Checkout' }
+    application { mainClass = 'Server' }
     ```
-
-    Create the source directory:
 
     ```bash
     mkdir -p src/main/java
     ```
 
-    Create this source file:
-
-    ```java title="src/main/java/Checkout.java"
+    ```java title="src/main/java/Server.java"
     import com.fasterxml.jackson.annotation.JsonInclude;
     import com.fasterxml.jackson.databind.DeserializationFeature;
     import com.fasterxml.jackson.databind.PropertyNamingStrategies;
@@ -169,51 +229,78 @@ Choose your language, install the SDK, and save the example in the file shown ab
     import com.sumup.sdk.models.CheckoutSuccessStatus;
     import com.sumup.sdk.models.Currency;
     import com.sumup.sdk.models.HostedCheckout;
-    import java.io.BufferedReader;
-    import java.io.InputStreamReader;
+    import com.sun.net.httpserver.HttpServer;
+    import java.net.InetSocketAddress;
+    import java.util.Map;
     import java.util.UUID;
+    import java.util.concurrent.ConcurrentHashMap;
 
-    public class Checkout {
+    public class Server {
         public static void main(String[] args) throws Exception {
             // Use the API's JSON field names with SDK 0.1.2.
-            var mapper = JsonMapper.builder()
-                .findAndAddModules()
+            var mapper = JsonMapper.builder().findAndAddModules()
                 .propertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE)
-                .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
-                .build();
+                .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES).build();
             mapper.setDefaultPropertyInclusion(JsonInclude.Include.NON_NULL);
-            var client = SumUpClient.builder().apiClient(
-                ApiClient.builder()
-                    .accessToken(System.getenv("SUMUP_API_KEY"))
-                    .objectMapper(mapper)
-                    .build()
-            ).build();
-
-            var checkout = client.checkouts().create(
-                CheckoutCreateRequest.builder()
-                    .checkoutReference(UUID.randomUUID().toString())
-                    .amount(10.0f)
-                    .currency(Currency.EUR)
-                    .merchantCode(System.getenv("SUMUP_MERCHANT_CODE"))
-                    .hostedCheckout(HostedCheckout.builder().enabled(true).build())
-                    .build()
-            );
-            System.out.println("Checkout ID: " + checkout.id());
-            System.out.println("Payment page: " + checkout.hostedCheckoutUrl());
-
-            var terminal = new BufferedReader(new InputStreamReader(System.in));
-            while (true) {
-                System.out.println("After paying in your browser, press Enter to check the status.");
-                if (terminal.readLine() == null) return;
-                var result = client.checkouts().get(checkout.id());
-                System.out.println("Status: " + result.status());
-                if (!CheckoutSuccessStatus.PENDING.equals(result.status())) break;
-            }
+            var client = SumUpClient.builder().apiClient(ApiClient.builder()
+                .accessToken(System.getenv("SUMUP_API_KEY")).objectMapper(mapper).build()).build();
+            var merchantCode = System.getenv("SUMUP_MERCHANT_CODE");
+            var returnUrl = System.getenv("PUBLIC_URL").replaceAll("/$", "") + "/webhooks/sumup";
+            var references = new ConcurrentHashMap<String, String>();
+            var confirmed = ConcurrentHashMap.<String>newKeySet();
+            var server = HttpServer.create(new InetSocketAddress("127.0.0.1", 3000), 0);
+            server.createContext("/", exchange -> {
+                try {
+                    var path = exchange.getRequestURI().getPath();
+                    if (!exchange.getRequestMethod().equals("POST")) {
+                        exchange.sendResponseHeaders(404, -1); return;
+                    }
+                    if (path.equals("/checkout")) {
+                        var reference = UUID.randomUUID().toString();
+                        var checkout = client.checkouts().create(CheckoutCreateRequest.builder()
+                            .checkoutReference(reference).amount(10.0f).currency(Currency.EUR)
+                            .merchantCode(merchantCode).returnUrl(returnUrl)
+                            .hostedCheckout(HostedCheckout.builder().enabled(true).build()).build());
+                        references.put(checkout.id(), reference);
+                        var body = mapper.writeValueAsBytes(Map.of(
+                            "id", checkout.id(), "hosted_checkout_url", checkout.hostedCheckoutUrl()));
+                        exchange.getResponseHeaders().set("Content-Type", "application/json");
+                        exchange.sendResponseHeaders(201, body.length);
+                        exchange.getResponseBody().write(body); return;
+                    }
+                    if (!path.equals("/webhooks/sumup")) {
+                        exchange.sendResponseHeaders(404, -1); return;
+                    }
+                    var message = mapper.readTree(exchange.getRequestBody());
+                    if (!message.path("event_type").asText().equals("CHECKOUT_STATUS_CHANGED")) {
+                        exchange.sendResponseHeaders(204, -1); return;
+                    }
+                    if (!message.path("id").isTextual()) {
+                        exchange.sendResponseHeaders(400, -1); return;
+                    }
+                    var id = message.path("id").asText();
+                    var reference = references.get(id);
+                    if (reference == null) { exchange.sendResponseHeaders(204, -1); return; }
+                    var checkout = client.checkouts().get(id);
+                    if (!id.equals(checkout.id()) || !reference.equals(checkout.checkoutReference()) ||
+                        !merchantCode.equals(checkout.merchantCode()) || !Float.valueOf(10.0f).equals(checkout.amount()) ||
+                        !Currency.EUR.equals(checkout.currency())) {
+                        exchange.sendResponseHeaders(500, -1); return;
+                    }
+                    if (CheckoutSuccessStatus.PAID.equals(checkout.status()) && confirmed.add(id))
+                        System.out.println("Payment confirmed: " + id);
+                    exchange.sendResponseHeaders(204, -1);
+                } catch (Exception error) {
+                    exchange.sendResponseHeaders(500, -1);
+                } finally { exchange.close(); }
+            });
+            server.start();
+            System.out.println("Listening on http://127.0.0.1:3000");
         }
     }
     ```
 
-    Run it to create a checkout:
+    Start the server and leave it running:
 
     ```bash
     gradle run
@@ -224,76 +311,110 @@ Choose your language, install the SDK, and save the example in the file shown ab
   <TabItem label="Go" icon="seti:go">
     Use Go 1.25 or later.
 
-    Install the SDK in your example directory:
-
     ```bash
     go mod init example.com/sumup-quickstart
     go get github.com/sumup/sumup-go@v0.21.0
     ```
 
-    Create this file:
-
     ```go title="main.go"
     package main
 
     import (
-        "bufio"
-        "context"
         "crypto/rand"
+        "encoding/json"
         "fmt"
+        "log"
+        "net/http"
         "os"
+        "strings"
+        "sync"
 
         sumup "github.com/sumup/sumup-go"
     )
 
     func main() {
-        if err := run(); err != nil {
-            fmt.Fprintln(os.Stderr, err)
-            os.Exit(1)
-        }
-    }
-
-    func run() error {
         client := sumup.NewClient()
-        ctx := context.Background()
-        checkout, err := client.Checkouts.Create(ctx, sumup.CheckoutsCreateParams{
-            CheckoutReference: rand.Text(),
-            Amount:            10,
-            Currency:          sumup.CurrencyEUR,
-            MerchantCode:      os.Getenv("SUMUP_MERCHANT_CODE"),
-            HostedCheckout:    &sumup.HostedCheckout{Enabled: true},
+        merchant := os.Getenv("SUMUP_MERCHANT_CODE")
+        returnURL := strings.TrimRight(os.Getenv("PUBLIC_URL"), "/") + "/webhooks/sumup"
+        references := make(map[string]string)
+        confirmed := make(map[string]bool)
+        var mu sync.Mutex
+        mux := http.NewServeMux()
+        mux.HandleFunc("POST /checkout", func(w http.ResponseWriter, r *http.Request) {
+            reference := rand.Text()
+            checkout, err := client.Checkouts.Create(r.Context(), sumup.CheckoutsCreateParams{
+                CheckoutReference: reference, Amount: 10, Currency: sumup.CurrencyEUR,
+                MerchantCode: merchant, HostedCheckout: &sumup.HostedCheckout{Enabled: true},
+                ReturnURL: &returnURL,
+            })
+            if err != nil || checkout.ID == nil || checkout.HostedCheckoutURL == nil {
+                w.WriteHeader(500)
+                return
+            }
+            mu.Lock()
+            references[*checkout.ID] = reference
+            mu.Unlock()
+            w.Header().Set("Content-Type", "application/json")
+            w.WriteHeader(201)
+            if err := json.NewEncoder(w).Encode(map[string]string{
+                "id": *checkout.ID, "hosted_checkout_url": *checkout.HostedCheckoutURL,
+            }); err != nil {
+                log.Print("write checkout response: ", err)
+            }
         })
-        if err != nil {
-            return fmt.Errorf("create checkout: %w", err)
-        }
-        if checkout.ID == nil || checkout.HostedCheckoutURL == nil {
-            return fmt.Errorf("checkout ID or payment page missing")
-        }
-        fmt.Println("Checkout ID:", *checkout.ID)
-        fmt.Println("Payment page:", *checkout.HostedCheckoutURL)
-
-        terminal := bufio.NewReader(os.Stdin)
-        for {
-            fmt.Println("After paying in your browser, press Enter to check the status.")
-            if _, err := terminal.ReadString('\n'); err != nil {
-                return fmt.Errorf("read terminal input: %w", err)
+        mux.HandleFunc("POST /webhooks/sumup", func(w http.ResponseWriter, r *http.Request) {
+            var event struct {
+                Type string `json:"event_type"`
+                ID   string `json:"id"`
             }
-            result, err := client.Checkouts.Get(ctx, *checkout.ID)
+            if err := json.NewDecoder(http.MaxBytesReader(w, r.Body, 4096)).Decode(&event); err != nil {
+                w.WriteHeader(400)
+                return
+            }
+            if event.Type != "CHECKOUT_STATUS_CHANGED" {
+                w.WriteHeader(204)
+                return
+            }
+            if event.ID == "" {
+                w.WriteHeader(400)
+                return
+            }
+            mu.Lock()
+            reference, exists := references[event.ID]
+            mu.Unlock()
+            if !exists {
+                w.WriteHeader(204)
+                return
+            }
+            checkout, err := client.Checkouts.Get(r.Context(), event.ID)
             if err != nil {
-                return fmt.Errorf("get checkout: %w", err)
+                w.WriteHeader(500)
+                return
             }
-            if result.Status == nil {
-                return fmt.Errorf("checkout status missing")
+            if checkout.ID == nil || *checkout.ID != event.ID ||
+                checkout.CheckoutReference == nil || *checkout.CheckoutReference != reference ||
+                checkout.MerchantCode == nil || *checkout.MerchantCode != merchant ||
+                checkout.Amount == nil || *checkout.Amount != 10 ||
+                checkout.Currency == nil || *checkout.Currency != sumup.CurrencyEUR {
+                w.WriteHeader(500)
+                return
             }
-            fmt.Println("Status:", *result.Status)
-            if *result.Status != sumup.CheckoutSuccessStatusPending {
-                return nil
+            mu.Lock()
+            if checkout.Status != nil && *checkout.Status == sumup.CheckoutSuccessStatusPaid && !confirmed[event.ID] {
+                confirmed[event.ID] = true
+                fmt.Println("Payment confirmed:", event.ID)
             }
+            mu.Unlock()
+            w.WriteHeader(204)
+        })
+        fmt.Println("Listening on http://127.0.0.1:3000")
+        if err := http.ListenAndServe("127.0.0.1:3000", mux); err != nil {
+            log.Fatal(err)
         }
     }
     ```
 
-    Run it to create a checkout:
+    Start the server and leave it running:
 
     ```bash
     go run main.go
@@ -304,46 +425,72 @@ Choose your language, install the SDK, and save the example in the file shown ab
   <TabItem label="Python" icon="seti:python">
     Use Python 3.10 or later.
 
-    Install the SDK in your example directory:
-
     ```bash
     python3 -m venv .venv
     source .venv/bin/activate
-    python -m pip install sumup==0.4.0
+    python -m pip install sumup==0.4.0 Flask==3.1.2
     ```
 
-    Create this file:
-
-    ```py title="checkout.py"
+    ```py title="server.py"
     import os
     from uuid import uuid4
 
+    from flask import Flask, request
     from sumup import Sumup
 
-    with Sumup(api_key=os.environ["SUMUP_API_KEY"]) as client:
-        checkout = client.checkouts.create(
-            checkout_reference=str(uuid4()),
-            amount=10,
-            currency="EUR",
-            merchant_code=os.environ["SUMUP_MERCHANT_CODE"],
-            hosted_checkout={"enabled": True},
-        )
-        print("Checkout ID:", checkout.id)
-        print("Payment page:", checkout.hosted_checkout_url)
+    app = Flask(__name__)
+    app.config["MAX_CONTENT_LENGTH"] = 4096
+    client = Sumup(api_key=os.environ["SUMUP_API_KEY"])
+    merchant = os.environ["SUMUP_MERCHANT_CODE"]
+    return_url = os.environ["PUBLIC_URL"].rstrip("/") + "/webhooks/sumup"
+    orders = {}
 
-        while True:
-            print("After paying in your browser, press Enter to check the status.")
-            input()
-            result = client.checkouts.get(checkout.id)
-            print("Status:", result.status)
-            if result.status != "PENDING":
-                break
+
+    @app.post("/checkout")
+    def create_checkout():
+        reference = str(uuid4())
+        checkout = client.checkouts.create(
+            checkout_reference=reference, amount=10, currency="EUR",
+            merchant_code=merchant, hosted_checkout={"enabled": True},
+            return_url=return_url,
+        )
+        orders[checkout.id] = {"reference": reference, "paid": False}
+        return {"id": checkout.id, "hosted_checkout_url": checkout.hosted_checkout_url}, 201
+
+
+    @app.post("/webhooks/sumup")
+    def receive_notification():
+        event = request.get_json(silent=True)
+        if not isinstance(event, dict):
+            return "", 400
+        if event.get("event_type") != "CHECKOUT_STATUS_CHANGED":
+            return "", 204
+        checkout_id = event.get("id")
+        if not isinstance(checkout_id, str):
+            return "", 400
+        order = orders.get(checkout_id)
+        if order is None:
+            return "", 204
+        try:
+            checkout = client.checkouts.get(checkout_id)
+            if (checkout.id != checkout_id or checkout.checkout_reference != order["reference"]
+                    or checkout.merchant_code != merchant or checkout.amount != 10 or checkout.currency != "EUR"):
+                return "", 500
+            if checkout.status == "PAID" and not order["paid"]:
+                order["paid"] = True
+                print("Payment confirmed:", checkout_id, flush=True)
+            return "", 204
+        except Exception:
+            return "", 500
+
+
+    app.run(host="127.0.0.1", port=3000, threaded=False)
     ```
 
-    Run it to create a checkout:
+    Start the server and leave it running:
 
     ```bash
-    python checkout.py
+    python server.py
     ```
 
   </TabItem>
@@ -351,54 +498,113 @@ Choose your language, install the SDK, and save the example in the file shown ab
   <TabItem label="Rust" icon="seti:rust">
     Use Rust 1.90 or later and Cargo.
 
-    Install the SDK in your example directory:
-
     ```bash
     cargo init --name sumup-quickstart
-    cargo add sumup@0.6.0 serde_json@1
-    cargo add tokio@1 --features macros,rt-multi-thread
+    cargo add sumup@0.6.0 serde_json@1 axum@0.8
+    cargo add tokio@1 --features macros,rt-multi-thread,sync,net
     cargo add uuid@1 --features v4
     ```
 
-    Replace the generated file with:
+    Replace the generated source file:
 
     ```rust title="src/main.rs"
-    use sumup::{checkouts, Client, Currency};
+    use axum::{Json, Router, extract::State, http::StatusCode, routing::post};
+    use serde_json::{Value, json};
+    use std::{
+        collections::{HashMap, HashSet},
+        sync::Arc,
+    };
+    use sumup::{Client, Currency, checkouts};
+    use tokio::sync::Mutex;
     use uuid::Uuid;
+
+    struct App {
+        client: Client,
+        merchant: String,
+        return_url: String,
+        references: Mutex<HashMap<String, String>>,
+        confirmed: Mutex<HashSet<String>>,
+    }
+
+    async fn create(State(app): State<Arc<App>>) -> Result<(StatusCode, Json<Value>), StatusCode> {
+        let reference = Uuid::new_v4().to_string();
+        let checkout = app
+            .client
+            .checkouts()
+            .create(
+                checkouts::CreateRequest::builder()
+                    .checkout_reference(reference.clone())
+                    .amount(10.0)
+                    .currency(Currency::EUR)
+                    .merchant_code(app.merchant.clone())
+                    .return_url(app.return_url.clone())
+                    .hosted_checkout(checkouts::HostedCheckout { enabled: true })
+                    .build(),
+            )
+            .await
+            .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
+        let id = checkout.id.ok_or(StatusCode::INTERNAL_SERVER_ERROR)?;
+        app.references.lock().await.insert(id.clone(), reference);
+        Ok((
+            StatusCode::CREATED,
+            Json(json!({"id": id, "hosted_checkout_url": checkout.hosted_checkout_url})),
+        ))
+    }
+
+    async fn webhook(State(app): State<Arc<App>>, Json(event): Json<Value>) -> StatusCode {
+        if event["event_type"] != "CHECKOUT_STATUS_CHANGED" {
+            return StatusCode::NO_CONTENT;
+        }
+        let Some(id) = event["id"].as_str() else {
+            return StatusCode::BAD_REQUEST;
+        };
+        let Some(reference) = app.references.lock().await.get(id).cloned() else {
+            return StatusCode::NO_CONTENT;
+        };
+        let checkout = match app.client.checkouts().get(id).await {
+            Ok(checkout) => checkout,
+            Err(_) => return StatusCode::INTERNAL_SERVER_ERROR,
+        };
+        if checkout.id.as_deref() != Some(id)
+            || checkout.checkout_reference.as_deref() != Some(&reference)
+            || checkout.merchant_code.as_deref() != Some(&app.merchant)
+            || checkout.amount != Some(10.0)
+            || checkout.currency != Some(Currency::EUR)
+        {
+            return StatusCode::INTERNAL_SERVER_ERROR;
+        }
+        if checkout.status == Some(checkouts::CheckoutSuccessStatus::Paid)
+            && app.confirmed.lock().await.insert(id.to_owned())
+        {
+            println!("Payment confirmed: {id}");
+        }
+        StatusCode::NO_CONTENT
+    }
 
     #[tokio::main]
     async fn main() -> Result<(), Box<dyn std::error::Error>> {
-        let client = Client::default();
-        let checkout = client.checkouts().create(
-            checkouts::CreateRequest::builder()
-                .checkout_reference(Uuid::new_v4().to_string())
-                .amount(10.0)
-                .currency(Currency::EUR)
-                .merchant_code(std::env::var("SUMUP_MERCHANT_CODE")?)
-                .hosted_checkout(checkouts::HostedCheckout { enabled: true })
-                .build(),
-        ).await?;
-        let checkout_id = checkout.id.ok_or("Checkout ID missing")?;
-        println!("Checkout ID: {checkout_id}");
-        println!("Payment page: {}", checkout.hosted_checkout_url.ok_or("Payment page missing")?);
-
-        loop {
-            println!("After paying in your browser, press Enter to check the status.");
-            if std::io::stdin().read_line(&mut String::new())? == 0 {
-                break;
-            }
-            let result = client.checkouts().get(&checkout_id).await?;
-            let status = serde_json::to_value(result.status)?;
-            println!("Status: {}", status.as_str().unwrap_or("UNKNOWN"));
-            if status.as_str() != Some("PENDING") {
-                break;
-            }
-        }
+        let state = Arc::new(App {
+            client: Client::default(),
+            merchant: std::env::var("SUMUP_MERCHANT_CODE")?,
+            return_url: format!(
+                "{}/webhooks/sumup",
+                std::env::var("PUBLIC_URL")?.trim_end_matches('/')
+            ),
+            references: Mutex::new(HashMap::new()),
+            confirmed: Mutex::new(HashSet::new()),
+        });
+        let app = Router::new()
+            .route("/checkout", post(create))
+            .route("/webhooks/sumup", post(webhook))
+            .with_state(state);
+        let listener = tokio::net::TcpListener::bind("127.0.0.1:3000").await?;
+        println!("Listening on http://127.0.0.1:3000");
+        axum::serve(listener, app).await?;
         Ok(())
     }
     ```
 
-    Run it to create a checkout:
+    Start the server and leave it running:
 
     ```bash
     cargo run
@@ -409,63 +615,88 @@ Choose your language, install the SDK, and save the example in the file shown ab
   <TabItem label="PHP" icon="seti:php">
     Use PHP 8.2 or later with the curl extension, and Composer.
 
-    Install the SDK in your example directory:
-
     ```bash
     composer require sumup/sumup-php:0.1.8
     ```
 
-    Create this file:
-
-    ```php title="checkout.php"
+    ```php title="server.php"
     <?php
 
     require __DIR__ . '/vendor/autoload.php';
 
     $client = new \SumUp\SumUp(getenv('SUMUP_API_KEY'));
-    $checkout = $client->checkouts()->create([
-        'checkout_reference' => bin2hex(random_bytes(16)),
-        'amount' => 10,
-        'currency' => 'EUR',
-        'merchant_code' => getenv('SUMUP_MERCHANT_CODE'),
-        'hosted_checkout' => ['enabled' => true],
-    ]);
-    echo 'Checkout ID: ', $checkout->id, PHP_EOL;
-    echo 'Payment page: ', $checkout->hostedCheckoutUrl, PHP_EOL;
+    $merchant = getenv('SUMUP_MERCHANT_CODE');
+    $returnUrl = rtrim(getenv('PUBLIC_URL'), '/') . '/webhooks/sumup';
+    $store = __DIR__ . '/checkouts.json';
 
-    do {
-        echo 'After paying in your browser, press Enter to check the status.', PHP_EOL;
-        if (fgets(STDIN) === false) exit(1);
-        $result = $client->checkouts()->get($checkout->id);
-        echo 'Status: ', $result->status ?? 'UNKNOWN', PHP_EOL;
-    } while ($result->status === 'PENDING');
+    try {
+        $orders = is_file($store) ? json_decode(file_get_contents($store), true, flags: JSON_THROW_ON_ERROR) : [];
+        $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') { http_response_code(404); exit; }
+        if ($path === '/checkout') {
+            $reference = bin2hex(random_bytes(16));
+            $checkout = $client->checkouts()->create([
+                'checkout_reference' => $reference, 'amount' => 10, 'currency' => 'EUR',
+                'merchant_code' => $merchant, 'hosted_checkout' => ['enabled' => true],
+                'return_url' => $returnUrl,
+            ]);
+            $orders[$checkout->id] = ['reference' => $reference, 'paid' => false];
+            if (file_put_contents($store, json_encode($orders, JSON_THROW_ON_ERROR), LOCK_EX) === false)
+                throw new RuntimeException('Could not save checkout');
+            http_response_code(201);
+            header('Content-Type: application/json');
+            echo json_encode(['id' => $checkout->id, 'hosted_checkout_url' => $checkout->hostedCheckoutUrl]);
+            exit;
+        }
+        if ($path !== '/webhooks/sumup') { http_response_code(404); exit; }
+        $event = json_decode(file_get_contents('php://input'), true);
+        if (!is_array($event)) { http_response_code(400); exit; }
+        if (($event['event_type'] ?? null) !== 'CHECKOUT_STATUS_CHANGED') { http_response_code(204); exit; }
+        $id = $event['id'] ?? null;
+        if (!is_string($id)) { http_response_code(400); exit; }
+        if (isset($orders[$id])) {
+            $checkout = $client->checkouts()->get($id);
+            if ($checkout->id !== $id || $checkout->checkoutReference !== $orders[$id]['reference'] ||
+                $checkout->merchantCode !== $merchant || $checkout->amount !== 10.0 || $checkout->currency !== 'EUR') {
+                http_response_code(500); exit;
+            }
+            if ($checkout->status === 'PAID' && !$orders[$id]['paid']) {
+                $orders[$id]['paid'] = true;
+                if (file_put_contents($store, json_encode($orders, JSON_THROW_ON_ERROR), LOCK_EX) === false)
+                    throw new RuntimeException('Could not save confirmation');
+                error_log('Payment confirmed: ' . $id);
+            }
+        }
+        http_response_code(204);
+    } catch (Throwable $error) {
+        http_response_code(500);
+    }
     ```
 
-    Run it to create a checkout:
+    Start the server and leave it running:
 
     ```bash
-    php checkout.php
+    php -S 127.0.0.1:3000 server.php
     ```
 
   </TabItem>
 
 </Tabs>
 
-The example prints a checkout ID and payment-page URL, then waits for you:
-
-```text title="Terminal output"
-Checkout ID: <checkout-id>
-Payment page: https://checkout.sumup.com/pay/<payment-page-id>
-After paying in your browser, press Enter to check the status.
-```
-
-Leave the example running. Creating the payment page does not charge the customer.
+The examples store checkout references locally: in memory, or in `checkouts.json` for PHP. Keep the server running until the notification arrives. In production, use persistent order storage and a durable verification queue; see [webhook handling](/online-payments/webhooks/).
 
 <span id="3-complete-the-sandbox-payment"></span>
+<span id="3-pay-with-a-test-card"></span>
 
-## 3. Pay with a test card
+## 3. Create and pay for a checkout
 
-Open the payment-page URL from your terminal in a browser and choose card payment. Use this [sandbox test card](/online-payments/testing/#test-successful-payments):
+In another terminal, ask your server to create a payment page:
+
+```bash
+curl -X POST http://127.0.0.1:3000/checkout
+```
+
+The response contains `id` and `hosted_checkout_url`. Open that URL in your browser, choose card payment, and use this [sandbox test card](/online-payments/testing/#test-successful-payments):
 
 | Field           | Value                 |
 | --------------- | --------------------- |
@@ -474,26 +705,34 @@ Open the payment-page URL from your terminal in a browser and choose card paymen
 | CVV             | `123`                 |
 | Cardholder name | Any name              |
 
-Submit the payment and follow any authentication instructions. The sandbox simulates the payment without moving real funds.
+Submit the payment and follow any authentication instructions. The sandbox simulates payment without moving real funds.
 
 <span id="4-verify-the-result"></span>
+<span id="4-confirm-the-payment"></span>
 
-## 4. Confirm the payment
+## 4. Receive payment confirmation
 
-Return to the terminal where the example is running and press **Enter**. The example retrieves the same checkout from SumUp to check its current payment status.
+SumUp posts a notification to your server's `return_url`:
+
+```json title="Notification payload"
+{
+  "event_type": "CHECKOUT_STATUS_CHANGED",
+  "id": "CHECKOUT_ID"
+}
+```
+
+The handler retrieves the checkout, checks its ID, reference, amount, currency, and merchant, and returns an empty `204` response. If verification fails, it returns `500` so SumUp can retry delivery. Unknown events and checkout IDs are acknowledged without changing an order.
 
 ## You should see
 
-The payment page shows success, and your terminal prints:
+After the payment succeeds, your server prints this automatically:
 
-```text title="Terminal output"
-Status: PAID
+```text title="Server output"
+Payment confirmed: <checkout-id>
 ```
 
-If you see `PENDING`, leave the example running, finish the payment in your browser, and press **Enter** again. Each check reads the same checkout; it does not create another payment.
-
-If you see `FAILED` or `EXPIRED`, use the [testing guide](/online-payments/testing/) before starting again. Only `PAID` confirms a successful payment. In your application, check this status on your server before fulfilling an order.
+A pending or failed checkout does not produce a paid confirmation. Duplicate notifications do not print another confirmation. If no notification arrives, check that the server and tunnel are still running and that `PUBLIC_URL` matches the current tunnel URL. See [webhook delivery and retry timing](/online-payments/webhooks/).
 
 ## Next step
 
-[Configure Hosted Checkout for your website](/online-payments/checkouts/hosted-checkout/) to set up the customer return flow and server notifications.
+[Configure Hosted Checkout for your website](/online-payments/checkouts/hosted-checkout/) to add the customer return flow. Keep payment confirmation on your server, even if the customer closes the browser.
