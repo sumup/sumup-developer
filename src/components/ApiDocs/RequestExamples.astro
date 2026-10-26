@@ -1,0 +1,38 @@
+---
+import type { ApiOperationPage } from "@cloudflare/nimbus-docs/api";
+import { Tabs, TabItem } from "@components/nimbus";
+import SectionHeading from "./SectionHeading.astro";
+import Example from "./Example.astro";
+
+interface Props {
+  page: ApiOperationPage;
+}
+const { page } = Astro.props;
+const firstExample =
+  page.requestExamples?.[0] ??
+  page.example ??
+  page.additionalBodies?.find((body) => body.example)?.example;
+---
+
+{page.isWebhook ? (
+  firstExample && <Example example={firstExample} />
+) : (
+  <>
+    {page.requestExamples && page.requestExamples.length > 0 && (
+      <section>
+        <SectionHeading as="h2">Request examples</SectionHeading>
+        <Tabs>
+          {page.requestExamples.map((example) => (
+            <TabItem label={example.label}>
+              {example.description && <p>{example.description}</p>}
+              <Example example={example} title={example.label} />
+            </TabItem>
+          ))}
+        </Tabs>
+      </section>
+    )}
+    {!page.samples.length && !page.requestExamples?.length && page.example && (
+      <Example example={page.example} title="Request example" />
+    )}
+  </>
+)}

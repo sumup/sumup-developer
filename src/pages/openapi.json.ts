@@ -1,5 +1,5 @@
 import type { APIRoute } from "astro";
-import document from "../../openapi.json?raw";
+import document from "../../openapi31.json?raw";
 
 export const prerender = true;
 

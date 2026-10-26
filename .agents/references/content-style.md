@@ -27,7 +27,7 @@ Repository instructions and the implemented schema and components take precedenc
 - Check `src/content.config.ts` and the installed Nimbus docs schema before adding frontmatter. Do not copy recipe metadata such as `type` or `lastVerified` automatically, or change the schema just to match a recipe. Changelog entries use `title`, `tags`, and `publishedDate`; adapt the changelog recipe to the existing per-entry collection and routes.
 - Check `src/components.ts` and relevant sibling pages for supported MDX components and imports. Use the [component reference](components.md) to choose existing components or plain Markdown. A recipe's component suggestions do not require installing registry UI or changing the portal's Circuit presentation.
 - Follow `AGENTS.md` for root-absolute website links, code blocks, and images. Keep Markdown reference files under `.agents/`, outside website content collections.
-- API reference facts come from the synchronized `openapi.yaml` and Nimbus's prepared model. Do not edit that schema or generated output to satisfy a recipe.
+- API reference facts come from the synchronized `openapi31.json` and Nimbus's prepared model. Do not edit that schema or generated output to satisfy a recipe.
 
 ## Write clear prose and procedures
 

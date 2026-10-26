@@ -35,7 +35,7 @@ const head = defineNimbusConfig({
       label: "SumUp API",
       spec: apiReference.spec,
       requireOperationId: true,
-      schemaPages: true,
+      schemaPages: false,
       routes: {
         convention: "resource-action-v2",
         operations: apiReference.operations,

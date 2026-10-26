@@ -1,0 +1,143 @@
+---
+import type { ApiSectionPage } from "@cloudflare/nimbus-docs/api";
+import { renderMarkdown } from "@cloudflare/nimbus-docs/markdown";
+import type { TagOverview } from "@lib/api/tagOverview";
+import MarkdownContent from "@components/MarkdownContent.astro";
+import { Tabs, TabItem } from "@components/nimbus";
+import LRGrid from "./LRGrid.astro";
+import EndpointList from "./EndpointList.astro";
+import SchemaDetails from "./SchemaDetails.astro";
+import CodeSamples from "./CodeSamples.astro";
+
+interface Props {
+  page: ApiSectionPage;
+  overview: TagOverview;
+}
+const { page, overview } = Astro.props;
+---
+
+<div class="tag-overview" data-api-tag-overview>
+  <LRGrid>
+    <MarkdownContent
+      data-api-tag-description
+      set:html={renderMarkdown(overview.description)}
+    />
+    <div class="tag-lists">
+      <Tabs aria-label={`${page.title} endpoints and events`}>
+        <TabItem label="Endpoints">
+          <h2 class="visually-hidden">Endpoints</h2>
+          {page.operations.length > 0 ? (
+            <EndpointList operations={page.operations} descriptions={false} />
+          ) : (
+            <p>No endpoints for this tag.</p>
+          )}
+        </TabItem>
+        <TabItem label="Events">
+          <h2 class="visually-hidden">Events</h2>
+          {overview.events.length > 0 ? (
+            <ul class="events">
+              {overview.events.map((event) => (
+                <li>
+                  <a href={event.href}>
+                    <code>{event.path}</code>
+                  </a>
+                  {event.descriptionHtml && (
+                    <MarkdownContent set:html={event.descriptionHtml} />
+                  )}
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p>No events for this tag.</p>
+          )}
+        </TabItem>
+      </Tabs>
+    </div>
+  </LRGrid>
+  {overview.coreObjects.map((object) => (
+    <section
+      id={object.href.split("#")[1]}
+      class="core-object"
+      data-api-core-object={object.coordinate}
+    >
+      <LRGrid>
+        <div>
+          <h2>
+            <a href={object.href}>{object.title}</a>
+          </h2>
+          {object.descriptionHtml && (
+            <MarkdownContent set:html={object.descriptionHtml} />
+          )}
+          <SchemaDetails schema={object} />
+        </div>
+        <div data-api-core-example>
+          <CodeSamples
+            samples={[]}
+            responses={[
+              {
+                status: "200",
+                coordinate: `${object.coordinate}.example`,
+                anchor: `${object.coordinate}-example`,
+                fields: [],
+                example: object.example,
+              },
+            ]}
+            coordinate={object.coordinate}
+            title={object.title}
+            responseTitle={`${object.title} example`}
+            showResponseStatus={false}
+          />
+        </div>
+      </LRGrid>
+    </section>
+  ))}
+</div>
+
+<style>
+  .tag-overview {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cui-spacings-exa);
+  }
+  .tag-lists {
+    min-width: 0;
+  }
+  .tag-lists :global(.tabs) {
+    margin-top: 0;
+  }
+  .events {
+    margin: var(--cui-spacings-kilo) 0;
+    padding: 0;
+    list-style: none;
+  }
+  .events li {
+    padding-block: var(--cui-spacings-kilo);
+    border-bottom: 1px solid var(--cui-border-divider);
+    overflow-wrap: anywhere;
+  }
+  .events li > a {
+    display: inline-block;
+    margin-bottom: var(--cui-spacings-byte);
+  }
+  code {
+    font-family: var(--cui-font-stack-mono);
+  }
+  .core-object {
+    padding-top: var(--cui-spacings-tera);
+    border-top: 1px solid var(--cui-border-divider);
+  }
+  [data-api-core-example] {
+    min-width: 0;
+  }
+  @media (min-width: 76.001rem) {
+    [data-api-core-example] {
+      align-self: start;
+      position: sticky;
+      top: calc(var(--portal-header-height) + var(--cui-spacings-giga));
+    }
+  }
+  h2 {
+    margin-bottom: var(--cui-spacings-mega);
+    font-size: var(--cui-headline-m-font-size);
+  }
+</style>
