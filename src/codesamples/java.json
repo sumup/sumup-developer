@@ -3,7 +3,7 @@
   "language": "java",
   "sdk": {
     "module": "com.sumup:sumup-sdk",
-    "version": "0.1.1"
+    "version": "0.1.2"
   },
   "openAPIVersion": "1.0.0",
   "samples": [
@@ -93,6 +93,15 @@
       "sample": "import com.sumup.sdk.SumUpClient;\n\npublic final class CreateMerchantRoleSample {\n  public static void main(String[] args) throws Exception {\n    var client = new SumUpClient();\n\n    var result = client.roles().create(\n            \"MK10CL2A\",\n            com.sumup.sdk.models.CreateMerchantRoleRequest.builder()\n                .name(\"Senior Shop Manager II\")\n                .permissions(java.util.List.of(\"catalog_access\", \"taxes_access\", \"members_access\"))\n                .build()\n        );\n    System.out.println(result);\n  }\n}\n"
     },
     {
+      "id": "CreateMerchantToken",
+      "operationId": "CreateMerchantToken",
+      "summary": "Create a merchant token",
+      "description": "Creates a short-lived token for the merchant account identified by `merchant_code` and the requested actions.\n\nCall this endpoint from your backend using a [supported authentication method](https://developer.sumup.com/api/authentication). You must have access to the merchant account. Before returning the token, check that the user signed in to your application is allowed to accept payments for that account.\n\nPass the returned `access_token` to the SDK. The token expires 15 minutes after creation; use `expires_in` for its remaining lifetime. To continue after it expires, create a new token through this endpoint.",
+      "httpMethod": "POST",
+      "path": "/v0.1/merchants/{merchant_code}/tokens",
+      "sample": "import com.sumup.sdk.SumUpClient;\n\npublic final class CreateMerchantTokenSample {\n  public static void main(String[] args) throws Exception {\n    var client = new SumUpClient();\n\n    var result = client.tokens().create(\n            \"MC0X0ABC\",\n            com.sumup.sdk.models.CreateMerchantTokenRequest.builder()\n                .actions(java.util.List.of(com.sumup.sdk.models.CreateMerchantTokenRequestActionsItem.of(\"checkout\")))\n                .build()\n        );\n    System.out.println(result);\n  }\n}\n"
+    },
+    {
       "id": "CreateReader",
       "operationId": "CreateReader",
       "summary": "Create a Reader",
@@ -105,10 +114,10 @@
       "id": "CreateReaderCheckout",
       "operationId": "CreateReaderCheckout",
       "summary": "Create a Reader Checkout",
-      "description": "Creates a Checkout for a Reader.\n\nThis process is asynchronous and the actual transaction may take some time to be started on the device.\n\n\nThere are some caveats when using this endpoint:\n* The target device must be online, otherwise checkout won't be accepted\n* After the checkout is accepted, the system has 60 seconds to start the payment on the target device. During this time, any other checkout for the same device will be rejected.\n\n\n**Note**: If the target device is a Solo, it must be in version 3.3.24.3 or higher.",
+      "description": "Creates a Checkout for a Reader.\n\nThis process is asynchronous and the actual transaction may take some time to be started on the device.\n\n\nThere are some caveats when using this endpoint:\n* The target device must be online, otherwise checkout won't be accepted\n* After the checkout is accepted, the system has 60 seconds to start the payment on the target device. During this time, any other checkout for the same device will be rejected.\n\n\n**Note**: If the target device is a Solo, it must be in version 3.3.24.3 or higher.\n\n\nOptionally include an `affiliate` object to attach integrator metadata to the payment.\nProvide both `app_id` and `key` when including this object.",
       "httpMethod": "POST",
       "path": "/v0.1/merchants/{merchant_code}/readers/{reader_id}/checkout",
-      "sample": "import com.sumup.sdk.SumUpClient;\n\npublic final class CreateReaderCheckoutSample {\n  public static void main(String[] args) throws Exception {\n    var client = new SumUpClient();\n\n    var result = client.readers().createCheckout(\n            \"MC0X0ABC\",\n            \"rdr_3MSAFM23CK82VSTT4BN6RWSQ65\",\n            com.sumup.sdk.models.CreateReaderCheckoutRequest.builder()\n                .aade(com.sumup.sdk.models.CreateReaderCheckoutRequestAade.builder()\n                .providerId(\"123\")\n                .signature(\"QjcxRDdBNTU1MDcyRTNFRTREMkZEM0Y0NTdBMjkxMTU4MzBFNkNCQTs7MjAyNTExMTIyMTQ3MTM7Nzk2OzEwNDs5MDA7OTAwOzU0ODg5MDM5\")\n                .signatureData(\"B71D7A555072E3EE4D2FD3F457A29115830E6CBA;;20251112214713;796;104;900;900;54889039\")\n                .build())\n                .affiliate(com.sumup.sdk.models.Affiliate2.builder()\n                .appId(\"com.example.app\")\n                .foreignTransactionId(\"123456\")\n                .key(\"ef7b684a-d6f4-4e93-9b1b-6acdd6564a8e\")\n                .tags(java.util.Map.ofEntries())\n                .build())\n                .cardType(com.sumup.sdk.models.CreateReaderCheckoutRequestCardType.of(\"debit\"))\n                .description(\"This is a description...\")\n                .installments(1L)\n                .returnUrl(\"https://webhook.site/e21ddbb0-42c4-4358-a981-f5a95cd86fb5\")\n                .tipRates(java.util.List.of(0.05f, 0.1f, 0.15f))\n                .tipTimeout(60L)\n                .totalAmount(com.sumup.sdk.models.Money.builder()\n                .currency(\"EUR\")\n                .minorUnit(2L)\n                .value(5033L)\n                .build())\n                .build()\n        );\n    System.out.println(result);\n  }\n}\n"
+      "sample": "import com.sumup.sdk.SumUpClient;\n\npublic final class CreateReaderCheckoutSample {\n  public static void main(String[] args) throws Exception {\n    var client = new SumUpClient();\n\n    var result = client.readers().createCheckout(\n            \"MC0X0ABC\",\n            \"rdr_3MSAFM23CK82VSTT4BN6RWSQ65\",\n            com.sumup.sdk.models.CreateReaderCheckoutRequest.builder()\n                .aade(com.sumup.sdk.models.CreateReaderCheckoutRequestAade.builder()\n                .providerId(\"123\")\n                .signature(\"QjcxRDdBNTU1MDcyRTNFRTREMkZEM0Y0NTdBMjkxMTU4MzBFNkNCQTs7MjAyNTExMTIyMTQ3MTM7Nzk2OzEwNDs5MDA7OTAwOzU0ODg5MDM5\")\n                .signatureData(\"B71D7A555072E3EE4D2FD3F457A29115830E6CBA;;20251112214713;796;104;900;900;54889039\")\n                .build())\n                .affiliate(com.sumup.sdk.models.Affiliate2.builder()\n                .appId(\"com.example.app\")\n                .foreignTransactionId(\"123456\")\n                .key(\"ef7b684a-d6f4-4e93-9b1b-6acdd6564a8e\")\n                .tags(java.util.Map.ofEntries(java.util.Map.entry(\"custom_key_1\", \"custom_value_1\"), java.util.Map.entry(\"custom_key_2\", \"custom_value_2\")))\n                .build())\n                .cardType(com.sumup.sdk.models.CreateReaderCheckoutRequestCardType.of(\"debit\"))\n                .description(\"This is a description...\")\n                .installments(1L)\n                .returnUrl(\"https://webhook.site/e21ddbb0-42c4-4358-a981-f5a95cd86fb5\")\n                .tipRates(java.util.List.of(0.05f, 0.1f, 0.15f))\n                .tipTimeout(60L)\n                .totalAmount(com.sumup.sdk.models.Money.builder()\n                .currency(\"EUR\")\n                .minorUnit(2L)\n                .value(5033L)\n                .build())\n                .build()\n        );\n    System.out.println(result);\n  }\n}\n"
     },
     {
       "id": "CreateReaderTerminate",
@@ -244,6 +253,15 @@
       "httpMethod": "GET",
       "path": "/v0.1/merchants/{merchant_code}/readers/{reader_id}/checkout/{checkout_id}",
       "sample": "import com.sumup.sdk.SumUpClient;\n\npublic final class GetReaderCheckoutSample {\n  public static void main(String[] args) throws Exception {\n    var client = new SumUpClient();\n\n    var result = client.readers().getCheckout(\n            \"74ecff66-1655-43ed-8ce3-193f49fa602f\",\n            \"MC0X0ABC\",\n            \"rdr_3MSAFM23CK82VSTT4BN6RWSQ65\"\n        );\n    System.out.println(result);\n  }\n}\n"
+    },
+    {
+      "id": "GetReaderSettings",
+      "operationId": "GetReaderSettings",
+      "summary": "Get Reader Settings",
+      "description": "Returns the menu lock settings for a Solo reader.\n\nFor an online reader, returns the current settings. For an offline reader,\nreturns the last saved settings, which may differ from its current configuration.\nReturns `404` if the reader is offline and no saved settings are available.\n\nThe response may include the menu lock PIN.",
+      "httpMethod": "GET",
+      "path": "/v0.1/merchants/{merchant_code}/readers/{reader_id}/settings",
+      "sample": "import com.sumup.sdk.SumUpClient;\n\npublic final class GetReaderSettingsSample {\n  public static void main(String[] args) throws Exception {\n    var client = new SumUpClient();\n\n    var result = client.readers().getReaderSettings(\n            \"MC0X0ABC\",\n            \"rdr_3MSAFM23CK82VSTT4BN6RWSQ65\"\n        );\n    System.out.println(result);\n  }\n}\n"
     },
     {
       "id": "GetReaderStatus",
@@ -456,6 +474,15 @@
       "httpMethod": "PATCH",
       "path": "/v0.1/merchants/{merchant_code}/readers/{reader_id}",
       "sample": "import com.sumup.sdk.SumUpClient;\n\npublic final class UpdateReaderSample {\n  public static void main(String[] args) throws Exception {\n    var client = new SumUpClient();\n\n    var result = client.readers().update(\n            \"MK10CL2A\",\n            \"rdr_3MSAFM23CK82VSTT4BN6RWSQ65\",\n            com.sumup.sdk.models.UpdateReaderRequest.builder()\n                .build()\n        );\n    System.out.println(result);\n  }\n}\n"
+    },
+    {
+      "id": "UpdateReaderSettings",
+      "operationId": "UpdateReaderSettings",
+      "summary": "Update Reader Settings",
+      "description": "Updates the menu lock settings for a Solo reader. The reader must be online.\nA successful response confirms that the reader applied the update.\n\nInclude at least one of `menu_lock.enabled` or `menu_lock.passcode`.\nOmitted settings keep their current values. The response contains only the\nsettings included in the request.\n\nWhen enabling menu lock for a reader without a PIN, include a four-digit PIN\nin `menu_lock.passcode` in the same request.",
+      "httpMethod": "PATCH",
+      "path": "/v0.1/merchants/{merchant_code}/readers/{reader_id}/settings",
+      "sample": "import com.sumup.sdk.SumUpClient;\n\npublic final class UpdateReaderSettingsSample {\n  public static void main(String[] args) throws Exception {\n    var client = new SumUpClient();\n\n    var result = client.readers().updateReaderSettings(\n            \"MC0X0ABC\",\n            \"rdr_3MSAFM23CK82VSTT4BN6RWSQ65\",\n            com.sumup.sdk.models.UpdateReaderSettingsRequest.builder()\n                .menuLock(com.sumup.sdk.models.UpdateReaderSettingsRequestMenuLock.builder()\n                .enabled(true)\n                .passcode(\"1234\")\n                .build())\n                .build()\n        );\n    System.out.println(result);\n  }\n}\n"
     }
   ]
 }
