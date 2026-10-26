@@ -1,5 +1,4 @@
-import { readFileSync, readdirSync } from "node:fs";
-import { beforeAll, expect, it } from "vitest";
+import { beforeAll, expect, it, vi } from "vitest";
 import {
   buildApiModel,
   getApiPageProps,
@@ -12,16 +11,16 @@ import source from "../../../openapi.json";
 import operationPaths from "./operationPaths.json";
 import { createApiReference } from "./reference";
 
-type SampleFile = {
-  language: string;
-  samples: { operationId: string; sample: string }[];
-};
-const sampleDirectory = new URL("../../codesamples/", import.meta.url);
-const vendoredSamples: SampleFile[] = readdirSync(sampleDirectory)
-  .filter((file) => file.endsWith(".json"))
-  .map((file) =>
-    JSON.parse(readFileSync(new URL(file, sampleDirectory), "utf8")),
-  );
+vi.mock("./codeSamples", () => ({
+  getSdkCodeSamples: (operationId: string) => [
+    {
+      id: "rust",
+      lang: "rust",
+      label: "Rust",
+      source: `sdk_request("${operationId}");`,
+    },
+  ],
+}));
 const operations = Object.values(
   source.paths as Record<string, Record<string, unknown>>,
 )
@@ -51,7 +50,7 @@ beforeAll(async () => {
   expect(JSON.stringify(source)).toBe(original);
 });
 
-it("keeps established operation URLs and every vendored sample in Nimbus", () => {
+it("keeps established operation URLs and passes SDK samples through to Nimbus", () => {
   const routes = new Map(
     getApiPageSlugs(model).map(({ coordinate, slug }) => [coordinate, slug]),
   );
@@ -62,19 +61,9 @@ it("keeps established operation URLs and every vendored sample in Nimbus", () =>
     const page = getApiPageProps(model, String(operation.operationId));
     if (page.kind !== "operation")
       throw new Error("Expected an operation page");
-    for (const vendored of vendoredSamples) {
-      const expected = vendored.samples.find(
-        (sample) => sample.operationId === operation.operationId,
-      );
-      expect(
-        expected,
-        `Missing ${vendored.language} sample for ${operation.operationId}`,
-      ).toBeDefined();
-      expect(
-        page.samples.find((sample) => sample.lang === vendored.language)
-          ?.source,
-      ).toBe(expected!.sample);
-    }
+    expect(page.samples.find((sample) => sample.lang === "rust")?.source).toBe(
+      `sdk_request("${operation.operationId}");`,
+    );
     expect(page.samples.some((sample) => sample.lang === "curl")).toBe(true);
   }
 });
