@@ -1,6 +1,6 @@
 ---
 title: React Native Checkout SDK
-description: Step-by-step guide for integrating the SumUp React Native Payment SDK, from prerequisites to checkout creation and mounting the payment sheet.
+description: Create checkouts on your server and show a payment sheet in your React Native app using a public merchant key.
 sidebar:
   order: 107
   hidden: true
@@ -10,7 +10,9 @@ import Callout from "@components/content/Callout";
 
 import Image from '@components/content/Image.astro';
 
-SumUp's React Native Payment SDK provides a payment sheet that is displayed on top of your app. It collects user payment details, confirms a payment, and saves a card for future usage. Moreover, it allows a user to use Apple Pay or Google Pay to process payments.
+The React Native Checkout SDK displays a payment sheet in your mobile app. Your server creates the checkout; the app uses a public merchant key to collect payment details and present the sheet.
+
+This guide uses the alpha release `@sumup/react-native-checkout@0.0.0-alpha.4`. Its API can change between releases.
 
 <Image alt="Challenge screen" src="/img/guides/react_native_payment_sheet.png" width="40%" />
 
@@ -18,13 +20,16 @@ SumUp's React Native Payment SDK provides a payment sheet that is displayed on t
 
 ### Before You Begin
 
-Here are the things that you need in order to complete the steps in this guide:
+Before you start, you need:
 
-- You have a merchant account with [SumUp](https://me.sumup.com/login) and have already filled in your [account details](https://me.sumup.com/account).
-  - For a **sandbox merchant account** reach out to our support team through this [contact form](/contact).
-- You have [registered your client application](/tools/authorization/oauth/#register-an-oauth-application) with SumUp.
-- You have a valid access token obtained via the [Authorization code flow](/tools/authorization/oauth/#authorization-code-flow).
-- The restricted `payment_instruments` scope is enabled for your client application. If it isn't enabled, [contact us](/contact) and request it.
+- A [sandbox merchant account](/online-payments/#getting-a-sandbox-merchant-account) and the [online test cards](/online-payments/testing/).
+- A backend that creates checkouts for your orders and keeps secret API keys or OAuth client secrets on the server. Use an [API key](/tools/authorization/api-keys/) for your own merchant or [OAuth](/tools/authorization/oauth/) when other merchants connect to your app.
+- Your merchant's public key, beginning with `sup_pk_`, from [Developer Settings](https://me.sumup.com/settings/api-keys).
+- A React Native app with access to its native iOS and Android projects.
+
+<Callout type="caution" title="Keep secret credentials on your server">
+Use the public merchant key in `SumUpProvider`. Never put a secret key beginning with `sup_sk_` or an OAuth client secret in your app, including build-time environment variables bundled with the app.
+</Callout>
 
 ### Create a Checkout
 
@@ -164,431 +169,172 @@ Initializing the SDK works by passing it a `checkout_id`. To [create a checkout]
   </TabItem>
 </Tabs>
 
-The SDK will process the checkout once a customer provides payment details. If payment details aren't passed an error will be received.
+Return only the checkout ID and other non-secret order details to the app. Set the amount, currency, and merchant on your server from the stored order, rather than accepting them from the mobile app.
 
 ## Set up SDK
 
-Install the npm module by one of the following commands:
-
-<Tabs>
-<TabItem label="npm">
+Install the published SDK and its WebView dependency:
 
 ```bash
-npm i sumup-react-native-alpha
-npm i react-native-webview
+npm install @sumup/react-native-checkout@0.0.0-alpha.4 react-native-webview
 ```
 
-</TabItem>
-<TabItem label="yarn">
-
-```bash
-yarn add sumup-react-native-alpha
-yarn add react-native-webview
-```
-
-</TabItem>
-</Tabs>
-
-You need to install `react-native-localization` to automatically detect the user system language.
-
-<Tabs>
-<TabItem label="npm">
-
-```bash
-npm i react-native-localization
-```
-
-</TabItem>
-<TabItem label="yarn">
-
-```bash
-yarn add react-native-localization
-```
-
-</TabItem>
-</Tabs>
-
-If you don't need it, please provide the language field in the `initPaymentSheet` function.
-
-```javascript
-await initPaymentSheet({
- checkoutId,
- language: 'en',
-});
-```
-
-Next, install the native modules.
+For iOS, install the native modules:
 
 ```bash
 cd ios
 pod install
 ```
 
-SDK should be initialized by wrapping your payment screen into SumUpProvider. This component requires an `apiKey` you can create in the [API Keys settings](/tools/authorization/api-keys/).
+The examples below set `language: "en"`. To detect the device language instead, install `react-native-localization` and omit `language`. The SDK supports `en` and `sv`.
 
-```javascript
-import { SumUpProvider } from 'sumup-react-native-alpha';
+Wrap your payment screen in `SumUpProvider`. Replace the public-key placeholder with the public key for the merchant that owns the checkout:
 
-export default function App() {
- return (
-   <SumUpProvider apiKey="sup_sk_...">
-     <Screen />
-   </SumUpProvider>
- );
+```tsx
+import { SumUpProvider } from "@sumup/react-native-checkout";
+import { PaymentScreen } from "./PaymentScreen";
+
+type AppProps = { checkoutId: string };
+
+export default function App({ checkoutId }: AppProps) {
+  return (
+    <SumUpProvider publicKey="sup_pk_YOUR_PUBLIC_KEY">
+      <PaymentScreen checkoutId={checkoutId} />
+    </SumUpProvider>
+  );
 }
 ```
+
+Obtain a fresh `checkoutId` from your backend for the order being paid. Do not reuse a checkout from a completed order.
 
 ## Provide Payment Details
 
-Before showing the payment sheet, it needs to be initialized. Call `initPaymentSheet` with the parameters like in example below:
+Create `PaymentScreen.tsx` with the following component. It initializes the sheet with the checkout ID from your server and enables the payment button only after initialization succeeds:
 
-```js
-import React, { useEffect } from "react";
-import { View, Alert } from "react-native";
-import { useSumUp } from "sumup-react-native-alpha";
+```tsx
+import { useEffect, useState } from "react";
+import { Alert, Button, View } from "react-native";
+import { useSumUp } from "@sumup/react-native-checkout";
 
-export default function MainScreen() {
- const { initPaymentSheet } = useSumUp();
+type PaymentScreenProps = { checkoutId: string };
 
- const initSumUpPaymentSheet = async () => {
-   const { error } = await initPaymentSheet({
-     checkoutId: "...",
-     customerId: "...",
-     language: "en", // en or sv are supported
-   });
+export function PaymentScreen({ checkoutId }: PaymentScreenProps) {
+  const { initPaymentSheet, presentPaymentSheet } = useSumUp();
+  const [ready, setReady] = useState(false);
+  const [presenting, setPresenting] = useState(false);
 
+  useEffect(() => {
+    let active = true;
+    setReady(false);
 
-   if (error) {
-     Alert.alert(
-       error.status,
-       error.status === "failure" ? error.message : undefined
-     );
-   } else {
-     Alert.alert("Payment Sheet was configured");
-   }
- };
+    async function initialize() {
+      try {
+        const { error } = await initPaymentSheet({ checkoutId, language: "en" });
+        if (!active) return;
+        if (error) {
+          Alert.alert("Could not prepare payment", error.status === "failure" ? error.message : "Cancelled");
+          return;
+        }
+        setReady(true);
+      } catch {
+        if (active) Alert.alert("Could not prepare payment", "Please try again.");
+      }
+    }
 
- useEffect(() => {
-   initSumUpPaymentSheet();
- }, []);
+    void initialize();
+    return () => { active = false; };
+  }, [checkoutId, initPaymentSheet]);
 
-...
+  async function pay() {
+    setPresenting(true);
+    try {
+      const { error } = await presentPaymentSheet();
+      if (error) {
+        if (error.status === "failure") Alert.alert("Payment failed", error.message);
+        return;
+      }
+      setReady(false);
+      Alert.alert("Payment submitted", "Check your order status for confirmation.");
+    } catch {
+      Alert.alert("Payment result unavailable", "Check your order status before trying another payment.");
+    } finally {
+      setPresenting(false);
+    }
+  }
+
+  return (
+    <View>
+      <Button title="Pay" disabled={!ready || presenting} onPress={pay} />
+    </View>
+  );
+}
 ```
-
-**Required** fields for `initPaymentSheet`:
-
-- `checkoutId` - described in section [Create a checkout](/online-payments/sdks/react-native/#create-a-checkout).
-
-_Optional_:
-
-- `customerId` - used for saving cards for future usage.
-- `language` - English and Sweden are supported (if undefined, react-native-localization will be used to check user device language).
 
 ## Show Payment Sheet
 
-After initialization a payment sheet can be shown. When a user presses a button, you can show it by calling `presentPaymentSheet()`. After a user completes a payment, this function will return a callback. If any errors take place, the callback will contain an error field with the details.
+Run the app, open your payment screen with a fresh sandbox checkout, and select **Pay**. Enter an [online test card](/online-payments/testing/) and complete any authentication challenge.
 
-```js
-...
-
- const showPaymentSheet = async () => {
-   const { error } = await presentPaymentSheet();
-
-
-   if (error) {
-     Alert.alert(
-       error.status,
-       error.status === "failure" ? error.message : undefined
-     );
-   } else {
-     Alert.alert("Payment successfully was processed");
-   }
- };
-
-
- return (
-   <View style={{ justifyContent: "center", alignItems: "center" }}>
-     <Button title="Present Payment Sheet!" onPress={showPaymentSheet} />
-   </View>
- );
-}
-```
+The sheet can complete, fail, or be cancelled. The example handles both returned SDK errors and rejected promises. Your backend must retrieve the checkout and verify its final status before marking the order paid. See [online payment webhooks](/online-payments/webhooks/) for server notifications.
 
 ## Optional Integrations
 
 ### Save a Card for Future Usage
 
-To save a card for future usage, a customer should be created. It can be achieved by making the following request:
+To save a card, create a customer and a checkout with `purpose: "SETUP_RECURRING_PAYMENT"` and that customer's `customer_id` on your server. Follow the [saved-card guide](/online-payments/guides/tokenization-with-payment-sdk/) for the backend flow and permission requirements.
 
-<Tabs syncKey="backend_lang">
-  <TabItem label="cURL" icon="seti:powershell">
-    ```bash
-    curl -L -X POST 'https://api.sumup.com/v0.1/customers' \
-      -H 'Content-Type: application/json' \
-      -H 'Accept: application/json' \
-      -H "Authorization: Bearer $SUMUP_API_KEY" \
-      --data-raw '{
-        "customer_id": "831ff8d4cd5958ab5670",
-        "personal_details": {
-          "first_name": "John",
-          "last_name": "Doe",
-          "email": "user@example.com",
-          "phone": "+491635559723",
-          "birthdate": "1993-12-31",
-          "address": {
-            "city": "Berlin",
-            "country": "DE",
-            "line1": "Sample street",
-            "line2": "ap. 5",
-            "postal_code": "10115",
-            "state": "Berlin"
-          }
-        }
-      }'
-    ```
-  </TabItem>
-  <TabItem label="JavaScript" icon="seti:javascript">
-    ```ts
-    const customer = await client.customers.create({
-      customer_id: "831ff8d4cd5958ab5670",
-      personal_details: {
-        first_name: "John",
-        last_name: "Doe",
-        email: "user@example.com",
-        phone: "+491635559723",
-        birth_date: "1993-12-31",
-        address: {
-          city: "Berlin",
-          state: "Berlin",
-          country: "DE",
-          line_1: "Sample street",
-          line_2: "ap. 5",
-          postal_code: "10115",
-        },
-      },
-    });
-    ```
-  </TabItem>
-  <TabItem label=".NET" icon="seti:c-sharp">
-    ```csharp
-    var customer = await client.Customers.CreateAsync(new Customer
-    {
-        CustomerId = "831ff8d4cd5958ab5670",
-        PersonalDetails = new PersonalDetails
-        {
-            FirstName = "John",
-            LastName = "Doe",
-            Email = "user@example.com",
-            Phone = "+491635559723",
-            BirthDate = new System.DateTime(1993, 12, 31),
-            Address = new AddressLegacy
-            {
-                City = "Berlin",
-                State = "Berlin",
-                Country = "DE",
-                Line1 = "Sample street",
-                Line2 = "ap. 5",
-                PostalCode = "10115",
-            },
-        },
-    });
-    ```
-  </TabItem>
-  <TabItem label="Java" icon="seti:java">
-    ```java
-    var customer = client.customers().createCustomer(
-        Customer.builder()
-            .customerId("831ff8d4cd5958ab5670")
-            .personalDetails(
-                PersonalDetails.builder()
-                    .firstName("John")
-                    .lastName("Doe")
-                    .email("user@example.com")
-                    .phone("+491635559723")
-                    .birthDate(java.time.LocalDate.parse("1993-12-31"))
-                    .address(
-                        AddressLegacy.builder()
-                            .city("Berlin")
-                            .state("Berlin")
-                            .country("DE")
-                            .line1("Sample street")
-                            .line2("ap. 5")
-                            .postalCode("10115")
-                            .build()
-                    )
-                    .build()
-            )
-            .build()
-    );
-    ```
-  </TabItem>
-  <TabItem label="Go" icon="seti:go">
-    ```go
-    str := func(v string) *string { return &v }
+Use `initSaveCardSheet` and `presentSaveCardSheet` from `useSumUp()` in a component under `SumUpProvider`:
 
-    customer, err := client.Customers.Create(ctx, sumup.CustomersCreateParams{
-    	CustomerID: "831ff8d4cd5958ab5670",
-    	PersonalDetails: &sumup.PersonalDetails{
-    		FirstName: str("John"),
-    		LastName:  str("Doe"),
-    		Email:     str("user@example.com"),
-    		Phone:     str("+491635559723"),
-    		Address: &sumup.AddressLegacy{
-    			City:       str("Berlin"),
-    			State:      str("Berlin"),
-    			Country:    str("DE"),
-    			Line1:      str("Sample street"),
-    			Line2:      str("ap. 5"),
-    			PostalCode: str("10115"),
-    		},
-    	},
-    })
-    ```
+```tsx
+const { initSaveCardSheet, presentSaveCardSheet } = useSumUp();
 
-  </TabItem>
-  <TabItem label="Python" icon="seti:python">
-    ```py
-    from sumup.customers.resource import CreateCustomerBody
-    from sumup.customers.types import AddressLegacy, PersonalDetails
+async function saveCard(checkoutId: string, customerId: string) {
+  const initialized = await initSaveCardSheet({ checkoutId, customerId, language: "en" });
+  if (initialized.error) return;
 
-    customer = client.customers.create(
-        CreateCustomerBody(
-            customer_id="831ff8d4cd5958ab5670",
-            personal_details=PersonalDetails(
-                first_name="John",
-                last_name="Doe",
-                email="user@example.com",
-                phone="+491635559723",
-                birth_date="1993-12-31",
-                address=AddressLegacy(
-                    city="Berlin",
-                    state="Berlin",
-                    country="DE",
-                    line_1="Sample street",
-                    line_2="ap. 5",
-                    postal_code="10115",
-                ),
-            ),
-        )
-    )
-    ```
-
-  </TabItem>
-  <TabItem label="Rust" icon="seti:rust">
-    ```rust
-    let customer = client
-        .customers()
-        .create(sumup::resources::customers::Customer {
-            customer_id: "831ff8d4cd5958ab5670".into(),
-            personal_details: Some(sumup::resources::common::PersonalDetails {
-                first_name: Some("John".into()),
-                last_name: Some("Doe".into()),
-                email: Some("user@example.com".into()),
-                phone: Some("+491635559723".into()),
-                birth_date: None,
-                tax_id: None,
-                address: Some(sumup::resources::common::AddressLegacy {
-                    city: Some("Berlin".into()),
-                    state: Some("Berlin".into()),
-                    country: Some("DE".into()),
-                    line_1: Some("Sample street".into()),
-                    line_2: Some("ap. 5".into()),
-                    postal_code: Some("10115".into()),
-                }),
-            }),
-        })
-        .await?;
-    ```
-  </TabItem>
-  <TabItem label="PHP" icon="seti:php">
-    ```php
-    $customer = $sumup->customers->create([
-        'customer_id' => '831ff8d4cd5958ab5670',
-        'personal_details' => [
-            'first_name' => 'John',
-            'last_name' => 'Doe',
-            'email' => 'user@example.com',
-            'phone' => '+491635559723',
-            'address' => [
-                'city' => 'Berlin',
-                'state' => 'Berlin',
-                'country' => 'DE',
-                'line_1' => 'Sample street',
-                'line_2' => 'ap. 5',
-                'postal_code' => '10115',
-            ],
-        ],
-    ]);
-    ```
-  </TabItem>
-</Tabs>
-
-For more information on saving a customer refer to [this guide](/api/customers/create).
-
-To use the newly created customer, create a checkout by passing the `customer_id` and provide it to the `initPaymentSheet` function.
-
-```js
-await initPaymentSheet({
- // ...
- customerId: '...',
-});
+  const result = await presentSaveCardSheet();
+  if (result.error) return;
+  // Ask your backend to retrieve the saved payment instrument for this customer.
+}
 ```
+
+Handle returned errors and rejected promises as in the payment example. Keep saved-card tokens and subsequent payment requests on your server.
 
 ### Use Google Pay
 
-To use Google Pay, first enable the Google Pay API by adding the following to the `application` tag of your `AndroidManifest.xml`:
+Enable Google Pay in your app's `AndroidManifest.xml`, inside `<application>`:
 
-```bash
-<application>
- ...
- <meta-data
-   android:name="com.google.android.gms.wallet.api.enabled"
-   android:value="true" />
-</application>
+```xml
+<meta-data
+  android:name="com.google.android.gms.wallet.api.enabled"
+  android:value="true" />
 ```
 
-For more details, see [Google Pay’s Set up Google Pay API for Android](https://developers.google.com/pay/api/android/guides/setup).
+Pass the Google Pay option when initializing the sheet:
 
-Then provide `googlePay` object to the `initPaymentSheet` to initialize.
-
-```js
+```tsx
 await initPaymentSheet({
- // ...
- googlePay: {
-   isProductionEnvironment: false,
- },
+  checkoutId,
+  language: "en",
+  googlePay: { isProductionEnvironment: false },
 });
 ```
+
+Keep the test environment enabled while developing. Complete [Google's Android setup](https://developers.google.com/pay/api/android/guides/setup) before enabling production payments.
 
 ### Use Apple Pay
 
-<Callout type="caution" title="Caution">
-The backend doesn't process payments with Apple Pay and an error message will be displayed after attempting to pay with it.  This is a known issue and a fix is being worked on.
-</Callout>
-
 #### Register for an Apple Merchant ID
 
-Obtain an Apple Merchant ID by registering for a new identifier on the Apple Developer website. Fill out the form with a description and identifier. Your description is for your own records and you can modify it in the future.
+Register an Apple merchant identifier, configure your app's Apple Pay capability and certificates, and select that identifier in Xcode. Follow [Apple's Apple Pay setup](https://developer.apple.com/documentation/passkit/setting-up-apple-pay).
 
-**Create a new Apple Pay certificate - needs to be implemented.**
+Pass the matching identifier when initializing the sheet:
 
-To enable Apple Pay in Xcode:
-
-1. Open your target settings
-2. Go to Signing & Capabilities tab
-3. Click on Add Capability button
-4. Select your merchant identifier
-
-![Apple Pay Xcode configurations](/img/guides/apple_pay_xcode_configurations.png)
-
-Then provide an `applePay` object in `initPaymentSheet` to initialize.
-
-```js
+```tsx
 await initPaymentSheet({
- // ...
- applePay: {
-   merchantIdentifier: 'merchant.com.{{YOUR_APP_NAME}}',
-   label: 'Pay',
- },
+  checkoutId,
+  language: "en",
+  applePay: { merchantIdentifier: "merchant.com.example.app" },
 });
 ```
+
+Test on a supported device with the merchant and wallet configuration you will use. Confirm the final checkout status on your server for wallet payments as well as card payments.
