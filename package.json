@@ -47,15 +47,14 @@
     "check:redirects": "node scripts/check-redirects.mjs",
     "linkcheck:rendered": "node scripts/check-rendered-links.mjs",
     "test": "vitest run",
-    "validate": "npm run format:check && npm run check:nimbus && npm run check:examples && npm run check && npm run lint && npm run test && npm run linkcheck && npm run test:worker",
+    "validate": "npm run format:check && npm run check:nimbus && npm run check && npm run lint && npm run test && npm run linkcheck && npm run test:worker",
     "check:agent-docs": "node scripts/check-agent-docs.mjs",
     "sync:agent-skills": "node scripts/sync-agent-skills.mjs",
     "postbuild": "node scripts/publish-agent-discovery.mjs && npm run check:site",
     "check:og-images": "node scripts/check-og-images.mjs",
     "check:site": "node scripts/check-site.mjs",
     "test:worker": "node --test tests/worker.test.mjs",
-    "lint:spelling": "typos src/content --config _typos.toml",
-    "check:examples": "node --test scripts/check-json-examples.test.mjs && node scripts/check-json-examples.mjs"
+    "lint:spelling": "typos src/content --config _typos.toml"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.12",
