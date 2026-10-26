@@ -22,7 +22,7 @@ const head = defineNimbusConfig({
   title: "SumUp Developer",
   description:
     "Developer documentation, guides, and APIs for building with SumUp.",
-  locale: "en",
+  locale: "en-US",
   homeLabel: "Home",
   github: "https://github.com/sumup/sumup-developer",
   editPattern: "https://github.com/sumup/sumup-developer/edit/main/{path}",

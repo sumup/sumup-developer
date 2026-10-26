@@ -117,9 +117,6 @@ export async function renderedSite(outputRoot) {
       llmsUrl: document
         .querySelector('link[rel="alternate"][title="LLM index"]')
         ?.getAttribute("href"),
-      ogImageUrl: document
-        .querySelector('meta[property="og:image"]')
-        ?.getAttribute("content"),
       canonical: document
         .querySelector('link[rel="canonical"]')
         ?.getAttribute("href"),

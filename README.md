@@ -82,7 +82,7 @@ prefixes, frontmatter, images, and internal links. `npm run linkcheck` also chec
 rendered link targets and fragments, rejects empty links, and requires image alt
 attributes; explicitly decorative images can use `alt=""`.
 
-Every build runs the OG, redirect, rendered-link, and agent-output checks through
+Every build runs the redirect, rendered-link, and agent-output checks through
 `check:site`, sharing one parsed HTML cache. The individual check commands remain
 available for focused diagnosis. Website source files must use `.mdx`; the build
 rejects stray `.md` files under `src/content/`.

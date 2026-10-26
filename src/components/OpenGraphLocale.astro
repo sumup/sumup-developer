@@ -1,0 +1,10 @@
+---
+// Nimbus uses the HTML language tag verbatim for OG, which needs underscores.
+const head = (await Astro.slots.render("default")).replace(
+  /(<meta\b[^>]*\bproperty="og:locale"[^>]*\bcontent=")([^"]+)(")/g,
+  (_match, before: string, locale: string, after: string) =>
+    `${before}${locale.replaceAll("-", "_")}${after}`,
+);
+---
+
+<Fragment set:html={head} />

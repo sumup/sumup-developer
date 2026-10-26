@@ -20,7 +20,8 @@ The recipes provide page structures and self-review checklists. Their editorial 
 
 Repository instructions and the implemented schema and components take precedence over generic recipe examples.
 
-- Write plain English for external integrators. Lead with the reader's outcome or the confirmed behavior. Use active voice, sentence-case headings, descriptive links, and consistent SumUp terminology. Explain technical terms when needed.
+- Write plain US English for external integrators. Lead with the reader's outcome or the confirmed behavior. Use active voice, sentence-case headings, descriptive links, and consistent SumUp terminology. Explain technical terms when needed.
+- Use US spellings such as "authorization", "initialize", "behavior", "installments", and "tokenization" in authored prose, headings, and metadata. Preserve published URLs and heading fragments, code, API and SDK identifiers, HTTP headers, exact UI labels, quotations, official names, and localized legal terms. For example, keep the SDK parameter `instalments` and the API response field `artefacts`.
 - Verify product claims against implementation, API schemas, SDKs, tests, or current public documentation. The recipes use the fictional product Hookline; replace its commands, values, and behavior with verified SumUp examples. Ask for missing facts only when available sources cannot resolve them.
 - Use `.mdx` for website content. Documentation belongs in `src/content/docs/`, changelog entries in `src/content/changelog/`, and help entries in `src/content/help/`. Match nearby file naming and sidebar conventions.
 - Check `src/content.config.ts` and the installed Nimbus docs schema before adding frontmatter. Do not copy recipe metadata such as `type` or `lastVerified` automatically, or change the schema just to match a recipe. Changelog entries use `title`, `tags`, and `publishedDate`; adapt the changelog recipe to the existing per-entry collection and routes.

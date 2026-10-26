@@ -18,6 +18,7 @@ import type { BasePageProps } from "@cloudflare/nimbus-docs/types";
 import { config } from "virtual:nimbus/config";
 
 import AgentDirective from "@components/nimbus/AgentDirective.astro";
+import OpenGraphLocale from "@components/OpenGraphLocale.astro";
 import SearchDialog from "@components/nimbus/SearchDialog.astro";
 import WebMCP from "@components/nimbus/WebMCP.astro";
 
@@ -92,20 +93,22 @@ const llmsUrl = Astro.site ? new URL(llmsPath, Astro.site).href : llmsPath;
         window.__applyPortalTheme = applyTheme;
       })();
     </script>
-    <NimbusHead
-      title={title}
-      description={description}
-      noindex={noindex}
-      markdownUrl={markdownUrl}
-      socialImage={socialImage}
-      socialImageSize={socialImageSize}
-      lastUpdated={lastUpdated}
-      head={head}
-      collection={collection}
-      entryId={entryId}
-      apiVersion={apiVersion}
-      coordinate={coordinate}
-    />
+    <OpenGraphLocale>
+      <NimbusHead
+        title={title}
+        description={description}
+        noindex={noindex}
+        markdownUrl={markdownUrl}
+        socialImage={socialImage}
+        socialImageSize={socialImageSize}
+        lastUpdated={lastUpdated}
+        head={head}
+        collection={collection}
+        entryId={entryId}
+        apiVersion={apiVersion}
+        coordinate={coordinate}
+      />
+    </OpenGraphLocale>
     <WebMCP />
   </head>
   <body>

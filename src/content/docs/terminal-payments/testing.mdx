@@ -88,7 +88,7 @@ The examples above use EUR, which has two decimal places. Use the amount format 
 
 ### What to Verify
 
-- A declined payment leaves the order unpaid and does not trigger fulfilment.
+- A declined payment leaves the order unpaid and does not trigger fulfillment.
 - Your app shows a clear failure message and lets the customer retry or choose another payment method.
 - Each retry uses a new transaction reference, and each result is matched to the correct payment attempt.
 - With Cloud API, your integration waits for the final transaction result before updating the order.
