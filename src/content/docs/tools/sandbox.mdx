@@ -1,0 +1,56 @@
+---
+title: Set up a sandbox merchant
+description: Create a sandbox merchant, configure its credentials, and verify which account your integration uses.
+sidebar:
+  order: 2
+---
+
+import Image from '@components/content/Image.astro';
+
+Use a sandbox merchant account to test payments without moving real funds. Online and in-person integrations use the normal SumUp API host with credentials for the sandbox merchant.
+
+## Create a sandbox merchant account
+
+1. Log in to the [SumUp Dashboard](https://me.sumup.com).
+2. Open [Developer Settings](https://me.sumup.com/settings/developer?tab=sandboxes).
+3. In **Sandboxes**, create a sandbox merchant account if you do not already have one.
+4. Open the account switcher and select **Sandbox Merchant Account**.
+
+If you do not have a SumUp account, [create a developer account](https://me.sumup.com/signup?signup_intent=developer) to start with a sandbox merchant.
+
+<Image alt="Dashboard account switcher with Sandbox Merchant Account highlighted" src="/img/guides/test_acc.png" width="40%" />
+
+## Use the sandbox credentials
+
+- Create secret API credentials in the sandbox merchant for server-side API calls. Keep them on your server.
+- Use the sandbox merchant's public key for client SDKs that require one.
+- Set the sandbox merchant code where your integration asks for a merchant code.
+- For OAuth, authorize the intended merchant and keep tokens associated with that merchant in your application.
+
+Selecting an account in the Dashboard does not change credentials already stored in your app or server. Verify the merchant associated with those credentials before testing.
+
+<Image alt="Dashboard warning identifying a sandbox merchant account" src="/img/guides/test-account-warning.png" width="100%" />
+
+## Choose the account for native SDK login
+
+:::caution
+If you have access to multiple merchant accounts, native login in the Android and iOS SDKs uses your default merchant account. The SDKs do not offer a merchant account selector.
+
+**Recommended: use a managed user account.** In the SumUp Dashboard, select the merchant account you want to use, then [create a managed user account](https://me.sumup.com/members/add?type=managed) for that merchant. Log in through the SDK using the managed user's credentials. For testing, create the managed user in your sandbox merchant account.
+
+**Alternative: set the default merchant account.** If you cannot create a managed user account or need to use your existing user account:
+
+1. Open [Accounts in the SumUp Dashboard](https://me.sumup.com/settings/accounts), under your user settings.
+2. Find the merchant account you want to use, open its options menu, and select **Set as default**.
+3. Log in through the SDK. If you are already logged in, log out first.
+
+When testing with your existing user account, set your sandbox merchant account as the default before logging in.
+
+You are responsible for verifying that the appropriate account is set as the default merchant account.
+:::
+
+## Verify the integration
+
+Follow the [online payment testing guide](/online-payments/testing/) for test cards, or the [in-person testing guide](/terminal-payments/testing/) for reader and Tap to Pay flows. Cloud API can also use [Virtual Solo](/terminal-payments/cloud-api/testing/).
+
+Keep sandbox and live merchant credentials separate in your application configuration. Switch to live credentials only when you intend to process real payments.

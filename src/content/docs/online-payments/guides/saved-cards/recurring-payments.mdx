@@ -1,0 +1,50 @@
+---
+title: Charge a saved card
+description: Process a new checkout with a saved payment token and its associated customer.
+sidebar:
+  order: 3
+  label: Charge a saved card
+---
+
+Use a saved card only for payments covered by the customer's consent. Keep the token and its associated `customer_id` on your server. Follow [Save a card with the Payment Widget](/online-payments/guides/saved-cards/save-card/) before starting this guide.
+
+## Processing recurring payments
+
+1. Create a new checkout for the actual amount to charge. Give this payment attempt a unique `checkout_reference` and save the returned checkout ID with your order.
+
+```bash
+curl https://api.sumup.com/v0.1/checkouts \
+  -H "Authorization: Bearer $SUMUP_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "checkout_reference": "order-123-attempt-2",
+    "amount": 10,
+    "currency": "EUR",
+    "merchant_code": "YOUR_MERCHANT_CODE",
+    "return_url": "https://example.com/webhooks/sumup"
+  }'
+```
+
+2. Process that checkout with the saved token and customer ID. Replace the placeholders and set `CHECKOUT_ID` to the ID from step 1.
+
+```bash
+curl -X PUT "https://api.sumup.com/v0.1/checkouts/$CHECKOUT_ID" \
+  -H "Authorization: Bearer $SUMUP_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "payment_type": "card",
+    "token": "YOUR_SAVED_CARD_TOKEN",
+    "customer_id": "YOUR_CUSTOMER_ID"
+  }'
+```
+
+Both `token` and `customer_id` are required. Add `installments` only for payments that require it in the Brazilian market. Use the customer's merchant currency; the examples use EUR.
+
+## Verify the result
+
+[Retrieve and verify the checkout on your server](/online-payments/guides/confirm-payment/) and mark the order paid only after confirming `PAID`. If the result is uncertain, [check the existing attempt before trying another charge](/online-payments/guides/response-handling/#check-an-uncertain-payment).
+
+## Next steps
+
+- [List or deactivate saved payment instruments](/api/customers/list-payment-instruments/).
+- [Refund a payment](/online-payments/guides/refund/).

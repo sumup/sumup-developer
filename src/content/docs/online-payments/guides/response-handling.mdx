@@ -68,7 +68,7 @@ Do not apply one automatic retry policy to every API call.
 4. If payment succeeded, update the existing order. If it is still pending or the final result is unavailable, keep the order unpaid while you reconcile it.
 5. Start another payment attempt only after checking the previous attempt's result. Give each new attempt a unique reference and keep the link to the same order.
 
-For Cloud API, the initial response only confirms that the reader checkout was accepted. Follow the [Cloud API result flow](/terminal-payments/cloud-api/#receive-transaction-results) for its final result.
+For Cloud API, the initial response only confirms that the reader checkout was accepted. Follow the [Cloud API result flow](/terminal-payments/cloud-api/payments/#receive-transaction-results) for its final result.
 
 ### Check an uncertain refund
 

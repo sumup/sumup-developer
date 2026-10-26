@@ -1,0 +1,29 @@
+---
+title: Test Cloud API with Virtual Solo
+description: Test pairing and checkout flows with a sandbox merchant and Virtual Solo.
+sidebar:
+  order: 2
+  label: Test with Virtual Solo
+---
+
+## Testing
+
+Follow the [in-person payment testing guide](/terminal-payments/testing/) to test successful payments and simulate specific decline reasons using a sandbox merchant account.
+
+### Solo virtual terminal
+
+You can also test your Cloud API integration without a card reader using [Virtual Solo](https://virtual-solo.sumup.com) with a [SumUp sandbox merchant account](/tools/sandbox/).
+
+Virtual Solo simulates a Solo card reader so you can test pairing and checkout flows. Use a Solo reader to test card reading and other device behavior. The following actions are not supported by Virtual Solo:
+
+- Physical card insertion or tap simulation (since there is no physical Solo device)
+- Real funds transfer (sandbox merchant accounts only)
+- PIN entry simulation (always auto-approved)
+- Offline transactions
+- Custom receipt printing
+- Network configuration
+- Real device pairing (the simulator uses virtual device identifiers)
+
+## Test the payment flow
+
+Use the simulator's pairing code with the [pairing guide](/terminal-payments/cloud-api/setup/), then follow [Accept a reader payment](/terminal-payments/cloud-api/payments/) to start a checkout and handle its result. Verify real reader behavior separately on the hardware you will deploy.
