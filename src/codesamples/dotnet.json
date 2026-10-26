@@ -3,7 +3,7 @@
   "language": "csharp",
   "sdk": {
     "module": "SumUp",
-    "version": "0.0.20"
+    "version": "0.0.21"
   },
   "openAPIVersion": "1.0.0",
   "samples": [
@@ -93,6 +93,15 @@
       "sample": "using System;\nusing System.Collections.Generic;\nusing System.Threading.Tasks;\nusing SumUp;\n\npublic static class Program\n{\n    public static async Task Main()\n    {\n        using var client = new SumUpClient();\n        var response = await client.Roles.CreateAsync(\n            \"your-merchant-code\",\n            new RolesCreateRequest\n            {\n                Description = \"Manges the shop and the employees.\",\n                Metadata = new Metadata { },\n                Name = \"Senior Shop Manager II\",\n                Permissions = new string[]\n                {\n                    \"catalog_access\",\n                    \"taxes_access\",\n                    \"members_access\",\n                },\n            });\n\n        Console.WriteLine(response.StatusCode);\n    }\n}\n"
     },
     {
+      "id": "CreateMerchantToken",
+      "operationId": "CreateMerchantToken",
+      "summary": "Create a merchant token",
+      "description": "Creates a short-lived token for the merchant account identified by merchant_code and the requested actions. Call this endpoint from your backend using a supported authentication method. You must have access to the merchant account. Before returning the token, check that the user signed in to your application is allowed to accept payments for that account. Pass the returned access_token to the SDK. The token expires 15 minutes after creation; use expires_in for its remaining lifetime. To continue after it expires, create a new token through this endpoint.",
+      "httpMethod": "POST",
+      "path": "/v0.1/merchants/{merchant_code}/tokens",
+      "sample": "using System;\nusing System.Collections.Generic;\nusing System.Threading.Tasks;\nusing SumUp;\n\npublic static class Program\n{\n    public static async Task Main()\n    {\n        using var client = new SumUpClient();\n        var response = await client.Tokens.CreateAsync(\n            \"your-merchant-code\",\n            new TokensCreateRequest\n            {\n                Actions = new TokensCreateRequestActionsItem[]\n                {\n                    TokensCreateRequestActionsItem.Checkout,\n                },\n            });\n\n        Console.WriteLine(response.StatusCode);\n    }\n}\n"
+    },
+    {
       "id": "CreateReader",
       "operationId": "CreateReader",
       "summary": "Create a Reader",
@@ -105,10 +114,10 @@
       "id": "CreateReaderCheckout",
       "operationId": "CreateReaderCheckout",
       "summary": "Create a Reader Checkout",
-      "description": "Creates a Checkout for a Reader. This process is asynchronous and the actual transaction may take some time to be started on the device. There are some caveats when using this endpoint: * The target device must be online, otherwise checkout won't be accepted * After the checkout is accepted, the system has 60 seconds to start the payment on the target device. During this time, any other checkout for the same device will be rejected. Note: If the target device is a Solo, it must be in version 3.3.24.3 or higher.",
+      "description": "Creates a Checkout for a Reader. This process is asynchronous and the actual transaction may take some time to be started on the device. There are some caveats when using this endpoint: * The target device must be online, otherwise checkout won't be accepted * After the checkout is accepted, the system has 60 seconds to start the payment on the target device. During this time, any other checkout for the same device will be rejected. Note: If the target device is a Solo, it must be in version 3.3.24.3 or higher. Optionally include an affiliate object to attach integrator metadata to the payment. Provide both app_id and key when including this object.",
       "httpMethod": "POST",
       "path": "/v0.1/merchants/{merchant_code}/readers/{reader_id}/checkout",
-      "sample": "using System;\nusing System.Collections.Generic;\nusing System.Threading.Tasks;\nusing SumUp;\n\npublic static class Program\n{\n    public static async Task Main()\n    {\n        using var client = new SumUpClient();\n        var response = await client.Readers.CreateCheckoutAsync(\n            \"your-merchant-code\",\n            \"your-reader-id\",\n            new CreateReaderCheckoutRequest\n            {\n                Aade = new CreateReaderCheckoutRequestAade\n                {\n                    ProviderId = \"123\",\n                    Signature = \"QjcxRDdBNTU1MDcyRTNFRTREMkZEM0Y0NTdBMjkxMTU4MzBFNkNCQTs7MjAyNTExMTIyMTQ3MTM7Nzk2OzEwNDs5MDA7OTAwOzU0ODg5MDM5\",\n                    SignatureData = \"B71D7A555072E3EE4D2FD3F457A29115830E6CBA;;20251112214713;796;104;900;900;54889039\",\n                },\n                Affiliate = new CreateReaderCheckoutRequestAffiliate\n                {\n                    AppId = \"com.example.app\",\n                    ForeignTransactionId = \"123456\",\n                    Key = \"ef7b684a-d6f4-4e93-9b1b-6acdd6564a8e\",\n                    Tags = new JsonObject { },\n                },\n                CardType = CreateReaderCheckoutRequestCardType.Debit,\n                Description = \"This is a description...\",\n                Installments = 1,\n                ReturnUrl = \"https://webhook.site/e21ddbb0-42c4-4358-a981-f5a95cd86fb5\",\n                TipRates = new float[]\n                {\n                    0.05f,\n                    0.1f,\n                    0.15f,\n                },\n                TipTimeout = 60,\n                TotalAmount = new CreateReaderCheckoutRequestTotalAmount\n                {\n                    Currency = \"EUR\",\n                    MinorUnit = 2,\n                    Value = 5033,\n                },\n            });\n\n        Console.WriteLine(response.StatusCode);\n    }\n}\n"
+      "sample": "using System;\nusing System.Collections.Generic;\nusing System.Threading.Tasks;\nusing SumUp;\n\npublic static class Program\n{\n    public static async Task Main()\n    {\n        using var client = new SumUpClient();\n        var response = await client.Readers.CreateCheckoutAsync(\n            \"your-merchant-code\",\n            \"your-reader-id\",\n            new CreateReaderCheckoutRequest\n            {\n                Aade = new CreateReaderCheckoutRequestAade\n                {\n                    ProviderId = \"123\",\n                    Signature = \"QjcxRDdBNTU1MDcyRTNFRTREMkZEM0Y0NTdBMjkxMTU4MzBFNkNCQTs7MjAyNTExMTIyMTQ3MTM7Nzk2OzEwNDs5MDA7OTAwOzU0ODg5MDM5\",\n                    SignatureData = \"B71D7A555072E3EE4D2FD3F457A29115830E6CBA;;20251112214713;796;104;900;900;54889039\",\n                },\n                Affiliate = new CreateReaderCheckoutRequestAffiliate\n                {\n                    AppId = \"com.example.app\",\n                    ForeignTransactionId = \"123456\",\n                    Key = \"ef7b684a-d6f4-4e93-9b1b-6acdd6564a8e\",\n                    Tags = new JsonObject\n                    {\n                        [\"custom_key_1\"] = \"custom_value_1\",\n                        [\"custom_key_2\"] = \"custom_value_2\",\n                    },\n                },\n                CardType = CreateReaderCheckoutRequestCardType.Debit,\n                Description = \"This is a description...\",\n                Installments = 1,\n                ReturnUrl = \"https://webhook.site/e21ddbb0-42c4-4358-a981-f5a95cd86fb5\",\n                TipRates = new float[]\n                {\n                    0.05f,\n                    0.1f,\n                    0.15f,\n                },\n                TipTimeout = 60,\n                TotalAmount = new CreateReaderCheckoutRequestTotalAmount\n                {\n                    Currency = \"EUR\",\n                    MinorUnit = 2,\n                    Value = 5033,\n                },\n            });\n\n        Console.WriteLine(response.StatusCode);\n    }\n}\n"
     },
     {
       "id": "CreateReaderTerminate",
@@ -244,6 +253,15 @@
       "httpMethod": "GET",
       "path": "/v0.1/merchants/{merchant_code}/readers/{reader_id}/checkout/{checkout_id}",
       "sample": "using System;\nusing System.Collections.Generic;\nusing System.Threading.Tasks;\nusing SumUp;\n\npublic static class Program\n{\n    public static async Task Main()\n    {\n        using var client = new SumUpClient();\n        var response = await client.Readers.GetCheckoutAsync(\n            \"your-merchant-code\",\n            \"your-reader-id\",\n            \"example-id\");\n\n        Console.WriteLine(response.StatusCode);\n    }\n}\n"
+    },
+    {
+      "id": "GetReaderSettings",
+      "operationId": "GetReaderSettings",
+      "summary": "Get Reader Settings",
+      "description": "Returns the menu lock settings for a Solo reader. For an online reader, returns the current settings. For an offline reader, returns the last saved settings, which may differ from its current configuration. Returns 404 if the reader is offline and no saved settings are available. The response may include the menu lock PIN.",
+      "httpMethod": "GET",
+      "path": "/v0.1/merchants/{merchant_code}/readers/{reader_id}/settings",
+      "sample": "using System;\nusing System.Collections.Generic;\nusing System.Threading.Tasks;\nusing SumUp;\n\npublic static class Program\n{\n    public static async Task Main()\n    {\n        using var client = new SumUpClient();\n        var response = await client.Readers.GetReaderSettingsAsync(\n            \"your-merchant-code\",\n            \"your-reader-id\");\n\n        Console.WriteLine(response.StatusCode);\n    }\n}\n"
     },
     {
       "id": "GetReaderStatus",
@@ -456,6 +474,15 @@
       "httpMethod": "PATCH",
       "path": "/v0.1/merchants/{merchant_code}/readers/{reader_id}",
       "sample": "using System;\nusing System.Collections.Generic;\nusing System.Threading.Tasks;\nusing SumUp;\n\npublic static class Program\n{\n    public static async Task Main()\n    {\n        using var client = new SumUpClient();\n        var response = await client.Readers.UpdateAsync(\n            \"your-merchant-code\",\n            \"your-reader-id\",\n            new ReadersUpdateRequest\n            {\n                Metadata = new Metadata { },\n                Name = \"Frontdesk\",\n            });\n\n        Console.WriteLine(response.StatusCode);\n    }\n}\n"
+    },
+    {
+      "id": "UpdateReaderSettings",
+      "operationId": "UpdateReaderSettings",
+      "summary": "Update Reader Settings",
+      "description": "Updates the menu lock settings for a Solo reader. The reader must be online. A successful response confirms that the reader applied the update. Include at least one of menu_lock.enabled or menu_lock.passcode. Omitted settings keep their current values. The response contains only the settings included in the request. When enabling menu lock for a reader without a PIN, include a four-digit PIN in menu_lock.passcode in the same request.",
+      "httpMethod": "PATCH",
+      "path": "/v0.1/merchants/{merchant_code}/readers/{reader_id}/settings",
+      "sample": "using System;\nusing System.Collections.Generic;\nusing System.Threading.Tasks;\nusing SumUp;\n\npublic static class Program\n{\n    public static async Task Main()\n    {\n        using var client = new SumUpClient();\n        var response = await client.Readers.UpdateReaderSettingsAsync(\n            \"your-merchant-code\",\n            \"your-reader-id\",\n            new UpdateReaderSettingsRequest\n            {\n                MenuLock = new UpdateReaderSettingsRequestMenuLock\n                {\n                    Enabled = true,\n                    Passcode = \"1234\",\n                },\n            });\n\n        Console.WriteLine(response.StatusCode);\n    }\n}\n"
     }
   ]
 }
