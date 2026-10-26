@@ -1,0 +1,143 @@
+---
+title: Confirm a payment and update your order
+description: Verify checkout results on your server and update each order once, even when notifications are repeated or delayed.
+sidebar:
+  order: 91
+---
+
+Confirm payment on your server before fulfilling an order. Use browser callbacks and webhooks to trigger that check, then retrieve the checkout from SumUp and match it to the payment attempt saved for your order.
+
+This guide applies to online checkouts, including Hosted Checkout, the Payment Widget, and checkout SDKs. Cloud API uses a different event and transaction lookup; follow its [reader transaction result guide](/terminal-payments/cloud-api/#receive-transaction-results).
+
+## Save the payment attempt
+
+When your server creates a checkout, save its ID alongside your order ID, checkout reference, amount, currency, and merchant code. Choose the amount and merchant from your stored order. Keep earlier attempts so a delayed notification can still be matched to the correct order.
+
+Two checkout fields control different parts of the return flow:
+
+| Field          | Destination                            | Purpose                                                                                       |
+| -------------- | -------------------------------------- | --------------------------------------------------------------------------------------------- |
+| `redirect_url` | A page the customer's browser can open | Returns the customer to your website. Its exact behavior depends on the checkout integration. |
+| `return_url`   | A public HTTPS endpoint on your server | Receives checkout status notifications from SumUp.                                            |
+
+For example, include these fields when creating a Hosted Checkout:
+
+```json
+{
+  "checkout_reference": "order-123-attempt-1",
+  "amount": 10,
+  "currency": "EUR",
+  "merchant_code": "YOUR_MERCHANT_CODE",
+  "hosted_checkout": { "enabled": true },
+  "redirect_url": "https://example.com/orders/123",
+  "return_url": "https://example.com/webhooks/sumup"
+}
+```
+
+Use a unique reference for each new payment attempt. The checkout's initial `PENDING` state means the order is still unpaid.
+
+## Receive a notification
+
+For online checkout status changes, SumUp sends this payload to `return_url`:
+
+```json
+{
+  "event_type": "CHECKOUT_STATUS_CHANGED",
+  "id": "CHECKOUT_ID"
+}
+```
+
+Your receiver should:
+
+1. Accept the HTTPS `POST`, recognize the event type, and validate that `id` is a string. Ignore unknown event types with a successful response.
+2. Find the saved payment attempt for that checkout ID. Never take the order amount or merchant code from the incoming notification.
+3. Save or enqueue the verification work durably before acknowledging it. Return an empty `2xx` response promptly once that work is stored. If it cannot be stored, return an error so delivery can be retried.
+4. Retrieve the checkout from SumUp and apply the checks below. If a lookup fails, retry the verification job with a delay and a limit; do not create another payment.
+
+See [webhook delivery and retry timing](/online-payments/webhooks/) for the notification contract. A notification's presence does not prove payment succeeded.
+
+## Retrieve and verify the checkout
+
+The following Node.js function checks the API response against a trusted payment-attempt record. Run it only on your server. Populate `attempt` from your stored order data, not from browser input or the webhook body.
+
+```js
+export async function verifyCheckout(attempt) {
+  const apiKey = process.env.SUMUP_API_KEY;
+  if (!apiKey) throw new Error("SUMUP_API_KEY is not configured");
+
+  const response = await fetch(
+    `https://api.sumup.com/v0.1/checkouts/${encodeURIComponent(attempt.checkoutId)}`,
+    { headers: { Authorization: `Bearer ${apiKey}` } },
+  );
+  if (!response.ok) {
+    throw new Error(`Checkout lookup failed with HTTP ${response.status}`);
+  }
+
+  const checkout = await response.json();
+  if (
+    checkout.id !== attempt.checkoutId ||
+    checkout.checkout_reference !== attempt.checkoutReference ||
+    checkout.merchant_code !== attempt.merchantCode ||
+    checkout.amount !== attempt.amount ||
+    checkout.currency !== attempt.currency
+  ) {
+    throw new Error("Checkout does not match the saved payment attempt");
+  }
+
+  return checkout.status;
+}
+```
+
+The expected record has `checkoutId`, `checkoutReference`, `merchantCode`, `amount`, and `currency`. Store the amount in the same major-unit format used by the Checkouts API. The example compares stored values directly; it does not calculate the order total from untrusted input.
+
+Use the returned status as follows:
+
+| Status                      | Order handling                                                         |
+| --------------------------- | ---------------------------------------------------------------------- |
+| `PAID`                      | Record the successful attempt and mark the associated order paid once. |
+| `PENDING`                   | Keep the order unpaid and continue waiting for the final result.       |
+| `FAILED` or `EXPIRED`       | Record the unsuccessful attempt. Offer a new attempt when appropriate. |
+| Unrecognized or unavailable | Keep the order unpaid and investigate or retry the lookup.             |
+
+Treat the API response as the source of truth. Do not downgrade a paid order because an older notification arrived later. Track refunds separately from checkout confirmation.
+
+## Update the order once
+
+Notifications can be repeated, arrive late, or race with a browser-triggered status check. Make the order update and creation of its fulfillment job one atomic database operation.
+
+For example, in PostgreSQL, if `orders.payment_status` starts as `unpaid` and `fulfillment_jobs.order_id` has a unique constraint, this statement records a verified payment and creates at most one job for the order:
+
+```sql
+WITH paid_order AS (
+  UPDATE orders
+  SET payment_status = 'paid'
+  WHERE id = $1 AND payment_status = 'unpaid'
+  RETURNING id
+)
+INSERT INTO fulfillment_jobs (order_id)
+SELECT id FROM paid_order
+ON CONFLICT (order_id) DO NOTHING;
+```
+
+Run this only after verifying a `PAID` checkout against the saved attempt. Adapt the table and status names to your application. Save the successful checkout ID and any transaction identifiers with your payment records as part of the same transaction.
+
+Have a worker process the saved job. Its fulfillment action must also tolerate retries, so a restarted job does not send a second shipment or repeat another order action.
+
+## Return the customer to your order page
+
+When the customer returns through `redirect_url`, or your widget or SDK callback fires, ask your backend for the order's status. The backend can trigger the same verification process if confirmation has not arrived yet.
+
+Show a waiting state while verification is pending. Show a paid state after the backend has confirmed payment. Do not mark an order paid from a URL parameter or a client callback alone.
+
+## Verify the integration
+
+Test these cases with a [sandbox merchant and test cards](/online-payments/testing/):
+
+- A successful payment reaches `PAID` and produces one fulfillment job.
+- Delivering the same notification twice does not create another job.
+- A browser callback and a webhook arrive together without duplicating the order update.
+- A pending, failed, expired, mismatched, or unrecognized checkout is not fulfilled.
+- An API timeout leaves the order unpaid while verification is retried.
+- Closing the browser does not prevent a later webhook from confirming payment.
+
+For an uncertain result, use the [safe retry and reconciliation guidance](/online-payments/guides/response-handling/#check-an-uncertain-payment).

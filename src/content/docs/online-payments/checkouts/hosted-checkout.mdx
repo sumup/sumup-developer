@@ -33,7 +33,7 @@ New to online payments? Follow the [Hosted Checkout quickstart](/online-payments
 1. Create a checkout and set `hosted_checkout.enabled` to `true`.
 2. Store the returned checkout `id` and `hosted_checkout_url`.
 3. Redirect the customer to `hosted_checkout_url`, or share that URL in the flow you are building.
-4. After the customer completes the payment, verify the final result through the API or with [webhooks](/online-payments/webhooks/).
+4. After the customer completes payment, [retrieve and verify the checkout on your server](/online-payments/guides/confirm-payment/). Use webhooks to trigger that verification even if the customer closes the browser.
 
 <Callout type="note" title="Note">
   A Hosted Checkout session is available for 30 minutes. After that, unpaid sessions show an expired or not found page.
@@ -217,6 +217,8 @@ The business branding shown on Hosted Checkout, such as your business logo and i
 If you want the success page to include a button back to your website, set `redirect_url` when you create the checkout, as shown in the examples above.
 
 If `redirect_url` is present, the success page shows a button that sends the customer back to your website.
+
+To receive server notifications as well, set `return_url` to your public HTTPS webhook endpoint. It is separate from the browser-facing `redirect_url`. Follow the [payment confirmation guide](/online-payments/guides/confirm-payment/).
 
 ## Handle Payment Outcomes
 
