@@ -59,22 +59,15 @@ describe("built documentation Worker", { timeout: 60_000 }, () => {
     assert.equal(response.status, 404);
   });
 
-  it("routes invalid contact submissions back to the contact page", async () => {
-    const response = await server.fetch("/contact/submit", {
-      method: "POST",
-      body: new URLSearchParams(),
-      redirect: "manual",
-    });
-    assert.equal(response.status, 303);
-    const target = new URL(
-      response.headers.get("location"),
-      "https://developer.sumup.com",
-    );
-    assert.equal(target.pathname, "/contact");
-    assert.equal(target.searchParams.get("status"), "error");
-    const page = await server.fetch(target.pathname + target.search);
-    assert.equal(page.status, 200);
-    assert.match(await page.text(), /action="\/contact\/submit"/);
+  it("redirects the retired contact page to SumUp", async () => {
+    for (const path of ["/contact", "/contact/"]) {
+      const response = await server.fetch(path, { redirect: "manual" });
+      assert.equal(response.status, 301);
+      assert.equal(
+        response.headers.get("location"),
+        "https://www.sumup.com/contact/",
+      );
+    }
   });
 
   it("serves documentation MCP metadata and operation Markdown", async () => {

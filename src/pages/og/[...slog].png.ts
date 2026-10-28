@@ -27,13 +27,6 @@ const staticPageMetadata = new Map<
     },
   ],
   [
-    "contact",
-    {
-      title: "Contact",
-      description: "Get in touch with the SumUp Developer support team.",
-    },
-  ],
-  [
     "help",
     {
       title: "FAQ",

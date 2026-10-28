@@ -42,7 +42,7 @@ Install the locked dependencies:
 npm ci
 ```
 
-No environment variables are required to install, build, or browse the documentation locally. Deployment-only integrations, including analytics and contact-form delivery, require secrets that are not stored in the repository.
+No environment variables are required to install, build, or browse the documentation locally. Deployment-only integrations, such as analytics, require secrets that are not stored in the repository.
 
 ### Start the Development Server
 

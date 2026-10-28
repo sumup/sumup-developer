@@ -10,7 +10,7 @@
     "directory": "./dist",
     "not_found_handling": "404-page",
     "html_handling": "force-trailing-slash",
-    "run_worker_first": ["/contact/submit", "/robots.txt", "/mcp", "/mcp/*"],
+    "run_worker_first": ["/robots.txt", "/mcp", "/mcp/*"],
   },
   "observability": {
     "enabled": true,
