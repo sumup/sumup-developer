@@ -1,69 +1,255 @@
 ---
-import { Help, History, Sparkles, Webspace } from "@sumup-oss/icons";
+import { SumUpLogo } from "@sumup-oss/circuit-ui";
+import { Email, Help, Info } from "@sumup-oss/icons";
+
+const groups = [
+  {
+    title: "Developers",
+    links: [
+      { label: "Get started", href: "/get-started/" },
+      { label: "Online payments", href: "/online-payments/" },
+      { label: "In-person payments", href: "/terminal-payments/" },
+      { label: "API reference", href: "/api/" },
+    ],
+  },
+  {
+    title: "Resources",
+    links: [
+      { label: "SDKs", href: "/tools/sdks/" },
+      { label: "Changelog", href: "/changelog/" },
+      { label: "AI tools", href: "/tools/llms/" },
+      { label: "llms.txt", href: "/llms.txt" },
+      { label: "SumUp Dashboard", href: "https://me.sumup.com" },
+      { label: "GitHub", href: "https://github.com/sumup/sumup-developer" },
+    ],
+  },
+  {
+    title: "Company",
+    links: [
+      { label: "About SumUp", href: "https://www.sumup.com/about/" },
+      { label: "Partners", href: "https://www.sumup.com/partner/" },
+      { label: "Careers", href: "https://www.sumup.com/careers/" },
+      { label: "Press", href: "https://www.sumup.com/press/" },
+    ],
+  },
+];
+
+const legalLinks = [
+  { label: "Legal notice", href: "https://www.sumup.com/legal/" },
+  {
+    label: "Privacy policy",
+    href: "https://www.sumup.com/privacy/",
+  },
+  { label: "Cookie policy", href: "https://www.sumup.com/cookies/" },
+  {
+    label: "Report a security issue",
+    href: "https://www.sumup.com/bug-bounty-program/",
+  },
+];
 ---
 
-<footer class="page-footer">
-  <div class="portal-footer-links">
-    <div>
-      <Webspace aria-hidden="true" />
-      <span>
-        Go to <a href="https://me.sumup.com">SumUp Dashboard</a>.
-      </span>
+<footer class="page-footer" data-pagefind-ignore>
+  <div class="footer-inner">
+    <div class="footer-identity">
+      <a
+        class="footer-brand"
+        href="https://www.sumup.com/"
+        aria-label="SumUp home"
+      >
+        <SumUpLogo size="s" variant="full" />
+      </a>
+      <nav class="footer-support" aria-label="Support">
+        <ul>
+          <li>
+            <a href="https://help.sumup.com/">
+              <Help aria-hidden="true" />
+              Help center
+            </a>
+          </li>
+          <li>
+            <a href="https://www.sumup.com/contact/">
+              <Email aria-hidden="true" />
+              Contact
+            </a>
+          </li>
+          <li>
+            <a href="https://status.sumup.com/">
+              <Info aria-hidden="true" />
+              Status
+            </a>
+          </li>
+        </ul>
+      </nav>
     </div>
-    <div>
-      <Help aria-hidden="true" />
-      <span>
-        Need help? <a href="https://www.sumup.com/contact/">Contact Support</a>.
-      </span>
-    </div>
-    <div>
-      <History aria-hidden="true" />
-      <span>
-        Check out our <a href="/changelog/">Changelog</a>.
-      </span>
-    </div>
-    <div>
-      <Sparkles aria-hidden="true" />
-      <span>
-        Using an LLM? See <a href="/llms.txt">llms.txt</a>.
-      </span>
+    <nav class="footer-groups" aria-label="Footer">
+      {groups.map((group) => (
+        <div>
+          <h2>{group.title}</h2>
+          <ul>
+            {group.links.map((link) => (
+              <li>
+                <a href={link.href}>{link.label}</a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </nav>
+    <div class="footer-bottom">
+      <p>© {new Date().getFullYear()} SumUp</p>
+      <nav aria-label="Legal">
+        <ul>
+          {legalLinks.map((link) => (
+            <li>
+              <a href={link.href}>{link.label}</a>
+            </li>
+          ))}
+          <li data-cookie-preferences hidden>
+            <button type="button">Cookie preferences</button>
+          </li>
+        </ul>
+      </nav>
     </div>
   </div>
 </footer>
 
+<script>
+  import "./cookie-preferences.client";
+</script>
+
 <style>
   .page-footer {
-    margin-top: var(--cui-spacings-exa);
-    padding-top: var(--cui-spacings-tera);
+    padding: var(--cui-spacings-tera) var(--cui-spacings-mega);
     border-top: 1px solid var(--cui-border-normal);
     font-size: var(--cui-body-s-font-size);
     line-height: var(--cui-body-s-line-height);
   }
 
-  .page-footer a {
+  .footer-inner {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--cui-spacings-giga);
+    max-width: 80rem;
+    margin: 0 auto;
+  }
+
+  .page-footer a,
+  .page-footer button {
     color: var(--cui-fg-subtle);
     text-decoration: none;
   }
 
-  .page-footer a:hover {
+  .page-footer a:hover,
+  .page-footer button:hover {
+    color: var(--cui-fg-normal);
     text-decoration: underline;
   }
 
-  .portal-footer-links {
-    display: flex;
-    flex-direction: column;
-    gap: var(--cui-spacings-bit);
-    margin-top: var(--cui-spacings-mega);
+  .page-footer button {
+    padding: 0;
+    border: 0;
+    background: none;
+    font: inherit;
+    cursor: pointer;
+    text-align: start;
   }
 
-  .portal-footer-links > div {
-    display: flex;
-    gap: var(--cui-spacings-byte);
+  .footer-identity {
+    display: grid;
+    align-content: start;
+    gap: var(--cui-spacings-giga);
+  }
+
+  .page-footer .footer-brand {
+    display: inline-flex;
+    align-self: start;
+    justify-self: start;
+    color: var(--cui-fg-normal);
+  }
+
+  .footer-brand :global(svg) {
+    height: 1.5rem;
+    width: auto;
+  }
+
+  .footer-support a {
+    display: inline-flex;
     align-items: center;
+    gap: var(--cui-spacings-byte);
   }
 
-  .portal-footer-links :global(svg) {
-    width: 1.25rem;
-    height: 1.25rem;
+  .footer-support :global(svg) {
+    width: 1rem;
+    height: 1rem;
+    flex: none;
+  }
+
+  .footer-groups {
+    display: grid;
+    grid-column: span 3;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--cui-spacings-giga);
+  }
+
+  .footer-groups h2 {
+    margin: 0 0 var(--cui-spacings-kilo);
+    font-size: inherit;
+    font-weight: var(--cui-font-weight-semibold);
+  }
+
+  .page-footer ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .footer-groups ul,
+  .footer-support ul {
+    display: grid;
+    gap: var(--cui-spacings-byte);
+  }
+
+  .footer-bottom {
+    display: flex;
+    grid-column: 1 / -1;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--cui-spacings-kilo);
+    padding-top: var(--cui-spacings-kilo);
+    border-top: 1px solid var(--cui-border-divider);
+    color: var(--cui-fg-subtle);
+    font-size: var(--cui-compact-s-font-size);
+    line-height: var(--cui-compact-s-line-height);
+  }
+
+  .footer-bottom p {
+    margin: 0;
+  }
+
+  .footer-bottom ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--cui-spacings-byte) var(--cui-spacings-kilo);
+  }
+
+  @media print {
+    .page-footer {
+      display: none;
+    }
+  }
+
+  @media (max-width: 42rem) {
+    .page-footer {
+      padding-inline: var(--cui-spacings-kilo);
+    }
+
+    .footer-inner {
+      grid-template-columns: 1fr;
+    }
+
+    .footer-groups {
+      grid-column: 1 / -1;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 10rem), 1fr));
+    }
   }
 </style>

@@ -118,8 +118,7 @@ body:has(#mobile-navigation[open], [data-search-dialog][open]) {
   .docs-sidebar,
   .docs-toc,
   .mobile-toc,
-  .page-actions,
-  .portal-footer-links {
+  .page-actions {
     display: none !important;
   }
 }

@@ -2,6 +2,7 @@
 import type { BasePageProps } from "@cloudflare/nimbus-docs/types";
 
 import Header from "@components/nimbus/Header.astro";
+import PageFooter from "@components/nimbus/PageFooter.astro";
 
 import BaseLayout from "./BaseLayout.astro";
 
@@ -53,6 +54,7 @@ const socialImage =
       <slot />
     </div>
   </main>
+  <PageFooter />
 </BaseLayout>
 
 <style>

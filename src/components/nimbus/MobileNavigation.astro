@@ -1,16 +1,7 @@
 ---
 import type { SidebarItem } from "@cloudflare/nimbus-docs/types";
 import { SumUpLogo } from "@sumup-oss/circuit-ui";
-import {
-  ArrowSlanted,
-  Close,
-  Email,
-  Help,
-  Info,
-  Moon,
-  Search,
-  Sun,
-} from "@sumup-oss/icons";
+import { ArrowSlanted, Close, Moon, Search, Sun } from "@sumup-oss/icons";
 import Sidebar from "./Sidebar.astro";
 
 interface Props {
@@ -80,32 +71,6 @@ const {
       )}
     </div>
     <div class="menu-footer">
-      <nav aria-label="Support">
-        <a
-          href="https://help.sumup.com/"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Help size="16" aria-hidden="true" />
-          Help<span class="visually-hidden"> (opens in a new tab)</span>
-        </a>
-        <a
-          href="https://status.sumup.com/"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Info size="16" aria-hidden="true" />
-          Status<span class="visually-hidden"> (opens in a new tab)</span>
-        </a>
-        <a
-          href="https://www.sumup.com/contact/"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Email aria-hidden="true" />
-          Contact<span class="visually-hidden"> (opens in a new tab)</span>
-        </a>
-      </nav>
       <button
         type="button"
         class="icon-button theme-toggle"
@@ -278,15 +243,7 @@ const {
     height: var(--cui-icon-sizes-m);
   }
 
-  .menu-footer nav :global(svg) {
-    display: block;
-    flex: none;
-    width: var(--cui-icon-sizes-s);
-    height: var(--cui-icon-sizes-s);
-  }
-
-  .icon-button:hover,
-  .menu-footer nav a:hover {
+  .icon-button:hover {
     background: var(--cui-bg-normal-hovered);
   }
 
@@ -367,8 +324,7 @@ const {
   }
 
   .menu-footer {
-    display: grid;
-    grid-template-columns: 1fr auto;
+    display: flex;
     align-items: center;
     gap: var(--cui-spacings-byte);
     padding: var(--cui-spacings-byte) var(--cui-spacings-mega);
@@ -376,27 +332,9 @@ const {
     border-top: 1px solid var(--cui-border-divider);
   }
 
-  .menu-footer nav {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--cui-spacings-byte);
-  }
-
-  .menu-footer nav a {
-    display: inline-flex;
-    min-height: 2.75rem;
-    gap: var(--cui-spacings-byte);
-    align-items: center;
-    padding-inline: var(--cui-spacings-byte);
-    color: var(--cui-fg-subtle);
-    border-radius: var(--cui-border-radius-byte);
-    font-size: var(--cui-body-s-font-size);
-    text-decoration: none;
-  }
-
   .dashboard-link {
     display: flex;
-    grid-column: 1 / -1;
+    flex: 1;
     min-height: 2.75rem;
     align-items: center;
     justify-content: center;
