@@ -88,16 +88,18 @@ it("retains callouts, access requirements, beta status and object links in agent
   for (const operation of operations) {
     const permissions = operation["x-permissions"];
     if (!Array.isArray(permissions) || permissions.length === 0) continue;
-    const markdown = renderApiPageMarkdown(
-      getApiPageProps(model, String(operation.operationId)),
-    );
+    const page = getApiPageProps(model, String(operation.operationId));
+    const markdown = renderApiPageMarkdown(page);
     expect(markdown).toContain("Required permissions");
     for (const permission of permissions) {
-      expect(markdown).toContain(
-        typeof permission === "string"
-          ? permission
-          : JSON.stringify(permission),
-      );
+      const relation =
+        typeof permission === "string" ? permission : permission.relation;
+      expect(markdown).toContain(`- \`${relation}\``);
+      expect(page.descriptionHtml).toContain(`<code>${relation}</code>`);
+      if (typeof permission !== "string") {
+        expect(markdown).not.toContain("object_type");
+        expect(page.descriptionHtml).not.toContain("object_type");
+      }
     }
   }
   const members = renderApiPageMarkdown(getApiPageProps(model, "tags.Members"));

@@ -9,7 +9,7 @@ type Operation = {
   description?: string;
   "x-codegen": { method_name: string };
   "x-scopes"?: string[];
-  "x-permissions"?: unknown[];
+  "x-permissions"?: (string | { relation: string })[];
   "x-deprecation-notice"?: string;
   "x-codeSamples"?: { lang: string; label: string; source: string }[];
 };
@@ -122,7 +122,7 @@ export function createApiReference() {
       }
       if (operation["x-permissions"]?.length) {
         notes.push(
-          `**Required permissions:**\n\n${operation["x-permissions"].map((permission) => `- \`${typeof permission === "string" ? permission : JSON.stringify(permission)}\``).join("\n")}`,
+          `**Required permissions:**\n\n${operation["x-permissions"].map((permission) => `- \`${typeof permission === "string" ? permission : permission.relation}\``).join("\n")}`,
         );
       }
       operation.description = notes.join("\n\n");
