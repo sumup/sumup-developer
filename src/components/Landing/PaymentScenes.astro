@@ -1,21 +1,51 @@
-<img
-  class="payment-scenes"
-  src="/img/landing/payment-scenes.png"
-  srcset="/img/landing/payment-scenes.png 480w, /img/landing/payment-scenes@2x.png 960w, /img/landing/payment-scenes@3x.png 1599w"
-  sizes="min(calc(100vw - 4rem), 24rem)"
-  alt=""
-  width="480"
-  height="340"
-  fetchpriority="high"
-  decoding="async"
-/>
+---
+const themes = ["light", "dark"];
+const sizes = "min(calc(100vw - 1.5rem), 28rem)";
+const srcSet = (theme: string, format: string) =>
+  [1, 2, 3]
+    .map(
+      (density) =>
+        `/img/landing/hero-${theme}${density > 1 ? `@${density}x` : ""}.${format} ${448 * density}w`,
+    )
+    .join(", ");
+---
+
+{themes.map((theme) => (
+  <picture class={`payment-scenes-${theme}`}>
+    <source type="image/avif" srcset={srcSet(theme, "avif")} sizes={sizes} />
+    <source type="image/webp" srcset={srcSet(theme, "webp")} sizes={sizes} />
+    <img
+      src={`/img/landing/hero-${theme}.png`}
+      srcset={srcSet(theme, "png")}
+      sizes={sizes}
+      width="448"
+      height="317"
+      class="payment-scenes"
+      alt=""
+      fetchpriority="high"
+      loading="eager"
+      decoding="async"
+    />
+  </picture>
+))}
 
 <style>
+  picture {
+    width: 100%;
+  }
+
   .payment-scenes {
-    position: relative;
-    z-index: 1;
     display: block;
     width: 100%;
     height: auto;
+  }
+
+  .payment-scenes-dark,
+  :global(:root[data-color-scheme="dark"]) .payment-scenes-light {
+    display: none;
+  }
+
+  :global(:root[data-color-scheme="dark"]) .payment-scenes-dark {
+    display: block;
   }
 </style>

@@ -56,15 +56,6 @@ const sidebar = await getSidebar("/", {
         </div>
       </div>
       <div class="hero-visual" aria-hidden="true">
-        <img
-          class="hero-sky"
-          src="/img/landing/sumup-sky-v01.webp"
-          alt=""
-          width="960"
-          height="640"
-          fetchpriority="high"
-          decoding="async"
-        />
         <PaymentScenes />
       </div>
     </header>
@@ -95,25 +86,11 @@ const sidebar = await getSidebar("/", {
   }
 
   .hero-visual {
-    position: relative;
-    isolation: isolate;
     display: flex;
     align-items: center;
     width: 100%;
     max-width: 28rem;
-    aspect-ratio: 1;
-    padding: clamp(1rem, 2.5vw, 2rem);
     justify-self: end;
-    overflow: hidden;
-    border-radius: var(--cui-border-radius-mega);
-  }
-
-  .hero-sky {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
   }
 
   .hero-actions {
