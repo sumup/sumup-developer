@@ -3,7 +3,7 @@ import type { HTMLAttributes } from "astro/types";
 
 interface Props extends HTMLAttributes<"span"> {
   text: string;
-  variant?: "default" | "tip" | "caution" | "danger";
+  variant?: "default" | "tip" | "caution" | "danger" | "promo";
 }
 
 const {
@@ -42,5 +42,10 @@ const {
   .danger {
     color: var(--cui-fg-danger);
     background: var(--cui-bg-danger);
+  }
+
+  .promo {
+    color: var(--cui-fg-promo);
+    background: var(--cui-bg-promo);
   }
 </style>

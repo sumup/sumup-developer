@@ -18,10 +18,7 @@ SumUp exposes two OAuth 2.0 endpoints:
 - `https://api.sumup.com/authorize`
 - `https://api.sumup.com/token`
 
-SumUp supports two OAuth 2.0 flows:
-
-- The [authorization code flow](#authorization-code-flow) when an end user grants your application access.
-- The [client credentials flow](#client-credentials-flow) when your application authenticates as itself.
+Use the [authorization code flow](#authorization-code-flow) when an end user grants your application access.
 
 <Callout type="note" title="Note">
 SumUp strongly recommends that you rely on [reputable existing libraries](https://oauth.net/code/) when implementing OAuth 2.0 authorization.
@@ -29,7 +26,7 @@ SumUp strongly recommends that you rely on [reputable existing libraries](https:
 
 ## Authorization Flows
 
-Choose the flow that matches how your application obtains access while keeping scope verification requirements in mind.
+Use the authorization code flow to obtain access while keeping scope verification requirements in mind.
 
 ## Authorization Code Flow
 
@@ -63,7 +60,7 @@ When building this flow:
 Example authorization request:
 
 ```http
-GET /authorize?response_type=code&client_id={CLIENT_ID}&redirect_uri={REDIRECT_URI}&scope=payments%20customers%20payment_instruments&state={STATE} HTTP/1.1
+GET /authorize?response_type=code&client_id={CLIENT_ID}&redirect_uri={REDIRECT_URI}&scope=payments%20payment_instruments&state={STATE} HTTP/1.1
 Host: api.sumup.com
 ```
 
@@ -71,16 +68,15 @@ Host: api.sumup.com
 
 After the user is redirected back to your application, read the `code` and `state` query parameters from the callback URL. If the `state` matches the value your application originally sent, exchange the authorization code at `https://api.sumup.com/token`:
 
-```http
-POST /token HTTP/1.1
-Host: api.sumup.com
-Content-Type: application/x-www-form-urlencoded
+Set `CLIENT_ID`, `CLIENT_SECRET`, and `REDIRECT_URI` from your application's configuration, and set `AUTHORIZATION_CODE` to the code received in the callback. Run the request from your backend:
 
-grant_type=authorization_code
-&code={AUTHORIZATION_CODE}
-&redirect_uri={REDIRECT_URI}
-&client_id={CLIENT_ID}
-&client_secret={CLIENT_SECRET}
+```bash
+curl https://api.sumup.com/token \
+  --data-urlencode "grant_type=authorization_code" \
+  --data-urlencode "code=$AUTHORIZATION_CODE" \
+  --data-urlencode "redirect_uri=$REDIRECT_URI" \
+  --data-urlencode "client_id=$CLIENT_ID" \
+  --data-urlencode "client_secret=$CLIENT_SECRET"
 ```
 
 The response contains an access token, refresh token, and metadata such as token lifetime and granted scopes.
@@ -91,7 +87,7 @@ The response contains an access token, refresh token, and metadata such as token
   "token_type": "Bearer",
   "expires_in": 3599,
   "refresh_token": "{REFRESH_TOKEN}",
-  "scope": "payments customers payment_instruments"
+  "scope": "payments payment_instruments"
 }
 ```
 
@@ -99,15 +95,14 @@ The response contains an access token, refresh token, and metadata such as token
 
 Access tokens are short-lived. Use the `expires_in` value to track when the current access token is expected to expire. You can refresh shortly before expiry, or you can wait until an API request fails because the access token is no longer valid. In both cases, request a new token from `https://api.sumup.com/token` using the OAuth 2.0 refresh token grant:
 
-```http
-POST /token HTTP/1.1
-Host: api.sumup.com
-Content-Type: application/x-www-form-urlencoded
+Set `REFRESH_TOKEN` to the latest refresh token stored for this connection. Use the same application's `CLIENT_ID` and `CLIENT_SECRET`:
 
-grant_type=refresh_token
-&refresh_token={REFRESH_TOKEN}
-&client_id={CLIENT_ID}
-&client_secret={CLIENT_SECRET}
+```bash
+curl https://api.sumup.com/token \
+  --data-urlencode "grant_type=refresh_token" \
+  --data-urlencode "refresh_token=$REFRESH_TOKEN" \
+  --data-urlencode "client_id=$CLIENT_ID" \
+  --data-urlencode "client_secret=$CLIENT_SECRET"
 ```
 
 Your integration should still handle cases where an API request fails because the access token became invalid earlier than expected, for example after revocation or other account changes.
@@ -130,41 +125,147 @@ Handle refresh tokens according to standard OAuth 2.0 practices:
 - If refresh fails with an OAuth error such as `invalid_grant`, treat the refresh token as no longer usable and restart the authorization code flow.
 - When refresh fails, do not keep retrying with the same invalid refresh token. Ask the user to authorize again.
 
+## Handle OAuth errors
+
+The following codes follow [RFC 6749 authorization errors](https://www.rfc-editor.org/rfc/rfc6749.html#section-4.1.2.1) and [token errors](https://www.rfc-editor.org/rfc/rfc6749.html#section-5.2).
+
+| Error                                                  | Meaning and recovery                                                                                                                                  |
+| ------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `access_denied`                                        | Authorization was denied. Stop; let the user choose whether to reconnect.                                                                             |
+| `invalid_request`                                      | Malformed request. Check required fields and encoding.                                                                                                |
+| `invalid_client`                                       | Client authentication failed. Check credentials and authentication method.                                                                            |
+| `invalid_grant`                                        | Invalid, expired, revoked, or reused code or refresh token, or a client/redirect mismatch. Check configuration, then restart authorization if needed. |
+| `invalid_scope`                                        | Invalid or excessive scopes. Check spelling, application configuration, and granted permissions.                                                      |
+| `unauthorized_client`                                  | Client cannot use this grant. Check application configuration.                                                                                        |
+| `unsupported_response_type` / `unsupported_grant_type` | Unsupported flow. Check `response_type` or `grant_type`.                                                                                              |
+| `server_error` / `temporarily_unavailable`             | Authorization service failure. Offer a later retry.                                                                                                   |
+
+For callback errors, verify `state` before handling `error`. Invalid client IDs or redirect URIs can prevent a callback. Token errors use JSON; handle `error`, not `error_description` text.
+
+### API authentication failures
+
+[RFC 6750](https://www.rfc-editor.org/rfc/rfc6750.html#section-3.1) defines bearer-token failures in the `WWW-Authenticate` header. Check the response details before deciding how to recover.
+
+| Error                | Meaning and recovery                                                                                                                                             |
+| -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `invalid_request`    | Malformed authentication. Send the access token once, using `Authorization: Bearer`.                                                                             |
+| `invalid_token`      | Expired, revoked, or invalid access token. Try refreshing if the connection is still active. If refresh fails with `invalid_grant`, request authorization again. |
+| `insufficient_scope` | Token lacks permission. Request the necessary scopes through authorization; refreshing alone cannot add them.                                                    |
+
+Check the merchant user's permissions as well as the token's scopes. Do not automatically retry payment operations after an authentication failure without checking whether the operation already completed.
+
+## Disconnect an integration
+
+Provide a disconnect action in your application. When a merchant disconnects:
+
+1. Stop scheduled API calls and token refreshes for that connection.
+2. Delete its stored access and refresh tokens from your active credential stores.
+3. Show the connection as disconnected. Resume access only after the merchant completes authorization again.
+
+Deleting your local tokens does not revoke the authorization or invalidate copies held elsewhere. [OAuth token revocation](https://www.rfc-editor.org/rfc/rfc7009.html) is a separate server-side operation. For help revoking an application's access, [contact SumUp support](https://www.sumup.com/contact/).
+
+If authorization is revoked outside your application, stop using the affected credentials when you detect the failure and ask the merchant to reconnect. An expired access token alone does not mean the merchant disconnected: first use the refresh flow when a valid refresh token is available.
+
 ## Authorization Scopes
 
-Scopes restrict what your application may do on behalf of the merchant. Request only the scopes you need. When you omit scopes, SumUp grants the defaults listed below. To obtain additional scopes later, repeat the authorization code flow.
+Scopes restrict what your application may do on behalf of the merchant. Request only the scopes your integration needs, separated by spaces in the `scope` parameter. The scopes must be enabled for your OAuth application before you request them. To obtain additional permissions, update your application's scopes and repeat the authorization code flow so the user can grant access.
 
-| Scope name              | Default | Access Level | Description                                                                               |
-| ----------------------- | ------- | ------------ | ----------------------------------------------------------------------------------------- |
-| `transactions.history`  | yes     | merchant     | View transactions and transaction history for the merchant user.                          |
-| `user.app-settings`     | yes     | merchant     | View and modify SumUp mobile app settings for the merchant user.                          |
-| `user.profile_readonly` | yes     | merchant     | View profile details of the merchant user.                                                |
-| `user.profile`          | no      | merchant     | Modify profile details of the merchant user.                                              |
-| `user.subaccounts`      | no      | merchant     | View and modify sub-account profiles for the merchant user.                               |
-| `user.payout-settings`  | no      | merchant     | View and modify payout settings for the merchant user.                                    |
-| `products`              | no      | merchant     | View and modify products, shelves, prices, and VAT rates in the merchant's product store. |
-| `payments`\*            | no      | feature      | Create and process payment checkouts. Requires manual verification by SumUp.              |
-| `payment_instruments`\* | no      | feature      | Save customers and tokenize their payment cards. Requires manual verification by SumUp.   |
+Always check the granted `scope` in the token response. When `scope` is omitted, legacy applications can receive all their configured scopes; this is not a universal default. Requesting a scope that is not enabled can fail with `invalid_scope`. Send an explicit scope list rather than relying on defaults.
 
-<Callout type="caution" title="Caution">
-*SumUp manually verifies requests for the following scopes:
+{/* Scope sources: openapi.yaml operation x-scopes; Identity apps/authland/scopes/{scopes.json,scopes.go} and internal/api/oauth2/scope.go; Portier Backend internal/domain/clients/clients.go, internal/repository/identity/oauth.go, internal/domain/oauth2/compat/oauth/oauth.go, and internal/api/public/apps/clients.go. Check the registry and endpoint requirements before changing replacements. */}
 
-- `payments` – required to create and process payments.
-- `payment_instruments` – required to store customer data and tokenize cards.
+### Existing scopes
 
-[Contact us](https://www.sumup.com/contact/) to request those scopes for your application.
+Use these scopes for standard integrations. The authorization examples above use `payments` and `payment_instruments`.
+
+| Scope                   | Access                                                                                                                                                                                                                      |
+| ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `transactions.history`  | Retrieve individual transactions, search transaction history, and view receipts. Refunding transactions requires a separate payment permission.                                                                             |
+| `user.app-settings`     | Read and update settings used by the SumUp mobile app. This does not grant access to payments or transaction history.                                                                                                       |
+| `user.profile_readonly` | Read merchant profile details, the user's merchant memberships, and payout lists. This does not allow profile or payout-setting changes.                                                                                    |
+| `user.profile`          | Read and update profile details. Also allows merchant profile, membership, and payout lookups; it does not grant permission to process payments.                                                                            |
+| `user.subaccounts`      | List, invite, update, and remove merchant members, and view and manage merchant roles and their permissions.                                                                                                                |
+| `user.payout-settings`  | Read and update payout settings. This concerns payout configuration rather than transaction history or payment processing.                                                                                                  |
+| `products`              | View and manage products, shelves, prices, and VAT rates in the merchant's product store.                                                                                                                                   |
+| `payments`              | Create, retrieve, process, update, and deactivate online checkouts; refund transactions; and start supported reader checkouts. Customer management requires a separate permission. Requires approval for live applications. |
+| `payment_instruments`   | Create and update customer records, and retrieve and deactivate their saved payment instruments. Use with payment permissions when saving a card through a checkout. Requires approval for live applications.               |
+| `terminals.read`        | Compatibility name for listing and retrieving readers on existing grants. Cannot be newly enabled for an OAuth application; use `readers.read` for new reader access.                                                       |
+| `terminals.write`       | Compatibility name for pairing, updating, and removing readers on existing grants. Cannot be newly enabled for an OAuth application; use `readers.write` for new reader access.                                             |
+| `accounting.read`       | Read accounting data.                                                                                                                                                                                                       |
+| `accounting.write`      | Manage accounting data.                                                                                                                                                                                                     |
+| `invoices.read`         | Read invoices.                                                                                                                                                                                                              |
+| `invoices.write`        | Manage invoices.                                                                                                                                                                                                            |
+| `email`                 | Access OpenID Connect email claims.                                                                                                                                                                                         |
+| `profile`               | Access OpenID Connect profile claims.                                                                                                                                                                                       |
+| `checkout_fees`         | Access checkout fees. Requires approval for live applications.                                                                                                                                                              |
+
+<Callout type="caution" title="Scope approval">
+
+The existing `payments`, `payment_instruments`, and `checkout_fees` scopes require approval for live applications. [Contact us](https://www.sumup.com/contact/) if your application needs one of these scopes and it is not already enabled. Sandbox applications can enable these scopes without manual approval.
 
 </Callout>
 
-## Client Credentials Flow
+Scopes do not replace the merchant user's permissions. Check the [API reference](/api/) for each endpoint's scope and permission requirements.
 
-The client credentials flow follows [RFC 6749 Client Credentials Grant](https://datatracker.ietf.org/doc/html/rfc6749#section-4.4). It issues an access token without involving a merchant user. Because no user is associated with the token, the flow does not allow access to merchant-specific data such as transactions or stored customers. You can still process payments for merchants linked to your application.
+### New scopes
 
-Request an access token from `https://api.sumup.com/token` using the client credentials grant parameters. This flow does not return a refresh token.
+<Badge text="Experimental" variant="promo" />
+
+The following experimental scopes provide more specific permissions and are included as a reference for new functionality. Continue using the existing scopes above for standard integrations. The new scopes do not require manual approval.
+
+Read and write permissions are separate: request both when your application needs to read and modify a resource. For example, creating an online checkout and checking its status uses `checkouts.write checkouts.read`. Reader checkouts use `readers.write`.
+
+| Scope               | Access                                                                                                                                                                    |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `checkouts.read`    | List online checkouts and retrieve their details and current payment status. This does not allow creating or processing a checkout.                                       |
+| `checkouts.write`   | Create online checkouts, submit payments for processing, update checkout details, and deactivate checkouts. Request `checkouts.read` separately to retrieve their status. |
+| `customers.read`    | Retrieve customer records and list their saved payment instruments. This does not allow changing customers or deactivating instruments.                                   |
+| `customers.write`   | Create and update customer records, and deactivate saved payment instruments. Saving a card through a checkout also needs checkout permissions.                           |
+| `members.read`      | List merchant members and retrieve their membership details, assigned roles, and permissions.                                                                             |
+| `members.write`     | Invite or create merchant members, update their membership and assigned roles, and remove members from the merchant account.                                              |
+| `payouts.read`      | List merchant payouts and their details. This does not grant access to change payout settings or refund transactions.                                                     |
+| `readers.read`      | List paired readers, retrieve reader details, status, and settings, and check the status of reader checkouts. This does not allow starting payments.                      |
+| `readers.write`     | Pair, rename, and remove readers; update reader settings; and start or terminate reader checkouts. Request `readers.read` separately for status and settings lookups.     |
+| `receipts.read`     | Retrieve receipt information for a transaction. This does not grant access to transaction history or refunds.                                                             |
+| `refunds.write`     | Issue refunds for transactions. Request `transactions.read` separately to look up transactions and their history.                                                         |
+| `roles.read`        | List merchant roles and retrieve individual role definitions, including their assigned permissions.                                                                       |
+| `roles.write`       | Create merchant roles, change their definitions and permissions, and delete roles. Assigning roles to members requires a member-management permission.                    |
+| `transactions.read` | Retrieve individual transactions and search transaction history. This does not allow issuing refunds; request `refunds.write` separately.                                 |
+
+{/* Keep these rows with the API scopes table until their endpoint documentation is available. */}
+{/* | `api_keys.read` | Read API keys. | */}
+{/* | `api_keys.write` | Manage API keys. | */}
+{/* | `merchants.read` | Read merchant data. | */}
+{/* | `merchants.write` | Manage merchant data. | */}
+{/* | `sales.read` | Read sales. | */}
+{/* | `subscriptions.read` | Read subscriptions. | */}
+{/* | `subscriptions.write` | Manage subscriptions. | */}
+
+**Merchant-profile compatibility:** The published merchant, merchant-person, and membership lookup endpoints still list `user.profile` or `user.profile_readonly`. Keep the legacy scope required by those endpoints until they list a replacement. Do not assume that `merchants.read` or `merchants.write` can replace it on every endpoint.
+
+#### Offline access
+
+`offline_access` requests a refresh token so your application can obtain new access tokens after the user leaves. It does not grant access to merchant resources; request the API scopes you need as well. Availability depends on your application's configuration. Existing authorization code integrations can receive refresh tokens without requesting this scope.
+
+#### Scope equivalents
+
+This table relates the existing scopes to the experimental scopes. The names are not automatic aliases. Changing requested scopes requires application configuration and a new user authorization, and the endpoint must support the new scope. Existing scopes without an equivalent in this table keep their existing names.
+
+| Existing scope          | Experimental equivalent                                                                                                                                                   |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `payments`              | `checkouts.read` and `checkouts.write` for online checkouts; `refunds.write` for refunds; `readers.write` for reader checkouts.                                           |
+| `payment_instruments`   | `customers.read` and `customers.write` for customer and saved payment instrument endpoints. Checkout scopes are separate for card tokenization through a checkout.        |
+| `transactions.history`  | `transactions.read` for transactions and history; `receipts.read` for receipts.                                                                                           |
+| `user.profile_readonly` | `merchants.read` where supported; `payouts.read` for payout lists. Merchant-profile and membership lookups still require an existing profile scope.                       |
+| `user.profile`          | `merchants.read` and `merchants.write` where supported; `payouts.read` for payout lists. Merchant-profile and membership lookups still require an existing profile scope. |
+| `user.subaccounts`      | `members.read` and `members.write` for merchant members; `roles.read` and `roles.write` for merchant roles.                                                               |
+| `user.payout-settings`  | No direct equivalent for changing payout settings. `payouts.read` only lists payouts.                                                                                     |
+| `terminals.read`        | `readers.read` for reader lookup and listing.                                                                                                                             |
+| `terminals.write`       | `readers.write` for pairing, updating, and removing readers.                                                                                                              |
 
 ## Register an OAuth Application
 
-To integrate an external application with SumUp, register an OAuth application and generate client credentials. These credentials let you complete the OAuth flows in this guide and obtain access tokens for protected SumUp resources.
+To integrate an external application with SumUp, register an OAuth application and generate client credentials. These credentials let you complete the authorization code flow and obtain access tokens for protected SumUp resources.
 
 ### Before You Begin
 
@@ -238,7 +339,7 @@ To integrate an external application with SumUp, register an OAuth application a
 
 ### Result
 
-You have registered at least one OAuth application and have downloaded its client credentials. Proceed with the [OAuth 2.0 flows](#authorization-flows) to obtain access tokens. Use access tokens from your server to create and manage checkouts, then use a supported [checkout integration](/online-payments/checkouts/) to collect payment details.
+You have registered at least one OAuth application and have downloaded its client credentials. Proceed with the [authorization code flow](#authorization-code-flow) to obtain access tokens. Use access tokens from your server to create and manage checkouts, then use a supported [checkout integration](/online-payments/checkouts/) to collect payment details.
 
 ## What's Next?
 
