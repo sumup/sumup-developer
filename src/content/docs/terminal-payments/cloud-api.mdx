@@ -346,13 +346,13 @@ Read the [Terminate Checkout API endpoint documentation](/api/readers/terminate-
 
 ### Reader Settings (Menu Lock)
 
-For unattended Solo deployments, you can require a 4-digit passcode before anyone can open the reader menu. Configure menu lock remotely with the reader settings endpoints.
+These Cloud API endpoints let you require a 4-digit passcode before anyone can open the menu on a paired Solo reader. Use the merchant code and reader ID from [pairing](#pairing-solo-reader-via-cloud-api). Authenticate with the same Bearer API key as the other reader requests on this page.
 
-Menu lock is available only on Solo readers running version 3.3.44 that are paired via the Cloud API. It is not supported on Solo Lite.
+Menu lock applies to Solo readers running firmware **3.3.44.0 or higher**. Solo Lite and other reader models are rejected with `422` and error type `UNSUPPORTED_DEVICE_MODEL`. A Solo reader on an older firmware version, or a reader whose firmware status is unavailable, is rejected with `422` and error type `UNSUPPORTED_FIRMWARE_VERSION`.
 
 #### Update Reader Settings
 
-Send a `PATCH` request to enable or disable menu lock and set the passcode. The request is applied on the reader only after the device acknowledges it.
+Send a `PATCH` request to enable or disable menu lock and set the passcode. The reader must be online. A `200` response means the reader applied the update.
 
 The SDK examples use an authenticated client and the merchant code and reader ID from pairing. In Go, import `github.com/sumup/sumup-go/secret` for the passcode value.
 
@@ -460,11 +460,29 @@ The SDK examples use an authenticated client and the merchant code and reader ID
   </TabItem>
 </Tabs>
 
-`PATCH` is partial: send only the fields you want to change. For example, you can update `passcode` without sending `enabled`, or set `enabled` to `false` to deactivate menu lock while keeping the stored passcode.
+Example response:
+
+```json
+{
+  "data": {
+    "status": "applied",
+    "menu_lock": {
+      "enabled": true,
+      "passcode": "1234"
+    }
+  }
+}
+```
+
+The `menu_lock` object in the response contains only the fields you sent.
+
+`menu_lock` is required and must include at least one of `enabled` or `passcode`. Omitted fields keep their current values. `passcode` is a 4-digit numeric string, for example `"1234"`. When you enable menu lock on a reader that does not already have a passcode, include `passcode` in that same request.
+
+If the reader is offline, the update is rejected with `422` and error type `READER_OFFLINE`. If the reader does not acknowledge the update in time, the response is `504` with error type `READER_ACTION_TIMEOUT`. If the reader cannot apply the update, the response is `422` with error type `READER_ACTION_FAILED`.
 
 #### Get Reader Settings
 
-Retrieve the current menu lock settings for a reader.
+Retrieve the menu lock settings for a reader.
 
 <Tabs syncKey="backend_lang">
   <TabItem label="cURL" icon="seti:powershell">
@@ -524,14 +542,11 @@ Example response:
 }
 ```
 
-When the reader is online, the response reflects the settings reported by the device. When the reader is offline, the response returns the last stored menu lock configuration.
+When the reader is online, the response is the settings reported by the device. When the reader is offline, the response is the last saved menu lock, which can differ from the configuration currently on the device. If the reader is offline and no settings have been saved, the response is `404`.
 
-Important notes:
+The same timeout and failure errors as [Update Reader Settings](#update-reader-settings) apply when the reader is online but cannot return its settings.
 
-- Menu lock requires Solo version 3.3.44.
-- The target device must be online for `PATCH`, otherwise the update is rejected. A successful response means the reader applied the settings.
-- `passcode` must be a 4-digit numeric string (for example `"1234"`). When enabling menu lock on a reader that does not already have a passcode, include `passcode` in the same request.
-- On the Solo reader, when menu lock is enabled, opening the menu prompts for the passcode on the lock screen. Entering the correct code unlocks the menu; an incorrect code shows an error and allows retry.
+On the Solo reader, when menu lock is enabled, opening the menu prompts for the passcode on the lock screen. Entering the correct code unlocks the menu. An incorrect code shows an error and allows another attempt.
 
 ### List Connected Readers
 
