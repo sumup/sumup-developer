@@ -2,6 +2,10 @@
 /contact                                                                    https://www.sumup.com/contact/ 301
 /contact/                                                                   https://www.sumup.com/contact/ 301
 
+# Help center
+/help                                                                       https://help.sumup.com/ 301
+/help/                                                                      https://help.sumup.com/ 301
+
 # Consolidated documentation homepage
 /docs                                                                       / 301
 /docs/                                                                      / 301
@@ -267,6 +271,7 @@
 /api-preview /api/ 301
 /api-preview/ /api/ 301
 
+/help/* https://help.sumup.com/ 301
 /api-preview/* /api/:splat 301
 
 # Catch-all for old docs structure

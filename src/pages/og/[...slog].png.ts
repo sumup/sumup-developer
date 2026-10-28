@@ -27,14 +27,6 @@ const staticPageMetadata = new Map<
     },
   ],
   [
-    "help",
-    {
-      title: "FAQ",
-      description:
-        "Frequently asked questions about SumUp developer products and integrations.",
-    },
-  ],
-  [
     "changelog",
     {
       title: "Changelog",

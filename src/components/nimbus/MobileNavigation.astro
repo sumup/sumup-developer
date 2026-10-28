@@ -4,6 +4,7 @@ import { SumUpLogo } from "@sumup-oss/circuit-ui";
 import {
   ArrowSlanted,
   Close,
+  Email,
   Help,
   Info,
   Moon,
@@ -80,9 +81,13 @@ const {
     </div>
     <div class="menu-footer">
       <nav aria-label="Support">
-        <a href="/help/">
+        <a
+          href="https://help.sumup.com/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           <Help size="16" aria-hidden="true" />
-          Help
+          Help<span class="visually-hidden"> (opens in a new tab)</span>
         </a>
         <a
           href="https://status.sumup.com/"
@@ -91,6 +96,14 @@ const {
         >
           <Info size="16" aria-hidden="true" />
           Status<span class="visually-hidden"> (opens in a new tab)</span>
+        </a>
+        <a
+          href="https://www.sumup.com/contact/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <Email aria-hidden="true" />
+          Contact<span class="visually-hidden"> (opens in a new tab)</span>
         </a>
       </nav>
       <button
@@ -365,6 +378,7 @@ const {
 
   .menu-footer nav {
     display: flex;
+    flex-wrap: wrap;
     gap: var(--cui-spacings-byte);
   }
 

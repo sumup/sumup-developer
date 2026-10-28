@@ -5,7 +5,7 @@ import {
   sidebarHash,
 } from "@cloudflare/nimbus-docs/runtime";
 import type { DocsPageProps } from "@cloudflare/nimbus-docs/types";
-import { ArrowSlanted, Help, Info } from "@sumup-oss/icons";
+import { ArrowSlanted, Email, Help, Info } from "@sumup-oss/icons";
 
 import Header from "@components/nimbus/Header.astro";
 import PageActions from "@components/nimbus/PageActions.astro";
@@ -111,9 +111,13 @@ const toc = headings === false ? [] : headings;
             />
           </nav>
           <div class="sidebar-footer">
-            <a href="/help/">
+            <a
+              href="https://help.sumup.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <Help aria-hidden="true" />
-              Help
+              Help<span class="visually-hidden"> (opens in a new tab)</span>
             </a>
             <a
               href="https://status.sumup.com/"
@@ -121,7 +125,15 @@ const toc = headings === false ? [] : headings;
               rel="noopener noreferrer"
             >
               <Info aria-hidden="true" />
-              Status
+              Status<span class="visually-hidden"> (opens in a new tab)</span>
+            </a>
+            <a
+              href="https://www.sumup.com/contact/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Email aria-hidden="true" />
+              Contact<span class="visually-hidden"> (opens in a new tab)</span>
             </a>
           </div>
         </aside>

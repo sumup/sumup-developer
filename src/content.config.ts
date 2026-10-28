@@ -3,13 +3,6 @@ import { defineCollection } from "astro:content";
 import { glob } from "astro/loaders";
 import { z } from "astro/zod";
 
-const help = defineCollection({
-  loader: glob({ pattern: "**/*.mdx", base: "./src/content/help" }),
-  schema: z.object({
-    title: z.string(),
-  }),
-});
-
 const changelog = defineCollection({
   loader: glob({
     pattern: "**/*.mdx",
@@ -41,7 +34,6 @@ export const collections = {
       },
     }),
   ),
-  // These collections are rendered by custom portal routes.
-  _help: help,
+  // This collection is rendered by custom portal routes.
   _changelog: changelog,
 };

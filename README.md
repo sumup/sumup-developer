@@ -72,7 +72,7 @@ Run the checks that match your change before opening a pull request:
 | `npm run validate`      | Run checks, tests, a build, and Worker smoke tests      |
 
 All authored website content under `src/content/` uses MDX, including changelog
-and help entries. Repository documents such as this README and imported skills
+entries. Repository documents such as this README and imported skills
 remain Markdown.
 
 Prettier handles source formatting, including Markdown tables and list spacing.
