@@ -344,6 +344,210 @@ Important notes:
 
 Read the [Terminate Checkout API endpoint documentation](/api/readers/terminate-checkout) for details on the API request, examples, and parameter descriptions.
 
+### Reader Settings (Menu Lock)
+
+These Cloud API endpoints let you require a 4-digit passcode before anyone can open the menu on a paired Solo reader. Use the merchant code and reader ID from [pairing](#pairing-solo-reader-via-cloud-api). Authenticate with the same Bearer API key as the other reader requests on this page.
+
+Menu lock applies to Solo readers running firmware **3.3.44.0 or higher**. Solo Lite and other reader models are rejected with `422` and error type `UNSUPPORTED_DEVICE_MODEL`. A Solo reader on an older firmware version, or a reader whose firmware status is unavailable, is rejected with `422` and error type `UNSUPPORTED_FIRMWARE_VERSION`.
+
+#### Update Reader Settings
+
+Send a `PATCH` request to enable or disable menu lock and set the passcode. The reader must be online. A `200` response means the reader applied the update.
+
+The SDK examples use an authenticated client and the merchant code and reader ID from pairing. In Go, import `github.com/sumup/sumup-go/secret` for the passcode value.
+
+<Tabs syncKey="backend_lang">
+  <TabItem label="cURL" icon="seti:powershell">
+    ```bash
+    curl -X PATCH \
+      https://api.sumup.com/v0.1/merchants/$SUMUP_MERCHANT_CODE/readers/$READER_ID/settings \
+      -H "Authorization: Bearer $SUMUP_API_KEY" \
+      -H 'Content-Type: application/json' \
+      -d '{
+            "menu_lock": {
+              "enabled": true,
+              "passcode": "1234"
+            }
+          }'
+    ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+    ```ts
+    const settings = await client.readers.updateReaderSettings(merchantCode, readerId, {
+      menu_lock: {
+        enabled: true,
+        passcode: "1234",
+      },
+    });
+    ```
+  </TabItem>
+  <TabItem label=".NET" icon="seti:c-sharp">
+    ```csharp
+    var settings = await client.Readers.UpdateReaderSettingsAsync(
+        merchantCode,
+        readerId,
+        new UpdateReaderSettingsRequest
+        {
+            MenuLock = new UpdateReaderSettingsRequestMenuLock
+            {
+                Enabled = true,
+                Passcode = "1234",
+            },
+        });
+    ```
+  </TabItem>
+  <TabItem label="Java" icon="seti:java">
+    ```java
+    var settings = client.readers().updateReaderSettings(
+        merchantCode,
+        readerId,
+        UpdateReaderSettingsRequest.builder()
+            .menuLock(UpdateReaderSettingsRequestMenuLock.builder()
+                .enabled(true)
+                .passcode("1234")
+                .build())
+            .build()
+    );
+    ```
+  </TabItem>
+  <TabItem label="Go" icon="seti:go">
+    ```go
+    settings, err := client.Readers.UpdateReaderSettings(ctx, merchantCode, readerID, sumup.ReadersUpdateReaderSettingsParams{
+        MenuLock: sumup.UpdateReaderSettingsRequestMenuLock{
+            Enabled:  new(true),
+            Passcode: new(secret.New("1234")),
+        },
+    })
+    ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+    ```py
+    settings = client.readers.update_reader_settings(
+        merchant_code,
+        reader_id,
+        menu_lock={
+            "enabled": True,
+            "passcode": "1234",
+        },
+    )
+    ```
+  </TabItem>
+  <TabItem label="Rust" icon="seti:rust">
+    ```rust
+    let settings = client.readers().update_reader_settings(
+        &merchant_code,
+        &reader_id,
+        sumup::resources::readers::UpdateReaderSettingsRequest::builder()
+            .menu_lock(
+                sumup::resources::readers::UpdateReaderSettingsRequestMenuLock::builder()
+                    .enabled(true)
+                    .passcode(sumup::secret::Secret::new("1234"))
+                    .build(),
+            )
+            .build(),
+    ).await?;
+    ```
+  </TabItem>
+  <TabItem label="PHP" icon="seti:php">
+    ```php
+    $settings = $sumup->readers()->updateReaderSettings($merchantCode, $readerId, [
+        'menu_lock' => [
+            'enabled' => true,
+            'passcode' => '1234',
+        ],
+    ]);
+    ```
+  </TabItem>
+</Tabs>
+
+Example response:
+
+```json
+{
+  "data": {
+    "status": "applied",
+    "menu_lock": {
+      "enabled": true,
+      "passcode": "1234"
+    }
+  }
+}
+```
+
+The `menu_lock` object in the response contains only the fields you sent.
+
+`menu_lock` is required and must include at least one of `enabled` or `passcode`. Omitted fields keep their current values. `passcode` is a 4-digit numeric string, for example `"1234"`. When you enable menu lock on a reader that does not already have a passcode, include `passcode` in that same request.
+
+If the reader is offline, the update is rejected with `422` and error type `READER_OFFLINE`. If the reader does not acknowledge the update in time, the response is `504` with error type `READER_ACTION_TIMEOUT`. If the reader cannot apply the update, the response is `422` with error type `READER_ACTION_FAILED`.
+
+#### Get Reader Settings
+
+Retrieve the menu lock settings for a reader.
+
+<Tabs syncKey="backend_lang">
+  <TabItem label="cURL" icon="seti:powershell">
+    ```bash
+    curl \
+      https://api.sumup.com/v0.1/merchants/$SUMUP_MERCHANT_CODE/readers/$READER_ID/settings \
+      -H "Authorization: Bearer $SUMUP_API_KEY"
+    ```
+  </TabItem>
+  <TabItem label="JavaScript" icon="seti:javascript">
+    ```ts
+    const settings = await client.readers.getReaderSettings(merchantCode, readerId);
+    ```
+  </TabItem>
+  <TabItem label=".NET" icon="seti:c-sharp">
+    ```csharp
+    var settings = await client.Readers.GetReaderSettingsAsync(merchantCode, readerId);
+    ```
+  </TabItem>
+  <TabItem label="Java" icon="seti:java">
+    ```java
+    var settings = client.readers().getReaderSettings(merchantCode, readerId);
+    ```
+  </TabItem>
+  <TabItem label="Go" icon="seti:go">
+    ```go
+    settings, err := client.Readers.GetReaderSettings(ctx, merchantCode, readerID)
+    ```
+  </TabItem>
+  <TabItem label="Python" icon="seti:python">
+    ```py
+    settings = client.readers.get_reader_settings(merchant_code, reader_id)
+    ```
+  </TabItem>
+  <TabItem label="Rust" icon="seti:rust">
+    ```rust
+    let settings = client.readers().get_reader_settings(&merchant_code, &reader_id).await?;
+    ```
+  </TabItem>
+  <TabItem label="PHP" icon="seti:php">
+    ```php
+    $settings = $sumup->readers()->getReaderSettings($merchantCode, $readerId);
+    ```
+  </TabItem>
+</Tabs>
+
+Example response:
+
+```json
+{
+  "data": {
+    "menu_lock": {
+      "enabled": true,
+      "passcode": "1234"
+    }
+  }
+}
+```
+
+When the reader is online, the response is the settings reported by the device. When the reader is offline, the response is the last saved menu lock, which can differ from the configuration currently on the device. If the reader is offline and no settings have been saved, the response is `404`.
+
+The same timeout and failure errors as [Update Reader Settings](#update-reader-settings) apply when the reader is online but cannot return its settings.
+
+On the Solo reader, when menu lock is enabled, opening the menu prompts for the passcode on the lock screen. Entering the correct code unlocks the menu. An incorrect code shows an error and allows another attempt.
+
 ### List Connected Readers
 
 List all readers connected to your merchant account.
