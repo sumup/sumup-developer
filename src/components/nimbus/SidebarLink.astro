@@ -1,6 +1,5 @@
 ---
 import type { SidebarItem } from "@cloudflare/nimbus-docs/types";
-import MethodStatus from "@components/ApiDocs/MethodStatus.astro";
 
 interface Props {
   item: Exclude<SidebarItem, { type: "group" }>;
@@ -9,7 +8,6 @@ interface Props {
 const { item } = Astro.props;
 const external = item.type === "external";
 const badge = typeof item.badge === "string" ? item.badge : item.badge?.text;
-const method = !external && item.attrs?.["data-http-method"];
 ---
 
 <a
@@ -20,5 +18,5 @@ const method = !external && item.attrs?.["data-http-method"];
   {...(!external && item.attrs)}
 >
   <span>{item.label}</span>
-  {method ? <MethodStatus method={method} /> : badge && <small>{badge}</small>}
+  {badge && <small>{badge}</small>}
 </a>

@@ -144,12 +144,6 @@
     background: transparent;
   }
 
-  & > li > a > [data-http-method] {
-    flex-shrink: 0;
-    margin-inline-start: auto;
-    white-space: nowrap;
-  }
-
   small {
     flex-shrink: 0;
     white-space: nowrap;

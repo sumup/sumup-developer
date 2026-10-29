@@ -24,9 +24,6 @@ export function apiSidebar(items: ApiNavItem[]): SidebarItem[] {
         href: item.href,
         order,
         isCurrent: item.active,
-        attrs: item.method
-          ? { "data-http-method": item.method.toUpperCase() }
-          : undefined,
       },
     ];
   });

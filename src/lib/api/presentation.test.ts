@@ -1,7 +1,7 @@
 import { expect, it } from "vitest";
 import { apiSidebar } from "./presentation";
 
-it("adapts API groups, active pages, method badges and schema links to shared navigation", () => {
+it("adapts API groups, active pages and schema links to shared navigation without method badges", () => {
   const items = apiSidebar([
     {
       coordinate: "api",
@@ -52,10 +52,10 @@ it("adapts API groups, active pages, method badges and schema links to shared na
         type: "link",
         href: "/api/checkouts/create/",
         isCurrent: true,
-        attrs: { "data-http-method": "POST" },
       },
     ],
   });
+  expect(items[1]).not.toHaveProperty("children.0.attrs");
   expect(items[2]).toMatchObject({
     type: "group",
     children: [{ href: "/api/schemas/checkout/" }],
