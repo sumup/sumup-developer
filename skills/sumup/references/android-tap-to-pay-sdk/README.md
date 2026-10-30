@@ -1,6 +1,6 @@
 # Android Tap-to-Pay SDK (Card-present on phone)
 
-> Prefer the latest SumUp docs first: `https://developer.sumup.com/terminal-payments/sdks/android-ttp/index.md`
+> Prefer the latest SumUp docs first: `https://developer.sumup.com/terminal-payments/sdks/android/tap-to-pay/index.md`
 > LLM entrypoint for discovery: `https://developer.sumup.com/llms.txt`
 
 ## Initialize once
@@ -23,7 +23,7 @@ tapToPay.startPayment(
     priceItems = null,
     products = null,
     processCardAs = null,
-    affiliateData = null,
+    affiliateData = AffiliateModel(key = "YOUR_AFFILIATE_KEY"),
   ),
   skipSuccessScreen = false
 )

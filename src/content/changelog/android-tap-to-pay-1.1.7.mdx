@@ -27,6 +27,8 @@ _We recommend updating to this version of the SDK for security enhancements._
 
 ### Integration Notes
 
+This release contains breaking API changes. Code that passes `affiliateData = null` or uses `shouldDisplayReceipt` no longer compiles.
+
 - `CheckoutData.affiliateData` is now required. Pass an `AffiliateModel` with your app's affiliate key so transactions are attributed to your integration.
 - `PaymentFlowClosedSuccessfully.shouldDisplayReceipt` has been removed, as announced in 1.1.6. Remove any references to it.
 - The SDK's consumer ProGuard rules no longer disable code shrinking (`-dontshrink`) or apply global keep rules to all enums and native methods in your app. If your release build relied on these, test it before shipping.
