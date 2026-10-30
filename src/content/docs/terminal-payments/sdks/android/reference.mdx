@@ -58,7 +58,7 @@ The list of possible events:
 - `TransactionFailed(val paymentOutput: PaymentOutput?, val tapToPayException: TapToPayException?)` - transaction failed. It might happen due to many reasons, like attestation error, backend error, card reader error, and so on. The full list of errors is described in the [Exceptions](/terminal-payments/sdks/android/reference/#exceptions) section. `PaymentOutput` param might be null if the transaction failed before reaching the backend.
 - `TransactionCanceled(val paymentOutput: PaymentOutput?)` - transaction was canceled by the user.
 - `TransactionResultUnknown(val paymentOutput: PaymentOutput?)` - transaction result is unknown. This might happen on remote calls, when there is no response due to timeout.
-- `PaymentFlowClosedSuccessfully(val paymentOutput: PaymentOutput, val shouldDisplayReceipt: Boolean = false)` - after a successful transaction, once the user dismisses the success screen (or when it is skipped via `skipSuccessScreen`), the flow closes and fires this event. The **Send receipt** button has been removed from the SDK success screen (SDK 1.1.6+); receipts must be handled by the host app if required. `shouldDisplayReceipt` is deprecated, always emitted as `false`, and will be removed in **1.1.7**.
+- `PaymentFlowClosedSuccessfully(val paymentOutput: PaymentOutput)` - after a successful transaction, once the user dismisses the success screen (or when it is skipped via `skipSuccessScreen`), the flow closes and fires this event. The **Send receipt** button has been removed from the SDK success screen (SDK 1.1.6+); receipts must be handled by the host app if required. `shouldDisplayReceipt` was removed in **1.1.7**.
 
 ## Exceptions
 
