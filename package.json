@@ -67,7 +67,7 @@
     "@readme/httpsnippet": "11.4.1",
     "@scalar/openapi-parser": "0.29.16",
     "@sindresorhus/slugify": "^3.0.1",
-    "@sumup-oss/circuit-ui": "12.4.0",
+    "@sumup-oss/circuit-ui": "12.5.0",
     "@sumup-oss/design-tokens": "11.1.0",
     "@sumup-oss/icons": "7.3.0",
     "@sumup-oss/illustrations": "1.1.0",
