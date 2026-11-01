@@ -11,6 +11,23 @@ before(() => server.listen(), { timeout: 30_000 });
 after(() => server.close(), { timeout: 10_000 });
 
 describe("built documentation Worker", { timeout: 60_000 }, () => {
+  it("serves the agent start document as cross-origin Markdown", async () => {
+    const response = await server.fetch("/start.md");
+    assert.equal(response.status, 200);
+    assert.match(response.headers.get("content-type"), /^text\/markdown/);
+    assert.equal(response.headers.get("access-control-allow-origin"), "*");
+    assert.match(response.headers.get("x-robots-tag"), /noindex/);
+    const markdown = await response.text();
+    assert(
+      (
+        await readFile("dist/client/tools/llms/start/index.md", "utf8")
+      ).includes(markdown.trim()),
+    );
+    assert.match(markdown, /^Use these instructions/);
+    assert.match(markdown, /https:\/\/mcp\.sumup\.com\/mcp/);
+    assert.match(markdown, /https:\/\/developer\.sumup\.com\/llms\.txt/);
+  });
+
   it("serves API pages and Markdown containing every SDK sample", async () => {
     const page = await server.fetch("/api/checkouts/process/");
     assert.equal(page.status, 200);

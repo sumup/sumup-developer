@@ -1,2 +1,2 @@
 export const agentSetupPrompt =
-  "Read https://developer.sumup.com/tools/llms/setup/index.md and https://developer.sumup.com/llms.txt. Help me choose and install the SumUp skills for my assistant. Explain how to connect https://mcp.sumup.com/mcp using its OAuth sign-in when I need account tools. Use the current SumUp documentation and https://developer.sumup.com/openapi.json for API details. Start payment development in a sandbox.";
+  "Read https://developer.sumup.com/start.md and help me set up SumUp for my AI assistant.";

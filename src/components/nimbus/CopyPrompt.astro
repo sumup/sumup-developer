@@ -15,14 +15,23 @@ const { text = agentSetupPrompt, compact = false } = Astro.props;
   {compact ? (
     <>
       <div class="copy-controls">
-        <Button
-          type="button"
-          variant="secondary"
-          label="Copy setup prompt"
-          icon={AgentLogos}
-          title="Set up Claude Code, Codex, Cursor, or another supported assistant"
-          data-copy-prompt-button
-        />
+        <div class="copy-button">
+          <Button
+            type="button"
+            variant="secondary"
+            label="Copy setup prompt"
+            icon={AgentLogos}
+            data-copy-prompt-button
+          />
+          <Body
+            size="s"
+            color="subtle"
+            className="prompt-preview"
+            aria-hidden="true"
+          >
+            {text}
+          </Body>
+        </div>
         <Body as="span" size="s" data-copy-prompt-status role="status" />
       </div>
       <Body size="s" className="prompt-text" data-copy-prompt-text hidden>
@@ -75,10 +84,32 @@ const { text = agentSetupPrompt, compact = false } = Astro.props;
     display: inline-flex;
     align-items: center;
     gap: var(--cui-spacings-bit);
+    flex-wrap: wrap;
+    max-width: 100%;
   }
 
-  .copy-controls {
-    flex-wrap: wrap;
+  .copy-button {
+    position: relative;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .copy-button :global(.prompt-preview) {
+    position: absolute;
+    top: calc(100% + var(--cui-spacings-bit));
+    inset-inline: 0;
+    margin: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  .compact:has([data-copy-prompt-text][hidden])
+    .copy-button:is(:hover, :focus-within)
+    :global(.prompt-preview) {
+    visibility: visible;
   }
 
   .copy-controls :global([data-copy-prompt-status]) {

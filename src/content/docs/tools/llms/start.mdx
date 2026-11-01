@@ -1,0 +1,38 @@
+---
+title: Set up SumUp for your AI assistant
+description: Instructions for agents to install SumUp skills, connect account tools, and find current integration documentation.
+sidebar:
+  hidden: true
+searchable: false
+---
+
+Use these instructions to set up the user's assistant for working with SumUp. Reuse existing SumUp skills and MCP connections when available.
+
+For the documentation links below, append `index.md` to the page's trailing-slash URL to read its Markdown version.
+
+## Install the SumUp skills
+
+1. Identify the assistant and its existing configuration. Ask which assistant the user wants to configure only if you cannot determine it from the current environment.
+2. Read the matching client instructions in [Set up your AI assistant](/tools/llms/setup/). Use the SumUp plugin, extension, or power when the client supports it. For other clients, follow [standalone skills installation](/tools/llms/agent-skills/#install-standalone-skills).
+3. Perform the applicable installation steps with the tools available to you. Preserve existing configuration. Explain any steps that require the user's UI, browser sign-in, or a new assistant session.
+4. Verify that the skills are available by using the relevant SumUp skill to explain an integration approach for the user's task.
+
+## Connect account tools when needed
+
+Skills can guide payment development without access to a SumUp account. When the user needs merchant account tools, connect `https://mcp.sumup.com/mcp` using the client's Streamable HTTP and OAuth support. Follow the [client-specific connection instructions](/tools/llms/setup/).
+
+If the installed SumUp plugin, extension, or power already configures MCP, use that connection. Let the user complete OAuth sign-in in their browser. Verify the connection with a read-only request, such as retrieving their merchant profile.
+
+For clients that require stdio or API-key authentication, follow [local MCP setup](/tools/llms/mcp-server/#run-the-local-server).
+
+## Start building
+
+Use the relevant installed SumUp skills and current documentation for the user's integration:
+
+- Documentation index: `https://developer.sumup.com/llms.txt`. Read the relevant guides rather than loading the full documentation bundle.
+- API reference index: `https://developer.sumup.com/api/llms.txt`.
+- OpenAPI specification: `https://developer.sumup.com/openapi.json`.
+
+Start payment development with a [sandbox merchant account](/online-payments/#getting-a-sandbox-merchant-account) and follow [SumUp testing guidance](/online-payments/testing/).
+
+Tell the user what is installed, whether account tools are connected, and any remaining setup steps.

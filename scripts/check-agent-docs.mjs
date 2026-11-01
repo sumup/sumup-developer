@@ -42,7 +42,7 @@ export async function checkAgentDocs(site) {
       `${path}: overlapping Content-Type headers`,
     );
     if (
-      /\/index\.mdx?$|\/llms(?:-full)?\.txt$|^\/\.well-known\/|^\/openapi\.json$/.test(
+      /\/index\.mdx?$|^\/start\.md$|\/llms(?:-full)?\.txt$|^\/\.well-known\/|^\/openapi\.json$/.test(
         path,
       )
     ) {
@@ -56,6 +56,24 @@ export async function checkAgentDocs(site) {
   }
   const index = await readFile(join(output, "llms.txt"), "utf8");
   const rootMarkdown = await readFile(join(output, "index.md"), "utf8");
+  const startMarkdown = await readFile(join(output, "start.md"), "utf8");
+  assert(
+    (
+      await readFile(join(output, "tools/llms/start/index.md"), "utf8")
+    ).includes(startMarkdown.trim()),
+    "Agent start document must use Nimbus's published Markdown",
+  );
+  assert(index.includes("https://developer.sumup.com/start.md"));
+  assert(agentSetupPrompt.includes("https://developer.sumup.com/start.md"));
+  assert.deepEqual(
+    staticHeaderValues(
+      headerRules,
+      new URL("/start.md", siteOrigin),
+      "Content-Type",
+    ),
+    ["text/markdown; charset=utf-8"],
+    "Agent start document must be served as Markdown",
+  );
   assert(
     rootMarkdown.includes(index.trim()),
     "Homepage Markdown must expose the documentation index",
