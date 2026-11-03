@@ -3,7 +3,7 @@
   "language": "java",
   "sdk": {
     "module": "com.sumup:sumup-sdk",
-    "version": "0.1.2"
+    "version": "0.1.3"
   },
   "openAPIVersion": "1.0.0",
   "samples": [
@@ -54,7 +54,17 @@
       "description": "Create a checkout with a SumUp-hosted payment page",
       "httpMethod": "POST",
       "path": "/v0.1/checkouts",
-      "sample": "import com.sumup.sdk.SumUpClient;\n\npublic final class CreateCheckoutHostedCheckoutSample {\n  public static void main(String[] args) throws Exception {\n    var client = new SumUpClient();\n\n    var result = client.checkouts().create(\n            com.sumup.sdk.models.CheckoutCreateRequest.builder()\n                .amount(12.0f)\n                .checkoutReference(\"b50pr914-6k0e-3091-a592-890010285b3d\")\n                .currency(com.sumup.sdk.models.Currency.of(\"EUR\"))\n                .description(\"A sample checkout\")\n                .hostedCheckout(com.sumup.sdk.models.HostedCheckout.builder()\n                .enabled(true)\n                .build())\n                .merchantCode(\"MCXXXXXX\")\n                .build()\n        );\n    System.out.println(result);\n  }\n}\n"
+      "sample": "import com.sumup.sdk.SumUpClient;\n\npublic final class CreateCheckoutHostedCheckoutSample {\n  public static void main(String[] args) throws Exception {\n    var client = new SumUpClient();\n\n    var result = client.checkouts().create(\n            com.sumup.sdk.models.CheckoutCreateRequest.builder()\n                .amount(12.0f)\n                .checkoutReference(\"b50pr914-6k0e-3091-a592-890010285b3d\")\n                .currency(com.sumup.sdk.models.Currency.of(\"EUR\"))\n                .description(\"A sample checkout\")\n                .hostedCheckout(com.sumup.sdk.models.HostedCheckout.builder()\n                .enabled(true)\n                .build())\n                .merchantCode(\"MCXXXXXX\")\n                .redirectUrl(\"https://example.com/orders/123/complete\")\n                .build()\n        );\n    System.out.println(result);\n  }\n}\n"
+    },
+    {
+      "id": "CreateCheckout.Tokenization",
+      "operationId": "CreateCheckout",
+      "example": "Tokenization",
+      "summary": "Save a customer card",
+      "description": "Create a checkout to collect consent and save a card through the Payment Widget.",
+      "httpMethod": "POST",
+      "path": "/v0.1/checkouts",
+      "sample": "import com.sumup.sdk.SumUpClient;\n\npublic final class CreateCheckoutTokenizationSample {\n  public static void main(String[] args) throws Exception {\n    var client = new SumUpClient();\n\n    var result = client.checkouts().create(\n            com.sumup.sdk.models.CheckoutCreateRequest.builder()\n                .amount(1.0f)\n                .checkoutReference(\"save-card-123\")\n                .currency(com.sumup.sdk.models.Currency.of(\"EUR\"))\n                .customerId(\"831ff8d4cd5958ab5670\")\n                .description(\"Save a card for future payments\")\n                .merchantCode(\"MCXXXXXX\")\n                .purpose(com.sumup.sdk.models.CheckoutCreateRequestPurpose.of(\"SETUP_RECURRING_PAYMENT\"))\n                .build()\n        );\n    System.out.println(result);\n  }\n}\n"
     },
     {
       "id": "CreateCustomer",
@@ -117,7 +127,7 @@
       "description": "Creates a Checkout for a Reader.\n\nThis process is asynchronous and the actual transaction may take some time to be started on the device.\n\n\nThere are some caveats when using this endpoint:\n* The target device must be online, otherwise checkout won't be accepted\n* After the checkout is accepted, the system has 60 seconds to start the payment on the target device. During this time, any other checkout for the same device will be rejected.\n\n\n**Note**: If the target device is a Solo, it must be in version 3.3.24.3 or higher.\n\n\nOptionally include an `affiliate` object to attach integrator metadata to the payment.\nProvide both `app_id` and `key` when including this object.",
       "httpMethod": "POST",
       "path": "/v0.1/merchants/{merchant_code}/readers/{reader_id}/checkout",
-      "sample": "import com.sumup.sdk.SumUpClient;\n\npublic final class CreateReaderCheckoutSample {\n  public static void main(String[] args) throws Exception {\n    var client = new SumUpClient();\n\n    var result = client.readers().createCheckout(\n            \"MC0X0ABC\",\n            \"rdr_3MSAFM23CK82VSTT4BN6RWSQ65\",\n            com.sumup.sdk.models.CreateReaderCheckoutRequest.builder()\n                .aade(com.sumup.sdk.models.CreateReaderCheckoutRequestAade.builder()\n                .providerId(\"123\")\n                .signature(\"QjcxRDdBNTU1MDcyRTNFRTREMkZEM0Y0NTdBMjkxMTU4MzBFNkNCQTs7MjAyNTExMTIyMTQ3MTM7Nzk2OzEwNDs5MDA7OTAwOzU0ODg5MDM5\")\n                .signatureData(\"B71D7A555072E3EE4D2FD3F457A29115830E6CBA;;20251112214713;796;104;900;900;54889039\")\n                .build())\n                .affiliate(com.sumup.sdk.models.Affiliate2.builder()\n                .appId(\"com.example.app\")\n                .foreignTransactionId(\"123456\")\n                .key(\"ef7b684a-d6f4-4e93-9b1b-6acdd6564a8e\")\n                .tags(java.util.Map.ofEntries(java.util.Map.entry(\"custom_key_1\", \"custom_value_1\"), java.util.Map.entry(\"custom_key_2\", \"custom_value_2\")))\n                .build())\n                .cardType(com.sumup.sdk.models.CreateReaderCheckoutRequestCardType.of(\"debit\"))\n                .description(\"This is a description...\")\n                .installments(1L)\n                .returnUrl(\"https://webhook.site/e21ddbb0-42c4-4358-a981-f5a95cd86fb5\")\n                .tipRates(java.util.List.of(0.05f, 0.1f, 0.15f))\n                .tipTimeout(60L)\n                .totalAmount(com.sumup.sdk.models.Money.builder()\n                .currency(\"EUR\")\n                .minorUnit(2L)\n                .value(5033L)\n                .build())\n                .build()\n        );\n    System.out.println(result);\n  }\n}\n"
+      "sample": "import com.sumup.sdk.SumUpClient;\n\npublic final class CreateReaderCheckoutSample {\n  public static void main(String[] args) throws Exception {\n    var client = new SumUpClient();\n\n    var result = client.readers().createCheckout(\n            \"MC0X0ABC\",\n            \"rdr_3MSAFM23CK82VSTT4BN6RWSQ65\",\n            com.sumup.sdk.models.CreateReaderCheckoutRequest.builder()\n                .returnUrl(\"https://example.com/sumup/webhook\")\n                .totalAmount(com.sumup.sdk.models.Money.builder()\n                .currency(\"EUR\")\n                .minorUnit(2L)\n                .value(1500L)\n                .build())\n                .build()\n        );\n    System.out.println(result);\n  }\n}\n"
     },
     {
       "id": "CreateReaderTerminate",
@@ -282,6 +292,15 @@
       "sample": "import com.sumup.sdk.SumUpClient;\n\npublic final class GetReceiptSample {\n  public static void main(String[] args) throws Exception {\n    var client = new SumUpClient();\n\n    var result = client.receipts().get(\n            \"410fc44a-5956-44e1-b5cc-19c6f8d727a4\",\n            \"MH4H92C7\"\n        );\n    System.out.println(result);\n  }\n}\n"
     },
     {
+      "id": "GetSaleV10",
+      "operationId": "GetSaleV10",
+      "summary": "Gets a sale",
+      "description": "Returns `Sale` for `sale_id`, including item lines and `payments[]`.\nNon-finalised sales are never returned; only fully-paid sales.",
+      "httpMethod": "GET",
+      "path": "/v1.0/merchants/{merchant_code}/sales/{sale_id}",
+      "sample": "import com.sumup.sdk.SumUpClient;\n\npublic final class GetSaleV10Sample {\n  public static void main(String[] args) throws Exception {\n    var client = new SumUpClient();\n\n    var result = client.sales().getSaleV10(\n            \"MCZM9TGQ\",\n            \"5965aa65-e45a-4cc1-9063-c1c1e3b8607f\"\n        );\n    System.out.println(result);\n  }\n}\n"
+    },
+    {
       "id": "GetTransactionV2.1",
       "operationId": "GetTransactionV2.1",
       "summary": "Retrieve a transaction",
@@ -363,6 +382,15 @@
       "sample": "import com.sumup.sdk.SumUpClient;\n\npublic final class ListReadersSample {\n  public static void main(String[] args) throws Exception {\n    var client = new SumUpClient();\n\n    var result = client.readers().list(\n            \"MK10CL2A\"\n        );\n    System.out.println(result);\n  }\n}\n"
     },
     {
+      "id": "ListSalesV10",
+      "operationId": "ListSalesV10",
+      "summary": "Lists sales",
+      "description": "Returns a paginated list of `Sale` objects. Results are sorted **newest first** by the\n**newest event** recorded for each sale. Pagination tokens follow that order.\n\nCovers the merchant’s **last two years** of sales. Non-finalised sales are never returned;\nonly fully-paid sales. Use `POST /sales/search` for filtered queries.",
+      "httpMethod": "GET",
+      "path": "/v1.0/merchants/{merchant_code}/sales",
+      "sample": "import com.sumup.sdk.SumUpClient;\n\npublic final class ListSalesV10Sample {\n  public static void main(String[] args) throws Exception {\n    var client = new SumUpClient();\n\n    var result = client.sales().listSalesV10(\n            \"MCZM9TGQ\"\n        );\n    System.out.println(result);\n  }\n}\n"
+    },
+    {
       "id": "ListTransactionsV2.1",
       "operationId": "ListTransactionsV2.1",
       "summary": "List transactions",
@@ -409,7 +437,7 @@
       "description": "Process a checkout with a token",
       "httpMethod": "PUT",
       "path": "/v0.1/checkouts/{checkout_id}",
-      "sample": "import com.sumup.sdk.SumUpClient;\n\npublic final class ProcessCheckoutProcessTokenSample {\n  public static void main(String[] args) throws Exception {\n    var client = new SumUpClient();\n\n    var result = client.checkouts().process(\n            \"4e425463-3e1b-431d-83fa-1e51c2925e99\",\n            com.sumup.sdk.models.ProcessCheckout.builder()\n                .customerId(\"MEDKHDTI\")\n                .installments(1L)\n                .paymentType(com.sumup.sdk.models.ProcessCheckoutPaymentType.of(\"card\"))\n                .token(\"ba85dfee-c3cf-48a6-84f5-d7d761fbba50\")\n                .build()\n        );\n    System.out.println(result);\n  }\n}\n"
+      "sample": "import com.sumup.sdk.SumUpClient;\n\npublic final class ProcessCheckoutProcessTokenSample {\n  public static void main(String[] args) throws Exception {\n    var client = new SumUpClient();\n\n    var result = client.checkouts().process(\n            \"4e425463-3e1b-431d-83fa-1e51c2925e99\",\n            com.sumup.sdk.models.ProcessCheckout.builder()\n                .customerId(\"831ff8d4cd5958ab5670\")\n                .paymentType(com.sumup.sdk.models.ProcessCheckoutPaymentType.of(\"card\"))\n                .token(\"6878cb7f-6515-47bf-bdd9-1408d270fdce\")\n                .build()\n        );\n    System.out.println(result);\n  }\n}\n"
     },
     {
       "id": "ProcessCheckout.ProcessiDeal",
@@ -422,13 +450,33 @@
       "sample": "import com.sumup.sdk.SumUpClient;\n\npublic final class ProcessCheckoutProcessiDealSample {\n  public static void main(String[] args) throws Exception {\n    var client = new SumUpClient();\n\n    var result = client.checkouts().process(\n            \"4e425463-3e1b-431d-83fa-1e51c2925e99\",\n            com.sumup.sdk.models.ProcessCheckout.builder()\n                .paymentType(com.sumup.sdk.models.ProcessCheckoutPaymentType.of(\"ideal\"))\n                .personalDetails(com.sumup.sdk.models.PersonalDetails.builder()\n                .address(com.sumup.sdk.models.AddressLegacy.builder()\n                .country(\"NL\")\n                .build())\n                .email(\"user@example.com\")\n                .firstName(\"John\")\n                .lastName(\"Doe\")\n                .build())\n                .build()\n        );\n    System.out.println(result);\n  }\n}\n"
     },
     {
-      "id": "RefundTransaction",
+      "id": "RefundTransaction.FullRefund",
       "operationId": "RefundTransaction",
-      "summary": "Refund a transaction",
+      "example": "FullRefund",
+      "summary": "Full refund",
       "description": "Refunds a transaction identified by its SumUp transaction ID. Omit the request body to request a full refund, or provide `amount` for a partial refund in the transaction's currency.\n\nRetrieve the transaction afterwards to inspect its refunded amount and refund events. The transaction must be eligible for a refund; see the error responses for invalid amounts, permissions, and processing failures.",
       "httpMethod": "POST",
       "path": "/v1.0/merchants/{merchant_code}/payments/{transaction_id}/refunds",
-      "sample": "import com.sumup.sdk.SumUpClient;\n\npublic final class RefundTransactionSample {\n  public static void main(String[] args) throws Exception {\n    var client = new SumUpClient();\n\n    var result = client.transactions().refund(\n            \"MH4H92C7\",\n            \"4ffb8dfc-7f2b-413d-a497-2ad00766585e\",\n            com.sumup.sdk.models.RefundTransactionRequest.builder()\n                .amount(5.0f)\n                .build()\n        );\n    System.out.println(result);\n  }\n}\n"
+      "sample": "import com.sumup.sdk.SumUpClient;\n\npublic final class RefundTransactionFullRefundSample {\n  public static void main(String[] args) throws Exception {\n    var client = new SumUpClient();\n\n    var result = client.transactions().refund(\n            \"MH4H92C7\",\n            \"4ffb8dfc-7f2b-413d-a497-2ad00766585e\",\n            com.sumup.sdk.models.RefundTransactionRequest.builder()\n                .build()\n        );\n    System.out.println(result);\n  }\n}\n"
+    },
+    {
+      "id": "RefundTransaction.PartialRefund",
+      "operationId": "RefundTransaction",
+      "example": "PartialRefund",
+      "summary": "Partial refund",
+      "description": "Refunds a transaction identified by its SumUp transaction ID. Omit the request body to request a full refund, or provide `amount` for a partial refund in the transaction's currency.\n\nRetrieve the transaction afterwards to inspect its refunded amount and refund events. The transaction must be eligible for a refund; see the error responses for invalid amounts, permissions, and processing failures.",
+      "httpMethod": "POST",
+      "path": "/v1.0/merchants/{merchant_code}/payments/{transaction_id}/refunds",
+      "sample": "import com.sumup.sdk.SumUpClient;\n\npublic final class RefundTransactionPartialRefundSample {\n  public static void main(String[] args) throws Exception {\n    var client = new SumUpClient();\n\n    var result = client.transactions().refund(\n            \"MH4H92C7\",\n            \"4ffb8dfc-7f2b-413d-a497-2ad00766585e\",\n            com.sumup.sdk.models.RefundTransactionRequest.builder()\n                .amount(24.42f)\n                .build()\n        );\n    System.out.println(result);\n  }\n}\n"
+    },
+    {
+      "id": "SearchSalesV10",
+      "operationId": "SearchSalesV10",
+      "summary": "Searches sales",
+      "description": "Returns a paginated list of `SaleSearchItem` rows matching filter criteria. Results are\nsorted **newest first** by **sale close date**.\n\nFilters from different categories stack with **logical AND**; multiple values in one array\nfield stack with **logical OR**. Results cover the merchant’s **last two years** of sales\n(narrow further with `start_date` / `end_date`). Pagination tokens are not interchangeable\nwith `GET /sales`.",
+      "httpMethod": "POST",
+      "path": "/v1.0/merchants/{merchant_code}/sales/search",
+      "sample": "import com.sumup.sdk.SumUpClient;\n\npublic final class SearchSalesV10Sample {\n  public static void main(String[] args) throws Exception {\n    var client = new SumUpClient();\n\n    var result = client.sales().searchSalesV10(\n            \"MCZM9TGQ\",\n            com.sumup.sdk.models.SaleSearchRequest.builder()\n                .build()\n        );\n    System.out.println(result);\n  }\n}\n"
     },
     {
       "id": "UpdateCheckout",
