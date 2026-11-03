@@ -3,7 +3,7 @@
   "language": "bash",
   "sdk": {
     "module": "github.com/sumup/sumup-cli",
-    "version": "v0.7.0"
+    "version": "v0.8.0"
   },
   "openAPIVersion": "1.0.0",
   "samples": [
@@ -17,7 +17,7 @@
       "sample": "sumup checkouts apple-pay-session \"4e425463-3e1b-431d-83fa-1e51c2925e99\" \\\n  --context \"example.com\" \\\n  --target \"https://apple-pay-gateway-cert.apple.com/paymentservices/startSession\"\n"
     },
     {
-      "id": "CreateCheckout",
+      "id": "CreateCheckout.Checkout",
       "operationId": "CreateCheckout",
       "example": "Checkout",
       "summary": "Create a checkout",
@@ -25,6 +25,36 @@
       "httpMethod": "POST",
       "path": "/v0.1/checkouts",
       "sample": "sumup checkouts create \\\n  --reference \"f00a8f74-b05d-4605-bd73-2a901bae5802\" \\\n  --amount \"10.1\" \\\n  --currency \"EUR\" \\\n  --merchant-code \"MH4H92C7\" \\\n  --description \"Purchase\" \\\n  --redirect-url \"https://sumup.com\" \\\n  --valid-until \"2030-12-31T23:59:59Z\"\n"
+    },
+    {
+      "id": "CreateCheckout.Checkout3DS",
+      "operationId": "CreateCheckout",
+      "example": "Checkout3DS",
+      "summary": "Create a checkout",
+      "description": "Create a 3DS checkout",
+      "httpMethod": "POST",
+      "path": "/v0.1/checkouts",
+      "sample": "sumup checkouts create \\\n  --reference \"f00a8f74-b05d-4605-bd73-2a901bae5802\" \\\n  --amount \"10.1\" \\\n  --currency \"EUR\" \\\n  --merchant-code \"MH4H92C7\" \\\n  --description \"Purchase\" \\\n  --return-url \"http://example.com/\" \\\n  --redirect-url \"https://mysite.com/completed_purchase\" \\\n  --customer-id \"831ff8d4cd5958ab5670\"\n"
+    },
+    {
+      "id": "CreateCheckout.CheckoutAPM",
+      "operationId": "CreateCheckout",
+      "example": "CheckoutAPM",
+      "summary": "Create a checkout",
+      "description": "Create an Alternative Payment Method checkout",
+      "httpMethod": "POST",
+      "path": "/v0.1/checkouts",
+      "sample": "sumup checkouts create \\\n  --reference \"f00a8f74-b05d-4605-bd73-2a901bae5802\" \\\n  --amount \"10.1\" \\\n  --currency \"EUR\" \\\n  --merchant-code \"MH4H92C7\" \\\n  --redirect-url \"https://mysite.com/completed_purchase\"\n"
+    },
+    {
+      "id": "CreateCheckout.HostedCheckout",
+      "operationId": "CreateCheckout",
+      "example": "HostedCheckout",
+      "summary": "Create a checkout",
+      "description": "Create a checkout with a SumUp-hosted payment page",
+      "httpMethod": "POST",
+      "path": "/v0.1/checkouts",
+      "sample": "sumup checkouts create \\\n  --reference \"b50pr914-6k0e-3091-a592-890010285b3d\" \\\n  --amount \"12\" \\\n  --currency \"EUR\" \\\n  --merchant-code \"MCXXXXXX\" \\\n  --description \"A sample checkout\" \\\n  --hosted-checkout\n"
     },
     {
       "id": "CreateCustomer",
@@ -342,11 +372,51 @@
       "sample": "sumup transactions list \\\n  --merchant-code \"MH4H92C7\"\n"
     },
     {
-      "id": "ProcessCheckout",
+      "id": "ProcessCheckout.ProcessBancontact",
       "operationId": "ProcessCheckout",
       "example": "ProcessBancontact",
       "summary": "Process a checkout",
       "description": "Process a checkout with Bancontact",
+      "httpMethod": "PUT",
+      "path": "/v0.1/checkouts/{checkout_id}",
+      "sample": "# not supported"
+    },
+    {
+      "id": "ProcessCheckout.ProcessBoleto",
+      "operationId": "ProcessCheckout",
+      "example": "ProcessBoleto",
+      "summary": "Process a checkout",
+      "description": "Process a checkout with Boleto",
+      "httpMethod": "PUT",
+      "path": "/v0.1/checkouts/{checkout_id}",
+      "sample": "# not supported"
+    },
+    {
+      "id": "ProcessCheckout.ProcessCard",
+      "operationId": "ProcessCheckout",
+      "example": "ProcessCard",
+      "summary": "Process a checkout",
+      "description": "Process a checkout with a card",
+      "httpMethod": "PUT",
+      "path": "/v0.1/checkouts/{checkout_id}",
+      "sample": "# not supported"
+    },
+    {
+      "id": "ProcessCheckout.ProcessToken",
+      "operationId": "ProcessCheckout",
+      "example": "ProcessToken",
+      "summary": "Process a checkout",
+      "description": "Process a checkout with a token",
+      "httpMethod": "PUT",
+      "path": "/v0.1/checkouts/{checkout_id}",
+      "sample": "# not supported"
+    },
+    {
+      "id": "ProcessCheckout.ProcessiDeal",
+      "operationId": "ProcessCheckout",
+      "example": "ProcessiDeal",
+      "summary": "Process a checkout",
+      "description": "Process a checkout with iDeal",
       "httpMethod": "PUT",
       "path": "/v0.1/checkouts/{checkout_id}",
       "sample": "# not supported"
