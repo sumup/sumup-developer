@@ -3,7 +3,7 @@
   "language": "bash",
   "sdk": {
     "module": "github.com/sumup/sumup-cli",
-    "version": "v0.8.0"
+    "version": "v0.9.0"
   },
   "openAPIVersion": "1.0.0",
   "samples": [
@@ -54,7 +54,17 @@
       "description": "Create a checkout with a SumUp-hosted payment page",
       "httpMethod": "POST",
       "path": "/v0.1/checkouts",
-      "sample": "sumup checkouts create \\\n  --reference \"b50pr914-6k0e-3091-a592-890010285b3d\" \\\n  --amount \"12\" \\\n  --currency \"EUR\" \\\n  --merchant-code \"MCXXXXXX\" \\\n  --description \"A sample checkout\" \\\n  --hosted-checkout\n"
+      "sample": "sumup checkouts create \\\n  --reference \"b50pr914-6k0e-3091-a592-890010285b3d\" \\\n  --amount \"12\" \\\n  --currency \"EUR\" \\\n  --merchant-code \"MCXXXXXX\" \\\n  --description \"A sample checkout\" \\\n  --redirect-url \"https://example.com/orders/123/complete\" \\\n  --hosted-checkout\n"
+    },
+    {
+      "id": "CreateCheckout.Tokenization",
+      "operationId": "CreateCheckout",
+      "example": "Tokenization",
+      "summary": "Save a customer card",
+      "description": "Create a checkout to collect consent and save a card through the Payment Widget.",
+      "httpMethod": "POST",
+      "path": "/v0.1/checkouts",
+      "sample": "sumup checkouts create \\\n  --reference \"save-card-123\" \\\n  --amount \"1\" \\\n  --currency \"EUR\" \\\n  --merchant-code \"MCXXXXXX\" \\\n  --description \"Save a card for future payments\" \\\n  --customer-id \"831ff8d4cd5958ab5670\" \\\n  --purpose \"SETUP_RECURRING_PAYMENT\"\n"
     },
     {
       "id": "CreateCustomer",
@@ -117,7 +127,7 @@
       "description": "Creates a Checkout for a Reader.\n\nThis process is asynchronous and the actual transaction may take some time to be started on the device.\n\n\nThere are some caveats when using this endpoint:\n* The target device must be online, otherwise checkout won't be accepted\n* After the checkout is accepted, the system has 60 seconds to start the payment on the target device. During this time, any other checkout for the same device will be rejected.\n\n\n**Note**: If the target device is a Solo, it must be in version 3.3.24.3 or higher.\n\n\nOptionally include an `affiliate` object to attach integrator metadata to the payment.\nProvide both `app_id` and `key` when including this object.",
       "httpMethod": "POST",
       "path": "/v0.1/merchants/{merchant_code}/readers/{reader_id}/checkout",
-      "sample": "sumup readers checkout \"rdr_3MSAFM23CK82VSTT4BN6RWSQ65\" \\\n  --merchant-code \"MC0X0ABC\" \\\n  --amount \"50.33\" \\\n  --minor-unit \"2\" \\\n  --currency \"EUR\" \\\n  --description \"This is a description...\" \\\n  --return-url \"https://webhook.site/e21ddbb0-42c4-4358-a981-f5a95cd86fb5\" \\\n  --card-type \"debit\" \\\n  --installments \"1\" \\\n  --tip-timeout \"60\" \\\n  --tip-rate \"0.05\" \\\n  --tip-rate \"0.1\" \\\n  --tip-rate \"0.15\" \\\n  --affiliate-app-id \"com.example.app\" \\\n  --affiliate-key \"ef7b684a-d6f4-4e93-9b1b-6acdd6564a8e\" \\\n  --affiliate-foreign-transaction-id \"123456\"\n"
+      "sample": "sumup readers checkout \"rdr_3MSAFM23CK82VSTT4BN6RWSQ65\" \\\n  --merchant-code \"MC0X0ABC\" \\\n  --amount \"15\" \\\n  --minor-unit \"2\" \\\n  --currency \"EUR\" \\\n  --return-url \"https://example.com/sumup/webhook\"\n"
     },
     {
       "id": "CreateReaderTerminate",
@@ -282,6 +292,15 @@
       "sample": "sumup receipts get \"410fc44a-5956-44e1-b5cc-19c6f8d727a4\"\n"
     },
     {
+      "id": "GetSaleV10",
+      "operationId": "GetSaleV10",
+      "summary": "Gets a sale",
+      "description": "Returns `Sale` for `sale_id`, including item lines and `payments[]`.\nNon-finalised sales are never returned; only fully-paid sales.",
+      "httpMethod": "GET",
+      "path": "/v1.0/merchants/{merchant_code}/sales/{sale_id}",
+      "sample": "sumup sales get \"5965aa65-e45a-4cc1-9063-c1c1e3b8607f\" \\\n  --merchant-code \"MCZM9TGQ\"\n"
+    },
+    {
       "id": "GetTransactionV2.1",
       "operationId": "GetTransactionV2.1",
       "summary": "Retrieve a transaction",
@@ -363,6 +382,15 @@
       "sample": "sumup readers list \\\n  --merchant-code \"MK10CL2A\"\n"
     },
     {
+      "id": "ListSalesV10",
+      "operationId": "ListSalesV10",
+      "summary": "Lists sales",
+      "description": "Returns a paginated list of `Sale` objects. Results are sorted **newest first** by the\n**newest event** recorded for each sale. Pagination tokens follow that order.\n\nCovers the merchant’s **last two years** of sales. Non-finalised sales are never returned;\nonly fully-paid sales. Use `POST /sales/search` for filtered queries.",
+      "httpMethod": "GET",
+      "path": "/v1.0/merchants/{merchant_code}/sales",
+      "sample": "sumup sales list \\\n  --merchant-code \"MCZM9TGQ\"\n"
+    },
+    {
       "id": "ListTransactionsV2.1",
       "operationId": "ListTransactionsV2.1",
       "summary": "List transactions",
@@ -422,13 +450,33 @@
       "sample": "# not supported"
     },
     {
-      "id": "RefundTransaction",
+      "id": "RefundTransaction.FullRefund",
       "operationId": "RefundTransaction",
-      "summary": "Refund a transaction",
+      "example": "FullRefund",
+      "summary": "Full refund",
       "description": "Refunds a transaction identified by its SumUp transaction ID. Omit the request body to request a full refund, or provide `amount` for a partial refund in the transaction's currency.\n\nRetrieve the transaction afterwards to inspect its refunded amount and refund events. The transaction must be eligible for a refund; see the error responses for invalid amounts, permissions, and processing failures.",
       "httpMethod": "POST",
       "path": "/v1.0/merchants/{merchant_code}/payments/{transaction_id}/refunds",
-      "sample": "sumup transactions refund \"4ffb8dfc-7f2b-413d-a497-2ad00766585e\" \\\n  --merchant-code \"MH4H92C7\" \\\n  --amount \"5\"\n"
+      "sample": "sumup transactions refund \"4ffb8dfc-7f2b-413d-a497-2ad00766585e\" \\\n  --merchant-code \"MH4H92C7\"\n"
+    },
+    {
+      "id": "RefundTransaction.PartialRefund",
+      "operationId": "RefundTransaction",
+      "example": "PartialRefund",
+      "summary": "Partial refund",
+      "description": "Refunds a transaction identified by its SumUp transaction ID. Omit the request body to request a full refund, or provide `amount` for a partial refund in the transaction's currency.\n\nRetrieve the transaction afterwards to inspect its refunded amount and refund events. The transaction must be eligible for a refund; see the error responses for invalid amounts, permissions, and processing failures.",
+      "httpMethod": "POST",
+      "path": "/v1.0/merchants/{merchant_code}/payments/{transaction_id}/refunds",
+      "sample": "sumup transactions refund \"4ffb8dfc-7f2b-413d-a497-2ad00766585e\" \\\n  --merchant-code \"MH4H92C7\" \\\n  --amount \"24.42\"\n"
+    },
+    {
+      "id": "SearchSalesV10",
+      "operationId": "SearchSalesV10",
+      "summary": "Searches sales",
+      "description": "Returns a paginated list of `SaleSearchItem` rows matching filter criteria. Results are\nsorted **newest first** by **sale close date**.\n\nFilters from different categories stack with **logical AND**; multiple values in one array\nfield stack with **logical OR**. Results cover the merchant’s **last two years** of sales\n(narrow further with `start_date` / `end_date`). Pagination tokens are not interchangeable\nwith `GET /sales`.",
+      "httpMethod": "POST",
+      "path": "/v1.0/merchants/{merchant_code}/sales/search",
+      "sample": "sumup sales search \\\n  --merchant-code \"MCZM9TGQ\" \\\n  --pagination-limit \"10\" \\\n  --pagination-token \"66bcbtzelrubzeuzruzgu76678trncH\" \\\n  --start-date \"2026-06-01T00:00:00Z\" \\\n  --end-date \"2026-06-02T23:59:59Z\" \\\n  --sales-channel \"POS\"\n"
     },
     {
       "id": "UpdateCheckout",
