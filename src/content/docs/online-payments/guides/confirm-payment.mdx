@@ -1,0 +1,376 @@
+---
+title: Confirm a payment and update your order
+description: Verify checkout results on your server and update each order once, even when notifications are repeated or delayed.
+sidebar:
+  order: 91
+---
+
+Confirm payment on your server before fulfilling an order. Use browser callbacks and webhooks to trigger that check, then retrieve the checkout from SumUp and match it to the payment attempt saved for your order.
+
+This guide applies to online checkouts, including Hosted Checkout, the Payment Widget, and checkout SDKs. Cloud API uses a different event and transaction lookup; follow its [reader transaction result guide](/terminal-payments/cloud-api/#receive-transaction-results).
+
+## Save the payment attempt
+
+When your server creates a checkout, save its ID alongside your order ID, checkout reference, amount, currency, and merchant code. Choose the amount and merchant from your stored order. Keep earlier attempts so a delayed notification can still be matched to the correct order.
+
+Two checkout fields control different parts of the return flow:
+
+| Field          | Destination                            | Purpose                                                                                       |
+| -------------- | -------------------------------------- | --------------------------------------------------------------------------------------------- |
+| `redirect_url` | A page the customer's browser can open | Returns the customer to your website. Its exact behavior depends on the checkout integration. |
+| `return_url`   | A public HTTPS endpoint on your server | Receives checkout status notifications from SumUp.                                            |
+
+For example, include these fields when creating a Hosted Checkout:
+
+```json
+{
+  "checkout_reference": "order-123-attempt-1",
+  "amount": 10,
+  "currency": "EUR",
+  "merchant_code": "YOUR_MERCHANT_CODE",
+  "hosted_checkout": { "enabled": true },
+  "redirect_url": "https://example.com/orders/123",
+  "return_url": "https://example.com/webhooks/sumup"
+}
+```
+
+Use a unique reference for each new payment attempt. The checkout's initial `PENDING` state means the order is still unpaid.
+
+## Receive a notification
+
+For online checkout status changes, SumUp sends this payload to `return_url`:
+
+```json
+{
+  "event_type": "CHECKOUT_STATUS_CHANGED",
+  "id": "CHECKOUT_ID"
+}
+```
+
+Your receiver should:
+
+1. Accept the HTTPS `POST`, recognize the event type, and validate that `id` is a string. Ignore unknown event types with a successful response.
+2. Find the saved payment attempt for that checkout ID. Never take the order amount or merchant code from the incoming notification.
+3. Save or enqueue the verification work durably before acknowledging it. Return an empty `2xx` response promptly once that work is stored. If it cannot be stored, return an error so delivery can be retried.
+4. Retrieve the checkout from SumUp and apply the checks below. If a lookup fails, retry the verification job with a delay and a limit; do not create another payment.
+
+See [webhook delivery and retry timing](/online-payments/webhooks/) for the notification contract. A notification's presence does not prove payment succeeded.
+
+## Retrieve and verify the checkout
+
+Install and configure a [server-side SDK](/tools/sdks/), then pass its authenticated client and your saved payment attempt to the function for your language. Run this code only on your server. Load the attempt from your database, not from browser input or the webhook body.
+
+Each attempt contains the checkout ID, checkout reference, merchant code, amount, and currency saved when you created the checkout. The JavaScript example uses `checkoutId`, `checkoutReference`, `merchantCode`, `amount`, and `currency`; the other examples define a `PaymentAttempt` type.
+
+Store the amount in the same major-unit format used by the Checkouts API. Compare the saved amount directly, without recalculating the order total from incoming data.
+
+<Tabs syncKey="backend_lang">
+
+<TabItem label="JavaScript" icon="seti:javascript">
+
+```js title="verify-checkout.mjs"
+export async function verifyCheckout(client, attempt) {
+  const checkout = await client.checkouts.get(attempt.checkoutId);
+  if (
+    checkout.id !== attempt.checkoutId ||
+    checkout.checkout_reference !== attempt.checkoutReference ||
+    checkout.merchant_code !== attempt.merchantCode ||
+    checkout.amount !== attempt.amount ||
+    checkout.currency !== attempt.currency
+  ) {
+    throw new Error("Checkout does not match the saved payment attempt");
+  }
+  if (!checkout.status) throw new Error("Checkout status is missing");
+  return checkout.status;
+}
+```
+
+</TabItem>
+
+<TabItem label=".NET" icon="seti:c-sharp">
+
+```csharp title="PaymentVerification.cs"
+using System;
+using System.Threading;
+using System.Threading.Tasks;
+using SumUp;
+
+public record PaymentAttempt(
+    string CheckoutId, string CheckoutReference, string MerchantCode,
+    float Amount, Currency Currency);
+
+public static class PaymentVerification
+{
+    public static async Task<CheckoutSuccessStatus> VerifyCheckoutAsync(
+        SumUpClient client, PaymentAttempt attempt,
+        CancellationToken cancellationToken = default)
+    {
+        var checkout = (await client.Checkouts.GetAsync(
+            attempt.CheckoutId, cancellationToken: cancellationToken)).Data
+            ?? throw new InvalidOperationException("Checkout was not returned");
+
+        if (checkout.Id != attempt.CheckoutId ||
+            checkout.CheckoutReference != attempt.CheckoutReference ||
+            checkout.MerchantCode != attempt.MerchantCode ||
+            checkout.Amount != attempt.Amount || checkout.Currency != attempt.Currency)
+        {
+            throw new InvalidOperationException("Checkout does not match the saved payment attempt");
+        }
+        return checkout.Status
+            ?? throw new InvalidOperationException("Checkout status is missing");
+    }
+}
+```
+
+</TabItem>
+
+<TabItem label="Java" icon="seti:java">
+
+With Java SDK 0.1.2, create your client with `PaymentVerification.createClient(apiKey)`. Its JSON configuration reads the API's snake-case field names.
+
+```java title="PaymentVerification.java"
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.sumup.sdk.SumUpClient;
+import com.sumup.sdk.core.ApiClient;
+import com.sumup.sdk.core.ApiException;
+import com.sumup.sdk.models.CheckoutSuccessStatus;
+import com.sumup.sdk.models.Currency;
+import java.util.Objects;
+
+public final class PaymentVerification {
+    public record PaymentAttempt(
+        String checkoutId, String checkoutReference, String merchantCode,
+        float amount, Currency currency) {}
+
+    public static SumUpClient createClient(String apiKey) {
+        var mapper = JsonMapper.builder().findAndAddModules()
+            .propertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE)
+            .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES).build();
+        return SumUpClient.builder().apiClient(ApiClient.builder()
+            .accessToken(apiKey).objectMapper(mapper).build()).build();
+    }
+
+    public static CheckoutSuccessStatus verifyCheckout(
+        SumUpClient client, PaymentAttempt attempt) throws ApiException {
+        var checkout = client.checkouts().get(attempt.checkoutId());
+        if (!Objects.equals(checkout.id(), attempt.checkoutId()) ||
+            !Objects.equals(checkout.checkoutReference(), attempt.checkoutReference()) ||
+            !Objects.equals(checkout.merchantCode(), attempt.merchantCode()) ||
+            !Objects.equals(checkout.amount(), attempt.amount()) ||
+            !Objects.equals(checkout.currency(), attempt.currency())) {
+            throw new IllegalStateException("Checkout does not match the saved payment attempt");
+        }
+        if (checkout.status() == null) throw new IllegalStateException("Checkout status is missing");
+        return checkout.status();
+    }
+}
+```
+
+</TabItem>
+
+<TabItem label="Go" icon="seti:go">
+
+```go title="verify_checkout.go"
+package payments
+
+import (
+    "context"
+    "fmt"
+
+    sumup "github.com/sumup/sumup-go"
+)
+
+type PaymentAttempt struct {
+    CheckoutID        string
+    CheckoutReference string
+    MerchantCode      string
+    Amount            float32
+    Currency          sumup.Currency
+}
+
+func VerifyCheckout(ctx context.Context, client *sumup.Client, attempt PaymentAttempt) (sumup.CheckoutSuccessStatus, error) {
+    checkout, err := client.Checkouts.Get(ctx, attempt.CheckoutID)
+    if err != nil {
+        return "", fmt.Errorf("get checkout: %w", err)
+    }
+    if checkout.ID == nil || *checkout.ID != attempt.CheckoutID ||
+        checkout.CheckoutReference == nil || *checkout.CheckoutReference != attempt.CheckoutReference ||
+        checkout.MerchantCode == nil || *checkout.MerchantCode != attempt.MerchantCode ||
+        checkout.Amount == nil || *checkout.Amount != attempt.Amount ||
+        checkout.Currency == nil || *checkout.Currency != attempt.Currency {
+        return "", fmt.Errorf("checkout does not match the saved payment attempt")
+    }
+    if checkout.Status == nil {
+        return "", fmt.Errorf("checkout status is missing")
+    }
+    return *checkout.Status, nil
+}
+```
+
+</TabItem>
+
+<TabItem label="Python" icon="seti:python">
+
+```py title="verify_checkout.py"
+from dataclasses import dataclass
+
+from sumup import Sumup
+
+
+@dataclass(frozen=True)
+class PaymentAttempt:
+    checkout_id: str
+    checkout_reference: str
+    merchant_code: str
+    amount: float
+    currency: str
+
+
+def verify_checkout(client: Sumup, attempt: PaymentAttempt) -> str:
+    checkout = client.checkouts.get(attempt.checkout_id)
+    if (
+        checkout.id != attempt.checkout_id
+        or checkout.checkout_reference != attempt.checkout_reference
+        or checkout.merchant_code != attempt.merchant_code
+        or checkout.amount != attempt.amount
+        or checkout.currency != attempt.currency
+    ):
+        raise ValueError("Checkout does not match the saved payment attempt")
+    if not checkout.status:
+        raise ValueError("Checkout status is missing")
+    return checkout.status
+```
+
+</TabItem>
+
+<TabItem label="Rust" icon="seti:rust">
+
+```rust title="src/payment_verification.rs"
+use sumup::{Client, Currency, checkouts::CheckoutSuccessStatus};
+
+pub struct PaymentAttempt {
+    pub checkout_id: String,
+    pub checkout_reference: String,
+    pub merchant_code: String,
+    pub amount: f32,
+    pub currency: Currency,
+}
+
+pub async fn verify_checkout(
+    client: &Client,
+    attempt: &PaymentAttempt,
+) -> Result<CheckoutSuccessStatus, Box<dyn std::error::Error + Send + Sync>> {
+    let checkout = client.checkouts().get(&attempt.checkout_id).await?;
+    if checkout.id.as_deref() != Some(attempt.checkout_id.as_str())
+        || checkout.checkout_reference.as_deref() != Some(attempt.checkout_reference.as_str())
+        || checkout.merchant_code.as_deref() != Some(attempt.merchant_code.as_str())
+        || checkout.amount != Some(attempt.amount)
+        || checkout.currency.as_ref() != Some(&attempt.currency)
+    {
+        return Err("Checkout does not match the saved payment attempt".into());
+    }
+    checkout
+        .status
+        .ok_or_else(|| "Checkout status is missing".into())
+}
+```
+
+</TabItem>
+
+<TabItem label="PHP" icon="seti:php">
+
+Load Composer's `vendor/autoload.php` in your application before calling this helper.
+
+```php title="verify-checkout.php"
+<?php
+
+declare(strict_types=1);
+
+use SumUp\SumUp;
+
+final readonly class PaymentAttempt
+{
+    public function __construct(
+        public string $checkoutId,
+        public string $checkoutReference,
+        public string $merchantCode,
+        public float $amount,
+        public string $currency,
+    ) {}
+}
+
+function verifyCheckout(SumUp $client, PaymentAttempt $attempt): string
+{
+    $checkout = $client->checkouts()->get($attempt->checkoutId);
+    if (
+        $checkout->id !== $attempt->checkoutId ||
+        $checkout->checkoutReference !== $attempt->checkoutReference ||
+        $checkout->merchantCode !== $attempt->merchantCode ||
+        $checkout->amount !== $attempt->amount ||
+        $checkout->currency !== $attempt->currency
+    ) {
+        throw new RuntimeException('Checkout does not match the saved payment attempt');
+    }
+    return $checkout->status ?? throw new RuntimeException('Checkout status is missing');
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+If the lookup fails, the checkout does not match, or its status is missing, the function raises an exception or returns an error. Leave the order unchanged. Retry temporary lookup failures; investigate mismatches before trying again.
+
+Use the returned status as follows. Some SDKs return enum values, such as `CheckoutSuccessStatus.Paid` in .NET, for these API statuses:
+
+| Status                      | Order handling                                                         |
+| --------------------------- | ---------------------------------------------------------------------- |
+| `PAID`                      | Record the successful attempt and mark the associated order paid once. |
+| `PENDING`                   | Keep the order unpaid and continue waiting for the final result.       |
+| `FAILED` or `EXPIRED`       | Record the unsuccessful attempt. Offer a new attempt when appropriate. |
+| Unrecognized or unavailable | Keep the order unpaid and investigate or retry the lookup.             |
+
+Treat the API response as the source of truth. Do not downgrade a paid order because an older notification arrived later. Track refunds separately from checkout confirmation.
+
+## Update the order once
+
+Notifications can be repeated, arrive late, or race with a browser-triggered status check. Make the order update and creation of its fulfillment job one atomic database operation.
+
+For example, in PostgreSQL, if `orders.payment_status` starts as `unpaid` and `fulfillment_jobs.order_id` has a unique constraint, this statement records a verified payment and creates at most one job for the order:
+
+```sql
+WITH paid_order AS (
+  UPDATE orders
+  SET payment_status = 'paid'
+  WHERE id = $1 AND payment_status = 'unpaid'
+  RETURNING id
+)
+INSERT INTO fulfillment_jobs (order_id)
+SELECT id FROM paid_order
+ON CONFLICT (order_id) DO NOTHING;
+```
+
+Run this only after verifying a `PAID` checkout against the saved attempt. Adapt the table and status names to your application. Save the successful checkout ID and any transaction identifiers with your payment records as part of the same transaction.
+
+Have a worker process the saved job. Its fulfillment action must also tolerate retries, so a restarted job does not send a second shipment or repeat another order action.
+
+## Return the customer to your order page
+
+When the customer returns through `redirect_url`, or your widget or SDK callback fires, ask your backend for the order's status. The backend can trigger the same verification process if confirmation has not arrived yet.
+
+Show a waiting state while verification is pending. Show a paid state after the backend has confirmed payment. Do not mark an order paid from a URL parameter or a client callback alone.
+
+## Verify the integration
+
+Test these cases with a [sandbox merchant and test cards](/online-payments/testing/):
+
+- A successful payment reaches `PAID` and produces one fulfillment job.
+- Delivering the same notification twice does not create another job.
+- A browser callback and a webhook arrive together without duplicating the order update.
+- A pending, failed, expired, mismatched, or unrecognized checkout is not fulfilled.
+- An API timeout leaves the order unpaid while verification is retried.
+- Closing the browser does not prevent a later webhook from confirming payment.
+
+For an uncertain result, use the [safe retry and reconciliation guidance](/online-payments/guides/response-handling/#check-an-uncertain-payment).
