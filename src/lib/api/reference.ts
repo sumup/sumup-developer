@@ -98,7 +98,7 @@ export function createApiReference() {
       const operation = value as Operation;
       operations[operation.operationId] =
         establishedPaths[operation.operationId] ??
-        `${slugify(operation.tags[0])}/${slugify(operation["x-codegen"].method_name)}`;
+        `${slugify(operation.tags[0])}/${slugify(operation["x-codegen"]?.method_name ?? operation.operationId)}`;
       const legacyAnchor = operations[operation.operationId].replace("/", "-");
       legacyLinks[legacyAnchor] = `/api/${operations[operation.operationId]}/`;
       legacyLinks[`${legacyAnchor}-heading`] = legacyLinks[legacyAnchor];
