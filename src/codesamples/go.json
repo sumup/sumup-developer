@@ -3,7 +3,7 @@
   "language": "go",
   "sdk": {
     "module": "github.com/sumup/sumup-go",
-    "version": "0.21.0"
+    "version": "0.22.0"
   },
   "openAPIVersion": "1.0.0",
   "samples": [
@@ -54,7 +54,17 @@
       "description": "Create a checkout with a SumUp-hosted payment page",
       "httpMethod": "POST",
       "path": "/v0.1/checkouts",
-      "sample": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/sumup/sumup-go\"\n)\n\nfunc main() {\n\tclient := sumup.NewClient()\n\tresult, err := client.Checkouts.Create(context.TODO(), sumup.CheckoutsCreateParams{\n\t\tAmount:            12,\n\t\tCheckoutReference: \"b50pr914-6k0e-3091-a592-890010285b3d\",\n\t\tCurrency:          \"EUR\",\n\t\tDescription:       new(\"A sample checkout\"),\n\t\tHostedCheckout: new(sumup.HostedCheckout{\n\t\t\tEnabled: true,\n\t\t}),\n\t\tMerchantCode: \"MCXXXXXX\",\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\n\tfmt.Printf(\"%+v\\n\", result)\n}\n"
+      "sample": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/sumup/sumup-go\"\n)\n\nfunc main() {\n\tclient := sumup.NewClient()\n\tresult, err := client.Checkouts.Create(context.TODO(), sumup.CheckoutsCreateParams{\n\t\tAmount:            12,\n\t\tCheckoutReference: \"b50pr914-6k0e-3091-a592-890010285b3d\",\n\t\tCurrency:          \"EUR\",\n\t\tDescription:       new(\"A sample checkout\"),\n\t\tHostedCheckout: new(sumup.HostedCheckout{\n\t\t\tEnabled: true,\n\t\t}),\n\t\tMerchantCode: \"MCXXXXXX\",\n\t\tRedirectURL:  new(\"https://example.com/orders/123/complete\"),\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\n\tfmt.Printf(\"%+v\\n\", result)\n}\n"
+    },
+    {
+      "id": "CreateCheckout.Tokenization",
+      "operationId": "CreateCheckout",
+      "example": "Tokenization",
+      "summary": "Save a customer card",
+      "description": "Create a checkout to collect consent and save a card through the Payment Widget.",
+      "httpMethod": "POST",
+      "path": "/v0.1/checkouts",
+      "sample": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/sumup/sumup-go\"\n)\n\nfunc main() {\n\tclient := sumup.NewClient()\n\tresult, err := client.Checkouts.Create(context.TODO(), sumup.CheckoutsCreateParams{\n\t\tAmount:            1,\n\t\tCheckoutReference: \"save-card-123\",\n\t\tCurrency:          \"EUR\",\n\t\tCustomerID:        new(\"831ff8d4cd5958ab5670\"),\n\t\tDescription:       new(\"Save a card for future payments\"),\n\t\tMerchantCode:      \"MCXXXXXX\",\n\t\tPurpose:           new(sumup.CheckoutCreateRequestPurpose(\"SETUP_RECURRING_PAYMENT\")),\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\n\tfmt.Printf(\"%+v\\n\", result)\n}\n"
     },
     {
       "id": "CreateCustomer",
@@ -117,7 +127,7 @@
       "description": "Creates a Checkout for a Reader.\n\nThis process is asynchronous and the actual transaction may take some time to be started on the device.\n\n\nThere are some caveats when using this endpoint:\n* The target device must be online, otherwise checkout won't be accepted\n* After the checkout is accepted, the system has 60 seconds to start the payment on the target device. During this time, any other checkout for the same device will be rejected.\n\n\n**Note**: If the target device is a Solo, it must be in version 3.3.24.3 or higher.\n\n\nOptionally include an `affiliate` object to attach integrator metadata to the payment.\nProvide both `app_id` and `key` when including this object.",
       "httpMethod": "POST",
       "path": "/v0.1/merchants/{merchant_code}/readers/{reader_id}/checkout",
-      "sample": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/sumup/sumup-go\"\n\t\"github.com/sumup/sumup-go/nullable\"\n)\n\nfunc main() {\n\tclient := sumup.NewClient()\n\tresult, err := client.Readers.CreateCheckout(context.TODO(), \"MC0X0ABC\", \"rdr_3MSAFM23CK82VSTT4BN6RWSQ65\", sumup.ReadersCreateCheckoutParams{\n\t\tAADE: new(sumup.CreateCheckoutRequestAADE{\n\t\t\tProviderID:    \"123\",\n\t\t\tSignature:     \"QjcxRDdBNTU1MDcyRTNFRTREMkZEM0Y0NTdBMjkxMTU4MzBFNkNCQTs7MjAyNTExMTIyMTQ3MTM7Nzk2OzEwNDs5MDA7OTAwOzU0ODg5MDM5\",\n\t\t\tSignatureData: \"B71D7A555072E3EE4D2FD3F457A29115830E6CBA;;20251112214713;796;104;900;900;54889039\",\n\t\t}),\n\t\tAffiliate: nullable.Value(sumup.CreateCheckoutRequestAffiliate{\n\t\t\tAppID:                \"com.example.app\",\n\t\t\tForeignTransactionID: new(\"123456\"),\n\t\t\tKey:                  \"ef7b684a-d6f4-4e93-9b1b-6acdd6564a8e\",\n\t\t\tTags:                 sumup.CreateCheckoutRequestAffiliateTags{\"custom_key_1\": \"custom_value_1\", \"custom_key_2\": \"custom_value_2\"},\n\t\t}),\n\t\tCardType:     new(sumup.CreateCheckoutRequestCardType(\"debit\")),\n\t\tDescription:  new(\"This is a description...\"),\n\t\tInstallments: nullable.Value(1),\n\t\tReturnURL:    new(\"https://webhook.site/e21ddbb0-42c4-4358-a981-f5a95cd86fb5\"),\n\t\tTipRates:     []float32{0.05, 0.1, 0.15},\n\t\tTipTimeout:   new(60),\n\t\tTotalAmount: sumup.CreateCheckoutRequestTotalAmount{\n\t\t\tCurrency:  \"EUR\",\n\t\t\tMinorUnit: 2,\n\t\t\tValue:     5033,\n\t\t},\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\n\tfmt.Printf(\"%+v\\n\", result)\n}\n"
+      "sample": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/sumup/sumup-go\"\n)\n\nfunc main() {\n\tclient := sumup.NewClient()\n\tresult, err := client.Readers.CreateCheckout(context.TODO(), \"MC0X0ABC\", \"rdr_3MSAFM23CK82VSTT4BN6RWSQ65\", sumup.ReadersCreateCheckoutParams{\n\t\tReturnURL: new(\"https://example.com/sumup/webhook\"),\n\t\tTotalAmount: sumup.CreateCheckoutRequestTotalAmount{\n\t\t\tCurrency:  \"EUR\",\n\t\t\tMinorUnit: 2,\n\t\t\tValue:     1500,\n\t\t},\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\n\tfmt.Printf(\"%+v\\n\", result)\n}\n"
     },
     {
       "id": "CreateReaderTerminate",
@@ -282,6 +292,15 @@
       "sample": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/sumup/sumup-go\"\n)\n\nfunc main() {\n\tclient := sumup.NewClient()\n\tresult, err := client.Receipts.Get(context.TODO(), \"410fc44a-5956-44e1-b5cc-19c6f8d727a4\", sumup.ReceiptsGetParams{\n\t\tMid:       \"MH4H92C7\",\n\t\tTxEventID: new(9567461191),\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\n\tfmt.Printf(\"%+v\\n\", result)\n}\n"
     },
     {
+      "id": "GetSaleV10",
+      "operationId": "GetSaleV10",
+      "summary": "Gets a sale",
+      "description": "Returns `Sale` for `sale_id`, including item lines and `payments[]`.\nNon-finalised sales are never returned; only fully-paid sales.",
+      "httpMethod": "GET",
+      "path": "/v1.0/merchants/{merchant_code}/sales/{sale_id}",
+      "sample": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/sumup/sumup-go\"\n)\n\nfunc main() {\n\tclient := sumup.NewClient()\n\tresult, err := client.Sales.GetSaleV10(context.TODO(), \"MCZM9TGQ\", \"5965aa65-e45a-4cc1-9063-c1c1e3b8607f\")\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\n\tfmt.Printf(\"%+v\\n\", result)\n}\n"
+    },
+    {
       "id": "GetTransactionV2.1",
       "operationId": "GetTransactionV2.1",
       "summary": "Retrieve a transaction",
@@ -363,6 +382,15 @@
       "sample": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/sumup/sumup-go\"\n)\n\nfunc main() {\n\tclient := sumup.NewClient()\n\tresult, err := client.Readers.List(context.TODO(), \"MK10CL2A\")\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\n\tfmt.Printf(\"%+v\\n\", result)\n}\n"
     },
     {
+      "id": "ListSalesV10",
+      "operationId": "ListSalesV10",
+      "summary": "Lists sales",
+      "description": "Returns a paginated list of `Sale` objects. Results are sorted **newest first** by the\n**newest event** recorded for each sale. Pagination tokens follow that order.\n\nCovers the merchant’s **last two years** of sales. Non-finalised sales are never returned;\nonly fully-paid sales. Use `POST /sales/search` for filtered queries.",
+      "httpMethod": "GET",
+      "path": "/v1.0/merchants/{merchant_code}/sales",
+      "sample": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/sumup/sumup-go\"\n)\n\nfunc main() {\n\tclient := sumup.NewClient()\n\tresult, err := client.Sales.ListSalesV10(context.TODO(), \"MCZM9TGQ\", sumup.SalesListSalesV10Params{\n\t\tPaginationToken: new(\"66bcbtzelrubzeuzruzgu76678trncH\"),\n\t\tPaginationLimit: new(10),\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\n\tfmt.Printf(\"%+v\\n\", result)\n}\n"
+    },
+    {
       "id": "ListTransactionsV2.1",
       "operationId": "ListTransactionsV2.1",
       "summary": "List transactions",
@@ -409,7 +437,7 @@
       "description": "Process a checkout with a token",
       "httpMethod": "PUT",
       "path": "/v0.1/checkouts/{checkout_id}",
-      "sample": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/sumup/sumup-go\"\n)\n\nfunc main() {\n\tclient := sumup.NewClient()\n\tresult, err := client.Checkouts.Process(context.TODO(), \"4e425463-3e1b-431d-83fa-1e51c2925e99\", sumup.CheckoutsProcessParams{\n\t\tCustomerID:   new(\"MEDKHDTI\"),\n\t\tInstallments: new(1),\n\t\tPaymentType:  \"card\",\n\t\tToken:        new(\"ba85dfee-c3cf-48a6-84f5-d7d761fbba50\"),\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\n\tfmt.Printf(\"%+v\\n\", result)\n}\n"
+      "sample": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/sumup/sumup-go\"\n)\n\nfunc main() {\n\tclient := sumup.NewClient()\n\tresult, err := client.Checkouts.Process(context.TODO(), \"4e425463-3e1b-431d-83fa-1e51c2925e99\", sumup.CheckoutsProcessParams{\n\t\tCustomerID:  new(\"831ff8d4cd5958ab5670\"),\n\t\tPaymentType: \"card\",\n\t\tToken:       new(\"6878cb7f-6515-47bf-bdd9-1408d270fdce\"),\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\n\tfmt.Printf(\"%+v\\n\", result)\n}\n"
     },
     {
       "id": "ProcessCheckout.ProcessiDeal",
@@ -422,13 +450,33 @@
       "sample": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/sumup/sumup-go\"\n)\n\nfunc main() {\n\tclient := sumup.NewClient()\n\tresult, err := client.Checkouts.Process(context.TODO(), \"4e425463-3e1b-431d-83fa-1e51c2925e99\", sumup.CheckoutsProcessParams{\n\t\tPaymentType: \"ideal\",\n\t\tPersonalDetails: new(sumup.PersonalDetails{\n\t\t\tAddress: new(sumup.AddressLegacy{\n\t\t\t\tCountry: new(\"NL\"),\n\t\t\t}),\n\t\t\tEmail:     new(\"user@example.com\"),\n\t\t\tFirstName: new(\"John\"),\n\t\t\tLastName:  new(\"Doe\"),\n\t\t}),\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\n\tfmt.Printf(\"%+v\\n\", result)\n}\n"
     },
     {
-      "id": "RefundTransaction",
+      "id": "RefundTransaction.FullRefund",
       "operationId": "RefundTransaction",
-      "summary": "Refund a transaction",
+      "example": "FullRefund",
+      "summary": "Full refund",
       "description": "Refunds a transaction identified by its SumUp transaction ID. Omit the request body to request a full refund, or provide `amount` for a partial refund in the transaction's currency.\n\nRetrieve the transaction afterwards to inspect its refunded amount and refund events. The transaction must be eligible for a refund; see the error responses for invalid amounts, permissions, and processing failures.",
       "httpMethod": "POST",
       "path": "/v1.0/merchants/{merchant_code}/payments/{transaction_id}/refunds",
-      "sample": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/sumup/sumup-go\"\n)\n\nfunc main() {\n\tclient := sumup.NewClient()\n\tresult, err := client.Transactions.Refund(context.TODO(), \"MH4H92C7\", \"4ffb8dfc-7f2b-413d-a497-2ad00766585e\", sumup.TransactionsRefundParams{\n\t\tAmount: new(float32(5)),\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\n\tfmt.Printf(\"%+v\\n\", result)\n}\n"
+      "sample": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/sumup/sumup-go\"\n)\n\nfunc main() {\n\tclient := sumup.NewClient()\n\tresult, err := client.Transactions.Refund(context.TODO(), \"MH4H92C7\", \"4ffb8dfc-7f2b-413d-a497-2ad00766585e\", sumup.TransactionsRefundParams{})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\n\tfmt.Printf(\"%+v\\n\", result)\n}\n"
+    },
+    {
+      "id": "RefundTransaction.PartialRefund",
+      "operationId": "RefundTransaction",
+      "example": "PartialRefund",
+      "summary": "Partial refund",
+      "description": "Refunds a transaction identified by its SumUp transaction ID. Omit the request body to request a full refund, or provide `amount` for a partial refund in the transaction's currency.\n\nRetrieve the transaction afterwards to inspect its refunded amount and refund events. The transaction must be eligible for a refund; see the error responses for invalid amounts, permissions, and processing failures.",
+      "httpMethod": "POST",
+      "path": "/v1.0/merchants/{merchant_code}/payments/{transaction_id}/refunds",
+      "sample": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/sumup/sumup-go\"\n)\n\nfunc main() {\n\tclient := sumup.NewClient()\n\tresult, err := client.Transactions.Refund(context.TODO(), \"MH4H92C7\", \"4ffb8dfc-7f2b-413d-a497-2ad00766585e\", sumup.TransactionsRefundParams{\n\t\tAmount: new(float32(24.42)),\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\n\tfmt.Printf(\"%+v\\n\", result)\n}\n"
+    },
+    {
+      "id": "SearchSalesV10",
+      "operationId": "SearchSalesV10",
+      "summary": "Searches sales",
+      "description": "Returns a paginated list of `SaleSearchItem` rows matching filter criteria. Results are\nsorted **newest first** by **sale close date**.\n\nFilters from different categories stack with **logical AND**; multiple values in one array\nfield stack with **logical OR**. Results cover the merchant’s **last two years** of sales\n(narrow further with `start_date` / `end_date`). Pagination tokens are not interchangeable\nwith `GET /sales`.",
+      "httpMethod": "POST",
+      "path": "/v1.0/merchants/{merchant_code}/sales/search",
+      "sample": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\t\"time\"\n\n\t\"github.com/sumup/sumup-go\"\n)\n\nfunc main() {\n\tclient := sumup.NewClient()\n\tresult, err := client.Sales.SearchSalesV10(context.TODO(), \"MCZM9TGQ\", sumup.SalesSearchSalesV10Params{\n\t\tEndDate:         new(time.Date(2026, time.June, 2, 23, 59, 59, 0, time.UTC)),\n\t\tPaginationLimit: new(10),\n\t\tPaginationToken: new(\"66bcbtzelrubzeuzruzgu76678trncH\"),\n\t\tPaymentStatuses: []sumup.PaymentStatusFilterV10{\"PAID\"},\n\t\tSaleStatuses:    []sumup.SaleStateV10{\"CLOSED\"},\n\t\tSalesChannels:   []sumup.SalesChannelFilterV10{\"POS\"},\n\t\tStartDate:       new(time.Date(2026, time.June, 1, 0, 0, 0, 0, time.UTC)),\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\n\tfmt.Printf(\"%+v\\n\", result)\n}\n"
     },
     {
       "id": "UpdateCheckout",
