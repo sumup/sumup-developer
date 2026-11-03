@@ -3,7 +3,7 @@
   "language": "php",
   "sdk": {
     "module": "sumup/sumup-php",
-    "version": "0.1.8"
+    "version": "0.1.9"
   },
   "openAPIVersion": "1.0.0",
   "samples": [
@@ -54,7 +54,17 @@
       "description": "Create a checkout with a SumUp-hosted payment page",
       "httpMethod": "POST",
       "path": "/v0.1/checkouts",
-      "sample": "\u003c?php\n\ndeclare(strict_types=1);\n\nrequire __DIR__ . '/vendor/autoload.php';\n\n$sumup = new \\SumUp\\SumUp('sup_sk_your_api_key');\n\n$body = [\n    'amount' =\u003e 12,\n    'checkout_reference' =\u003e 'b50pr914-6k0e-3091-a592-890010285b3d',\n    'currency' =\u003e 'EUR',\n    'description' =\u003e 'A sample checkout',\n    'hosted_checkout' =\u003e [\n        'enabled' =\u003e true,\n    ],\n    'merchant_code' =\u003e 'MCXXXXXX',\n];\n\n$result = $sumup-\u003echeckouts()-\u003ecreate(\n    $body,\n);\n\nvar_dump($result);\n"
+      "sample": "\u003c?php\n\ndeclare(strict_types=1);\n\nrequire __DIR__ . '/vendor/autoload.php';\n\n$sumup = new \\SumUp\\SumUp('sup_sk_your_api_key');\n\n$body = [\n    'amount' =\u003e 12,\n    'checkout_reference' =\u003e 'b50pr914-6k0e-3091-a592-890010285b3d',\n    'currency' =\u003e 'EUR',\n    'description' =\u003e 'A sample checkout',\n    'hosted_checkout' =\u003e [\n        'enabled' =\u003e true,\n    ],\n    'merchant_code' =\u003e 'MCXXXXXX',\n    'redirect_url' =\u003e 'https://example.com/orders/123/complete',\n];\n\n$result = $sumup-\u003echeckouts()-\u003ecreate(\n    $body,\n);\n\nvar_dump($result);\n"
+    },
+    {
+      "id": "CreateCheckout.Tokenization",
+      "operationId": "CreateCheckout",
+      "example": "Tokenization",
+      "summary": "Save a customer card",
+      "description": "Create a checkout to collect consent and save a card through the Payment Widget.",
+      "httpMethod": "POST",
+      "path": "/v0.1/checkouts",
+      "sample": "\u003c?php\n\ndeclare(strict_types=1);\n\nrequire __DIR__ . '/vendor/autoload.php';\n\n$sumup = new \\SumUp\\SumUp('sup_sk_your_api_key');\n\n$body = [\n    'amount' =\u003e 1,\n    'checkout_reference' =\u003e 'save-card-123',\n    'currency' =\u003e 'EUR',\n    'customer_id' =\u003e '831ff8d4cd5958ab5670',\n    'description' =\u003e 'Save a card for future payments',\n    'merchant_code' =\u003e 'MCXXXXXX',\n    'purpose' =\u003e 'SETUP_RECURRING_PAYMENT',\n];\n\n$result = $sumup-\u003echeckouts()-\u003ecreate(\n    $body,\n);\n\nvar_dump($result);\n"
     },
     {
       "id": "CreateCustomer",
@@ -117,7 +127,7 @@
       "description": "Creates a Checkout for a Reader.\n\nThis process is asynchronous and the actual transaction may take some time to be started on the device.\n\n\nThere are some caveats when using this endpoint:\n* The target device must be online, otherwise checkout won't be accepted\n* After the checkout is accepted, the system has 60 seconds to start the payment on the target device. During this time, any other checkout for the same device will be rejected.\n\n\n**Note**: If the target device is a Solo, it must be in version 3.3.24.3 or higher.\n\n\nOptionally include an `affiliate` object to attach integrator metadata to the payment.\nProvide both `app_id` and `key` when including this object.",
       "httpMethod": "POST",
       "path": "/v0.1/merchants/{merchant_code}/readers/{reader_id}/checkout",
-      "sample": "\u003c?php\n\ndeclare(strict_types=1);\n\nrequire __DIR__ . '/vendor/autoload.php';\n\n$sumup = new \\SumUp\\SumUp('sup_sk_your_api_key');\n\n$body = [\n    'aade' =\u003e [\n        'provider_id' =\u003e '123',\n        'signature' =\u003e 'QjcxRDdBNTU1MDcyRTNFRTREMkZEM0Y0NTdBMjkxMTU4MzBFNkNCQTs7MjAyNTExMTIyMTQ3MTM7Nzk2OzEwNDs5MDA7OTAwOzU0ODg5MDM5',\n        'signature_data' =\u003e 'B71D7A555072E3EE4D2FD3F457A29115830E6CBA;;20251112214713;796;104;900;900;54889039',\n    ],\n    'affiliate' =\u003e [\n        'app_id' =\u003e 'com.example.app',\n        'foreign_transaction_id' =\u003e '123456',\n        'key' =\u003e 'ef7b684a-d6f4-4e93-9b1b-6acdd6564a8e',\n        'tags' =\u003e [\n            'custom_key_1' =\u003e 'custom_value_1',\n            'custom_key_2' =\u003e 'custom_value_2',\n        ],\n    ],\n    'card_type' =\u003e 'debit',\n    'description' =\u003e 'This is a description...',\n    'installments' =\u003e 1,\n    'return_url' =\u003e 'https://webhook.site/e21ddbb0-42c4-4358-a981-f5a95cd86fb5',\n    'tip_rates' =\u003e [\n        0.05,\n        0.1,\n        0.15,\n    ],\n    'tip_timeout' =\u003e 60,\n    'total_amount' =\u003e [\n        'currency' =\u003e 'EUR',\n        'minor_unit' =\u003e 2,\n        'value' =\u003e 5033,\n    ],\n];\n\n$result = $sumup-\u003ereaders()-\u003ecreateCheckout(\n    'MC0X0ABC',\n    'rdr_3MSAFM23CK82VSTT4BN6RWSQ65',\n    $body,\n);\n\nvar_dump($result);\n"
+      "sample": "\u003c?php\n\ndeclare(strict_types=1);\n\nrequire __DIR__ . '/vendor/autoload.php';\n\n$sumup = new \\SumUp\\SumUp('sup_sk_your_api_key');\n\n$body = [\n    'return_url' =\u003e 'https://example.com/sumup/webhook',\n    'total_amount' =\u003e [\n        'currency' =\u003e 'EUR',\n        'minor_unit' =\u003e 2,\n        'value' =\u003e 1500,\n    ],\n];\n\n$result = $sumup-\u003ereaders()-\u003ecreateCheckout(\n    'MC0X0ABC',\n    'rdr_3MSAFM23CK82VSTT4BN6RWSQ65',\n    $body,\n);\n\nvar_dump($result);\n"
     },
     {
       "id": "CreateReaderTerminate",
@@ -282,6 +292,15 @@
       "sample": "\u003c?php\n\ndeclare(strict_types=1);\n\nrequire __DIR__ . '/vendor/autoload.php';\n\n$sumup = new \\SumUp\\SumUp('sup_sk_your_api_key');\n\n$queryParams = new \\SumUp\\Services\\ReceiptsGetParams();\n$queryParams-\u003emid = 'MH4H92C7';\n$queryParams-\u003etxEventId = 9567461191;\n\n$result = $sumup-\u003ereceipts()-\u003eget(\n    '410fc44a-5956-44e1-b5cc-19c6f8d727a4',\n    $queryParams,\n);\n\nvar_dump($result);\n"
     },
     {
+      "id": "GetSaleV10",
+      "operationId": "GetSaleV10",
+      "summary": "Gets a sale",
+      "description": "Returns `Sale` for `sale_id`, including item lines and `payments[]`.\nNon-finalised sales are never returned; only fully-paid sales.",
+      "httpMethod": "GET",
+      "path": "/v1.0/merchants/{merchant_code}/sales/{sale_id}",
+      "sample": "\u003c?php\n\ndeclare(strict_types=1);\n\nrequire __DIR__ . '/vendor/autoload.php';\n\n$sumup = new \\SumUp\\SumUp('sup_sk_your_api_key');\n\n$result = $sumup-\u003esales()-\u003egetSaleV10(\n    'MCZM9TGQ',\n    '5965aa65-e45a-4cc1-9063-c1c1e3b8607f',\n);\n\nvar_dump($result);\n"
+    },
+    {
       "id": "GetTransactionV2.1",
       "operationId": "GetTransactionV2.1",
       "summary": "Retrieve a transaction",
@@ -363,6 +382,15 @@
       "sample": "\u003c?php\n\ndeclare(strict_types=1);\n\nrequire __DIR__ . '/vendor/autoload.php';\n\n$sumup = new \\SumUp\\SumUp('sup_sk_your_api_key');\n\n$result = $sumup-\u003ereaders()-\u003elist(\n    'MK10CL2A',\n);\n\nvar_dump($result);\n"
     },
     {
+      "id": "ListSalesV10",
+      "operationId": "ListSalesV10",
+      "summary": "Lists sales",
+      "description": "Returns a paginated list of `Sale` objects. Results are sorted **newest first** by the\n**newest event** recorded for each sale. Pagination tokens follow that order.\n\nCovers the merchant’s **last two years** of sales. Non-finalised sales are never returned;\nonly fully-paid sales. Use `POST /sales/search` for filtered queries.",
+      "httpMethod": "GET",
+      "path": "/v1.0/merchants/{merchant_code}/sales",
+      "sample": "\u003c?php\n\ndeclare(strict_types=1);\n\nrequire __DIR__ . '/vendor/autoload.php';\n\n$sumup = new \\SumUp\\SumUp('sup_sk_your_api_key');\n\n$queryParams = new \\SumUp\\Services\\SalesListSalesV10Params();\n$queryParams-\u003epaginationToken = '66bcbtzelrubzeuzruzgu76678trncH';\n$queryParams-\u003epaginationLimit = 10;\n\n$result = $sumup-\u003esales()-\u003elistSalesV10(\n    'MCZM9TGQ',\n    $queryParams,\n);\n\nvar_dump($result);\n"
+    },
+    {
       "id": "ListTransactionsV2.1",
       "operationId": "ListTransactionsV2.1",
       "summary": "List transactions",
@@ -409,7 +437,7 @@
       "description": "Process a checkout with a token",
       "httpMethod": "PUT",
       "path": "/v0.1/checkouts/{checkout_id}",
-      "sample": "\u003c?php\n\ndeclare(strict_types=1);\n\nrequire __DIR__ . '/vendor/autoload.php';\n\n$sumup = new \\SumUp\\SumUp('sup_sk_your_api_key');\n\n$body = [\n    'customer_id' =\u003e 'MEDKHDTI',\n    'installments' =\u003e 1,\n    'payment_type' =\u003e 'card',\n    'token' =\u003e 'ba85dfee-c3cf-48a6-84f5-d7d761fbba50',\n];\n\n$result = $sumup-\u003echeckouts()-\u003eprocess(\n    '4e425463-3e1b-431d-83fa-1e51c2925e99',\n    $body,\n);\n\nvar_dump($result);\n"
+      "sample": "\u003c?php\n\ndeclare(strict_types=1);\n\nrequire __DIR__ . '/vendor/autoload.php';\n\n$sumup = new \\SumUp\\SumUp('sup_sk_your_api_key');\n\n$body = [\n    'customer_id' =\u003e '831ff8d4cd5958ab5670',\n    'payment_type' =\u003e 'card',\n    'token' =\u003e '6878cb7f-6515-47bf-bdd9-1408d270fdce',\n];\n\n$result = $sumup-\u003echeckouts()-\u003eprocess(\n    '4e425463-3e1b-431d-83fa-1e51c2925e99',\n    $body,\n);\n\nvar_dump($result);\n"
     },
     {
       "id": "ProcessCheckout.ProcessiDeal",
@@ -422,13 +450,33 @@
       "sample": "\u003c?php\n\ndeclare(strict_types=1);\n\nrequire __DIR__ . '/vendor/autoload.php';\n\n$sumup = new \\SumUp\\SumUp('sup_sk_your_api_key');\n\n$body = [\n    'payment_type' =\u003e 'ideal',\n    'personal_details' =\u003e [\n        'address' =\u003e [\n            'country' =\u003e 'NL',\n        ],\n        'email' =\u003e 'user@example.com',\n        'first_name' =\u003e 'John',\n        'last_name' =\u003e 'Doe',\n    ],\n];\n\n$result = $sumup-\u003echeckouts()-\u003eprocess(\n    '4e425463-3e1b-431d-83fa-1e51c2925e99',\n    $body,\n);\n\nvar_dump($result);\n"
     },
     {
-      "id": "RefundTransaction",
+      "id": "RefundTransaction.FullRefund",
       "operationId": "RefundTransaction",
-      "summary": "Refund a transaction",
+      "example": "FullRefund",
+      "summary": "Full refund",
       "description": "Refunds a transaction identified by its SumUp transaction ID. Omit the request body to request a full refund, or provide `amount` for a partial refund in the transaction's currency.\n\nRetrieve the transaction afterwards to inspect its refunded amount and refund events. The transaction must be eligible for a refund; see the error responses for invalid amounts, permissions, and processing failures.",
       "httpMethod": "POST",
       "path": "/v1.0/merchants/{merchant_code}/payments/{transaction_id}/refunds",
-      "sample": "\u003c?php\n\ndeclare(strict_types=1);\n\nrequire __DIR__ . '/vendor/autoload.php';\n\n$sumup = new \\SumUp\\SumUp('sup_sk_your_api_key');\n\n$body = [\n    'amount' =\u003e 5,\n];\n\n$result = $sumup-\u003etransactions()-\u003erefund(\n    'MH4H92C7',\n    '4ffb8dfc-7f2b-413d-a497-2ad00766585e',\n    $body,\n);\n\nvar_dump($result);\n"
+      "sample": "\u003c?php\n\ndeclare(strict_types=1);\n\nrequire __DIR__ . '/vendor/autoload.php';\n\n$sumup = new \\SumUp\\SumUp('sup_sk_your_api_key');\n\n$body = [];\n\n$result = $sumup-\u003etransactions()-\u003erefund(\n    'MH4H92C7',\n    '4ffb8dfc-7f2b-413d-a497-2ad00766585e',\n    $body,\n);\n\nvar_dump($result);\n"
+    },
+    {
+      "id": "RefundTransaction.PartialRefund",
+      "operationId": "RefundTransaction",
+      "example": "PartialRefund",
+      "summary": "Partial refund",
+      "description": "Refunds a transaction identified by its SumUp transaction ID. Omit the request body to request a full refund, or provide `amount` for a partial refund in the transaction's currency.\n\nRetrieve the transaction afterwards to inspect its refunded amount and refund events. The transaction must be eligible for a refund; see the error responses for invalid amounts, permissions, and processing failures.",
+      "httpMethod": "POST",
+      "path": "/v1.0/merchants/{merchant_code}/payments/{transaction_id}/refunds",
+      "sample": "\u003c?php\n\ndeclare(strict_types=1);\n\nrequire __DIR__ . '/vendor/autoload.php';\n\n$sumup = new \\SumUp\\SumUp('sup_sk_your_api_key');\n\n$body = [\n    'amount' =\u003e 24.42,\n];\n\n$result = $sumup-\u003etransactions()-\u003erefund(\n    'MH4H92C7',\n    '4ffb8dfc-7f2b-413d-a497-2ad00766585e',\n    $body,\n);\n\nvar_dump($result);\n"
+    },
+    {
+      "id": "SearchSalesV10",
+      "operationId": "SearchSalesV10",
+      "summary": "Searches sales",
+      "description": "Returns a paginated list of `SaleSearchItem` rows matching filter criteria. Results are\nsorted **newest first** by **sale close date**.\n\nFilters from different categories stack with **logical AND**; multiple values in one array\nfield stack with **logical OR**. Results cover the merchant’s **last two years** of sales\n(narrow further with `start_date` / `end_date`). Pagination tokens are not interchangeable\nwith `GET /sales`.",
+      "httpMethod": "POST",
+      "path": "/v1.0/merchants/{merchant_code}/sales/search",
+      "sample": "\u003c?php\n\ndeclare(strict_types=1);\n\nrequire __DIR__ . '/vendor/autoload.php';\n\n$sumup = new \\SumUp\\SumUp('sup_sk_your_api_key');\n\n$body = [\n    'end_date' =\u003e '2026-06-02T23:59:59Z',\n    'pagination_limit' =\u003e 10,\n    'pagination_token' =\u003e '66bcbtzelrubzeuzruzgu76678trncH',\n    'payment_statuses' =\u003e [\n        'PAID',\n    ],\n    'sale_statuses' =\u003e [\n        'CLOSED',\n    ],\n    'sales_channels' =\u003e [\n        'POS',\n    ],\n    'start_date' =\u003e '2026-06-01T00:00:00Z',\n];\n\n$result = $sumup-\u003esales()-\u003esearchSalesV10(\n    'MCZM9TGQ',\n    $body,\n);\n\nvar_dump($result);\n"
     },
     {
       "id": "UpdateCheckout",
