@@ -1,0 +1,49 @@
+---
+title: Sale
+description: A sale records what was sold and connects the commercial event to its payments.
+sidebar:
+  order: 30
+---
+
+A sale is the commercial record of an exchange between a merchant and a
+customer. It answers **what was sold**, independently of how the customer paid.
+
+A sale can contain business details such as:
+
+- Items and quantities
+- Taxes, discounts, and tips
+- The sales channel, device, or location
+- The total amount and associated payments
+
+Keeping the commercial record separate from payment processing lets a merchant
+record what was sold even when a purchase uses multiple payments or a method
+such as cash.
+
+## How sales, checkouts, and transactions relate
+
+Use these terms to describe different parts of the same flow:
+
+| Term                                        | Purpose                                                                 |
+| ------------------------------------------- | ----------------------------------------------------------------------- |
+| Sale                                        | Records what the customer is buying and the associated payments.        |
+| [Checkout](/tools/glossary/checkout/)       | Carries the amount, currency, and instructions used to collect payment. |
+| [Transaction](/tools/glossary/transaction/) | Records the outcome of a payment attempt and related financial events.  |
+
+In a typical online purchase, your system holds the order or basket. You create
+a checkout for the amount to collect, and payment processing produces a
+transaction. You then use the payment result to update the order in your system.
+
+The exact relationship depends on the integration. A merchant can split one
+sale across multiple payments, and a cash payment does not require an online
+checkout.
+
+## Sales in the public API
+
+The [Sales API](/api/tags/sales/) exposes fully paid, closed sales, including
+item lines and a `payments` array. It does not return unfinished or unpaid
+sales. Your own order or basket can exist before payment; that does not mean
+it is already available as a sale through the Sales API.
+
+A sale's payment entries support bookkeeping and reconciliation. Use the
+[Transactions API](/api/transactions/get/) for the processing details and
+financial events of a SumUp transaction.
