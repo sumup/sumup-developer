@@ -1,0 +1,32 @@
+---
+title: Account
+description: Understand merchant accounts, choose the right business for API requests, and manage member access.
+sidebar:
+  label: Overview
+  order: 2
+---
+
+Understand how merchant accounts and users work together, select the right business for API requests, and manage who can access it.
+
+## Understand and choose an account
+
+- [Merchants and users](/tools/account/merchants-and-users/): understand the difference between a business and the users who can access it.
+- [Choose a merchant account](/tools/account/choose-merchant/): find a user's merchant accounts and select the merchant code for API requests.
+
+## Manage member access
+
+- [Manage members](/tools/account/members/): invite people, change their roles, manage user logins, and remove access.
+- [Roles and permissions](/tools/account/roles/): choose system roles and assign them to account members.
+
+## Authorize your integration
+
+Use an [API key](/tools/authorization/api-keys/) or [OAuth access token](/tools/authorization/oauth/) to call the account APIs. For OAuth requests, the user needs the required permissions and the token needs the endpoint's required scopes. See [permissions and OAuth scopes](/tools/account/roles/#permissions-and-oauth-scopes) for how they work together.
+
+## Run the examples
+
+Follow the [authorization guide](/tools/authorization/) to get credentials, and install your language's [server SDK](/tools/sdks/) if you use the SDK examples.
+
+The examples in this section read these environment variables:
+
+- `SUMUP_ACCESS_TOKEN`: your API key or OAuth access token.
+- `SUMUP_MERCHANT_CODE`: the [merchant code](/tools/account/choose-merchant/) for requests that act on a specific account.
