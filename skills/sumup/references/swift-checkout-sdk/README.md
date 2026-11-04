@@ -1,16 +1,18 @@
-# Swift Checkout SDK (Online)
+# Swift Checkout SDK (Web)
 
 > Prefer the latest SumUp docs first: `https://developer.sumup.com/online-payments/checkouts/swift-checkout/index.md`
 > LLM entrypoint for discovery: `https://developer.sumup.com/llms.txt`
 
-Use this integration path for fast online checkout experiences with Apple Pay/Google Pay support.
+Swift Checkout is a browser JavaScript SDK for Apple Pay and Google Pay on websites. Its name does not mean it is a native iOS SDK written in Swift. For a React Native app, use `references/react-native-sdk/README.md`; for native iOS in-person payments, use `references/ios-terminal-sdk/README.md`.
 
 ## Flow
 
-1. Create checkout server-side via SumUp API.
-2. Initialize Swift Checkout with returned checkout identifier.
-3. Present checkout UI and handle completion callback.
-4. Verify final checkout status server-side.
+1. Serve the website over HTTPS and load `https://js.sumup.com/swift-checkout/v1/sdk.js`.
+2. Initialize `window.SumUp.SwiftCheckout` with the merchant's public `sup_pk_` key. Keep secret API keys on your backend.
+3. Create checkout resources on the backend and follow the guide's payment element, wallet authorization, and checkout-processing flow.
+4. Handle completion and verify final checkout status on the backend before fulfillment.
+
+Complete the wallet-specific merchant/domain setup in the current guide. Wallet and browser availability determine which buttons can be shown.
 
 Also see `references/checkout-widget/README.md` and `references/webhooks-3ds/README.md`.
 

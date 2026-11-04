@@ -1,7 +1,9 @@
 # iOS Terminal SDK (Card-present)
 
-> Prefer the latest SumUp docs first: `https://developer.sumup.com/terminal-payments/sdks/ios-sdk/index.md`
+> Prefer the latest SumUp docs first: `https://developer.sumup.com/terminal-payments/sdks/ios/index.md`
 > LLM entrypoint for discovery: `https://developer.sumup.com/llms.txt`
+
+Use the current platform guides for [setup](https://developer.sumup.com/terminal-payments/sdks/ios/setup/), [authentication](https://developer.sumup.com/terminal-payments/sdks/ios/authentication/), [readers](https://developer.sumup.com/terminal-payments/sdks/ios/readers/), and [payments](https://developer.sumup.com/terminal-payments/sdks/ios/payments/). For contactless payments on a supported iPhone without a reader, follow [Tap to Pay on iPhone](https://developer.sumup.com/terminal-payments/sdks/ios/tap-to-pay/).
 
 ## Setup
 

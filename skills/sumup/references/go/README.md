@@ -1,6 +1,6 @@
 # Go SDK
 
-> Prefer the latest SumUp docs first: `https://developer.sumup.com/online-payments/sdks/go/index.md`
+> Prefer the latest SumUp docs first: `https://developer.sumup.com/tools/sdks/go/index.md`
 > LLM entrypoint for discovery: `https://developer.sumup.com/llms.txt`
 
 Use `github.com/sumup/sumup-go`.

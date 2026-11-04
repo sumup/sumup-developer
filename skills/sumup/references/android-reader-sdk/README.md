@@ -1,7 +1,9 @@
 # Android Reader SDK (Card-present)
 
-> Prefer the latest SumUp docs first: `https://developer.sumup.com/terminal-payments/sdks/android-sdk/index.md`
+> Prefer the latest SumUp docs first: `https://developer.sumup.com/terminal-payments/sdks/android/index.md`
 > LLM entrypoint for discovery: `https://developer.sumup.com/llms.txt`
+
+Use the current platform guides for [setup](https://developer.sumup.com/terminal-payments/sdks/android/setup/), [authentication](https://developer.sumup.com/terminal-payments/sdks/android/authentication/), [readers](https://developer.sumup.com/terminal-payments/sdks/android/readers/), and [payments](https://developer.sumup.com/terminal-payments/sdks/android/payments/). Tap to Pay on Android is a separate SDK; see `references/android-tap-to-pay-sdk/README.md`.
 
 ## Init + login
 

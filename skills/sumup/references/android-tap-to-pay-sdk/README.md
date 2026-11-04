@@ -3,6 +3,15 @@
 > Prefer the latest SumUp docs first: `https://developer.sumup.com/terminal-payments/sdks/android/tap-to-pay/index.md`
 > LLM entrypoint for discovery: `https://developer.sumup.com/llms.txt`
 
+## SDK 1.1.7 migration
+
+The [1.1.7 release notes](https://developer.sumup.com/changelog/) recommend upgrading for security fixes and identify breaking API changes:
+
+- `CheckoutData.affiliateData` is required; pass `AffiliateModel` with your integration's Affiliate Key.
+- Remove references to `PaymentFlowClosedSuccessfully.shouldDisplayReceipt`.
+- Verify the release build with R8/ProGuard; the SDK no longer disables shrinking or installs global keep rules for all enums and native methods.
+- Handle backend error details through `TransactionFailed.tapToPayException`. JCB support is included; do not describe upcoming Girocard support as already available.
+
 ## Initialize once
 
 ```kotlin
@@ -26,7 +35,9 @@ tapToPay.startPayment(
     affiliateData = AffiliateModel(key = "YOUR_AFFILIATE_KEY"),
   ),
   skipSuccessScreen = false
-)
+).collectLatest { event ->
+  // Handle the SDK payment event and retain its transaction identifiers.
+}
 ```
 
 ## Tear down

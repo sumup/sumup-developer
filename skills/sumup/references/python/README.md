@@ -1,6 +1,6 @@
 # Python SDK
 
-> Prefer the latest SumUp docs first: `https://developer.sumup.com/online-payments/sdks/python/index.md`
+> Prefer the latest SumUp docs first: `https://developer.sumup.com/tools/sdks/python/index.md`
 > LLM entrypoint for discovery: `https://developer.sumup.com/llms.txt`
 
 Use `sumup-py`.

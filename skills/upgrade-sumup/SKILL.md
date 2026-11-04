@@ -1,86 +1,32 @@
 ---
 name: upgrade-sumup
-description: Guide for upgrading SumUp API versions and server/mobile SDKs (@sumup/sdk, sumup-go, sumup Python, PHP, Java, Rust, .NET, iOS Terminal, Android Reader, Swift Checkout, React Native). Use when bumping SumUp SDK versions or migrating off deprecated endpoints.
+description: Upgrade SumUp server or mobile SDKs, migrate deprecated endpoints, and assess release compatibility. Use for dependency bumps or migrations involving @sumup/sdk, Go, Python, PHP, Java, Rust, .NET, reader SDKs, Tap to Pay, React Native, or Swift Checkout.
 license: Apache-2.0
 ---
 
-# SumUp Upgrade and Migration Guide
+# Upgrade a SumUp Integration
 
-Knowledge and APIs can change. Always prefer current official docs and release notes.
+## Establish the target
 
-- Docs root: `https://developer.sumup.com/`
-- LLM entrypoint: `https://developer.sumup.com/llms.txt`
+Inspect the affected dependency manifests, lockfiles, client configuration, and used endpoints. Honor the user's requested version. When asked for the latest release, verify it through the SDK's official repository or registry and [SumUp release notes](https://developer.sumup.com/changelog/); do not treat a bundled version example as current.
 
-Use this skill when the request is about upgrades, version bumps, deprecations, or migrations.
+State the selected target and source. If current release information is unavailable, identify what remains unverified rather than guessing a version. Preserve stable versus prerelease choices and avoid downgrades or unrelated package upgrades unless requested.
 
-## Supported Upgrade Targets
+## Compare the affected contracts
 
-- Node: `@sumup/sdk`
-- Go: `sumup-go`
-- Python: `sumup`
-- PHP, Java, Rust, .NET SDK/client integrations
-- iOS Terminal SDK
-- Android Reader SDK
-- Swift Checkout SDK
-- React Native SDK
-- Checkouts API and related webhook/3DS endpoint usage
+- Read release and migration notes between the installed and target versions. Verify method names, request models, response fields, error types, and runtime/toolchain requirements against the target SDK.
+- Check endpoint deprecations, merchant parameters, permissions, callback protocols, and asynchronous result behavior only where the integration uses them.
+- Treat Swift Checkout as a web JavaScript SDK and Android Tap-to-Pay as a separate package from the Android Reader SDK. React Native Checkout has an alpha API; verify the selected release's signatures.
+- When crossing Android Tap-to-Pay 1.1.7, check its required affiliate metadata, removed `shouldDisplayReceipt` field, and changed R8/ProGuard rules. Read the exact release notes rather than applying those changes to unrelated SDKs.
 
-## Upgrade Workflow
+Find current SDK guides through the [documentation index](https://developer.sumup.com/llms.txt) and endpoint contracts through the [API index](https://developer.sumup.com/api/llms.txt) or [OpenAPI specification](https://developer.sumup.com/openapi.json).
 
-### 1) Pre-upgrade inventory
+## Implement and validate the migration
 
-Capture:
+Change the affected SDK or endpoint and its callers. Update the lockfile, fix incompatible types and behavior, and regenerate any clients from their authoritative source where needed. Follow the dependency order required by that migration; do not force a server/mobile/UI upgrade sequence onto a single-package change.
 
-- Current SDK/library versions by service/app.
-- All used SumUp endpoints and fields.
-- Auth mode (API key/OAuth), scopes, and webhook signature setup.
-- Environments impacted (sandbox, staging, production).
+Preserve payment-state safeguards: verify the final checkout or transaction before fulfillment, make order updates idempotent, and reconcile uncertain payments or refunds before repeating them. Keep callback verification specific to the selected product; not every SumUp webhook documents signatures.
 
-### 2) Breaking-change diff
+Run focused project checks for the changed contracts. For payment-flow changes, include relevant sandbox success and decline tests (`11.00` where documented), and changed 3DS, callback, cancellation, or uncertain-result behavior. For native SDKs, check the affected platform and release build; local tests alone cannot verify a reader or provider flow.
 
-For each SDK or endpoint migration:
-
-- Compare changelog and migration notes.
-- Identify renamed/removed fields, enums, and callback signatures.
-- Identify behavior changes in async/payment status semantics.
-- Identify deprecated endpoints and required replacements.
-
-### 3) Migration implementation
-
-- Upgrade one surface at a time (server SDK, then mobile SDK, then UI integration).
-- Keep a compatibility adapter where necessary to isolate application code from SDK changes.
-- Replace deprecated endpoints with current equivalents, preferring endpoints that accept `merchant_code` where applicable.
-- Keep webhook verification and idempotency logic unchanged unless required.
-
-### 4) Post-upgrade validation
-
-- Run happy path payment in sandbox.
-- Run deliberate failure (`amount = 11`) and verify order state remains unpaid.
-- Verify 3DS redirect/challenge and return handling.
-- Verify webhook retries and idempotent processing.
-- Verify duplicate reference behavior and reconciliation fields.
-
-### 5) Rollout and rollback
-
-- Roll out in stages (internal -> low-volume -> full traffic).
-- Add release toggles where practical.
-- Keep previous version rollback path ready until metrics are stable.
-
-## Migration Checklist
-
-- [ ] All deprecated SumUp endpoints removed from active code paths.
-- [ ] SDK major/minor versions pinned consistently across services/apps.
-- [ ] Any generated API clients re-generated and committed.
-- [ ] Integration tests updated for new response shapes.
-- [ ] Runbook updated with new status/error codes.
-- [ ] Monitoring alerts reviewed for new failure signatures.
-
-## Required Response Contract
-
-Every upgrade answer should include:
-
-1. Current state summary and target version.
-2. Breaking changes and affected code surfaces.
-3. Minimal safe migration sequence.
-4. Validation plan including forced-failure path.
-5. Rollback strategy and go/no-go criteria.
+Report the resulting version and behavior, checks actually run, and any compatibility or provider validation still outstanding. Include rollout or rollback steps when deployment risk warrants them; do not require a production rollout plan for a small version question or unrelated repository cleanup.

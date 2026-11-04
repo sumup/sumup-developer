@@ -1,124 +1,50 @@
 ---
 name: sumup
-description: Implement SumUp checkout flows end-to-end. Use when writing or reviewing SumUp Checkouts API calls, Card Widget mounts, Hosted Checkout setup, recurring tokenization, Terminal SDK / Cloud API reader checkouts, or 3DS / webhook handling.
+description: Implement or modify SumUp payment integrations using Hosted Checkout, Card Widget, Checkouts API, saved cards, React Native Checkout, terminal SDKs, Tap to Pay, or Cloud API. Use for integration code and payment-flow reviews.
 license: Apache-2.0
 ---
 
-# SumUp Checkout Integrations
+# Build SumUp Payment Integrations
 
-Knowledge and APIs can change. Always prefer the latest SumUp docs in markdown format over stale memory.
+Work from the requested flow and existing implementation. Preserve the chosen integration and installed SDK versions unless the task calls for changing them. Inspect available code and configuration before asking for missing merchant, platform, or credential details; ask only when the missing information blocks the work.
 
-- Docs root: `https://developer.sumup.com/`
-- LLM entrypoint: `https://developer.sumup.com/llms.txt`
-- Markdown page format example: `https://developer.sumup.com/terminal-payments/cloud-api/index.md`
+Check current contracts through the [documentation index](https://developer.sumup.com/llms.txt), [API reference index](https://developer.sumup.com/api/llms.txt), or [OpenAPI specification](https://developer.sumup.com/openapi.json). Use the installed SDK's types to verify method names and request models. If current sources cannot be reached, distinguish bundled guidance from verified behavior.
 
-Use this skill to implement end-to-end SumUp checkouts for:
+## Choose the relevant references
 
-- Terminal payments (native mobile SDKs, Cloud API for Solo, or Payment Switch)
-- Online payments (Card Widget and API-orchestrated checkout flow)
+Open the references needed for the task; a flow may need both a channel guide and backend or callback details. Paths below are relative to this skill directory.
 
-## Related Skills
+| Task | Reference |
+| --- | --- |
+| Redirect to a hosted payment page | [Hosted Checkout](references/hosted-checkout/README.md) |
+| Embed payment collection in a website | [Card Widget](references/checkout-widget/README.md) |
+| Add Apple Pay or Google Pay buttons on a website | [Swift Checkout JavaScript SDK](references/swift-checkout-sdk/README.md) |
+| Show a mobile payment sheet | [React Native Checkout](references/react-native-sdk/README.md) |
+| Save a card or charge a saved token | [Tokenization](references/recurring-tokenization/README.md) |
+| Create, process, or retrieve online checkouts | [Checkouts API](references/checkouts-api/README.md) |
+| Connect a native app to a reader | [iOS](references/ios-terminal-sdk/README.md) or [Android](references/android-reader-sdk/README.md) |
+| Accept contactless payments on a phone | [Android Tap to Pay](references/android-tap-to-pay-sdk/README.md) or [iPhone guide](https://developer.sumup.com/terminal-payments/sdks/ios/tap-to-pay/) |
+| Control a Solo reader from a POS/backend | [Cloud API](references/cloud-api/README.md) |
+| Handle callbacks or 3DS | [Webhooks and 3DS](references/webhooks-3ds/README.md) |
+| Recover an uncertain payment or refund | [Safe retries](references/response-handling/README.md) |
+| Check credentials, scopes, or affiliate setup | [Authorization](references/security/README.md) |
+| Find language examples, APMs, tests, or legacy Payment Switch | [Reference index](references/README.md) |
 
-- `sumup-best-practices` for integration-path and security decisions.
-- `upgrade-sumup` for SDK/API version upgrades and migrations.
-- `sumup-debug` for troubleshooting failing integrations.
-- `sumup-mcp` for configuring and using `https://mcp.sumup.com/mcp`.
-- `sumup-testing` for sandbox setup and end-to-end QA.
+## Payment rules
 
-## Quick Decision Tree
+- Create online checkouts on the backend. Keep secret `sup_sk_` keys and OAuth client secrets there; supported frontend checkout SDKs use public `sup_pk_` merchant keys.
+- Prefer supported hosted, widget, or SDK payment collection over introducing raw-card handling. Swift Checkout is a browser JavaScript SDK, not a native iOS SDK.
+- Use API keys for the merchant that owns them and OAuth for delegated merchant access. Verify the selected endpoint's permissions and the credential's merchant context.
+- For terminal flows, supply the required Affiliate Key and matching app identifier. Android Tap-to-Pay requires its separate SDK and affiliate metadata.
+- Persist payment-attempt references and returned IDs before processing results. Give a confirmed new attempt its own reference; `checkout_reference` does not replace duplicate-payment checks.
+- For online orders, retrieve the expected checkout and require `status: "PAID"`, matching merchant, reference, amount, and currency before fulfillment. A redirect or client callback is not payment proof.
+- Cloud API checkout acceptance is asynchronous. Correlate its `client_transaction_id` and reconcile the final transaction result.
+- Treat callbacks as notifications and make order updates idempotent. Online checkout callbacks do not document HMAC signing; apply signature checks only when the selected product specifies them.
+- After a timeout, lost response, or `5xx`, reconcile the existing payment or refund before repeating it. If checkout creation returned no ID, look up the original `checkout_reference`.
+- Use current non-deprecated endpoints for new work; keep unrelated migrations outside the requested change.
 
-```text
-Need to accept a payment?
-├─ In-person (card-present) → terminal
-│  ├─ Native mobile app + direct reader flow → terminal/mobile (iOS SDK or Android Reader SDK)
-│  ├─ Non-native POS/backend controls Solo reader → terminal/platform-agnostic (Cloud API)
-│  └─ Legacy app handoff to SumUp app explicitly required → terminal/legacy-lightweight (Payment Switch)
-└─ Online (card-not-present) → online
-   ├─ Fastest, no embed needed, redirect OK → online/no-code (Hosted Checkout)
-   ├─ Embedded UI, no PCI burden → online/low-complexity (Card Widget)
-   ├─ Mobile app (iOS native | React Native) → online/mobile (Swift / React Native SDK)
-   ├─ Save card / subscriptions → online/recurring (Customers + tokenization)
-   └─ Custom orchestration → online/custom (Checkouts API + 3DS + webhooks)
-```
+## Verify the affected flow
 
-## Start Here
+Use the project's existing checks and relevant sandbox scenarios. For payment-flow changes, cover success, decline (`11.00` where documented), and any affected callback, authentication, cancellation, or uncertain-result path. Reader-based tests and online test cards use different setups. State which checks ran and what still requires a device, credentials, or live-provider verification.
 
-1. Classify the requested flow:
-   - `terminal`: in-person card-present payment
-   - `online`: e-commerce/web/app card-not-present payment
-   - `hybrid`: both (for example, web checkout + in-store Solo)
-2. Pick integration path:
-   - `terminal/mobile`: iOS SDK or Android Reader SDK
-   - `terminal/platform-agnostic`: Cloud API with Solo readers
-   - `terminal/legacy-lightweight`: Payment Switch
-   - `online/no-code`: Hosted Checkout
-   - `online/low-complexity`: Card Widget
-   - `online/mobile`: Swift Checkout SDK or React Native SDK
-   - `online/recurring`: Customers + tokenization + recurring charges
-   - `online/custom`: Checkouts API + 3DS + webhooks
-3. Confirm credentials and environment:
-   - API key or OAuth access token
-   - Affiliate Key for card-present flows
-   - Merchant code and currency alignment
-   - Sandbox merchant account for non-production testing
-4. Ask for missing critical inputs before implementation:
-   - integration channel (mobile SDK, Cloud API, Card Widget, or API-orchestrated)
-   - target market/currency and merchant code
-   - auth model (API key vs OAuth)
-   - webhook endpoint and idempotency strategy
-   - existing constraints (legacy compatibility, migration, PCI scope)
-5. Apply the implementation pattern from `references/checkout-playbook.md`.
-6. Use `references/README.md` and open only the single most relevant entrypoint for the request.
-
-## Non-Negotiable Rules
-
-- Keep secret API keys and OAuth client secrets server-side only.
-- Never handle raw PAN/card data directly.
-- Create online checkouts server-to-server.
-- Prefer Card Widget and SDK-provided checkout experiences to avoid handling raw card details.
-- For card-present integrations, include the Affiliate Key and ensure app identifiers match the key setup.
-- Avoid Payment Switch unless the user explicitly requests it or has a hard legacy constraint.
-- Use unique transaction references (`checkout_reference`, `foreignTransactionId`, or equivalent) to prevent duplicates and improve reconciliation.
-- Do not use endpoints marked as deprecated.
-- Prefer endpoints that accept `merchant_code` as an explicit parameter when equivalent alternatives exist.
-- Treat webhook events as notifications only; verify state through API reads.
-- After a widget/client callback reports success, always verify final checkout state on the backend before confirming order/payment success.
-
-## Implementation Workflow
-
-1. Set up auth and merchant context.
-2. Create checkout request with unique reference and correct currency.
-3. Complete checkout via chosen channel:
-   - terminal SDK checkout call
-   - Cloud API reader checkout
-   - Card Widget
-   - direct checkout processing flow
-4. Handle async outcomes:
-   - SDK callback / activity result / event stream
-   - 3DS `next_step` redirect flow
-   - webhook delivery + API verification
-5. Return normalized result (status, transaction identifiers, retry guidance).
-
-## Required Response Contract
-
-Every solution should state:
-
-1. Chosen integration path and why.
-2. End-to-end sequence (server, client, webhook/async verification).
-3. Exact endpoint set, confirming no deprecated endpoints and preference for `merchant_code`-accepting endpoints.
-4. Failure and retry handling (timeouts, duplicate refs, webhook retries).
-5. Test plan for success, deliberate failure, and reconciliation checks.
-
-## Validation Checklist
-
-- Test and capture both successful payment and deliberate failure case (`amount = 11` in test mode).
-- Verify behavior for duplicate transaction references.
-- Verify timeout/session expiry behavior in the selected checkout path.
-- Verify webhook retries and idempotent processing.
-- Verify reconciliation fields are stored (checkout id, transaction id/code, merchant code, reference).
-
-## References
-
-- Use `references/README.md` to pick the right reference file.
-- Each reference file includes its own canonical markdown docs URL. Prefer that URL over stale memory.
-- Open `references/hosted-checkout/README.md`, `references/recurring-tokenization/README.md`, or `references/security/README.md` directly when the request maps to those flows.
+If installed, `sumup-best-practices`, `sumup-debug`, `sumup-testing`, `sumup-mcp`, and `upgrade-sumup` cover selection, diagnosis, testing, MCP, and migrations. Use them when those tasks are requested; they are not prerequisites for this skill. Answer narrow questions directly without a full integration plan.

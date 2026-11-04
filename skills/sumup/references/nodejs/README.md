@@ -1,6 +1,6 @@
 # Node.js SDK
 
-> Prefer the latest SumUp docs first: `https://developer.sumup.com/online-payments/sdks/nodejs/index.md`
+> Prefer the latest SumUp docs first: `https://developer.sumup.com/tools/sdks/javascript/index.md`
 > LLM entrypoint for discovery: `https://developer.sumup.com/llms.txt`
 
 Use `@sumup/sdk` for backend API calls.

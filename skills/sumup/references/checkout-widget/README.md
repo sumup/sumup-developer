@@ -68,19 +68,19 @@ Always verify checkout status on backend after client callbacks.
 
 ## Session lifetime
 
-- Widget checkout sessions expire after 30 minutes.
-- Regenerate checkout on backend and remount/update widget if the session expires.
+- Use the checkout's validity and the returned API/widget status to handle expiry. The published 30-minute Hosted Checkout window is specific to that hosted flow.
+- Retrieve the previous checkout before creating a replacement. If it remains unpaid and a new attempt is appropriate, create a fresh checkout/reference and remount or update the widget.
 
-## Authorized JavaScript origins
+## HTTPS and content security policy
 
-- Ensure every staging and production domain is configured in SumUp client credentials.
-- Widget mounting can fail if page origin is not allowlisted.
-- See `references/security/README.md` for credential/origin hardening guidance.
+- Use HTTPS for production payment pages and follow the widget guide's strict CSP instructions for the SumUp script and payment frames.
+- Check any authorized-origin requirements in the selected client integration's current guide.
+- See `references/security/README.md` for credential handling.
 
 ## Server-side verification
 
 - Never treat `success` callback as final payment confirmation.
-- Confirm with `GET /v0.1/checkouts/{id}` and/or webhook event processing before fulfilling the order.
+- Retrieve with `GET /v0.1/checkouts/{id}` and require `status: "PAID"` before fulfilling the order. A webhook initiates this verification; it is not payment proof by itself.
 
 ## Reading Order
 

@@ -60,9 +60,13 @@ Expected result: your UI shows a recoverable error, your backend does not mark t
 
 ### Payment failure by amount
 
-To simulate an unsuccessful payment, create a checkout for amount `42.01`, `42.76`, or `42.91` depending on the currency representation used by that checkout flow.
+To simulate an unsuccessful online payment, create a checkout for amount `11.00`, `42.01`, `42.76`, or `42.91` using the amount format required by the integration.
 
 Expected result: payment fails even if the card details are otherwise valid.
+
+For physical readers and Cloud API, use the separate [in-person testing guide](https://developer.sumup.com/terminal-payments/testing/). Reader tests use a physical card or Virtual Solo and documented amounts; online test card numbers do not replace physical cards. Make sure the actual app/API credential selects the sandbox merchant.
+
+Sandbox merchants can also test card tokenization through the Payment Widget with `SETUP_RECURRING_PAYMENT`, including 3DS, without additional activation or contacting support.
 
 ## What to Verify
 

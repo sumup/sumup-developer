@@ -15,7 +15,7 @@
 2. Optionally set `redirect_url` for post-payment return navigation.
 3. Save both `id` and `hosted_checkout_url` from the response.
 4. Redirect customer to `hosted_checkout_url`.
-5. Verify final status on backend (`GET /v0.1/checkouts/{id}` or webhook), not from redirect alone.
+5. Retrieve the checkout on the backend and require `status: "PAID"` before fulfillment; a webhook or redirect alone is not payment proof.
 
 ### cURL example
 
@@ -35,88 +35,19 @@ curl -X POST https://api.sumup.com/v0.1/checkouts \
   }'
 ```
 
-### `@sumup/sdk` (TypeScript)
+## Server SDKs
 
-```ts
-import { SumUp } from "@sumup/sdk";
-
-const sumup = new SumUp({
-  apiKey: process.env.SUMUP_API_KEY!,
-});
-
-const checkout = await sumup.checkouts.create({
-  merchant_code: "MCXXXXXX",
-  amount: 15.0,
-  currency: "EUR",
-  checkout_reference: "order-1001",
-  redirect_url: "https://example.com/payments/return",
-  hosted_checkout: { enabled: true },
-});
-
-// Persist checkout.id and redirect customer to checkout.hosted_checkout_url
-```
-
-### `sumup-go` (Go)
-
-```go
-checkout, err := client.Checkout.Create(ctx, sumup.CreateCheckoutBody{
-    MerchantCode:      "MCXXXXXX",
-    Amount:            15.0,
-    Currency:          "EUR",
-    CheckoutReference: "order-1001",
-    RedirectURL:       "https://example.com/payments/return",
-    HostedCheckout: &sumup.HostedCheckout{
-        Enabled: true,
-    },
-})
-if err != nil {
-    return err
-}
-
-// Persist checkout.ID and redirect to checkout.HostedCheckoutURL
-```
-
-### `sumup` (Python)
-
-```python
-checkout = sumup_client.checkouts.create(
-    merchant_code="MCXXXXXX",
-    amount=15.0,
-    currency="EUR",
-    checkout_reference="order-1001",
-    redirect_url="https://example.com/payments/return",
-    hosted_checkout={"enabled": True},
-)
-
-# Persist checkout["id"] and redirect to checkout["hosted_checkout_url"]
-```
-
-### PHP
-
-```php
-$checkout = $sumup->checkouts()->create([
-    "merchant_code" => "MCXXXXXX",
-    "amount" => 15.0,
-    "currency" => "EUR",
-    "checkout_reference" => "order-1001",
-    "redirect_url" => "https://example.com/payments/return",
-    "hosted_checkout" => [
-        "enabled" => true,
-    ],
-]);
-
-// Persist $checkout["id"] and redirect to $checkout["hosted_checkout_url"]
-```
+Use the same checkout fields with your installed server SDK. Read its current examples through [the SDK documentation index](https://developer.sumup.com/tools/sdks/index.md); request types, service names, and response access differ between languages and versions.
 
 ## Session lifetime
 
 - Hosted checkout sessions expire after 30 minutes.
-- If expired, create a new checkout and redirect to the new `hosted_checkout_url`.
+- If expired, retrieve the previous checkout before starting another payment attempt. If it remains unpaid and a new attempt is appropriate, create a fresh checkout with a new reference.
 
 ## Verification model
 
 - `redirect_url` is a customer navigation signal, not payment proof.
-- Finalize orders only after backend verification (`GET /v0.1/checkouts/{id}` or webhook confirmation).
+- Finalize orders only after retrieving the checkout with `GET /v0.1/checkouts/{id}` and verifying `status: "PAID"`.
 
 ## Common pitfalls
 

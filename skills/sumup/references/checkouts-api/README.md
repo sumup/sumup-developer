@@ -28,6 +28,12 @@ curl -X POST https://api.sumup.com/v0.1/checkouts \
 - Prefer `references/checkout-widget/README.md` for embedded payment UI.
 - Use `references/webhooks-3ds/README.md` for async confirmation and 3DS handling patterns.
 
+## Retrieve and retry
+
+- Retrieve an existing checkout with `GET /v0.1/checkouts/{id}`; require `status: "PAID"` before fulfillment.
+- If checkout creation timed out without an ID, use `GET /v0.1/checkouts?checkout_reference=...` to look for the original resource.
+- Do not repeat a payment merely because of a timeout or `5xx`. Reconcile the existing attempt first; see `references/response-handling/README.md`.
+
 ## Reading Order
 
 1. This file.
