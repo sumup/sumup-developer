@@ -1,0 +1,71 @@
+---
+title: Transaction
+description: A transaction records a payment or related financial operation, including its amount and status.
+sidebar:
+  order: 50
+---
+
+A transaction records a payment or a related financial operation, such as a
+refund or chargeback. It includes the amount, currency, and status so you can
+track the result and match it to your sale or order.
+
+A transaction can include:
+
+- The amount and currency
+- Its processing status
+- The payment type and entry mode
+- SumUp and merchant-provided identifiers
+- Card, device, payout, refund, and other event details where applicable
+
+The [sale](/tools/glossary/sale/) records what was sold, while the
+[checkout](/tools/glossary/checkout/) coordinates collecting payment. The
+transaction records the processing result, which you can use to reconcile the
+payment with your sale or order.
+
+## Transaction lifecycle
+
+The `status` field describes the current state of a payment transaction:
+
+| Status       | Meaning                                                         |
+| ------------ | --------------------------------------------------------------- |
+| `PENDING`    | The transaction exists, but its final outcome is not yet known. |
+| `SUCCESSFUL` | The transaction completed successfully.                         |
+| `FAILED`     | The payment attempt did not complete successfully.              |
+| `CANCELLED`  | The transaction was canceled or reversed before completion.     |
+| `REFUNDED`   | The transaction was refunded in full or in part.                |
+
+Transaction status is separate from checkout status. For example, a successful
+transaction has status `SUCCESSFUL`, while the paid online checkout has status
+`PAID`.
+
+`REFUNDED` can mean a partial or full refund. Check `refunded_amount` in
+transaction history to see the total amount refunded.
+
+Related events, such as refunds, chargebacks, payouts, and payout deductions,
+have their own types and statuses. A successful payment does not by itself
+mean its funds have been paid out to the merchant.
+
+## Transactions in the public APIs
+
+Use the Transactions API to:
+
+- [Retrieve a transaction](/api/transactions/get/) by its SumUp ID, transaction
+  code, foreign transaction ID, or client transaction ID
+- [List transactions](/api/transactions/list/) for a merchant and filter the
+  history by status, payment type, entry mode, or transaction type
+- [Refund a transaction](/api/transactions/refund/) in full or partially
+
+Transaction history distinguishes payments, refunds, and chargebacks through
+the `type` field. The transaction details also include related financial events
+in `events` and `transaction_events`.
+
+## Relationship to a sale and checkout
+
+A typical online flow starts with an order in your system. You create a
+checkout for the amount to collect, then process it. The checkout links to
+payment attempts through its `transactions` array. Successful synchronous
+processing can also return `transaction_id` and `transaction_code`.
+
+In-person payments initiated through a reader or mobile SDK also produce
+transactions. Store SumUp identifiers alongside your own order references so
+you can reconcile each transaction with the correct sale.
