@@ -1,0 +1,222 @@
+---
+title: Choose a merchant account
+description: Find the merchant accounts a signed-in user can access and select the right account for API requests.
+sidebar:
+  order: 2
+---
+
+A [user can have access to more than one merchant account](/tools/account/merchants-and-users/). Before making a request for a business, find the accounts available to the user and select the correct merchant code.
+
+See [Run the examples](/tools/account/#run-the-examples) for shared setup.
+
+## 1. Find the user's merchant accounts
+
+For OAuth requests, the token needs `user.profile_readonly` or `user.profile`. An API key can also list accounts available to the identity it belongs to.
+
+Call [List memberships](/api/memberships/list/) to find the accounts the user can access. Each returned item describes the user's access to one account.
+
+Filter by `kind=merchant` and `status=accepted` to list merchant accounts the user has already joined. An invitation must be accepted before its account appears in this filtered list.
+
+<Tabs syncKey="account-sdk">
+
+<TabItem label="cURL">
+
+```bash
+curl --get "https://api.sumup.com/v0.1/memberships" \
+  --header "Authorization: Bearer ${SUMUP_ACCESS_TOKEN}" \
+  --data-urlencode "kind=merchant" \
+  --data-urlencode "status=accepted" \
+  --data-urlencode "limit=25" \
+  --data-urlencode "offset=0"
+```
+
+</TabItem>
+
+<TabItem label="TypeScript">
+
+```ts
+import SumUp from "@sumup/sdk";
+
+const client = new SumUp({ apiKey: process.env.SUMUP_ACCESS_TOKEN! });
+const accounts = await client.memberships.list({
+  kind: "merchant",
+  status: "accepted",
+  limit: 25,
+  offset: 0,
+});
+console.log(accounts);
+```
+
+</TabItem>
+
+<TabItem label="Python">
+
+```py
+import os
+
+from sumup import Sumup
+
+client = Sumup(api_key=os.environ["SUMUP_ACCESS_TOKEN"])
+accounts = client.memberships.list(
+    kind="merchant",
+    status="accepted",
+    limit=25,
+    offset=0,
+)
+print(accounts)
+```
+
+</TabItem>
+
+<TabItem label="PHP">
+
+```php
+<?php
+
+require __DIR__ . '/vendor/autoload.php';
+
+$client = new \SumUp\SumUp(getenv('SUMUP_ACCESS_TOKEN'));
+$query = new \SumUp\Services\MembershipsListParams();
+$query->kind = 'merchant';
+$query->status = 'accepted';
+$query->limit = 25;
+$query->offset = 0;
+$accounts = $client->memberships()->list($query);
+var_dump($accounts);
+```
+
+</TabItem>
+
+<TabItem label="Go">
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"log"
+	"os"
+
+	"github.com/sumup/sumup-go"
+	sumupclient "github.com/sumup/sumup-go/client"
+)
+
+func main() {
+	client := sumup.NewClient(sumupclient.WithAPIKey(os.Getenv("SUMUP_ACCESS_TOKEN")))
+	kind := sumup.ResourceType("merchant")
+	status := sumup.MembershipStatusAccepted
+	limit, offset := 25, 0
+	accounts, err := client.Memberships.List(context.Background(), sumup.MembershipsListParams{
+		Kind:   &kind,
+		Status: &status,
+		Limit:  &limit,
+		Offset: &offset,
+	})
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Printf("%+v\n", accounts)
+}
+```
+
+</TabItem>
+
+<TabItem label="Java">
+
+```java
+import com.sumup.sdk.SumUpClient;
+import com.sumup.sdk.clients.MembershipsClient.ListMembershipsQueryParams;
+import com.sumup.sdk.models.MembershipStatus;
+
+public class Main {
+  public static void main(String[] args) throws Exception {
+    var client = new SumUpClient(System.getenv("SUMUP_ACCESS_TOKEN"));
+    var accounts = client.memberships().list(
+        new ListMembershipsQueryParams()
+            .kind("merchant")
+            .status(MembershipStatus.ACCEPTED)
+            .limit(25L)
+            .offset(0L));
+    System.out.println(accounts);
+  }
+}
+```
+
+</TabItem>
+
+<TabItem label=".NET">
+
+```csharp
+using System;
+using SumUp;
+
+using var client = new SumUpClient(); // Reads SUMUP_ACCESS_TOKEN.
+var response = await client.Memberships.ListAsync(new MembershipsListOptions
+{
+    Kind = "merchant",
+    Status = MembershipStatus.Accepted,
+    Limit = 25,
+    Offset = 0,
+});
+Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(response.Data));
+```
+
+</TabItem>
+
+<TabItem label="Rust">
+
+```rust
+use sumup::{
+    resources::{common::MembershipStatus, memberships::ListParams},
+    Authorization, Client,
+};
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let client = Client::default().with_authorization(Authorization::api_key(
+        std::env::var("SUMUP_ACCESS_TOKEN")?,
+    ));
+    let accounts = client
+        .memberships()
+        .list(ListParams {
+            kind: Some("merchant".into()),
+            status: Some(MembershipStatus::Accepted),
+            limit: Some(25),
+            offset: Some(0),
+            ..Default::default()
+        })
+        .await?;
+    println!("{accounts:#?}");
+    Ok(())
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+The API returns HTTP `200` with an `items` array and a `total_count`. Use these fields from each item:
+
+| Field           | Use                                                   |
+| --------------- | ----------------------------------------------------- |
+| `resource.name` | Display the business name in an account picker.       |
+| `resource.id`   | Use this merchant code for requests to that business. |
+
+The examples request the first 25 results. If `total_count` is greater than the number retrieved, repeat the request with the same filters and increase `offset` by the number of items returned. Continue until you have retrieved all results.
+
+## 2. Select an account
+
+If there is one result, your application can select it automatically. If there are several, show the business names and let the user choose. Store the selected `resource.id` as the merchant code for that user's session.
+
+If there are no results, the user has no accepted merchant accounts matching the filters. Check whether they still need to accept an invitation or sign in with a different user account.
+
+Do not use an email address or a user ID as the merchant code. A business and the users who can access it are [separate](/tools/account/merchants-and-users/).
+
+## 3. Use the selected merchant code
+
+Pass the selected code wherever an endpoint asks for `merchant_code`, such as [List members](/api/members/list/) or [List readers](/api/readers/list/). Keep the selected account consistent across the data you display and the requests you make.
+
+Choosing an account does not grant extra access. The user's [roles](/tools/account/roles/) and the token's [OAuth scopes](/tools/authorization/oauth/#authorization-scopes) still determine which actions are allowed.
+
+When the user switches accounts, use the newly selected merchant code for subsequent requests and reload the displayed account data.

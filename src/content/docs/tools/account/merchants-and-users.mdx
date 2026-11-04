@@ -1,0 +1,28 @@
+---
+title: Merchants and users
+description: Understand the difference between a SumUp merchant account and a user who has access to it.
+sidebar:
+  order: 1
+---
+
+A **merchant** is a business that uses SumUp. A **user** is someone who signs in and acts on behalf of a business. They are separate: one merchant account can have several users, and one user can have access to several merchant accounts.
+
+For example, a shop owner and an employee can sign in with different user accounts and work with the same merchant account. An accountant can use one user account to work with several businesses.
+
+## Merchant accounts hold business data
+
+Payments, readers, and business profile information belong to a merchant account. SumUp identifies each merchant account with a **merchant code**, such as `MK10CL2A`.
+
+Use the merchant code when an API endpoint asks for `merchant_code`. It selects the business whose data you want to work with. See [Choose a merchant account](/tools/account/choose-merchant/) for how to find the accounts a user can access.
+
+For details about the business information stored on a merchant, see the [Merchant glossary](/tools/glossary/merchant/).
+
+## Users sign in and receive access
+
+A user signs in with their own credentials. Their [roles and permissions](/tools/account/roles/) determine what they can do in each merchant account. The same user can have different roles in different accounts.
+
+For example, an accountant might be an Admin in their own business and have the Accountant role in a client's business. Signing in as that user does not make those businesses the same account.
+
+When you use [OAuth](/tools/authorization/oauth/), the user authorizes your application to act on their behalf. Your application still needs to select the correct merchant account for each request.
+
+Use a merchant code to identify a business and a user ID to identify a user. A user's email address is contact information; it is not a merchant code or a reliable unique user identifier.

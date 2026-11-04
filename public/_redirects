@@ -21,6 +21,12 @@
 /terminal-payments/sdks/offline-transactions/index.md                        /terminal-payments/offline-payments/index.md 301
 /terminal-payments/sdks/offline-transactions/index.mdx                       /terminal-payments/offline-payments/index.mdx 301
 
+# Roles and permissions
+/tools/authorization/roles                                                 /tools/account/roles/ 301
+/tools/authorization/roles/                                                /tools/account/roles/ 301
+/tools/authorization/roles/index.md                                        /tools/account/roles/index.md 301
+/tools/authorization/roles/index.mdx                                       /tools/account/roles/index.mdx 301
+
 # SDKs redirects
 /tools/sdks/ios-sdk/                                                         /terminal-payments/sdks/ios-sdk
 /tools/sdks/android-ttp/                                                     /terminal-payments/sdks/android-ttp
