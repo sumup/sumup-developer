@@ -10,9 +10,9 @@ import shared from '@components/Diagrams/Diagram.module.css';
 import styles from '@components/Diagrams/PairingSequence.module.css';
 
 export const goActors = [
-  { id: 'app', title: 'Your EPS', description: 'Point of sale', Icon: Laptop },
-  { id: 'api', title: 'Cloud API', description: 'SumUp', Icon: Code },
-  { id: 'reader', title: 'Go reader', description: 'Card terminal', Icon: AndroidTerminal },
+  { id: 'app', title: 'Your EPS', description: 'Point of sale', icon: <Laptop size="24" /> },
+  { id: 'api', title: 'Cloud API', description: 'SumUp', icon: <Code size="24" /> },
+  { id: 'reader', title: 'Go reader', description: 'Card terminal', icon: <AndroidTerminal size="24" /> },
 ];
 
 export const goMessages = [
@@ -29,7 +29,7 @@ export const goMessages = [
 
 export const position = (actor) => 120 + goActors.findIndex(({ id }) => id === actor) * 240;
 
-export const GoPairingSequence = () => (
+export const goPairingSequence = (
   <figure className={shared.diagram} aria-label="Cloud API pairing and payment sequence for Go">
     <div className={shared.toolbar}>
       <strong>Pairing and payment</strong>
@@ -37,11 +37,9 @@ export const GoPairingSequence = () => (
     <div className={styles.scroll} tabIndex={0} role="region" aria-label="Pairing sequence; scroll horizontally on small screens">
       <div className={styles.sequence}>
         <div className={styles.actors} aria-hidden="true">
-          {goActors.map(({ id, title, description, Icon }) => (
+          {goActors.map(({ id, title, description, icon }) => (
             <div className={styles.actor} key={id}>
-              <span className={styles.icon}>
-                <Icon size="24" />
-              </span>
+              <span className={styles.icon}>{icon}</span>
               <strong>{title}</strong>
               <span>{description}</span>
             </div>
@@ -118,7 +116,7 @@ The Cloud API acts as a bridge between your EPS and the Go reader. It supports t
 
 Once the Go reader is paired to your SumUp account, your EPS can initiate a card charge request. SumUp handles the rest, providing a seamless payment experience where all card data is encrypted end-to-end. Transaction results are available by polling the [Transactions API](/api/transactions/get).
 
-<GoPairingSequence />
+{goPairingSequence}
 
 1. **Generate pairing code** (Go reader): On the Go login screen, tap **Connections**, select **API**, and tap **Connect**. Copy the pairing code; it expires after five minutes.
 2. **Pair reader using the code** (Your EPS → Cloud API): Your EPS sends the pairing code and a reader name to the [Create Reader endpoint](/api/readers/create).
