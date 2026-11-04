@@ -1,11 +1,13 @@
 ---
 title: Roles and permissions
-description: Choose system roles and control what members can do in a SumUp merchant account.
+description: Choose roles, create custom roles, and control what members can do in a SumUp merchant account.
 sidebar:
   order: 4
 ---
 
-Roles control what members can see and do in a merchant account. Use a system role for common jobs, such as managing a shop or handling accounting.
+Roles control what members can see and do in a merchant account. Use a system role for common jobs, such as managing a shop or handling accounting. Create a custom role when you need to choose the permissions yourself.
+
+You can assign the same custom role to several members of the account. The [permission reference](/tools/account/roles/permissions/) lists the permissions you can include and the actions they allow.
 
 ## System roles
 
@@ -18,15 +20,22 @@ SumUp provides four system roles for merchant account members. To assign Manager
 | Employee   | `role_employee`   | Perform cashier tasks, such as accepting payments.                                                    |
 | Accountant | `role_accountant` | Access reporting and transaction information for accounting.                                          |
 
-SumUp manages the permissions in system roles. [List roles](/api/roles/list/) returns them with `is_predefined: true`.
+SumUp manages the permissions in system roles. [List roles](/api/roles/list/) returns them with `is_predefined: true`, along with the account's custom roles.
 
 The account owner has `role_owner` and all Admin permissions. Each merchant account has one owner. This role is not available through the APIs.
 
 ## How roles grant access
 
-A **permission** allows an action, such as viewing API keys. A **role** is a set of permissions. SumUp chooses the permissions included in each system role.
+A **permission** allows an action, such as viewing API keys. A **role** is a set of permissions. A **membership** links a user to a merchant account and records the roles assigned to them.
 
-A member receives the permissions from all their assigned roles. Removing one role leaves access granted by other roles in place.
+- **System roles** contain permissions chosen by SumUp.
+- **Custom roles** contain permissions you choose. You create and assign them within one merchant account.
+
+Some permissions cover several actions. For example, `api_keys_edit` lets a member create, update, delete, list, and view API keys. It includes `api_keys_access`, which allows listing and viewing only.
+
+You can add `api_keys_edit` or `api_keys_access` to a custom role. You cannot add the individual action permission `api_keys.create`. To allow that action, add `api_keys_edit` and review the other actions it allows.
+
+A member receives the permissions from all their assigned roles. Removing a permission from one role leaves access granted by other roles in place.
 
 ### Permissions and OAuth scopes
 
@@ -34,13 +43,220 @@ Permissions control what a user can do in a merchant account. [OAuth scopes](/to
 
 An OAuth request needs both: the user must have the required permission, and the access token must have the required scopes. Requesting a scope does not give the user extra permissions.
 
-Find the required permission for an endpoint in the [API reference](/api/).
+Find the required permission for an endpoint in the [API reference](/api/). Then look it up in the [permission reference](/tools/account/roles/permissions/) to see which permission to add to a custom role.
+
+## Create a custom role with the API
+
+See [Run the examples](/tools/account/#run-the-examples) for shared setup.
+
+### Required access
+
+Check that the user making each request has the required permission. If you use OAuth, the access token must also have either of the listed scopes.
+
+| Action                              | User permission  | OAuth scopes                          |
+| ----------------------------------- | ---------------- | ------------------------------------- |
+| Create a role                       | `roles_create`   | `user.subaccounts` or `roles.write`   |
+| Assign a role to an existing member | `members_update` | `user.subaccounts` or `members.write` |
+
+For read requests, check the permissions and scopes in the [API reference](/api/).
+
+### 1. Choose permissions
+
+Choose permissions that allow only the actions the member needs. For example, use `api_keys_access` for a member who only needs to list and view API keys.
+
+Use names from the reference's [Assignable permissions](/tools/account/roles/permissions/#assignable-permissions) section. Include between 1 and 100 permissions when creating a role.
+
+### 2. Create the role
+
+Call [Create a role](/api/roles/create/) with a name and a list of permissions. This example creates an API key viewer role:
+
+<Tabs syncKey="roles-sdk">
+
+<TabItem label="cURL">
+
+```bash
+curl --request POST \
+  "https://api.sumup.com/v0.1/merchants/${SUMUP_MERCHANT_CODE}/roles" \
+  --header "Authorization: Bearer ${SUMUP_ACCESS_TOKEN}" \
+  --header "Content-Type: application/json" \
+  --data '{
+    "name": "API key viewer",
+    "description": "Can list and view API keys.",
+    "permissions": ["api_keys_access"]
+  }'
+```
+
+</TabItem>
+
+<TabItem label="TypeScript">
+
+```ts
+import SumUp from "@sumup/sdk";
+
+const client = new SumUp({ apiKey: process.env.SUMUP_ACCESS_TOKEN! });
+const role = await client.roles.create(process.env.SUMUP_MERCHANT_CODE!, {
+  name: "API key viewer",
+  description: "Can list and view API keys.",
+  permissions: ["api_keys_access"],
+});
+console.log(role.id);
+```
+
+</TabItem>
+
+<TabItem label="Python">
+
+```py
+import os
+
+from sumup import Sumup
+
+client = Sumup(api_key=os.environ["SUMUP_ACCESS_TOKEN"])
+role = client.roles.create(
+    os.environ["SUMUP_MERCHANT_CODE"],
+    name="API key viewer",
+    description="Can list and view API keys.",
+    permissions=["api_keys_access"],
+)
+print(role.id)
+```
+
+</TabItem>
+
+<TabItem label="PHP">
+
+```php
+<?php
+
+require __DIR__ . '/vendor/autoload.php';
+
+$client = new \SumUp\SumUp(getenv('SUMUP_ACCESS_TOKEN'));
+$role = $client->roles()->create(getenv('SUMUP_MERCHANT_CODE'), [
+    'name' => 'API key viewer',
+    'description' => 'Can list and view API keys.',
+    'permissions' => ['api_keys_access'],
+]);
+echo $role->id, PHP_EOL;
+```
+
+</TabItem>
+
+<TabItem label="Go">
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "log"
+    "os"
+
+    "github.com/sumup/sumup-go"
+    sumupclient "github.com/sumup/sumup-go/client"
+)
+
+func main() {
+    client := sumup.NewClient(sumupclient.WithAPIKey(os.Getenv("SUMUP_ACCESS_TOKEN")))
+    description := "Can list and view API keys."
+    role, err := client.Roles.Create(context.Background(), os.Getenv("SUMUP_MERCHANT_CODE"), sumup.RolesCreateParams{
+        Name: "API key viewer",
+        Description: &description,
+        Permissions: []string{"api_keys_access"},
+    })
+    if err != nil {
+        log.Fatal(err)
+    }
+    fmt.Println(role.ID)
+}
+```
+
+</TabItem>
+
+<TabItem label="Java">
+
+```java
+import com.sumup.sdk.SumUpClient;
+import com.sumup.sdk.models.CreateMerchantRoleRequest;
+import java.util.List;
+
+public class Main {
+  public static void main(String[] args) throws Exception {
+    var client = new SumUpClient(System.getenv("SUMUP_ACCESS_TOKEN"));
+    var role = client.roles().create(
+        System.getenv("SUMUP_MERCHANT_CODE"),
+        CreateMerchantRoleRequest.builder()
+            .name("API key viewer")
+            .description("Can list and view API keys.")
+            .permissions(List.of("api_keys_access"))
+            .build());
+    System.out.println(role.id());
+  }
+}
+```
+
+</TabItem>
+
+<TabItem label=".NET">
+
+```csharp
+using System;
+using SumUp;
+
+using var client = new SumUpClient(); // Reads SUMUP_ACCESS_TOKEN.
+var response = await client.Roles.CreateAsync(
+    Environment.GetEnvironmentVariable("SUMUP_MERCHANT_CODE")!,
+    new RolesCreateRequest
+    {
+        Name = "API key viewer",
+        Description = "Can list and view API keys.",
+        Permissions = new[] { "api_keys_access" },
+    });
+Console.WriteLine(response.Data?.Id);
+```
+
+</TabItem>
+
+<TabItem label="Rust">
+
+```rust
+use sumup::{resources::roles::CreateRequest, Authorization, Client};
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let client = Client::default().with_authorization(Authorization::api_key(
+        std::env::var("SUMUP_ACCESS_TOKEN")?,
+    ));
+    let role = client
+        .roles()
+        .create(
+            std::env::var("SUMUP_MERCHANT_CODE")?,
+            CreateRequest {
+                name: "API key viewer".into(),
+                description: Some("Can list and view API keys.".into()),
+                permissions: vec!["api_keys_access".into()],
+                metadata: None,
+            },
+        )
+        .await?;
+    println!("{}", role.id);
+    Ok(())
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+The API returns HTTP `201` and the new role. The SDK examples print its `id`. Save that value in `SUMUP_ROLE_ID` to [assign the role to a member](/tools/account/roles/#assign-a-role-to-a-member).
+
+The role is ready to assign, but no members have it yet.
 
 ## Assign a role to a member
 
 See [Run the examples](/tools/account/#run-the-examples) for shared setup. The user making the request needs `members_update`. For OAuth requests, the token also needs `user.subaccounts` or `members.write`.
 
-Set `SUMUP_ROLE_ID` to the system role to assign, such as `role_manager`. Use [List members](/api/members/list/) to find the member and check their current roles. Set `SUMUP_MEMBER_ID` to their member ID.
+Set `SUMUP_ROLE_ID` to the custom role ID returned by Create a role, or a system role ID such as `role_manager`. Use [List members](/api/members/list/) to find the member and check their current roles. Set `SUMUP_MEMBER_ID` to their member ID.
 
 **The `roles` array replaces the member's current roles.** Include every role the member should keep. These examples assign only the selected role, removing any other roles from the member:
 
@@ -218,14 +434,36 @@ The API returns HTTP `200` and the updated member. You can also assign the role 
 
 ## Verify the member's access
 
-Call [Get a member](/api/members/get/) and check their saved roles. Test an action the role allows and one it should deny using the member's credentials and the required OAuth scopes. A successful request made as the account owner does not verify the member's access.
+Call [Get a member](/api/members/get/) and check that their roles include `SUMUP_ROLE_ID`. Call [Get a role](/api/roles/get/) to review its permissions.
+
+Make test requests using that member's credentials and the scopes required by each endpoint. Check an action the role allows and one it should deny. For the API key viewer role, listing API keys should succeed, while creating one should be denied unless another role grants that permission.
+
+## Create a role in the Dashboard
+
+You can also create custom roles in the [SumUp Dashboard](https://me.sumup.com/roles). You need permission to create roles.
+
+1. Open **Roles** and choose to create a custom role.
+2. Enter a name and description.
+3. Select the permissions the role needs, then save it.
+
+The Dashboard can add related permissions automatically, so the saved role may contain more permissions than you selected. Use [Get a role](/api/roles/get/) to review the complete list.
+
+The Dashboard does not show every permission available through the API. Use the [permission reference](/tools/account/roles/permissions/) when creating roles with the API.
+
+## Change a role
+
+Use [Update a role](/api/roles/update/) to change its name, description, or permissions. Changes apply to every member assigned to the role.
+
+If you include `permissions`, send the complete list the role should keep, with between 1 and 100 entries. Leaving out `permissions` keeps the current list.
 
 ## Troubleshoot access
+
+If creating a role returns HTTP `400`, check that every permission is in the [Assignable permissions](/tools/account/roles/permissions/#assignable-permissions) section and that the array contains between 1 and 100 entries.
 
 If a member cannot perform an action after you assign a role, check:
 
 - The request uses the correct merchant code and the member's credentials.
-- The member has the intended role, and the role grants the permission required by the endpoint.
+- The member has the custom role, and the role grants the permission required by the endpoint.
 - For OAuth requests, the access token has the endpoint's required scopes.
 
 If the member has more access than expected, check all their assigned roles. Another role may grant the same permission.

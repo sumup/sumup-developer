@@ -1,3 +1,4 @@
+import catalog from "../data/merchant-permissions.json" with { type: "json" };
 import { expect, it } from "vitest";
 import { renderEntryAsMarkdown } from "@cloudflare/nimbus-docs/runtime";
 import { markdownToMdast } from "satteri";
@@ -139,4 +140,24 @@ it("publishes all pairing sequence messages, their direction, and the asynchrono
   expect(markdown).toContain("Starting a checkout is asynchronous");
   expect(markdown).toContain("final payment result");
   expect(markdown).not.toContain("<PairingSequence");
+});
+
+it("publishes every imported permission in the matching Markdown table", () => {
+  for (const kind of ["assignable", "inherited"]) {
+    const markdown = convert(`<PermissionTable kind="${kind}" />`);
+    for (const permission of catalog) {
+      const row = `| \`${permission.name}\` |`;
+      const renderedRow = markdown
+        .split("\n")
+        .find((line) => line.startsWith(row));
+      if (permission.assignable === (kind === "assignable")) {
+        expect(renderedRow).toBeDefined();
+        for (const grant of permission.granted_by) {
+          expect(markdown).toContain(`\`${grant}\``);
+        }
+      } else {
+        expect(renderedRow).toBeUndefined();
+      }
+    }
+  }
 });
