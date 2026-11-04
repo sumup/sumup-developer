@@ -1,0 +1,45 @@
+---
+import SearchableTable from "./SearchableTable.astro";
+import { permissionEntries, type PermissionKind } from "@lib/permissions";
+
+interface Props {
+  kind: PermissionKind;
+}
+
+const { kind } = Astro.props;
+const entries = permissionEntries(kind);
+const searchPlaceholder =
+  kind === "assignable"
+    ? "Search assignable permissions"
+    : "Search non-assignable permissions";
+---
+
+<SearchableTable searchPlaceholder={searchPlaceholder}>
+  <table>
+    <thead>
+      <tr>
+        <th>Permission</th>
+        <th>Granted by</th>
+      </tr>
+    </thead>
+    <tbody>
+      {entries.map(({ name, granted_by }) => (
+        <tr>
+          <td>
+            <code>{name}</code>
+          </td>
+          <td>
+            {granted_by.length
+              ? granted_by.map((grant, index) => (
+                  <span>
+                    {index > 0 ? ", " : ""}
+                    <code>{grant}</code>
+                  </span>
+                ))
+              : "—"}
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</SearchableTable>

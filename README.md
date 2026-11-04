@@ -250,3 +250,18 @@ headless hooks directly and are owned by this repository.
 After merging upstream behavior, update the relevant reviewed baseline and run
 `npm run validate`. A baseline update means the upstream changes were reviewed;
 it does not mean our customized files should match the starter byte for byte.
+
+## Permission catalog
+
+The [permission catalog](src/data/merchant-permissions.json) starts with the manual Go export from Identity's permissions service. The checked-in file is then edited manually for the developer portal. It contains permission names, custom-role assignability, and granting permissions. The full model and the code that interprets it stay in Identity.
+
+To refresh it, follow the generation steps in `sumup/identity/apps/permissions/docs/README.md`, then review the export before replacing this repository's file. Apply these selection rules:
+
+- Keep merchant permissions from any authorization module with a permission used by ze-dashboard's custom-role selector (including both its current and legacy configurations) or referenced in `openapi.json` through `x-permissions`.
+- Use the authorization model's `.module.fga` files to identify modules; Dashboard categories and permission-name prefixes do not necessarily match them.
+- When permission names differ only by underscore versus dot separators, keep the dotted name. Preserve its assignability and grants from the model.
+- Keep `granted_by` references within the selected list.
+
+The current modules are `bookings`, `catalog`, `core`, `customer-directory`, `devices`, `gift-cards`, `iam`, `identity`, `legacy`, `orderandpay`, `payment-links`, `pos`, `reporting`, and `taxes`. Dashboard selector inputs are `src/domains/Members/static/permissions.json` and `permissions-legacy.json` in ze-dashboard.
+
+There is no automatic synchronization. This repository owns the [permission reference](src/content/docs/tools/account/roles/permissions.mdx), its presentation, and its Markdown output. Builds use the checked-in JSON file and do not access Identity.
