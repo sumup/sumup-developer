@@ -1,0 +1,34 @@
+---
+title: Permission reference
+description: Find permissions you can add to a custom role and the actions they allow.
+sidebar:
+  order: 1
+---
+
+import PermissionTable from "@components/content/PermissionTable.astro";
+
+Use this reference to choose permissions for a [custom role](/tools/account/roles/). It covers merchant permissions from modules used by Dashboard custom roles or the public API, sorted by name within each section. Permissions for organizations or individual bank accounts are not included.
+
+## Read the reference
+
+- **Assignable permissions** are permissions you can add to a custom role's `permissions` array.
+- **Non-assignable permissions** are permissions a member receives through another permission or a system role. You cannot add them to a custom role directly.
+- **Granted by** lists other assignable permissions that include the permission in that row. It shows the most specific options; broader permissions may include it too. System roles and access inherited from other resources are not shown. A dash means no other assignable permission is listed.
+
+For example, the non-assignable permission `api_keys.create` is granted by `api_keys_edit`. Add `api_keys_edit` to the role to allow API-key creation. That permission also allows other actions, including updating and deleting API keys.
+
+Use permission names exactly as listed. Where both dotted and underscore versions exist, this reference lists the dotted version. A permission does not make a product available to the account. Check the [API reference](/api/) for each endpoint's required permissions and OAuth scopes.
+
+## Merchant permissions
+
+### Assignable permissions
+
+You can include these permissions when creating or updating a custom role.
+
+<PermissionTable kind="assignable" />
+
+### Non-assignable permissions
+
+You cannot add these permissions to a custom role directly. Look in **Granted by** for a permission you can add instead.
+
+<PermissionTable kind="inherited" />

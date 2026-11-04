@@ -1,0 +1,1652 @@
+[
+  {
+    "name": "affiliate_keys_access",
+    "assignable": true,
+    "granted_by": ["affiliate_keys_edit", "developer_settings_access"]
+  },
+  {
+    "name": "affiliate_keys_create",
+    "assignable": false,
+    "granted_by": ["developer_settings_edit"]
+  },
+  {
+    "name": "affiliate_keys_delete",
+    "assignable": false,
+    "granted_by": ["developer_settings_edit"]
+  },
+  {
+    "name": "affiliate_keys_edit",
+    "assignable": true,
+    "granted_by": ["developer_settings_edit"]
+  },
+  {
+    "name": "affiliate_keys_list",
+    "assignable": false,
+    "granted_by": ["developer_settings_access"]
+  },
+  {
+    "name": "affiliate_keys_update",
+    "assignable": false,
+    "granted_by": ["developer_settings_edit"]
+  },
+  {
+    "name": "affiliate_keys_view",
+    "assignable": false,
+    "granted_by": ["developer_settings_access"]
+  },
+  {
+    "name": "api_keys.create",
+    "assignable": false,
+    "granted_by": ["api_keys_edit"]
+  },
+  {
+    "name": "api_keys.delete",
+    "assignable": false,
+    "granted_by": ["api_keys_edit"]
+  },
+  {
+    "name": "api_keys.list",
+    "assignable": false,
+    "granted_by": ["api_keys_access"]
+  },
+  {
+    "name": "api_keys.update",
+    "assignable": false,
+    "granted_by": ["api_keys_edit"]
+  },
+  {
+    "name": "api_keys.view",
+    "assignable": false,
+    "granted_by": ["api_keys_access"]
+  },
+  {
+    "name": "api_keys_access",
+    "assignable": true,
+    "granted_by": ["api_keys_edit", "developer_settings_access"]
+  },
+  {
+    "name": "api_keys_edit",
+    "assignable": true,
+    "granted_by": ["developer_settings_edit"]
+  },
+  {
+    "name": "apps_access",
+    "assignable": true,
+    "granted_by": ["apps_edit", "developer_settings_access"]
+  },
+  {
+    "name": "apps_create",
+    "assignable": false,
+    "granted_by": ["developer_settings_edit"]
+  },
+  {
+    "name": "apps_credentials_create",
+    "assignable": false,
+    "granted_by": ["developer_settings_edit"]
+  },
+  {
+    "name": "apps_credentials_delete",
+    "assignable": false,
+    "granted_by": ["developer_settings_edit"]
+  },
+  {
+    "name": "apps_credentials_list",
+    "assignable": false,
+    "granted_by": ["developer_settings_access"]
+  },
+  {
+    "name": "apps_credentials_update",
+    "assignable": false,
+    "granted_by": ["developer_settings_edit"]
+  },
+  {
+    "name": "apps_credentials_view",
+    "assignable": false,
+    "granted_by": ["developer_settings_access"]
+  },
+  {
+    "name": "apps_delete",
+    "assignable": false,
+    "granted_by": ["developer_settings_edit"]
+  },
+  {
+    "name": "apps_edit",
+    "assignable": true,
+    "granted_by": ["developer_settings_edit"]
+  },
+  {
+    "name": "apps_list",
+    "assignable": false,
+    "granted_by": ["developer_settings_access"]
+  },
+  {
+    "name": "apps_update",
+    "assignable": false,
+    "granted_by": ["developer_settings_edit"]
+  },
+  {
+    "name": "apps_view",
+    "assignable": false,
+    "granted_by": ["developer_settings_access"]
+  },
+  {
+    "name": "basic_discount_access",
+    "assignable": true,
+    "granted_by": ["basic_discount_edit"]
+  },
+  {
+    "name": "basic_discount_create",
+    "assignable": false,
+    "granted_by": ["basic_discount_edit"]
+  },
+  {
+    "name": "basic_discount_delete",
+    "assignable": false,
+    "granted_by": ["basic_discount_edit"]
+  },
+  {
+    "name": "basic_discount_edit",
+    "assignable": true,
+    "granted_by": []
+  },
+  {
+    "name": "basic_discount_get",
+    "assignable": false,
+    "granted_by": ["basic_discount_access"]
+  },
+  {
+    "name": "basic_discount_list",
+    "assignable": false,
+    "granted_by": ["basic_discount_access"]
+  },
+  {
+    "name": "bookings_access",
+    "assignable": true,
+    "granted_by": ["bookings_edit"]
+  },
+  {
+    "name": "bookings_appointments_create",
+    "assignable": false,
+    "granted_by": ["bookings_access"]
+  },
+  {
+    "name": "bookings_appointments_list",
+    "assignable": false,
+    "granted_by": ["bookings_access"]
+  },
+  {
+    "name": "bookings_appointments_update",
+    "assignable": false,
+    "granted_by": ["bookings_access"]
+  },
+  {
+    "name": "bookings_appointments_view",
+    "assignable": false,
+    "granted_by": ["bookings_access"]
+  },
+  {
+    "name": "bookings_banners_list",
+    "assignable": false,
+    "granted_by": ["bookings_access"]
+  },
+  {
+    "name": "bookings_banners_update",
+    "assignable": false,
+    "granted_by": ["bookings_access"]
+  },
+  {
+    "name": "bookings_calendar-integrations_create",
+    "assignable": false,
+    "granted_by": ["bookings_access"]
+  },
+  {
+    "name": "bookings_calendar-integrations_delete",
+    "assignable": false,
+    "granted_by": ["bookings_access"]
+  },
+  {
+    "name": "bookings_calendar-integrations_update",
+    "assignable": false,
+    "granted_by": ["bookings_access"]
+  },
+  {
+    "name": "bookings_calendar-integrations_view",
+    "assignable": false,
+    "granted_by": ["bookings_access"]
+  },
+  {
+    "name": "bookings_calendars_create",
+    "assignable": false,
+    "granted_by": ["bookings_edit"]
+  },
+  {
+    "name": "bookings_calendars_delete",
+    "assignable": false,
+    "granted_by": ["bookings_edit"]
+  },
+  {
+    "name": "bookings_calendars_list",
+    "assignable": false,
+    "granted_by": ["bookings_access"]
+  },
+  {
+    "name": "bookings_calendars_update",
+    "assignable": false,
+    "granted_by": ["bookings_access"]
+  },
+  {
+    "name": "bookings_calendars_view",
+    "assignable": false,
+    "granted_by": ["bookings_access"]
+  },
+  {
+    "name": "bookings_customers_update",
+    "assignable": false,
+    "granted_by": ["bookings_edit"]
+  },
+  {
+    "name": "bookings_edit",
+    "assignable": true,
+    "granted_by": []
+  },
+  {
+    "name": "bookings_merchants_create",
+    "assignable": false,
+    "granted_by": ["bookings_edit"]
+  },
+  {
+    "name": "bookings_merchants_delete",
+    "assignable": false,
+    "granted_by": ["bookings_edit"]
+  },
+  {
+    "name": "bookings_merchants_update",
+    "assignable": false,
+    "granted_by": ["bookings_edit"]
+  },
+  {
+    "name": "bookings_merchants_view",
+    "assignable": false,
+    "granted_by": []
+  },
+  {
+    "name": "bookings_pages_list",
+    "assignable": false,
+    "granted_by": ["bookings_edit"]
+  },
+  {
+    "name": "bookings_pages_update",
+    "assignable": false,
+    "granted_by": ["bookings_edit"]
+  },
+  {
+    "name": "bookings_product-tours_update",
+    "assignable": false,
+    "granted_by": ["bookings_access"]
+  },
+  {
+    "name": "bookings_product-tours_view",
+    "assignable": false,
+    "granted_by": ["bookings_access"]
+  },
+  {
+    "name": "bookings_reports_view",
+    "assignable": false,
+    "granted_by": ["bookings_access"]
+  },
+  {
+    "name": "bookings_setup-guides_delete",
+    "assignable": false,
+    "granted_by": ["bookings_edit"]
+  },
+  {
+    "name": "bookings_setup-guides_list",
+    "assignable": false,
+    "granted_by": ["bookings_edit"]
+  },
+  {
+    "name": "bookings_setup-guides_update",
+    "assignable": false,
+    "granted_by": ["bookings_edit"]
+  },
+  {
+    "name": "bookings_time-blocks_create",
+    "assignable": false,
+    "granted_by": ["bookings_access"]
+  },
+  {
+    "name": "bookings_time-blocks_delete",
+    "assignable": false,
+    "granted_by": ["bookings_access"]
+  },
+  {
+    "name": "bookings_time-blocks_update",
+    "assignable": false,
+    "granted_by": ["bookings_access"]
+  },
+  {
+    "name": "bookings_time-blocks_view",
+    "assignable": false,
+    "granted_by": ["bookings_access"]
+  },
+  {
+    "name": "catalog.layouts.access",
+    "assignable": false,
+    "granted_by": ["catalog_access"]
+  },
+  {
+    "name": "catalog.layouts.delete",
+    "assignable": false,
+    "granted_by": ["catalog_edit"]
+  },
+  {
+    "name": "catalog.layouts.edit",
+    "assignable": false,
+    "granted_by": ["catalog_edit"]
+  },
+  {
+    "name": "catalog.layouts.read",
+    "assignable": false,
+    "granted_by": ["catalog_access"]
+  },
+  {
+    "name": "catalog.layouts.upsert",
+    "assignable": false,
+    "granted_by": ["catalog_edit"]
+  },
+  {
+    "name": "catalog_access",
+    "assignable": true,
+    "granted_by": ["catalog_edit"]
+  },
+  {
+    "name": "catalog_categories_access",
+    "assignable": false,
+    "granted_by": ["catalog_access"]
+  },
+  {
+    "name": "catalog_categories_create",
+    "assignable": false,
+    "granted_by": ["catalog_edit"]
+  },
+  {
+    "name": "catalog_categories_delete",
+    "assignable": false,
+    "granted_by": ["catalog_edit"]
+  },
+  {
+    "name": "catalog_categories_edit",
+    "assignable": false,
+    "granted_by": ["catalog_edit"]
+  },
+  {
+    "name": "catalog_categories_read",
+    "assignable": false,
+    "granted_by": ["catalog_access"]
+  },
+  {
+    "name": "catalog_categories_update",
+    "assignable": false,
+    "granted_by": ["catalog_edit"]
+  },
+  {
+    "name": "catalog_categories_upsert",
+    "assignable": false,
+    "granted_by": ["catalog_edit"]
+  },
+  {
+    "name": "catalog_deposits_access",
+    "assignable": false,
+    "granted_by": ["catalog_access"]
+  },
+  {
+    "name": "catalog_deposits_create",
+    "assignable": false,
+    "granted_by": ["catalog_edit"]
+  },
+  {
+    "name": "catalog_deposits_delete",
+    "assignable": false,
+    "granted_by": ["catalog_edit"]
+  },
+  {
+    "name": "catalog_deposits_edit",
+    "assignable": false,
+    "granted_by": ["catalog_edit"]
+  },
+  {
+    "name": "catalog_deposits_read",
+    "assignable": false,
+    "granted_by": ["catalog_access"]
+  },
+  {
+    "name": "catalog_deposits_update",
+    "assignable": false,
+    "granted_by": ["catalog_edit"]
+  },
+  {
+    "name": "catalog_deposits_upsert",
+    "assignable": false,
+    "granted_by": ["catalog_edit"]
+  },
+  {
+    "name": "catalog_edit",
+    "assignable": true,
+    "granted_by": []
+  },
+  {
+    "name": "catalog_inventory_access",
+    "assignable": false,
+    "granted_by": ["catalog_access"]
+  },
+  {
+    "name": "catalog_inventory_all_read",
+    "assignable": false,
+    "granted_by": ["catalog_access"]
+  },
+  {
+    "name": "catalog_inventory_edit",
+    "assignable": false,
+    "granted_by": ["catalog_edit"]
+  },
+  {
+    "name": "catalog_items_access",
+    "assignable": false,
+    "granted_by": ["catalog_access"]
+  },
+  {
+    "name": "catalog_items_create",
+    "assignable": false,
+    "granted_by": ["catalog_edit"]
+  },
+  {
+    "name": "catalog_items_delete",
+    "assignable": false,
+    "granted_by": ["catalog_edit"]
+  },
+  {
+    "name": "catalog_items_edit",
+    "assignable": false,
+    "granted_by": ["catalog_edit"]
+  },
+  {
+    "name": "catalog_items_read",
+    "assignable": false,
+    "granted_by": ["catalog_access"]
+  },
+  {
+    "name": "catalog_items_update",
+    "assignable": false,
+    "granted_by": ["catalog_edit"]
+  },
+  {
+    "name": "catalog_items_upsert",
+    "assignable": false,
+    "granted_by": ["catalog_edit"]
+  },
+  {
+    "name": "catalog_modifiers_access",
+    "assignable": false,
+    "granted_by": ["catalog_access"]
+  },
+  {
+    "name": "catalog_modifiers_create",
+    "assignable": false,
+    "granted_by": ["catalog_edit"]
+  },
+  {
+    "name": "catalog_modifiers_delete",
+    "assignable": false,
+    "granted_by": ["catalog_edit"]
+  },
+  {
+    "name": "catalog_modifiers_edit",
+    "assignable": false,
+    "granted_by": ["catalog_edit"]
+  },
+  {
+    "name": "catalog_modifiers_read",
+    "assignable": false,
+    "granted_by": ["catalog_access"]
+  },
+  {
+    "name": "catalog_modifiers_update",
+    "assignable": false,
+    "granted_by": ["catalog_edit"]
+  },
+  {
+    "name": "catalog_modifiers_upsert",
+    "assignable": false,
+    "granted_by": ["catalog_edit"]
+  },
+  {
+    "name": "catalog_offline_all_read",
+    "assignable": false,
+    "granted_by": ["catalog_access"]
+  },
+  {
+    "name": "catalog_options_access",
+    "assignable": false,
+    "granted_by": ["catalog_access"]
+  },
+  {
+    "name": "catalog_options_create",
+    "assignable": false,
+    "granted_by": ["catalog_edit"]
+  },
+  {
+    "name": "catalog_options_delete",
+    "assignable": false,
+    "granted_by": ["catalog_edit"]
+  },
+  {
+    "name": "catalog_options_edit",
+    "assignable": false,
+    "granted_by": ["catalog_edit"]
+  },
+  {
+    "name": "catalog_options_read",
+    "assignable": false,
+    "granted_by": ["catalog_access"]
+  },
+  {
+    "name": "catalog_options_update",
+    "assignable": false,
+    "granted_by": ["catalog_edit"]
+  },
+  {
+    "name": "catalog_options_upsert",
+    "assignable": false,
+    "granted_by": ["catalog_edit"]
+  },
+  {
+    "name": "coupons_access",
+    "assignable": true,
+    "granted_by": ["coupons_edit"]
+  },
+  {
+    "name": "coupons_create",
+    "assignable": false,
+    "granted_by": ["coupons_edit"]
+  },
+  {
+    "name": "coupons_delete",
+    "assignable": false,
+    "granted_by": ["coupons_edit"]
+  },
+  {
+    "name": "coupons_edit",
+    "assignable": true,
+    "granted_by": []
+  },
+  {
+    "name": "coupons_get",
+    "assignable": false,
+    "granted_by": ["coupons_access"]
+  },
+  {
+    "name": "coupons_list",
+    "assignable": false,
+    "granted_by": ["coupons_access"]
+  },
+  {
+    "name": "coupons_verify",
+    "assignable": false,
+    "granted_by": ["coupons_access"]
+  },
+  {
+    "name": "create_moto_payments",
+    "assignable": true,
+    "granted_by": []
+  },
+  {
+    "name": "create_referral",
+    "assignable": false,
+    "granted_by": []
+  },
+  {
+    "name": "customers.access",
+    "assignable": true,
+    "granted_by": ["customers.edit"]
+  },
+  {
+    "name": "customers.edit",
+    "assignable": true,
+    "granted_by": []
+  },
+  {
+    "name": "customers.read",
+    "assignable": false,
+    "granted_by": ["customers.access"]
+  },
+  {
+    "name": "customers.search",
+    "assignable": false,
+    "granted_by": []
+  },
+  {
+    "name": "customers.write",
+    "assignable": false,
+    "granted_by": ["customers.edit"]
+  },
+  {
+    "name": "data_retention.access",
+    "assignable": false,
+    "granted_by": []
+  },
+  {
+    "name": "data_retention.create",
+    "assignable": false,
+    "granted_by": []
+  },
+  {
+    "name": "data_retention.delete",
+    "assignable": false,
+    "granted_by": []
+  },
+  {
+    "name": "data_retention.edit",
+    "assignable": false,
+    "granted_by": []
+  },
+  {
+    "name": "data_retention.view",
+    "assignable": false,
+    "granted_by": []
+  },
+  {
+    "name": "developer_settings_access",
+    "assignable": true,
+    "granted_by": ["developer_settings_edit"]
+  },
+  {
+    "name": "developer_settings_edit",
+    "assignable": true,
+    "granted_by": []
+  },
+  {
+    "name": "full_transaction_history_view",
+    "assignable": true,
+    "granted_by": []
+  },
+  {
+    "name": "gift-cards_access",
+    "assignable": true,
+    "granted_by": ["gift-cards_edit"]
+  },
+  {
+    "name": "gift-cards_create",
+    "assignable": true,
+    "granted_by": ["gift-cards_edit"]
+  },
+  {
+    "name": "gift-cards_edit",
+    "assignable": true,
+    "granted_by": []
+  },
+  {
+    "name": "gift-cards_reports",
+    "assignable": false,
+    "granted_by": ["gift-cards_edit"]
+  },
+  {
+    "name": "gift-cards_settings",
+    "assignable": false,
+    "granted_by": ["gift-cards_edit"]
+  },
+  {
+    "name": "gift-cards_view",
+    "assignable": false,
+    "granted_by": ["gift-cards_access"]
+  },
+  {
+    "name": "gift-cards_view_code",
+    "assignable": false,
+    "granted_by": ["gift-cards_edit"]
+  },
+  {
+    "name": "iam_access",
+    "assignable": true,
+    "granted_by": ["iam_edit"]
+  },
+  {
+    "name": "iam_edit",
+    "assignable": true,
+    "granted_by": []
+  },
+  {
+    "name": "inventory_all_read",
+    "assignable": false,
+    "granted_by": ["catalog_access"]
+  },
+  {
+    "name": "kds_operation",
+    "assignable": false,
+    "granted_by": []
+  },
+  {
+    "name": "kiosk_operation",
+    "assignable": false,
+    "granted_by": []
+  },
+  {
+    "name": "links_access",
+    "assignable": false,
+    "granted_by": []
+  },
+  {
+    "name": "links_edit",
+    "assignable": false,
+    "granted_by": []
+  },
+  {
+    "name": "locations.access",
+    "assignable": true,
+    "granted_by": ["locations.edit"]
+  },
+  {
+    "name": "locations.create",
+    "assignable": false,
+    "granted_by": ["locations.edit"]
+  },
+  {
+    "name": "locations.delete",
+    "assignable": false,
+    "granted_by": ["locations.edit"]
+  },
+  {
+    "name": "locations.edit",
+    "assignable": true,
+    "granted_by": []
+  },
+  {
+    "name": "locations.list",
+    "assignable": false,
+    "granted_by": ["locations.access"]
+  },
+  {
+    "name": "locations.update",
+    "assignable": false,
+    "granted_by": ["locations.edit"]
+  },
+  {
+    "name": "locations.view",
+    "assignable": false,
+    "granted_by": ["locations.access"]
+  },
+  {
+    "name": "loyalty_offer_access",
+    "assignable": true,
+    "granted_by": ["promotions_access"]
+  },
+  {
+    "name": "loyalty_offer_create",
+    "assignable": false,
+    "granted_by": ["loyalty_offer_edit"]
+  },
+  {
+    "name": "loyalty_offer_delete",
+    "assignable": false,
+    "granted_by": ["loyalty_offer_edit"]
+  },
+  {
+    "name": "loyalty_offer_edit",
+    "assignable": true,
+    "granted_by": ["promotions_edit"]
+  },
+  {
+    "name": "loyalty_offer_get",
+    "assignable": false,
+    "granted_by": ["loyalty_offer_access"]
+  },
+  {
+    "name": "loyalty_offer_list",
+    "assignable": false,
+    "granted_by": ["loyalty_offer_access"]
+  },
+  {
+    "name": "members_access",
+    "assignable": true,
+    "granted_by": ["iam_access", "members_edit"]
+  },
+  {
+    "name": "members_create",
+    "assignable": false,
+    "granted_by": ["members_edit"]
+  },
+  {
+    "name": "members_delegate",
+    "assignable": false,
+    "granted_by": []
+  },
+  {
+    "name": "members_delete",
+    "assignable": false,
+    "granted_by": ["members_edit"]
+  },
+  {
+    "name": "members_edit",
+    "assignable": true,
+    "granted_by": ["iam_edit"]
+  },
+  {
+    "name": "members_list",
+    "assignable": false,
+    "granted_by": ["members_access"]
+  },
+  {
+    "name": "members_update",
+    "assignable": false,
+    "granted_by": ["members_edit"]
+  },
+  {
+    "name": "members_view",
+    "assignable": false,
+    "granted_by": ["members_access"]
+  },
+  {
+    "name": "merchant.delete",
+    "assignable": false,
+    "granted_by": []
+  },
+  {
+    "name": "merchant.read",
+    "assignable": false,
+    "granted_by": []
+  },
+  {
+    "name": "merchant.write",
+    "assignable": false,
+    "granted_by": []
+  },
+  {
+    "name": "oauth_clients.access",
+    "assignable": true,
+    "granted_by": ["developer_settings_access", "oauth_clients.edit"]
+  },
+  {
+    "name": "oauth_clients.create",
+    "assignable": false,
+    "granted_by": ["oauth_clients.edit"]
+  },
+  {
+    "name": "oauth_clients.credentials_create",
+    "assignable": false,
+    "granted_by": ["oauth_clients.edit"]
+  },
+  {
+    "name": "oauth_clients.credentials_delete",
+    "assignable": false,
+    "granted_by": ["oauth_clients.edit"]
+  },
+  {
+    "name": "oauth_clients.credentials_list",
+    "assignable": false,
+    "granted_by": ["oauth_clients.access"]
+  },
+  {
+    "name": "oauth_clients.credentials_update",
+    "assignable": false,
+    "granted_by": ["oauth_clients.edit"]
+  },
+  {
+    "name": "oauth_clients.credentials_view",
+    "assignable": false,
+    "granted_by": ["oauth_clients.access"]
+  },
+  {
+    "name": "oauth_clients.delete",
+    "assignable": false,
+    "granted_by": ["oauth_clients.edit"]
+  },
+  {
+    "name": "oauth_clients.edit",
+    "assignable": true,
+    "granted_by": ["developer_settings_edit"]
+  },
+  {
+    "name": "oauth_clients.list",
+    "assignable": false,
+    "granted_by": ["oauth_clients.access"]
+  },
+  {
+    "name": "oauth_clients.update",
+    "assignable": false,
+    "granted_by": ["oauth_clients.edit"]
+  },
+  {
+    "name": "oauth_clients.view",
+    "assignable": false,
+    "granted_by": ["oauth_clients.access"]
+  },
+  {
+    "name": "offers_access",
+    "assignable": true,
+    "granted_by": ["offers_edit"]
+  },
+  {
+    "name": "offers_create",
+    "assignable": false,
+    "granted_by": ["offers_edit"]
+  },
+  {
+    "name": "offers_delete",
+    "assignable": false,
+    "granted_by": ["offers_edit"]
+  },
+  {
+    "name": "offers_edit",
+    "assignable": true,
+    "granted_by": []
+  },
+  {
+    "name": "offers_get",
+    "assignable": false,
+    "granted_by": ["offers_access"]
+  },
+  {
+    "name": "offers_list",
+    "assignable": false,
+    "granted_by": ["offers_access"]
+  },
+  {
+    "name": "orderandpay_product_management",
+    "assignable": false,
+    "granted_by": []
+  },
+  {
+    "name": "payment-links_access",
+    "assignable": true,
+    "granted_by": ["payment-links_edit"]
+  },
+  {
+    "name": "payment-links_create",
+    "assignable": false,
+    "granted_by": ["payment-links_edit"]
+  },
+  {
+    "name": "payment-links_edit",
+    "assignable": true,
+    "granted_by": []
+  },
+  {
+    "name": "payment-links_view",
+    "assignable": false,
+    "granted_by": ["payment-links_edit"]
+  },
+  {
+    "name": "persons_read",
+    "assignable": true,
+    "granted_by": []
+  },
+  {
+    "name": "pos-cashmgt_access",
+    "assignable": true,
+    "granted_by": ["pos-cashmgt_edit", "pos_access"]
+  },
+  {
+    "name": "pos-cashmgt_drawer_open",
+    "assignable": false,
+    "granted_by": ["pos-cashmgt_edit"]
+  },
+  {
+    "name": "pos-cashmgt_edit",
+    "assignable": true,
+    "granted_by": ["pos_edit"]
+  },
+  {
+    "name": "pos-cashmgt_events_create",
+    "assignable": false,
+    "granted_by": ["pos_edit"]
+  },
+  {
+    "name": "pos-cashmgt_movements_create",
+    "assignable": false,
+    "granted_by": ["pos-cashmgt_access"]
+  },
+  {
+    "name": "pos-cashmgt_movements_get",
+    "assignable": false,
+    "granted_by": ["pos-cashmgt_edit"]
+  },
+  {
+    "name": "pos-cashmgt_my-movements_get",
+    "assignable": false,
+    "granted_by": ["pos-cashmgt_access"]
+  },
+  {
+    "name": "pos-cashmgt_state_get",
+    "assignable": false,
+    "granted_by": ["pos-cashmgt_access"]
+  },
+  {
+    "name": "pos-cashmgt_virtualdrawers_create",
+    "assignable": false,
+    "granted_by": ["pos-cashmgt_access"]
+  },
+  {
+    "name": "pos-cashmgt_virtualdrawers_list",
+    "assignable": false,
+    "granted_by": ["pos-cashmgt_edit"]
+  },
+  {
+    "name": "pos-cashmgt_virtualdrawers_update",
+    "assignable": false,
+    "granted_by": ["pos-cashmgt_access"]
+  },
+  {
+    "name": "pos-fiscalisation_access",
+    "assignable": true,
+    "granted_by": ["pos-fiscalisation_edit", "pos_access"]
+  },
+  {
+    "name": "pos-fiscalisation_edit",
+    "assignable": true,
+    "granted_by": ["pos_edit"]
+  },
+  {
+    "name": "pos-fiscalisation_events_create",
+    "assignable": false,
+    "granted_by": ["pos_edit"]
+  },
+  {
+    "name": "pos-fiscalisation_german-tse_create",
+    "assignable": false,
+    "granted_by": ["pos-fiscalisation_edit"]
+  },
+  {
+    "name": "pos-fiscalisation_german-tse_get",
+    "assignable": false,
+    "granted_by": ["pos-fiscalisation_access"]
+  },
+  {
+    "name": "pos-fiscalisation_tse_create",
+    "assignable": false,
+    "granted_by": ["pos-fiscalisation_edit"]
+  },
+  {
+    "name": "pos-fiscalisation_tse_get",
+    "assignable": false,
+    "granted_by": ["pos-fiscalisation_access"]
+  },
+  {
+    "name": "pos-order-aggregator_access",
+    "assignable": true,
+    "granted_by": ["pos-order-aggregator_edit", "pos_access"]
+  },
+  {
+    "name": "pos-order-aggregator_edit",
+    "assignable": true,
+    "granted_by": ["pos_edit"]
+  },
+  {
+    "name": "pos-order-aggregator_menu_update",
+    "assignable": false,
+    "granted_by": ["pos-order-aggregator_edit"]
+  },
+  {
+    "name": "pos-order-aggregator_order_update",
+    "assignable": false,
+    "granted_by": ["pos-order-aggregator_edit"]
+  },
+  {
+    "name": "pos-order-aggregator_sales_get",
+    "assignable": false,
+    "granted_by": ["pos-order-aggregator_access"]
+  },
+  {
+    "name": "pos-order-aggregator_store-settings_update",
+    "assignable": false,
+    "granted_by": ["pos-order-aggregator_edit"]
+  },
+  {
+    "name": "pos-order-aggregator_uber-connection_get",
+    "assignable": false,
+    "granted_by": ["pos-order-aggregator_access"]
+  },
+  {
+    "name": "pos-order-aggregator_uber-oauth_authorize",
+    "assignable": false,
+    "granted_by": ["pos-order-aggregator_edit"]
+  },
+  {
+    "name": "pos-order-aggregator_uber-oauth_token",
+    "assignable": false,
+    "granted_by": ["pos-order-aggregator_edit"]
+  },
+  {
+    "name": "pos-sales-period_access",
+    "assignable": false,
+    "granted_by": ["pos_access"]
+  },
+  {
+    "name": "pos-sales-period_periods_create",
+    "assignable": true,
+    "granted_by": ["pos_edit"]
+  },
+  {
+    "name": "pos-sales-period_periods_get",
+    "assignable": true,
+    "granted_by": ["pos_access"]
+  },
+  {
+    "name": "pos-sales-period_periods_update",
+    "assignable": true,
+    "granted_by": ["pos_edit"]
+  },
+  {
+    "name": "pos-sales-period_state_get",
+    "assignable": false,
+    "granted_by": ["pos_access"]
+  },
+  {
+    "name": "pos-sales-period_xreports_all_staff_create",
+    "assignable": true,
+    "granted_by": ["pos_edit"]
+  },
+  {
+    "name": "pos-sales-period_xreports_all_staff_get",
+    "assignable": true,
+    "granted_by": ["pos_edit"]
+  },
+  {
+    "name": "pos-sales-period_xreports_individual_create",
+    "assignable": true,
+    "granted_by": []
+  },
+  {
+    "name": "pos-sales-period_xreports_individual_get",
+    "assignable": true,
+    "granted_by": ["pos-sales-period_xreports_all_staff_get"]
+  },
+  {
+    "name": "pos-settings_access",
+    "assignable": true,
+    "granted_by": ["pos-settings_edit", "pos_access"]
+  },
+  {
+    "name": "pos-settings_cash-payment_update",
+    "assignable": false,
+    "granted_by": []
+  },
+  {
+    "name": "pos-settings_cashmgt_update",
+    "assignable": false,
+    "granted_by": ["pos-settings_edit"]
+  },
+  {
+    "name": "pos-settings_edit",
+    "assignable": true,
+    "granted_by": ["pos_edit"]
+  },
+  {
+    "name": "pos-settings_other-payment-methods_update",
+    "assignable": false,
+    "granted_by": ["pos-settings_edit"]
+  },
+  {
+    "name": "pos-settings_payment-methods-cash_get",
+    "assignable": false,
+    "granted_by": ["pos-settings_access"]
+  },
+  {
+    "name": "pos-settings_paymentmethod_update",
+    "assignable": false,
+    "granted_by": []
+  },
+  {
+    "name": "pos-settings_pos-pin-access_update",
+    "assignable": false,
+    "granted_by": []
+  },
+  {
+    "name": "pos-settings_sales-period_update",
+    "assignable": false,
+    "granted_by": ["pos-settings_edit"]
+  },
+  {
+    "name": "pos-tablemgt_access",
+    "assignable": true,
+    "granted_by": ["pos-tablemgt_edit", "pos_access"]
+  },
+  {
+    "name": "pos-tablemgt_edit",
+    "assignable": true,
+    "granted_by": ["pos_edit"]
+  },
+  {
+    "name": "pos-tablemgt_layout_edit",
+    "assignable": false,
+    "granted_by": ["pos-tablemgt_edit"]
+  },
+  {
+    "name": "pos-tablemgt_layout_read",
+    "assignable": false,
+    "granted_by": ["pos-tablemgt_access"]
+  },
+  {
+    "name": "pos_access",
+    "assignable": true,
+    "granted_by": ["pos_edit"]
+  },
+  {
+    "name": "pos_edit",
+    "assignable": true,
+    "granted_by": []
+  },
+  {
+    "name": "promotions_access",
+    "assignable": true,
+    "granted_by": ["basic_discount_access", "coupons_access", "offers_access"]
+  },
+  {
+    "name": "promotions_create",
+    "assignable": false,
+    "granted_by": ["promotions_edit"]
+  },
+  {
+    "name": "promotions_delete",
+    "assignable": false,
+    "granted_by": ["promotions_edit"]
+  },
+  {
+    "name": "promotions_edit",
+    "assignable": true,
+    "granted_by": ["basic_discount_edit", "coupons_edit", "offers_edit"]
+  },
+  {
+    "name": "promotions_get",
+    "assignable": false,
+    "granted_by": ["promotions_access"]
+  },
+  {
+    "name": "promotions_list",
+    "assignable": false,
+    "granted_by": ["promotions_access"]
+  },
+  {
+    "name": "readers.checkouts.create",
+    "assignable": false,
+    "granted_by": ["readers_access"]
+  },
+  {
+    "name": "readers.checkouts.delete",
+    "assignable": false,
+    "granted_by": ["readers_access"]
+  },
+  {
+    "name": "readers.checkouts.view",
+    "assignable": false,
+    "granted_by": ["readers_access"]
+  },
+  {
+    "name": "readers.create",
+    "assignable": false,
+    "granted_by": ["readers_edit"]
+  },
+  {
+    "name": "readers.delete",
+    "assignable": false,
+    "granted_by": ["readers_edit"]
+  },
+  {
+    "name": "readers.list",
+    "assignable": false,
+    "granted_by": ["readers_access"]
+  },
+  {
+    "name": "readers.update",
+    "assignable": false,
+    "granted_by": ["readers_edit"]
+  },
+  {
+    "name": "readers.view",
+    "assignable": false,
+    "granted_by": ["readers_access"]
+  },
+  {
+    "name": "readers_access",
+    "assignable": true,
+    "granted_by": ["readers_edit"]
+  },
+  {
+    "name": "readers_checkout_create",
+    "assignable": false,
+    "granted_by": ["readers_access"]
+  },
+  {
+    "name": "readers_edit",
+    "assignable": true,
+    "granted_by": []
+  },
+  {
+    "name": "refund_transactions",
+    "assignable": true,
+    "granted_by": []
+  },
+  {
+    "name": "reporting_cost-price_get",
+    "assignable": false,
+    "granted_by": ["reports_access"]
+  },
+  {
+    "name": "reporting_daily-totals_get",
+    "assignable": true,
+    "granted_by": []
+  },
+  {
+    "name": "reporting_fee-invoice_get",
+    "assignable": false,
+    "granted_by": ["reports_access"]
+  },
+  {
+    "name": "reporting_fiscal-report_get",
+    "assignable": false,
+    "granted_by": ["stats-reports_access"]
+  },
+  {
+    "name": "reporting_italian-tax-report_get",
+    "assignable": false,
+    "granted_by": ["reports_access"]
+  },
+  {
+    "name": "reporting_items-report_get",
+    "assignable": false,
+    "granted_by": ["stats-reports_access"]
+  },
+  {
+    "name": "reporting_latam-tax-report_get",
+    "assignable": false,
+    "granted_by": []
+  },
+  {
+    "name": "reporting_my-cashmgt-report_get",
+    "assignable": false,
+    "granted_by": ["stats-reports_own_access"]
+  },
+  {
+    "name": "reporting_my-items-report_get",
+    "assignable": false,
+    "granted_by": ["stats-reports_own_access"]
+  },
+  {
+    "name": "reporting_my-reports_list",
+    "assignable": false,
+    "granted_by": ["stats-reports_own_access"]
+  },
+  {
+    "name": "reporting_my-revenue-report_get",
+    "assignable": false,
+    "granted_by": ["stats-reports_own_access"]
+  },
+  {
+    "name": "reporting_my-sales-report_get",
+    "assignable": false,
+    "granted_by": ["stats-reports_own_access"]
+  },
+  {
+    "name": "reporting_my-sales-summary_get",
+    "assignable": false,
+    "granted_by": ["stats-reports_own_access"]
+  },
+  {
+    "name": "reporting_my-transactions-report_get",
+    "assignable": false,
+    "granted_by": ["reports_own_access"]
+  },
+  {
+    "name": "reporting_payout-payments-report_get",
+    "assignable": false,
+    "granted_by": ["reports_access"]
+  },
+  {
+    "name": "reporting_payout-report_get",
+    "assignable": false,
+    "granted_by": ["reports_access"]
+  },
+  {
+    "name": "reporting_receivable-balance_get",
+    "assignable": false,
+    "granted_by": ["reports_access"]
+  },
+  {
+    "name": "reporting_reports_list",
+    "assignable": false,
+    "granted_by": ["stats-reports_access"]
+  },
+  {
+    "name": "reporting_revenue-report_get",
+    "assignable": false,
+    "granted_by": ["stats-reports_access"]
+  },
+  {
+    "name": "reporting_sales-report_get",
+    "assignable": false,
+    "granted_by": ["stats-reports_access"]
+  },
+  {
+    "name": "reporting_sales-summary_get",
+    "assignable": false,
+    "granted_by": ["stats-reports_access"]
+  },
+  {
+    "name": "reporting_settings.update",
+    "assignable": false,
+    "granted_by": []
+  },
+  {
+    "name": "reporting_transactions-report_get",
+    "assignable": false,
+    "granted_by": ["reports_access"]
+  },
+  {
+    "name": "reports_access",
+    "assignable": true,
+    "granted_by": []
+  },
+  {
+    "name": "reports_own_access",
+    "assignable": true,
+    "granted_by": ["reports_access"]
+  },
+  {
+    "name": "roles_access",
+    "assignable": true,
+    "granted_by": ["members_access", "roles_edit"]
+  },
+  {
+    "name": "roles_create",
+    "assignable": false,
+    "granted_by": ["roles_edit"]
+  },
+  {
+    "name": "roles_delete",
+    "assignable": false,
+    "granted_by": ["roles_edit"]
+  },
+  {
+    "name": "roles_edit",
+    "assignable": true,
+    "granted_by": ["iam_edit"]
+  },
+  {
+    "name": "roles_list",
+    "assignable": false,
+    "granted_by": ["roles_access"]
+  },
+  {
+    "name": "roles_update",
+    "assignable": false,
+    "granted_by": ["roles_edit"]
+  },
+  {
+    "name": "roles_view",
+    "assignable": false,
+    "granted_by": ["roles_access"]
+  },
+  {
+    "name": "service_accounts_access",
+    "assignable": true,
+    "granted_by": ["developer_settings_access", "service_accounts_edit"]
+  },
+  {
+    "name": "service_accounts_create",
+    "assignable": false,
+    "granted_by": ["developer_settings_edit"]
+  },
+  {
+    "name": "service_accounts_delete",
+    "assignable": false,
+    "granted_by": ["developer_settings_edit"]
+  },
+  {
+    "name": "service_accounts_edit",
+    "assignable": true,
+    "granted_by": ["developer_settings_edit"]
+  },
+  {
+    "name": "service_accounts_list",
+    "assignable": false,
+    "granted_by": ["developer_settings_access"]
+  },
+  {
+    "name": "service_accounts_update",
+    "assignable": false,
+    "granted_by": ["developer_settings_edit"]
+  },
+  {
+    "name": "service_accounts_view",
+    "assignable": false,
+    "granted_by": ["developer_settings_access"]
+  },
+  {
+    "name": "shopping-cart_cart-discount_add",
+    "assignable": true,
+    "granted_by": []
+  },
+  {
+    "name": "shopping-cart_item-discount_add",
+    "assignable": true,
+    "granted_by": []
+  },
+  {
+    "name": "stats-reports_access",
+    "assignable": true,
+    "granted_by": ["full_transaction_history_view"]
+  },
+  {
+    "name": "stats-reports_own_access",
+    "assignable": true,
+    "granted_by": ["stats-reports_access"]
+  },
+  {
+    "name": "taxes_access",
+    "assignable": true,
+    "granted_by": ["taxes_edit"]
+  },
+  {
+    "name": "taxes_config_access",
+    "assignable": true,
+    "granted_by": ["taxes_access", "taxes_config_edit"]
+  },
+  {
+    "name": "taxes_config_edit",
+    "assignable": true,
+    "granted_by": ["taxes_edit"]
+  },
+  {
+    "name": "taxes_configs_read",
+    "assignable": false,
+    "granted_by": ["taxes_config_access"]
+  },
+  {
+    "name": "taxes_configs_update",
+    "assignable": false,
+    "granted_by": ["taxes_config_edit"]
+  },
+  {
+    "name": "taxes_edit",
+    "assignable": true,
+    "granted_by": []
+  },
+  {
+    "name": "taxes_rates_access",
+    "assignable": true,
+    "granted_by": ["taxes_access", "taxes_rates_edit"]
+  },
+  {
+    "name": "taxes_rates_create",
+    "assignable": false,
+    "granted_by": ["taxes_rates_edit"]
+  },
+  {
+    "name": "taxes_rates_delete",
+    "assignable": false,
+    "granted_by": ["taxes_rates_edit"]
+  },
+  {
+    "name": "taxes_rates_edit",
+    "assignable": true,
+    "granted_by": ["taxes_edit"]
+  },
+  {
+    "name": "taxes_rates_read",
+    "assignable": false,
+    "granted_by": ["taxes_rates_access"]
+  },
+  {
+    "name": "taxes_rates_update",
+    "assignable": false,
+    "granted_by": ["taxes_rates_edit"]
+  },
+  {
+    "name": "taxes_rates_upsert",
+    "assignable": false,
+    "granted_by": ["taxes_rates_edit"]
+  },
+  {
+    "name": "tokens.create",
+    "assignable": false,
+    "granted_by": []
+  },
+  {
+    "name": "webhooks.access",
+    "assignable": true,
+    "granted_by": ["developer_settings_access", "webhooks.edit"]
+  },
+  {
+    "name": "webhooks.edit",
+    "assignable": true,
+    "granted_by": ["developer_settings_edit"]
+  },
+  {
+    "name": "webhooks.event_destinations.create",
+    "assignable": false,
+    "granted_by": ["webhooks.edit"]
+  },
+  {
+    "name": "webhooks.event_destinations.delete",
+    "assignable": false,
+    "granted_by": ["webhooks.edit"]
+  },
+  {
+    "name": "webhooks.event_destinations.list",
+    "assignable": false,
+    "granted_by": ["webhooks.access"]
+  },
+  {
+    "name": "webhooks.event_destinations.update",
+    "assignable": false,
+    "granted_by": ["webhooks.edit"]
+  },
+  {
+    "name": "webhooks.event_destinations.view",
+    "assignable": false,
+    "granted_by": ["webhooks.access"]
+  },
+  {
+    "name": "webhooks.events.list",
+    "assignable": false,
+    "granted_by": ["webhooks.access"]
+  }
+]

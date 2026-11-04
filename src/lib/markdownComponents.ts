@@ -1,4 +1,6 @@
 import type { NimbusIntegrationOptions } from "@cloudflare/nimbus-docs";
+import catalog from "../data/merchant-permissions.json" with { type: "json" };
+import { permissionTableMarkdown } from "./permissions.ts";
 import { plugins } from "./plugins.ts";
 import { readers } from "./readers.ts";
 import { javaInstallExamples } from "./sdks/javaInstallExamples.ts";
@@ -49,6 +51,13 @@ export function createMarkdownComponents(javaVersion: string): ComponentMap {
       revision: "1",
       render: ({ attrs, children }) =>
         `**${text(attrs.label)}**\n\n${children}`,
+    },
+    PermissionTable: {
+      revision: JSON.stringify(catalog),
+      render: ({ attrs }) =>
+        permissionTableMarkdown(
+          attrs.kind === "assignable" ? "assignable" : "inherited",
+        ),
     },
     PairingSequence: {
       revision: JSON.stringify({
