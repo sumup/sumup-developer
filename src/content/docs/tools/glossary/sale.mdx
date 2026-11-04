@@ -1,23 +1,19 @@
 ---
 title: Sale
-description: A sale records what was sold and connects the commercial event to its payments.
+description: A sale records the items sold, their prices, and the associated payments.
 sidebar:
   order: 30
 ---
 
-A sale is the commercial record of an exchange between a merchant and a
-customer. It answers **what was sold**, independently of how the customer paid.
+A sale records what a merchant sold to a customer and how the customer paid.
+It brings together the items, prices, and payments for a purchase.
 
-A sale can contain business details such as:
+A sale can include:
 
 - Items and quantities
-- Taxes, discounts, and tips
-- The sales channel, device, or location
+- Prices, taxes, and discounts
+- The sales channel
 - The total amount and associated payments
-
-Keeping the commercial record separate from payment processing lets a merchant
-record what was sold even when a purchase uses multiple payments or a method
-such as cash.
 
 ## How sales, checkouts, and transactions relate
 
@@ -31,7 +27,7 @@ Use these terms to describe different parts of the same flow:
 
 In a typical online purchase, your system holds the order or basket. You create
 a checkout for the amount to collect, and payment processing produces a
-transaction. You then use the payment result to update the order in your system.
+transaction. You then verify the payment result before updating your order.
 
 The exact relationship depends on the integration. A merchant can split one
 sale across multiple payments, and a cash payment does not require an online
@@ -41,8 +37,7 @@ checkout.
 
 The [Sales API](/api/tags/sales/) exposes fully paid, closed sales, including
 item lines and a `payments` array. It does not return unfinished or unpaid
-sales. Your own order or basket can exist before payment; that does not mean
-it is already available as a sale through the Sales API.
+sales. Keep track of unpaid orders or baskets in your own system.
 
 A sale's payment entries support bookkeeping and reconciliation. Use the
 [Transactions API](/api/transactions/get/) for the processing details and
