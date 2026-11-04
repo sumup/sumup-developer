@@ -3,70 +3,56 @@
 > Prefer the latest SumUp docs first: `https://developer.sumup.com/tools/authorization/index.md`
 > LLM entrypoint for discovery: `https://developer.sumup.com/llms.txt`
 
-## API key tiers
+## API keys
 
-- `sup_sk_test_*`: sandbox secret key for test environments.
-- `sup_sk_live_*`: production secret key.
-- Restricted API keys (scoped access) are preferred for production deployments.
+- Secret API keys beginning with `sup_sk_` authorize server-side requests for the merchant that created them. Keep them out of browser code, mobile binaries, logs, and repositories.
+- Public merchant keys beginning with `sup_pk_` are used by client integrations such as Swift Checkout and React Native Checkout. They do not authorize server API calls.
+- Sandbox behavior depends on the merchant associated with the credential. Do not infer sandbox or production from the secret key prefix.
+- Follow the current API-key guide for available permission controls; do not promise a restricted-key product without checking it is supported.
 
-Never expose `sup_sk_*` keys in browser code, mobile binaries, or public repositories.
+## OAuth 2.0
 
-## OAuth 2.0 flows
-
-### Authorization Code (merchant-delegated)
+Use OAuth for applications acting on behalf of other merchants:
 
 - Authorize endpoint: `https://api.sumup.com/authorize`
 - Token endpoint: `https://api.sumup.com/token`
-- Use for merchant-consented delegated access.
-- Always validate OAuth `state`.
-- Use PKCE for public clients (browser/mobile/native apps).
+- The documented authorization code flow uses a backend that can keep the client secret confidential. Exchange the short-lived, single-use code from that backend.
+- Validate `state` and use the exact registered `redirect_uri` in both authorization and token-exchange requests.
+- Submit token requests as `application/x-www-form-urlencoded` and use the returned token with `Authorization: Bearer`.
+- Track `expires_in` and refresh tokens as documented. Store any replacement refresh token. An `invalid_grant` requires a new merchant authorization, rather than repeatedly retrying the same refresh token.
 
-### Client Credentials (machine-to-machine)
+Do not assume a PKCE-only public-client flow is supported by these endpoints; implement the flow documented for the selected client and product.
 
-- Token endpoint: `https://api.sumup.com/token`
-- Use for backend service-to-service calls under your own app credentials.
-- No refresh token; request a new token when expired.
-- Not suitable for merchant-specific delegated resources.
+Client credentials authenticate the application without a merchant user. They cannot retrieve merchant-specific transactions or saved customers, but can process payments for merchants linked to the application. This grant does not return a refresh token.
 
-## Scopes
+## OAuth scopes
 
-- `payments`: required for checkout APIs.
-- `payment_instruments`: required for tokenization/payment instrument APIs.
-  - This scope must be activated by SumUp (request via support/contact form).
+- `payments`: the published OAuth guide's scope for creating and processing checkouts.
+- `payment_instruments`: the published OAuth guide's scope for storing customers and tokenizing cards.
+- These legacy OAuth scopes require SumUp verification; request them for the OAuth application through [SumUp contact](https://www.sumup.com/contact/).
+- Request only the scopes needed by the endpoints and check the granted scopes. Do not apply OAuth scope-activation requirements to API keys or sandbox card-tokenization tests; the saved-card guide permits sandbox testing without additional activation.
+- Check each operation's current API reference for its authorization requirements, including newer permission relations. Do not infer that a token can access an operation from its name alone.
 
-## Authorized JavaScript origins
+## Client origins and affiliate keys
 
-For Card Widget and similar browser integrations, list every allowed staging and production domain in client credentials configuration.
-If origin is not listed, widget mount/init can fail.
+Configure allowed JavaScript origins where required by the selected checkout integration. For terminal integrations, match Affiliate Key configuration to the app's bundle ID or package identifier.
 
-## Affiliate Keys (card-present)
+## Payment verification
 
-Affiliate Key configuration must match the app identifier (bundle ID/package/app ID) used by your terminal integration.
-
-## Security don'ts
-
-- Never store or log raw PAN/CVV.
-- Never trust Card Widget `success` callback as final payment proof.
-- Never trust Hosted Checkout `redirect_url` callback as final payment proof.
-- Always reconcile payment status server-side via API reads and/or webhooks.
+- Keep PAN/CVV inside the hosted, widget, or SDK-provided payment interface.
+- Treat redirects and callbacks as notifications. Retrieve the expected checkout or transaction before fulfillment.
+- Follow the webhook protocol for the selected flow; online checkout callbacks do not document HMAC signing.
+- Resolve an uncertain payment or refund before submitting another attempt. See `references/response-handling/README.md`.
 
 ## Key rotation
 
-Rotate keys with zero downtime:
-
-1. Issue new restricted key.
-2. Deploy/update all consumers to use the new key.
-3. Revoke old key only after successful cutover.
-
-## Reading Order
-
-1. This file.
-2. `references/checkout-widget/README.md` for browser origin and callback handling.
-3. `references/webhooks-3ds/README.md` for HMAC signature verification and raw body handling.
-4. `references/checkouts-api/README.md` for server-side verification endpoints.
+1. Issue a new key and store it securely.
+2. Deploy it to the intended consumers and verify authentication.
+3. Revoke the old key after the cutover succeeds.
 
 ## See Also
 
-- `references/checkout-widget/README.md`
+- `references/react-native-sdk/README.md`
 - `references/webhooks-3ds/README.md`
-- `references/checkouts-api/README.md`
+- `references/recurring-tokenization/README.md`
+- `references/response-handling/README.md`

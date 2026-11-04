@@ -6,66 +6,44 @@
 ## 3DS flow
 
 1. Include `redirect_url` on checkout creation.
-2. Process checkout and inspect `next_step`.
-3. Redirect/post customer to `next_step.url` with full `next_step.payload`.
-4. After challenge, verify status using retrieve-checkout API.
+2. Let the Payment Widget or selected checkout SDK handle authentication. For API-orchestrated flows, inspect `next_step` and follow its method, URL, and complete payload.
+3. After the challenge, retrieve the checkout on your backend and require `status: "PAID"` before fulfillment.
 
-## Per-checkout server callback (`return_url`)
+## Online checkout callbacks
 
-- Set `return_url` when creating a checkout.
-- SumUp sends checkout status-change notifications to this URL.
-- Respond quickly with empty `2xx`.
-- Use this path for simpler checkout-specific callback handling where global subscriptions are not required.
+Set `return_url` when creating a checkout. SumUp sends an HTTP POST when the checkout status changes:
 
-## Dashboard-registered webhooks (HMAC-signed)
-
-- Register webhook endpoint in Developer Settings.
-- SumUp signs payloads in `x-payload-signature` using HMAC SHA-256 over the raw request body and your webhook secret.
-- Verify signatures against raw bytes, not parsed JSON.
-- Delivery retries can occur (up to 9 retries with exponential backoff).
-- Use this model for global event-driven workflows (settlement, refunds, recurring renewals).
-
-### Critical pitfall: raw body is required
-
-- Middleware/framework JSON parsing changes payload bytes and can invalidate signature checks.
-- Use raw body access in your stack (for example `req.rawBody` in Express or `request.arrayBuffer()` in Next.js Route Handlers).
-
-### Node verification snippet
-
-```ts
-import crypto from "node:crypto";
-
-const expected = crypto
-  .createHmac("sha256", process.env.SUMUP_WEBHOOK_SECRET!)
-  .update(rawBody) // Buffer of raw bytes, NOT parsed JSON
-  .digest("hex");
-
-const ok = crypto.timingSafeEqual(
-  Buffer.from(expected),
-  Buffer.from(req.headers["x-payload-signature"] as string),
-);
+```json
+{
+  "event_type": "CHECKOUT_STATUS_CHANGED",
+  "id": "id-of-the-changed-checkout"
+}
 ```
 
-## Common requirements (both webhook mechanisms)
+- Respond promptly with an empty `2xx` response.
+- Retrieve the checkout with `GET /v0.1/checkouts/{id}` and verify the expected merchant, amount, currency, reference, and final status before updating the order.
+- Make order updates idempotent. This payload has a checkout ID, not a separate delivery ID; repeated notifications must not trigger duplicate fulfillment.
+- Ignore unknown event types.
+- The documented retry delays are 1 minute, 5 minutes, 20 minutes, and 2 hours.
 
-- Treat callbacks/events as signals only.
-- Reconcile final state with `GET /v0.1/checkouts/{id}` before finalizing orders.
-- Implement idempotency and deduplicate using event identifiers/checkout state transitions.
+The published online checkout guide does not specify a signing header or a webhook-secret setup. Do not require `x-payload-signature` for this callback or present the draft dashboard webhook-subscription guide as an available checkout integration. If a different SumUp product explicitly documents signed webhooks, follow that product's signature protocol.
 
-## UK payment initiation variant
+## Cloud API callbacks
 
-For SumUp UK payment initiation flows, signature verification can use ED25519 (`token-signature` header) with public key material from the dashboard.
+Cloud API uses a separate `solo.transaction.updated` event. Match `payload.client_transaction_id` to the identifier returned when starting the reader checkout; `transaction_id` is deprecated. Its status is `successful` or `failed`, rather than the online checkout status enum.
+
+Use [the Cloud API result flow](https://developer.sumup.com/terminal-payments/cloud-api/#receive-transaction-results) and transaction retrieval for reconciliation. An accepted reader checkout is not a completed payment.
 
 ## Reading Order
 
 1. This file.
-2. `references/checkouts-api/README.md` for checkout lifecycle API calls.
-3. `references/checkout-widget/README.md` for frontend callback integration.
+2. `references/checkouts-api/README.md` for online checkout retrieval.
+3. `references/cloud-api/README.md` for reader transaction results.
+4. `references/response-handling/README.md` before retrying uncertain payments or refunds.
 
 ## See Also
 
 - `references/online-testing/README.md`
-- `references/checkouts-api/README.md`
 - `references/checkout-widget/README.md`
 - `references/react-native-sdk/README.md`
 - `references/swift-checkout-sdk/README.md`

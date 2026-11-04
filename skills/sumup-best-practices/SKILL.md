@@ -1,75 +1,38 @@
 ---
 name: sumup-best-practices
-description: Pick the right SumUp integration path and apply security best practices. Use when deciding between Hosted Checkout, Card Widget, Checkouts API, mobile SDKs, terminal SDKs, or Cloud API; choosing API key vs OAuth vs restricted keys; or reviewing SumUp integration security.
+description: Choose a SumUp integration and credential model, or review its payment security. Use for Hosted Checkout vs Card Widget, reader SDK vs Cloud API, API key vs OAuth, and public vs secret key decisions.
 license: Apache-2.0
 ---
 
-# SumUp Integration Decisions and Best Practices
+# Choose a SumUp Integration
 
-Knowledge and APIs can change. Always prefer the latest SumUp docs in markdown format over stale memory.
+Start with the user's constraints and existing stack. Recommend the simplest supported path that meets them; preserve an explicit integration choice unless evidence shows it cannot satisfy the requirement. Use the [current documentation index](https://developer.sumup.com/llms.txt) to verify availability and product-specific requirements.
 
-- Docs root: `https://developer.sumup.com/`
-- LLM entrypoint: `https://developer.sumup.com/llms.txt`
+## Choose by requirement
 
-Use this skill for architecture and security decisions, not implementation walkthroughs.
+| Requirement | Default choice and deciding constraint |
+| --- | --- |
+| Online checkout with redirect UX | Hosted Checkout; the backend creates the checkout and redirects to its hosted URL. |
+| Embedded website payment collection | Card Widget; SumUp provides the payment interface and authentication flow. |
+| Website wallet buttons | Swift Checkout JavaScript SDK; verify browser/wallet and merchant-domain requirements. |
+| React Native payment sheet | React Native Checkout; check the current alpha API and use a public merchant key in the app. |
+| Save cards and charge later | Customers plus tokenization; the stored token belongs to its customer and each later charge is a separate attempt. |
+| Native mobile app controls a reader | iOS Terminal or Android Reader SDK; check supported devices and platform permissions. |
+| Contactless payment on the phone | Tap to Pay on iPhone or the separate Android Tap-to-Pay SDK; verify device eligibility and access requirements. |
+| POS or backend controls Solo | Cloud API; design around asynchronous transaction results. |
+| Existing app must hand off to the SumUp app | Payment Switch; retain it when that handoff is a requirement. |
 
-## Quick Decision Tree
+A custom backend may still use hosted, widget, or SDK payment collection. Do not introduce direct card-data handling just because the application needs custom order logic.
 
-```text
-Need to accept a payment?
-├─ In-person (card-present)
-│  ├─ Native mobile app controls reader directly -> iOS Terminal SDK / Android Reader SDK
-│  ├─ POS/backend controls Solo from non-native environment -> Cloud API
-│  └─ Legacy handoff to SumUp app is mandatory -> Payment Switch
-└─ Online (card-not-present)
-   ├─ Fastest redirect flow, no embed required -> Hosted Checkout
-   ├─ Embedded payment form with low PCI scope -> Card Widget
-   ├─ Mobile app checkout UX -> Swift Checkout SDK / React Native SDK
-   ├─ Save card and charge later -> Customers + tokenization
-   └─ Custom orchestration needs -> Checkouts API + 3DS + webhooks
-```
+## Choose credentials and verify payment state
 
-## Start Here
+- Use a secret API key on the server for its owning merchant. Use OAuth when other merchants authorize the application. Check endpoint permissions and any required OAuth scope verification in the [authorization guide](https://developer.sumup.com/tools/authorization/).
+- Public `sup_pk_` merchant keys belong in supported checkout clients; secret `sup_sk_` keys and OAuth client secrets do not. Sandbox behavior follows the authenticated merchant, not an assumed key-prefix tier.
+- Terminal integrations need the Affiliate Key and matching app identifiers required by that SDK or API.
+- Match the checkout/transaction to the expected merchant, order reference, amount, and currency. Retrieve final payment state before fulfillment; callback delivery and HTTP success are not enough.
+- Resolve an uncertain payment or refund before repeating it. A unique reference helps reconciliation but is not a guarantee of server-enforced idempotency.
+- Make repeated notifications and status reads safe for order updates. Follow the selected callback protocol rather than assuming every SumUp webhook is signed.
 
-1. Classify the request: `terminal`, `online`, or `hybrid`.
-2. Choose the lowest-complexity viable path first:
-   - Prefer Hosted Checkout or Card Widget before custom orchestration.
-   - Prefer Cloud API for non-native Solo control.
-3. Select auth model:
-   - API key for single-merchant server integrations.
-   - OAuth 2.0 for delegated or multi-merchant apps.
-4. Confirm restricted access and affiliate prerequisites:
-   - `payments` scope activation where needed.
-   - Affiliate Key plus app/bundle identifier alignment for card-present.
-5. Confirm operational constraints:
-   - Currency/merchant alignment
-   - Webhook endpoint readiness and idempotency
-   - Legacy compatibility requirements
+For a selection question, explain the deciding constraint and credential requirements. For a security review, lead with concrete findings and evidence, and describe validation for the affected behavior. Add alternatives or a launch checklist only when they help the requested decision.
 
-## Non-Negotiable Rules
-
-- Keep API keys and OAuth secrets server-side only.
-- Never handle raw PAN/card details directly.
-- Create online checkouts server-to-server.
-- Prefer hosted/widget/SDK checkout UI over custom card handling.
-- Avoid deprecated endpoints.
-- Use unique transaction references (`checkout_reference`, `foreignTransactionId`, or equivalent).
-- Treat webhook callbacks as signals and verify final state via API before fulfillment.
-- Assume retries and duplicate deliveries; enforce idempotent backend handling.
-
-## Required Response Contract
-
-When giving guidance, always return:
-
-1. Chosen integration path with a brief why.
-2. Credential model recommendation (API key vs OAuth) and scope requirements.
-3. Security posture checklist for the chosen path.
-4. Risks/trade-offs and when to pick a different path.
-5. Minimum validation plan before production rollout.
-
-## Hand-off to Implementation Skills
-
-- Use `sumup` for end-to-end implementation steps.
-- Use `upgrade-sumup` for SDK/API migrations.
-- Use `sumup-debug` for failure diagnosis.
-- Use `sumup-testing` for sandbox and QA setup.
+For implementation, use the `sumup` skill if installed, or continue with the selected flow's current documentation. General account reporting and MCP setup do not require an integration-selection exercise.

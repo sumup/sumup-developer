@@ -5,10 +5,12 @@
 
 Use Payment Sheet for online checkout UX in mobile apps.
 
+The current guide targets `@sumup/react-native-checkout@0.0.0-alpha.4`; check its API before upgrading. Create the checkout on your backend with a secret key or OAuth token. The app receives only the checkout ID and the merchant's public key.
+
 ## Provider setup
 
 ```tsx
-<SumUpProvider apiKey="sup_sk_...">
+<SumUpProvider apiKey="sup_pk_YOUR_PUBLIC_MERCHANT_KEY">
   <PaymentScreen />
 </SumUpProvider>
 ```
@@ -18,11 +20,23 @@ Use Payment Sheet for online checkout UX in mobile apps.
 ```tsx
 const { initPaymentSheet, presentPaymentSheet } = useSumUp();
 
-await initPaymentSheet({ checkoutId: "<CHECKOUT_ID>" });
-await presentPaymentSheet();
+async function pay(checkoutId: string) {
+  try {
+    const initialized = await initPaymentSheet({ checkoutId, language: "en" });
+    if (initialized.error) return;
+
+    const result = await presentPaymentSheet();
+    if (result.error) return;
+    // Ask your backend to retrieve the checkout and confirm the order status.
+  } catch {
+    // The result is uncertain: reconcile the existing checkout before retrying.
+  }
+}
 ```
 
-Create checkout on backend first, then pass `checkoutId` to the app.
+Handle returned SDK errors, cancellation, and rejected promises in the UI. A successful sheet response is not payment proof; the backend must require checkout status `PAID`. Never bundle a `sup_sk_` secret key or OAuth client secret in the app.
+
+For saved cards, use `initSaveCardSheet` / `presentSaveCardSheet` and the server-side tokenization flow in `references/recurring-tokenization/README.md`.
 
 ## Reading Order
 

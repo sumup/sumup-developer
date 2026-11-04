@@ -36,7 +36,7 @@
   - API key for single-merchant integrations.
   - OAuth 2.0 for multi-merchant/delegated integrations.
 - For card-present integrations, create Affiliate Key and match app ID / bundle ID to key setup.
-- Keep credentials secure; never expose secret key or client secret in public/client code.
+- Keep credentials secure; never expose a secret key or client secret in public/client code. Supported client checkout SDKs use public `sup_pk_` merchant keys.
 - Ensure payment currency matches merchant account currency for checkout calls.
 
 ## 3. Terminal Checkout Patterns
@@ -137,7 +137,7 @@ Notes:
 2. Create setup checkout with `purpose: "SETUP_RECURRING_PAYMENT"` and `customer_id`.
 3. Complete setup through Card Widget (recommended for consent + 3DS + mandate handling).
 4. Retrieve and store `payment_instrument.token`.
-5. For later charges, create normal checkout and process with `token + customer_id`.
+5. For later charges, create normal checkout and process with `token + customer_id`. Sandbox merchants can test the widget tokenization and 3DS flow without additional activation.
 
 See `references/recurring-tokenization/README.md` for implementation details and edge cases.
 
@@ -153,22 +153,18 @@ See `references/recurring-tokenization/README.md` for implementation details and
 
 ### Webhooks
 
-Two supported mechanisms:
+- For online checkout status notifications, set `return_url` on checkout creation. The callback contains `event_type: "CHECKOUT_STATUS_CHANGED"` and the checkout `id`.
+- Reply promptly with an empty `2xx`. The online guide documents retry delays of 1 minute, 5 minutes, 20 minutes, and 2 hours.
+- Retrieve the checkout and validate its merchant, reference, amount, currency, and `PAID` status before fulfillment. The published online callback protocol does not specify HMAC signatures.
+- Cloud API has a separate `solo.transaction.updated` callback. Match `payload.client_transaction_id` and reconcile the transaction result; an accepted checkout is not payment confirmation.
+- Apply any signature checks only when documented for the selected product. Do not treat the draft dashboard webhook guide as an available online checkout feature.
+- Make order updates idempotent across repeated callbacks and status reads.
 
-1. Per-checkout callback (`return_url`):
-   - Set `return_url` on checkout creation.
-   - Receive checkout-status POSTs for that checkout lifecycle.
-   - Reply quickly with empty `2xx`.
-2. Dashboard-registered webhook endpoint:
-   - Register endpoint in Developer Settings.
-   - Verify `x-payload-signature` using HMAC SHA-256 over raw body with webhook secret.
-   - Plan for retries (up to 9 attempts with exponential backoff).
+### Safe retries
 
-Common rules:
+A timeout or `5xx` can leave a payment or refund result uncertain. Retrieve the existing resource before repeating the operation. If checkout creation returned no ID, list checkouts with the original `checkout_reference`. Keep an unresolved attempt under reconciliation; give any confirmed new payment attempt a new reference linked to the same order.
 
-- Treat incoming webhook/callback as signal.
-- Fetch current checkout state via API before finalizing order state.
-- Implement idempotent processing for duplicate/retry deliveries.
+For refunds, inspect transaction refund events or the refunded amount before submitting another refund. See `references/response-handling/README.md` for the full recovery flow.
 
 ## 6. Common Pitfalls and Safeguards
 

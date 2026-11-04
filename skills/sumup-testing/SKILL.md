@@ -1,89 +1,35 @@
 ---
 name: sumup-testing
-description: Set up and run SumUp sandbox tests. Use when configuring a SumUp test merchant, picking test cards, triggering deliberate failure (`amount = 11`), or building a SumUp end-to-end test harness.
+description: Set up SumUp sandbox merchants, choose online test cards or terminal simulation amounts, test saved-card tokenization, and design or run payment-flow regression checks. Use for requested test setup, scenarios, or verification.
 license: Apache-2.0
 ---
 
-# SumUp Sandbox Testing Guide
+# Test SumUp Payment Flows
 
-Use this skill for test setup, scenario design, and verification of SumUp integrations.
+Match the test to the requested integration and changed behavior. Inspect an existing harness and credentials configuration before proposing new infrastructure. For a test-data question, provide the relevant card or amount directly; a full end-to-end matrix is useful only when the task calls for it.
 
-## Test Environment Setup
+## Choose the scenario reference
 
-1. Use a sandbox merchant account only.
-2. Confirm credentials map to sandbox environment.
-3. Prepare webhook endpoint in a non-production environment.
-4. Enable logging for checkout id, reference, status, and error code.
+Read [sandbox scenarios](references/scenarios.md) for the selected flow:
 
-## Core Card Test Data
+- **Online payments:** test cards, frictionless/challenge authentication, and documented decline amounts.
+- **Reader SDK or Cloud API:** physical cards or Virtual Solo, sandbox SDK login, minor-unit amounts, and specific decline simulations.
+- **Saved cards:** sandbox tokenization through the Payment Widget, subsequent charges, and deactivation.
 
-Default values unless docs specify otherwise:
+Check the linked current guide when its data or SDK requirements differ from the bundled reference. Online test cards do not replace a physical card in a reader test, and simulated decline amounts do not reproduce a disconnected device.
 
-- CVV: any 3 digits (for example `123`)
-- Expiry: any future date (for example `12/30`)
-- Cardholder: any name
+## Establish the test merchant
 
-Happy path cards:
+Use sandbox merchants and credentials for simulated payments. Confirm the merchant selected by the actual app/API credential; switching merchants in the Dashboard alone does not switch SDK login. Keep secrets and raw card data out of logs. Store checkout/transaction IDs and attempt references for reconciliation.
 
-- VISA `4200 0000 0000 0091`
-- Mastercard `5200 0000 0000 0007`
+Create online checkouts server-side with `merchant_code`. The standard decline amount is `11.00` in the documented flow's units; Cloud API represents `11.00 EUR` as `{ "currency": "EUR", "minor_unit": 2, "value": 1100 }`. Creating a checkout alone does not complete a payment.
 
-3DS challenge cards:
+## Verify the affected outcomes
 
-- VISA `4200 0000 0000 0042`
-- Mastercard `5200 0000 0000 0015`
+- A successful online payment is confirmed by retrieving `status: "PAID"`; Cloud API acceptance must be followed by its final transaction result.
+- A declined, cancelled, or failed-authentication payment leaves the order unpaid. For test plans, include the relevant success and decline paths plus any changed challenge, expiry, callback, or device behavior.
+- Repeated callbacks or status reads do not repeat fulfillment. Keep payment attempts linked to their order without assuming `checkout_reference` is a server idempotency key.
+- After a timeout or `5xx`, reconcile the original payment or refund before another attempt. If creation returned no ID, look up the original checkout reference.
+- For tokenization, verify that the stored token belongs to the expected customer, then test a later charge and deactivation. Sandbox widget tokenization with 3DS requires no additional activation or support request.
 
-## Deliberate Failure Conventions
-
-- For skill-level test recipes, use `amount = 11` as the default forced-failure trigger.
-- If an integration already uses canonical amount-based failures (for example `42.01`, `42.76`, `42.91`), run both patterns and document which one is authoritative for that flow.
-
-## End-to-End Smoke Test Recipe
-
-1. Create checkout with unique `checkout_reference`.
-2. Complete payment with a happy-path card.
-3. Verify frontend callback/result handling.
-4. Verify backend retrieves final paid status before fulfillment.
-5. Verify webhook delivery and idempotent processing.
-6. Repeat with forced-failure amount and confirm order remains unpaid.
-
-## cURL Skeleton
-
-```bash
-curl -X POST "https://api.sumup.com/v0.1/checkouts" \
-  -H "Authorization: Bearer $SUMUP_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "checkout_reference": "order-12345",
-    "amount": 11,
-    "currency": "EUR",
-    "pay_to_email": "merchant@example.com",
-    "description": "Sandbox test payment"
-  }'
-```
-
-Adjust payload fields to the selected flow and auth model.
-
-## SDK Smoke Test Guidance
-
-- Keep one smoke test per integration surface (server SDK, mobile SDK, widget).
-- Assert normalized outcomes: `success`, `pending`, `failed`.
-- Capture and store reconciliation keys: checkout id, transaction id/code, merchant code, reference.
-
-## Required QA Matrix
-
-- [ ] Happy path payment succeeds.
-- [ ] Forced-failure payment does not fulfill order.
-- [ ] 3DS challenge flow completes and returns expected status.
-- [ ] Duplicate reference behavior is deterministic.
-- [ ] Expired checkout/session path is handled with a fresh checkout.
-- [ ] Webhook retries do not create duplicate side effects.
-
-## Required Response Contract
-
-When asked for test planning, always provide:
-
-1. Test environment assumptions.
-2. Exact scenarios to run (success + failure + async).
-3. Assertions for frontend and backend.
-4. Evidence to collect for reconciliation/debugging.
+Use the project's existing tests for local assertions and sandbox/device checks for provider behavior. Report what ran, what passed or failed, and which checks require a device, credentials, or provider access; a passing unit test does not establish a successful payment.
