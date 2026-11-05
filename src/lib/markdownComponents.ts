@@ -44,6 +44,12 @@ export function createMarkdownComponents(javaVersion: string): ComponentMap {
       }`,
   };
   return {
+    CodeGroup: { revision: "1", render: ({ children }) => children },
+    CodeGroupItem: {
+      revision: "1",
+      render: ({ attrs, children }) =>
+        `**${text(attrs.label)}**\n\n${children}`,
+    },
     PairingSequence: {
       revision: JSON.stringify({
         actors: pairingActors,
@@ -112,7 +118,7 @@ export function createMarkdownComponents(javaVersion: string): ComponentMap {
       render: () =>
         "[Try the interactive Payment Widget demo](https://developer.sumup.com/online-payments/checkouts/card-widget/). No real charges occur.",
     },
-    JavaSdkInstallTabs: {
+    JavaSdkInstallExamples: {
       revision: JSON.stringify(javaInstallExamples(javaVersion)),
       render: () =>
         javaInstallExamples(javaVersion)

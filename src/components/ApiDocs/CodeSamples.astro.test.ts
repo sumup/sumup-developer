@@ -57,6 +57,14 @@ it("shows only the default request and response with stable controls before Java
     doc.querySelectorAll("[data-api-response-trigger]:disabled"),
   ).toHaveLength(2);
   expect(doc.querySelector(".sample-label, header [hidden]")).toBeNull();
+  for (const header of doc.querySelectorAll(".sample-header")) {
+    expect(
+      header.querySelectorAll(".sample-controls > [data-sample-copy]"),
+    ).toHaveLength(1);
+  }
+  expect(doc.querySelectorAll(".sample-body:not([data-cg-row])")).toHaveLength(
+    0,
+  );
   expect(
     doc.querySelector("[data-http-method]")?.getAttribute("data-http-method"),
   ).toBe("POST");

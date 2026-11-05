@@ -15,6 +15,29 @@ const componentMap = Object.fromEntries(
 const convert = (body: string) =>
   renderEntryAsMarkdown({ body, filePath: "fixture.mdx" }, { componentMap });
 
+it("publishes every code-group variant with its label and language", () => {
+  const markdown = convert(`<CodeGroup title="Create a checkout">
+<CodeGroupItem label="cURL">
+
+\`\`\`bash
+curl example
+\`\`\`
+
+</CodeGroupItem>
+<CodeGroupItem label="Python">
+
+\`\`\`python
+print("example")
+\`\`\`
+
+</CodeGroupItem>
+</CodeGroup>`);
+  expect(markdown).toContain("**cURL**");
+  expect(markdown).toContain("**Python**");
+  expect(markdown).toContain('```python\nprint("example")');
+  expect(markdown).toContain("```bash\ncurl example");
+});
+
 function nodes(markdown: string) {
   const result: RootContent[] = [];
   const visit = (node: Root | RootContent) => {
@@ -111,7 +134,7 @@ it("preserves nested callout code and native Steps, Tabs, and SearchableTable co
 });
 
 it("keeps generated Java install snippets and the default setup prompt intact", () => {
-  const markdown = convert("<JavaSdkInstallTabs />\n\n<CopyPrompt />");
+  const markdown = convert("<JavaSdkInstallExamples />\n\n<CopyPrompt />");
   const code = nodes(markdown).filter((node) => node.type === "code");
   expect(code.map((node) => node.value)).toEqual([
     ...javaInstallExamples("1.2.3").map((example) => example.code),

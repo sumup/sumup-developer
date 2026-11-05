@@ -35,8 +35,8 @@ Use the public merchant key in `SumUpProvider`. Never put a secret key beginning
 
 Initializing the SDK works by passing it a `checkout_id`. To [create a checkout](/api/checkouts/create) on your backend make the following request:
 
-<Tabs syncKey="backend_lang">
-  <TabItem label="cURL" icon="seti:powershell">
+<CodeGroup title="Create a Checkout">
+  <CodeGroupItem label="cURL">
     ```bash
     curl --request POST \
       --url https://api.sumup.com/v0.1/checkouts \
@@ -52,8 +52,8 @@ Initializing the SDK works by passing it a `checkout_id`. To [create a checkout]
         "redirect_url": "https://sumup.com"
       }'
     ```
-  </TabItem>
-  <TabItem label="JavaScript" icon="seti:javascript">
+  </CodeGroupItem>
+  <CodeGroupItem label="JavaScript">
     ```ts
     const checkout = await client.checkouts.create({
       checkout_reference: "44ea5096-b83f-46e1-9323-fe82a8cb7eb5",
@@ -65,8 +65,8 @@ Initializing the SDK works by passing it a `checkout_id`. To [create a checkout]
       redirect_url: "https://sumup.com",
     });
     ```
-  </TabItem>
-  <TabItem label=".NET" icon="seti:c-sharp">
+  </CodeGroupItem>
+  <CodeGroupItem label=".NET">
     ```csharp
     var checkout = await client.Checkouts.CreateAsync(new CheckoutCreateRequest
     {
@@ -79,8 +79,8 @@ Initializing the SDK works by passing it a `checkout_id`. To [create a checkout]
         RedirectUrl = "https://sumup.com",
     });
     ```
-  </TabItem>
-  <TabItem label="Java" icon="seti:java">
+  </CodeGroupItem>
+  <CodeGroupItem label="Java">
     ```java
     var checkout = client.checkouts().createCheckout(
         CheckoutCreateRequest.builder()
@@ -94,8 +94,8 @@ Initializing the SDK works by passing it a `checkout_id`. To [create a checkout]
             .build()
     );
     ```
-  </TabItem>
-  <TabItem label="Go" icon="seti:go">
+  </CodeGroupItem>
+  <CodeGroupItem label="Go">
     ```go
     description := "Order #1234"
     returnURL := "https://example.com"
@@ -112,8 +112,8 @@ Initializing the SDK works by passing it a `checkout_id`. To [create a checkout]
     })
     ```
 
-  </TabItem>
-  <TabItem label="Python" icon="seti:python">
+  </CodeGroupItem>
+  <CodeGroupItem label="Python">
     ```py
     from sumup.checkouts.resource import CreateCheckoutBody
 
@@ -130,8 +130,8 @@ Initializing the SDK works by passing it a `checkout_id`. To [create a checkout]
     )
     ```
 
-  </TabItem>
-  <TabItem label="Rust" icon="seti:rust">
+  </CodeGroupItem>
+  <CodeGroupItem label="Rust">
     ```rust
     let checkout = client
         .checkouts()
@@ -153,8 +153,8 @@ Initializing the SDK works by passing it a `checkout_id`. To [create a checkout]
         }))
         .await?;
     ```
-  </TabItem>
-  <TabItem label="PHP" icon="seti:php">
+  </CodeGroupItem>
+  <CodeGroupItem label="PHP">
     ```php
     $checkout = $sumup->checkouts->create([
         'checkout_reference' => '44ea5096-b83f-46e1-9323-fe82a8cb7eb5',
@@ -166,8 +166,8 @@ Initializing the SDK works by passing it a `checkout_id`. To [create a checkout]
         'redirect_url' => 'https://sumup.com',
     ]);
     ```
-  </TabItem>
-</Tabs>
+  </CodeGroupItem>
+</CodeGroup>
 
 Return only the checkout ID and other non-secret order details to the app. Set the amount, currency, and merchant on your server from the stored order, rather than accepting them from the mobile app.
 

@@ -1,21 +1,16 @@
 ---
-import { Tabs, TabItem } from "@components/nimbus";
+import CodeGroup from "@components/Code/CodeGroup.astro";
+import CodeGroupItem from "@components/Code/CodeGroupItem.astro";
 import Code from "@components/Code/Code.astro";
 import { getJavaSdkVersion } from "@lib/sdks/javaSdkVersion";
 import { javaInstallExamples } from "@lib/sdks/javaInstallExamples";
 const examples = javaInstallExamples(await getJavaSdkVersion());
 ---
 
-<Tabs class="install-examples">
+<CodeGroup title="Install the Java SDK">
   {examples.map(({ label, language, code }) => (
-    <TabItem label={label}>
+    <CodeGroupItem label={label}>
       <Code lang={language} code={code} />
-    </TabItem>
+    </CodeGroupItem>
   ))}
-</Tabs>
-
-<style>
-  .install-examples :global(.nb-code-figure) {
-    margin: 0;
-  }
-</style>
+</CodeGroup>

@@ -11,6 +11,11 @@ afterEach(() => {
 it("copies highlighted source without markup and removes buttons on page swaps", async () => {
   document.body.innerHTML = `<figure class="nb-code-figure"><pre class="astro-code"><code><span class="line"><span>curl</span> "$SUMUP_API_KEY"</span>\n<span class="line">  --data '{"amount":12}'</span></code></pre></figure>`;
   const expected = document.querySelector("code")!.textContent;
+  // Nimbus's documented opt-out prevents duplicate controls in our frames.
+  document.body.insertAdjacentHTML(
+    "beforeend",
+    `<div data-cg-row><pre class="astro-code"><code>Header-owned example</code></pre></div>`,
+  );
   const writeText = vi.fn().mockResolvedValue(undefined);
   Object.defineProperty(navigator, "clipboard", {
     value: { writeText },

@@ -123,34 +123,34 @@ A Tap to Pay on iPhone checkout uses the same `SMPCheckoutRequest` and completio
 
 `tapToPayProductName` returns the localized "Tap to Pay on iPhone" string. It is localized in all languages supported by the SDK and exposed as a convenience for use in your app's UI — use it instead of hardcoding the product name, as Apple may update the branding.
 
-<Tabs syncKey="ios_language">
+<CodeGroup title="Product name">
 
-<TabItem label="Swift">
+<CodeGroupItem label="Swift">
 
 ```swift
 let productName = SumUpSDK.tapToPayProductName()
 // e.g. "Tap to Pay on iPhone"
 ```
 
-</TabItem>
+</CodeGroupItem>
 
-<TabItem label="Objective-C">
+<CodeGroupItem label="Objective-C">
 
 ```objc
 NSString *productName = [SMPSumUpSDK tapToPayProductName];
 // e.g. @"Tap to Pay on iPhone"
 ```
 
-</TabItem>
+</CodeGroupItem>
 
-</Tabs>
+</CodeGroup>
 
 ## Implementation
 
 Use these methods in your app's `UIViewController` after setting up the SDK and logging in to an EUR sandbox merchant. Call `startTapToPayPayment()` from a button. The example checks availability, activates Tap to Pay if needed, and takes a `10.00 EUR` sandbox payment.
 
-<Tabs syncKey="ios_language">
-<TabItem label="Swift">
+<CodeGroup title="Implementation">
+<CodeGroupItem label="Swift">
 
 ```swift
 private func startTapToPayPayment() {
@@ -199,8 +199,8 @@ private func startTapToPayCheckout() {
 }
 ```
 
-</TabItem>
-<TabItem label="Objective-C">
+</CodeGroupItem>
+<CodeGroupItem label="Objective-C">
 
 ```objc
 - (void)startTapToPayPayment {
@@ -249,8 +249,8 @@ private func startTapToPayCheckout() {
 }
 ```
 
-</TabItem>
-</Tabs>
+</CodeGroupItem>
+</CodeGroup>
 
 Before using this flow with a live merchant, replace the test amount and currency with your order amount and the merchant's currency. Follow the [payment guide](/terminal-payments/sdks/ios/payments/) for transaction references and regional credit/debit requirements.
 

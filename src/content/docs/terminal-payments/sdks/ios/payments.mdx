@@ -21,8 +21,8 @@ The examples below are methods in your app's `UIViewController`. They use the SD
 
 The examples accept the amount and the customer's credit/debit selection as arguments. Use `ProcessAs.notSet` in Swift or `SMPProcessAsNotSet` in Objective-C when selection is not required. The installments argument is only used for credit payments.
 
-<Tabs syncKey="ios_language">
-<TabItem label="Swift">
+<CodeGroup title="Implement full checkout">
+<CodeGroupItem label="Swift">
 
 ```swift
 private func requestCheckout(
@@ -60,8 +60,8 @@ private func requestCheckout(
 }
 ```
 
-</TabItem>
-<TabItem label="Objective-C">
+</CodeGroupItem>
+<CodeGroupItem label="Objective-C">
 
 ```objc
 - (void)requestCheckoutWithTotal:(NSDecimalNumber *)total
@@ -101,8 +101,8 @@ private func requestCheckout(
 }
 ```
 
-</TabItem>
-</Tabs>
+</CodeGroupItem>
+</CodeGroup>
 
 Keep your order reference associated with `foreignTransactionID`. If a connection problem leaves the result uncertain, use the [Transactions API](/api/transactions/get/) to check the transaction before starting another payment. Pass the reference as the `foreign_transaction_id` query parameter.
 

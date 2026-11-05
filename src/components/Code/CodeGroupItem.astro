@@ -1,0 +1,10 @@
+---
+interface Props {
+  label: string;
+}
+const { label } = Astro.props;
+---
+
+<div data-api-sample={label} role="region" aria-label={label}>
+  <slot />
+</div>

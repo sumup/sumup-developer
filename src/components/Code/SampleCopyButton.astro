@@ -1,0 +1,22 @@
+---
+import { CopyPaste, Checkmark } from "@sumup-oss/icons";
+---
+
+<button
+  type="button"
+  class="sample-copy"
+  aria-label="Copy code to clipboard"
+  data-sample-copy
+  disabled
+>
+  <span class="copy-icon">
+    <CopyPaste size="24" aria-hidden="true" />
+  </span>
+  <span class="copied-icon">
+    <Checkmark size="24" aria-hidden="true" />
+  </span>
+</button>
+
+<script>
+  import "./sample-copy.client";
+</script>

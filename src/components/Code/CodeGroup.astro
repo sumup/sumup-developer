@@ -1,0 +1,53 @@
+---
+import { Select } from "@sumup-oss/circuit-ui";
+import "./code-samples.css";
+import SampleCopyButton from "./SampleCopyButton.astro";
+
+interface Props {
+  title: string;
+}
+const { title } = Astro.props;
+---
+
+<section class="code-samples code-group" data-code-group aria-label={title}>
+  <header class="sample-header">
+    <span class="request-title code-group-name" title={title}>
+      {title}
+    </span>
+    <div class="sample-controls">
+      <div class="sample-select">
+        <Select
+          size="s"
+          label="Code sample"
+          hideLabel
+          options={[]}
+          disabled
+          data-api-sample-select
+        />
+      </div>
+      <SampleCopyButton />
+    </div>
+  </header>
+  <div class="sample-body request-body" data-cg-row>
+    <slot />
+  </div>
+</section>
+
+<script>
+  import "./code-group.client";
+</script>
+
+<style>
+  .code-group {
+    margin: var(--cui-spacings-mega) 0;
+  }
+  .code-group-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-weight: var(--cui-font-weight-semibold);
+  }
+  .code-group :global(.nb-code-title) {
+    display: none;
+  }
+</style>

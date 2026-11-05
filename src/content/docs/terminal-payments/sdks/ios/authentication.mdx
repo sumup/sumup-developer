@@ -18,8 +18,8 @@ Use the [OAuth 2.0 authorization code flow](/tools/authorization/oauth/#authoriz
 
 Pass the user-scoped access token obtained through your OAuth authorization code flow to the SDK. Client credentials tokens are not supported.
 
-<Tabs syncKey="ios_language">
-<TabItem label="Swift">
+<CodeGroup title="Log in with an OAuth access token">
+<CodeGroupItem label="Swift">
 
 ```swift
 SumUpSDK.login(withToken: accessToken) { success, error in
@@ -28,8 +28,8 @@ SumUpSDK.login(withToken: accessToken) { success, error in
 }
 ```
 
-</TabItem>
-<TabItem label="Objective-C">
+</CodeGroupItem>
+<CodeGroupItem label="Objective-C">
 
 ```objc
 [SMPSumUpSDK loginWithToken:accessToken completion:^(BOOL success, NSError *error) {
@@ -38,8 +38,8 @@ SumUpSDK.login(withToken: accessToken) { success, error in
 }];
 ```
 
-</TabItem>
-</Tabs>
+</CodeGroupItem>
+</CodeGroup>
 
 ## Implementing authentication with view controller
 
@@ -55,8 +55,8 @@ Present the login screen from a visible `UIViewController`. Only continue when `
 
 <Image alt="Login screen" src="/img/guides/ios-sdk_login.png" width="40%" />
 
-<Tabs syncKey="ios_language">
-<TabItem label="Swift">
+<CodeGroup title="Logging the user in">
+<CodeGroupItem label="Swift">
 
 ```swift
 SumUpSDK.presentLogin(from: self, animated: true) { success, error in
@@ -68,8 +68,8 @@ SumUpSDK.presentLogin(from: self, animated: true) { success, error in
 }
 ```
 
-</TabItem>
-<TabItem label="Objective-C">
+</CodeGroupItem>
+<CodeGroupItem label="Objective-C">
 
 ```objc
 [SMPSumUpSDK presentLoginFromViewController:self animated:YES
@@ -82,15 +82,15 @@ SumUpSDK.presentLogin(from: self, animated: true) { success, error in
 }];
 ```
 
-</TabItem>
-</Tabs>
+</CodeGroupItem>
+</CodeGroup>
 
 ### Logging the user out
 
 Log out before switching merchant accounts:
 
-<Tabs syncKey="ios_language">
-<TabItem label="Swift">
+<CodeGroup title="Logging the user out">
+<CodeGroupItem label="Swift">
 
 ```swift
 SumUpSDK.logout { success, error in
@@ -102,8 +102,8 @@ SumUpSDK.logout { success, error in
 }
 ```
 
-</TabItem>
-<TabItem label="Objective-C">
+</CodeGroupItem>
+<CodeGroupItem label="Objective-C">
 
 ```objc
 [SMPSumUpSDK logoutWithCompletionBlock:^(BOOL success, NSError *error) {
@@ -115,8 +115,8 @@ SumUpSDK.logout { success, error in
 }];
 ```
 
-</TabItem>
-</Tabs>
+</CodeGroupItem>
+</CodeGroup>
 
 ## Verify the account
 

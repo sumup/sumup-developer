@@ -1,6 +1,7 @@
 // @vitest-environment jsdom
 import { afterEach, expect, it } from "vitest";
-import { initResponseSamples, initSamples } from "./samples.client";
+import { initResponseSamples } from "./samples.client";
+import { initSamples } from "@components/Code/samples";
 
 let destroy: (() => void) | undefined;
 afterEach(() => {

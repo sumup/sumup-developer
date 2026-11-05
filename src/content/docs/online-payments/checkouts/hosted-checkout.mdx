@@ -41,8 +41,8 @@ This is the lowest-effort way to launch an online checkout while keeping payment
 
 Send a request to the [Create a checkout endpoint](/api/checkouts/create) with `hosted_checkout.enabled` set to `true`. If you want the success page to link back to your website, include `redirect_url` at the same time.
 
-<Tabs syncKey="backend_lang">
-  <TabItem label="cURL" icon="seti:powershell">
+<CodeGroup title="Create a Hosted Checkout">
+  <CodeGroupItem label="cURL">
     ```bash
     curl -X POST https://api.sumup.com/v0.1/checkouts \
       -H "Content-Type: application/json" \
@@ -57,8 +57,8 @@ Send a request to the [Create a checkout endpoint](/api/checkouts/create) with `
         "hosted_checkout": { "enabled": true }
       }'
     ```
-  </TabItem>
-  <TabItem label="JavaScript" icon="seti:javascript">
+  </CodeGroupItem>
+  <CodeGroupItem label="JavaScript">
     ```ts
     const checkout = await client.checkouts.create({
       merchant_code: merchantCode,
@@ -70,8 +70,8 @@ Send a request to the [Create a checkout endpoint](/api/checkouts/create) with `
       hosted_checkout: { enabled: true },
     });
     ```
-  </TabItem>
-  <TabItem label=".NET" icon="seti:c-sharp">
+  </CodeGroupItem>
+  <CodeGroupItem label=".NET">
     ```csharp
     var checkout = await client.Checkouts.CreateAsync(new CheckoutCreateRequest
     {
@@ -87,8 +87,8 @@ Send a request to the [Create a checkout endpoint](/api/checkouts/create) with `
         },
     });
     ```
-  </TabItem>
-  <TabItem label="Java" icon="seti:java">
+  </CodeGroupItem>
+  <CodeGroupItem label="Java">
     ```java
     var checkout = client.checkouts().createCheckout(
         CheckoutCreateRequest.builder()
@@ -106,8 +106,8 @@ Send a request to the [Create a checkout endpoint](/api/checkouts/create) with `
             .build()
     );
     ```
-  </TabItem>
-  <TabItem label="Go" icon="seti:go">
+  </CodeGroupItem>
+  <CodeGroupItem label="Go">
     ```go
     checkout, err := client.Checkouts.Create(ctx, sumup.CheckoutsCreateParams{
         MerchantCode:      merchantCode,
@@ -121,8 +121,8 @@ Send a request to the [Create a checkout endpoint](/api/checkouts/create) with `
         },
     })
     ```
-  </TabItem>
-  <TabItem label="Python" icon="seti:python">
+  </CodeGroupItem>
+  <CodeGroupItem label="Python">
     ```py
     checkout = client.checkouts.create(
         CreateCheckoutBody(
@@ -136,8 +136,8 @@ Send a request to the [Create a checkout endpoint](/api/checkouts/create) with `
         )
     )
     ```
-  </TabItem>
-  <TabItem label="Rust" icon="seti:rust">
+  </CodeGroupItem>
+  <CodeGroupItem label="Rust">
     ```rust
     let checkout = client.checkouts().create(Some(CheckoutCreateRequest {
         merchant_code,
@@ -159,8 +159,8 @@ Send a request to the [Create a checkout endpoint](/api/checkouts/create) with `
         transactions: None,
     })).await?;
     ```
-  </TabItem>
-  <TabItem label="PHP" icon="seti:php">
+  </CodeGroupItem>
+  <CodeGroupItem label="PHP">
     ```php
     $checkout = $sumup->checkouts->create([
         'merchant_code' => $merchantCode,
@@ -174,8 +174,8 @@ Send a request to the [Create a checkout endpoint](/api/checkouts/create) with `
         ],
     ]);
     ```
-  </TabItem>
-</Tabs>
+  </CodeGroupItem>
+</CodeGroup>
 
 The response includes the hosted checkout configuration and the URL you send the customer to:
 

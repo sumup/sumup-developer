@@ -225,28 +225,28 @@ Payment processing is asynchronous. The go-checkout response confirms that the p
 
 Look up the transaction by the `transaction_code` from the go-checkout response:
 
-<Tabs syncKey="backend_lang">
-  <TabItem label="cURL" icon="seti:powershell">
+<CodeGroup title="Receive Transaction Results">
+  <CodeGroupItem label="cURL">
     ```bash
     curl "https://api.sumup.com/v2.1/merchants/$SUMUP_MERCHANT_CODE/transactions?transaction_code=$TRANSACTION_CODE" \
       -H "Authorization: Bearer $SUMUP_API_KEY"
     ```
-  </TabItem>
-  <TabItem label="JavaScript" icon="seti:javascript">
+  </CodeGroupItem>
+  <CodeGroupItem label="JavaScript">
     ```ts
     const transaction = await client.transactions.get(merchantCode, {
       transaction_code: transactionCode,
     });
     ```
-  </TabItem>
-  <TabItem label=".NET" icon="seti:c-sharp">
+  </CodeGroupItem>
+  <CodeGroupItem label=".NET">
     ```csharp
     var transaction = await client.Transactions.GetAsync(
         merchantCode,
         new TransactionsGetParams { TransactionCode = transactionCode });
     ```
-  </TabItem>
-  <TabItem label="Java" icon="seti:java">
+  </CodeGroupItem>
+  <CodeGroupItem label="Java">
     ```java
     var transaction = client.transactions().get(
         merchantCode,
@@ -255,23 +255,23 @@ Look up the transaction by the `transaction_code` from the go-checkout response:
             .build()
     );
     ```
-  </TabItem>
-  <TabItem label="Go" icon="seti:go">
+  </CodeGroupItem>
+  <CodeGroupItem label="Go">
     ```go
     transaction, err := client.Transactions.Get(ctx, merchantCode, sumup.TransactionsGetParams{
         TransactionCode: &transactionCode,
     })
     ```
-  </TabItem>
-  <TabItem label="Python" icon="seti:python">
+  </CodeGroupItem>
+  <CodeGroupItem label="Python">
     ```py
     transaction = await client.transactions.get(
         merchant_code,
         transaction_code=transaction_code,
     )
     ```
-  </TabItem>
-  <TabItem label="Rust" icon="seti:rust">
+  </CodeGroupItem>
+  <CodeGroupItem label="Rust">
     ```rust
     let transaction = client.transactions().get(
         &merchant_code,
@@ -281,8 +281,8 @@ Look up the transaction by the `transaction_code` from the go-checkout response:
         },
     ).await?;
     ```
-  </TabItem>
-</Tabs>
+  </CodeGroupItem>
+</CodeGroup>
 
 Alternatively, pass the `client_transaction_id` you sent in the go-checkout request:
 
@@ -299,44 +299,44 @@ The transaction may not be available immediately after the go-checkout request. 
 
 List all readers connected to your merchant account.
 
-<Tabs syncKey="backend_lang">
-  <TabItem label="cURL" icon="seti:powershell">
+<CodeGroup title="List Connected Readers">
+  <CodeGroupItem label="cURL">
     ```bash
     curl https://api.sumup.com/v0.1/merchants/$SUMUP_MERCHANT_CODE/readers \
       -H "Authorization: Bearer $SUMUP_API_KEY"
     ```
-  </TabItem>
-  <TabItem label="JavaScript" icon="seti:javascript">
+  </CodeGroupItem>
+  <CodeGroupItem label="JavaScript">
     ```ts
     const readers = await client.readers.list(merchantCode)
     ```
-  </TabItem>
-  <TabItem label=".NET" icon="seti:c-sharp">
+  </CodeGroupItem>
+  <CodeGroupItem label=".NET">
     ```csharp
     var readers = await client.Readers.ListAsync(merchantCode);
     ```
-  </TabItem>
-  <TabItem label="Java" icon="seti:java">
+  </CodeGroupItem>
+  <CodeGroupItem label="Java">
     ```java
     var readers = client.readers().listReaders(merchantCode);
     ```
-  </TabItem>
-  <TabItem label="Go" icon="seti:go">
+  </CodeGroupItem>
+  <CodeGroupItem label="Go">
     ```go
     readers, err := client.Readers.List(ctx, merchantCode)
     ```
-  </TabItem>
-  <TabItem label="Python" icon="seti:python">
+  </CodeGroupItem>
+  <CodeGroupItem label="Python">
     ```py
     readers = await client.readers.list(merchant_code)
     ```
-  </TabItem>
-  <TabItem label="Rust" icon="seti:rust">
+  </CodeGroupItem>
+  <CodeGroupItem label="Rust">
     ```rust
     let readers = client.readers().list(&merchant_code).await?;
     ```
-  </TabItem>
-</Tabs>
+  </CodeGroupItem>
+</CodeGroup>
 
 Read the [List API endpoint documentation](/api/readers/list) for details on the API request, examples, and parameter descriptions.
 

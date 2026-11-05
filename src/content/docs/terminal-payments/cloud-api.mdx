@@ -123,8 +123,8 @@ Explore a successful or failed checkout below. The order stays unpaid until your
 
 This is an asynchronous process; starting the transaction on the device may take some time.
 
-<Tabs syncKey="backend_lang">
-  <TabItem label="cURL" icon="seti:powershell">
+<CodeGroup title="Initiate Transaction">
+  <CodeGroupItem label="cURL">
     ```bash
     curl -X POST \
       https://api.sumup.com/v0.1/merchants/$SUMUP_MERCHANT_CODE/readers/$READER_ID/checkout \
@@ -138,8 +138,8 @@ This is an asynchronous process; starting the transaction on the device may take
             }
           }'
     ```
-  </TabItem>
-  <TabItem label="JavaScript" icon="seti:javascript">
+  </CodeGroupItem>
+  <CodeGroupItem label="JavaScript">
     ```ts
     const checkout = await client.readers.createCheckout(merchantCode, readerId, {
       total_amount: {
@@ -149,8 +149,8 @@ This is an asynchronous process; starting the transaction on the device may take
       },
     });
     ```
-  </TabItem>
-  <TabItem label=".NET" icon="seti:c-sharp">
+  </CodeGroupItem>
+  <CodeGroupItem label=".NET">
     ```csharp
     var checkout = await client.Readers.CreateCheckoutAsync(
         merchantCode,
@@ -165,8 +165,8 @@ This is an asynchronous process; starting the transaction on the device may take
             },
         });
     ```
-  </TabItem>
-  <TabItem label="Java" icon="seti:java">
+  </CodeGroupItem>
+  <CodeGroupItem label="Java">
     ```java
     var checkout = client.readers().createReaderCheckout(
         merchantCode,
@@ -182,8 +182,8 @@ This is an asynchronous process; starting the transaction on the device may take
             .build()
     );
     ```
-  </TabItem>
-  <TabItem label="Go" icon="seti:go">
+  </CodeGroupItem>
+  <CodeGroupItem label="Go">
     ```go
     checkout, err := client.Readers.CreateCheckout(ctx, merchantCode, readerID, sumup.CreateCheckoutRequest{
           TotalAmount: sumup.CreateCheckoutRequestTotalAmount{
@@ -193,8 +193,8 @@ This is an asynchronous process; starting the transaction on the device may take
           },
       })
     ```
-  </TabItem>
-  <TabItem label="Python" icon="seti:python">
+  </CodeGroupItem>
+  <CodeGroupItem label="Python">
     ```py
     checkout = await client.readers.create_checkout(
         merchant_code,
@@ -204,8 +204,8 @@ This is an asynchronous process; starting the transaction on the device may take
         ),
     )
     ```
-  </TabItem>
-  <TabItem label="Rust" icon="seti:rust">
+  </CodeGroupItem>
+  <CodeGroupItem label="Rust">
     ```rust
     let checkout = client.readers().create_checkout(
         &merchant_code,
@@ -226,8 +226,8 @@ This is an asynchronous process; starting the transaction on the device may take
         },
     ).await?;
     ```
-  </TabItem>
-</Tabs>
+  </CodeGroupItem>
+</CodeGroup>
 
 Important notes:
 
@@ -295,45 +295,45 @@ Do not display `failure_reason` directly to customers. Choose an appropriate cus
 Stops the current transaction on the target device.
 This process is asynchronous, and the actual termination may take some time to be performed on the device.
 
-<Tabs syncKey="backend_lang">
-  <TabItem label="cURL" icon="seti:powershell">
+<CodeGroup title="Terminate Transaction">
+  <CodeGroupItem label="cURL">
     ```bash
     curl -X POST \
       https://api.sumup.com/v0.1/merchants/$SUMUP_MERCHANT_CODE/readers/$READER_ID/terminate \
       -H "Authorization: Bearer $SUMUP_API_KEY"
     ```
-  </TabItem>
-  <TabItem label="JavaScript" icon="seti:javascript">
+  </CodeGroupItem>
+  <CodeGroupItem label="JavaScript">
     ```ts
     await client.readers.terminateCheckout(merchantCode, readerId)
     ```
-  </TabItem>
-  <TabItem label=".NET" icon="seti:c-sharp">
+  </CodeGroupItem>
+  <CodeGroupItem label=".NET">
     ```csharp
     await client.Readers.TerminateCheckoutAsync(merchantCode, readerId);
     ```
-  </TabItem>
-  <TabItem label="Java" icon="seti:java">
+  </CodeGroupItem>
+  <CodeGroupItem label="Java">
     ```java
     client.readers().createReaderTerminate(merchantCode, readerId, java.util.Map.of());
     ```
-  </TabItem>
-  <TabItem label="Go" icon="seti:go">
+  </CodeGroupItem>
+  <CodeGroupItem label="Go">
     ```go
     err := client.Readers.TerminateCheckout(ctx, merchantCode, readerID)
     ```
-  </TabItem>
-  <TabItem label="Python" icon="seti:python">
+  </CodeGroupItem>
+  <CodeGroupItem label="Python">
     ```py
     await client.readers.terminate_checkout(merchant_code, reader_id)
     ```
-  </TabItem>
-  <TabItem label="Rust" icon="seti:rust">
+  </CodeGroupItem>
+  <CodeGroupItem label="Rust">
     ```rust
     client.readers().terminate_checkout(&merchant_code, &reader_id).await?;
     ```
-  </TabItem>
-</Tabs>
+  </CodeGroupItem>
+</CodeGroup>
 
 Important notes:
 
@@ -356,8 +356,8 @@ Send a `PATCH` request to enable or disable menu lock and set the passcode. The 
 
 The SDK examples use an authenticated client and the merchant code and reader ID from pairing. In Go, import `github.com/sumup/sumup-go/secret` for the passcode value.
 
-<Tabs syncKey="backend_lang">
-  <TabItem label="cURL" icon="seti:powershell">
+<CodeGroup title="Update Reader Settings">
+  <CodeGroupItem label="cURL">
     ```bash
     curl -X PATCH \
       https://api.sumup.com/v0.1/merchants/$SUMUP_MERCHANT_CODE/readers/$READER_ID/settings \
@@ -370,8 +370,8 @@ The SDK examples use an authenticated client and the merchant code and reader ID
             }
           }'
     ```
-  </TabItem>
-  <TabItem label="JavaScript" icon="seti:javascript">
+  </CodeGroupItem>
+  <CodeGroupItem label="JavaScript">
     ```ts
     const settings = await client.readers.updateReaderSettings(merchantCode, readerId, {
       menu_lock: {
@@ -380,8 +380,8 @@ The SDK examples use an authenticated client and the merchant code and reader ID
       },
     });
     ```
-  </TabItem>
-  <TabItem label=".NET" icon="seti:c-sharp">
+  </CodeGroupItem>
+  <CodeGroupItem label=".NET">
     ```csharp
     var settings = await client.Readers.UpdateReaderSettingsAsync(
         merchantCode,
@@ -395,8 +395,8 @@ The SDK examples use an authenticated client and the merchant code and reader ID
             },
         });
     ```
-  </TabItem>
-  <TabItem label="Java" icon="seti:java">
+  </CodeGroupItem>
+  <CodeGroupItem label="Java">
     ```java
     var settings = client.readers().updateReaderSettings(
         merchantCode,
@@ -409,8 +409,8 @@ The SDK examples use an authenticated client and the merchant code and reader ID
             .build()
     );
     ```
-  </TabItem>
-  <TabItem label="Go" icon="seti:go">
+  </CodeGroupItem>
+  <CodeGroupItem label="Go">
     ```go
     settings, err := client.Readers.UpdateReaderSettings(ctx, merchantCode, readerID, sumup.ReadersUpdateReaderSettingsParams{
         MenuLock: sumup.UpdateReaderSettingsRequestMenuLock{
@@ -419,8 +419,8 @@ The SDK examples use an authenticated client and the merchant code and reader ID
         },
     })
     ```
-  </TabItem>
-  <TabItem label="Python" icon="seti:python">
+  </CodeGroupItem>
+  <CodeGroupItem label="Python">
     ```py
     settings = client.readers.update_reader_settings(
         merchant_code,
@@ -431,8 +431,8 @@ The SDK examples use an authenticated client and the merchant code and reader ID
         },
     )
     ```
-  </TabItem>
-  <TabItem label="Rust" icon="seti:rust">
+  </CodeGroupItem>
+  <CodeGroupItem label="Rust">
     ```rust
     let settings = client.readers().update_reader_settings(
         &merchant_code,
@@ -447,8 +447,8 @@ The SDK examples use an authenticated client and the merchant code and reader ID
             .build(),
     ).await?;
     ```
-  </TabItem>
-  <TabItem label="PHP" icon="seti:php">
+  </CodeGroupItem>
+  <CodeGroupItem label="PHP">
     ```php
     $settings = $sumup->readers()->updateReaderSettings($merchantCode, $readerId, [
         'menu_lock' => [
@@ -457,8 +457,8 @@ The SDK examples use an authenticated client and the merchant code and reader ID
         ],
     ]);
     ```
-  </TabItem>
-</Tabs>
+  </CodeGroupItem>
+</CodeGroup>
 
 Example response:
 
@@ -484,50 +484,50 @@ If the reader is offline, the update is rejected with `422` and error type `READ
 
 Retrieve the menu lock settings for a reader.
 
-<Tabs syncKey="backend_lang">
-  <TabItem label="cURL" icon="seti:powershell">
+<CodeGroup title="Get Reader Settings">
+  <CodeGroupItem label="cURL">
     ```bash
     curl \
       https://api.sumup.com/v0.1/merchants/$SUMUP_MERCHANT_CODE/readers/$READER_ID/settings \
       -H "Authorization: Bearer $SUMUP_API_KEY"
     ```
-  </TabItem>
-  <TabItem label="JavaScript" icon="seti:javascript">
+  </CodeGroupItem>
+  <CodeGroupItem label="JavaScript">
     ```ts
     const settings = await client.readers.getReaderSettings(merchantCode, readerId);
     ```
-  </TabItem>
-  <TabItem label=".NET" icon="seti:c-sharp">
+  </CodeGroupItem>
+  <CodeGroupItem label=".NET">
     ```csharp
     var settings = await client.Readers.GetReaderSettingsAsync(merchantCode, readerId);
     ```
-  </TabItem>
-  <TabItem label="Java" icon="seti:java">
+  </CodeGroupItem>
+  <CodeGroupItem label="Java">
     ```java
     var settings = client.readers().getReaderSettings(merchantCode, readerId);
     ```
-  </TabItem>
-  <TabItem label="Go" icon="seti:go">
+  </CodeGroupItem>
+  <CodeGroupItem label="Go">
     ```go
     settings, err := client.Readers.GetReaderSettings(ctx, merchantCode, readerID)
     ```
-  </TabItem>
-  <TabItem label="Python" icon="seti:python">
+  </CodeGroupItem>
+  <CodeGroupItem label="Python">
     ```py
     settings = client.readers.get_reader_settings(merchant_code, reader_id)
     ```
-  </TabItem>
-  <TabItem label="Rust" icon="seti:rust">
+  </CodeGroupItem>
+  <CodeGroupItem label="Rust">
     ```rust
     let settings = client.readers().get_reader_settings(&merchant_code, &reader_id).await?;
     ```
-  </TabItem>
-  <TabItem label="PHP" icon="seti:php">
+  </CodeGroupItem>
+  <CodeGroupItem label="PHP">
     ```php
     $settings = $sumup->readers()->getReaderSettings($merchantCode, $readerId);
     ```
-  </TabItem>
-</Tabs>
+  </CodeGroupItem>
+</CodeGroup>
 
 Example response:
 
@@ -552,44 +552,44 @@ On the Solo reader, when menu lock is enabled, opening the menu prompts for the 
 
 List all readers connected to your merchant account.
 
-<Tabs syncKey="backend_lang">
-  <TabItem label="cURL" icon="seti:powershell">
+<CodeGroup title="List Connected Readers">
+  <CodeGroupItem label="cURL">
     ```bash
     curl https://api.sumup.com/v0.1/merchants/$SUMUP_MERCHANT_CODE/readers \
       -H "Authorization: Bearer $SUMUP_API_KEY"
     ```
-  </TabItem>
-  <TabItem label="JavaScript" icon="seti:javascript">
+  </CodeGroupItem>
+  <CodeGroupItem label="JavaScript">
     ```ts
     const readers = await client.readers.list(merchantCode)
     ```
-  </TabItem>
-  <TabItem label=".NET" icon="seti:c-sharp">
+  </CodeGroupItem>
+  <CodeGroupItem label=".NET">
     ```csharp
     var readers = await client.Readers.ListAsync(merchantCode);
     ```
-  </TabItem>
-  <TabItem label="Java" icon="seti:java">
+  </CodeGroupItem>
+  <CodeGroupItem label="Java">
     ```java
     var readers = client.readers().listReaders(merchantCode);
     ```
-  </TabItem>
-  <TabItem label="Go" icon="seti:go">
+  </CodeGroupItem>
+  <CodeGroupItem label="Go">
     ```go
     readers, err := client.Readers.List(ctx, merchantCode)
     ```
-  </TabItem>
-  <TabItem label="Python" icon="seti:python">
+  </CodeGroupItem>
+  <CodeGroupItem label="Python">
     ```py
     readers = await client.readers.list(merchant_code)
     ```
-  </TabItem>
-  <TabItem label="Rust" icon="seti:rust">
+  </CodeGroupItem>
+  <CodeGroupItem label="Rust">
     ```rust
     let readers = client.readers().list(&merchant_code).await?;
     ```
-  </TabItem>
-</Tabs>
+  </CodeGroupItem>
+</CodeGroup>
 
 Read the [List API endpoint documentation](/api/readers/list) for details on the API request, examples, and parameter descriptions.
 

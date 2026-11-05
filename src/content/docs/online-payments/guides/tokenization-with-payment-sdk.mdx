@@ -34,8 +34,8 @@ It contains personal information such as name, contact details, postal address, 
 
 1. Create a new customer resource with a POST request to the `https://api.sumup.com/v0.1/customers` endpoint:
 
-<Tabs syncKey="backend_lang">
-  <TabItem label="cURL" icon="seti:powershell">
+<CodeGroup title="Creating Customer">
+  <CodeGroupItem label="cURL">
 ```bash
 curl -X POST \
   https://api.sumup.com/v0.1/customers \
@@ -60,8 +60,8 @@ curl -X POST \
   }
 }'
 ```
-</TabItem>
-  <TabItem label="JavaScript" icon="seti:javascript">
+</CodeGroupItem>
+  <CodeGroupItem label="JavaScript">
     ```ts
     const customer = await client.customers.create({
       customer_id: "MYCUSTOMERID-123",
@@ -82,8 +82,8 @@ curl -X POST \
       },
     });
     ```
-  </TabItem>
-  <TabItem label=".NET" icon="seti:c-sharp">
+  </CodeGroupItem>
+  <CodeGroupItem label=".NET">
     ```csharp
     var customer = await client.Customers.CreateAsync(new Customer
     {
@@ -107,8 +107,8 @@ curl -X POST \
         },
     });
     ```
-  </TabItem>
-  <TabItem label="Java" icon="seti:java">
+  </CodeGroupItem>
+  <CodeGroupItem label="Java">
     ```java
     var customer = client.customers().createCustomer(
         Customer.builder()
@@ -135,8 +135,8 @@ curl -X POST \
             .build()
     );
     ```
-  </TabItem>
-  <TabItem label="Go" icon="seti:go">
+  </CodeGroupItem>
+  <CodeGroupItem label="Go">
     ```go
     str := func(v string) *string { return &v }
 
@@ -159,8 +159,8 @@ curl -X POST \
     })
     ```
 
-  </TabItem>
-  <TabItem label="Python" icon="seti:python">
+  </CodeGroupItem>
+  <CodeGroupItem label="Python">
     ```py
     from sumup.customers.resource import CreateCustomerBody
     from sumup.customers.types import AddressLegacy, PersonalDetails
@@ -187,8 +187,8 @@ curl -X POST \
     )
     ```
 
-  </TabItem>
-  <TabItem label="Rust" icon="seti:rust">
+  </CodeGroupItem>
+  <CodeGroupItem label="Rust">
   ```rust
     let customer = client
         .customers()
@@ -213,8 +213,8 @@ curl -X POST \
         })
         .await?;
     ```
-  </TabItem>
-  <TabItem label="PHP" icon="seti:php">
+  </CodeGroupItem>
+  <CodeGroupItem label="PHP">
     ```php
     $customer = $sumup->customers->create([
         'customer_id' => 'MYCUSTOMERID-123',
@@ -234,8 +234,8 @@ curl -X POST \
         ],
     ]);
     ```
-  </TabItem>
-</Tabs>
+  </CodeGroupItem>
+</CodeGroup>
 
 You should expect a standard `201 Created` response, with the customer details you passed. For full details, see the [endpoint documentation](/api/customers/create). Having created the customer, we can now proceed to making a payment
 
@@ -250,8 +250,8 @@ The flow is initiated with the `create a checkout` endpoint. It is important to 
 
 Example of such request:
 
-<Tabs syncKey="backend_lang">
-  <TabItem label="cURL" icon="seti:powershell">
+<CodeGroup title="Creating Checkout to Save Card">
+  <CodeGroupItem label="cURL">
     ```bash
     curl -X POST \
       https://api.sumup.com/v0.1/checkouts \
@@ -267,8 +267,8 @@ Example of such request:
             "purpose": "SETUP_RECURRING_PAYMENT"
           }'
     ```
-  </TabItem>
-  <TabItem label="JavaScript" icon="seti:javascript">
+  </CodeGroupItem>
+  <CodeGroupItem label="JavaScript">
     ```ts
     const checkout = await client.checkouts.create({
       checkout_reference: "MYCHECKOUT",
@@ -280,8 +280,8 @@ Example of such request:
       purpose: "SETUP_RECURRING_PAYMENT",
     });
     ```
-  </TabItem>
-  <TabItem label=".NET" icon="seti:c-sharp">
+  </CodeGroupItem>
+  <CodeGroupItem label=".NET">
     ```csharp
     var checkout = await client.Checkouts.CreateAsync(new CheckoutCreateRequest
     {
@@ -294,8 +294,8 @@ Example of such request:
         Purpose = "SETUP_RECURRING_PAYMENT",
     });
     ```
-  </TabItem>
-  <TabItem label="Java" icon="seti:java">
+  </CodeGroupItem>
+  <CodeGroupItem label="Java">
     ```java
     var checkout = client.checkouts().createCheckout(
         CheckoutCreateRequest.builder()
@@ -309,8 +309,8 @@ Example of such request:
             .build()
     );
     ```
-  </TabItem>
-  <TabItem label="Go" icon="seti:go">
+  </CodeGroupItem>
+  <CodeGroupItem label="Go">
     ```go
     customerID := "MYCUSTOMERID-123"
     purpose := sumup.CheckoutCreateRequestPurposeSetupRecurringPayment
@@ -327,8 +327,8 @@ Example of such request:
     })
     ```
 
-  </TabItem>
-  <TabItem label="Python" icon="seti:python">
+  </CodeGroupItem>
+  <CodeGroupItem label="Python">
     ```py
     from sumup.checkouts.resource import CreateCheckoutBody
 
@@ -345,8 +345,8 @@ Example of such request:
     )
     ```
 
-  </TabItem>
-  <TabItem label="Rust" icon="seti:rust">
+  </CodeGroupItem>
+  <CodeGroupItem label="Rust">
     ```rust
     let checkout = client
         .checkouts()
@@ -368,8 +368,8 @@ Example of such request:
         }))
         .await?;
     ```
-  </TabItem>
-  <TabItem label="PHP" icon="seti:php">
+  </CodeGroupItem>
+  <CodeGroupItem label="PHP">
     ```php
     $checkout = $sumup->checkouts->create([
         'checkout_reference' => 'MYCHECKOUT',
@@ -381,8 +381,8 @@ Example of such request:
         'purpose' => 'SETUP_RECURRING_PAYMENT',
     ]);
     ```
-  </TabItem>
-</Tabs>
+  </CodeGroupItem>
+</CodeGroup>
 
 You should expect a standard `201 Created` response, with the checkout reference and both merchant and customer information.
 
@@ -451,54 +451,54 @@ If the previous operation is successful, and the card is stored with the **Save 
 At any time, you can fetch the list of tokenized cards of a customer by
 requesting them via [the list payment instruments](/api/customers/list-payment-instruments) endpoint.
 
-<Tabs syncKey="backend_lang">
-  <TabItem label="cURL" icon="seti:powershell">
+<CodeGroup title="Processing Request with Payment Widget">
+  <CodeGroupItem label="cURL">
     ```bash
     curl -X GET \
       "https://api.sumup.com/v0.1/customers/${CUSTOMER_ID}/payment-instruments" \
       -H "Authorization: Bearer $SUMUP_API_KEY" \
       -H "Content-Type: application/json;charset=UTF-8"
     ```
-  </TabItem>
-  <TabItem label="JavaScript" icon="seti:javascript">
+  </CodeGroupItem>
+  <CodeGroupItem label="JavaScript">
     ```ts
     const instruments = await client.customers.listPaymentInstruments("MYCUSTOMERID-123");
     ```
-  </TabItem>
-  <TabItem label=".NET" icon="seti:c-sharp">
+  </CodeGroupItem>
+  <CodeGroupItem label=".NET">
     ```csharp
     var instruments = await client.Customers.ListPaymentInstrumentsAsync("MYCUSTOMERID-123");
     ```
-  </TabItem>
-  <TabItem label="Java" icon="seti:java">
+  </CodeGroupItem>
+  <CodeGroupItem label="Java">
     ```java
     var instruments = client.customers().listPaymentInstruments("MYCUSTOMERID-123");
     ```
-  </TabItem>
-  <TabItem label="Go" icon="seti:go">
+  </CodeGroupItem>
+  <CodeGroupItem label="Go">
     ```go
     instruments, err := client.Customers.ListPaymentInstruments(ctx, "MYCUSTOMERID-123")
     ```
-  </TabItem>
-  <TabItem label="Python" icon="seti:python">
+  </CodeGroupItem>
+  <CodeGroupItem label="Python">
     ```py
     instruments = client.customers.list_payment_instruments("MYCUSTOMERID-123")
     ```
-  </TabItem>
-  <TabItem label="Rust" icon="seti:rust">
+  </CodeGroupItem>
+  <CodeGroupItem label="Rust">
     ```rust
     let instruments = client
         .customers()
         .list_payment_instruments("MYCUSTOMERID-123")
         .await?;
     ```
-  </TabItem>
-  <TabItem label="PHP" icon="seti:php">
+  </CodeGroupItem>
+  <CodeGroupItem label="PHP">
     ```php
     $instruments = $sumup->customers->listPaymentInstruments('MYCUSTOMERID-123');
     ```
-  </TabItem>
-</Tabs>
+  </CodeGroupItem>
+</CodeGroup>
 
 ## Retrieving Tokenized Card
 
