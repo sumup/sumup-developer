@@ -280,9 +280,9 @@ It is still possible to have a USB debugging enabled and Developer Mode disabled
 
 ## Testing in specific regions
 
-### Brazil and Chile
+### Latin America
 
-To test the Android Tap-to-Pay SDK in Brazil and Chile, you should set `processCardAs` for each transaction. For example:
+To test the Android Tap-to-Pay SDK in Latin America, you should set `processCardAs` for each transaction. For example:
 
 ```kotlin
 tapToPay.startPayment(
@@ -300,7 +300,7 @@ tapToPay.startPayment(
 )
 ```
 
-Additionally, PIN verification for transactions is mandatory for these countries.
+Additionally, PIN verification for transactions is mandatory in this region.
 However, the PIN entry screen will appear only if _Developer Options_ are _disabled_ on the device - otherwise, the transaction will fail with an error.
 
 ## Next step
