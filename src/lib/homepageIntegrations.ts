@@ -1,4 +1,4 @@
-import spec from "../../openapi.json";
+import spec from "../../openapi31.json";
 import {
   hostedCheckoutSamples,
   readerCheckoutSamples,

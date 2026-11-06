@@ -5,8 +5,9 @@ import MarkdownContent from "@components/MarkdownContent.astro";
 import MethodStatus from "./MethodStatus.astro";
 interface Props {
   operations: ApiOperationRef[];
+  descriptions?: boolean;
 }
-const { operations } = Astro.props;
+const { operations, descriptions = true } = Astro.props;
 ---
 
 <ul class="endpoints">
@@ -20,7 +21,7 @@ const { operations } = Astro.props;
         </span>
         {operation.deprecated && <small>Deprecated</small>}
       </a>
-      {operation.description && (
+      {descriptions && operation.description && (
         <MarkdownContent
           class="description"
           set:html={renderMarkdown(operation.description)}

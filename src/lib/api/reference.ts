@@ -1,7 +1,13 @@
 import slugify from "@sindresorhus/slugify";
-import source from "../../../openapi.json";
+import source from "../../../openapi31.json";
 import { getSdkCodeSamples } from "./codeSamples";
 import operationPaths from "./operationPaths.json";
+import {
+  prepareCoreObjects,
+  coreObjectMarkdown,
+  type CoreObject,
+} from "./coreObjects";
+import type { JsonValue } from "@cloudflare/nimbus-docs/api";
 
 type Operation = {
   operationId: string;
@@ -25,6 +31,12 @@ const methods = new Set([
   "trace",
 ]);
 
+export type TagOverviewSource = {
+  description: string;
+  coreObjects: CoreObject[];
+  events: string[];
+};
+
 // API descriptions use CommonMark rather than the MDX guide pipeline.
 export const apiDescription = (source: string) =>
   source.replace(
@@ -41,9 +53,12 @@ export const apiDescription = (source: string) =>
   );
 
 /** Enrich a copy for Nimbus; synchronized contracts and samples stay untouched. */
-export function createApiReference() {
+export async function createApiReference() {
   const spec = structuredClone(source);
   const operations: Record<string, string> = {};
+  const tagOverviews: Record<string, TagOverviewSource> = {};
+  const coreNames: Record<string, string[]> = {};
+  const coreTargets: Record<string, string> = {};
   const legacyLinks: Record<string, string> = {
     introduction: "/api/",
     sdks: "/tools/sdks/",
@@ -133,6 +148,8 @@ export function createApiReference() {
     legacyLinks[tagSlug] = `/api/tags/${tagSlug}/`;
     const notes = [tag.description];
     if ("x-beta" in tag && tag["x-beta"]) notes.push("**Beta.**");
+    const description = apiDescription(notes.filter(Boolean).join("\n\n"));
+    const coreObjects: string[] = [];
     if ("x-core-objects" in tag) {
       const objects = tag["x-core-objects"] as { $ref: string }[];
       notes.push(
@@ -142,22 +159,65 @@ export function createApiReference() {
               .split("/")
               .pop()!;
             const originalName = object.$ref.split("/").pop()!;
-            legacyLinks[`${tagSlug}-object-${slugify(originalName)}`] =
-              `/api/schemas/${name}/`;
-            return `- [${name}](/api/schemas/${name}/)`;
+            coreObjects.push(name);
+            const anchor = `${tagSlug}-object-${slugify(originalName)}`;
+            const href = `/api/tags/${tagSlug}/#${anchor}`;
+            coreTargets[name] = href;
+            legacyLinks[anchor] = href;
+            return `- [${name}](${href})`;
           })
           .join("\n")}`,
+      );
+    }
+    const events = Object.entries(spec.webhooks).flatMap(([name, path]) =>
+      Object.entries(path).flatMap(([method, value]) => {
+        const operation = value as Pick<Operation, "tags" | "description">;
+        return methods.has(method) && operation.tags.includes(tag.name)
+          ? [{ name, description: operation.description ?? "" }]
+          : [];
+      }),
+    );
+    tagOverviews[`/api/tags/${tagSlug}/`] = {
+      description,
+      coreObjects: [],
+      events: events.map(({ name }) => name),
+    };
+    coreNames[`/api/tags/${tagSlug}/`] = coreObjects;
+    if (events.length) {
+      notes.push(
+        `**Events:**\n\n${events
+          .map(
+            (event) =>
+              `- [\`${event.name}\`](/api/webhooks/${event.name}/)\n\n${event.description
+                .split("\n")
+                .map((line) => `  ${line}`)
+                .join("\n")}`,
+          )
+          .join("\n\n")}`,
       );
     }
     tag.description = notes.filter(Boolean).join("\n\n");
   }
   spec.info.description = `${spec.info.description.replaceAll("https://developer.sumup.com/api/authentication", "/tools/authorization/")}\n\n**Getting started:** [Authorization](/tools/authorization/), [SDKs](/tools/sdks/), [CLI](/tools/cli/), and [API errors](/tools/errors/).\n\n[Download the OpenAPI specification](/openapi.json).`;
+  const preparedSpec = rewriteReferences(spec) as typeof spec;
+  const objects = await prepareCoreObjects(
+    preparedSpec as unknown as Record<string, JsonValue>,
+    coreTargets,
+  );
+  for (const tag of preparedSpec.tags) {
+    const href = `/api/tags/${slugify(tag.name)}/`;
+    const coreObjects = coreNames[href].map((name) => objects[name]);
+    tagOverviews[href].coreObjects = coreObjects;
+    if (coreObjects.length)
+      tag.description += `\n\n${coreObjects.map(coreObjectMarkdown).join("\n\n")}`;
+  }
   return {
-    spec: rewriteReferences(spec) as typeof spec,
+    spec: preparedSpec,
     operations,
+    tagOverviews,
     legacyLinks,
   };
 }
 
 // Share the projection across API pages instead of rebuilding it for each one.
-export const apiReference = createApiReference();
+export const apiReference = await createApiReference();

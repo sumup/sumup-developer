@@ -2,7 +2,7 @@
 
 ## Project Structure & Organization
 
-The portal uses Astro with Nimbus. Application source sits in `src/`, with `pages/` for route entry points, `content/` for MDX docs, `layouts/` and `components/` for repository-owned UI (React, Astro, and Circuit UI), and `utils/`/`lib/` for shared logic. Assets live in `src/assets` and `public/`. Build outputs go to `dist/`. Configuration resides in `astro.config.ts`, `nimbus.json`, and `wrangler.jsonc`; adjust them when adding new content types or deployment targets. API documentation is based on `openapi.yaml`, this file is synchronized from outside this repository, do not edit it.
+The portal uses Astro with Nimbus. Application source sits in `src/`, with `pages/` for route entry points, `content/` for MDX docs, `layouts/` and `components/` for repository-owned UI (React, Astro, and Circuit UI), and `utils/`/`lib/` for shared logic. Assets live in `src/assets` and `public/`. Build outputs go to `dist/`. Configuration resides in `astro.config.ts`, `nimbus.json`, and `wrangler.jsonc`; adjust them when adding new content types or deployment targets. API documentation is based on `openapi31.json`, this file is synchronized from outside this repository, do not edit it.
 
 Use Node.js 24.x and the npm version pinned in `package.json`. Install locked dependencies with `npm ci`. The primary branch is `main`.
 

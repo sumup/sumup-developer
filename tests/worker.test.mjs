@@ -67,13 +67,29 @@ describe("built documentation Worker", { timeout: 60_000 }, () => {
     assert.equal(contract.status, 200);
     assert.deepEqual(
       await contract.json(),
-      JSON.parse(await readFile("openapi.json", "utf8")),
+      JSON.parse(await readFile("openapi31.json", "utf8")),
     );
   });
 
   it("returns 404 for a missing API operation", async () => {
     const response = await server.fetch("/api/not-a-real-operation/");
     assert.equal(response.status, 404);
+  });
+
+  it("redirects retired core schema pages to their tag sections", async () => {
+    const response = await server.fetch("/api/schemas/Checkout/", {
+      redirect: "manual",
+    });
+    assert.equal(response.status, 301);
+    const target = new URL(
+      response.headers.get("location"),
+      "https://developer.sumup.com",
+    );
+    assert.equal(target.pathname, "/api/tags/checkouts/");
+    assert.equal(target.hash, "#checkouts-object-checkout");
+    const tag = await server.fetch(target.pathname);
+    assert.equal(tag.status, 200);
+    assert.match(await tag.text(), /id="checkouts-object-checkout"/);
   });
 
   it("redirects the retired contact page to SumUp", async () => {
@@ -119,6 +135,7 @@ describe("built documentation Worker", { timeout: 60_000 }, () => {
     });
     assert(!listing.isError);
     assert(JSON.parse(listing.content[0].text).pages.length > 0);
+    assert(!listing.content[0].text.includes("/api/schemas/"));
     const result = await rpc(4, "tools/call", {
       name: "get_page",
       arguments: { url: "/api/checkouts/process/" },
@@ -127,5 +144,27 @@ describe("built documentation Worker", { timeout: 60_000 }, () => {
     const page = JSON.parse(result.content[0].text);
     assert.match(page.content, /Process a checkout/);
     assert.match(page.content, /```php\n/);
+    for (const [id, url] of [
+      [5, "/api/tags/checkouts/"],
+      [6, "/api/webhooks/checkouts.paid/"],
+    ]) {
+      const result = await rpc(id, "tools/call", {
+        name: "get_page",
+        arguments: { url },
+      });
+      assert(!result.isError);
+      const page = JSON.parse(result.content[0].text);
+      assert.match(page.content, /checkouts\.paid/);
+      assert.match(page.content, /Sent once when a checkout/);
+      if (url === "/api/tags/checkouts/") {
+        assert.match(page.content, /Checkout object/);
+        assert.match(page.content, /checkout_reference/);
+        assert.match(page.content, /```json\n/);
+        assert(!page.content.includes("/api/schemas/"));
+      } else {
+        assert.match(page.content, /created_at/);
+        assert(!page.content.includes("transaction_id"));
+      }
+    }
   });
 });
