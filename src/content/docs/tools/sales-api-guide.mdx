@@ -1,9 +1,9 @@
 ---
 title: Sales API integrator guide
-description: Learn how the SumUp Sales API fits into your integration, how to sync sales, and when to use the Transactions API.
+description: Learn how the SumUp Sales API fits into your integration, how to sync sales, and when to use the Sales vs Transactions API.
+sidebar:
+  order: 110
 ---
-
-# Sales API Overview
 
 The Sales API lets your integration read a merchant’s sales. Use it to bring sales data into accounting, ERP, and reporting systems.
 
@@ -21,21 +21,21 @@ The Sales API and [Transactions API](https://developer.sumup.com/api/tags/transa
 | Issue a refund | Transactions API |
 | Investigate payouts and settlement activity | Transactions API and Payouts API |
 
-Use the Sales API for the **business view** of a sale. Use the Transactions API for the **payment view**. If you need both, retrieve the sale first, then use its payment reference to look for a related transaction. Check the [Transactions API reference](https://developer.sumup.com/api/tags/transactions/) for the current lookup options.
+![Diagram showing checkout creating a sale, with the Sales API, Transactions API, and Payouts API in the wider SumUp context](/public/img/guides/SumUp_Sales_API_Overview.svg)
 
-## Sales API in Wider Context
+Use the Sales API for the **business view** of a sale. A sale object is created **at sucessfully processed checkout**. The diagram shows how checkout, sale data, payment processing, and the public APIs relate. Note that only fully paid sales are returned by the Sales API. Use the Transactions API for the **payment view**. If you need both, retrieve the sale first, then use its payment reference to look for a related transaction. Check the [Transactions API reference](https://developer.sumup.com/api/tags/transactions/) for the current lookup options.
 
-A sale object is created **at checkout**. The diagram shows how checkout, sale data, payment processing, and the public APIs relate.
+## Out of Scope
 
-![Diagram showing checkout creating a sale, with the Sales API, Transactions API, and Payouts API in the wider SumUp context](../../../../public/img/guides/SumUp_Sales_API_Overview.svg)
-
-Only fully paid sales are returned by the Sales API.
+* Sales API is read-only, no write operations are available.
+* Sales API does not support multi-merchant operations.
+* Sales API does not provide webhooks nor async event support.
 
 ## Get Access
 
-### Authenticate Your Requests
+### Authenticate Requests
 
-Send an access token in the `Authorization` header as a bearer token. The Sales API reference lists API key and OAuth authentication options. For OAuth, request the `sales.read` scope. Requests also require the `merchant_read` permission. See the [authorization guide](https://developer.sumup.com/tools/authorization/) and the [Sales API reference](https://developer.sumup.com/api/tags/sales/).
+Send an access token in the `Authorization` header as a bearer token. Merchant API key and OAuth are both valid options. For OAuth, request the `sales.read` scope. Requests also require the `merchant_read` permission. See the [authorization guide](https://developer.sumup.com/tools/authorization/) and the [Sales API reference](https://developer.sumup.com/api/tags/sales/).
 
 Use the merchant code for the account associated with the token. Request only the access your integration needs.
 
@@ -46,6 +46,7 @@ Include a non-empty `User-Agent` header with every request. A missing or empty v
 ## Make a First Request
 
 This example searches for sales created on a specific day. Replace the placeholders with your merchant code, token, and integration name.
+
 ```bash
 curl --request POST \
   --url https://api.sumup.com/v1.0/merchants/<MERCHANT_CODE>/sales/search \
@@ -105,13 +106,13 @@ The search operation supports a page size of up to 25. Check the [Search sales r
 
 A request can fail after your integration has processed some results. Store records by sale ID and use upserts so that rerunning the same window does not create duplicates.
 
-The API does not document how long after a sale’s creation its payment details can change. If your reconciliation needs to detect later changes, decide how far back to re-read sales and document that policy in your integration.
+The API does not determine how long after a sale’s creation its payment details can change. If your reconciliation needs to detect later changes, decide how far back to re-read sales and document that policy in your integration.
 
 ## Understand Sale Status
 
-The public documentation says non-finalised sales are not returned and only fully paid sales are returned. It does not define “finalised” or state whether “finalised” means the same thing as `CLOSED`.
+{/* TODO clarify this further. Do we want to discuss other status changes here and their logic? It confuses me a bit that we have a sale status filter with one value. */}
 
-The search filter accepts `CLOSED` as a sale-status value. Treat `CLOSED` as the API’s filter value; do not infer from the public documentation that it defines the business event that finalises a sale or that it is synonymous with “fully paid.” If the distinction affects your accounting or reconciliation logic, confirm the intended semantics with SumUp.
+Only fully paid sales are returned by the API.
 
 The search filter also supports `PAID` and `CHARGED_BACK` as payment-status values. Use the [Search sales reference](https://developer.sumup.com/api/sales/search-sales-v10/) for the accepted values and their current descriptions.
 
@@ -121,7 +122,7 @@ The search filter also supports `PAID` and `CHARGED_BACK` as payment-status valu
 
 A sale can contain different kinds of lines. Use the shared fields described in the [Sale schema](https://developer.sumup.com/api/schemas/Sale/) to display and process a line.
 
-Treat item types as extensible. New types or feature names can be added, so handle values your integration does not recognize without failing the whole sale. Read optional feature data only when it is present.
+Treat item types as extensible. New types or feature names can be added, so handle values your integration does not recognize without failing the entire sale. Read optional feature data only when it is present.
 
 ### Distinguish Sale Fees from Payment Costs
 
@@ -149,16 +150,18 @@ A sale total and a payment amount may not be equal. The search response describe
 
 The payment `reference` is described as a reference to the payment used for the sale, for example a SumUp transaction code. Treat it as a possible correlation value, not as a guaranteed unique join, until you have verified how it maps to the Transactions API in your integration.
 
+{/* TODO clarify this - do we have cases where it's not the transaction code? */}
+
 ## Handle Errors
 
 The API uses standard HTTP status codes and Problem Details responses. See the [API errors guide](https://developer.sumup.com/tools/errors/) for the error format.
 
 Common checks:
 
-- For `401`, check that the authorization header contains a valid token.
-- For `403`, check the scope, permission, and merchant code.
-- For `412`, add a non-empty `User-Agent` header.
-- For other errors, use the response details and the operation-specific reference to correct the request before retrying.
+* For `401`, check that the authorization header contains a valid token.
+* For `403`, check the scope, permission, and merchant code.
+* For `412`, add a non-empty `User-Agent` header.
+* For other errors, use the response details and the operation-specific reference to correct the request before retrying.
 
 For transient server errors, use a bounded retry policy with backoff. Do not retry an invalid request unchanged.
 
@@ -166,13 +169,13 @@ For transient server errors, use a bounded retry policy with backoff. Do not ret
 
 Build your integration to tolerate additive changes:
 
-- Ignore response fields that your integration does not use.
-- Handle unknown item types and feature names without failing the sale.
-- Check the [SumUp changelog](https://developer.sumup.com/changelog/) for API changes that may affect your integration.
+* Ignore response fields that your integration does not use.
+* Handle unknown item types and feature names without failing the sale.
+* Check the [SumUp changelog](https://developer.sumup.com/changelog/) for API changes that may affect your integration.
 
 ## Protect Merchant Data
 
-- Request only the access your integration needs.
-- Store access tokens securely. Do not include them in logs or error reports.
-- Keep only the sale data needed for your use case and define an appropriate retention period.
-- Keep records for different merchants separate.
+* Request only the access your integration needs.
+* Store access tokens securely. Do not include them in logs or error reports.
+* Keep only the sale data needed for your use case and define an appropriate retention period.
+* Keep records for different merchants separate.
