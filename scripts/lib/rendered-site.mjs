@@ -76,7 +76,9 @@ export async function renderedSite(outputRoot) {
     const document = dom.window.document;
     const result = {
       apiDescription: proseSignature(
-        document.querySelector(".api-docs > .docs-content"),
+        document.querySelector(
+          ".api-docs [data-api-tag-description], .api-docs > .docs-content",
+        ),
       ),
       apiIndexDescriptions: Array.from(
         document.querySelectorAll(".index-section"),

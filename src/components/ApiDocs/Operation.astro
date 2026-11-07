@@ -1,6 +1,5 @@
 ---
 import type { ApiOperationPage } from "@cloudflare/nimbus-docs/api";
-import { Tabs, TabItem } from "@components/nimbus";
 import MarkdownContent from "@components/MarkdownContent.astro";
 import LRGrid from "./LRGrid.astro";
 import SectionHeading from "./SectionHeading.astro";
@@ -8,6 +7,7 @@ import Schema from "./Schema.astro";
 import Example from "./Example.astro";
 import CodeSamples from "./CodeSamples.astro";
 import OperationEndpoint from "./OperationEndpoint.astro";
+import RequestExamples from "./RequestExamples.astro";
 interface Props {
   page: ApiOperationPage;
 }
@@ -72,7 +72,7 @@ const bodyExists =
     {bodyExists && (
       <Schema
         fields={page.body}
-        title="Body parameters"
+        title={page.isWebhook ? "Event payload" : "Body parameters"}
         union={page.bodyUnion}
         mediaType={page.bodyMediaType}
         required={page.bodyRequired}
@@ -80,33 +80,18 @@ const bodyExists =
         truncated={page.bodyTruncated}
       />
     )}
-    {page.requestExamples && page.requestExamples.length > 0 && (
-      <section>
-        <SectionHeading as="h2">Request examples</SectionHeading>
-        <Tabs>
-          {page.requestExamples.map((example) => (
-            <TabItem label={example.label}>
-              {example.description && <p>{example.description}</p>}
-              <Example example={example} title={example.label} />
-            </TabItem>
-          ))}
-        </Tabs>
-      </section>
-    )}
-    {!page.samples.length && !page.requestExamples?.length && page.example && (
-      <Example example={page.example} title="Request example" />
-    )}
+    {!page.isWebhook && <RequestExamples page={page} />}
     {page.additionalBodies?.map((body) => (
       <Schema
         fields={body.fields}
-        title="Body parameters"
+        title={page.isWebhook ? "Event payload" : "Body parameters"}
         anchor={body.anchor}
         union={body.union}
         mediaType={body.mediaType}
         required={page.bodyRequired}
         truncated={body.truncated}
       >
-        {body.example && <Example example={body.example} />}
+        {body.example && !page.isWebhook && <Example example={body.example} />}
       </Schema>
     ))}
     <section class="responses" data-api-responses>
@@ -152,13 +137,17 @@ const bodyExists =
   </div>
   <div class="examples">
     <div class="example-stack">
-      <CodeSamples
-        samples={page.samples}
-        responses={page.responses}
-        method={page.method}
-        title={page.title}
-        coordinate={page.coordinate}
-      />
+      {page.isWebhook ? (
+        <RequestExamples page={page} />
+      ) : (
+        <CodeSamples
+          samples={page.samples}
+          responses={page.responses}
+          method={page.method}
+          title={page.title}
+          coordinate={page.coordinate}
+        />
+      )}
     </div>
   </div>
 </LRGrid>

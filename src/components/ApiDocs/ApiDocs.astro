@@ -3,22 +3,25 @@ import type { ApiPageProps } from "@cloudflare/nimbus-docs/api";
 import type { ApiHome } from "@cloudflare/nimbus-docs/runtime";
 import MarkdownContent from "@components/MarkdownContent.astro";
 import Operation from "./Operation.astro";
-import Schema from "./Schema.astro";
 import ApiIndex from "./ApiIndex.astro";
 import EndpointList from "./EndpointList.astro";
-import { constraintPairs, displayValue } from "./schemaUtils";
+import TagOverview from "./TagOverview.astro";
+import type { TagOverview as TagOverviewData } from "@lib/api/tagOverview";
 interface Props {
   page: ApiPageProps;
   home?: ApiHome;
+  tagOverview?: TagOverviewData;
 }
-const { page, home } = Astro.props;
+const { page, home, tagOverview } = Astro.props;
 const nextPart = home?.parts[home.part.number];
 ---
 
 <div
   class="api-docs"
   data-api-endpoint-index={
-    page.kind === "api" || page.kind === "section" ? "" : undefined
+    page.kind === "api" || (page.kind === "section" && !tagOverview)
+      ? ""
+      : undefined
   }
 >
   {page.deprecated && (
@@ -42,7 +45,7 @@ const nextPart = home?.parts[home.part.number];
       )}
     </div>
   )}
-  {(page.kind === "api" || page.kind === "section") && (
+  {(page.kind === "api" || (page.kind === "section" && !tagOverview)) && (
     <div class="endpoint-filter">
       <label hidden>
         <span class="visually-hidden">Filter endpoints on this page</span>
@@ -57,53 +60,12 @@ const nextPart = home?.parts[home.part.number];
   )}
   {page.kind === "operation" ? (
     <Operation page={page} />
+  ) : page.kind === "section" && tagOverview ? (
+    <TagOverview page={page} overview={tagOverview} />
   ) : (
     <>
       {page.descriptionHtml && (!home || home.part.number === 1) && (
         <MarkdownContent set:html={page.descriptionHtml} />
-      )}
-      {page.kind === "schema" && (
-        <>
-          {page.scalar && (
-            <section class="scalar">
-              <p>
-                Type: <code>{page.scalar.type}</code>
-                {page.scalar.nullable && " (nullable)"}
-              </p>
-              {page.scalar.enum && (
-                <p>
-                  Options:{" "}
-                  {page.scalar.enum.map((value) => (
-                    <code>{displayValue(value)} </code>
-                  ))}
-                </p>
-              )}
-              {constraintPairs(page.scalar.constraints).map(([key, value]) => (
-                <p>
-                  {key}: <code>{value}</code>
-                </p>
-              ))}
-              {page.scalar.default !== undefined && (
-                <p>
-                  Default: <code>{displayValue(page.scalar.default)}</code>
-                </p>
-              )}
-              {page.scalar.example !== undefined && (
-                <p>
-                  Example: <code>{displayValue(page.scalar.example)}</code>
-                </p>
-              )}
-            </section>
-          )}
-          {(page.fields.length > 0 || page.union) && (
-            <Schema
-              title="Fields"
-              fields={page.fields}
-              union={page.union}
-              truncated={page.truncated}
-            />
-          )}
-        </>
       )}
       {page.kind === "section" && (
         <>
@@ -181,9 +143,6 @@ const nextPart = home?.parts[home.part.number];
     border-radius: var(--cui-border-radius-byte);
     background: var(--cui-bg-warning);
     color: var(--cui-fg-warning);
-  }
-  .scalar {
-    overflow-wrap: anywhere;
   }
   h2 {
     font-size: var(--cui-headline-s-font-size);

@@ -1,0 +1,17 @@
+.list {
+  margin-block: var(--cui-spacings-kilo);
+  overflow-wrap: anywhere;
+}
+
+.signature {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--cui-spacings-byte);
+  font-size: var(--cui-body-s-font-size);
+  color: var(--cui-fg-subtle);
+}
+
+.code {
+  font-family: var(--cui-font-stack-mono);
+}
