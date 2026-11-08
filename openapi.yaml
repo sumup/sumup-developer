@@ -2451,7 +2451,12 @@ paths:
           description: The unique identifier of the reader.
           required: true
           schema:
-            $ref: '#/components/schemas/ReaderID'
+            type: string
+            description: >-
+              Unique identifier of the reader that the payment is initiated on.
+            example: rdr_3MSAFM23CK82VSTT4BN6RWSQ65
+            minLength: 30
+            maxLength: 30
       security:
         - apiKey: []
         - oauth2:
@@ -2494,7 +2499,16 @@ paths:
           in: query
           description: Filter memberships by resource kind.
           schema:
-            $ref: '#/components/schemas/ResourceType'
+            type: string
+            description: >-
+              The type of the membership resource.
+
+              Possible values are:
+
+              * `merchant` - merchant account(s)
+
+              * `organization` - organization(s)
+            example: merchant
         - name: status
           in: query
           description: Filter the returned memberships by the membership status.
@@ -2504,7 +2518,16 @@ paths:
           in: query
           description: Filter memberships by resource kind.
           schema:
-            $ref: '#/components/schemas/ResourceType'
+            type: string
+            description: >-
+              The type of the membership resource.
+
+              Possible values are:
+
+              * `merchant` - merchant account(s)
+
+              * `organization` - organization(s)
+            example: merchant
         - name: resource.attributes.sandbox
           in: query
           description: Filter memberships by the sandbox status of the resource the membership is in.
@@ -2537,7 +2560,16 @@ paths:
 
             Omit both `resource.parent.id` and `resource.parent.type` to skip parent filtering. When filtering by parent, both parameters must be present. To select resources without a parent, set each parameter to an empty value. Otherwise, both parameters must identify a parent.
           schema:
-            $ref: '#/components/schemas/ResourceType'
+            type: string
+            description: >-
+              The type of the membership resource.
+
+              Possible values are:
+
+              * `merchant` - merchant account(s)
+
+              * `organization` - organization(s)
+            example: merchant
         - name: roles
           in: query
           description: Filter the returned memberships by role.
@@ -3622,9 +3654,17 @@ paths:
                 - name
               properties:
                 pairing_code:
-                  $ref: '#/components/schemas/ReaderPairingCode'
+                  type: string
+                  description: >-
+                    The pairing code is a 8 or 9 character alphanumeric string that is displayed on a SumUp Device after initiating the pairing. It is used to link the physical device to the created pairing.
+                  example: 4WLFDSBF
+                  minLength: 8
+                  maxLength: 9
                 name:
-                  $ref: '#/components/schemas/ReaderName'
+                  type: string
+                  description: Custom human-readable, user-defined name for easier identification of the reader.
+                  maxLength: 500
+                  example: Frontdesk
                 metadata:
                   $ref: '#/components/schemas/Metadata'
       responses:
@@ -3751,7 +3791,15 @@ paths:
           description: The unique identifier of the reader.
           required: true
           schema:
-            $ref: '#/components/schemas/ReaderID'
+            type: string
+            description: >-
+              Unique identifier of the object.
+
+
+              Note that this identifies the instance of the physical devices pairing with your SumUp account. If you [delete](https://developer.sumup.com/api/readers/delete-reader) a reader, and pair the device again, the ID will be different. Do not use this ID to refer to a physical device.
+            example: rdr_3MSAFM23CK82VSTT4BN6RWSQ65
+            minLength: 30
+            maxLength: 30
       responses:
         "200":
           description: Returns a Reader object for a valid identifier.
@@ -3815,7 +3863,15 @@ paths:
           description: The unique identifier of the reader.
           required: true
           schema:
-            $ref: '#/components/schemas/ReaderID'
+            type: string
+            description: >-
+              Unique identifier of the object.
+
+
+              Note that this identifies the instance of the physical devices pairing with your SumUp account. If you [delete](https://developer.sumup.com/api/readers/delete-reader) a reader, and pair the device again, the ID will be different. Do not use this ID to refer to a physical device.
+            example: rdr_3MSAFM23CK82VSTT4BN6RWSQ65
+            minLength: 30
+            maxLength: 30
     patch:
       summary: Update a Reader
       description: |-
@@ -3845,7 +3901,10 @@ paths:
               type: object
               properties:
                 name:
-                  $ref: '#/components/schemas/ReaderName'
+                  type: string
+                  description: Custom human-readable, user-defined name for easier identification of the reader.
+                  maxLength: 500
+                  example: Frontdesk
                 metadata:
                   $ref: '#/components/schemas/Metadata'
       responses:
@@ -3890,7 +3949,15 @@ paths:
           description: The unique identifier of the reader.
           required: true
           schema:
-            $ref: '#/components/schemas/ReaderID'
+            type: string
+            description: >-
+              Unique identifier of the object.
+
+
+              Note that this identifies the instance of the physical devices pairing with your SumUp account. If you [delete](https://developer.sumup.com/api/readers/delete-reader) a reader, and pair the device again, the ID will be different. Do not use this ID to refer to a physical device.
+            example: rdr_3MSAFM23CK82VSTT4BN6RWSQ65
+            minLength: 30
+            maxLength: 30
   /v1.0/merchants/{merchant_code}/sales:
     get:
       tags:
@@ -5487,38 +5554,43 @@ components:
           description: Platform code for the error.
           example: NOT_FOUND
     Problem:
-      description: |-
+      type: object
+      description: |
         A RFC 9457 problem details object.
 
         Additional properties specific to the problem type may be present.
-      type: object
-      properties:
-        type:
-          description: A URI reference that identifies the problem type.
-          type: string
-          format: uri
-          example: 'https://developer.sumup.com/problem/not-found'
-        title:
-          description: 'A short, human-readable summary of the problem type.'
-          type: string
-          example: Requested resource couldn't be found.
-        status:
-          description: The HTTP status code generated by the origin server for this occurrence of the problem.
-          type: integer
-          example: 404
-        detail:
-          description: A human-readable explanation specific to this occurrence of the problem.
-          type: string
-          example: The requested resource doesn't exist or does not belong to you.
-        instance:
-          description: A URI reference that identifies the specific occurrence of the problem.
-          type: string
-          format: uri
-          example: https://api.sumup.com/v0.1/checkouts/4e425463-3e1b-431d-83fa-1e51c2925e99
-      additionalProperties: true
       required:
         - type
-      title: Problem
+      additionalProperties: true
+      properties:
+        type:
+          type: string
+          format: uri
+          description: A URI reference that identifies the problem type.
+          example: https://developer.sumup.com/problem/not-found
+        title:
+          type: string
+          description: A short, human-readable summary of the problem type.
+          example: Requested resource couldn't be found.
+        status:
+          type: integer
+          description: The HTTP status code generated by the origin server for this occurrence of the problem.
+          example: 404
+        detail:
+          type: string
+          description: A human-readable explanation specific to this occurrence of the problem.
+          example: The requested resource doesn't exist or does not belong to you.
+        instance:
+          type: string
+          format: uri
+          description: A URI reference that identifies the specific occurrence of the problem.
+    Metadata:
+      description: >-
+        Set of user-defined key-value pairs attached to the object. Partial updates are not supported. When updating, always submit whole metadata. Maximum of 64 parameters are allowed in the object.
+      type: object
+      maxProperties: 64
+      example: {}
+      additionalProperties: true
     ErrorExtended:
       title: Error Extended
       description: Error payload with the invalid parameter reference.
@@ -5582,15 +5654,22 @@ components:
                 type: string
                 description: Name of the field that violated the constraint.
                 example: currency
-    Event:
-      title: Event
+    TransactionEvent:
+      title: Transaction Event
       description: High-level transaction event details.
       type: object
       properties:
         id:
-          $ref: '#/components/schemas/TransactionEventID'
+          title: Transaction Event ID
+          type: integer
+          format: int64
+          description: Numeric identifier of a transaction event. Use it as `tx_event_id` when requesting receipt details for a specific event. This is separate from the transaction ID and the transaction history pagination references.
+          example: 9567461191
         transaction_id:
-          $ref: '#/components/schemas/TransactionID'
+          title: Transaction ID
+          type: string
+          description: Unique identifier of the transaction.
+          example: 410fc44a-5956-44e1-b5cc-19c6f8d727a4
         type:
           $ref: '#/components/schemas/TransactionEventType'
         status:
@@ -5977,9 +6056,16 @@ components:
       type: object
       properties:
         id:
-          $ref: '#/components/schemas/TransactionEventID'
+          title: Transaction Event ID
+          type: integer
+          format: int64
+          description: Numeric identifier of a transaction event. Use it as `tx_event_id` when requesting receipt details for a specific event. This is separate from the transaction ID and the transaction history pagination references.
+          example: 9567461191
         transaction_id:
-          $ref: '#/components/schemas/TransactionID'
+          title: Transaction ID
+          type: string
+          description: Unique identifier of the transaction.
+          example: 410fc44a-5956-44e1-b5cc-19c6f8d727a4
         type:
           $ref: '#/components/schemas/TransactionEventType'
         status:
@@ -6129,7 +6215,10 @@ components:
           description: Transaction code returned after processing the transaction.
           example: TEENSK4W2K
         transaction_id:
-          $ref: '#/components/schemas/TransactionID'
+          title: Transaction ID
+          type: string
+          description: Unique identifier of the transaction.
+          example: 410fc44a-5956-44e1-b5cc-19c6f8d727a4
         merchant_code:
           type: string
           description: Short unique identifier for the merchant.
@@ -6275,13 +6364,17 @@ components:
           type: string
           description: Receipt number associated with the transaction.
           example: '123456'
-    TransactionEvent:
-      title: Transaction Event
+    TransactionEventDetails:
+      title: Transaction Event Details
       type: object
       description: Detailed information about a transaction event.
       properties:
         id:
-          $ref: '#/components/schemas/TransactionEventID'
+          title: Transaction Event ID
+          type: integer
+          format: int64
+          description: Numeric identifier of a transaction event. Use it as `tx_event_id` when requesting receipt details for a specific event. This is separate from the transaction ID and the transaction history pagination references.
+          example: 9567461191
         event_type:
           $ref: '#/components/schemas/TransactionEventType'
         status:
@@ -6410,7 +6503,10 @@ components:
         - type: object
           properties:
             transaction_id:
-              $ref: '#/components/schemas/TransactionID'
+              title: Transaction ID
+              type: string
+              description: Unique identifier of the transaction.
+              example: 410fc44a-5956-44e1-b5cc-19c6f8d727a4
             client_transaction_id:
               type: string
               description: Client-supplied identifier of the transaction.
@@ -6562,11 +6658,30 @@ components:
               description: Total SumUp transaction fee in major units of the transaction's currency.
               example: 8.0
             lat:
-              $ref: '#/components/schemas/Lat'
+              title: Latitude
+              type: number
+              format: float
+              description: |-
+                Latitude value from the coordinates of the payment location (as received from the payment terminal reader).
+              minimum: -90
+              maximum: 90
+              example: 52.520008
             lon:
-              $ref: '#/components/schemas/Lon'
+              title: Longitude
+              type: number
+              format: float
+              description: |-
+                Longitude value from the coordinates of the payment location (as received from the payment terminal reader).
+              minimum: -180
+              maximum: 180
+              example: 13.404954
             horizontal_accuracy:
-              $ref: '#/components/schemas/HorizontalAccuracy'
+              title: Horizontal Accuracy
+              type: number
+              format: float
+              description: |-
+                Indication of the precision of the geographical position received from the payment terminal.
+              example: 5.0
             merchant_id:
               type: integer
               format: int64
@@ -6668,7 +6783,7 @@ components:
               type: array
               description: Detailed list of events related to the transaction.
               items:
-                $ref: '#/components/schemas/TransactionEvent'
+                $ref: '#/components/schemas/TransactionEventDetails'
             simple_status:
               type: string
               description: |-
@@ -6705,18 +6820,37 @@ components:
               type: array
               description: Compact list of events related to the transaction.
               items:
-                $ref: '#/components/schemas/Event'
+                $ref: '#/components/schemas/TransactionEvent'
             location:
               type: object
               description: |-
                 Details of the payment location as received from the payment terminal.
               properties:
                 lat:
-                  $ref: '#/components/schemas/Lat'
+                  title: Latitude
+                  type: number
+                  format: float
+                  description: |-
+                    Latitude value from the coordinates of the payment location (as received from the payment terminal reader).
+                  minimum: -90
+                  maximum: 90
+                  example: 52.520008
                 lon:
-                  $ref: '#/components/schemas/Lon'
+                  title: Longitude
+                  type: number
+                  format: float
+                  description: |-
+                    Longitude value from the coordinates of the payment location (as received from the payment terminal reader).
+                  minimum: -180
+                  maximum: 180
+                  example: 13.404954
                 horizontal_accuracy:
-                  $ref: '#/components/schemas/HorizontalAccuracy'
+                  title: Horizontal Accuracy
+                  type: number
+                  format: float
+                  description: |-
+                    Indication of the precision of the geographical position received from the payment terminal.
+                  example: 5.0
             tax_enabled:
               type: boolean
               description: Indicates whether tax deduction is enabled for the transaction.
@@ -6801,42 +6935,6 @@ components:
         - SCHEDULED
         - SUCCESSFUL
       example: SUCCESSFUL
-    TransactionEventID:
-      title: Transaction Event ID
-      type: integer
-      format: int64
-      description: Numeric identifier of a transaction event. Use it as `tx_event_id` when requesting receipt details for a specific event. This is separate from the transaction ID and the transaction history pagination references.
-      example: 9567461191
-    HorizontalAccuracy:
-      title: Horizontal Accuracy
-      type: number
-      format: float
-      description: |-
-        Indication of the precision of the geographical position received from the payment terminal.
-      example: 5.0
-    Lat:
-      title: Latitude
-      type: number
-      format: float
-      description: |-
-        Latitude value from the coordinates of the payment location (as received from the payment terminal reader).
-      minimum: -90
-      maximum: 90
-      example: 52.520008
-    Lon:
-      title: Longitude
-      type: number
-      format: float
-      description: |-
-        Longitude value from the coordinates of the payment location (as received from the payment terminal reader).
-      minimum: -180
-      maximum: 180
-      example: 13.404954
-    TransactionID:
-      title: Transaction ID
-      type: string
-      description: Unique identifier of the transaction.
-      example: 410fc44a-5956-44e1-b5cc-19c6f8d727a4
     Affiliate:
       properties:
         app_id:
@@ -6863,13 +6961,6 @@ components:
         - currency
         - value
       type: object
-    ReaderID:
-      type: string
-      description: >-
-        Unique identifier of the reader that the payment is initiated on.
-      example: rdr_3MSAFM23CK82VSTT4BN6RWSQ65
-      minLength: 30
-      maxLength: 30
     ReaderPaymentRequestParams:
       properties:
         affiliate:
@@ -6922,17 +7013,6 @@ components:
         - expired
         - disabled
         - unknown
-    ResourceType:
-      type: string
-      description: >-
-        The type of the membership resource.
-
-        Possible values are:
-
-        * `merchant` - merchant account(s)
-
-        * `organization` - organization(s)
-      example: merchant
     Membership:
       title: Membership
       type: object
@@ -6958,7 +7038,16 @@ components:
           description: ID of the resource the membership is in.
           example: M2DDT39A
         type:
-          $ref: '#/components/schemas/ResourceType'
+          type: string
+          description: >-
+            The type of the membership resource.
+
+            Possible values are:
+
+            * `merchant` - merchant account(s)
+
+            * `organization` - organization(s)
+          example: merchant
         roles:
           type: array
           description: User's roles.
@@ -7020,7 +7109,16 @@ components:
           description: ID of the resource the membership is in.
           example: M2DDT39A
         type:
-          $ref: '#/components/schemas/ResourceType'
+          type: string
+          description: >-
+            The type of the membership resource.
+
+            Possible values are:
+
+            * `merchant` - merchant account(s)
+
+            * `organization` - organization(s)
+          example: merchant
         name:
           type: string
           description: Display name of the resource.
@@ -7264,13 +7362,6 @@ components:
           description: The timestamp of when the role was last updated.
           format: date-time
           example: 2023-01-20T15:16:17Z
-    Metadata:
-      description: >-
-        Set of user-defined key-value pairs attached to the object. Partial updates are not supported. When updating, always submit whole metadata. Maximum of 64 parameters are allowed in the object.
-      type: object
-      maxProperties: 64
-      example: {}
-      additionalProperties: true
     Attributes:
       description: >
         Object attributes that are modifiable only by SumUp applications.
@@ -7286,170 +7377,6 @@ components:
         - service_account
         - system_account
       example: user
-    Address:
-      externalDocs:
-        description: Address documentation
-        url: https://developer.sumup.com/tools/glossary/address
-      description: >-
-        An address somewhere in the world. The address fields used depend on the country conventions. For example, in Great Britain, `city` is `post_town`. In the United States, the top-level administrative unit used in addresses is `state`, whereas in Chile it's `region`.
-
-        Whether an address is valid or not depends on whether the locally required fields are present. Fields not supported in a country will be ignored.
-      type: object
-      required:
-        - country
-      properties:
-        street_address:
-          type: array
-          maxItems: 2
-          items:
-            type: string
-            description: The first line of the address.
-            maxLength: 100
-          example:
-            - Paul-Linke-Ufer 39-40
-            - 2. Hinterhof
-        post_code:
-          type: string
-          description: >
-            The postal code (aka. zip code) of the address.
-          maxLength: 10
-          example: "10999"
-        country:
-          allOf:
-            - description: >
-                The ISO3166-1 Alpha-2 code of the address country.
-              example: "DE"
-            - $ref: '#/components/schemas/CountryCode'
-        city:
-          type: string
-          description: >
-            The city of the address.
-          maxLength: 60
-          example: Berlin
-        province:
-          type: string
-          description: >
-            The province where the address is located. This may not be relevant in some countries.
-          maxLength: 60
-          example: Berlin
-        region:
-          type: string
-          description: >
-            The region where the address is located. This may not be relevant in some countries.
-          maxLength: 60
-          example: Baden Wuerttemberg
-        county:
-          type: string
-          description: >
-            A county is a geographic region of a country used for administrative or other purposes in some nations. Used in countries such as Ireland, Romania, etc.
-          maxLength: 60
-          example: Dublin County
-        autonomous_community:
-          type: string
-          description: >
-            In Spain, an autonomous community is the first sub-national level of political and administrative division.
-          maxLength: 60
-          example: Catalonia
-        post_town:
-          type: string
-          description: >
-            A post town is a required part of all postal addresses in the United Kingdom and Ireland, and a basic unit of the postal delivery system.
-          maxLength: 60
-          example: London
-        state:
-          type: string
-          description: >
-            Most often, a country has a single state, with various administrative divisions. The term "state" is sometimes used to refer to the federated polities that make up the federation. Used in countries such as the United States and Brazil.
-          maxLength: 60
-          example: California
-        neighborhood:
-          type: string
-          description: >
-            Locality level of the address. Used in countries such as Brazil or Chile.
-          maxLength: 60
-          example: Copacabana
-        commune:
-          type: string
-          description: >
-            In many countries, terms cognate with "commune" are used, referring to the community living in the area and the common interest. Used in countries such as Chile.
-          maxLength: 60
-          example: Providencia
-        department:
-          type: string
-          description: >
-            A department (French: département, Spanish: departamento) is an administrative or political division in several countries. Used in countries such as Colombia.
-          maxLength: 60
-          example: Antioquia
-        municipality:
-          type: string
-          description: >
-            A municipality is usually a single administrative division having corporate status and powers of self-government or jurisdiction as granted by national and regional laws to which it is subordinate. Used in countries such as Colombia.
-          maxLength: 60
-          example: Medellín
-        district:
-          type: string
-          description: >
-            A district is a type of administrative division that in some countries is managed by the local government. Used in countries such as Portugal.
-          maxLength: 60
-          example: Lisbon District
-        zip_code:
-          type: string
-          description: >
-            A US system of postal codes used by the United States Postal Service (USPS).
-          maxLength: 10
-          example: "94103"
-        eircode:
-          type: string
-          description: >
-            A postal address in Ireland.
-          maxLength: 10
-          example: "D02 X285"
-      example:
-        street_address:
-          - Paul-Linke-Ufer 39-40
-          - 2. Hinterhof
-        post_code: "10999"
-        city: Berlin
-        country: "DE"
-    CountryCode:
-      description: |-
-        An [ISO3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)
-        country code. This definition users `oneOf` with a two-character string
-        type to allow for support of future countries in client code.
-      type: string
-      minLength: 2
-      maxLength: 2
-      pattern: "^[A-Z]{2}$"
-      example: BR
-    PersonalIdentifiers:
-      type: array
-      description: A list of country-specific personal identifiers.
-      items:
-        $ref: '#/components/schemas/PersonalIdentifier'
-      maxItems: 32
-      example:
-        - ref: "br.cpf"
-          value: "847.060.136-90"
-    PersonalIdentifier:
-      type: object
-      required:
-        - ref
-        - value
-      properties:
-        ref:
-          type: string
-          description: The unique reference for the personal identifier type.
-          example: "br.cpf"
-          maxLength: 32
-        value:
-          type: string
-          description: >-
-            The personal identifier value.
-          example: "847.060.136-90"
-          maxLength: 128
-      example:
-        ref: "br.cpf"
-        value: "847.060.136-90"
     ListPersonsResponseBody:
       type: object
       required:
@@ -7498,7 +7425,14 @@ components:
             company:
               $ref: '#/components/schemas/Company'
             country:
-              $ref: '#/components/schemas/CountryCode'
+              description: >
+                The [https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2](ISO3166-1 alpha-2) country code of the country the merchant is registered and operates in.
+              allOf:
+                - description: >
+                    An [ISO3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) country code. This definition uses `oneOf` with a two-character string type to allow for support of future countries in client code.
+                  type: string
+                  pattern: "^[A-Z]{2}$"
+                  example: "AR"
             business_profile:
               $ref: '#/components/schemas/BusinessProfile'
             avatar:
@@ -7536,9 +7470,17 @@ components:
             classic:
               $ref: '#/components/schemas/ClassicMerchantIdentifiers'
             version:
-              $ref: '#/components/schemas/Version'
+              type: string
+              description: >
+                The version of the resource. The version reflects a specific change submitted to the API via one of the `PATCH` endpoints.
+              example: "chng_01HS0KG3MPVEVWW85E3KNXH55J"
             change_status:
-              $ref: '#/components/schemas/ChangeStatus'
+              type: string
+              readOnly: true
+              description: >
+                Reflects the status of changes submitted through the `PATCH` endpoints for the Merchant or Persons. If some changes have not been applied yet, the status will be `pending`. If all changes have been applied, the status `done`.
+
+                The status is only returned after write operations or on read endpoints when the `version` query parameter is provided.
         - $ref: '#/components/schemas/Timestamps'
     Meta:
       type: object
@@ -7585,20 +7527,249 @@ components:
           maxLength: 255
           example: contact@example.com
         phone_number:
-          $ref: '#/components/schemas/PhoneNumber'
+          description: >
+            A public phone number that customers can call.
+          allOf:
+            - type: string
+              description: >
+                A publicly available phone number in [E.164](https://en.wikipedia.org/wiki/E.164) format.
+              example: "+420123456789"
+              maxLength: 16
         address:
-          $ref: '#/components/schemas/Address'
+          $ref: '#/components/schemas/MerchantsAddress'
         branding:
           $ref: '#/components/schemas/Branding'
+    Location:
+      type: object
+      description: >-
+        Physical Merchant Location with a customer-facing name and address.
+      additionalProperties: false
+      required:
+        - id
+        - name
+        - is_default
+        - address
+        - created_at
+        - updated_at
+      properties:
+        id:
+          readOnly: true
+          allOf:
+            - type: string
+              description: >-
+                Unique identifier of a Merchant Location.
+              example: loc_01JZ8N8ZH8AVAZF30MZ6J4Z7PK
+        name:
+          type: string
+          description: >-
+            Customer-facing Location name.
+          minLength: 1
+          maxLength: 255
+          example: Kreuzberg Store
+        business_name:
+          type: string
+          description: >-
+            Customer-facing business name used at the Location.
+          minLength: 1
+          maxLength: 255
+          example: Example Coffee
+        email:
+          type: string
+          format: email
+          description: >-
+            Public email address for the Location.
+          minLength: 1
+          maxLength: 255
+          example: kreuzberg@example.com
+        phone_number:
+          type: string
+          description: >-
+            Public phone number for the Location in E.164 format.
+          minLength: 1
+          maxLength: 20
+          example: "+49301234567"
+        website:
+          type: string
+          format: uri
+          description: >-
+            Public website for the Location.
+          minLength: 1
+          maxLength: 255
+          example: https://example.com/kreuzberg
+        is_default:
+          type: boolean
+          readOnly: true
+          description: >-
+            Whether this is the default Location for the Merchant.
+          example: true
+        address:
+          allOf:
+            - description: >-
+                Physical address of the Location.
+            - $ref: '#/components/schemas/MerchantsAddress'
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+          description: >-
+            Time when the Location was created.
+          example: "2026-07-02T10:15:30Z"
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+          description: >-
+            Time when the Location was last updated.
+          example: "2026-07-02T10:15:30Z"
+      example:
+        id: loc_01JZ8N8ZH8AVAZF30MZ6J4Z7PK
+        name: Kreuzberg Store
+        business_name: Example Coffee
+        email: kreuzberg@example.com
+        phone_number: "+49301234567"
+        website: https://example.com/kreuzberg
+        is_default: true
+        address:
+          street_address:
+            - Paul-Linke-Ufer 39-40
+          post_code: "10999"
+          city: Berlin
+          country: DE
+        created_at: "2026-07-02T10:15:30Z"
+        updated_at: "2026-07-02T10:15:30Z"
     Person:
       allOf:
         - $ref: '#/components/schemas/BasePerson'
-    PhoneNumber:
-      type: string
-      description: >
-        A publicly available phone number in [E.164](https://en.wikipedia.org/wiki/E.164) format.
-      example: "+420123456789"
-      maxLength: 16
+    MerchantsAddress:
+      externalDocs:
+        description: Address documentation
+        url: https://developer.sumup.com/tools/glossary/merchant#addresses
+      description: >-
+        An address somewhere in the world. The address fields used depend on the country conventions. For example, in Great Britain, `city` is `post_town`. In the United States, the top-level administrative unit used in addresses is `state`, whereas in Chile it's `region`.
+
+        Whether an address is valid or not depends on whether the locally required fields are present. Fields not supported in a country will be ignored.
+      type: object
+      required:
+        - country
+      properties:
+        street_address:
+          type: array
+          minItems: 1
+          maxItems: 2
+          items:
+            type: string
+            description: The first line of the address.
+            maxLength: 100
+          example:
+            - Paul-Linke-Ufer 39-40
+            - 2. Hinterhof
+        post_code:
+          type: string
+          description: >
+            The postal code (aka. zip code) of the address.
+          maxLength: 10
+          example: "10999"
+        country:
+          description: >
+            The ISO3166-1 Alpha-2 code of the address country.
+          example: "DE"
+          allOf:
+            - description: >
+                An [ISO3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) country code. This definition uses `oneOf` with a two-character string type to allow for support of future countries in client code.
+              type: string
+              pattern: "^[A-Z]{2}$"
+              example: "AR"
+        city:
+          type: string
+          description: >
+            The city of the address.
+          maxLength: 60
+          example: Berlin
+        province:
+          type: string
+          description: >
+            The province where the address is located. This may not be relevant in some countries.
+          maxLength: 60
+          example: Ontario
+        region:
+          type: string
+          description: >
+            The region where the address is located. This may not be relevant in some countries.
+          maxLength: 60
+          example: Baden-Wuerttemberg
+        county:
+          type: string
+          description: >
+            A county is a geographic region of a country used for administrative or other purposes in some nations. Used in countries such as Ireland, Romania, etc.
+          maxLength: 60
+          example: Dublin
+        autonomous_community:
+          type: string
+          description: >
+            In Spain, an autonomous community is the first sub-national level of political and administrative division.
+          maxLength: 60
+          example: Catalonia
+        post_town:
+          type: string
+          description: >
+            A post town is a required part of all postal addresses in the United Kingdom and Ireland, and a basic unit of the postal delivery system.
+          maxLength: 60
+          example: London
+        state:
+          type: string
+          description: >
+            Most often, a country has a single state, with various administrative divisions. The term "state" is sometimes used to refer to the federated polities that make up the federation. Used in countries such as the United States and Brazil.
+          maxLength: 60
+          example: California
+        neighborhood:
+          type: string
+          description: >
+            Locality level of the address. Used in countries such as Brazil or Chile.
+          maxLength: 60
+          example: Copacabana
+        commune:
+          type: string
+          description: >
+            In many countries, terms cognate with "commune" are used, referring to the community living in the area and the common interest. Used in countries such as Chile.
+          maxLength: 60
+          example: Providencia
+        department:
+          type: string
+          description: >
+            A department (French: département, Spanish: departamento) is an administrative or political division in several countries. Used in countries such as Colombia.
+          maxLength: 60
+          example: Antioquia
+        municipality:
+          type: string
+          description: >
+            A municipality is usually a single administrative division having corporate status and powers of self-government or jurisdiction as granted by national and regional laws to which it is subordinate. Used in countries such as Colombia.
+          maxLength: 60
+          example: Medellin
+        district:
+          type: string
+          description: >
+            A district is a type of administrative division that in some countries is managed by the local government. Used in countries such as Portugal.
+          maxLength: 60
+          example: Lisbon
+        zip_code:
+          type: string
+          description: >
+            A US system of postal codes used by the United States Postal Service (USPS).
+          maxLength: 10
+          example: "94103"
+        eircode:
+          type: string
+          description: >
+            A postal address in Ireland.
+          maxLength: 10
+          example: "D02 X285"
+      example:
+        street_address:
+          - Paul-Linke-Ufer 39-40
+          - 2. Hinterhof
+        post_code: "10999"
+        city: Berlin
+        country: "DE"
     Branding:
       type: object
       description: Settings used to apply the Merchant's branding to email receipts, invoices, checkouts, and other products.
@@ -7650,23 +7821,22 @@ components:
           description: >
             A hex color value representing the preferred background color of this merchant.
           example: "#FF4B3A"
-    LegalType:
-      externalDocs:
-        description: The country SDK documentation for legal types.
-        url: https://developer.sumup.com/tools/glossary/merchant#legal-types
-      type: string
-      description: >
-        The unique legal type reference as defined in the country SDK. We do not rely on IDs as used by other services. Consumers of this API are expected to use the country SDK to map to any other IDs, translation keys, or descriptions.
-      minLength: 4
-      maxLength: 64
-      pattern: '^[a-z]{2}\.[a-z_]+$'
-      example: de.freiberufler
     CompanyIdentifiers:
       type: array
       description: >
         A list of country-specific company identifiers.
       items:
         $ref: '#/components/schemas/CompanyIdentifier'
+    MerchantsAttributes:
+      type: object
+      additionalProperties:
+        type: string
+        maxLength: 256
+      description: >
+        Object metadata which should only be writable for internal applications, and readable by all clients.
+
+        **Warning**: Updating Attributes will overwrite the existing data. Make sure to always include the complete JSON object.
+      example: {}
     CompanyIdentifier:
       externalDocs:
         description: Company identifier documentation
@@ -7705,18 +7875,33 @@ components:
           minimum: 25000
           maximum: 100000
           example: 50000
-    Version:
-      type: string
+    MerchantsPersonalIdentifiers:
+      type: array
       description: >
-        The version of the resource. The version reflects a specific change submitted to the API via one of the `PATCH` endpoints.
-      example: "chng_01HS0KG3MPVEVWW85E3KNXH55J"
-    ChangeStatus:
-      type: string
-      readOnly: true
-      description: >
-        Reflects the status of changes submitted through the `PATCH` endpoints for the Merchant or Persons. If some changes have not been applied yet, the status will be `pending`. If all changes have been applied, the status `done`.
-
-        The status is only returned after write operations or on read endpoints when the `version` query parameter is provided.
+        A list of country-specific personal identifiers.
+      maxItems: 5
+      items:
+        type: object
+        required:
+          - ref
+          - value
+        properties:
+          ref:
+            type: string
+            pattern: '^[a-z]{2}\.[a-z_]+$'
+            description: >
+              The unique reference for the personal identifier type as defined in the country SDK.
+            example: "br.cpf"
+          value:
+            type: string
+            minLength: 1
+            maxLength: 30
+            description: >
+              The value of the personal identifier.
+            example: "847.060.136-90"
+        example:
+          ref: "br.cpf"
+          value: "847.060.136-90"
     BasePerson:
       externalDocs:
         description: Person documentation
@@ -7757,7 +7942,14 @@ components:
           minLength: 1
           maxLength: 60
         phone_number:
-          $ref: '#/components/schemas/PhoneNumber'
+          description: >
+            The (mobile) phone number of the individual (used for verification) in [E.164](https://en.wikipedia.org/wiki/E.164) format.
+          allOf:
+            - type: string
+              description: >
+                A publicly available phone number in [E.164](https://en.wikipedia.org/wiki/E.164) format.
+              example: "+420123456789"
+              maxLength: 16
         relationships:
           type: array
           description: >
@@ -7776,11 +7968,18 @@ components:
         ownership:
           $ref: '#/components/schemas/Ownership'
         address:
-          $ref: '#/components/schemas/Address'
+          $ref: '#/components/schemas/MerchantsAddress'
         identifiers:
-          $ref: '#/components/schemas/PersonalIdentifiers'
+          $ref: '#/components/schemas/MerchantsPersonalIdentifiers'
         citizenship:
-          $ref: '#/components/schemas/CountryCode'
+          description: >
+            The Alpha-2 ISO code of the country where the Person is a citizen.
+          allOf:
+            - description: >
+                An [ISO3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) country code. This definition uses `oneOf` with a two-character string type to allow for support of future countries in client code.
+              type: string
+              pattern: "^[A-Z]{2}$"
+              example: "AR"
         nationality:
           type: string
           pattern: "^[A-Z]{2}$"
@@ -7794,9 +7993,17 @@ components:
           pattern: "^[A-Z]{2}$"
           nullable: true
         version:
-          $ref: '#/components/schemas/Version'
+          type: string
+          description: >
+            The version of the resource. The version reflects a specific change submitted to the API via one of the `PATCH` endpoints.
+          example: "chng_01HS0KG3MPVEVWW85E3KNXH55J"
         change_status:
-          $ref: '#/components/schemas/ChangeStatus'
+          type: string
+          readOnly: true
+          description: >
+            Reflects the status of changes submitted through the `PATCH` endpoints for the Merchant or Persons. If some changes have not been applied yet, the status will be `pending`. If all changes have been applied, the status `done`.
+
+            The status is only returned after write operations or on read endpoints when the `version` query parameter is provided.
     Company:
       externalDocs:
         description: Company documentation
@@ -7818,26 +8025,39 @@ components:
           example: "1532"
           pattern: ^[0-9]{4}$
         legal_type:
+          description: >
+            The category identifying the legal structure of the company or legal entity.
           allOf:
-            - description: >
-                The category identifying the legal structure of the company or legal entity.
-            - $ref: '#/components/schemas/LegalType'
+            - externalDocs:
+                description: The country SDK documentation for legal types.
+                url: https://developer.sumup.com/tools/glossary/merchant#legal-types
+              type: string
+              description: >
+                The unique legal type reference as defined in the country SDK. We do not rely on IDs as used by other services. Consumers of this API are expected to use the country SDK to map to any other IDs, translation keys, or descriptions.
+              minLength: 4
+              maxLength: 64
+              pattern: '^[a-z]{2}\.[a-z_]+$'
+              example: de.freiberufler
         address:
           allOf:
             - description: The company's primary address.
-            - $ref: '#/components/schemas/Address'
+            - $ref: '#/components/schemas/MerchantsAddress'
         trading_address:
           allOf:
             - description: >
                 A trading address is where your suppliers, banks or customers send you correspondence to. Trading address can be different to the company's registered address (`address`).
-            - $ref: '#/components/schemas/Address'
+            - $ref: '#/components/schemas/MerchantsAddress'
         identifiers:
           $ref: '#/components/schemas/CompanyIdentifiers'
         phone_number:
+          description: >
+            The company's phone number (used for verification) in [E.164](https://en.wikipedia.org/wiki/E.164) format.
           allOf:
-            - description: >
-                The company's phone number (used for verification) in [E.164](https://en.wikipedia.org/wiki/E.164) format.
-            - $ref: '#/components/schemas/PhoneNumber'
+            - type: string
+              description: >
+                A publicly available phone number in [E.164](https://en.wikipedia.org/wiki/E.164) format.
+              example: "+420123456789"
+              maxLength: 16
         website:
           description: >
             HTTP(S) URL of the company's website.
@@ -7846,7 +8066,7 @@ components:
           maxLength: 255
           example: https://www.sumup.com
         attributes:
-          $ref: '#/components/schemas/Attributes'
+          $ref: '#/components/schemas/MerchantsAttributes'
     ClassicMerchantIdentifiers:
       type: object
       required:
@@ -7884,9 +8104,20 @@ components:
       type: object
       properties:
         id:
-          $ref: '#/components/schemas/ReaderID'
+          type: string
+          description: >-
+            Unique identifier of the object.
+
+
+            Note that this identifies the instance of the physical devices pairing with your SumUp account. If you [delete](https://developer.sumup.com/api/readers/delete-reader) a reader, and pair the device again, the ID will be different. Do not use this ID to refer to a physical device.
+          example: rdr_3MSAFM23CK82VSTT4BN6RWSQ65
+          minLength: 30
+          maxLength: 30
         name:
-          $ref: '#/components/schemas/ReaderName'
+          type: string
+          description: Custom human-readable, user-defined name for easier identification of the reader.
+          maxLength: 500
+          example: Frontdesk
         status:
           $ref: '#/components/schemas/ReaderStatus'
         device:
@@ -7918,11 +8149,6 @@ components:
         - device
         - created_at
         - updated_at
-    ReaderName:
-      type: string
-      description: Custom human-readable, user-defined name for easier identification of the reader.
-      maxLength: 500
-      example: Frontdesk
     ReaderStatus:
       type: string
       example: "paired"
@@ -7959,60 +8185,25 @@ components:
       required:
         - identifier
         - model
-    ReaderPairingCode:
-      type: string
-      description: >-
-        The pairing code is a 8 or 9 character alphanumeric string that is displayed on a SumUp Device after initiating the pairing. It is used to link the physical device to the created pairing.
-      example: 4WLFDSBF
-      minLength: 8
-      maxLength: 9
-    Reference:
-      type: string
-      description: The reference to the actual payment used for this sale, e.g. the sumup transaction code.
-      example: TERTYFQ4G3
-      maxLength: 50
-    Brand:
-      type: string
-      description: 'The brand of the card.
-
-        Input is case-insensitive; the canonical form is lowercase snake_case.
-
-        **VALUES**: [amex, cup, diners, discover, elo, elv, hipercard, jcb, maestro, mastercard, visa, visa_electron,
-
-        visa_vpay, vr, eftpos, conecs, swile, girocard, interac, sumup, bancomat].'
-      maxLength: 20
-      example: visa
-    ItemTypeV10:
-      type: string
-      description: 'Classifies a sale line. Not a schema subclass.
-
-
-        Known values: `CATALOG`, `DEPOSIT`, `GIFT_CARD`, `CUSTOM`, `FEE`.
-
-
-        `FEE` lines represent merchant-charged fees on the sale (e.g. shipping, service
-
-        charge, surcharge, cancellation). They participate in sale totals like any other
-
-        line; type-specific data is carried in `features` (see `Feature` for the
-
-        conventional feature keys).
-
-
-        This is intentionally an open string, NOT a closed enum: new values are added
-
-        over time as pure data and consumers MUST tolerate unknown values, rendering the
-
-        line from the generic envelope (name, quantity, price, taxes) and reading any
-
-        extra information from `features`.'
-      example: CATALOG
-    Quantity:
-      type: number
-      format: double
-      description: The numerical value representing the quantity in the specified unit.
-      minimum: 0
-      example: 2.15332
+    SalesActivityCurrency:
+      type: object
+      description: The currency of the sale.
+      required:
+        - code
+        - scale
+      properties:
+        code:
+          type: string
+          minLength: 3
+          maxLength: 3
+          description: 3-letter currency code as defined by ISO-4217.
+          format: iso-4217
+          example: EUR
+        scale:
+          type: integer
+          description: |
+            The scaling factor to apply to the value to arrive at the currency's major unit. Providing a scale mitigates changes to the minor unit over time, for example due to inflation. For example, if `scale` is denoted by `s` and `value` is denoted by  `v` is the value, then one arrives at the major currency value by calculating `v / 10^s`.
+          example: 2
     UnitOfMeasure:
       type: object
       description: The unit of measure of the item.
@@ -8036,18 +8227,6 @@ components:
           format: double
           description: The ratio of the specified unit to the base unit of the group.
           example: 1.24412
-    PositiveAmount:
-      type: integer
-      format: int64
-      description: "The value of the amount in minor units of the currency according to the Sale.currency.scale. \n`value` can get large for some currencies and applications. \nUse Long type or a similar data type when parsing `value`."
-      example: 100
-      minimum: 0
-    TaxRate:
-      type: integer
-      format: int64
-      minimum: 0
-      description: The tax rate percentage in minor units (1/100000). For example 19000 = 19%.
-      example: 19000
     TaxLine:
       type: object
       required:
@@ -8067,40 +8246,36 @@ components:
           description: Tax name, e.g. "MwSt."
           maxLength: 255
         percentage:
-          $ref: '#/components/schemas/TaxRate'
+          type: integer
+          format: int64
+          minimum: 0
+          description: The tax rate percentage in minor units (1/100000). For example 19000 = 19%.
+          example: 19000
         net_amount:
           description: "Net amount before applying the tax. \nThe value of the amount in minor units of the currency according to the Sale.currency.scale.\n"
           allOf:
-            - $ref: '#/components/schemas/Amount'
+            - type: integer
+              format: int64
+              description: "The value of the amount in minor units of the currency according to the Sale.currency.scale. \n`value` can get large for some currencies and applications. \nUse Long type or a similar data type when parsing `value`."
+              example: 100
         gross_amount:
-          description: 'Gross amount after applying the tax.
-
+          description: |
+            Gross amount after applying the tax.
             The value of the amount in minor units of the currency according to the Sale.currency.scale.
-
-'
           allOf:
-            - $ref: '#/components/schemas/Amount'
+            - type: integer
+              format: int64
+              description: "The value of the amount in minor units of the currency according to the Sale.currency.scale. \n`value` can get large for some currencies and applications. \nUse Long type or a similar data type when parsing `value`."
+              example: 100
         tax_amount:
-          description: 'Amount of tax.
-
+          description: |
+            Amount of tax.
             The value of the amount in minor units of the currency according to the Sale.currency.scale.
-
-'
           allOf:
-            - $ref: '#/components/schemas/Amount'
-    DiscountLevel:
-      type: string
-      description: 'Specifies where discount was applied by user (either merchant or consumer):
-
-        - CART: Applied to the whole cart (calculated and distributed per sale item)
-
-        - ITEM: Applied to specific sale item
-
-
-        *Accepted values:* ["ITEM", "CART"].'
-      example: CART
-      minLength: 4
-      maxLength: 4
+            - type: integer
+              format: int64
+              description: "The value of the amount in minor units of the currency according to the Sale.currency.scale. \n`value` can get large for some currencies and applications. \nUse Long type or a similar data type when parsing `value`."
+              example: 100
     DiscountSourceAdHoc:
       type: object
       description: Discount created ad-hoc on device during checkout.
@@ -8156,13 +8331,10 @@ components:
     DiscountClass:
       type: string
       nullable: true
-      description: 'The method used to target items to discount.
-
+      description: |
+        The method used to target items to discount.
         Must be populated for ITEM level discounts, and must be null for CART level discounts (CART level targets all
-
         items, therefore none of these categories apply).
-
-'
       enum:
         - ITEM
         - CATEGORY
@@ -8270,13 +8442,10 @@ components:
           format: int64
           nullable: true
           minimum: 1
-          description: 'The number of points used for this loyalty discount.
-
+          description: |
+            The number of points used for this loyalty discount.
             Must be a positive integer if the scheme type is POINTS.
-
             Must not be populated if the scheme type is STAMPS.
-
-'
           example: 50
         name:
           type: string
@@ -8319,29 +8488,26 @@ components:
         - percentage.'
       properties:
         absolute:
-          description: 'The absolute value in minor units of the currency according to the Sale.currency.scale.
-
+          description: |
+            The absolute value in minor units of the currency according to the Sale.currency.scale.
             Example: 10000 = 10.00
-
-'
           allOf:
-            - $ref: '#/components/schemas/PositiveAmount'
+            - type: integer
+              format: int64
+              description: "The value of the amount in minor units of the currency according to the Sale.currency.scale. \n`value` can get large for some currencies and applications. \nUse Long type or a similar data type when parsing `value`."
+              example: 100
+              minimum: 0
         percentage:
           type: integer
           format: int64
           minimum: 0
-          description: 'The percentage in minor units (1/100000).
-
+          description: |
+            The percentage in minor units (1/100000).
 
             Examples:
-
             - 10% -> 0.10 (decimal) = 10000 (minor units)
-
             - 15.5% -> 0.155 (decimal) = 15500 (minor units)
-
             - 0.001% -> 0.00001 (decimal) = 1 (minor units)
-
-'
           example: 10000
     DiscountLine:
       type: object
@@ -8365,35 +8531,52 @@ components:
           example: Happy Hour
           maxLength: 250
         level:
-          $ref: '#/components/schemas/DiscountLevel'
+          type: string
+          description: 'Specifies where discount was applied by user (either merchant or consumer):
+
+            - CART: Applied to the whole cart (calculated and distributed per sale item)
+
+            - ITEM: Applied to specific sale item
+
+
+            *Accepted values:* ["ITEM", "CART"].'
+          example: CART
+          minLength: 4
+          maxLength: 4
         source:
           $ref: '#/components/schemas/DiscountSource'
         value:
           $ref: '#/components/schemas/DiscountValue'
         net_amount:
-          description: 'The net amount of the discount.
-
+          description: |
+            The net amount of the discount.
             The value of the amount in minor units of the currency according to the Sale.currency.scale.
-
-'
           allOf:
-            - $ref: '#/components/schemas/PositiveAmount'
+            - type: integer
+              format: int64
+              description: "The value of the amount in minor units of the currency according to the Sale.currency.scale. \n`value` can get large for some currencies and applications. \nUse Long type or a similar data type when parsing `value`."
+              example: 100
+              minimum: 0
         gross_amount:
-          description: 'The gross amount of the discount.
-
+          description: |
+            The gross amount of the discount.
             The value of the amount in minor units of the currency according to the Sale.currency.scale.
-
-'
           allOf:
-            - $ref: '#/components/schemas/PositiveAmount'
+            - type: integer
+              format: int64
+              description: "The value of the amount in minor units of the currency according to the Sale.currency.scale. \n`value` can get large for some currencies and applications. \nUse Long type or a similar data type when parsing `value`."
+              example: 100
+              minimum: 0
         tax_amount:
-          description: 'The tax amount of the discount.
-
+          description: |
+            The tax amount of the discount.
             The value of the amount in minor units of the currency according to the Sale.currency.scale.
-
-'
           allOf:
-            - $ref: '#/components/schemas/PositiveAmount'
+            - type: integer
+              format: int64
+              description: "The value of the amount in minor units of the currency according to the Sale.currency.scale. \n`value` can get large for some currencies and applications. \nUse Long type or a similar data type when parsing `value`."
+              example: 100
+              minimum: 0
     LineItemPriceV10:
       type: object
       description: 'Pricing for a single line, valid for every item type.
@@ -8417,23 +8600,31 @@ components:
         - taxes_final
       properties:
         unit_amount:
-          description: 'The price of a single unit. If the tax_mode is GROSS it includes taxes,
-
+          description: |
+            The price of a single unit. If the tax_mode is GROSS it includes taxes,
             otherwise no tax is included. It does NOT include discounts.
-
-'
           allOf:
-            - $ref: '#/components/schemas/PositiveAmount'
+            - type: integer
+              format: int64
+              description: "The value of the amount in minor units of the currency according to the Sale.currency.scale. \n`value` can get large for some currencies and applications. \nUse Long type or a similar data type when parsing `value`."
+              example: 100
+              minimum: 0
           example: 300
         total_net_amount:
           description: The net amount (including modifiers if applied). It does NOT include discounts.
           allOf:
-            - $ref: '#/components/schemas/Amount'
+            - type: integer
+              format: int64
+              description: "The value of the amount in minor units of the currency according to the Sale.currency.scale. \n`value` can get large for some currencies and applications. \nUse Long type or a similar data type when parsing `value`."
+              example: 100
           example: 252
         total_gross_amount:
           description: The gross amount (including modifiers if applied). It does NOT include discounts.
           allOf:
-            - $ref: '#/components/schemas/Amount'
+            - type: integer
+              format: int64
+              description: "The value of the amount in minor units of the currency according to the Sale.currency.scale. \n`value` can get large for some currencies and applications. \nUse Long type or a similar data type when parsing `value`."
+              example: 100
           example: 300
         taxes:
           type: array
@@ -8450,23 +8641,27 @@ components:
         discounts:
           type: array
           maxItems: 1000
-          description: 'Discounts applied. Discount amounts do not affect `total_net_amount` /
-
+          description: |
+            Discounts applied. Discount amounts do not affect `total_net_amount` /
             `total_gross_amount`; they are reflected in the `*_final` amounts.
-
-'
           items:
             $ref: '#/components/schemas/DiscountLine'
           example: []
         total_net_amount_final:
           description: The final net amount including discounts and modifiers. Equals `total_net_amount` if no discounts apply.
           allOf:
-            - $ref: '#/components/schemas/Amount'
+            - type: integer
+              format: int64
+              description: "The value of the amount in minor units of the currency according to the Sale.currency.scale. \n`value` can get large for some currencies and applications. \nUse Long type or a similar data type when parsing `value`."
+              example: 100
           example: 210
         total_gross_amount_final:
           description: The final gross amount including discounts, modifiers and taxes. Equals `total_gross_amount` if no discounts apply.
           allOf:
-            - $ref: '#/components/schemas/Amount'
+            - type: integer
+              format: int64
+              description: "The value of the amount in minor units of the currency according to the Sale.currency.scale. \n`value` can get large for some currencies and applications. \nUse Long type or a similar data type when parsing `value`."
+              example: 100
           example: 250
         taxes_final:
           type: array
@@ -8506,23 +8701,30 @@ components:
         - total_gross_amount
       properties:
         unit_amount:
-          description: 'The price of a single unit.
-
+          description: |
+            The price of a single unit.
             If the tax_mode is GROSS, it includes taxes, otherwise no tax included.
-
-            It doesn''t include discounts.
-
-'
+            It doesn't include discounts.
           allOf:
-            - $ref: '#/components/schemas/PositiveAmount'
+            - type: integer
+              format: int64
+              description: "The value of the amount in minor units of the currency according to the Sale.currency.scale. \n`value` can get large for some currencies and applications. \nUse Long type or a similar data type when parsing `value`."
+              example: 100
+              minimum: 0
         total_net_amount:
           description: The net amount (including modifiers if applied). It does NOT include discounts.
           allOf:
-            - $ref: '#/components/schemas/Amount'
+            - type: integer
+              format: int64
+              description: "The value of the amount in minor units of the currency according to the Sale.currency.scale. \n`value` can get large for some currencies and applications. \nUse Long type or a similar data type when parsing `value`."
+              example: 100
         total_gross_amount:
           description: The gross amount (including modifiers if applied). It does NOT include discounts.
           allOf:
-            - $ref: '#/components/schemas/Amount'
+            - type: integer
+              format: int64
+              description: "The value of the amount in minor units of the currency according to the Sale.currency.scale. \n`value` can get large for some currencies and applications. \nUse Long type or a similar data type when parsing `value`."
+              example: 100
     PositivePriceAmounts:
       description: Price information for items with positive amounts only.
       allOf:
@@ -8530,9 +8732,17 @@ components:
         - type: object
           properties:
             total_net_amount:
-              $ref: '#/components/schemas/PositiveAmount'
+              type: integer
+              format: int64
+              description: "The value of the amount in minor units of the currency according to the Sale.currency.scale. \n`value` can get large for some currencies and applications. \nUse Long type or a similar data type when parsing `value`."
+              example: 100
+              minimum: 0
             total_gross_amount:
-              $ref: '#/components/schemas/PositiveAmount'
+              type: integer
+              format: int64
+              description: "The value of the amount in minor units of the currency according to the Sale.currency.scale. \n`value` can get large for some currencies and applications. \nUse Long type or a similar data type when parsing `value`."
+              example: 100
+              minimum: 0
     PositiveTaxLine:
       description: "Tax line with positive amounts only.\nInformation about tax together with amounts before and after its application such as:\n - net amount: taxable net amount, scoped by this tax\n - gross amount: amount after applying the tax\nThe numbers here can't be negative."
       allOf:
@@ -8542,23 +8752,31 @@ components:
             net_amount:
               description: "Net amount before applying the tax. \nThe value of the amount in minor units of the currency according to the Sale.currency.scale.\n"
               allOf:
-                - $ref: '#/components/schemas/PositiveAmount'
+                - type: integer
+                  format: int64
+                  description: "The value of the amount in minor units of the currency according to the Sale.currency.scale. \n`value` can get large for some currencies and applications. \nUse Long type or a similar data type when parsing `value`."
+                  example: 100
+                  minimum: 0
             gross_amount:
-              description: 'Gross amount after applying the tax.
-
+              description: |
+                Gross amount after applying the tax.
                 The value of the amount in minor units of the currency according to the Sale.currency.scale.
-
-'
               allOf:
-                - $ref: '#/components/schemas/PositiveAmount'
+                - type: integer
+                  format: int64
+                  description: "The value of the amount in minor units of the currency according to the Sale.currency.scale. \n`value` can get large for some currencies and applications. \nUse Long type or a similar data type when parsing `value`."
+                  example: 100
+                  minimum: 0
             tax_amount:
-              description: 'Amount of tax.
-
+              description: |
+                Amount of tax.
                 The value of the amount in minor units of the currency according to the Sale.currency.scale.
-
-'
               allOf:
-                - $ref: '#/components/schemas/PositiveAmount'
+                - type: integer
+                  format: int64
+                  description: "The value of the amount in minor units of the currency according to the Sale.currency.scale. \n`value` can get large for some currencies and applications. \nUse Long type or a similar data type when parsing `value`."
+                  example: 100
+                  minimum: 0
     PositivePriceWithTaxes:
       description: Price information with positive amounts and detailed tax breakdown.
       allOf:
@@ -8591,20 +8809,26 @@ components:
         total_net_amount_final:
           description: The final net amount includes discounts and modifiers. It does NOT include taxes. If no discounts are applied, it should be equal to total_net_amount.
           allOf:
-            - $ref: '#/components/schemas/PositiveAmount'
+            - type: integer
+              format: int64
+              description: "The value of the amount in minor units of the currency according to the Sale.currency.scale. \n`value` can get large for some currencies and applications. \nUse Long type or a similar data type when parsing `value`."
+              example: 100
+              minimum: 0
         total_gross_amount_final:
           description: The final gross amount includes discounts, modifiers, and taxes. If no discounts are applied, it should be equal to total_gross_amount.
           allOf:
-            - $ref: '#/components/schemas/PositiveAmount'
+            - type: integer
+              format: int64
+              description: "The value of the amount in minor units of the currency according to the Sale.currency.scale. \n`value` can get large for some currencies and applications. \nUse Long type or a similar data type when parsing `value`."
+              example: 100
+              minimum: 0
         taxes_final:
           type: array
           minItems: 1
           maxItems: 1000
-          description: 'Taxes applied on top of `total_net_amount_final` amount resulting in `total_gross_amount_final` amount.
-
+          description: |
+            Taxes applied on top of `total_net_amount_final` amount resulting in `total_gross_amount_final` amount.
             If no discounts are applied, it should be equal to `taxes`.
-
-'
           items:
             $ref: '#/components/schemas/PositiveTaxLine'
     ModifierSet:
@@ -8653,7 +8877,11 @@ components:
             set:
               $ref: '#/components/schemas/ModifierSet'
             quantity:
-              $ref: '#/components/schemas/Quantity'
+              type: number
+              format: double
+              description: The numerical value representing the quantity in the specified unit.
+              minimum: 0
+              example: 2.15332
     ItemReferencesV10:
       type: object
       description: 'Outward identifiers and links for a line, kept in one place rather than scattered
@@ -8757,14 +8985,41 @@ components:
           maxLength: 100
           example: line-1
         type:
-          $ref: '#/components/schemas/ItemTypeV10'
+          type: string
+          description: 'Classifies a sale line. Not a schema subclass.
+
+
+            Known values: `CATALOG`, `DEPOSIT`, `GIFT_CARD`, `CUSTOM`, `FEE`.
+
+
+            `FEE` lines represent merchant-charged fees on the sale (e.g. shipping, service
+
+            charge, surcharge, cancellation). They participate in sale totals like any other
+
+            line; type-specific data is carried in `features` (see `Feature` for the
+
+            conventional feature keys).
+
+
+            This is intentionally an open string, NOT a closed enum: new values are added
+
+            over time as pure data and consumers MUST tolerate unknown values, rendering the
+
+            line from the generic envelope (name, quantity, price, taxes) and reading any
+
+            extra information from `features`.'
+          example: CATALOG
         name:
           type: string
           description: Display name of the line.
           maxLength: 250
           example: Cappuccino
         quantity:
-          $ref: '#/components/schemas/Quantity'
+          type: number
+          format: double
+          description: The numerical value representing the quantity in the specified unit.
+          minimum: 0
+          example: 2.15332
         unit_of_measure:
           $ref: '#/components/schemas/UnitOfMeasure'
         service_type:
@@ -8783,11 +9038,9 @@ components:
           $ref: '#/components/schemas/LineItemPriceV10'
         categories:
           type: array
-          description: 'Categories the line belongs to. A shared optional structure available to any
-
+          description: |
+            Categories the line belongs to. A shared optional structure available to any
             line; not a per-type field.
-
-'
           maxItems: 1000
           items:
             $ref: '#/components/schemas/CategoryV10'
@@ -8796,11 +9049,9 @@ components:
               name: Hot Drinks
         modifiers:
           type: array
-          description: 'Modifiers customise a line (e.g. "oat milk" on a cappuccino). A shared
-
+          description: |
+            Modifiers customise a line (e.g. "oat milk" on a cappuccino). A shared
             optional structure available to any line; not a per-type field.
-
-'
           maxItems: 50
           items:
             $ref: '#/components/schemas/ModifierItem'
@@ -8809,11 +9060,9 @@ components:
           $ref: '#/components/schemas/ItemReferencesV10'
         features:
           type: array
-          description: 'Named, typed, type-specific data. New item types add their data here as
-
+          description: |
+            Named, typed, type-specific data. New item types add their data here as
             features instead of new schema variants. See `Feature` for per-type examples.
-
-'
           maxItems: 100
           items:
             $ref: '#/components/schemas/FeatureV10'
@@ -8843,7 +9092,10 @@ components:
 
             In minor units according to `Sale.currency.scale`.'
           allOf:
-            - $ref: '#/components/schemas/Amount'
+            - type: integer
+              format: int64
+              description: "The value of the amount in minor units of the currency according to the Sale.currency.scale. \n`value` can get large for some currencies and applications. \nUse Long type or a similar data type when parsing `value`."
+              example: 100
           example: 777
         gross_amount:
           description: 'Final gross total for the sale: sum of `items[].price.total_gross_amount_final`
@@ -8854,7 +9106,10 @@ components:
 
             Payment amounts include tips and can therefore differ from this gross total.'
           allOf:
-            - $ref: '#/components/schemas/Amount'
+            - type: integer
+              format: int64
+              description: "The value of the amount in minor units of the currency according to the Sale.currency.scale. \n`value` can get large for some currencies and applications. \nUse Long type or a similar data type when parsing `value`."
+              example: 100
           example: 925
         cart_discounts:
           type: array
@@ -8881,52 +9136,41 @@ components:
               tax_amount: 148
     TaxMode:
       type: string
-      description: 'The tax mode used by merchant for displaying prices and calculating taxes:
-
-        - NO_TAX: The prices don''t contain any taxes, merchant don''t report taxes
-
+      description: |
+        The tax mode used by merchant for displaying prices and calculating taxes:
+        - NO_TAX: The prices don't contain any taxes, merchant don't report taxes
         - GROSS: The prices used by merchant already include taxes (common in EU), the tax is calculated from the gross price
-
-        - NET: The prices used by merchant don''t include taxes (common in US), the tax is calculated from the net price
-
+        - NET: The prices used by merchant don't include taxes (common in US), the tax is calculated from the net price
         Since tax values can be different for the same net price depending if the tax
-
         was calculated from gross or net price, this info is necessary to be able to reconcile tax calculations.
-
-'
       enum:
         - NO_TAX
         - GROSS
         - NET
       example: NO_TAX
-    SalesChannel:
-      type: string
-      description: 'The sale_channel is field that indicates the channel through
-
-        which the sale was made. For example, if the sale was made in the merchant app,
-
-        the sale_channel could be POS. If the sale was made on a kiosk, the
-
-        sale_channel is KIOSK.
-
-
-        *Accepted values:* ["POS", "KIOSK", "ONLINE_STORE", "SOLO", "ORDER_AND_PAY", "INVOICE", "BOOKINGS", "ORDER_AGGREGATOR", "SUBSCRIPTIONS", "UNKNOWN"].'
-      example: POS
     SaleSource:
       type: object
       description: Information about the source of the sale.
       properties:
         channel:
-          $ref: '#/components/schemas/SalesChannel'
+          type: string
+          description: 'The sale_channel is field that indicates the channel through
+
+            which the sale was made. For example, if the sale was made in the merchant app,
+
+            the sale_channel could be POS. If the sale was made on a kiosk, the
+
+            sale_channel is KIOSK.
+
+
+            *Accepted values:* ["POS", "KIOSK", "ONLINE_STORE", "SOLO", "ORDER_AND_PAY", "INVOICE", "BOOKINGS", "ORDER_AGGREGATOR", "SUBSCRIPTIONS", "UNKNOWN"].'
+          example: POS
         sub_channel:
           type: string
-          description: 'The sub_channel is an optional field that can be used to provide more
-
+          description: |
+            The sub_channel is an optional field that can be used to provide more
             information about the sale_channel. For example, if the sale_channel is
-
             ONLINE_PAYMENTS, the sub_channel could be "WIX" or "QR_CODE" or "WOOCOMMERCE".
-
-'
           example: QR_CODE
           maxLength: 50
         external_id:
@@ -8936,38 +9180,14 @@ components:
           maxLength: 250
         external_sub_channel_id:
           type: string
-          description: 'An external reference ID for the sub-channel.
-
+          description: |
+            An external reference ID for the sub-channel.
             For example, when channel is BOOKINGS and sub_channel is POS,
-
             this can hold the OMS order ID while external_id holds the appointment ID.
-
-'
           example: 9736e947-6f1f-487f-846a-c5954fb06a5a
           maxLength: 250
       required:
         - channel
-    PublicPaymentMethod:
-      type: string
-      description: 'Payment method on public sales read API v1.0.
-
-        Digital wallets are first-class methods. Gift card payments use `gift_card`, not `apm`.
-
-        Input is case-insensitive; the canonical form is lowercase snake_case.
-
-        **VALUES**: [card, cash, apm, external, apple_pay, google_pay, whatsapp_pay, gift_card].'
-      example: card
-      maxLength: 20
-    PublicApmType:
-      type: string
-      description: 'Alternative payment method type when `method` is `apm`.
-
-        Gift card is not an APM on this API.
-
-        Input is case-insensitive; the canonical form is lowercase snake_case.
-
-        **VALUES**: [qr_code_pix, sepa_dd, paypal, sumup_pay, twint, iris].'
-      maxLength: 20
     PublicCardV10:
       type: object
       description: Card brand, credit/debit processing type, and last four digits.
@@ -8977,7 +9197,16 @@ components:
         - last_4_digits
       properties:
         brand:
-          $ref: '#/components/schemas/Brand'
+          type: string
+          description: 'The brand of the card.
+
+            Input is case-insensitive; the canonical form is lowercase snake_case.
+
+            **VALUES**: [amex, cup, diners, discover, elo, elv, hipercard, jcb, maestro, mastercard, visa, visa_electron,
+
+            visa_vpay, vr, eftpos, conecs, swile, girocard, interac, sumup, bancomat].'
+          maxLength: 20
+          example: visa
         type:
           type: string
           description: 'Credit or debit processing choice, not brand or funding.
@@ -9031,34 +9260,42 @@ components:
         - processed_at
       properties:
         method:
-          $ref: '#/components/schemas/PublicPaymentMethod'
-        reference:
-          $ref: '#/components/schemas/Reference'
-        type:
           type: string
-          default: purchase
-          description: 'Payment operation type.
+          description: 'Payment method on public sales read API v1.0.
 
-            This is distinct from the payment instrument in `method`.
+            Digital wallets are first-class methods. Gift card payments use `gift_card`, not `apm`.
 
             Input is case-insensitive; the canonical form is lowercase snake_case.
 
+            **VALUES**: [card, cash, apm, external, apple_pay, google_pay, whatsapp_pay, gift_card].'
+          example: card
+          maxLength: 20
+        reference:
+          type: string
+          description: The reference to the actual payment used for this sale, e.g. the sumup transaction code.
+          example: TERTYFQ4G3
+          maxLength: 50
+        type:
+          type: string
+          default: purchase
+          description: |
+            Payment operation type.
+            This is distinct from the payment instrument in `method`.
+            Input is case-insensitive; the canonical form is lowercase snake_case.
             **VALUES**: [purchase, unreferenced_refund]
-
             Defaults to "purchase" if unspecified. Either a normal purchase or an unreferenced refund for negative
-
             sales like deposit returns.
-
-'
           example: purchase
         amount:
-          description: 'The amount of the payment including tips.
-
+          description: |
+            The amount of the payment including tips.
             The value of the amount in minor units of `Sale.currency`.
-
-'
           allOf:
-            - $ref: '#/components/schemas/PositiveAmount'
+            - type: integer
+              format: int64
+              description: "The value of the amount in minor units of the currency according to the Sale.currency.scale. \n`value` can get large for some currencies and applications. \nUse Long type or a similar data type when parsing `value`."
+              example: 100
+              minimum: 0
           example: 975
         status:
           type: string
@@ -9069,7 +9306,15 @@ components:
             - CANCELED
           example: SUCCESSFUL
         apm_type:
-          $ref: '#/components/schemas/PublicApmType'
+          type: string
+          description: 'Alternative payment method type when `method` is `apm`.
+
+            Gift card is not an APM on this API.
+
+            Input is case-insensitive; the canonical form is lowercase snake_case.
+
+            **VALUES**: [qr_code_pix, sepa_dd, paypal, sumup_pay, twint, iris].'
+          maxLength: 20
         card:
           $ref: '#/components/schemas/PublicCardV10'
         gift_card:
@@ -9127,7 +9372,7 @@ components:
             identity is unknown.'
           example: d6f51684-519b-454c-bdb3-deeb05f52b92
         currency:
-          $ref: '#/components/schemas/Currency'
+          $ref: '#/components/schemas/SalesActivityCurrency'
         name:
           type: string
           maxLength: 160
@@ -9142,11 +9387,9 @@ components:
           type: array
           minItems: 1
           maxItems: 1000
-          description: 'The lines sold in this sale, in the order they were added to the cart.
-
+          description: |
+            The lines sold in this sale, in the order they were added to the cart.
             Includes merchant fees (`type: "FEE"`) when present; fee details are in `features`.
-
-'
           items:
             $ref: '#/components/schemas/SaleLineItemV10'
         price:
@@ -9158,9 +9401,8 @@ components:
         payments:
           type: array
           maxItems: 1000
-          description: 'Payments on this sale, in the order they were recorded.
-
-'
+          description: |
+            Payments on this sale, in the order they were recorded.
           items:
             $ref: '#/components/schemas/PublicPaymentV10'
           example:
@@ -9207,12 +9449,10 @@ components:
           example: 66bcbtzelrubzeuzruzgu76678trncH
     ProblemV10:
       type: object
-      description: 'A RFC 9457 problem details object.
-
+      description: |
+        A RFC 9457 problem details object.
 
         Additional properties specific to the problem type may be present.
-
-'
       required:
         - type
       additionalProperties: true
@@ -9365,7 +9605,7 @@ components:
           allOf:
             - $ref: '#/components/schemas/TaxMode'
         currency:
-          $ref: '#/components/schemas/Currency'
+          $ref: '#/components/schemas/SalesActivityCurrency'
         total_amount:
           description: 'Final sale gross total after discounts and taxes, excluding tips.
 
@@ -9373,7 +9613,10 @@ components:
 
             Payment amounts include tips and can therefore differ from this total.'
           allOf:
-            - $ref: '#/components/schemas/Amount'
+            - type: integer
+              format: int64
+              description: "The value of the amount in minor units of the currency according to the Sale.currency.scale. \n`value` can get large for some currencies and applications. \nUse Long type or a similar data type when parsing `value`."
+              example: 100
           example: 1250
         created_at:
           type: string
@@ -10334,401 +10577,7 @@ components:
               summary: Partial refund
               value:
                 amount: 24.42
-  responses:
-    Checkout:
-      description: Returns the created checkout resource.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Checkout'
-          examples:
-            Checkout:
-              description: Standard response body for a successfully created checkout
-              value:
-                checkout_reference: 8ea25ec3-3293-40e9-a165-6d7f3b3073c5
-                amount: 10.1
-                currency: EUR
-                merchant_code: MH4H92C7
-                merchant_country: DE
-                description: My Checkout
-                return_url: http://example.com
-                id: 88fcf8de-304d-4820-8f1c-ec880290eb92
-                status: PENDING
-                date: '2020-02-29T10:56:56+00:00'
-                valid_until: '2030-12-31T23:59:59Z'
-                customer_id: 831ff8d4cd5958ab5670
-                mandate:
-                  type: recurrent
-                  status: active
-                  merchant_code: MH4H92C7
-                transactions:
-                  - id: 410fc44a-5956-44e1-b5cc-19c6f8d727a4
-                    transaction_code: TEENSK4W2K
-                    amount: 10.1
-                    currency: EUR
-                    timestamp: '2020-02-29T10:56:56.876Z'
-                    status: SUCCESSFUL
-                    payment_type: ECOM
-                    installments_count: 1
-                    merchant_code: MH4H92C7
-                    vat_amount: 6
-                    tip_amount: 3
-                    entry_mode: CUSTOMER_ENTRY
-                    auth_code: '012345'
-            Checkout3DS:
-              description: Response body for a successfully created 3DS checkout
-              value:
-                checkout_reference: 8ea25ec3-3293-40e9-a165-6d7f3b3073c5
-                amount: 10.1
-                currency: EUR
-                description: My Checkout
-                return_url: http://example.com
-                id: 88fcf8de-304d-4820-8f1c-ec880290eb92
-                status: PENDING
-                date: '2020-02-29T10:56:56+00:00'
-                valid_until: '2030-12-31T23:59:59Z'
-                customer_id: 831ff8d4cd5958ab5670
-                redirect_url: https://mysite.com/completed_purchase
-                transactions:
-                  - id: 410fc44a-5956-44e1-b5cc-19c6f8d727a4
-                    transaction_code: TEENSK4W2K
-                    amount: 10.1
-                    currency: EUR
-                    timestamp: '2020-02-29T10:56:56.876Z'
-                    status: SUCCESSFUL
-                    payment_type: ECOM
-                    installments_count: 1
-                    merchant_code: MH4H92C7
-                    vat_amount: 6
-                    tip_amount: 3
-                    entry_mode: CUSTOMER_ENTRY
-                    auth_code: '012345'
-            CheckoutAPM:
-              description: Response body for APMs, including Blik, iDeal, ...
-              value:
-                checkout_reference: 8ea25ec3-3293-40e9-a165-6d7f3b3073c5
-                amount: 10.1
-                currency: EUR
-                merchant_code: MH4H92C7
-                description: My Checkout
-                return_url: http://example.com
-                id: 88fcf8de-304d-4820-8f1c-ec880290eb92
-                status: PENDING
-                date: '2021-06-29T11:08:36.000+00:00'
-                merchant_name: My company
-                merchant_country: DE
-                redirect_url: https://sumup.com
-                purpose: CHECKOUT
-                transactions:
-                  - id: 410fc44a-5956-44e1-b5cc-19c6f8d727a4
-                    transaction_code: TEENSK4W2K
-                    amount: 10.1
-                    currency: EUR
-                    timestamp: '2020-02-29T10:56:56.876Z'
-                    status: SUCCESSFUL
-                    payment_type: ECOM
-                    installments_count: 1
-                    merchant_code: MH4H92C7
-                    vat_amount: 6
-                    tip_amount: 3
-                    entry_mode: CUSTOMER_ENTRY
-                    auth_code: '012345'
-            HostedCheckout:
-              description: Response body for a checkout with a SumUp-hosted payment page
-              value:
-                checkout_reference: b50pr914-6k0e-3091-a592-890010285b3d
-                amount: 12
-                currency: EUR
-                merchant_code: MCXXXXXX
-                merchant_country: DE
-                merchant_name: Sample Shop
-                description: A sample checkout
-                id: 64553e20-3f0e-49e4-8af3-fd0eca86ce91
-                status: PENDING
-                date: '2000-01-01T12:49:24.899+00:00'
-                purpose: CHECKOUT
-                hosted_checkout:
-                  enabled: true
-                hosted_checkout_url: https://checkout.sumup.com/pay/8f9316a3-cda9-42a9-9771-54d534315676
-                transactions: []
-            Tokenization:
-              summary: Checkout for saving a card
-              value:
-                checkout_reference: save-card-123
-                amount: 1
-                currency: EUR
-                merchant_code: MCXXXXXX
-                description: Save a card for future payments
-                customer_id: 831ff8d4cd5958ab5670
-                purpose: SETUP_RECURRING_PAYMENT
-                id: 7164c99b-13cb-42a1-8ba1-3c2c46a29de7
-                status: PENDING
-                date: '2026-10-30T12:00:00+00:00'
-                transactions: []
-    CheckoutUpdate:
-      description: Returns the updated checkout resource.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Checkout'
-          example:
-            checkout_reference: f00a8f74-b05d-4605-bd73-2a901bae5802
-            amount: 12.5
-            currency: EUR
-            merchant_code: MH4H92C7
-            merchant_country: DE
-            description: Updated purchase
-            id: 88fcf8de-304d-4820-8f1c-ec880290eb92
-            status: PENDING
-            date: '2020-02-29T10:56:56+00:00'
-            valid_until: '2030-12-31T23:59:59Z'
-            customer_id: 831ff8d4cd5958ab5670
-            transactions: []
-    CheckoutList:
-      description: Returns a list of checkout resources.
-      content:
-        application/json:
-          schema:
-            type: array
-            items:
-              $ref: '#/components/schemas/CheckoutSuccess'
-          example:
-            - checkout_reference: f00a8f74-b05d-4605-bd73-2a901bae5802
-              amount: 10.1
-              currency: EUR
-              merchant_code: MH4H92C7
-              description: Purchase
-              id: 4e425463-3e1b-431d-83fa-1e51c2925e99
-              status: PENDING
-              date: '2020-02-29T10:56:56+00:00'
-    CheckoutRetrieve:
-      description: Returns the requested checkout resource.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CheckoutSuccess'
-          examples:
-            Checkout:
-              value:
-                checkout_reference: f00a8f74-b05d-4605-bd73-2a901bae5802
-                amount: 10.1
-                currency: EUR
-                merchant_code: MH4H92C7
-                description: Purchase
-                id: 4e425463-3e1b-431d-83fa-1e51c2925e99
-                status: PENDING
-                date: '2020-02-29T10:56:56+00:00'
-                transaction_code: TEENSK4W2K
-                transaction_id: 410fc44a-5956-44e1-b5cc-19c6f8d727a4
-            PaidCheckout:
-              summary: Paid checkout with a transaction to refund
-              value:
-                checkout_reference: f00a8f74-b05d-4605-bd73-2a901bae5802
-                amount: 42.42
-                currency: EUR
-                merchant_code: MH4H92C7
-                description: Purchase
-                id: 4e425463-3e1b-431d-83fa-1e51c2925e99
-                status: PAID
-                date: '2020-02-29T10:56:56+00:00'
-                transaction_code: TEENSK4W2K
-                transaction_id: 410fc44a-5956-44e1-b5cc-19c6f8d727a4
-                transactions:
-                  - id: 410fc44a-5956-44e1-b5cc-19c6f8d727a4
-                    transaction_code: TEENSK4W2K
-                    amount: 42.42
-                    currency: EUR
-                    status: SUCCESSFUL
-                    timestamp: '2026-10-30T12:00:00+00:00'
-            TokenizedCheckout:
-              summary: Checkout with a saved card
-              value:
-                checkout_reference: save-card-123
-                amount: 1
-                currency: EUR
-                merchant_code: MCXXXXXX
-                description: Save a card for future payments
-                customer_id: 831ff8d4cd5958ab5670
-                purpose: SETUP_RECURRING_PAYMENT
-                id: 7164c99b-13cb-42a1-8ba1-3c2c46a29de7
-                status: PAID
-                date: '2026-10-30T12:00:00+00:00'
-                transactions: []
-                payment_instrument:
-                  token: 6878cb7f-6515-47bf-bdd9-1408d270fdce
-    CheckoutProcessAccepted:
-      description: Returns the next required action for asynchronous checkout processing.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CheckoutAccepted'
-    Customer:
-      description: Returns the customer resource.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Customer'
-    PaymentInstrumentList:
-      description: Returns the list of saved payment instruments for the customer.
-      content:
-        application/json:
-          schema:
-            type: array
-            items:
-              $ref: '#/components/schemas/PaymentInstrumentResponse'
-    Transaction:
-      description: Returns the requested transaction resource.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/TransactionFull'
-          example:
-            id: 410fc44a-5956-44e1-b5cc-19c6f8d727a4
-            transaction_code: TEENSK4W2K
-            amount: 10.1
-            currency: EUR
-            timestamp: '2020-02-29T10:56:56.876Z'
-            status: SUCCESSFUL
-            payment_type: ECOM
-            installments_count: 1
-            merchant_code: MH4H92C7
-            vat_amount: 6
-            tip_amount: 3
-            entry_mode: CUSTOMER_ENTRY
-            auth_code: '053201'
-    NoBodyResponse:
-      description: Returns an empty response body when the operation succeeds.
-    ErrorNotAuthorized:
-      description: The request is not authorized.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Problem'
-          examples:
-            Problem_Details:
-              description: Unauthorized response returned by API gateway.
-              value:
-                detail: Unauthorized.
-                status: 401
-                title: Unauthorized
-                trace_id: 3c77294349d3b5647ea2d990f0d8f017
-                type: https://developer.sumup.com/problem/unauthorized
-    ErrorForbidden:
-      description: The request is authenticated but not permitted for this operation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorForbidden'
-          examples:
-            Forbidden:
-              description: You do not have required scopes for making this request.
-              value:
-                error_message: request_not_allowed
-                error_code: FORBIDDEN
-                status_code: '403'
-    ErrorNotFound:
-      description: The requested resource does not exist.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            Not_Found:
-              description: The identified resource is not found on the server.
-              value:
-                error_code: NOT_FOUND
-                message: Resource not found
-    ErrorConflict:
-      description: The request conflicts with the current state of the resource.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            Checkout_Processed:
-              description: The identified checkout resource is already processed.
-              value:
-                error_code: CHECKOUT_PROCESSED
-                message: Checkout is already processed
-    BadRequest:
-      description: The request is invalid.
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/Problem'
-          example:
-            type: https://developer.sumup.com/problem/bad-request
-            title: Bad Request
-            status: 400
-            detail: Request validation failed.
-    Unauthorized:
-      description: Authentication failed or missing required scope.
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/Problem'
-          example:
-            type: https://developer.sumup.com/problem/unauthorized
-            title: Unauthorized
-            status: 401
-            detail: Authentication credentials are missing or invalid.
-    NotFound:
-      description: The requested Reader resource does not exist.
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/Problem'
-          example:
-            type: https://developer.sumup.com/problem/not-found
-            title: Requested resource couldn't be found.
-            status: 404
-            detail: The requested resource doesn't exist or does not belong to you.
-    ListMemberships:
-      description: Returns a list of Membership objects.
-      content:
-        application/json:
-          schema:
-            type: object
-            required:
-              - total_count
-              - items
-            properties:
-              items:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Membership'
-              total_count:
-                type: integer
-                example: 3
-    ListMembers:
-      description: Returns a list of Member objects.
-      content:
-        application/json:
-          schema:
-            type: object
-            required:
-              - items
-            properties:
-              items:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Member'
-              total_count:
-                type: integer
-                example: 3
-    ListRoles:
-      description: Returns a list of Role objects.
-      content:
-        application/json:
-          schema:
-            type: object
-            required:
-              - items
-            properties:
-              items:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Role'
+  responses: {}
   parameters:
     CheckoutReference:
       name: checkout_reference
