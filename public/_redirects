@@ -260,6 +260,8 @@
 /api/receipts/ /api/tags/receipts/ 301
 /api/readers /api/tags/readers/ 301
 /api/readers/ /api/tags/readers/ 301
+/api/readers/delete-reader /api/readers/delete/ 301
+/api/readers/delete-reader/ /api/readers/delete/ 301
 /api/members /api/tags/members/ 301
 /api/members/ /api/tags/members/ 301
 /api/memberships /api/tags/memberships/ 301
