@@ -2,18 +2,12 @@ import { mount } from "@cloudflare/nimbus-docs/client";
 import type { File as PierreFile } from "@pierre/diffs";
 import { applyNotations, readNotations } from "./pierre-notations";
 import shadowStyles from "./pierre-code.css?raw";
+import { codeThemes } from "../../lib/codeThemes";
 
 // Load the renderer and themes once, only when a snippet approaches the viewport.
 let renderer: ReturnType<typeof loadRenderer> | undefined;
-async function loadRenderer() {
-  const [diffs, { codeThemes }] = await Promise.all([
-    import("@pierre/diffs"),
-    import("../../lib/codeThemes"),
-  ]);
-  for (const theme of Object.values(codeThemes)) {
-    diffs.registerCustomTheme(theme.name, async () => theme);
-  }
-  return diffs;
+function loadRenderer() {
+  return import("@pierre/diffs");
 }
 
 export function initPierreCode(pre: HTMLElement): () => void {
@@ -57,7 +51,7 @@ export function initPierreCode(pre: HTMLElement): () => void {
       // Nimbus keeps ownership of the frame, title, and clipboard source.
       pre.after(host);
       instance = new File({
-        theme: { light: "pierre-light-vibrant", dark: "pierre-dark-vibrant" },
+        theme: codeThemes,
         themeType: themeType(),
         disableFileHeader: true,
         enableLineSelection: true,

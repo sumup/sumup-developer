@@ -1,6 +1,7 @@
 // @vitest-environment jsdom
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import { initPierreCode } from "./pierre-code.client";
+import { codeThemes } from "../../lib/codeThemes";
 
 let intersect: IntersectionObserverCallback;
 const cleanups: (() => void)[] = [];
@@ -75,11 +76,22 @@ it("renders visible snippets with Pierre and preserves notations and clipboard s
     "const hello = 1;\nconsole.log(hello);",
   );
   expect(root.querySelector("[data-code]")).not.toBeNull();
+  // The client renderer uses the same configured pair as static API samples.
+  expect(codeThemes).toEqual({ light: "min-light", dark: "min-dark" });
+  await vi.waitFor(() =>
+    expect(root.querySelector("style[data-theme-css]")?.textContent).toContain(
+      "color-scheme: light",
+    ),
+  );
+  const lightTheme = root.querySelector("style[data-theme-css]")!.textContent;
   document.documentElement.dataset.mode = "dark";
   await vi.waitFor(() =>
     expect(root.querySelector("style[data-theme-css]")?.textContent).toContain(
       "color-scheme: dark",
     ),
+  );
+  expect(root.querySelector("style[data-theme-css]")!.textContent).not.toBe(
+    lightTheme,
   );
   cleanups.pop()!();
   expect(frame.querySelector("diffs-container")).toBeNull();
