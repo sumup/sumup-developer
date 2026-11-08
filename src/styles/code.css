@@ -240,3 +240,32 @@ pre.astro-code[data-nb-wrap] code {
     display: none;
   }
 }
+
+/* Retain the server-rendered source for no-JS, search, and clipboard helpers. */
+.pierre-ready > pre.astro-code {
+  display: none;
+}
+
+.portal-code {
+  display: block;
+  max-height: min(68vh, 62.5rem);
+  overflow: auto;
+}
+
+.code-samples .sample-body .portal-code {
+  max-height: 28rem;
+  --portal-code-line-height: 1.25rem;
+}
+
+.code-samples .response-body .portal-code,
+.code-samples.compact .request-body .portal-code {
+  max-height: 20rem;
+}
+
+.code-samples.compact .response-body .portal-code {
+  max-height: 12rem;
+}
+
+.code-samples.compact .request-body .portal-code {
+  min-height: 12rem;
+}

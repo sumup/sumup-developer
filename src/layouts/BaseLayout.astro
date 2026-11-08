@@ -124,6 +124,8 @@ const llmsUrl = Astro.site ? new URL(llmsPath, Astro.site).href : llmsPath;
     <script>
       import { codeCopy, headingAnchors } from "@cloudflare/nimbus-docs/client";
 
+      import "../components/Code/pierre-code.client";
+
       headingAnchors();
       codeCopy();
     </script>

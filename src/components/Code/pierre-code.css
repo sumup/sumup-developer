@@ -1,0 +1,32 @@
+:host {
+  --diffs-font-family: var(--cui-font-stack-mono);
+  --diffs-font-size: var(--portal-font-size-mono);
+  --diffs-line-height: var(--portal-code-line-height, 1.625);
+  --diffs-fg-number-override: var(--cui-fg-subtle);
+}
+pre {
+  margin: 0;
+  tab-size: 4;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+.portal-highlighted,
+.portal-word {
+  background: var(--cui-bg-highlight);
+}
+.portal-add {
+  background: var(--cui-bg-success);
+}
+.portal-remove,
+.portal-error {
+  background: var(--cui-bg-danger);
+}
+.portal-warning {
+  background: var(--cui-bg-warning);
+}
+:host([data-focused]) [data-content] > [data-line]:not(.portal-focused) {
+  opacity: 0.5;
+}
+:host([data-focused]:hover) [data-content] > [data-line] {
+  opacity: 1;
+}
