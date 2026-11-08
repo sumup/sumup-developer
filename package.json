@@ -64,7 +64,6 @@
     "@cloudflare/nimbus-docs": "0.19.1",
     "@eslint/js": "10.0.1",
     "@modelcontextprotocol/server": "2.4.0",
-    "@pierre/theme": "2.0.0",
     "@readme/httpsnippet": "11.4.1",
     "@scalar/openapi-parser": "0.29.19",
     "@sindresorhus/slugify": "^3.0.1",

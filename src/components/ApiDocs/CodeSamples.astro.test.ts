@@ -21,7 +21,7 @@ beforeAll(async () => {
       ].map((sample) => ({
         ...sample,
         source: sample.label,
-        highlightedHtml: `<pre class="astro-code"><code>${sample.label}</code></pre>`,
+        highlightedHtml: `<pre class="astro-code github-light github-dark"><code>stale request highlighting</code></pre>`,
       })),
       responses: ["200", "400"].map((status) => ({
         status,
@@ -31,7 +31,7 @@ beforeAll(async () => {
         example: {
           mediaType: "application/json",
           value: { status },
-          highlightedHtml: `<pre class="astro-code"><code>${status}</code></pre>`,
+          highlightedHtml: `<pre class="astro-code github-light github-dark"><code>stale response highlighting</code></pre>`,
         },
       })),
     },
@@ -68,6 +68,26 @@ it("shows only the default request and response with stable controls before Java
   expect(
     doc.querySelector("[data-http-method]")?.getAttribute("data-http-method"),
   ).toBe("POST");
+  dom.window.close();
+});
+
+it("uses the portal themes for every request and response instead of cached GitHub HTML", () => {
+  const dom = new JSDOM(html);
+  const doc = dom.window.document;
+  const blocks = [...doc.querySelectorAll("pre.astro-code")];
+  expect(blocks).toHaveLength(5);
+  for (const block of blocks) {
+    expect(block.classList.contains("min-light")).toBe(true);
+    expect(block.classList.contains("min-dark")).toBe(true);
+    expect(block.className).not.toContain("github");
+  }
+  expect(doc.querySelector('[data-api-sample="curl"] code')!.textContent).toBe(
+    "cURL",
+  );
+  expect(doc.querySelector(".response-body code")!.textContent).toBe(
+    JSON.stringify({ status: "200" }, null, 2),
+  );
+  expect(doc.body.textContent).not.toContain("stale");
   dom.window.close();
 });
 
