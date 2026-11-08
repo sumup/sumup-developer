@@ -1,0 +1,270 @@
+---
+title: Create merchant tokens
+description: Create short-lived tokens scoped to a merchant account and selected actions, using your app's own authentication.
+sidebar:
+  label: Merchant tokens
+  order: 5
+---
+
+Merchant tokens give your application short-lived access to a specific SumUp merchant account for selected actions. Users sign in through your application's own authentication. Your backend checks their access, creates a token, and returns it to your app.
+
+Each token is limited to one merchant account and the actions you request. It cannot grant more permissions than the identity that creates it. Keep your backend credentials on your server and give your app only the merchant token.
+
+## Current support
+
+Currently, the only supported action is `checkout`, for accepting in-person payments with a SumUp SDK that supports merchant tokens. The examples in this guide use that action.
+
+Use merchant tokens only with integrations that explicitly document support for them. Available actions and integration support determine what a token can be used for.
+
+## Before you begin
+
+You need:
+
+- A SumUp merchant account and its merchant code.
+- Backend credentials with access to that account: an [API key](/tools/authorization/api-keys/) for an account you control, or an [OAuth access token](/tools/authorization/oauth/) for a merchant who has authorized your integration. The authenticated identity needs the `tokens.create` permission for the account.
+- A way to authenticate users in your application and check which actions they can perform for each merchant account.
+- A SumUp SDK version that explicitly supports merchant tokens. Check your SDK's authentication documentation before integrating; an SDK method that accepts OAuth access tokens does not by itself confirm merchant-token support.
+
+Keep your API key or OAuth credentials on your backend. Only return the merchant token to the authorized app.
+
+## How the token reaches your app
+
+1. The user signs in to your application.
+2. Your app requests a merchant token from your backend.
+3. Your backend verifies the user's session and checks that they can perform the requested actions for the selected merchant account.
+4. Your backend requests a token from SumUp for that account and the allowed actions. In the example below, the action is `checkout`.
+5. Your backend returns the token to your app over HTTPS. Your app passes its `access_token` to the integration using its documented merchant-token authentication flow.
+
+The user signs in to your application; your backend's credentials authorize the request to SumUp. For integrations serving other merchants, use OAuth to obtain their authorization before creating merchant tokens for their accounts.
+
+## Create a token on your backend
+
+Call `POST https://api.sumup.com/v0.1/merchants/{merchant_code}/tokens` with `actions` set to `["checkout"]`.
+
+For this backend request, set `SUMUP_ACCESS_TOKEN` in your server environment to your API key or OAuth access token. Set `SUMUP_MERCHANT_CODE` to the account the token should grant access to. Install your chosen [server SDK](/tools/sdks/) before using its example. The Go SDK reads its credential from `SUMUP_API_KEY`; set that variable to your backend credential instead, and pass the authorized merchant code to `createMerchantToken`.
+
+Run these examples only on your backend, after checking the user's access to the merchant account. The cURL command prints the secret token; keep its output out of logs.
+
+<CodeGroup title="Create a merchant token">
+<CodeGroupItem label="cURL">
+
+```bash
+curl --fail-with-body --request POST \
+  "https://api.sumup.com/v0.1/merchants/${SUMUP_MERCHANT_CODE}/tokens" \
+  --header "Authorization: Bearer ${SUMUP_ACCESS_TOKEN}" \
+  --header "Content-Type: application/json" \
+  --data '{"actions":["checkout"]}'
+```
+
+</CodeGroupItem>
+<CodeGroupItem label="JavaScript">
+
+```ts
+import SumUp from "@sumup/sdk";
+
+async function main() {
+  const client = new SumUp({ apiKey: process.env.SUMUP_ACCESS_TOKEN ?? "" });
+
+  const result = await client.tokens.create(
+    process.env.SUMUP_MERCHANT_CODE ?? "",
+    { actions: ["checkout"] },
+  );
+  // Return result only to the authorized app; do not log it.
+}
+
+main().catch(console.error);
+```
+
+</CodeGroupItem>
+<CodeGroupItem label=".NET">
+
+```csharp
+using System;
+using System.Threading.Tasks;
+using SumUp;
+
+public static class Program
+{
+    public static async Task Main()
+    {
+        using var client = new SumUpClient();
+        var response = await client.Tokens.CreateAsync(
+            Environment.GetEnvironmentVariable("SUMUP_MERCHANT_CODE")
+                ?? throw new InvalidOperationException("SUMUP_MERCHANT_CODE is not configured"),
+            new TokensCreateRequest
+            {
+                Actions = new TokensCreateRequestActionsItem[]
+                {
+                    TokensCreateRequestActionsItem.Checkout,
+                },
+            });
+
+        // Return response.Data only to the authorized app; do not log it.
+    }
+}
+```
+
+</CodeGroupItem>
+<CodeGroupItem label="Java">
+
+```java
+import com.sumup.sdk.SumUpClient;
+
+public final class CreateMerchantTokenSample {
+  public static void main(String[] args) throws Exception {
+    var client = new SumUpClient(System.getenv("SUMUP_ACCESS_TOKEN"));
+
+    var result = client.tokens().create(
+            System.getenv("SUMUP_MERCHANT_CODE"),
+            com.sumup.sdk.models.CreateMerchantTokenRequest.builder()
+                .actions(java.util.List.of(com.sumup.sdk.models.CreateMerchantTokenRequestActionsItem.of("checkout")))
+                .build()
+        );
+    // Return result only to the authorized app; do not log it.
+  }
+}
+```
+
+</CodeGroupItem>
+<CodeGroupItem label="Go">
+
+```go
+package example
+
+import (
+	"context"
+
+	"github.com/sumup/sumup-go"
+)
+
+// Call only after checking the user's access to merchantCode.
+func createMerchantToken(ctx context.Context, merchantCode string) (*sumup.Token, error) {
+	client := sumup.NewClient()
+	return client.Tokens.Create(ctx, merchantCode, sumup.TokensCreateParams{
+		Actions: []sumup.TokensCreateParamsAction{"checkout"},
+	})
+}
+```
+
+</CodeGroupItem>
+<CodeGroupItem label="Python">
+
+```py
+import os
+
+import sumup
+
+client = sumup.Sumup(api_key=os.environ["SUMUP_ACCESS_TOKEN"])
+result = client.tokens.create(
+    os.environ["SUMUP_MERCHANT_CODE"],
+    actions=[
+        "checkout",
+    ],
+)
+# Return result only to the authorized app; do not log it.
+```
+
+</CodeGroupItem>
+<CodeGroupItem label="Rust">
+
+```rust
+use sumup::{Authorization, Client};
+#[tokio::main]
+async fn main() {
+    let client = Client::default().with_authorization(Authorization::access_token(
+        std::env::var("SUMUP_ACCESS_TOKEN").expect("SUMUP_ACCESS_TOKEN is not configured"),
+    ));
+    let body = sumup::resources::tokens::CreateRequest::builder()
+        .actions(vec![
+            sumup::resources::tokens::CreateRequestActionsItem::Checkout,
+        ])
+        .build();
+    let response = client
+        .tokens()
+        .create(
+            &std::env::var("SUMUP_MERCHANT_CODE").expect("SUMUP_MERCHANT_CODE is not configured"),
+            body,
+        )
+        .await
+        .expect("create request failed");
+    // Return response only to the authorized app; do not log it.
+}
+```
+
+</CodeGroupItem>
+<CodeGroupItem label="PHP">
+
+```php
+<?php
+
+declare(strict_types=1);
+
+require __DIR__ . '/vendor/autoload.php';
+
+$sumup = new \SumUp\SumUp(getenv('SUMUP_ACCESS_TOKEN'));
+
+$body = [
+    'actions' => [
+        'checkout',
+    ],
+];
+
+$result = $sumup->tokens()->create(
+    getenv('SUMUP_MERCHANT_CODE'),
+    $body,
+);
+
+// Return $result only to the authorized app; do not log it.
+```
+
+</CodeGroupItem>
+</CodeGroup>
+
+A successful request returns HTTP `200` with a response like this. `MERCHANT_TOKEN` is a placeholder for the secret value:
+
+```json
+{
+  "access_token": "MERCHANT_TOKEN",
+  "token_type": "Bearer",
+  "expires_in": 899
+}
+```
+
+| Field          | Meaning                                                                                                             |
+| -------------- | ------------------------------------------------------------------------------------------------------------------- |
+| `access_token` | The secret value to pass to the integration. Treat it as an opaque string; do not parse it or depend on its format. |
+| `token_type`   | Always `Bearer`.                                                                                                    |
+| `expires_in`   | The remaining token lifetime in seconds when SumUp creates the response.                                            |
+
+The examples make the SumUp request; your application's endpoint must enforce user access before running them:
+
+- Verify the user's session on every token request.
+- Resolve the merchant account from your own records, or check a requested merchant code against the user's allowed accounts. A merchant code supplied by the app is not proof of access.
+- Check that the user can perform every requested action. For `checkout`, check that they can accept payments, not just view the account. Reject unauthorized requests before calling SumUp.
+- Return the token only to that user over HTTPS, with `Cache-Control: no-store`. Keep credentials and tokens out of URLs, logs, analytics, and source code.
+
+Keep the requested actions under backend control and request only those needed for the task. This payment example requests `["checkout"]`.
+
+## Use and replace the token
+
+Pass `access_token` to the integration's documented merchant-token authentication flow. For the `checkout` example, follow the supported SDK's reader setup and checkout instructions to accept a payment.
+
+Tokens expire 15 minutes after creation. Use `expires_in` to track the remaining lifetime. When a new token is needed, request one through your backend and repeat the user and merchant access checks.
+
+When a user signs out or switches merchant accounts, stop reusing the previous account's token and follow the integration's logout or account-switching instructions. Request a token for the newly selected account only after checking access again.
+
+## Troubleshoot token creation
+
+| HTTP status | What to check                                                                                                                |
+| ----------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| `400`       | Send a JSON body with a non-empty `actions` array. Use only `checkout`, once. Unsupported or duplicate actions are rejected. |
+| `401`       | Check the backend's API key or OAuth access token. Missing, invalid, or expired credentials cannot create a merchant token.  |
+| `403`       | Check that the authenticated identity can create tokens for the merchant account in the request path.                        |
+
+A successful token response confirms token creation. To verify the complete integration, authenticate a supported SDK with the returned token and follow the [in-person payment testing guide](/terminal-payments/testing/).
+
+## Next steps
+
+- Review the [Create a merchant token API reference](/api/tokens/create/) for the request and response contract.
+- Choose your platform in the [mobile SDK guides](/terminal-payments/sdks/).
+- For readers controlled through server API calls, follow the separate [Cloud API pairing flow](/terminal-payments/cloud-api/).

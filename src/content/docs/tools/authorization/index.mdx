@@ -1,6 +1,6 @@
 ---
 title: Authorization
-description: Compare SumUp API keys, OAuth 2.0, and affiliate keys to choose the right authorization model for your integration.
+description: Choose API keys or OAuth for backend access, merchant tokens for scoped access from your app, and affiliate keys to identify card-present integrations.
 sidebar:
   label: Overview
   order: 1
@@ -13,6 +13,7 @@ Every integration needs a way to authorize its API requests, and card-present so
 
 - **[API keys](/tools/authorization/api-keys/)** – Static credentials owned by a single merchant. Use them for direct server-to-server integrations when you control the merchant account and need full API access.
 - **[OAuth 2.0](/tools/authorization/oauth/)** – Standards-based authorization for multi-merchant solutions. Use it when other merchants or their employees connect to your application and must explicitly grant access.
+- **[Merchant tokens](/tools/authorization/merchant-tokens/)** – Short-lived credentials scoped to one merchant account and selected actions, using your app's own authentication. Create them on your backend using API key or OAuth authentication, then return only the merchant token to your app.
 - **[Affiliate Keys](/tools/authorization/affiliate-keys/)** – Required for card-present scenarios to attribute transactions to your integration. Combine them with API keys or OAuth depending on how you authorize API calls.
 
 ## Next Steps
