@@ -1,17 +1,21 @@
 ---
+import Code from "@components/Code/Code.astro";
 import type { ApiExampleView } from "@cloudflare/nimbus-docs/api";
 interface Props {
   example: ApiExampleView;
   title?: string;
 }
 const { example, title } = Astro.props;
-if (!example.highlightedHtml)
-  throw new Error("Nimbus API example was not prepared during content sync.");
+const isJson = example.mediaType.includes("json");
+const source =
+  typeof example.value === "string" && !isJson
+    ? example.value
+    : JSON.stringify(example.value, null, 2);
 ---
 
 <div class="api-example" data-pagefind-ignore="all">
   {title && <p class="example-title">{title}</p>}
-  <Fragment set:html={example.highlightedHtml} />
+  <Code code={source} lang={isJson ? "json" : "text"} />
 </div>
 <style>
   .api-example {

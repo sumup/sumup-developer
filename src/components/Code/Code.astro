@@ -1,4 +1,5 @@
 ---
+import { codeThemes } from "../../lib/codeThemes";
 import { Code as AstroCode } from "astro:components";
 import { defaultCodeTransformers } from "@cloudflare/nimbus-docs/runtime";
 
@@ -6,19 +7,18 @@ type AstroCodeProps = Parameters<typeof AstroCode>[0];
 // Generated API examples supply language names as strings.
 export type Props = Omit<AstroCodeProps, "lang"> & { lang?: string };
 const rawProps = Astro.props as Props;
-const usesNimbusDefaultThemes =
-  !("theme" in rawProps) && !("themes" in rawProps);
-const themed = usesNimbusDefaultThemes
+const usesPortalThemes = !("theme" in rawProps) && !("themes" in rawProps);
+const themed = usesPortalThemes
   ? {
       ...rawProps,
-      themes: { light: "github-light", dark: "github-dark" },
+      themes: codeThemes,
       defaultColor: false,
     }
   : rawProps;
 const props = {
   ...themed,
   transformers: defaultCodeTransformers({
-    classTokens: usesNimbusDefaultThemes,
+    classTokens: false,
     beforeTitleTransformers: themed.transformers ?? [],
   }),
 };

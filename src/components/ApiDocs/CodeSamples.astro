@@ -4,6 +4,7 @@ import type { ApiOperationPage } from "@cloudflare/nimbus-docs/api";
 import { Select } from "@sumup-oss/circuit-ui";
 import MethodStatus from "./MethodStatus.astro";
 import Code from "@components/Code/Code.astro";
+import Example from "./Example.astro";
 import SampleCopyButton from "@components/Code/SampleCopyButton.astro";
 
 type Props = Pick<
@@ -38,8 +39,7 @@ const examples = responses.flatMap((response) =>
 );
 // Multiple responses always retain tabs so each example remains accessible.
 const responseTabs = showResponseStatus || examples.length > 1;
-// API routes provide prepared HTML; other pages can render the same model
-// through the portal's standard Nimbus-themed Code component.
+// Nimbus prepares the sample sources; the portal owns their presentation.
 const options = samples.map((sample) => ({
   label: sample.label,
   value: sample.id,
@@ -90,14 +90,10 @@ const responseId = `api-sample-responses-${encodeURIComponent(coordinate)}`;
               data-api-language={sample.lang}
               hidden={i !== 0}
             >
-              {sample.highlightedHtml ? (
-                <Fragment set:html={sample.highlightedHtml} />
-              ) : (
-                <Code
-                  code={sample.source}
-                  lang={sample.lang === "curl" ? "bash" : sample.lang}
-                />
-              )}
+              <Code
+                code={sample.source}
+                lang={sample.lang === "curl" ? "bash" : sample.lang}
+              />
             </div>
           ))}
         </div>
@@ -177,19 +173,7 @@ const responseId = `api-sample-responses-${encodeURIComponent(coordinate)}`;
             hidden={i !== 0}
           >
             <div class="sample-body response-body" data-cg-row>
-              {example.highlightedHtml ? (
-                <Fragment set:html={example.highlightedHtml} />
-              ) : (
-                <Code
-                  code={
-                    typeof example.value === "string" &&
-                    !example.mediaType.includes("json")
-                      ? example.value
-                      : JSON.stringify(example.value, null, 2)
-                  }
-                  lang={example.mediaType.includes("json") ? "json" : "text"}
-                />
-              )}
+              <Example example={example} />
             </div>
           </div>
         ))}

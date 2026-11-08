@@ -1,6 +1,6 @@
 :root {
-  /* The editor surfaces from Shiki's github-light / github-dark themes. */
-  --code-frame-background: light-dark(#fff, #24292e);
+  /* The editor surfaces from the Min light and dark themes. */
+  --code-frame-background: light-dark(#ffffff, #1f1f1f);
   --code-frame-header-background: color-mix(
     in srgb,
     var(--cui-bg-subtle) 50%,
@@ -48,7 +48,7 @@ pre.astro-code code {
   counter-reset: code-line;
 }
 
-/* Nimbus emits these shared token variables in /_nimbus/shiki.css. */
+/* Custom themes emit Shiki token variables on the highlighted spans. */
 pre.astro-code span {
   color: var(--shiki-light, inherit);
 }

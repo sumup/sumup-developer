@@ -1,3 +1,4 @@
+import { codeThemes } from "./src/lib/codeThemes";
 import { markdownComponents } from "./src/lib/markdownComponents";
 import { apiReference } from "./src/lib/api/reference";
 
@@ -189,7 +190,7 @@ export default defineConfig({
   markdown: {
     syntaxHighlight: { type: "shiki" },
     shikiConfig: {
-      themes: { light: "github-light", dark: "github-dark" },
+      themes: codeThemes,
       defaultColor: false,
     },
   },
