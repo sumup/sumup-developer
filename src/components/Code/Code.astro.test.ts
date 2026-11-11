@@ -29,7 +29,7 @@ it("uses Nimbus frames and highlighting while preserving code text", async () =>
   );
   expect(document.querySelector("pre.astro-code span[class]")).not.toBeNull();
   const classes = document.querySelector("pre.astro-code")!.classList;
-  expect(classes.contains("min-light")).toBe(true);
-  expect(classes.contains("min-dark")).toBe(true);
+  expect(classes.contains("github-light")).toBe(true);
+  expect(classes.contains("github-dark")).toBe(true);
   dom.window.close();
 });

@@ -1,6 +1,6 @@
 :root {
-  /* The editor surfaces from the Min light and dark themes. */
-  --code-frame-background: light-dark(#ffffff, #1f1f1f);
+  /* The editor surfaces from the GitHub light and dark themes. */
+  --code-frame-background: light-dark(#ffffff, #24292e);
   --code-frame-header-background: color-mix(
     in srgb,
     var(--cui-bg-subtle) 50%,

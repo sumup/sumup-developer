@@ -1,2 +1,5 @@
 // Shared by authored code fences, API examples, and the client renderer.
-export const codeThemes = { light: "min-light", dark: "min-dark" } as const;
+export const codeThemes = {
+  light: "github-light",
+  dark: "github-dark",
+} as const;
