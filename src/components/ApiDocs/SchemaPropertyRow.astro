@@ -8,19 +8,20 @@ interface Props {
   field: ApiFieldView;
 }
 const { field } = Astro.props;
+const Name = field.anchor ? "a" : "span";
 const refs = field.typeRefs ?? (field.typeRef ? [field.typeRef] : []);
 const omitted = field.childCount - field.children.length;
 ---
 
 <li id={field.anchor} class="property">
   <div class="parameter">
-    <a
+    <Name
       class="name"
-      href={`#${field.anchor}`}
-      aria-label={`Link to ${field.name}`}
+      href={field.anchor ? `#${field.anchor}` : undefined}
+      aria-label={field.anchor ? `Link to ${field.name}` : undefined}
     >
       {field.name}
-    </a>
+    </Name>
     <span class="type">{field.type}</span>
     {field.required && <span class="required">required</span>}
     {field.nullable && <span>nullable</span>}
@@ -117,8 +118,8 @@ const omitted = field.childCount - field.children.length;
     font-weight: var(--cui-font-weight-semibold);
     text-decoration: none;
   }
-  .name:hover,
-  .name:focus-visible {
+  a.name:hover,
+  a.name:focus-visible {
     text-decoration: underline;
   }
   .type,
