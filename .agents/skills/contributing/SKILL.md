@@ -7,6 +7,8 @@ description: Write, edit, and review SumUp Developer website content, including 
 
 Use the repository's [AGENTS.md](../../../AGENTS.md) for scope and validation, and the [content style reference](../../references/content-style.md) for authoring. Read the references for the task below. Paths in this skill are relative to its directory; source paths mentioned in prose are relative to the repository root.
 
+For guide pages, also use the [docs style skill](../docs-style/SKILL.md) for voice, terminology, structure, accessibility, and code-sample presentation. Its draft rules apply to guides, not the API reference or changelog.
+
 ## Choose the guidance for the task
 
 | Task                     | Read or inspect                                                                                                                                                                  |

@@ -2,14 +2,14 @@
 title: Roles and permissions
 description: Choose system roles and control what members can do in a SumUp merchant account.
 sidebar:
-  order: 4
+  order: 3
 ---
 
 Roles control what members can see and do in a merchant account. Use a system role for common jobs, such as managing a shop or handling accounting.
 
 ## System roles
 
-SumUp provides four system roles for merchant account members. To assign Manager, Employee, or Accountant through the API, include its ID in the member's `roles` array.
+SumUp provides four system roles for merchant account members. Manager, Employee, and Accountant can be assigned through the API using their role IDs.
 
 | Role       | ID                | Intended use                                                                                          |
 | ---------- | ----------------- | ----------------------------------------------------------------------------------------------------- |
@@ -38,187 +38,7 @@ Find the required permission for an endpoint in the [API reference](/api/).
 
 ## Assign a role to a member
 
-See [Run the examples](/tools/account/#run-the-examples) for shared setup. The user making the request needs `members_update`. For OAuth requests, the token also needs `user.subaccounts` or `members.write`.
-
-Set `SUMUP_ROLE_ID` to the system role to assign, such as `role_manager`. Use [List members](/api/members/list/) to find the member and check their current roles. Set `SUMUP_MEMBER_ID` to their member ID.
-
-**The `roles` array replaces the member's current roles.** Include every role the member should keep. These examples assign only the selected role, removing any other roles from the member:
-
-<Tabs syncKey="roles-sdk">
-
-<TabItem label="cURL">
-
-```bash
-curl --request PUT \
-  "https://api.sumup.com/v0.1/merchants/${SUMUP_MERCHANT_CODE}/members/${SUMUP_MEMBER_ID}" \
-  --header "Authorization: Bearer ${SUMUP_ACCESS_TOKEN}" \
-  --header "Content-Type: application/json" \
-  --data "{\"roles\":[\"${SUMUP_ROLE_ID}\"]}"
-```
-
-</TabItem>
-
-<TabItem label="TypeScript">
-
-```ts
-import SumUp from "@sumup/sdk";
-
-const client = new SumUp({ apiKey: process.env.SUMUP_ACCESS_TOKEN! });
-const member = await client.members.update(
-  process.env.SUMUP_MERCHANT_CODE!,
-  process.env.SUMUP_MEMBER_ID!,
-  { roles: [process.env.SUMUP_ROLE_ID!] },
-);
-console.log(member);
-```
-
-</TabItem>
-
-<TabItem label="Python">
-
-```py
-import os
-
-from sumup import Sumup
-
-client = Sumup(api_key=os.environ["SUMUP_ACCESS_TOKEN"])
-member = client.members.update(
-    os.environ["SUMUP_MERCHANT_CODE"],
-    os.environ["SUMUP_MEMBER_ID"],
-    roles=[os.environ["SUMUP_ROLE_ID"]],
-)
-print(member)
-```
-
-</TabItem>
-
-<TabItem label="PHP">
-
-```php
-<?php
-
-require __DIR__ . '/vendor/autoload.php';
-
-$client = new \SumUp\SumUp(getenv('SUMUP_ACCESS_TOKEN'));
-$member = $client->members()->update(
-    getenv('SUMUP_MERCHANT_CODE'),
-    getenv('SUMUP_MEMBER_ID'),
-    ['roles' => [getenv('SUMUP_ROLE_ID')]],
-);
-var_dump($member);
-```
-
-</TabItem>
-
-<TabItem label="Go">
-
-```go
-package main
-
-import (
-    "context"
-    "fmt"
-    "log"
-    "os"
-
-    "github.com/sumup/sumup-go"
-    sumupclient "github.com/sumup/sumup-go/client"
-)
-
-func main() {
-    client := sumup.NewClient(sumupclient.WithAPIKey(os.Getenv("SUMUP_ACCESS_TOKEN")))
-    member, err := client.Members.Update(
-        context.Background(),
-        os.Getenv("SUMUP_MERCHANT_CODE"),
-        os.Getenv("SUMUP_MEMBER_ID"),
-        sumup.MembersUpdateParams{Roles: []string{os.Getenv("SUMUP_ROLE_ID")}},
-    )
-    if err != nil {
-        log.Fatal(err)
-    }
-    fmt.Printf("%+v\n", member)
-}
-```
-
-</TabItem>
-
-<TabItem label="Java">
-
-```java
-import com.sumup.sdk.SumUpClient;
-import com.sumup.sdk.models.UpdateMerchantMemberRequest;
-import java.util.List;
-
-public class Main {
-  public static void main(String[] args) throws Exception {
-    var client = new SumUpClient(System.getenv("SUMUP_ACCESS_TOKEN"));
-    var member = client.members().update(
-        System.getenv("SUMUP_MEMBER_ID"),
-        System.getenv("SUMUP_MERCHANT_CODE"),
-        UpdateMerchantMemberRequest.builder()
-            .roles(List.of(System.getenv("SUMUP_ROLE_ID")))
-            .build());
-    System.out.println(member);
-  }
-}
-```
-
-</TabItem>
-
-<TabItem label=".NET">
-
-```csharp
-using System;
-using SumUp;
-
-using var client = new SumUpClient(); // Reads SUMUP_ACCESS_TOKEN.
-var response = await client.Members.UpdateAsync(
-    Environment.GetEnvironmentVariable("SUMUP_MERCHANT_CODE")!,
-    Environment.GetEnvironmentVariable("SUMUP_MEMBER_ID")!,
-    new MembersUpdateRequest
-    {
-        Roles = new[] { Environment.GetEnvironmentVariable("SUMUP_ROLE_ID")! },
-    });
-Console.WriteLine(response.Data);
-```
-
-</TabItem>
-
-<TabItem label="Rust">
-
-```rust
-use sumup::{resources::members::UpdateRequest, Authorization, Client};
-
-#[tokio::main]
-async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let client = Client::default().with_authorization(Authorization::api_key(
-        std::env::var("SUMUP_ACCESS_TOKEN")?,
-    ));
-    let member = client
-        .members()
-        .update(
-            std::env::var("SUMUP_MERCHANT_CODE")?,
-            std::env::var("SUMUP_MEMBER_ID")?,
-            UpdateRequest {
-                roles: Some(vec![std::env::var("SUMUP_ROLE_ID")?]),
-                ..Default::default()
-            },
-        )
-        .await?;
-    println!("{member:#?}");
-    Ok(())
-}
-```
-
-</TabItem>
-
-</Tabs>
-
-The API returns HTTP `200` and the updated member. You can also assign the role when [inviting a new member](/api/members/create/). The invited user must accept the invitation to join the account. See [Manage members](/tools/account/members/) for invitation status, managed users, and removing access.
-
-## Verify the member's access
-
-Call [Get a member](/api/members/get/) and check their saved roles. Test an action the role allows and one it should deny using the member's credentials and the required OAuth scopes. A successful request made as the account owner does not verify the member's access.
+Roles are assigned to a member of a specific merchant account. A user can have different roles in different accounts. See [Manage members](/tools/account/members/#assign-a-role-to-a-member) for role-assignment examples and how to verify access.
 
 ## Troubleshoot access
 

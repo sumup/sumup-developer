@@ -38,7 +38,7 @@ Prettier (project defaults) handles whitespace, so commit formatted files rather
 
 ## Agent Guidance and Content Authoring
 
-Repository-local agent skills live in `.agents/skills/`. Read the [contributing skill](.agents/skills/contributing/SKILL.md) first when writing, editing, or reviewing website content, including examples, changelog entries, and navigation changes. Read only the references relevant to the task:
+Repository-local agent skills live in `.agents/skills/`. Read the [contributing skill](.agents/skills/contributing/SKILL.md) first when writing, editing, or reviewing website content, including examples, changelog entries, and navigation changes. For guide pages, also read the [docs style skill](.agents/skills/docs-style/SKILL.md) and its linked style guide before writing, editing, or reviewing. It applies to guide pages, not the API reference or changelog; preserve its draft status and unresolved forum decisions. Read only the references relevant to the task:
 
 | Reference                                             | Use                                                                                              |
 | ----------------------------------------------------- | ------------------------------------------------------------------------------------------------ |

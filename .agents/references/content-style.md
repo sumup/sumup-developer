@@ -16,6 +16,8 @@ Before writing, editing, or reviewing website content, choose the reader's quest
 
 The recipes provide page structures and self-review checklists. Their editorial thresholds are guidance, not additional build gates. Read only the recipes relevant to the task. The [Nimbus snapshot notes](nimbus/README.md) record the source, license, and update process; no network access is needed to use these references.
 
+For guide pages, read the [docs style skill](../skills/docs-style/SKILL.md) and its linked style guide alongside the selected recipe. The guide supplies SumUp-specific editorial rules; its task skeleton applies to task guides, and its open forum decisions remain unresolved.
+
 ## Apply the recipes to this repository
 
 Repository instructions and the implemented schema and components take precedence over generic recipe examples.

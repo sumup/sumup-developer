@@ -17,9 +17,9 @@ Call [List memberships](/api/memberships/list/) to find the accounts the user ca
 
 Filter by `kind=merchant` and `status=accepted` to list merchant accounts the user has already joined. An invitation must be accepted before its account appears in this filtered list.
 
-<Tabs syncKey="account-sdk">
+<CodeGroup title="List merchant accounts">
 
-<TabItem label="cURL">
+<CodeGroupItem label="cURL">
 
 ```bash
 curl --get "https://api.sumup.com/v0.1/memberships" \
@@ -30,9 +30,9 @@ curl --get "https://api.sumup.com/v0.1/memberships" \
   --data-urlencode "offset=0"
 ```
 
-</TabItem>
+</CodeGroupItem>
 
-<TabItem label="TypeScript">
+<CodeGroupItem label="TypeScript">
 
 ```ts
 import SumUp from "@sumup/sdk";
@@ -47,9 +47,9 @@ const accounts = await client.memberships.list({
 console.log(accounts);
 ```
 
-</TabItem>
+</CodeGroupItem>
 
-<TabItem label="Python">
+<CodeGroupItem label="Python">
 
 ```py
 import os
@@ -66,9 +66,9 @@ accounts = client.memberships.list(
 print(accounts)
 ```
 
-</TabItem>
+</CodeGroupItem>
 
-<TabItem label="PHP">
+<CodeGroupItem label="PHP">
 
 ```php
 <?php
@@ -85,9 +85,9 @@ $accounts = $client->memberships()->list($query);
 var_dump($accounts);
 ```
 
-</TabItem>
+</CodeGroupItem>
 
-<TabItem label="Go">
+<CodeGroupItem label="Go">
 
 ```go
 package main
@@ -120,9 +120,9 @@ func main() {
 }
 ```
 
-</TabItem>
+</CodeGroupItem>
 
-<TabItem label="Java">
+<CodeGroupItem label="Java">
 
 ```java
 import com.sumup.sdk.SumUpClient;
@@ -143,9 +143,9 @@ public class Main {
 }
 ```
 
-</TabItem>
+</CodeGroupItem>
 
-<TabItem label=".NET">
+<CodeGroupItem label=".NET">
 
 ```csharp
 using System;
@@ -162,9 +162,9 @@ var response = await client.Memberships.ListAsync(new MembershipsListOptions
 Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(response.Data));
 ```
 
-</TabItem>
+</CodeGroupItem>
 
-<TabItem label="Rust">
+<CodeGroupItem label="Rust">
 
 ```rust
 use sumup::{
@@ -192,9 +192,9 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 }
 ```
 
-</TabItem>
+</CodeGroupItem>
 
-</Tabs>
+</CodeGroup>
 
 The API returns HTTP `200` with an `items` array and a `total_count`. Use these fields from each item:
 
