@@ -3,7 +3,7 @@
   "language": "java",
   "sdk": {
     "module": "com.sumup:sumup-sdk",
-    "version": "0.1.3"
+    "version": "0.1.4"
   },
   "openAPIVersion": "1.0.0",
   "samples": [
@@ -294,11 +294,11 @@
     {
       "id": "GetSaleV10",
       "operationId": "GetSaleV10",
-      "summary": "Gets a sale",
+      "summary": "Get a sale",
       "description": "Returns `Sale` for `sale_id`, including item lines and `payments[]`.\nNon-finalised sales are never returned; only fully-paid sales.",
       "httpMethod": "GET",
       "path": "/v1.0/merchants/{merchant_code}/sales/{sale_id}",
-      "sample": "import com.sumup.sdk.SumUpClient;\n\npublic final class GetSaleV10Sample {\n  public static void main(String[] args) throws Exception {\n    var client = new SumUpClient();\n\n    var result = client.sales().getSaleV10(\n            \"MCZM9TGQ\",\n            \"5965aa65-e45a-4cc1-9063-c1c1e3b8607f\"\n        );\n    System.out.println(result);\n  }\n}\n"
+      "sample": "import com.sumup.sdk.SumUpClient;\n\npublic final class GetSaleV10Sample {\n  public static void main(String[] args) throws Exception {\n    var client = new SumUpClient();\n\n    var result = client.sales().get(\n            \"MCZM9TGQ\",\n            \"5965aa65-e45a-4cc1-9063-c1c1e3b8607f\"\n        );\n    System.out.println(result);\n  }\n}\n"
     },
     {
       "id": "GetTransactionV2.1",
@@ -384,11 +384,11 @@
     {
       "id": "ListSalesV10",
       "operationId": "ListSalesV10",
-      "summary": "Lists sales",
+      "summary": "List sales",
       "description": "Returns a paginated list of `Sale` objects. Results are sorted **newest first** by the\n**newest event** recorded for each sale. Pagination tokens follow that order.\n\nCovers the merchant’s **last two years** of sales. Non-finalised sales are never returned;\nonly fully-paid sales. Use `POST /sales/search` for filtered queries.",
       "httpMethod": "GET",
       "path": "/v1.0/merchants/{merchant_code}/sales",
-      "sample": "import com.sumup.sdk.SumUpClient;\n\npublic final class ListSalesV10Sample {\n  public static void main(String[] args) throws Exception {\n    var client = new SumUpClient();\n\n    var result = client.sales().listSalesV10(\n            \"MCZM9TGQ\"\n        );\n    System.out.println(result);\n  }\n}\n"
+      "sample": "import com.sumup.sdk.SumUpClient;\n\npublic final class ListSalesV10Sample {\n  public static void main(String[] args) throws Exception {\n    var client = new SumUpClient();\n\n    var result = client.sales().list(\n            \"MCZM9TGQ\"\n        );\n    System.out.println(result);\n  }\n}\n"
     },
     {
       "id": "ListTransactionsV2.1",
@@ -470,13 +470,14 @@
       "sample": "import com.sumup.sdk.SumUpClient;\n\npublic final class RefundTransactionPartialRefundSample {\n  public static void main(String[] args) throws Exception {\n    var client = new SumUpClient();\n\n    var result = client.transactions().refund(\n            \"MH4H92C7\",\n            \"4ffb8dfc-7f2b-413d-a497-2ad00766585e\",\n            com.sumup.sdk.models.RefundTransactionRequest.builder()\n                .amount(24.42f)\n                .build()\n        );\n    System.out.println(result);\n  }\n}\n"
     },
     {
-      "id": "SearchSalesV10",
+      "id": "SearchSalesV10.date_range",
       "operationId": "SearchSalesV10",
-      "summary": "Searches sales",
+      "example": "date_range",
+      "summary": "Search point-of-sale sales in a date range",
       "description": "Returns a paginated list of `SaleSearchItem` rows matching filter criteria. Results are\nsorted **newest first** by **sale close date**.\n\nFilters from different categories stack with **logical AND**; multiple values in one array\nfield stack with **logical OR**. Results cover the merchant’s **last two years** of sales\n(narrow further with `start_date` / `end_date`). Pagination tokens are not interchangeable\nwith `GET /sales`.",
       "httpMethod": "POST",
       "path": "/v1.0/merchants/{merchant_code}/sales/search",
-      "sample": "import com.sumup.sdk.SumUpClient;\n\npublic final class SearchSalesV10Sample {\n  public static void main(String[] args) throws Exception {\n    var client = new SumUpClient();\n\n    var result = client.sales().searchSalesV10(\n            \"MCZM9TGQ\",\n            com.sumup.sdk.models.SaleSearchRequest.builder()\n                .build()\n        );\n    System.out.println(result);\n  }\n}\n"
+      "sample": "import com.sumup.sdk.SumUpClient;\n\npublic final class SearchSalesV10DateRangeSample {\n  public static void main(String[] args) throws Exception {\n    var client = new SumUpClient();\n\n    var result = client.sales().search(\n            \"MCZM9TGQ\",\n            com.sumup.sdk.models.SaleSearchRequest.builder()\n                .endDate(java.time.OffsetDateTime.parse(\"2026-06-02T23:59:59Z\"))\n                .paginationLimit(10L)\n                .salesChannels(java.util.List.of(com.sumup.sdk.models.SalesChannelFilterV10.of(\"POS\")))\n                .startDate(java.time.OffsetDateTime.parse(\"2026-06-01T00:00:00Z\"))\n                .build()\n        );\n    System.out.println(result);\n  }\n}\n"
     },
     {
       "id": "UpdateCheckout",
