@@ -3,7 +3,7 @@
   "language": "php",
   "sdk": {
     "module": "sumup/sumup-php",
-    "version": "0.1.9"
+    "version": "0.1.10"
   },
   "openAPIVersion": "1.0.0",
   "samples": [
@@ -294,11 +294,11 @@
     {
       "id": "GetSaleV10",
       "operationId": "GetSaleV10",
-      "summary": "Gets a sale",
+      "summary": "Get a sale",
       "description": "Returns `Sale` for `sale_id`, including item lines and `payments[]`.\nNon-finalised sales are never returned; only fully-paid sales.",
       "httpMethod": "GET",
       "path": "/v1.0/merchants/{merchant_code}/sales/{sale_id}",
-      "sample": "\u003c?php\n\ndeclare(strict_types=1);\n\nrequire __DIR__ . '/vendor/autoload.php';\n\n$sumup = new \\SumUp\\SumUp('sup_sk_your_api_key');\n\n$result = $sumup-\u003esales()-\u003egetSaleV10(\n    'MCZM9TGQ',\n    '5965aa65-e45a-4cc1-9063-c1c1e3b8607f',\n);\n\nvar_dump($result);\n"
+      "sample": "\u003c?php\n\ndeclare(strict_types=1);\n\nrequire __DIR__ . '/vendor/autoload.php';\n\n$sumup = new \\SumUp\\SumUp('sup_sk_your_api_key');\n\n$result = $sumup-\u003esales()-\u003eget(\n    'MCZM9TGQ',\n    '5965aa65-e45a-4cc1-9063-c1c1e3b8607f',\n);\n\nvar_dump($result);\n"
     },
     {
       "id": "GetTransactionV2.1",
@@ -384,11 +384,11 @@
     {
       "id": "ListSalesV10",
       "operationId": "ListSalesV10",
-      "summary": "Lists sales",
+      "summary": "List sales",
       "description": "Returns a paginated list of `Sale` objects. Results are sorted **newest first** by the\n**newest event** recorded for each sale. Pagination tokens follow that order.\n\nCovers the merchant’s **last two years** of sales. Non-finalised sales are never returned;\nonly fully-paid sales. Use `POST /sales/search` for filtered queries.",
       "httpMethod": "GET",
       "path": "/v1.0/merchants/{merchant_code}/sales",
-      "sample": "\u003c?php\n\ndeclare(strict_types=1);\n\nrequire __DIR__ . '/vendor/autoload.php';\n\n$sumup = new \\SumUp\\SumUp('sup_sk_your_api_key');\n\n$queryParams = new \\SumUp\\Services\\SalesListSalesV10Params();\n$queryParams-\u003epaginationToken = '66bcbtzelrubzeuzruzgu76678trncH';\n$queryParams-\u003epaginationLimit = 10;\n\n$result = $sumup-\u003esales()-\u003elistSalesV10(\n    'MCZM9TGQ',\n    $queryParams,\n);\n\nvar_dump($result);\n"
+      "sample": "\u003c?php\n\ndeclare(strict_types=1);\n\nrequire __DIR__ . '/vendor/autoload.php';\n\n$sumup = new \\SumUp\\SumUp('sup_sk_your_api_key');\n\n$queryParams = new \\SumUp\\Services\\SalesListParams();\n$queryParams-\u003epaginationLimit = 10;\n\n$result = $sumup-\u003esales()-\u003elist(\n    'MCZM9TGQ',\n    $queryParams,\n);\n\nvar_dump($result);\n"
     },
     {
       "id": "ListTransactionsV2.1",
@@ -397,7 +397,7 @@
       "description": "Lists transaction history for the merchant, with optional filters for payment type, status, and date range. The response contains the current page in `items` and pagination query strings in `links`.\n\nTo request another page, use the query string from the relevant link's `href` with this history endpoint. Use `changes_since` when retrieving transactions modified since a previous synchronization, including transactions created earlier whose status has changed.",
       "httpMethod": "GET",
       "path": "/v2.1/merchants/{merchant_code}/transactions/history",
-      "sample": "\u003c?php\n\ndeclare(strict_types=1);\n\nrequire __DIR__ . '/vendor/autoload.php';\n\n$sumup = new \\SumUp\\SumUp('sup_sk_your_api_key');\n\n$queryParams = new \\SumUp\\Services\\TransactionsListParams();\n$queryParams-\u003etransactionCode = 'TEENSK4W2K';\n$queryParams-\u003eorder = 'ascending';\n$queryParams-\u003elimit = 10;\n$queryParams-\u003eusersList = [\n    'merchant@example.com',\n];\n$queryParams-\u003estatusesList = [\n    'SUCCESSFUL',\n    'REFUNDED',\n];\n$queryParams-\u003epaymentTypesList = [\n    'ECOM',\n    'POS',\n];\n$queryParams-\u003eentryModesList = [\n    'CUSTOMER_ENTRY',\n    'CHIP',\n];\n$queryParams-\u003etypesList = [\n    'PAYMENT',\n    'REFUND',\n];\n$queryParams-\u003echangesSince = '2019-08-28T09:00:00Z';\n$queryParams-\u003enewestTime = '2019-08-29T09:00:00Z';\n$queryParams-\u003enewestRef = '090df9bf-93b7-40f1-8181-fbdb236568a1';\n$queryParams-\u003eoldestTime = '2019-08-28T09:00:00Z';\n$queryParams-\u003eoldestRef = '090df9bf-93b7-40f1-8181-fbdb236568a1';\n\n$result = $sumup-\u003etransactions()-\u003elist(\n    'MH4H92C7',\n    $queryParams,\n);\n\nvar_dump($result);\n"
+      "sample": "\u003c?php\n\ndeclare(strict_types=1);\n\nrequire __DIR__ . '/vendor/autoload.php';\n\n$sumup = new \\SumUp\\SumUp('sup_sk_your_api_key');\n\n$queryParams = new \\SumUp\\Services\\TransactionsListParams();\n$queryParams-\u003etransactionCode = 'TEENSK4W2K';\n$queryParams-\u003eorder = 'ascending';\n$queryParams-\u003elimit = 10;\n$queryParams-\u003eusersList = [\n    'merchant@example.com',\n];\n$queryParams-\u003estatusesList = [\n    'SUCCESSFUL',\n    'REFUNDED',\n];\n$queryParams-\u003epaymentTypesList = [\n    'ECOM',\n    'POS',\n];\n$queryParams-\u003eentryModesList = [\n    'customer entry',\n    'chip',\n];\n$queryParams-\u003etypesList = [\n    'PAYMENT',\n    'REFUND',\n];\n$queryParams-\u003echangesSince = '2019-08-28T09:00:00Z';\n$queryParams-\u003enewestTime = '2019-08-29T09:00:00Z';\n$queryParams-\u003enewestRef = '090df9bf-93b7-40f1-8181-fbdb236568a1';\n$queryParams-\u003eoldestTime = '2019-08-28T09:00:00Z';\n$queryParams-\u003eoldestRef = '090df9bf-93b7-40f1-8181-fbdb236568a1';\n\n$result = $sumup-\u003etransactions()-\u003elist(\n    'MH4H92C7',\n    $queryParams,\n);\n\nvar_dump($result);\n"
     },
     {
       "id": "ProcessCheckout.ProcessBancontact",
@@ -470,13 +470,14 @@
       "sample": "\u003c?php\n\ndeclare(strict_types=1);\n\nrequire __DIR__ . '/vendor/autoload.php';\n\n$sumup = new \\SumUp\\SumUp('sup_sk_your_api_key');\n\n$body = [\n    'amount' =\u003e 24.42,\n];\n\n$result = $sumup-\u003etransactions()-\u003erefund(\n    'MH4H92C7',\n    '4ffb8dfc-7f2b-413d-a497-2ad00766585e',\n    $body,\n);\n\nvar_dump($result);\n"
     },
     {
-      "id": "SearchSalesV10",
+      "id": "SearchSalesV10.date_range",
       "operationId": "SearchSalesV10",
-      "summary": "Searches sales",
+      "example": "date_range",
+      "summary": "Search point-of-sale sales in a date range",
       "description": "Returns a paginated list of `SaleSearchItem` rows matching filter criteria. Results are\nsorted **newest first** by **sale close date**.\n\nFilters from different categories stack with **logical AND**; multiple values in one array\nfield stack with **logical OR**. Results cover the merchant’s **last two years** of sales\n(narrow further with `start_date` / `end_date`). Pagination tokens are not interchangeable\nwith `GET /sales`.",
       "httpMethod": "POST",
       "path": "/v1.0/merchants/{merchant_code}/sales/search",
-      "sample": "\u003c?php\n\ndeclare(strict_types=1);\n\nrequire __DIR__ . '/vendor/autoload.php';\n\n$sumup = new \\SumUp\\SumUp('sup_sk_your_api_key');\n\n$body = [\n    'end_date' =\u003e '2026-06-02T23:59:59Z',\n    'pagination_limit' =\u003e 10,\n    'pagination_token' =\u003e '66bcbtzelrubzeuzruzgu76678trncH',\n    'payment_statuses' =\u003e [\n        'PAID',\n    ],\n    'sale_statuses' =\u003e [\n        'CLOSED',\n    ],\n    'sales_channels' =\u003e [\n        'POS',\n    ],\n    'start_date' =\u003e '2026-06-01T00:00:00Z',\n];\n\n$result = $sumup-\u003esales()-\u003esearchSalesV10(\n    'MCZM9TGQ',\n    $body,\n);\n\nvar_dump($result);\n"
+      "sample": "\u003c?php\n\ndeclare(strict_types=1);\n\nrequire __DIR__ . '/vendor/autoload.php';\n\n$sumup = new \\SumUp\\SumUp('sup_sk_your_api_key');\n\n$body = [\n    'end_date' =\u003e '2026-06-02T23:59:59Z',\n    'pagination_limit' =\u003e 10,\n    'sales_channels' =\u003e [\n        'POS',\n    ],\n    'start_date' =\u003e '2026-06-01T00:00:00Z',\n];\n\n$result = $sumup-\u003esales()-\u003esearch(\n    'MCZM9TGQ',\n    $body,\n);\n\nvar_dump($result);\n"
     },
     {
       "id": "UpdateCheckout",
