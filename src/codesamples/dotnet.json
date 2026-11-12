@@ -3,7 +3,7 @@
   "language": "csharp",
   "sdk": {
     "module": "SumUp",
-    "version": "0.0.22"
+    "version": "0.0.23"
   },
   "openAPIVersion": "1.0.0",
   "samples": [
@@ -294,11 +294,11 @@
     {
       "id": "GetSaleV10",
       "operationId": "GetSaleV10",
-      "summary": "Gets a sale",
+      "summary": "Get a sale",
       "description": "Returns Sale for sale_id, including item lines and payments[]. Non-finalised sales are never returned; only fully-paid sales.",
       "httpMethod": "GET",
       "path": "/v1.0/merchants/{merchant_code}/sales/{sale_id}",
-      "sample": "using System;\nusing System.Collections.Generic;\nusing System.Threading.Tasks;\nusing SumUp;\n\npublic static class Program\n{\n    public static async Task Main()\n    {\n        using var client = new SumUpClient();\n        var response = await client.Sales.GetSaleV10Async(\n            \"your-merchant-code\",\n            \"example-id\");\n\n        Console.WriteLine(response.StatusCode);\n    }\n}\n"
+      "sample": "using System;\nusing System.Collections.Generic;\nusing System.Threading.Tasks;\nusing SumUp;\n\npublic static class Program\n{\n    public static async Task Main()\n    {\n        using var client = new SumUpClient();\n        var response = await client.Sales.GetAsync(\n            \"your-merchant-code\",\n            \"example-id\");\n\n        Console.WriteLine(response.StatusCode);\n    }\n}\n"
     },
     {
       "id": "GetTransactionV2.1",
@@ -384,11 +384,11 @@
     {
       "id": "ListSalesV10",
       "operationId": "ListSalesV10",
-      "summary": "Lists sales",
+      "summary": "List sales",
       "description": "Returns a paginated list of Sale objects. Results are sorted newest first by the newest event recorded for each sale. Pagination tokens follow that order. Covers the merchant’s last two years of sales. Non-finalised sales are never returned; only fully-paid sales. Use POST /sales/search for filtered queries.",
       "httpMethod": "GET",
       "path": "/v1.0/merchants/{merchant_code}/sales",
-      "sample": "using System;\nusing System.Collections.Generic;\nusing System.Threading.Tasks;\nusing SumUp;\n\npublic static class Program\n{\n    public static async Task Main()\n    {\n        using var client = new SumUpClient();\n        var response = await client.Sales.ListSalesV10Async(\n            \"your-merchant-code\",\n            new SalesListSalesV10Options\n            {\n                PaginationToken = \"example\",\n                PaginationLimit = 10,\n            });\n\n        Console.WriteLine(response.StatusCode);\n    }\n}\n"
+      "sample": "using System;\nusing System.Collections.Generic;\nusing System.Threading.Tasks;\nusing SumUp;\n\npublic static class Program\n{\n    public static async Task Main()\n    {\n        using var client = new SumUpClient();\n        var response = await client.Sales.ListAsync(\n            \"your-merchant-code\",\n            new SalesListOptions\n            {\n                PaginationToken = \"example\",\n                PaginationLimit = 10,\n            });\n\n        Console.WriteLine(response.StatusCode);\n    }\n}\n"
     },
     {
       "id": "ListTransactionsV2.1",
@@ -470,13 +470,14 @@
       "sample": "using System;\nusing System.Collections.Generic;\nusing System.Threading.Tasks;\nusing SumUp;\n\npublic static class Program\n{\n    public static async Task Main()\n    {\n        using var client = new SumUpClient();\n        var response = await client.Transactions.RefundAsync(\n            \"your-merchant-code\",\n            \"example-id\",\n            new TransactionsRefundRequest\n            {\n                Amount = 24.42f,\n            });\n\n        Console.WriteLine(response.StatusCode);\n    }\n}\n"
     },
     {
-      "id": "SearchSalesV10",
+      "id": "SearchSalesV10.date_range",
       "operationId": "SearchSalesV10",
-      "summary": "Searches sales",
+      "example": "date_range",
+      "summary": "Search point-of-sale sales in a date range",
       "description": "Returns a paginated list of SaleSearchItem rows matching filter criteria. Results are sorted newest first by sale close date. Filters from different categories stack with logical AND; multiple values in one array field stack with logical OR. Results cover the merchant’s last two years of sales (narrow further with start_date / end_date). Pagination tokens are not interchangeable with GET /sales.",
       "httpMethod": "POST",
       "path": "/v1.0/merchants/{merchant_code}/sales/search",
-      "sample": "using System;\nusing System.Collections.Generic;\nusing System.Threading.Tasks;\nusing SumUp;\n\npublic static class Program\n{\n    public static async Task Main()\n    {\n        using var client = new SumUpClient();\n        var response = await client.Sales.SearchSalesV10Async(\n            \"your-merchant-code\",\n            new SaleSearchRequest\n            {\n                EndDate = DateTimeOffset.Parse(\"2026-06-02T23:59:59Z\"),\n                PaginationLimit = 10,\n                PaginationToken = \"66bcbtzelrubzeuzruzgu76678trncH\",\n                PaymentStatuses = new PaymentStatusFilterV10[]\n                {\n                    PaymentStatusFilterV10.Paid,\n                },\n                SaleStatuses = new SaleStateV10[]\n                {\n                    SaleStateV10.Closed,\n                },\n                SalesChannels = new SalesChannelFilterV10[]\n                {\n                    SalesChannelFilterV10.Pos,\n                },\n                StartDate = DateTimeOffset.Parse(\"2026-06-01T00:00:00Z\"),\n            });\n\n        Console.WriteLine(response.StatusCode);\n    }\n}\n"
+      "sample": "using System;\nusing System.Collections.Generic;\nusing System.Threading.Tasks;\nusing SumUp;\n\npublic static class Program\n{\n    public static async Task Main()\n    {\n        using var client = new SumUpClient();\n        var response = await client.Sales.SearchAsync(\n            \"your-merchant-code\",\n            new SaleSearchRequest\n            {\n                EndDate = DateTimeOffset.Parse(\"2026-06-02T23:59:59Z\"),\n                PaginationLimit = 10,\n                SalesChannels = new SalesChannelFilterV10[]\n                {\n                    SalesChannelFilterV10.Pos,\n                },\n                StartDate = DateTimeOffset.Parse(\"2026-06-01T00:00:00Z\"),\n            });\n\n        Console.WriteLine(response.StatusCode);\n    }\n}\n"
     },
     {
       "id": "UpdateCheckout",
