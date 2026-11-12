@@ -3,7 +3,7 @@
   "language": "typescript",
   "sdk": {
     "module": "@sumup/sdk",
-    "version": "0.2.3"
+    "version": "0.2.4"
   },
   "openAPIVersion": "1.0.0",
   "samples": [
@@ -294,11 +294,11 @@
     {
       "id": "GetSaleV10",
       "operationId": "GetSaleV10",
-      "summary": "Gets a sale",
+      "summary": "Get a sale",
       "description": "Returns `Sale` for `sale_id`, including item lines and `payments[]`.\nNon-finalised sales are never returned; only fully-paid sales.",
       "httpMethod": "GET",
       "path": "/v1.0/merchants/{merchant_code}/sales/{sale_id}",
-      "sample": "import SumUp from \"@sumup/sdk\";\n\nasync function main() {\n  const client = new SumUp({ apiKey: \"sup_sk_your_api_key\" });\n\n  const result = await client.sales.getSaleV10(\n    \"MCZM9TGQ\",\n    \"5965aa65-e45a-4cc1-9063-c1c1e3b8607f\"\n  );\n  console.log(result);\n}\n\nmain().catch(console.error);\n"
+      "sample": "import SumUp from \"@sumup/sdk\";\n\nasync function main() {\n  const client = new SumUp({ apiKey: \"sup_sk_your_api_key\" });\n\n  const result = await client.sales.get(\n    \"MCZM9TGQ\",\n    \"5965aa65-e45a-4cc1-9063-c1c1e3b8607f\"\n  );\n  console.log(result);\n}\n\nmain().catch(console.error);\n"
     },
     {
       "id": "GetTransactionV2.1",
@@ -384,11 +384,11 @@
     {
       "id": "ListSalesV10",
       "operationId": "ListSalesV10",
-      "summary": "Lists sales",
+      "summary": "List sales",
       "description": "Returns a paginated list of `Sale` objects. Results are sorted **newest first** by the\n**newest event** recorded for each sale. Pagination tokens follow that order.\n\nCovers the merchant’s **last two years** of sales. Non-finalised sales are never returned;\nonly fully-paid sales. Use `POST /sales/search` for filtered queries.",
       "httpMethod": "GET",
       "path": "/v1.0/merchants/{merchant_code}/sales",
-      "sample": "import SumUp from \"@sumup/sdk\";\n\nasync function main() {\n  const client = new SumUp({ apiKey: \"sup_sk_your_api_key\" });\n\n  const result = await client.sales.listSalesV10(\n    \"MCZM9TGQ\",\n    {\n      \"pagination_token\": \"66bcbtzelrubzeuzruzgu76678trncH\"\n    }\n  );\n  console.log(result);\n}\n\nmain().catch(console.error);\n"
+      "sample": "import SumUp from \"@sumup/sdk\";\n\nasync function main() {\n  const client = new SumUp({ apiKey: \"sup_sk_your_api_key\" });\n\n  const result = await client.sales.list(\n    \"MCZM9TGQ\",\n    {\n      \"pagination_token\": \"example\"\n    }\n  );\n  console.log(result);\n}\n\nmain().catch(console.error);\n"
     },
     {
       "id": "ListTransactionsV2.1",
@@ -470,13 +470,14 @@
       "sample": "import SumUp from \"@sumup/sdk\";\n\nasync function main() {\n  const client = new SumUp({ apiKey: \"sup_sk_your_api_key\" });\n\n  const result = await client.transactions.refund(\n    \"MH4H92C7\",\n    \"4ffb8dfc-7f2b-413d-a497-2ad00766585e\",\n    {\n      \"amount\": 24.42\n    }\n  );\n  console.log(result);\n}\n\nmain().catch(console.error);\n"
     },
     {
-      "id": "SearchSalesV10",
+      "id": "SearchSalesV10.date_range",
       "operationId": "SearchSalesV10",
-      "summary": "Searches sales",
+      "example": "date_range",
+      "summary": "Search point-of-sale sales in a date range",
       "description": "Returns a paginated list of `SaleSearchItem` rows matching filter criteria. Results are\nsorted **newest first** by **sale close date**.\n\nFilters from different categories stack with **logical AND**; multiple values in one array\nfield stack with **logical OR**. Results cover the merchant’s **last two years** of sales\n(narrow further with `start_date` / `end_date`). Pagination tokens are not interchangeable\nwith `GET /sales`.",
       "httpMethod": "POST",
       "path": "/v1.0/merchants/{merchant_code}/sales/search",
-      "sample": "import SumUp from \"@sumup/sdk\";\n\nasync function main() {\n  const client = new SumUp({ apiKey: \"sup_sk_your_api_key\" });\n\n  const result = await client.sales.searchSalesV10(\n    \"MCZM9TGQ\",\n    {\n      \"start_date\": \"2026-06-01T00:00:00Z\",\n      \"end_date\": \"2026-06-02T23:59:59Z\",\n      \"sale_statuses\": [\n        \"CLOSED\"\n      ],\n      \"payment_statuses\": [\n        \"PAID\"\n      ],\n      \"sales_channels\": [\n        \"POS\"\n      ],\n      \"pagination_token\": \"66bcbtzelrubzeuzruzgu76678trncH\",\n      \"pagination_limit\": 10\n    }\n  );\n  console.log(result);\n}\n\nmain().catch(console.error);\n"
+      "sample": "import SumUp from \"@sumup/sdk\";\n\nasync function main() {\n  const client = new SumUp({ apiKey: \"sup_sk_your_api_key\" });\n\n  const result = await client.sales.search(\n    \"MCZM9TGQ\",\n    {\n      \"start_date\": \"2026-06-01T00:00:00Z\",\n      \"end_date\": \"2026-06-02T23:59:59Z\",\n      \"sales_channels\": [\n        \"POS\"\n      ],\n      \"pagination_limit\": 10\n    }\n  );\n  console.log(result);\n}\n\nmain().catch(console.error);\n"
     },
     {
       "id": "UpdateCheckout",
@@ -521,7 +522,7 @@
       "description": "Updates a reader's name or metadata and returns the updated reader.\n\nProviding `metadata` replaces the entire metadata object; include all entries that should be retained. Omitted fields remain unchanged.",
       "httpMethod": "PATCH",
       "path": "/v0.1/merchants/{merchant_code}/readers/{reader_id}",
-      "sample": "import SumUp from \"@sumup/sdk\";\n\nasync function main() {\n  const client = new SumUp({ apiKey: \"sup_sk_your_api_key\" });\n\n  const result = await client.readers.update(\n    \"MK10CL2A\",\n    \"rdr_3MSAFM23CK82VSTT4BN6RWSQ65\",\n    {}\n  );\n  console.log(result);\n}\n\nmain().catch(console.error);\n"
+      "sample": "import SumUp from \"@sumup/sdk\";\n\nasync function main() {\n  const client = new SumUp({ apiKey: \"sup_sk_your_api_key\" });\n\n  const result = await client.readers.update(\n    \"MK10CL2A\",\n    \"rdr_3MSAFM23CK82VSTT4BN6RWSQ65\",\n    {\n      \"name\": \"Frontdesk\"\n    }\n  );\n  console.log(result);\n}\n\nmain().catch(console.error);\n"
     },
     {
       "id": "UpdateReaderSettings",
