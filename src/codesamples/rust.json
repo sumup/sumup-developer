@@ -3,7 +3,7 @@
   "language": "rust",
   "sdk": {
     "module": "sumup",
-    "version": "0.6.1"
+    "version": "0.6.2"
   },
   "openAPIVersion": "1.0.0",
   "samples": [
@@ -82,7 +82,7 @@
       "description": "Initiates a payment on the SumUp Go terminal identified by the reader ID.\n\nUse `client_transaction_id` as an idempotency key: retrying the request with the same value returns the result of the original payment instead of creating a duplicate.",
       "httpMethod": "POST",
       "path": "/v0/merchants/{merchant_code}/readers/{reader_id}/go-checkout",
-      "sample": "use sumup::{Authorization, Client};\n#[tokio::main]\nasync fn main() {\n    let client = Client::default()\n        .with_authorization(Authorization::api_key(\"sup_sk_test_...\"));\n    let body = sumup::resources::readers::CreateGoCheckoutRequest::builder()\n        .client_transaction_id(\"19e12390-72cf-4f9f-80b5-b0c8a67fa43f\")\n        .total_amount(\n            sumup::resources::common::Amount::builder()\n                .currency(\"MXN\")\n                .value(1000i64)\n                .build(),\n        )\n        .build();\n    let response = client\n        .readers()\n        .create_go_checkout(\"MERCHANT_CODE\", \"READER_ID\", body)\n        .await\n        .expect(\"create_go_checkout request failed\");\n    println!(\"{response:#?}\");\n}\n"
+      "sample": "use sumup::{Authorization, Client};\n#[tokio::main]\nasync fn main() {\n    let client = Client::default()\n        .with_authorization(Authorization::api_key(\"sup_sk_test_...\"));\n    let body = sumup::resources::readers::CreateGoCheckoutRequest::builder()\n        .client_transaction_id(\"19e12390-72cf-4f9f-80b5-b0c8a67fa43f\")\n        .total_amount(\n            sumup::resources::readers::Amount::builder()\n                .currency(\"MXN\")\n                .value(1000i64)\n                .build(),\n        )\n        .build();\n    let response = client\n        .readers()\n        .create_go_checkout(\"MERCHANT_CODE\", \"READER_ID\", body)\n        .await\n        .expect(\"create_go_checkout request failed\");\n    println!(\"{response:#?}\");\n}\n"
     },
     {
       "id": "CreateMerchantMember",
@@ -296,11 +296,11 @@
     {
       "id": "GetSaleV10",
       "operationId": "GetSaleV10",
-      "summary": "Gets a sale",
+      "summary": "Get a sale",
       "description": "Returns `Sale` for `sale_id`, including item lines and `payments[]`.\nNon-finalised sales are never returned; only fully-paid sales.",
       "httpMethod": "GET",
       "path": "/v1.0/merchants/{merchant_code}/sales/{sale_id}",
-      "sample": "use sumup::{Authorization, Client};\n#[tokio::main]\nasync fn main() {\n    let client = Client::default()\n        .with_authorization(Authorization::api_key(\"sup_sk_test_...\"));\n    let response = client\n        .sales()\n        .get_sale_v10(\"MERCHANT_CODE\", \"RESOURCE_ID\")\n        .await\n        .expect(\"get_sale_v10 request failed\");\n    println!(\"{response:#?}\");\n}\n"
+      "sample": "use sumup::{Authorization, Client};\n#[tokio::main]\nasync fn main() {\n    let client = Client::default()\n        .with_authorization(Authorization::api_key(\"sup_sk_test_...\"));\n    let response = client\n        .sales()\n        .get(\"MERCHANT_CODE\", \"RESOURCE_ID\")\n        .await\n        .expect(\"get request failed\");\n    println!(\"{response:#?}\");\n}\n"
     },
     {
       "id": "GetTransactionV2.1",
@@ -386,11 +386,11 @@
     {
       "id": "ListSalesV10",
       "operationId": "ListSalesV10",
-      "summary": "Lists sales",
+      "summary": "List sales",
       "description": "Returns a paginated list of `Sale` objects. Results are sorted **newest first** by the\n**newest event** recorded for each sale. Pagination tokens follow that order.\n\nCovers the merchant’s **last two years** of sales. Non-finalised sales are never returned;\nonly fully-paid sales. Use `POST /sales/search` for filtered queries.",
       "httpMethod": "GET",
       "path": "/v1.0/merchants/{merchant_code}/sales",
-      "sample": "use sumup::{Authorization, Client};\n#[tokio::main]\nasync fn main() {\n    let client = Client::default()\n        .with_authorization(Authorization::api_key(\"sup_sk_test_...\"));\n    let response = client\n        .sales()\n        .list_sales_v10(\n            \"MERCHANT_CODE\",\n            sumup::resources::sales::ListSalesV10Params::builder().build(),\n        )\n        .await\n        .expect(\"list_sales_v10 request failed\");\n    println!(\"{response:#?}\");\n}\n"
+      "sample": "use sumup::{Authorization, Client};\n#[tokio::main]\nasync fn main() {\n    let client = Client::default()\n        .with_authorization(Authorization::api_key(\"sup_sk_test_...\"));\n    let response = client\n        .sales()\n        .list(\"MERCHANT_CODE\", sumup::resources::sales::ListParams::builder().build())\n        .await\n        .expect(\"list request failed\");\n    println!(\"{response:#?}\");\n}\n"
     },
     {
       "id": "ListTransactionsV2.1",
@@ -472,13 +472,14 @@
       "sample": "use sumup::{Authorization, Client};\n#[tokio::main]\nasync fn main() {\n    let client = Client::default()\n        .with_authorization(Authorization::api_key(\"sup_sk_test_...\"));\n    let body = sumup::resources::transactions::RefundRequest::builder()\n        .amount(24.42f32)\n        .build();\n    let response = client\n        .transactions()\n        .refund(\"MERCHANT_CODE\", \"TRANSACTION_ID\", Some(body))\n        .await\n        .expect(\"refund request failed\");\n    println!(\"{response:#?}\");\n}\n"
     },
     {
-      "id": "SearchSalesV10",
+      "id": "SearchSalesV10.date_range",
       "operationId": "SearchSalesV10",
-      "summary": "Searches sales",
+      "example": "date_range",
+      "summary": "Search point-of-sale sales in a date range",
       "description": "Returns a paginated list of `SaleSearchItem` rows matching filter criteria. Results are\nsorted **newest first** by **sale close date**.\n\nFilters from different categories stack with **logical AND**; multiple values in one array\nfield stack with **logical OR**. Results cover the merchant’s **last two years** of sales\n(narrow further with `start_date` / `end_date`). Pagination tokens are not interchangeable\nwith `GET /sales`.",
       "httpMethod": "POST",
       "path": "/v1.0/merchants/{merchant_code}/sales/search",
-      "sample": "use sumup::{Authorization, Client};\n#[tokio::main]\nasync fn main() {\n    let client = Client::default()\n        .with_authorization(Authorization::api_key(\"sup_sk_test_...\"));\n    let body = sumup::resources::sales::SearchSalesV10Request::builder().build();\n    let response = client\n        .sales()\n        .search_sales_v10(\"MERCHANT_CODE\", body)\n        .await\n        .expect(\"search_sales_v10 request failed\");\n    println!(\"{response:#?}\");\n}\n"
+      "sample": "use sumup::{Authorization, Client};\n#[tokio::main]\nasync fn main() {\n    let client = Client::default()\n        .with_authorization(Authorization::api_key(\"sup_sk_test_...\"));\n    let body = sumup::resources::sales::SearchRequest::builder()\n        .end_date(\"2026-06-02T23:59:59Z\".parse().expect(\"valid date\"))\n        .pagination_limit(10i64)\n        .sales_channels(vec![sumup::resources::sales::SalesChannelFilterV10::Pos])\n        .start_date(\"2026-06-01T00:00:00Z\".parse().expect(\"valid date\"))\n        .build();\n    let response = client\n        .sales()\n        .search(\"MERCHANT_CODE\", body)\n        .await\n        .expect(\"search request failed\");\n    println!(\"{response:#?}\");\n}\n"
     },
     {
       "id": "UpdateCheckout.default",
