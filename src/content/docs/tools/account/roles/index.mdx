@@ -1,0 +1,51 @@
+---
+title: Roles and permissions
+description: Choose system roles and control what members can do in a SumUp merchant account.
+sidebar:
+  order: 3
+---
+
+Roles control what members can see and do in a merchant account. Use a system role for common jobs, such as managing a shop or handling accounting.
+
+## System roles
+
+SumUp provides four system roles for merchant account members. Manager, Employee, and Accountant can be assigned through the API using their role IDs.
+
+| Role       | ID                | Intended use                                                                                          |
+| ---------- | ----------------- | ----------------------------------------------------------------------------------------------------- |
+| Admin      | `role_admin`      | Manage the merchant account's settings and preferences. Currently cannot be assigned through the API. |
+| Manager    | `role_manager`    | Manage daily business operations, including refunds.                                                  |
+| Employee   | `role_employee`   | Perform cashier tasks, such as accepting payments.                                                    |
+| Accountant | `role_accountant` | Access reporting and transaction information for accounting.                                          |
+
+SumUp manages the permissions in system roles. [List roles](/api/roles/list/) returns them with `is_predefined: true`.
+
+The account owner has `role_owner` and all Admin permissions. Each merchant account has one owner. This role is not available through the APIs.
+
+## How roles grant access
+
+A **permission** allows an action, such as viewing API keys. A **role** is a set of permissions. SumUp chooses the permissions included in each system role.
+
+A member receives the permissions from all their assigned roles. Removing one role leaves access granted by other roles in place.
+
+### Permissions and OAuth scopes
+
+Permissions control what a user can do in a merchant account. [OAuth scopes](/tools/authorization/oauth/#authorization-scopes) control what your application can do on that user's behalf.
+
+An OAuth request needs both: the user must have the required permission, and the access token must have the required scopes. Requesting a scope does not give the user extra permissions.
+
+Find the required permission for an endpoint in the [API reference](/api/).
+
+## Assign a role to a member
+
+Roles are assigned to a member of a specific merchant account. A user can have different roles in different accounts. See [Manage members](/tools/account/members/#assign-a-role-to-a-member) for role-assignment examples and how to verify access.
+
+## Troubleshoot access
+
+If a member cannot perform an action after you assign a role, check:
+
+- The request uses the correct merchant code and the member's credentials.
+- The member has the intended role, and the role grants the permission required by the endpoint.
+- For OAuth requests, the access token has the endpoint's required scopes.
+
+If the member has more access than expected, check all their assigned roles. Another role may grant the same permission.

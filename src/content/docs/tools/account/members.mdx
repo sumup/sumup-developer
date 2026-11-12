@@ -1,0 +1,460 @@
+---
+title: Manage members
+description: Invite people to a merchant account, change their roles, and remove access.
+sidebar:
+  order: 4
+---
+
+Add members to a merchant account so each person can sign in with their own user account. Assign roles to control what they can do. You can also create managed users when the merchant needs to manage the user's login.
+
+See [Run the examples](/tools/account/#run-the-examples) for shared setup.
+
+## Required access
+
+The user making each request needs the corresponding permission. For OAuth requests, the token must also have either of the listed scopes.
+
+| Action                    | User permission  | OAuth scopes                          |
+| ------------------------- | ---------------- | ------------------------------------- |
+| List members              | `merchant_read`  | `user.subaccounts` or `members.read`  |
+| View a member             | `members_view`   | `user.subaccounts` or `members.read`  |
+| Invite or create a member | `members_create` | `user.subaccounts` or `members.write` |
+| Change a member's roles   | `members_update` | `user.subaccounts` or `members.write` |
+| Remove a member           | `members_delete` | `user.subaccounts` or `members.write` |
+
+## Invite a member
+
+1. Choose a [system role](/tools/account/roles/) for the new member.
+2. Call [Create a member](/api/members/create/) with the person's email address and the roles to assign.
+
+The following examples invite `teammate@example.com` with the Employee role. Replace the email address before sending a real invitation.
+
+<CodeGroup title="Invite a member">
+
+<CodeGroupItem label="cURL">
+
+```bash
+curl --request POST \
+  "https://api.sumup.com/v0.1/merchants/${SUMUP_MERCHANT_CODE}/members" \
+  --header "Authorization: Bearer ${SUMUP_ACCESS_TOKEN}" \
+  --header "Content-Type: application/json" \
+  --data '{
+    "email": "teammate@example.com",
+    "roles": ["role_employee"]
+  }'
+```
+
+</CodeGroupItem>
+
+<CodeGroupItem label="TypeScript">
+
+```ts
+import SumUp from "@sumup/sdk";
+
+const client = new SumUp({ apiKey: process.env.SUMUP_ACCESS_TOKEN! });
+const member = await client.members.create(process.env.SUMUP_MERCHANT_CODE!, {
+  email: "teammate@example.com",
+  roles: ["role_employee"],
+});
+console.log(member.id);
+```
+
+</CodeGroupItem>
+
+<CodeGroupItem label="Python">
+
+```py
+import os
+
+from sumup import Sumup
+
+client = Sumup(api_key=os.environ["SUMUP_ACCESS_TOKEN"])
+member = client.members.create(
+    os.environ["SUMUP_MERCHANT_CODE"],
+    email="teammate@example.com",
+    roles=["role_employee"],
+)
+print(member.id)
+```
+
+</CodeGroupItem>
+
+<CodeGroupItem label="PHP">
+
+```php
+<?php
+
+require __DIR__ . '/vendor/autoload.php';
+
+$client = new \SumUp\SumUp(getenv('SUMUP_ACCESS_TOKEN'));
+$member = $client->members()->create(getenv('SUMUP_MERCHANT_CODE'), [
+    'email' => 'teammate@example.com',
+    'roles' => ['role_employee'],
+]);
+echo $member->id, PHP_EOL;
+```
+
+</CodeGroupItem>
+
+<CodeGroupItem label="Go">
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"log"
+	"os"
+
+	"github.com/sumup/sumup-go"
+	sumupclient "github.com/sumup/sumup-go/client"
+)
+
+func main() {
+	client := sumup.NewClient(sumupclient.WithAPIKey(os.Getenv("SUMUP_ACCESS_TOKEN")))
+	member, err := client.Members.Create(context.Background(), os.Getenv("SUMUP_MERCHANT_CODE"), sumup.MembersCreateParams{
+		Email: "teammate@example.com",
+		Roles: []string{"role_employee"},
+	})
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(member.ID)
+}
+```
+
+</CodeGroupItem>
+
+<CodeGroupItem label="Java">
+
+```java
+import com.sumup.sdk.SumUpClient;
+import com.sumup.sdk.models.CreateMerchantMemberRequest;
+import java.util.List;
+
+public class Main {
+  public static void main(String[] args) throws Exception {
+    var client = new SumUpClient(System.getenv("SUMUP_ACCESS_TOKEN"));
+    var member = client.members().create(
+        System.getenv("SUMUP_MERCHANT_CODE"),
+        CreateMerchantMemberRequest.builder()
+            .email("teammate@example.com")
+            .roles(List.of("role_employee"))
+            .build());
+    System.out.println(member.id());
+  }
+}
+```
+
+</CodeGroupItem>
+
+<CodeGroupItem label=".NET">
+
+```csharp
+using System;
+using SumUp;
+
+using var client = new SumUpClient(); // Reads SUMUP_ACCESS_TOKEN.
+var response = await client.Members.CreateAsync(
+    Environment.GetEnvironmentVariable("SUMUP_MERCHANT_CODE")!,
+    new MembersCreateRequest
+    {
+        Email = "teammate@example.com",
+        Roles = new[] { "role_employee" },
+    });
+Console.WriteLine(response.Data?.Id);
+```
+
+</CodeGroupItem>
+
+<CodeGroupItem label="Rust">
+
+```rust
+use sumup::{resources::members::CreateRequest, Authorization, Client};
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let client = Client::default().with_authorization(Authorization::api_key(
+        std::env::var("SUMUP_ACCESS_TOKEN")?,
+    ));
+    let member = client
+        .members()
+        .create(
+            std::env::var("SUMUP_MERCHANT_CODE")?,
+            CreateRequest {
+                email: "teammate@example.com".into(),
+                roles: vec!["role_employee".into()],
+                is_managed_user: None,
+                password: None,
+                nickname: None,
+                metadata: None,
+                attributes: None,
+            },
+        )
+        .await?;
+    println!("{}", member.id);
+    Ok(())
+}
+```
+
+</CodeGroupItem>
+
+</CodeGroup>
+
+The API returns HTTP `201` and a member object. Save its `id` if you need to update or remove this member later. The person receives an email invitation and must accept it before accessing the account.
+
+Call [Get a member](/api/members/get/) or [List members](/api/members/list/) to check their status. A pending invitation has status `pending`; after acceptance, the member has status `accepted`.
+
+If an invitation expires, the status is `expired`. To replace it, remove its member entry with [Delete a member](/api/members/delete/), then invite the person again. Creating another invitation while an entry for that email already exists is rejected.
+
+If the API returns HTTP `429`, wait until the time indicated by `Retry-After` before retrying.
+
+## Review members and change roles
+
+Use [List members](/api/members/list/) to review who has access to the account. You can filter the results by email prefix, role, or status. The response is paginated: use `limit` and `offset` to retrieve additional pages, with at most 25 members per page.
+
+The following request retrieves the first page of accepted members:
+
+<CodeGroup title="List accepted members">
+<CodeGroupItem label="cURL">
+
+```bash
+curl --get \
+  "https://api.sumup.com/v0.1/merchants/${SUMUP_MERCHANT_CODE}/members" \
+  --header "Authorization: Bearer ${SUMUP_ACCESS_TOKEN}" \
+  --data-urlencode "status=accepted" \
+  --data-urlencode "limit=25" \
+  --data-urlencode "offset=0"
+```
+
+</CodeGroupItem>
+</CodeGroup>
+
+The API returns HTTP `200` with an `items` array and `total_count`. Increase `offset` by the number of items returned to retrieve the next page. Use a member's `id` to update their roles or remove their access.
+
+## Assign a role to a member
+
+The user making the request needs `members_update`. For OAuth requests, the token also needs `user.subaccounts` or `members.write`.
+
+Set `SUMUP_ROLE_ID` to the system role to assign, such as `role_manager`. Use [List members](/api/members/list/) to find the member and check their current roles. Set `SUMUP_MEMBER_ID` to their member ID.
+
+**The `roles` array replaces the member's current roles.** Include every role the member should keep. These examples assign only the selected role, removing any other roles from the member:
+
+<CodeGroup title="Assign a role to a member">
+
+<CodeGroupItem label="cURL">
+
+```bash
+curl --request PUT \
+  "https://api.sumup.com/v0.1/merchants/${SUMUP_MERCHANT_CODE}/members/${SUMUP_MEMBER_ID}" \
+  --header "Authorization: Bearer ${SUMUP_ACCESS_TOKEN}" \
+  --header "Content-Type: application/json" \
+  --data "{\"roles\":[\"${SUMUP_ROLE_ID}\"]}"
+```
+
+</CodeGroupItem>
+
+<CodeGroupItem label="TypeScript">
+
+```ts
+import SumUp from "@sumup/sdk";
+
+const client = new SumUp({ apiKey: process.env.SUMUP_ACCESS_TOKEN! });
+const member = await client.members.update(
+  process.env.SUMUP_MERCHANT_CODE!,
+  process.env.SUMUP_MEMBER_ID!,
+  { roles: [process.env.SUMUP_ROLE_ID!] },
+);
+console.log(member);
+```
+
+</CodeGroupItem>
+
+<CodeGroupItem label="Python">
+
+```py
+import os
+
+from sumup import Sumup
+
+client = Sumup(api_key=os.environ["SUMUP_ACCESS_TOKEN"])
+member = client.members.update(
+    os.environ["SUMUP_MERCHANT_CODE"],
+    os.environ["SUMUP_MEMBER_ID"],
+    roles=[os.environ["SUMUP_ROLE_ID"]],
+)
+print(member)
+```
+
+</CodeGroupItem>
+
+<CodeGroupItem label="PHP">
+
+```php
+<?php
+
+require __DIR__ . '/vendor/autoload.php';
+
+$client = new \SumUp\SumUp(getenv('SUMUP_ACCESS_TOKEN'));
+$member = $client->members()->update(
+    getenv('SUMUP_MERCHANT_CODE'),
+    getenv('SUMUP_MEMBER_ID'),
+    ['roles' => [getenv('SUMUP_ROLE_ID')]],
+);
+var_dump($member);
+```
+
+</CodeGroupItem>
+
+<CodeGroupItem label="Go">
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "log"
+    "os"
+
+    "github.com/sumup/sumup-go"
+    sumupclient "github.com/sumup/sumup-go/client"
+)
+
+func main() {
+    client := sumup.NewClient(sumupclient.WithAPIKey(os.Getenv("SUMUP_ACCESS_TOKEN")))
+    member, err := client.Members.Update(
+        context.Background(),
+        os.Getenv("SUMUP_MERCHANT_CODE"),
+        os.Getenv("SUMUP_MEMBER_ID"),
+        sumup.MembersUpdateParams{Roles: []string{os.Getenv("SUMUP_ROLE_ID")}},
+    )
+    if err != nil {
+        log.Fatal(err)
+    }
+    fmt.Printf("%+v\n", member)
+}
+```
+
+</CodeGroupItem>
+
+<CodeGroupItem label="Java">
+
+```java
+import com.sumup.sdk.SumUpClient;
+import com.sumup.sdk.models.UpdateMerchantMemberRequest;
+import java.util.List;
+
+public class Main {
+  public static void main(String[] args) throws Exception {
+    var client = new SumUpClient(System.getenv("SUMUP_ACCESS_TOKEN"));
+    var member = client.members().update(
+        System.getenv("SUMUP_MEMBER_ID"),
+        System.getenv("SUMUP_MERCHANT_CODE"),
+        UpdateMerchantMemberRequest.builder()
+            .roles(List.of(System.getenv("SUMUP_ROLE_ID")))
+            .build());
+    System.out.println(member);
+  }
+}
+```
+
+</CodeGroupItem>
+
+<CodeGroupItem label=".NET">
+
+```csharp
+using System;
+using SumUp;
+
+using var client = new SumUpClient(); // Reads SUMUP_ACCESS_TOKEN.
+var response = await client.Members.UpdateAsync(
+    Environment.GetEnvironmentVariable("SUMUP_MERCHANT_CODE")!,
+    Environment.GetEnvironmentVariable("SUMUP_MEMBER_ID")!,
+    new MembersUpdateRequest
+    {
+        Roles = new[] { Environment.GetEnvironmentVariable("SUMUP_ROLE_ID")! },
+    });
+Console.WriteLine(response.Data);
+```
+
+</CodeGroupItem>
+
+<CodeGroupItem label="Rust">
+
+```rust
+use sumup::{resources::members::UpdateRequest, Authorization, Client};
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let client = Client::default().with_authorization(Authorization::api_key(
+        std::env::var("SUMUP_ACCESS_TOKEN")?,
+    ));
+    let member = client
+        .members()
+        .update(
+            std::env::var("SUMUP_MERCHANT_CODE")?,
+            std::env::var("SUMUP_MEMBER_ID")?,
+            UpdateRequest {
+                roles: Some(vec![std::env::var("SUMUP_ROLE_ID")?]),
+                ..Default::default()
+            },
+        )
+        .await?;
+    println!("{member:#?}");
+    Ok(())
+}
+```
+
+</CodeGroupItem>
+
+</CodeGroup>
+
+The API returns HTTP `200` and the updated member. You can also assign roles when [inviting a new member](/tools/account/members/#invite-a-member).
+
+### Verify the member's access
+
+Call [Get a member](/api/members/get/) and check their saved roles. Test an action the role allows and one it should deny using the member's credentials and the required OAuth scopes. A successful request made as the account owner does not verify the member's access.
+
+## Managed users
+
+An invited member signs in with their own user account. A managed user's login is managed by the merchant instead, and no invitation is sent. Managed users cannot reset their own password; the merchant must change it with [Update a member](/api/members/update/).
+
+To create a managed user, call [Create a member](/api/members/create/) with `is_managed_user: true`, an email address, a password, and the roles to assign. You can also provide a `nickname` for display. The password must contain at least eight characters.
+
+Export `SUMUP_MANAGED_USER_PASSWORD` with the password for the new managed user. The following request creates `cashier@example.com` with the Employee role. Replace the email address before sending the request.
+
+<CodeGroup title="Create a managed user">
+<CodeGroupItem label="cURL">
+
+```bash
+curl --request POST \
+  "https://api.sumup.com/v0.1/merchants/${SUMUP_MERCHANT_CODE}/members" \
+  --header "Authorization: Bearer ${SUMUP_ACCESS_TOKEN}" \
+  --json "$(jq -n '{
+    email: "cashier@example.com",
+    is_managed_user: true,
+    password: env.SUMUP_MANAGED_USER_PASSWORD,
+    nickname: "Cashier",
+    roles: ["role_employee"]
+  }')"
+```
+
+</CodeGroupItem>
+</CodeGroup>
+
+This example requires [jq](https://jqlang.org/) to encode the password safely as JSON. The API returns HTTP `201` and the new member. No invitation needs to be accepted before the managed user can sign in.
+
+Use [Update a member](/api/members/update/) to change a managed user's `user.nickname` or `user.password`. These fields are not available for invited users. Setting a new password also enables the managed user's account.
+
+## Remove access
+
+**Removing a managed user from their last merchant account also deletes their login and ends their sessions.** Check which type of user you are removing before proceeding.
+
+1. Use [Get a member](/api/members/get/) to confirm you have the correct person and account.
+2. Call [Delete a member](/api/members/delete/) with the merchant code and the member's `id`.
+3. Confirm that the member no longer appears in [List members](/api/members/list/).
+
+The delete request returns HTTP `200` with an empty body. For an invited user, removal affects access to this merchant account; it does not remove their access to other merchant accounts.
+
+Some members, including the account owner and Admin members, are protected from removal through this endpoint. The Members API also does not support removing service accounts.
