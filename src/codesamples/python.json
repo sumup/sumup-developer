@@ -3,7 +3,7 @@
   "language": "python",
   "sdk": {
     "module": "sumup",
-    "version": "0.4.1"
+    "version": "0.4.2"
   },
   "openAPIVersion": "1.0.0",
   "samples": [
@@ -294,11 +294,11 @@
     {
       "id": "GetSaleV10",
       "operationId": "GetSaleV10",
-      "summary": "Gets a sale",
+      "summary": "Get a sale",
       "description": "Returns `Sale` for `sale_id`, including item lines and `payments[]`.\nNon-finalised sales are never returned; only fully-paid sales.",
       "httpMethod": "GET",
       "path": "/v1.0/merchants/{merchant_code}/sales/{sale_id}",
-      "sample": "import os\n\nimport sumup\n\nclient = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\nresult = client.sales.get_sale_v_10(\n    \"MCZM9TGQ\",\n    \"5965aa65-e45a-4cc1-9063-c1c1e3b8607f\",\n)\nprint(result)\n"
+      "sample": "import os\n\nimport sumup\n\nclient = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\nresult = client.sales.get(\n    \"MCZM9TGQ\",\n    \"5965aa65-e45a-4cc1-9063-c1c1e3b8607f\",\n)\nprint(result)\n"
     },
     {
       "id": "GetTransactionV2.1",
@@ -384,11 +384,11 @@
     {
       "id": "ListSalesV10",
       "operationId": "ListSalesV10",
-      "summary": "Lists sales",
+      "summary": "List sales",
       "description": "Returns a paginated list of `Sale` objects. Results are sorted **newest first** by the\n**newest event** recorded for each sale. Pagination tokens follow that order.\n\nCovers the merchant’s **last two years** of sales. Non-finalised sales are never returned;\nonly fully-paid sales. Use `POST /sales/search` for filtered queries.",
       "httpMethod": "GET",
       "path": "/v1.0/merchants/{merchant_code}/sales",
-      "sample": "import os\n\nimport sumup\n\nclient = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\nresult = client.sales.list_sales_v_10(\n    \"MCZM9TGQ\",\n    pagination_token=\"66bcbtzelrubzeuzruzgu76678trncH\",\n    pagination_limit=10,\n)\nprint(result)\n"
+      "sample": "import os\n\nimport sumup\n\nclient = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\nresult = client.sales.list(\n    \"MCZM9TGQ\",\n    pagination_limit=10,\n)\nprint(result)\n"
     },
     {
       "id": "ListTransactionsV2.1",
@@ -397,7 +397,7 @@
       "description": "Lists transaction history for the merchant, with optional filters for payment type, status, and date range. The response contains the current page in `items` and pagination query strings in `links`.\n\nTo request another page, use the query string from the relevant link's `href` with this history endpoint. Use `changes_since` when retrieving transactions modified since a previous synchronization, including transactions created earlier whose status has changed.",
       "httpMethod": "GET",
       "path": "/v2.1/merchants/{merchant_code}/transactions/history",
-      "sample": "import os\n\nimport sumup\n\nclient = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\nresult = client.transactions.list(\n    \"MH4H92C7\",\n    transaction_code=\"TEENSK4W2K\",\n    order=\"ascending\",\n    limit=10,\n    users=[\n        \"merchant@example.com\",\n    ],\n    statuses=[\n        \"SUCCESSFUL\",\n        \"REFUNDED\",\n    ],\n    payment_types=[\n        \"ECOM\",\n        \"POS\",\n    ],\n    entry_modes=[\n        \"CUSTOMER_ENTRY\",\n        \"CHIP\",\n    ],\n    types=[\n        \"PAYMENT\",\n        \"REFUND\",\n    ],\n    changes_since=\"2019-08-28T09:00:00Z\",\n    newest_time=\"2019-08-29T09:00:00Z\",\n    newest_ref=\"090df9bf-93b7-40f1-8181-fbdb236568a1\",\n    oldest_time=\"2019-08-28T09:00:00Z\",\n    oldest_ref=\"090df9bf-93b7-40f1-8181-fbdb236568a1\",\n)\nprint(result)\n"
+      "sample": "import os\n\nimport sumup\n\nclient = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\nresult = client.transactions.list(\n    \"MH4H92C7\",\n    transaction_code=\"TEENSK4W2K\",\n    order=\"ascending\",\n    limit=10,\n    users=[\n        \"merchant@example.com\",\n    ],\n    statuses=[\n        \"SUCCESSFUL\",\n        \"REFUNDED\",\n    ],\n    payment_types=[\n        \"ECOM\",\n        \"POS\",\n    ],\n    entry_modes=[\n        \"customer entry\",\n        \"chip\",\n    ],\n    types=[\n        \"PAYMENT\",\n        \"REFUND\",\n    ],\n    changes_since=\"2019-08-28T09:00:00Z\",\n    newest_time=\"2019-08-29T09:00:00Z\",\n    newest_ref=\"090df9bf-93b7-40f1-8181-fbdb236568a1\",\n    oldest_time=\"2019-08-28T09:00:00Z\",\n    oldest_ref=\"090df9bf-93b7-40f1-8181-fbdb236568a1\",\n)\nprint(result)\n"
     },
     {
       "id": "ProcessCheckout.ProcessBancontact",
@@ -470,13 +470,14 @@
       "sample": "import os\n\nimport sumup\n\nclient = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\nresult = client.transactions.refund(\n    \"MH4H92C7\",\n    \"4ffb8dfc-7f2b-413d-a497-2ad00766585e\",\n    amount=24.42,\n)\nprint(result)\n"
     },
     {
-      "id": "SearchSalesV10",
+      "id": "SearchSalesV10.date_range",
       "operationId": "SearchSalesV10",
-      "summary": "Searches sales",
+      "example": "date_range",
+      "summary": "Search point-of-sale sales in a date range",
       "description": "Returns a paginated list of `SaleSearchItem` rows matching filter criteria. Results are\nsorted **newest first** by **sale close date**.\n\nFilters from different categories stack with **logical AND**; multiple values in one array\nfield stack with **logical OR**. Results cover the merchant’s **last two years** of sales\n(narrow further with `start_date` / `end_date`). Pagination tokens are not interchangeable\nwith `GET /sales`.",
       "httpMethod": "POST",
       "path": "/v1.0/merchants/{merchant_code}/sales/search",
-      "sample": "import os\n\nimport sumup\n\nclient = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\nresult = client.sales.search_sales_v_10(\n    \"MCZM9TGQ\",\n    start_date=\"2026-06-01T00:00:00Z\",\n    end_date=\"2026-06-02T23:59:59Z\",\n    sale_statuses=[\n        \"CLOSED\",\n    ],\n    payment_statuses=[\n        \"PAID\",\n    ],\n    sales_channels=[\n        \"POS\",\n    ],\n    pagination_token=\"66bcbtzelrubzeuzruzgu76678trncH\",\n    pagination_limit=10,\n)\nprint(result)\n"
+      "sample": "import os\n\nimport sumup\n\nclient = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\nresult = client.sales.search(\n    \"MCZM9TGQ\",\n    start_date=\"2026-06-01T00:00:00Z\",\n    end_date=\"2026-06-02T23:59:59Z\",\n    sales_channels=[\n        \"POS\",\n    ],\n    pagination_limit=10,\n)\nprint(result)\n"
     },
     {
       "id": "UpdateCheckout",
