@@ -100,10 +100,17 @@ tags:
     x-core-objects:
       - $ref: "#/components/schemas/Merchant"
   - name: Sales
-    description: Operations related to reading sales data.
+    description: 'Read a merchant''s fully-paid, closed sales, including item lines, taxes, discounts, and payments.
+
+
+      List sales to retrieve full `Sale` objects, or search by date, payment status, and sales channel
+
+      to retrieve summaries. Use a summary''s `id` to get the full sale.
+
+
+      Amounts are expressed in minor units according to each sale''s `currency.scale`.'
     x-core-objects:
       - $ref: '#/components/schemas/Sale'
-      - $ref: '#/components/schemas/PublicPaymentV10'
     x-displayName: Sales
   - name: Tokens
     description: |-
@@ -217,6 +224,7 @@ paths:
         - apiKey: []
         - oauth2:
             - payments
+        - oauth2:
             - checkouts.write
       x-codegen:
         method_name: create
@@ -481,6 +489,7 @@ paths:
         - apiKey: []
         - oauth2:
             - payments
+        - oauth2:
             - checkouts.read
       x-codegen:
         method_name: list
@@ -548,6 +557,7 @@ paths:
         - apiKey: []
         - oauth2:
             - payments
+        - oauth2:
             - checkouts.read
       x-codegen:
         method_name: get
@@ -650,6 +660,7 @@ paths:
         - apiKey: []
         - oauth2:
             - payments
+        - oauth2:
             - checkouts.write
       x-codegen:
         method_name: update
@@ -736,6 +747,7 @@ paths:
         - apiKey: []
         - oauth2:
             - payments
+        - oauth2:
             - checkouts.write
       x-codegen:
         method_name: process
@@ -1066,6 +1078,7 @@ paths:
         - apiKey: []
         - oauth2:
             - payments
+        - oauth2:
             - checkouts.write
       x-codegen:
         method_name: deactivate
@@ -1238,6 +1251,7 @@ paths:
         - apiKey: []
         - oauth2:
             - payment_instruments
+        - oauth2:
             - customers.write
       x-codegen:
         method_name: create
@@ -1334,6 +1348,7 @@ paths:
         - apiKey: []
         - oauth2:
             - payment_instruments
+        - oauth2:
             - customers.read
       x-codegen:
         method_name: get
@@ -1400,6 +1415,7 @@ paths:
         - apiKey: []
         - oauth2:
             - payment_instruments
+        - oauth2:
             - customers.write
       x-codegen:
         method_name: update
@@ -1483,6 +1499,7 @@ paths:
         - apiKey: []
         - oauth2:
             - payment_instruments
+        - oauth2:
             - customers.read
       x-codegen:
         method_name: list_payment_instruments
@@ -1566,6 +1583,7 @@ paths:
         - apiKey: []
         - oauth2:
             - payment_instruments
+        - oauth2:
             - customers.write
       x-codegen:
         method_name: deactivate_payment_instrument
@@ -1656,6 +1674,7 @@ paths:
         - apiKey: []
         - oauth2:
             - payments
+        - oauth2:
             - refunds.write
       x-codegen:
         method_name: refund
@@ -1784,6 +1803,7 @@ paths:
         - apiKey: []
         - oauth2:
             - transactions.history
+        - oauth2:
             - transactions.read
       x-codegen:
         method_name: get
@@ -1887,6 +1907,7 @@ paths:
         - apiKey: []
         - oauth2:
             - transactions.history
+        - oauth2:
             - transactions.read
       x-codegen:
         method_name: list
@@ -2132,7 +2153,9 @@ paths:
         - apiKey: []
         - oauth2:
             - user.profile
+        - oauth2:
             - user.profile_readonly
+        - oauth2:
             - payouts.read
       x-codegen:
         method_name: list
@@ -2270,6 +2293,7 @@ paths:
         - apiKey: []
         - oauth2:
             - receipts.read
+        - oauth2:
             - transactions.history
       x-codegen:
         method_name: get
@@ -2432,7 +2456,9 @@ paths:
       summary: Create a Go Reader Payment
       tags:
         - Readers
-      x-scopes: [payments, readers.write]
+      x-scopes:
+        - payments
+        - readers.write
       x-permissions:
         - readers_checkout_create
       x-codegen:
@@ -2461,6 +2487,7 @@ paths:
         - apiKey: []
         - oauth2:
             - payments
+        - oauth2:
             - readers.write
   /v0.1/memberships:
     get:
@@ -2471,11 +2498,14 @@ paths:
       operationId: ListMemberships
       x-codegen:
         method_name: list
-      x-scopes: ["user.profile", "user.profile_readonly"]
+      x-scopes:
+        - user.profile
+        - user.profile_readonly
       security:
         - apiKey: []
         - oauth2:
             - user.profile
+        - oauth2:
             - user.profile_readonly
       parameters:
         - name: offset
@@ -2694,11 +2724,14 @@ paths:
         - relation: merchant_read
           object_type: merchant
           object_id_param: merchant_code
-      x-scopes: [user.subaccounts, members.read]
+      x-scopes:
+        - user.subaccounts
+        - members.read
       security:
         - apiKey: []
         - oauth2:
             - user.subaccounts
+        - oauth2:
             - members.read
       responses:
         "200":
@@ -2742,6 +2775,7 @@ paths:
         - apiKey: []
         - oauth2:
             - user.subaccounts
+        - oauth2:
             - members.write
       x-codegen:
         method_name: create
@@ -2749,7 +2783,9 @@ paths:
         - relation: members_create
           object_type: merchant
           object_id_param: merchant_code
-      x-scopes: [user.subaccounts, members.write]
+      x-scopes:
+        - user.subaccounts
+        - members.write
       requestBody:
         required: true
         content:
@@ -2869,11 +2905,14 @@ paths:
         - relation: members_view
           object_type: merchant
           object_id_param: merchant_code
-      x-scopes: [user.subaccounts, members.read]
+      x-scopes:
+        - user.subaccounts
+        - members.read
       security:
         - apiKey: []
         - oauth2:
             - user.subaccounts
+        - oauth2:
             - members.read
       responses:
         "200":
@@ -2924,11 +2963,14 @@ paths:
         - relation: members_update
           object_type: merchant
           object_id_param: merchant_code
-      x-scopes: [user.subaccounts, members.write]
+      x-scopes:
+        - user.subaccounts
+        - members.write
       security:
         - apiKey: []
         - oauth2:
             - user.subaccounts
+        - oauth2:
             - members.write
       requestBody:
         required: true
@@ -3047,11 +3089,14 @@ paths:
         - relation: members_delete
           object_type: merchant
           object_id_param: merchant_code
-      x-scopes: [user.subaccounts, members.write]
+      x-scopes:
+        - user.subaccounts
+        - members.write
       security:
         - apiKey: []
         - oauth2:
             - user.subaccounts
+        - oauth2:
             - members.write
       responses:
         "200":
@@ -3106,11 +3151,14 @@ paths:
         - relation: roles_list
           object_type: merchant
           object_id_param: merchant_code
-      x-scopes: [user.subaccounts, roles.read]
+      x-scopes:
+        - user.subaccounts
+        - roles.read
       security:
         - apiKey: []
         - oauth2:
             - user.subaccounts
+        - oauth2:
             - roles.read
       responses:
         "200":
@@ -3156,6 +3204,7 @@ paths:
         - apiKey: []
         - oauth2:
             - user.subaccounts
+        - oauth2:
             - roles.write
       x-codegen:
         method_name: create
@@ -3163,7 +3212,9 @@ paths:
         - relation: roles_create
           object_type: merchant
           object_id_param: merchant_code
-      x-scopes: [user.subaccounts, roles.write]
+      x-scopes:
+        - user.subaccounts
+        - roles.write
       requestBody:
         required: true
         content:
@@ -3247,11 +3298,14 @@ paths:
         - relation: roles_view
           object_type: merchant
           object_id_param: merchant_code
-      x-scopes: [user.subaccounts, roles.read]
+      x-scopes:
+        - user.subaccounts
+        - roles.read
       security:
         - apiKey: []
         - oauth2:
             - user.subaccounts
+        - oauth2:
             - roles.read
       responses:
         "200":
@@ -3296,6 +3350,7 @@ paths:
         - apiKey: []
         - oauth2:
             - user.subaccounts
+        - oauth2:
             - roles.write
       x-codegen:
         method_name: delete
@@ -3303,7 +3358,9 @@ paths:
         - relation: roles_delete
           object_type: merchant
           object_id_param: merchant_code
-      x-scopes: [user.subaccounts, roles.write]
+      x-scopes:
+        - user.subaccounts
+        - roles.write
       responses:
         "200":
           description: Returns an empty response if the role deletion succeeded.
@@ -3357,6 +3414,7 @@ paths:
         - apiKey: []
         - oauth2:
             - user.subaccounts
+        - oauth2:
             - roles.write
       x-codegen:
         method_name: update
@@ -3364,7 +3422,9 @@ paths:
         - relation: roles_update
           object_type: merchant
           object_id_param: merchant_code
-      x-scopes: [user.subaccounts, roles.write]
+      x-scopes:
+        - user.subaccounts
+        - roles.write
       requestBody:
         required: true
         content:
@@ -3456,12 +3516,15 @@ paths:
         url: https://developer.sumup.com/tools/models/merchant
       x-codegen:
         method_name: get
-      x-scopes: ["user.profile", "user.profile_readonly"]
+      x-scopes:
+        - user.profile
+        - user.profile_readonly
       x-permissions: [merchant_read]
       security:
         - apiKey: []
         - oauth2:
             - user.profile
+        - oauth2:
             - user.profile_readonly
       responses:
         "200":
@@ -3495,7 +3558,9 @@ paths:
       externalDocs:
         description: Persons documentation
         url: https://developer.sumup.com/tools/models/merchant#persons
-      x-scopes: ["user.profile", "user.profile_readonly"]
+      x-scopes:
+        - user.profile
+        - user.profile_readonly
       x-permissions: [persons_read]
       x-codegen:
         method_name: list_persons
@@ -3503,6 +3568,7 @@ paths:
         - apiKey: []
         - oauth2:
             - user.profile
+        - oauth2:
             - user.profile_readonly
       responses:
         "200":
@@ -3536,7 +3602,9 @@ paths:
       externalDocs:
         description: Persons documentation
         url: https://developer.sumup.com/tools/models/merchant#persons
-      x-scopes: ["user.profile", "user.profile_readonly"]
+      x-scopes:
+        - user.profile
+        - user.profile_readonly
       x-permissions: [persons_read]
       x-codegen:
         method_name: get_person
@@ -3544,6 +3612,7 @@ paths:
         - apiKey: []
         - oauth2:
             - user.profile
+        - oauth2:
             - user.profile_readonly
       responses:
         "200":
@@ -3586,11 +3655,14 @@ paths:
         - relation: readers.list
           object_type: merchant
           object_id_param: merchant_code
-      x-scopes: [readers.read, terminals.read]
+      x-scopes:
+        - readers.read
+        - terminals.read
       security:
         - apiKey: []
         - oauth2:
             - readers.read
+        - oauth2:
             - terminals.read
       responses:
         "200":
@@ -3637,11 +3709,14 @@ paths:
         - relation: readers.create
           object_type: merchant
           object_id_param: merchant_code
-      x-scopes: [readers.write, terminals.write]
+      x-scopes:
+        - readers.write
+        - terminals.write
       security:
         - apiKey: []
         - oauth2:
             - readers.write
+        - oauth2:
             - terminals.write
       requestBody:
         required: true
@@ -3753,11 +3828,14 @@ paths:
         - relation: readers.view
           object_type: merchant
           object_id_param: merchant_code
-      x-scopes: [readers.read, terminals.read]
+      x-scopes:
+        - readers.read
+        - terminals.read
       security:
         - apiKey: []
         - oauth2:
             - readers.read
+        - oauth2:
             - terminals.read
       parameters:
         - in: header
@@ -3830,11 +3908,14 @@ paths:
         - relation: readers.delete
           object_type: merchant
           object_id_param: merchant_code
-      x-scopes: [readers.write, terminals.write]
+      x-scopes:
+        - readers.write
+        - terminals.write
       security:
         - apiKey: []
         - oauth2:
             - readers.write
+        - oauth2:
             - terminals.write
       responses:
         "200":
@@ -3887,11 +3968,14 @@ paths:
         - relation: readers.update
           object_type: merchant
           object_id_param: merchant_code
-      x-scopes: [readers.write, terminals.write]
+      x-scopes:
+        - readers.write
+        - terminals.write
       security:
         - apiKey: []
         - oauth2:
             - readers.write
+        - oauth2:
             - terminals.write
       requestBody:
         required: true
@@ -3962,7 +4046,7 @@ paths:
     get:
       tags:
         - Sales
-      summary: Lists sales
+      summary: List sales
       description: 'Returns a paginated list of `Sale` objects. Results are sorted **newest first** by the
 
         **newest event** recorded for each sale. Pagination tokens follow that order.
@@ -3972,14 +4056,16 @@ paths:
 
         only fully-paid sales. Use `POST /sales/search` for filtered queries.'
       operationId: ListSalesV10
+      x-codegen:
+        method_name: list
+      x-scopes:
+        - sales.read
+      x-permissions:
+        - merchant.read
       security:
         - apiKey: []
         - oauth2:
             - sales.read
-      x-scopes:
-        - sales.read
-      x-permissions:
-        - merchant_read
       parameters:
         - name: merchant_code
           in: path
@@ -3992,16 +4078,13 @@ paths:
         - name: pagination_token
           in: query
           required: false
-          description: 'Pagination token for subsequent requests. Should only be set by clients if they have
+          description: 'Opaque token from the previous list response. Omit it on the first request. To load
 
-            received a token in the previous response, and this request is an immediate follow-up
+            the next page, pass the returned token unchanged. Not interchangeable with tokens
 
-            request to that response to load the subsequent page. Clients should treat this as an
-
-            opaque token and should not attempt to parse it in any way.'
+            from `POST /sales/search`.'
           schema:
             type: string
-          example: 66bcbtzelrubzeuzruzgu76678trncH
         - name: pagination_limit
           in: query
           required: false
@@ -4032,7 +4115,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ProblemV10'
         '403':
-          description: Missing `sales.read`, merchant code mismatch on the token, or no `merchant_read` permission.
+          description: Missing `sales.read`, merchant code mismatch on the token, or no `merchant.read` permission.
           content:
             application/problem+json:
               schema:
@@ -4047,7 +4130,7 @@ paths:
     post:
       tags:
         - Sales
-      summary: Searches sales
+      summary: Search sales
       description: 'Returns a paginated list of `SaleSearchItem` rows matching filter criteria. Results are
 
         sorted **newest first** by **sale close date**.
@@ -4061,14 +4144,16 @@ paths:
 
         with `GET /sales`.'
       operationId: SearchSalesV10
+      x-codegen:
+        method_name: search
+      x-scopes:
+        - sales.read
+      x-permissions:
+        - merchant.read
       security:
         - apiKey: []
         - oauth2:
             - sales.read
-      x-scopes:
-        - sales.read
-      x-permissions:
-        - merchant_read
       parameters:
         - name: merchant_code
           in: path
@@ -4084,6 +4169,15 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/SaleSearchRequest'
+            examples:
+              date_range:
+                summary: Search point-of-sale sales in a date range
+                value:
+                  start_date: '2026-06-01T00:00:00Z'
+                  end_date: '2026-06-02T23:59:59Z'
+                  sales_channels:
+                    - POS
+                  pagination_limit: 10
       responses:
         '200':
           description: Successful response with search results.
@@ -4104,7 +4198,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ProblemV10'
         '403':
-          description: Missing `sales.read`, merchant code mismatch on the token, or no `merchant_read` permission.
+          description: Missing `sales.read`, merchant code mismatch on the token, or no `merchant.read` permission.
           content:
             application/problem+json:
               schema:
@@ -4119,19 +4213,21 @@ paths:
     get:
       tags:
         - Sales
-      summary: Gets a sale
+      summary: Get a sale
       description: 'Returns `Sale` for `sale_id`, including item lines and `payments[]`.
 
         Non-finalised sales are never returned; only fully-paid sales.'
       operationId: GetSaleV10
+      x-codegen:
+        method_name: get
+      x-scopes:
+        - sales.read
+      x-permissions:
+        - merchant.read
       security:
         - apiKey: []
         - oauth2:
             - sales.read
-      x-scopes:
-        - sales.read
-      x-permissions:
-        - merchant_read
       parameters:
         - name: merchant_code
           in: path
@@ -4163,13 +4259,13 @@ paths:
                 tax_mode: GROSS
                 state: CLOSED
                 price:
-                  net_amount: 777
-                  gross_amount: 925
+                  net_amount: 252
+                  gross_amount: 300
                   taxes:
                     - id: tax-vat-19
-                      net_amount: 777
-                      gross_amount: 925
-                      tax_amount: 148
+                      net_amount: 252
+                      gross_amount: 300
+                      tax_amount: 48
                 created_at: '2026-06-02T10:15:00Z'
                 closed_at: '2026-06-02T10:20:00Z'
                 source:
@@ -4179,6 +4275,10 @@ paths:
                     type: CATALOG
                     name: Cappuccino
                     quantity: 1
+                    unit_of_measure:
+                      group_id: quantity
+                      unit_id: quantity.piece
+                      unit_ratio: 1
                     price:
                       unit_amount: 300
                       total_net_amount: 252
@@ -4199,7 +4299,7 @@ paths:
                   - method: apple_pay
                     reference: TERTYFQ4G3
                     type: purchase
-                    amount: 975
+                    amount: 300
                     status: SUCCESSFUL
                     processed_at: '2026-06-02T10:20:00Z'
         '401':
@@ -4209,7 +4309,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ProblemV10'
         '403':
-          description: Missing `sales.read`, merchant code mismatch on the token, or no `merchant_read` permission.
+          description: Missing `sales.read`, merchant code mismatch on the token, or no `merchant.read` permission.
           content:
             application/problem+json:
               schema:
@@ -9468,9 +9568,11 @@ components:
 
             Digital wallets are first-class methods. Gift card payments use `gift_card`, not `apm`.
 
-            Input is case-insensitive; the canonical form is lowercase snake_case.
+            Values use lowercase snake_case. Known values are `card`, `cash`, `apm`, `external`,
 
-            **VALUES**: [card, cash, apm, external, apple_pay, google_pay, whatsapp_pay, gift_card].'
+            `apple_pay`, `google_pay`, `whatsapp_pay`, and `gift_card`.
+
+            Additional values may be returned as new payment methods become available.'
           example: card
           maxLength: 20
         reference:
@@ -9484,10 +9586,8 @@ components:
           description: |
             Payment operation type.
             This is distinct from the payment instrument in `method`.
-            Input is case-insensitive; the canonical form is lowercase snake_case.
-            **VALUES**: [purchase, unreferenced_refund]
-            Defaults to "purchase" if unspecified. Either a normal purchase or an unreferenced refund for negative
-            sales like deposit returns.
+            Values use lowercase snake_case. Known values are `purchase` for a normal purchase
+            and `unreferenced_refund` for negative sales such as deposit returns.
           example: purchase
         amount:
           description: |
@@ -9514,9 +9614,11 @@ components:
 
             Gift card is not an APM on this API.
 
-            Input is case-insensitive; the canonical form is lowercase snake_case.
+            Values use lowercase snake_case. Known values are `qr_code_pix`, `sepa_dd`, `paypal`,
 
-            **VALUES**: [qr_code_pix, sepa_dd, paypal, sumup_pay, twint, iris].'
+            `sumup_pay`, `twint`, and `iris`.
+
+            Additional values may be returned as new alternative payment methods become available.'
           maxLength: 20
         card:
           $ref: '#/components/schemas/PublicCardV10'
@@ -9530,7 +9632,7 @@ components:
             or canceled). Server processed time when available; otherwise the payment provider’s
 
             transaction time. Not the device clock.'
-          example: '2017-07-21T17:32:28+01:00'
+          example: '2026-06-02T10:20:00Z'
     SaleStateV10:
       type: string
       description: 'Lifecycle state of the sale.
@@ -9632,7 +9734,7 @@ components:
       type: object
       description: 'Paginated list of `Sale` objects. Results are ordered **newest first** by the newest
 
-        activity recorded for each sale. See `ListSalesV10`.'
+        activity recorded for each sale.'
       required:
         - items
       properties:
@@ -9641,13 +9743,9 @@ components:
           items:
             $ref: '#/components/schemas/Sale'
         pagination_token:
-          description: 'Pagination token for subsequent requests. Should only be set by clients if they have
+          description: 'Opaque token for the next page. Pass it as the `pagination_token` query parameter
 
-            received a token in the previous response, and this request is an immediate follow-up
-
-            request to that response to load the subsequent page. Clients should treat this as an
-
-            opaque token and should not attempt to parse it in any way.'
+            on the next list request. Omitted when no further page is available.'
           type: string
           example: 66bcbtzelrubzeuzruzgu76678trncH
     ProblemV10:
@@ -9760,9 +9858,9 @@ components:
             - POS
         pagination_token:
           type: string
-          description: 'Opaque pagination token from a previous search response. Not interchangeable with tokens
+          description: 'Opaque token from the previous search response. To load the next page, send it with
 
-            from `GET /sales`.'
+            the same filters. Not interchangeable with tokens from `GET /sales`.'
           example: 66bcbtzelrubzeuzruzgu76678trncH
         pagination_limit:
           type: integer
@@ -9854,7 +9952,9 @@ components:
               created_at: '2026-06-01T14:30:00Z'
               closed_at: '2026-06-01T14:35:00Z'
         pagination_token:
-          description: Opaque token for the next page of search results.
+          description: 'Opaque token for the next page. Pass it as `pagination_token` in the next search
+
+            request body with the same filters. Omitted when no further page is available.'
           type: string
           example: 66bcbtzelrubzeuzruzgu76678trncH
     UpdateReaderSettingsError:
