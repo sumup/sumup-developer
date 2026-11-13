@@ -68,7 +68,7 @@
     "@scalar/openapi-parser": "0.29.19",
     "@sindresorhus/slugify": "^4.0.0",
     "@sumup-oss/circuit-ui": "12.6.0",
-    "@sumup-oss/design-tokens": "11.1.0",
+    "@sumup-oss/design-tokens": "11.1.1",
     "@sumup-oss/icons": "7.3.0",
     "@sumup-oss/illustrations": "1.1.0",
     "@types/jsdom": "30.0.0",
