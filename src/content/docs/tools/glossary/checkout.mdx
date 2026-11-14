@@ -1,0 +1,69 @@
+---
+title: Checkout
+description: A checkout defines how SumUp should collect a payment from a customer.
+sidebar:
+  order: 40
+---
+
+A checkout is a request to collect a specific amount in a specific currency
+for a merchant. You use it to accept payment for a
+[sale](/tools/glossary/sale/) or an order in your system.
+
+An online checkout commonly contains:
+
+- The amount and currency to collect
+- The merchant receiving the payment
+- A merchant-defined reference
+- Optional customer, expiration, redirect, and callback details
+- Its current status and any linked
+  [transactions](/tools/glossary/transaction/)
+
+A checkout can exist before any payment attempt. Its creation alone does not
+confirm payment: it can remain `PENDING`, fail, or expire without a successful
+transaction.
+
+## Checkout types in the public APIs
+
+SumUp APIs support checkouts for online and in-person payments:
+
+- The **Checkouts API** creates an online checkout, processes it with a payment
+  instrument, and retrieves its latest state. See
+  [Create a checkout](/api/checkouts/create/) and supported integrations such as
+  the [Payment Widget](/online-payments/checkouts/card-widget/) or
+  [Hosted Checkout](/online-payments/checkouts/hosted-checkout/).
+- The **Readers API** creates a checkout on a paired card reader. This starts an
+  asynchronous in-person payment flow. See
+  [Create a reader checkout](/api/readers/create-checkout/).
+
+Reader checkouts use different request and response fields from online
+checkouts. Acceptance of a reader checkout request does not confirm payment;
+follow the [Cloud API result flow](/terminal-payments/cloud-api/#receive-transaction-results)
+to verify the outcome. The following sections describe online checkouts.
+
+## Typical online checkout flow
+
+Your backend creates a checkout and provides its ID to the payment UI. The
+payment UI processes the payment, and SumUp links the resulting transaction
+records to the checkout. Your backend retrieves the checkout to confirm the
+latest payment state before updating your order.
+
+For redirect-based payment methods or 3D Secure (3DS), processing can return a
+next action instead of a final result. Use
+[Retrieve a checkout](/api/checkouts/get/) from your backend to verify the
+latest status, including after a
+[checkout webhook notification](/online-payments/webhooks/). Only mark the
+order as paid when the retrieved checkout has `status: "PAID"`.
+
+## Relationship to a sale and transaction
+
+- The **sale** records the items sold, their prices, and the associated payments.
+- The **checkout** carries the amount, currency, and instructions needed to
+  attempt payment.
+- The **transaction** records the payment attempt's outcome and related
+  financial events.
+
+A newly created checkout can have an empty `transactions` array. Payment
+processing attaches transaction records as attempts occur. Use the checkout to
+manage the payment flow; use the
+[Transactions API](/api/transactions/get/) for transaction details, history,
+and post-payment operations.
