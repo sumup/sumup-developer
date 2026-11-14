@@ -67,6 +67,8 @@ Strong Customer Authentication (SCA) may apply to European online payments. The 
 
 </Steps>
 
+Use `onResponse` to refresh the order status from your backend. Before fulfillment, [verify the checkout and update the order once](/online-payments/guides/confirm-payment/). Logging a callback or showing a success message in the browser does not update or verify your backend order.
+
 ## Configurations
 
 The Payment Widget allows you to customize certain properties on the payment form, as listed below. To override the default settings, add your own configuration property-value pairs to the `SumUpCard.mount` method.
