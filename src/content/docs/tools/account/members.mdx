@@ -23,7 +23,7 @@ The user making each request needs the corresponding permission. For OAuth reque
 
 ## Invite a member
 
-1. Choose a [system role](/tools/account/roles/) for the new member.
+1. Choose a [system or custom role](/tools/account/roles/) for the new member.
 2. Call [Create a member](/api/members/create/) with the person's email address and the roles to assign.
 
 The following examples invite `teammate@example.com` with the Employee role. Replace the email address before sending a real invitation.
@@ -236,7 +236,7 @@ The API returns HTTP `200` with an `items` array and `total_count`. Increase `of
 
 The user making the request needs `members_update`. For OAuth requests, the token also needs `user.subaccounts` or `members.write`.
 
-Set `SUMUP_ROLE_ID` to the system role to assign, such as `role_manager`. Use [List members](/api/members/list/) to find the member and check their current roles. Set `SUMUP_MEMBER_ID` to their member ID.
+Set `SUMUP_ROLE_ID` to the custom role ID returned by Create a role, or a system role ID such as `role_manager`. Use [List members](/api/members/list/) to find the member and check their current roles. Set `SUMUP_MEMBER_ID` to their member ID.
 
 **The `roles` array replaces the member's current roles.** Include every role the member should keep. These examples assign only the selected role, removing any other roles from the member:
 
@@ -414,7 +414,9 @@ The API returns HTTP `200` and the updated member. You can also assign roles whe
 
 ### Verify the member's access
 
-Call [Get a member](/api/members/get/) and check their saved roles. Test an action the role allows and one it should deny using the member's credentials and the required OAuth scopes. A successful request made as the account owner does not verify the member's access.
+Call [Get a member](/api/members/get/) and check that their roles include `SUMUP_ROLE_ID`. Call [Get a role](/api/roles/get/) to review its permissions.
+
+Make test requests using that member's credentials and the scopes required by each endpoint. Check an action the role allows and one it should deny. For the API key viewer role, listing API keys should succeed, while creating one should be denied unless another role grants that permission. A successful request made as the account owner does not verify the member's access.
 
 ## Managed users
 
