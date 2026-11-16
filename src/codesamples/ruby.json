@@ -1,0 +1,423 @@
+{
+  "schemaVersion": 1,
+  "language": "ruby",
+  "sdk": {
+    "module": "sumup",
+    "version": "0.0.1"
+  },
+  "openAPIVersion": "1.0.0",
+  "samples": [
+    {
+      "id": "CreateApplePaySession",
+      "operationId": "CreateApplePaySession",
+      "httpMethod": "PUT",
+      "path": "/v0.2/checkouts/{checkout_id}/apple-pay-session",
+      "sample": "require \"sumup\"\n\nclient = SumUp::Client.new(api_key: ENV.fetch(\"SUMUP_API_KEY\"))\nresult = client.checkouts.create_apple_pay_session(checkout_id: \"4e425463-3e1b-431d-83fa-1e51c2925e99\", body: {\"context\" => \"example.com\", \"target\" => \"https://apple-pay-gateway-cert.apple.com/paymentservices/startSession\"})\n"
+    },
+    {
+      "id": "CreateCheckout.Checkout",
+      "operationId": "CreateCheckout",
+      "httpMethod": "POST",
+      "path": "/v0.1/checkouts",
+      "sample": "require \"sumup\"\n\nclient = SumUp::Client.new(api_key: ENV.fetch(\"SUMUP_API_KEY\"))\nresult = client.checkouts.create(body: {\"checkout_reference\" => \"f00a8f74-b05d-4605-bd73-2a901bae5802\", \"amount\" => 10.1, \"currency\" => \"EUR\", \"merchant_code\" => \"MH4H92C7\", \"description\" => \"Purchase\", \"valid_until\" => \"2030-12-31T23:59:59Z\", \"redirect_url\" => \"https://sumup.com\"})\n",
+      "example": "Checkout"
+    },
+    {
+      "id": "CreateCheckout.Checkout3DS",
+      "operationId": "CreateCheckout",
+      "httpMethod": "POST",
+      "path": "/v0.1/checkouts",
+      "sample": "require \"sumup\"\n\nclient = SumUp::Client.new(api_key: ENV.fetch(\"SUMUP_API_KEY\"))\nresult = client.checkouts.create(body: {\"checkout_reference\" => \"f00a8f74-b05d-4605-bd73-2a901bae5802\", \"amount\" => 10.1, \"currency\" => \"EUR\", \"merchant_code\" => \"MH4H92C7\", \"description\" => \"Purchase\", \"return_url\" => \"http://example.com/\", \"customer_id\" => \"831ff8d4cd5958ab5670\", \"redirect_url\" => \"https://mysite.com/completed_purchase\"})\n",
+      "example": "Checkout3DS"
+    },
+    {
+      "id": "CreateCheckout.CheckoutAPM",
+      "operationId": "CreateCheckout",
+      "httpMethod": "POST",
+      "path": "/v0.1/checkouts",
+      "sample": "require \"sumup\"\n\nclient = SumUp::Client.new(api_key: ENV.fetch(\"SUMUP_API_KEY\"))\nresult = client.checkouts.create(body: {\"checkout_reference\" => \"f00a8f74-b05d-4605-bd73-2a901bae5802\", \"amount\" => 10.1, \"currency\" => \"EUR\", \"merchant_code\" => \"MH4H92C7\", \"redirect_url\" => \"https://mysite.com/completed_purchase\"})\n",
+      "example": "CheckoutAPM"
+    },
+    {
+      "id": "CreateCheckout.HostedCheckout",
+      "operationId": "CreateCheckout",
+      "httpMethod": "POST",
+      "path": "/v0.1/checkouts",
+      "sample": "require \"sumup\"\n\nclient = SumUp::Client.new(api_key: ENV.fetch(\"SUMUP_API_KEY\"))\nresult = client.checkouts.create(body: {\"checkout_reference\" => \"b50pr914-6k0e-3091-a592-890010285b3d\", \"amount\" => 12, \"currency\" => \"EUR\", \"merchant_code\" => \"MCXXXXXX\", \"description\" => \"A sample checkout\", \"hosted_checkout\" => {\"enabled\" => true}, \"redirect_url\" => \"https://example.com/orders/123/complete\"})\n",
+      "example": "HostedCheckout"
+    },
+    {
+      "id": "CreateCheckout.Tokenization",
+      "operationId": "CreateCheckout",
+      "httpMethod": "POST",
+      "path": "/v0.1/checkouts",
+      "sample": "require \"sumup\"\n\nclient = SumUp::Client.new(api_key: ENV.fetch(\"SUMUP_API_KEY\"))\nresult = client.checkouts.create(body: {\"checkout_reference\" => \"save-card-123\", \"amount\" => 1, \"currency\" => \"EUR\", \"merchant_code\" => \"MCXXXXXX\", \"description\" => \"Save a card for future payments\", \"customer_id\" => \"831ff8d4cd5958ab5670\", \"purpose\" => \"SETUP_RECURRING_PAYMENT\"})\n",
+      "example": "Tokenization"
+    },
+    {
+      "id": "CreateCustomer",
+      "operationId": "CreateCustomer",
+      "httpMethod": "POST",
+      "path": "/v0.1/customers",
+      "sample": "require \"sumup\"\n\nclient = SumUp::Client.new(api_key: ENV.fetch(\"SUMUP_API_KEY\"))\nresult = client.customers.create(body: {\"customer_id\" => \"831ff8d4cd5958ab5670\"})\n"
+    },
+    {
+      "id": "CreateGoReaderCheckout",
+      "operationId": "CreateGoReaderCheckout",
+      "httpMethod": "POST",
+      "path": "/v0/merchants/{merchant_code}/readers/{reader_id}/go-checkout",
+      "sample": "require \"sumup\"\n\nclient = SumUp::Client.new(api_key: ENV.fetch(\"SUMUP_API_KEY\"))\nresult = client.readers.create_go_checkout(merchant_code: \"MK10CL2A\", reader_id: \"rdr_3MSAFM23CK82VSTT4BN6RWSQ65\", body: {\"total_amount\" => {\"currency\" => \"MXN\", \"value\" => 1000}, \"client_transaction_id\" => \"19e12390-72cf-4f9f-80b5-b0c8a67fa43f\"})\n"
+    },
+    {
+      "id": "CreateMerchantMember",
+      "operationId": "CreateMerchantMember",
+      "httpMethod": "POST",
+      "path": "/v0.1/merchants/{merchant_code}/members",
+      "sample": "require \"sumup\"\n\nclient = SumUp::Client.new(api_key: ENV.fetch(\"SUMUP_API_KEY\"))\nresult = client.members.create(merchant_code: \"MK10CL2A\", body: {\"email\" => \"karl.berg@example.com\", \"roles\" => [\"role_employee\"]})\n"
+    },
+    {
+      "id": "CreateMerchantRole",
+      "operationId": "CreateMerchantRole",
+      "httpMethod": "POST",
+      "path": "/v0.1/merchants/{merchant_code}/roles",
+      "sample": "require \"sumup\"\n\nclient = SumUp::Client.new(api_key: ENV.fetch(\"SUMUP_API_KEY\"))\nresult = client.roles.create(merchant_code: \"MK10CL2A\", body: {\"name\" => \"Senior Shop Manager II\", \"permissions\" => [\"catalog_access\", \"taxes_access\", \"members_access\"]})\n"
+    },
+    {
+      "id": "CreateMerchantToken",
+      "operationId": "CreateMerchantToken",
+      "httpMethod": "POST",
+      "path": "/v0.1/merchants/{merchant_code}/tokens",
+      "sample": "require \"sumup\"\n\nclient = SumUp::Client.new(api_key: ENV.fetch(\"SUMUP_API_KEY\"))\nresult = client.tokens.create(merchant_code: \"MC0X0ABC\", body: {\"actions\" => [\"checkout\"]})\n"
+    },
+    {
+      "id": "CreateReader",
+      "operationId": "CreateReader",
+      "httpMethod": "POST",
+      "path": "/v0.1/merchants/{merchant_code}/readers",
+      "sample": "require \"sumup\"\n\nclient = SumUp::Client.new(api_key: ENV.fetch(\"SUMUP_API_KEY\"))\nresult = client.readers.create(merchant_code: \"MK10CL2A\", body: {\"pairing_code\" => \"4WLFDSBF\", \"name\" => \"Frontdesk\"})\n"
+    },
+    {
+      "id": "CreateReaderCheckout",
+      "operationId": "CreateReaderCheckout",
+      "httpMethod": "POST",
+      "path": "/v0.1/merchants/{merchant_code}/readers/{reader_id}/checkout",
+      "sample": "require \"sumup\"\n\nclient = SumUp::Client.new(api_key: ENV.fetch(\"SUMUP_API_KEY\"))\nresult = client.readers.create_checkout(merchant_code: \"example\", reader_id: \"example\", body: {\"aade\" => {\"provider_id\" => \"123\", \"signature\" => \"QjcxRDdBNTU1MDcyRTNFRTREMkZEM0Y0NTdBMjkxMTU4MzBFNkNCQTs7MjAyNTExMTIyMTQ3MTM7Nzk2OzEwNDs5MDA7OTAwOzU0ODg5MDM5\", \"signature_data\" => \"B71D7A555072E3EE4D2FD3F457A29115830E6CBA;;20251112214713;796;104;900;900;54889039\"}, \"affiliate\" => {\"app_id\" => \"com.example.app\", \"foreign_transaction_id\" => \"123456\", \"key\" => \"ef7b684a-d6f4-4e93-9b1b-6acdd6564a8e\", \"tags\" => {\"custom_key_1\" => \"custom_value_1\", \"custom_key_2\" => \"custom_value_2\"}}, \"card_type\" => \"debit\", \"description\" => \"This is a description...\", \"installments\" => 1, \"return_url\" => \"https://webhook.site/e21ddbb0-42c4-4358-a981-f5a95cd86fb5\", \"tip_rates\" => [0.05, 0.1, 0.15], \"tip_timeout\" => 60, \"total_amount\" => {\"currency\" => \"EUR\", \"minor_unit\" => 2, \"value\" => 5033}})\n"
+    },
+    {
+      "id": "CreateReaderTerminate",
+      "operationId": "CreateReaderTerminate",
+      "httpMethod": "POST",
+      "path": "/v0.1/merchants/{merchant_code}/readers/{reader_id}/terminate",
+      "sample": "require \"sumup\"\n\nclient = SumUp::Client.new(api_key: ENV.fetch(\"SUMUP_API_KEY\"))\nresult = client.readers.terminate_checkout(merchant_code: \"example\", reader_id: \"example\", body: \"example\")\n"
+    },
+    {
+      "id": "DeactivateCheckout",
+      "operationId": "DeactivateCheckout",
+      "httpMethod": "DELETE",
+      "path": "/v0.1/checkouts/{checkout_id}",
+      "sample": "require \"sumup\"\n\nclient = SumUp::Client.new(api_key: ENV.fetch(\"SUMUP_API_KEY\"))\nresult = client.checkouts.deactivate(checkout_id: \"4e425463-3e1b-431d-83fa-1e51c2925e99\")\n"
+    },
+    {
+      "id": "DeactivatePaymentInstrument",
+      "operationId": "DeactivatePaymentInstrument",
+      "httpMethod": "DELETE",
+      "path": "/v0.1/customers/{customer_id}/payment-instruments/{token}",
+      "sample": "require \"sumup\"\n\nclient = SumUp::Client.new(api_key: ENV.fetch(\"SUMUP_API_KEY\"))\nresult = client.customers.deactivate_payment_instrument(customer_id: \"831ff8d4cd5958ab5670\", token: \"bcfc8e5f-3b47-4cb9-854b-3b7a4cce7be3\")\n"
+    },
+    {
+      "id": "DeleteMerchantMember",
+      "operationId": "DeleteMerchantMember",
+      "httpMethod": "DELETE",
+      "path": "/v0.1/merchants/{merchant_code}/members/{member_id}",
+      "sample": "require \"sumup\"\n\nclient = SumUp::Client.new(api_key: ENV.fetch(\"SUMUP_API_KEY\"))\nresult = client.members.delete(merchant_code: \"MK10CL2A\", member_id: \"mem_WZsm7QTPhVrompscmPhoGTXXcrd58fr9MOhP\")\n"
+    },
+    {
+      "id": "DeleteMerchantRole",
+      "operationId": "DeleteMerchantRole",
+      "httpMethod": "DELETE",
+      "path": "/v0.1/merchants/{merchant_code}/roles/{role_id}",
+      "sample": "require \"sumup\"\n\nclient = SumUp::Client.new(api_key: ENV.fetch(\"SUMUP_API_KEY\"))\nresult = client.roles.delete(merchant_code: \"MK10CL2A\", role_id: \"role_WZsm7QTPhVrompscmPhoGTXXcrd58fr9MOhP\")\n"
+    },
+    {
+      "id": "DeleteReader",
+      "operationId": "DeleteReader",
+      "httpMethod": "DELETE",
+      "path": "/v0.1/merchants/{merchant_code}/readers/{reader_id}",
+      "sample": "require \"sumup\"\n\nclient = SumUp::Client.new(api_key: ENV.fetch(\"SUMUP_API_KEY\"))\nresult = client.readers.delete(merchant_code: \"MK10CL2A\", reader_id: \"rdr_3MSAFM23CK82VSTT4BN6RWSQ65\")\n"
+    },
+    {
+      "id": "GetCheckout",
+      "operationId": "GetCheckout",
+      "httpMethod": "GET",
+      "path": "/v0.1/checkouts/{checkout_id}",
+      "sample": "require \"sumup\"\n\nclient = SumUp::Client.new(api_key: ENV.fetch(\"SUMUP_API_KEY\"))\nresult = client.checkouts.get(checkout_id: \"4e425463-3e1b-431d-83fa-1e51c2925e99\")\n"
+    },
+    {
+      "id": "GetCustomer",
+      "operationId": "GetCustomer",
+      "httpMethod": "GET",
+      "path": "/v0.1/customers/{customer_id}",
+      "sample": "require \"sumup\"\n\nclient = SumUp::Client.new(api_key: ENV.fetch(\"SUMUP_API_KEY\"))\nresult = client.customers.get(customer_id: \"831ff8d4cd5958ab5670\")\n"
+    },
+    {
+      "id": "GetMerchant",
+      "operationId": "GetMerchant",
+      "httpMethod": "GET",
+      "path": "/v1/merchants/{merchant_code}",
+      "sample": "require \"sumup\"\n\nclient = SumUp::Client.new(api_key: ENV.fetch(\"SUMUP_API_KEY\"))\nresult = client.merchants.get(merchant_code: \"MK10CL2A\")\n"
+    },
+    {
+      "id": "GetMerchantMember",
+      "operationId": "GetMerchantMember",
+      "httpMethod": "GET",
+      "path": "/v0.1/merchants/{merchant_code}/members/{member_id}",
+      "sample": "require \"sumup\"\n\nclient = SumUp::Client.new(api_key: ENV.fetch(\"SUMUP_API_KEY\"))\nresult = client.members.get(merchant_code: \"MK10CL2A\", member_id: \"mem_WZsm7QTPhVrompscmPhoGTXXcrd58fr9MOhP\")\n"
+    },
+    {
+      "id": "GetMerchantRole",
+      "operationId": "GetMerchantRole",
+      "httpMethod": "GET",
+      "path": "/v0.1/merchants/{merchant_code}/roles/{role_id}",
+      "sample": "require \"sumup\"\n\nclient = SumUp::Client.new(api_key: ENV.fetch(\"SUMUP_API_KEY\"))\nresult = client.roles.get(merchant_code: \"MK10CL2A\", role_id: \"role_WZsm7QTPhVrompscmPhoGTXXcrd58fr9MOhP\")\n"
+    },
+    {
+      "id": "GetPaymentMethods",
+      "operationId": "GetPaymentMethods",
+      "httpMethod": "GET",
+      "path": "/v0.1/merchants/{merchant_code}/payment-methods",
+      "sample": "require \"sumup\"\n\nclient = SumUp::Client.new(api_key: ENV.fetch(\"SUMUP_API_KEY\"))\nresult = client.checkouts.list_available_payment_methods(merchant_code: \"MH4H92C7\")\n"
+    },
+    {
+      "id": "GetPerson",
+      "operationId": "GetPerson",
+      "httpMethod": "GET",
+      "path": "/v1/merchants/{merchant_code}/persons/{person_id}",
+      "sample": "require \"sumup\"\n\nclient = SumUp::Client.new(api_key: ENV.fetch(\"SUMUP_API_KEY\"))\nresult = client.merchants.get_person(merchant_code: \"MK10CL2A\", person_id: \"pers_5AKFHN2KSK8D3TS79DJE3P3A2Z\")\n"
+    },
+    {
+      "id": "GetReader",
+      "operationId": "GetReader",
+      "httpMethod": "GET",
+      "path": "/v0.1/merchants/{merchant_code}/readers/{reader_id}",
+      "sample": "require \"sumup\"\n\nclient = SumUp::Client.new(api_key: ENV.fetch(\"SUMUP_API_KEY\"))\nresult = client.readers.get(merchant_code: \"MK10CL2A\", reader_id: \"rdr_3MSAFM23CK82VSTT4BN6RWSQ65\")\n"
+    },
+    {
+      "id": "GetReaderCheckout",
+      "operationId": "GetReaderCheckout",
+      "httpMethod": "GET",
+      "path": "/v0.1/merchants/{merchant_code}/readers/{reader_id}/checkout/{checkout_id}",
+      "sample": "require \"sumup\"\n\nclient = SumUp::Client.new(api_key: ENV.fetch(\"SUMUP_API_KEY\"))\nresult = client.readers.get_checkout(merchant_code: \"example\", reader_id: \"example\", checkout_id: \"example\")\n"
+    },
+    {
+      "id": "GetReaderSettings",
+      "operationId": "GetReaderSettings",
+      "httpMethod": "GET",
+      "path": "/v0.1/merchants/{merchant_code}/readers/{reader_id}/settings",
+      "sample": "require \"sumup\"\n\nclient = SumUp::Client.new(api_key: ENV.fetch(\"SUMUP_API_KEY\"))\nresult = client.readers.get_reader_settings(merchant_code: \"example\", reader_id: \"example\")\n"
+    },
+    {
+      "id": "GetReaderStatus",
+      "operationId": "GetReaderStatus",
+      "httpMethod": "GET",
+      "path": "/v0.1/merchants/{merchant_code}/readers/{reader_id}/status",
+      "sample": "require \"sumup\"\n\nclient = SumUp::Client.new(api_key: ENV.fetch(\"SUMUP_API_KEY\"))\nresult = client.readers.get_status(merchant_code: \"example\", reader_id: \"example\")\n"
+    },
+    {
+      "id": "GetReceipt",
+      "operationId": "GetReceipt",
+      "httpMethod": "GET",
+      "path": "/v1.1/receipts/{transaction_id}",
+      "sample": "require \"sumup\"\n\nclient = SumUp::Client.new(api_key: ENV.fetch(\"SUMUP_API_KEY\"))\nresult = client.receipts.get(transaction_id: \"410fc44a-5956-44e1-b5cc-19c6f8d727a4\", mid: \"MH4H92C7\")\n"
+    },
+    {
+      "id": "GetSaleV10",
+      "operationId": "GetSaleV10",
+      "httpMethod": "GET",
+      "path": "/v1.0/merchants/{merchant_code}/sales/{sale_id}",
+      "sample": "require \"sumup\"\n\nclient = SumUp::Client.new(api_key: ENV.fetch(\"SUMUP_API_KEY\"))\nresult = client.sales.get(merchant_code: \"MCZM9TGQ\", sale_id: \"5965aa65-e45a-4cc1-9063-c1c1e3b8607f\")\n"
+    },
+    {
+      "id": "GetTransactionV2.1",
+      "operationId": "GetTransactionV2.1",
+      "httpMethod": "GET",
+      "path": "/v2.1/merchants/{merchant_code}/transactions",
+      "sample": "require \"sumup\"\n\nclient = SumUp::Client.new(api_key: ENV.fetch(\"SUMUP_API_KEY\"))\nresult = client.transactions.get(merchant_code: \"MH4H92C7\")\n"
+    },
+    {
+      "id": "ListCheckouts",
+      "operationId": "ListCheckouts",
+      "httpMethod": "GET",
+      "path": "/v0.1/checkouts",
+      "sample": "require \"sumup\"\n\nclient = SumUp::Client.new(api_key: ENV.fetch(\"SUMUP_API_KEY\"))\nresult = client.checkouts.list()\n"
+    },
+    {
+      "id": "ListMemberships",
+      "operationId": "ListMemberships",
+      "httpMethod": "GET",
+      "path": "/v0.1/memberships",
+      "sample": "require \"sumup\"\n\nclient = SumUp::Client.new(api_key: ENV.fetch(\"SUMUP_API_KEY\"))\nresult = client.memberships.list()\n"
+    },
+    {
+      "id": "ListMerchantMembers",
+      "operationId": "ListMerchantMembers",
+      "httpMethod": "GET",
+      "path": "/v0.1/merchants/{merchant_code}/members",
+      "sample": "require \"sumup\"\n\nclient = SumUp::Client.new(api_key: ENV.fetch(\"SUMUP_API_KEY\"))\nresult = client.members.list(merchant_code: \"MK10CL2A\")\n"
+    },
+    {
+      "id": "ListMerchantRoles",
+      "operationId": "ListMerchantRoles",
+      "httpMethod": "GET",
+      "path": "/v0.1/merchants/{merchant_code}/roles",
+      "sample": "require \"sumup\"\n\nclient = SumUp::Client.new(api_key: ENV.fetch(\"SUMUP_API_KEY\"))\nresult = client.roles.list(merchant_code: \"MK10CL2A\")\n"
+    },
+    {
+      "id": "ListPaymentInstruments",
+      "operationId": "ListPaymentInstruments",
+      "httpMethod": "GET",
+      "path": "/v0.1/customers/{customer_id}/payment-instruments",
+      "sample": "require \"sumup\"\n\nclient = SumUp::Client.new(api_key: ENV.fetch(\"SUMUP_API_KEY\"))\nresult = client.customers.list_payment_instruments(customer_id: \"831ff8d4cd5958ab5670\")\n"
+    },
+    {
+      "id": "ListPayoutsV1",
+      "operationId": "ListPayoutsV1",
+      "httpMethod": "GET",
+      "path": "/v1.0/merchants/{merchant_code}/payouts",
+      "sample": "require \"sumup\"\n\nclient = SumUp::Client.new(api_key: ENV.fetch(\"SUMUP_API_KEY\"))\nresult = client.payouts.list(merchant_code: \"MH4H92C7\", start_date: \"2024-02-01\", end_date: \"2024-02-29\")\n"
+    },
+    {
+      "id": "ListPersons",
+      "operationId": "ListPersons",
+      "httpMethod": "GET",
+      "path": "/v1/merchants/{merchant_code}/persons",
+      "sample": "require \"sumup\"\n\nclient = SumUp::Client.new(api_key: ENV.fetch(\"SUMUP_API_KEY\"))\nresult = client.merchants.list_persons(merchant_code: \"MK10CL2A\")\n"
+    },
+    {
+      "id": "ListReaders",
+      "operationId": "ListReaders",
+      "httpMethod": "GET",
+      "path": "/v0.1/merchants/{merchant_code}/readers",
+      "sample": "require \"sumup\"\n\nclient = SumUp::Client.new(api_key: ENV.fetch(\"SUMUP_API_KEY\"))\nresult = client.readers.list(merchant_code: \"MK10CL2A\")\n"
+    },
+    {
+      "id": "ListSalesV10",
+      "operationId": "ListSalesV10",
+      "httpMethod": "GET",
+      "path": "/v1.0/merchants/{merchant_code}/sales",
+      "sample": "require \"sumup\"\n\nclient = SumUp::Client.new(api_key: ENV.fetch(\"SUMUP_API_KEY\"))\nresult = client.sales.list(merchant_code: \"MCZM9TGQ\")\n"
+    },
+    {
+      "id": "ListTransactionsV2.1",
+      "operationId": "ListTransactionsV2.1",
+      "httpMethod": "GET",
+      "path": "/v2.1/merchants/{merchant_code}/transactions/history",
+      "sample": "require \"sumup\"\n\nclient = SumUp::Client.new(api_key: ENV.fetch(\"SUMUP_API_KEY\"))\nresult = client.transactions.list(merchant_code: \"MH4H92C7\")\n"
+    },
+    {
+      "id": "ProcessCheckout.ProcessBancontact",
+      "operationId": "ProcessCheckout",
+      "httpMethod": "PUT",
+      "path": "/v0.1/checkouts/{checkout_id}",
+      "sample": "require \"sumup\"\n\nclient = SumUp::Client.new(api_key: ENV.fetch(\"SUMUP_API_KEY\"))\nresult = client.checkouts.process(checkout_id: \"4e425463-3e1b-431d-83fa-1e51c2925e99\", body: {\"payment_type\" => \"bancontact\", \"personal_details\" => {\"email\" => \"user@example.com\", \"first_name\" => \"John\", \"last_name\" => \"Doe\", \"address\" => {\"country\" => \"BE\"}}})\n",
+      "example": "ProcessBancontact"
+    },
+    {
+      "id": "ProcessCheckout.ProcessBoleto",
+      "operationId": "ProcessCheckout",
+      "httpMethod": "PUT",
+      "path": "/v0.1/checkouts/{checkout_id}",
+      "sample": "require \"sumup\"\n\nclient = SumUp::Client.new(api_key: ENV.fetch(\"SUMUP_API_KEY\"))\nresult = client.checkouts.process(checkout_id: \"4e425463-3e1b-431d-83fa-1e51c2925e99\", body: {\"payment_type\" => \"boleto\", \"personal_details\" => {\"email\" => \"user@example.com\", \"first_name\" => \"John\", \"last_name\" => \"Doe\", \"tax_id\" => \"423.378.593-47\", \"address\" => {\"country\" => \"BR\", \"city\" => \"São Paulo\", \"line1\" => \"Rua Gilberto Sabino, 215\", \"state\" => \"SP\", \"postal_code\" => \"05425-020\"}}})\n",
+      "example": "ProcessBoleto"
+    },
+    {
+      "id": "ProcessCheckout.ProcessCard",
+      "operationId": "ProcessCheckout",
+      "httpMethod": "PUT",
+      "path": "/v0.1/checkouts/{checkout_id}",
+      "sample": "require \"sumup\"\n\nclient = SumUp::Client.new(api_key: ENV.fetch(\"SUMUP_API_KEY\"))\nresult = client.checkouts.process(checkout_id: \"4e425463-3e1b-431d-83fa-1e51c2925e99\", body: {\"payment_type\" => \"card\", \"installments\" => 1, \"mandate\" => {\"type\" => \"recurrent\", \"user_agent\" => \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.104 Safari/537.36\", \"user_ip\" => \"172.217.169.174\"}, \"card\" => {\"type\" => \"VISA\", \"name\" => \"John Doe\", \"number\" => \"1234567890123456\", \"expiry_year\" => \"2023\", \"expiry_month\" => \"01\", \"cvv\" => \"123\", \"zip_code\" => \"12345\"}})\n",
+      "example": "ProcessCard"
+    },
+    {
+      "id": "ProcessCheckout.ProcessToken",
+      "operationId": "ProcessCheckout",
+      "httpMethod": "PUT",
+      "path": "/v0.1/checkouts/{checkout_id}",
+      "sample": "require \"sumup\"\n\nclient = SumUp::Client.new(api_key: ENV.fetch(\"SUMUP_API_KEY\"))\nresult = client.checkouts.process(checkout_id: \"4e425463-3e1b-431d-83fa-1e51c2925e99\", body: {\"payment_type\" => \"card\", \"token\" => \"6878cb7f-6515-47bf-bdd9-1408d270fdce\", \"customer_id\" => \"831ff8d4cd5958ab5670\"})\n",
+      "example": "ProcessToken"
+    },
+    {
+      "id": "ProcessCheckout.ProcessiDeal",
+      "operationId": "ProcessCheckout",
+      "httpMethod": "PUT",
+      "path": "/v0.1/checkouts/{checkout_id}",
+      "sample": "require \"sumup\"\n\nclient = SumUp::Client.new(api_key: ENV.fetch(\"SUMUP_API_KEY\"))\nresult = client.checkouts.process(checkout_id: \"4e425463-3e1b-431d-83fa-1e51c2925e99\", body: {\"payment_type\" => \"ideal\", \"personal_details\" => {\"email\" => \"user@example.com\", \"first_name\" => \"John\", \"last_name\" => \"Doe\", \"address\" => {\"country\" => \"NL\"}}})\n",
+      "example": "ProcessiDeal"
+    },
+    {
+      "id": "RefundTransaction.FullRefund",
+      "operationId": "RefundTransaction",
+      "httpMethod": "POST",
+      "path": "/v1.0/merchants/{merchant_code}/payments/{transaction_id}/refunds",
+      "sample": "require \"sumup\"\n\nclient = SumUp::Client.new(api_key: ENV.fetch(\"SUMUP_API_KEY\"))\nresult = client.transactions.refund(merchant_code: \"MH4H92C7\", transaction_id: \"4ffb8dfc-7f2b-413d-a497-2ad00766585e\", body: {})\n",
+      "example": "FullRefund"
+    },
+    {
+      "id": "RefundTransaction.PartialRefund",
+      "operationId": "RefundTransaction",
+      "httpMethod": "POST",
+      "path": "/v1.0/merchants/{merchant_code}/payments/{transaction_id}/refunds",
+      "sample": "require \"sumup\"\n\nclient = SumUp::Client.new(api_key: ENV.fetch(\"SUMUP_API_KEY\"))\nresult = client.transactions.refund(merchant_code: \"MH4H92C7\", transaction_id: \"4ffb8dfc-7f2b-413d-a497-2ad00766585e\", body: {\"amount\" => 24.42})\n",
+      "example": "PartialRefund"
+    },
+    {
+      "id": "SearchSalesV10.date_range",
+      "operationId": "SearchSalesV10",
+      "httpMethod": "POST",
+      "path": "/v1.0/merchants/{merchant_code}/sales/search",
+      "sample": "require \"sumup\"\n\nclient = SumUp::Client.new(api_key: ENV.fetch(\"SUMUP_API_KEY\"))\nresult = client.sales.search(merchant_code: \"MCZM9TGQ\", body: {\"start_date\" => \"2026-06-01T00:00:00Z\", \"end_date\" => \"2026-06-02T23:59:59Z\", \"sales_channels\" => [\"POS\"], \"pagination_limit\" => 10})\n",
+      "example": "date_range"
+    },
+    {
+      "id": "UpdateCheckout",
+      "operationId": "UpdateCheckout",
+      "httpMethod": "PATCH",
+      "path": "/v0.1/checkouts/{checkout_id}",
+      "sample": "require \"sumup\"\n\nclient = SumUp::Client.new(api_key: ENV.fetch(\"SUMUP_API_KEY\"))\nresult = client.checkouts.update(checkout_id: \"4e425463-3e1b-431d-83fa-1e51c2925e99\", body: {})\n"
+    },
+    {
+      "id": "UpdateCustomer",
+      "operationId": "UpdateCustomer",
+      "httpMethod": "PUT",
+      "path": "/v0.1/customers/{customer_id}",
+      "sample": "require \"sumup\"\n\nclient = SumUp::Client.new(api_key: ENV.fetch(\"SUMUP_API_KEY\"))\nresult = client.customers.update(customer_id: \"831ff8d4cd5958ab5670\", body: {})\n"
+    },
+    {
+      "id": "UpdateMerchantMember",
+      "operationId": "UpdateMerchantMember",
+      "httpMethod": "PUT",
+      "path": "/v0.1/merchants/{merchant_code}/members/{member_id}",
+      "sample": "require \"sumup\"\n\nclient = SumUp::Client.new(api_key: ENV.fetch(\"SUMUP_API_KEY\"))\nresult = client.members.update(merchant_code: \"MK10CL2A\", member_id: \"mem_WZsm7QTPhVrompscmPhoGTXXcrd58fr9MOhP\", body: {\"Update member's role\" => {\"roles\" => [\"role_manager\"]}, \"Update managed user\" => {\"user\" => {\"nickname\" => \"New Employee Name\"}}})\n"
+    },
+    {
+      "id": "UpdateMerchantRole",
+      "operationId": "UpdateMerchantRole",
+      "httpMethod": "PATCH",
+      "path": "/v0.1/merchants/{merchant_code}/roles/{role_id}",
+      "sample": "require \"sumup\"\n\nclient = SumUp::Client.new(api_key: ENV.fetch(\"SUMUP_API_KEY\"))\nresult = client.roles.update(merchant_code: \"MK10CL2A\", role_id: \"role_WZsm7QTPhVrompscmPhoGTXXcrd58fr9MOhP\", body: {\"name\" => \"Senior Shop Manager III\", \"permissions\" => [\"catalog_edit\", \"taxes_access\", \"members_edit\"]})\n"
+    },
+    {
+      "id": "UpdateReader",
+      "operationId": "UpdateReader",
+      "httpMethod": "PATCH",
+      "path": "/v0.1/merchants/{merchant_code}/readers/{reader_id}",
+      "sample": "require \"sumup\"\n\nclient = SumUp::Client.new(api_key: ENV.fetch(\"SUMUP_API_KEY\"))\nresult = client.readers.update(merchant_code: \"MK10CL2A\", reader_id: \"rdr_3MSAFM23CK82VSTT4BN6RWSQ65\", body: {})\n"
+    },
+    {
+      "id": "UpdateReaderSettings",
+      "operationId": "UpdateReaderSettings",
+      "httpMethod": "PATCH",
+      "path": "/v0.1/merchants/{merchant_code}/readers/{reader_id}/settings",
+      "sample": "require \"sumup\"\n\nclient = SumUp::Client.new(api_key: ENV.fetch(\"SUMUP_API_KEY\"))\nresult = client.readers.update_reader_settings(merchant_code: \"example\", reader_id: \"example\", body: {\"menu_lock\" => {\"enabled\" => true, \"passcode\" => \"1234\"}})\n"
+    }
+  ]
+}
