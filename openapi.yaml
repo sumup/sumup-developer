@@ -2501,12 +2501,15 @@ paths:
       x-scopes:
         - user.profile
         - user.profile_readonly
+        - members.read
       security:
         - apiKey: []
         - oauth2:
             - user.profile
         - oauth2:
             - user.profile_readonly
+        - oauth2:
+            - members.read
       parameters:
         - name: offset
           in: query
@@ -2721,7 +2724,7 @@ paths:
       x-codegen:
         method_name: list
       x-permissions:
-        - relation: merchant_read
+        - relation: merchant.read
           object_type: merchant
           object_id_param: merchant_code
       x-scopes:
@@ -4107,25 +4110,25 @@ paths:
           content:
             application/problem+json:
               schema:
-                $ref: '#/components/schemas/ProblemV10'
+                $ref: '#/components/schemas/Problem'
         '401':
           description: The client is not authenticated (auth header is empty or invalid).
           content:
             application/problem+json:
               schema:
-                $ref: '#/components/schemas/ProblemV10'
+                $ref: '#/components/schemas/Problem'
         '403':
           description: Missing `sales.read`, merchant code mismatch on the token, or no `merchant.read` permission.
           content:
             application/problem+json:
               schema:
-                $ref: '#/components/schemas/ProblemV10'
+                $ref: '#/components/schemas/Problem'
         '412':
           description: User-Agent header is not present or is empty.
           content:
             application/problem+json:
               schema:
-                $ref: '#/components/schemas/ProblemV10'
+                $ref: '#/components/schemas/Problem'
   /v1.0/merchants/{merchant_code}/sales/search:
     post:
       tags:
@@ -4190,25 +4193,25 @@ paths:
           content:
             application/problem+json:
               schema:
-                $ref: '#/components/schemas/ProblemV10'
+                $ref: '#/components/schemas/Problem'
         '401':
           description: The client is not authenticated (auth header is empty or invalid).
           content:
             application/problem+json:
               schema:
-                $ref: '#/components/schemas/ProblemV10'
+                $ref: '#/components/schemas/Problem'
         '403':
           description: Missing `sales.read`, merchant code mismatch on the token, or no `merchant.read` permission.
           content:
             application/problem+json:
               schema:
-                $ref: '#/components/schemas/ProblemV10'
+                $ref: '#/components/schemas/Problem'
         '412':
           description: User-Agent header is not present or is empty.
           content:
             application/problem+json:
               schema:
-                $ref: '#/components/schemas/ProblemV10'
+                $ref: '#/components/schemas/Problem'
   /v1.0/merchants/{merchant_code}/sales/{sale_id}:
     get:
       tags:
@@ -4307,25 +4310,25 @@ paths:
           content:
             application/problem+json:
               schema:
-                $ref: '#/components/schemas/ProblemV10'
+                $ref: '#/components/schemas/Problem'
         '403':
           description: Missing `sales.read`, merchant code mismatch on the token, or no `merchant.read` permission.
           content:
             application/problem+json:
               schema:
-                $ref: '#/components/schemas/ProblemV10'
+                $ref: '#/components/schemas/Problem'
         '404':
           description: Sale not found. Non-finalised sales are never returned; only fully-paid sales.
           content:
             application/problem+json:
               schema:
-                $ref: '#/components/schemas/ProblemV10'
+                $ref: '#/components/schemas/Problem'
         '412':
           description: User-Agent header is not present or is empty.
           content:
             application/problem+json:
               schema:
-                $ref: '#/components/schemas/ProblemV10'
+                $ref: '#/components/schemas/Problem'
   /v0.1/merchants/{merchant_code}/readers/{reader_id}/checkout:
     post:
       callbacks:
@@ -8710,7 +8713,7 @@ components:
               description: "The value of the amount in minor units of the currency according to the Sale.currency.scale. \n`value` can get large for some currencies and applications. \nUse Long type or a similar data type when parsing `value`."
               example: 100
               minimum: 0
-    LineItemPriceV10:
+    SaleItemPrice:
       type: object
       description: 'Pricing for a single line, valid for every item type.
 
@@ -8808,7 +8811,7 @@ components:
               net_amount: 210
               gross_amount: 250
               tax_amount: 40
-    CategoryV10:
+    SaleItemCategory:
       type: object
       description: A category a line belongs to.
       required:
@@ -9015,7 +9018,7 @@ components:
               description: The numerical value representing the quantity in the specified unit.
               minimum: 0
               example: 2.15332
-    ItemReferencesV10:
+    SaleItemReferences:
       type: object
       description: 'Outward identifiers and links for a line, kept in one place rather than scattered
 
@@ -9054,7 +9057,7 @@ components:
           description: Stock keeping unit, enriched from the Catalog when available.
           maxLength: 100
           example: COFFEE-LARGE
-    FeatureValueTypeV10:
+    SaleItemFeatureValueType:
       type: string
       description: 'The data type of a feature value. The wire `value` is always a string and is parsed
 
@@ -9066,7 +9069,7 @@ components:
         - DATE
         - BOOLEAN
       example: TEXT
-    FeatureV10:
+    SaleItemFeature:
       type: object
       description: "A named, typed characteristic of a line. New item types add data here instead of\na typed sub-object per type.\n\nExamples by item type (illustrative, not exhaustive):\n  - DEPOSIT:   `operation_type` = \"SALE\", `linked_line_id` = \"line-1\"\n  - GIFT_CARD: `gift_card_reference` = \"GCMINGXPC5\"\n  - CATALOG:   `variant_name` = \"Large\", `item_id` / `variant_id` (TEXT),\n               `reporting_category_id` = \"cat-...\"\n  - FEE:       `fee_type` = \"SHIPPING\" (required); optional `fee_id`,\n               `value_absolute` or `value_percentage`, and per-type metadata\n               features such as `delivery_name` / `tracking_reference` (shipping),\n               `card_type` / `scheme` (surcharge), or `policy_id` (cancellation)\n  - (future) SUBSCRIPTION: `billing_period` = \"P1M\", `renews_at` = \"2026-07-02\"\n\nConventional `FEE` feature keys:\n  - `fee_type` (TEXT, required): `SHIPPING`, `SURCHARGE`, `SERVICE_CHARGE`, or\n    `CANCELLATION`\n  - `fee_id` (TEXT, optional): identifier of the fee definition\n  - `value_absolute` (INTEGER, optional): configured absolute value in minor units\n    of the sale currency (the charged amount is on `price`)\n  - `value_percentage` (INTEGER, optional): configured percentage in minor units\n    (1/100000; e.g. 10000 = 10%)\n  - Per-type metadata (optional, TEXT unless noted): `delivery_name`,\n    `tracking_reference` (shipping); `card_type`, `scheme` (surcharge);\n    `policy_id` (cancellation)"
       required:
@@ -9080,7 +9083,7 @@ components:
           maxLength: 100
           example: operation_type
         value_type:
-          $ref: '#/components/schemas/FeatureValueTypeV10'
+          $ref: '#/components/schemas/SaleItemFeatureValueType'
         value:
           type: string
           description: 'The feature value in canonical string form, to be parsed per `value_type`
@@ -9092,7 +9095,7 @@ components:
             new feature names and value types are introduced.'
           maxLength: 1000
           example: SALE
-    SaleLineItemV10:
+    SaleItem:
       type: object
       description: 'A single line of a sale.
 
@@ -9129,7 +9132,7 @@ components:
 
             charge, surcharge, cancellation). They participate in sale totals like any other
 
-            line; type-specific data is carried in `features` (see `Feature` for the
+            line; type-specific data is carried in `features` (see `SaleItemFeature` for the
 
             conventional feature keys).
 
@@ -9168,7 +9171,7 @@ components:
           description: Optional free-text note attached to the line, visible on receipts.
           example: extra hot
         price:
-          $ref: '#/components/schemas/LineItemPriceV10'
+          $ref: '#/components/schemas/SaleItemPrice'
         categories:
           type: array
           description: |
@@ -9176,7 +9179,7 @@ components:
             line; not a per-type field.
           maxItems: 1000
           items:
-            $ref: '#/components/schemas/CategoryV10'
+            $ref: '#/components/schemas/SaleItemCategory'
           example:
             - id: cat-hot-drinks
               name: Hot Drinks
@@ -9190,22 +9193,22 @@ components:
             $ref: '#/components/schemas/ModifierItem'
           example: []
         references:
-          $ref: '#/components/schemas/ItemReferencesV10'
+          $ref: '#/components/schemas/SaleItemReferences'
         features:
           type: array
           description: |
             Named, typed, type-specific data. New item types add their data here as
-            features instead of new schema variants. See `Feature` for per-type examples.
+            features instead of new schema variants. See `SaleItemFeature` for per-type examples.
           maxItems: 100
           items:
-            $ref: '#/components/schemas/FeatureV10'
+            $ref: '#/components/schemas/SaleItemFeature'
           example:
             - name: variant_name
               value_type: TEXT
               value: Large
-    SalePriceV10:
+    SaleTotals:
       type: object
-      description: 'Sale-level pricing aggregate, parallel to `LineItemPrice` on each `SaleLineItem`.
+      description: 'Sale-level pricing aggregate, parallel to `SaleItemPrice` on each `SaleItem`.
 
 
         Line-level breakdown (unit price, line discounts, per-line taxes) lives on
@@ -9321,7 +9324,7 @@ components:
           maxLength: 250
       required:
         - channel
-    PublicCardV10:
+    SalePaymentCard:
       type: object
       description: Card brand, credit/debit processing type, and last four digits.
       required:
@@ -9357,7 +9360,7 @@ components:
           pattern: ^\d{4}$
           minLength: 4
           maxLength: 4
-    PublicGiftCardPayment:
+    SaleGiftCardPayment:
       type: object
       description: 'Gift card used for this payment. Present when `method` is `gift_card` and the gift card
 
@@ -9375,8 +9378,8 @@ components:
           example: GCZ3NTMB1V
       required:
         - id
-    PublicPaymentV10:
-      title: PublicPayment
+    SalePayment:
+      title: SalePayment
       type: object
       description: 'Payment on a closed sale, for bookkeeping and reconciliation.
 
@@ -9451,9 +9454,9 @@ components:
             Additional values may be returned as new alternative payment methods become available.'
           maxLength: 20
         card:
-          $ref: '#/components/schemas/PublicCardV10'
+          $ref: '#/components/schemas/SalePaymentCard'
         gift_card:
-          $ref: '#/components/schemas/PublicGiftCardPayment'
+          $ref: '#/components/schemas/SaleGiftCardPayment'
         processed_at:
           type: string
           format: date-time
@@ -9463,7 +9466,7 @@ components:
 
             transaction time. Not the device clock.'
           example: '2026-06-02T10:20:00Z'
-    SaleStateV10:
+    SaleLifecycleState:
       type: string
       description: 'Lifecycle state of the sale.
 
@@ -9480,7 +9483,7 @@ components:
         Non-finalised sales are never returned; only fully-paid sales.
 
 
-        Item lines are `SaleLineItem`. Merchant fees appear as `type: "FEE"` lines; extra fee data
+        Item lines are `SaleItem`. Merchant fees appear as `type: "FEE"` lines; extra fee data
 
         is in `features`.'
       required:
@@ -9526,9 +9529,9 @@ components:
             The lines sold in this sale, in the order they were added to the cart.
             Includes merchant fees (`type: "FEE"`) when present; fee details are in `features`.
           items:
-            $ref: '#/components/schemas/SaleLineItemV10'
+            $ref: '#/components/schemas/SaleItem'
         price:
-          $ref: '#/components/schemas/SalePriceV10'
+          $ref: '#/components/schemas/SaleTotals'
         tax_mode:
           $ref: '#/components/schemas/TaxMode'
         source:
@@ -9539,7 +9542,7 @@ components:
           description: |
             Payments on this sale, in the order they were recorded.
           items:
-            $ref: '#/components/schemas/PublicPaymentV10'
+            $ref: '#/components/schemas/SalePayment'
           example:
             - method: card
               reference: TERTYFQ4G3
@@ -9558,7 +9561,7 @@ components:
           description: 'Instant when the sale was closed. Always present: non-finalised sales are never returned.'
           example: '2026-06-02T10:20:00Z'
         state:
-          $ref: '#/components/schemas/SaleStateV10'
+          $ref: '#/components/schemas/SaleLifecycleState'
     SalePage:
       title: SalePage
       type: object
@@ -9578,38 +9581,7 @@ components:
             on the next list request. Omitted when no further page is available.'
           type: string
           example: 66bcbtzelrubzeuzruzgu76678trncH
-    ProblemV10:
-      type: object
-      description: |
-        A RFC 9457 problem details object.
-
-        Additional properties specific to the problem type may be present.
-      required:
-        - type
-      additionalProperties: true
-      properties:
-        type:
-          type: string
-          format: uri
-          description: A URI reference that identifies the problem type.
-          example: https://developer.sumup.com/problem/not-found
-        title:
-          type: string
-          description: A short, human-readable summary of the problem type.
-          example: Requested resource couldn't be found.
-        status:
-          type: integer
-          description: The HTTP status code generated by the origin server for this occurrence of the problem.
-          example: 404
-        detail:
-          type: string
-          description: A human-readable explanation specific to this occurrence of the problem.
-          example: The requested resource doesn't exist or does not belong to you.
-        instance:
-          type: string
-          format: uri
-          description: A URI reference that identifies the specific occurrence of the problem.
-    PaymentStatusFilterV10:
+    SalePaymentStatusFilter:
       type: string
       description: 'Payment outcome filter value. Multi-select uses **OR** within this field; combined with
 
@@ -9622,7 +9594,7 @@ components:
         - PAID
         - CHARGED_BACK
       example: PAID
-    SalesChannelFilterV10:
+    SaleChannelFilter:
       type: string
       description: Sale channel filter value. Multi-select uses **OR** within this field.
       enum:
@@ -9667,7 +9639,7 @@ components:
 
             fully-paid sales.'
           items:
-            $ref: '#/components/schemas/SaleStateV10'
+            $ref: '#/components/schemas/SaleLifecycleState'
           example:
             - CLOSED
         payment_statuses:
@@ -9676,14 +9648,14 @@ components:
 
             row does not echo this value.'
           items:
-            $ref: '#/components/schemas/PaymentStatusFilterV10'
+            $ref: '#/components/schemas/SalePaymentStatusFilter'
           example:
             - PAID
         sales_channels:
           type: array
           description: Sales channel filter. Multiple values match any of them (**OR**).
           items:
-            $ref: '#/components/schemas/SalesChannelFilterV10'
+            $ref: '#/components/schemas/SaleChannelFilter'
           example:
             - POS
         pagination_token:
@@ -9724,7 +9696,7 @@ components:
             identity is unknown.'
           example: d6f51684-519b-454c-bdb3-deeb05f52b92
         state:
-          $ref: '#/components/schemas/SaleStateV10'
+          $ref: '#/components/schemas/SaleLifecycleState'
         name:
           type: string
           description: 'Display name of the sale when set; otherwise a concatenation of item names with
