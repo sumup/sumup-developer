@@ -194,6 +194,23 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
 </CodeGroupItem>
 
+<CodeGroupItem label="Ruby">
+
+```ruby
+require "sumup"
+
+client = SumUp::Client.new(api_key: ENV.fetch("SUMUP_ACCESS_TOKEN"))
+
+accounts = client.memberships.list(
+  kind: "merchant",
+  status: "accepted",
+  limit: 25,
+  offset: 0
+)
+puts accounts.to_h
+```
+
+</CodeGroupItem>
 </CodeGroup>
 
 The API returns HTTP `200` with an `items` array and a `total_count`. Use these fields from each item:

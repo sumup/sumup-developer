@@ -2,7 +2,7 @@ import type { ApiCodeSampleView } from "@cloudflare/nimbus-docs/api";
 
 // Handwritten homepage examples, independent of the full API reference catalogs.
 // Checked against TypeScript 0.2.2, .NET 0.0.21, Java 0.1.2, Python 0.3.5,
-// PHP 0.1.8, Go 0.21.0, Rust 0.6.0, and CLI 0.7.0.
+// PHP 0.1.8, Go 0.21.0, Rust 0.6.0, Ruby 0.0.1, and CLI 0.7.0.
 export const hostedCheckoutSamples: ApiCodeSampleView[] = [
   {
     id: "typescript",
@@ -170,6 +170,24 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("{}", checkout.hosted_checkout_url.unwrap_or_default());
     Ok(())
 }`,
+  },
+  {
+    id: "ruby",
+    lang: "ruby",
+    label: "Ruby",
+    source: `require "sumup"
+
+client = SumUp::Client.new(api_key: "sup_sk_your_api_key")
+
+checkout = client.checkouts.create(
+  checkout_reference: "order-123",
+  amount: 12,
+  currency: "EUR",
+  merchant_code: "MERCHANT_CODE",
+  hosted_checkout: {enabled: true}
+)
+
+puts checkout.hosted_checkout_url`,
   },
 ];
 
@@ -343,5 +361,21 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("{}", checkout.data.client_transaction_id);
     Ok(())
 }`,
+  },
+  {
+    id: "ruby",
+    lang: "ruby",
+    label: "Ruby",
+    source: `require "sumup"
+
+client = SumUp::Client.new(api_key: "sup_sk_your_api_key")
+
+checkout = client.readers.create_checkout(
+  merchant_code: "MERCHANT_CODE",
+  reader_id: "READER_ID",
+  total_amount: {currency: "EUR", minor_unit: 2, value: 1200}
+)
+
+puts checkout.data.client_transaction_id`,
   },
 ];

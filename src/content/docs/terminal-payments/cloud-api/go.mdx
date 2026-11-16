@@ -282,6 +282,19 @@ Look up the transaction by the `transaction_code` from the go-checkout response:
     ).await?;
     ```
   </CodeGroupItem>
+  <CodeGroupItem label="Ruby">
+    ```ruby
+    require "sumup"
+
+    client = SumUp::Client.new(api_key: ENV.fetch("SUMUP_API_KEY"))
+
+    transaction = client.transactions.get(
+      merchant_code: ENV.fetch("SUMUP_MERCHANT_CODE"),
+      transaction_code: "TRANSACTION_CODE"
+    )
+    ```
+
+  </CodeGroupItem>
 </CodeGroup>
 
 Alternatively, pass the `client_transaction_id` you sent in the go-checkout request:
@@ -335,6 +348,16 @@ List all readers connected to your merchant account.
     ```rust
     let readers = client.readers().list(&merchant_code).await?;
     ```
+  </CodeGroupItem>
+  <CodeGroupItem label="Ruby">
+    ```ruby
+    require "sumup"
+
+    client = SumUp::Client.new(api_key: ENV.fetch("SUMUP_API_KEY"))
+
+    readers = client.readers.list(merchant_code: ENV.fetch("SUMUP_MERCHANT_CODE"))
+    ```
+
   </CodeGroupItem>
 </CodeGroup>
 

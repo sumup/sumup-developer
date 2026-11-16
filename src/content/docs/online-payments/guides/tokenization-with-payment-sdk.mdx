@@ -235,6 +235,33 @@ curl -X POST \
     ]);
     ```
   </CodeGroupItem>
+  <CodeGroupItem label="Ruby">
+    ```ruby
+    require "sumup"
+
+    client = SumUp::Client.new(api_key: ENV.fetch("SUMUP_API_KEY"))
+
+    customer = client.customers.create(
+      customer_id: "MYCUSTOMERID-123",
+      personal_details: {
+        first_name: "Jeffrey",
+        last_name: "Lebowski",
+        email: "thedude@example.com",
+        phone: "+1 310-555-1234",
+        birth_date: "1949-11-11",
+        address: {
+          city: "Venice",
+          state: "California",
+          country: "US",
+          line_1: "606 Venezia Ave",
+          line_2: "Front",
+          postal_code: "90291"
+        }
+      }
+    )
+    ```
+
+  </CodeGroupItem>
 </CodeGroup>
 
 You should expect a standard `201 Created` response, with the customer details you passed. For full details, see the [endpoint documentation](/api/customers/create). Having created the customer, we can now proceed to making a payment
@@ -382,6 +409,24 @@ Example of such request:
     ]);
     ```
   </CodeGroupItem>
+  <CodeGroupItem label="Ruby">
+    ```ruby
+    require "sumup"
+
+    client = SumUp::Client.new(api_key: ENV.fetch("SUMUP_API_KEY"))
+
+    checkout = client.checkouts.create(
+      checkout_reference: "MYCHECKOUT",
+      amount: 1,
+      currency: "EUR",
+      merchant_code: ENV.fetch("SUMUP_MERCHANT_CODE"),
+      description: "My checkout",
+      customer_id: "MYCUSTOMERID-123",
+      purpose: "SETUP_RECURRING_PAYMENT"
+    )
+    ```
+
+  </CodeGroupItem>
 </CodeGroup>
 
 You should expect a standard `201 Created` response, with the checkout reference and both merchant and customer information.
@@ -497,6 +542,16 @@ requesting them via [the list payment instruments](/api/customers/list-payment-i
     ```php
     $instruments = $sumup->customers->listPaymentInstruments('MYCUSTOMERID-123');
     ```
+  </CodeGroupItem>
+  <CodeGroupItem label="Ruby">
+    ```ruby
+    require "sumup"
+
+    client = SumUp::Client.new(api_key: ENV.fetch("SUMUP_API_KEY"))
+
+    instruments = client.customers.list_payment_instruments(customer_id: "MYCUSTOMERID-123")
+    ```
+
   </CodeGroupItem>
 </CodeGroup>
 

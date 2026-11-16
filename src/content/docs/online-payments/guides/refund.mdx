@@ -96,6 +96,16 @@ Example request:
     $checkoutId = $checkout->id;
     ```
   </CodeGroupItem>
+  <CodeGroupItem label="Ruby">
+    ```ruby
+    require "sumup"
+
+    client = SumUp::Client.new(api_key: ENV.fetch("SUMUP_API_KEY"))
+
+    checkout = client.checkouts.get(checkout_id: "4ebc2ed7-bb8c-4d4d-a110-08fd31301bf2")
+    ```
+
+  </CodeGroupItem>
 </CodeGroup>
 
 The response contains a JSON body with the full details of the processed checkout resource. You can find the transaction ID in the `id` attribute of the respective transaction resource (`664200af-2b62-4142-9c73-a2a505310d78` in the sample response below).
@@ -181,6 +191,20 @@ Example request for the transaction with identifier `664200af-2b62-4142-9c73-a2a
     ```php
     $sumup->transactions->refund('19aa3cca-89f6-42d2-b462-463b0b53e959');
     ```
+  </CodeGroupItem>
+  <CodeGroupItem label="Ruby">
+    ```ruby
+    require "sumup"
+
+    client = SumUp::Client.new(api_key: ENV.fetch("SUMUP_API_KEY"))
+
+    client.transactions.refund(
+      merchant_code: ENV.fetch("SUMUP_MERCHANT_CODE"),
+      transaction_id: "19aa3cca-89f6-42d2-b462-463b0b53e959",
+      body: {}
+    )
+    ```
+
   </CodeGroupItem>
 </CodeGroup>
 
@@ -272,6 +296,20 @@ Example request for a partial refund for the amount of 24.42 EUR:
         'amount' => 24.42,
     ]);
     ```
+  </CodeGroupItem>
+  <CodeGroupItem label="Ruby">
+    ```ruby
+    require "sumup"
+
+    client = SumUp::Client.new(api_key: ENV.fetch("SUMUP_API_KEY"))
+
+    client.transactions.refund(
+      merchant_code: ENV.fetch("SUMUP_MERCHANT_CODE"),
+      transaction_id: "19aa3cca-89f6-42d2-b462-463b0b53e959",
+      amount: 24.42
+    )
+    ```
+
   </CodeGroupItem>
 </CodeGroup>
 

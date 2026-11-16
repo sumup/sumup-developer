@@ -175,6 +175,24 @@ Send a request to the [Create a checkout endpoint](/api/checkouts/create) with `
     ]);
     ```
   </CodeGroupItem>
+  <CodeGroupItem label="Ruby">
+    ```ruby
+    require "sumup"
+
+    client = SumUp::Client.new(api_key: ENV.fetch("SUMUP_API_KEY"))
+
+    checkout = client.checkouts.create(
+      merchant_code: ENV.fetch("SUMUP_MERCHANT_CODE"),
+      amount: 12.00,
+      currency: "EUR",
+      checkout_reference: "b50pr914-6k0e-3091-a592-890010285b3d",
+      description: "A sample checkout",
+      redirect_url: "https://example.com/orders/123/complete",
+      hosted_checkout: {enabled: true}
+    )
+    ```
+
+  </CodeGroupItem>
 </CodeGroup>
 
 The response includes the hosted checkout configuration and the URL you send the customer to:

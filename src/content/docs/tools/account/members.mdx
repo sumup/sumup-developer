@@ -199,6 +199,22 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
 </CodeGroupItem>
 
+<CodeGroupItem label="Ruby">
+
+```ruby
+require "sumup"
+
+client = SumUp::Client.new(api_key: ENV.fetch("SUMUP_ACCESS_TOKEN"))
+
+member = client.members.create(
+  merchant_code: ENV.fetch("SUMUP_MERCHANT_CODE"),
+  email: "teammate@example.com",
+  roles: ["role_employee"]
+)
+puts member.id
+```
+
+</CodeGroupItem>
 </CodeGroup>
 
 The API returns HTTP `201` and a member object. Save its `id` if you need to update or remove this member later. The person receives an email invitation and must accept it before accessing the account.
@@ -408,6 +424,22 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
 </CodeGroupItem>
 
+<CodeGroupItem label="Ruby">
+
+```ruby
+require "sumup"
+
+client = SumUp::Client.new(api_key: ENV.fetch("SUMUP_ACCESS_TOKEN"))
+
+member = client.members.update(
+  merchant_code: ENV.fetch("SUMUP_MERCHANT_CODE"),
+  member_id: ENV.fetch("SUMUP_MEMBER_ID"),
+  roles: [ENV.fetch("SUMUP_ROLE_ID")]
+)
+puts member.to_h
+```
+
+</CodeGroupItem>
 </CodeGroup>
 
 The API returns HTTP `200` and the updated member. You can also assign roles when [inviting a new member](/tools/account/members/#invite-a-member).

@@ -167,6 +167,24 @@ Initializing the SDK works by passing it a `checkout_id`. To [create a checkout]
     ]);
     ```
   </CodeGroupItem>
+  <CodeGroupItem label="Ruby">
+    ```ruby
+    require "sumup"
+
+    client = SumUp::Client.new(api_key: ENV.fetch("SUMUP_API_KEY"))
+
+    checkout = client.checkouts.create(
+      checkout_reference: "44ea5096-b83f-46e1-9323-fe82a8cb7eb5",
+      amount: 9.99,
+      currency: "SEK",
+      merchant_code: ENV.fetch("SUMUP_MERCHANT_CODE"),
+      description: "Order #1234",
+      return_url: "https://example.com",
+      redirect_url: "https://sumup.com"
+    )
+    ```
+
+  </CodeGroupItem>
 </CodeGroup>
 
 Return only the checkout ID and other non-secret order details to the app. Set the amount, currency, and merchant on your server from the stored order, rather than accepting them from the mobile app.

@@ -5,6 +5,7 @@ import go from "../../codesamples/go.json";
 import java from "../../codesamples/java.json";
 import php from "../../codesamples/php.json";
 import python from "../../codesamples/python.json";
+import ruby from "../../codesamples/ruby.json";
 import rust from "../../codesamples/rust.json";
 import typescript from "../../codesamples/typescript.json";
 
@@ -21,6 +22,7 @@ const catalogs: readonly [string, Catalog][] = [
   ["PHP", php],
   ["Go", go],
   ["Rust", rust],
+  ["Ruby", ruby],
 ];
 
 /** Select SDK-owned examples; named variants may not exist in every catalog. */

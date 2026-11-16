@@ -218,6 +218,21 @@ $result = $sumup->tokens()->create(
 ```
 
 </CodeGroupItem>
+<CodeGroupItem label="Ruby">
+
+```ruby
+require "sumup"
+
+client = SumUp::Client.new(api_key: ENV.fetch("SUMUP_ACCESS_TOKEN"))
+
+result = client.tokens.create(
+  merchant_code: ENV.fetch("SUMUP_MERCHANT_CODE"),
+  actions: ["checkout"]
+)
+# Return result only to the authorized app; do not log it.
+```
+
+</CodeGroupItem>
 </CodeGroup>
 
 A successful request returns HTTP `200` with a response like this. `MERCHANT_TOKEN` is a placeholder for the secret value:

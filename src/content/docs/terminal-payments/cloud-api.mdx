@@ -227,6 +227,20 @@ This is an asynchronous process; starting the transaction on the device may take
     ).await?;
     ```
   </CodeGroupItem>
+  <CodeGroupItem label="Ruby">
+    ```ruby
+    require "sumup"
+
+    client = SumUp::Client.new(api_key: ENV.fetch("SUMUP_API_KEY"))
+
+    checkout = client.readers.create_checkout(
+      merchant_code: ENV.fetch("SUMUP_MERCHANT_CODE"),
+      reader_id: "READER_ID",
+      total_amount: {currency: "EUR", minor_unit: 2, value: 1500}
+    )
+    ```
+
+  </CodeGroupItem>
 </CodeGroup>
 
 Important notes:
@@ -332,6 +346,19 @@ This process is asynchronous, and the actual termination may take some time to b
     ```rust
     client.readers().terminate_checkout(&merchant_code, &reader_id).await?;
     ```
+  </CodeGroupItem>
+  <CodeGroupItem label="Ruby">
+    ```ruby
+    require "sumup"
+
+    client = SumUp::Client.new(api_key: ENV.fetch("SUMUP_API_KEY"))
+
+    client.readers.terminate_checkout(
+      merchant_code: ENV.fetch("SUMUP_MERCHANT_CODE"),
+      reader_id: "READER_ID"
+    )
+    ```
+
   </CodeGroupItem>
 </CodeGroup>
 
@@ -458,6 +485,20 @@ The SDK examples use an authenticated client and the merchant code and reader ID
     ]);
     ```
   </CodeGroupItem>
+  <CodeGroupItem label="Ruby">
+    ```ruby
+    require "sumup"
+
+    client = SumUp::Client.new(api_key: ENV.fetch("SUMUP_API_KEY"))
+
+    settings = client.readers.update_reader_settings(
+      merchant_code: ENV.fetch("SUMUP_MERCHANT_CODE"),
+      reader_id: "READER_ID",
+      menu_lock: {enabled: true, passcode: "1234"}
+    )
+    ```
+
+  </CodeGroupItem>
 </CodeGroup>
 
 Example response:
@@ -527,6 +568,19 @@ Retrieve the menu lock settings for a reader.
     $settings = $sumup->readers()->getReaderSettings($merchantCode, $readerId);
     ```
   </CodeGroupItem>
+  <CodeGroupItem label="Ruby">
+    ```ruby
+    require "sumup"
+
+    client = SumUp::Client.new(api_key: ENV.fetch("SUMUP_API_KEY"))
+
+    settings = client.readers.get_reader_settings(
+      merchant_code: ENV.fetch("SUMUP_MERCHANT_CODE"),
+      reader_id: "READER_ID"
+    )
+    ```
+
+  </CodeGroupItem>
 </CodeGroup>
 
 Example response:
@@ -588,6 +642,16 @@ List all readers connected to your merchant account.
     ```rust
     let readers = client.readers().list(&merchant_code).await?;
     ```
+  </CodeGroupItem>
+  <CodeGroupItem label="Ruby">
+    ```ruby
+    require "sumup"
+
+    client = SumUp::Client.new(api_key: ENV.fetch("SUMUP_API_KEY"))
+
+    readers = client.readers.list(merchant_code: ENV.fetch("SUMUP_MERCHANT_CODE"))
+    ```
+
   </CodeGroupItem>
 </CodeGroup>
 

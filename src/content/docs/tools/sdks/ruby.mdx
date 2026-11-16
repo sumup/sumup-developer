@@ -1,0 +1,88 @@
+---
+title: Ruby SDK
+description: Create online checkouts and accept reader payments with the SumUp Ruby SDK.
+sidebar:
+  order: 107
+links:
+  - title: Source code
+    href: https://github.com/sumup/sumup-ruby
+  - title: Documentation
+    href: https://github.com/sumup/sumup-ruby#readme
+---
+
+The [`sumup` gem](https://rubygems.org/gems/sumup) provides Ruby clients for SumUp APIs, response models, and RBS signatures. Request bodies accept keyword arguments, hashes, or models from `SumUp::Types`.
+
+## Before you begin
+
+You need Ruby 3.3 or later, a [sandbox merchant account](/online-payments/testing/), and a [secret API key](/tools/authorization/api-keys/). Set `SUMUP_API_KEY` and `SUMUP_MERCHANT_CODE` in your server environment. You can also pass an [OAuth access token](/tools/authorization/oauth/) through the client's `api_key` option to act on behalf of another merchant.
+
+## Install the SDK
+
+Add the SDK to your application's Gemfile:
+
+```ruby
+gem "sumup"
+```
+
+Install the gem with Bundler:
+
+```bash
+bundle install
+```
+
+Keep your credentials and the SDK calls on your server.
+
+## Create an online checkout
+
+Create a Hosted Checkout and retrieve its payment URL:
+
+```ruby
+require "sumup"
+require "securerandom"
+
+client = SumUp::Client.new(api_key: ENV.fetch("SUMUP_API_KEY"))
+checkout = client.checkouts.create(
+  checkout_reference: SecureRandom.uuid,
+  amount: 19.99,
+  currency: "EUR",
+  merchant_code: ENV.fetch("SUMUP_MERCHANT_CODE"),
+  description: "Order 1234",
+  hosted_checkout: {enabled: true}
+)
+
+puts checkout.hosted_checkout_url
+```
+
+Send the customer to `hosted_checkout_url` to pay. [Retrieve the checkout](/api/checkouts/get/) on your server to verify its status before fulfilling the order.
+
+## Start a reader checkout
+
+Follow the [Cloud API setup and pairing instructions](/terminal-payments/cloud-api/) first, including its affiliate key requirements. Set `SUMUP_READER_ID` to the paired reader's ID.
+
+Start a checkout for EUR 19.99 on that reader:
+
+```ruby
+require "sumup"
+
+client = SumUp::Client.new(api_key: ENV.fetch("SUMUP_API_KEY"))
+checkout = client.readers.create_checkout(
+  merchant_code: ENV.fetch("SUMUP_MERCHANT_CODE"),
+  reader_id: ENV.fetch("SUMUP_READER_ID"),
+  total_amount: {currency: "EUR", minor_unit: 2, value: 1999},
+  description: "Order 1234"
+)
+
+puts checkout.data.client_transaction_id
+```
+
+Online checkout amounts use major units (`19.99` EUR); reader amounts use minor units (`1999` cents). The response identifies the reader checkout. Follow [reader checkout status notifications](/terminal-payments/cloud-api/#receive-transaction-results) to determine the result and verify the transaction before fulfilling the order.
+
+## Test your integration
+
+Use your sandbox merchant account to [test online payments](/online-payments/testing/) or follow the [in-person payment testing guide](/terminal-payments/testing/). Verify successful, failed, and canceled payments before going live.
+
+## Next steps
+
+- Use the [API reference](/api/) for Ruby samples and request fields.
+- Review [error handling and request options](https://github.com/sumup/sumup-ruby#handle-errors).
+- See the [Ruby SDK examples](https://github.com/sumup/sumup-ruby/tree/main/examples) for OAuth and signed event handling.
