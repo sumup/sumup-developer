@@ -3,7 +3,7 @@
   "language": "rust",
   "sdk": {
     "module": "sumup",
-    "version": "0.6.2"
+    "version": "0.7.0"
   },
   "openAPIVersion": "1.0.0",
   "samples": [
@@ -469,7 +469,7 @@
       "description": "Refunds a transaction identified by its SumUp transaction ID. Omit the request body to request a full refund, or provide `amount` for a partial refund in the transaction's currency.\n\nRetrieve the transaction afterwards to inspect its refunded amount and refund events. The transaction must be eligible for a refund; see the error responses for invalid amounts, permissions, and processing failures.",
       "httpMethod": "POST",
       "path": "/v1.0/merchants/{merchant_code}/payments/{transaction_id}/refunds",
-      "sample": "use sumup::{Authorization, Client};\n#[tokio::main]\nasync fn main() {\n    let client = Client::default()\n        .with_authorization(Authorization::api_key(\"sup_sk_test_...\"));\n    let body = sumup::resources::transactions::RefundRequest::builder()\n        .amount(24.42f32)\n        .build();\n    let response = client\n        .transactions()\n        .refund(\"MERCHANT_CODE\", \"TRANSACTION_ID\", Some(body))\n        .await\n        .expect(\"refund request failed\");\n    println!(\"{response:#?}\");\n}\n"
+      "sample": "use sumup::{Authorization, Client};\n#[tokio::main]\nasync fn main() {\n    let client = Client::default()\n        .with_authorization(Authorization::api_key(\"sup_sk_test_...\"));\n    let body = sumup::resources::transactions::RefundRequest::builder()\n        .amount(2442i64)\n        .build();\n    let response = client\n        .transactions()\n        .refund(\"MERCHANT_CODE\", \"TRANSACTION_ID\", Some(body))\n        .await\n        .expect(\"refund request failed\");\n    println!(\"{response:#?}\");\n}\n"
     },
     {
       "id": "SearchSalesV10.date_range",
@@ -479,7 +479,7 @@
       "description": "Returns a paginated list of `SaleSearchItem` rows matching filter criteria. Results are\nsorted **newest first** by **sale close date**.\n\nFilters from different categories stack with **logical AND**; multiple values in one array\nfield stack with **logical OR**. Results cover the merchant’s **last two years** of sales\n(narrow further with `start_date` / `end_date`). Pagination tokens are not interchangeable\nwith `GET /sales`.",
       "httpMethod": "POST",
       "path": "/v1.0/merchants/{merchant_code}/sales/search",
-      "sample": "use sumup::{Authorization, Client};\n#[tokio::main]\nasync fn main() {\n    let client = Client::default()\n        .with_authorization(Authorization::api_key(\"sup_sk_test_...\"));\n    let body = sumup::resources::sales::SearchRequest::builder()\n        .end_date(\"2026-06-02T23:59:59Z\".parse().expect(\"valid date\"))\n        .pagination_limit(10i64)\n        .sales_channels(vec![sumup::resources::sales::SalesChannelFilterV10::Pos])\n        .start_date(\"2026-06-01T00:00:00Z\".parse().expect(\"valid date\"))\n        .build();\n    let response = client\n        .sales()\n        .search(\"MERCHANT_CODE\", body)\n        .await\n        .expect(\"search request failed\");\n    println!(\"{response:#?}\");\n}\n"
+      "sample": "use sumup::{Authorization, Client};\n#[tokio::main]\nasync fn main() {\n    let client = Client::default()\n        .with_authorization(Authorization::api_key(\"sup_sk_test_...\"));\n    let body = sumup::resources::sales::SearchRequest::builder()\n        .end_date(\"2026-06-02T23:59:59Z\".parse().expect(\"valid date\"))\n        .pagination_limit(10i64)\n        .sales_channels(vec![sumup::resources::sales::SaleChannelFilter::Pos])\n        .start_date(\"2026-06-01T00:00:00Z\".parse().expect(\"valid date\"))\n        .build();\n    let response = client\n        .sales()\n        .search(\"MERCHANT_CODE\", body)\n        .await\n        .expect(\"search request failed\");\n    println!(\"{response:#?}\");\n}\n"
     },
     {
       "id": "UpdateCheckout.default",
