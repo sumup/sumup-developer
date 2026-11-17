@@ -1,0 +1,55 @@
+---
+title: Domains and IP addresses
+description: Find SumUp domains and IP addresses for your network allowlist.
+sidebar:
+  order: 6
+---
+
+Configure network access for SumUp APIs, payment integrations, and SDKs.
+
+## SumUp domains
+
+Allow HTTPS and secure WebSocket connections on port `443` to the domains your integration uses:
+
+```text
+6f74656c.sumup.com
+api.sumup.com
+auth.sumup.com
+checkout.sumup.com
+developer.sumup.com
+devices.sumup.com
+gateway.sumup.com
+hardware-mobile-edge.sumup.com
+images.sumup.com
+js.sumup.com
+ltxup.sumup.com
+maven.sumup.com
+mcp.sumup.com
+me.sumup.com
+socket.sumup.com
+solo-edge.sumup.com
+static.sumup.com
+top-sam.sumup.com
+triangle-ng.sumup.com
+triangle.sumup.com
+txg-ng.sumup.com
+txg.sumup.com
+virtual-solo.sumup.com
+```
+
+Always use domain names when calling SumUp services. Payment methods and 3D Secure authentication can also require access to third-party domains.
+
+## IP addresses
+
+SumUp can send requests to your integration from these public IPv4 addresses:
+
+```text
+3.214.234.97
+52.48.211.42
+52.48.233.7
+54.145.188.229
+54.86.98.164
+79.125.59.241
+```
+
+If your firewall requires CIDR notation, append `/32` to each address.

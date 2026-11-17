@@ -179,15 +179,22 @@ pre.astro-code code > .line {
   position: relative;
   display: inline-block;
   min-width: 100%;
-  /* Empty Shiki spans need a line box to keep their gutter numbers aligned. */
+  /* Empty Shiki spans need a line box to preserve blank lines. */
   min-height: 1lh;
-  padding-inline-start: 4.5ch;
   vertical-align: top;
+}
+
+:is(pre.astro-code[data-line-numbers], .code-samples pre.astro-code)
+  code
+  > .line {
+  padding-inline-start: 4.5ch;
   counter-increment: code-line;
 }
 
 /* Generated numbers stay out of copied code and the accessibility text. */
-pre.astro-code code > .line::before {
+:is(pre.astro-code[data-line-numbers], .code-samples pre.astro-code)
+  code
+  > .line::before {
   content: counter(code-line) / "";
   position: absolute;
   inset-inline-start: 0;

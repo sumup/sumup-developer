@@ -19,6 +19,8 @@ New events may be introduced at any time, without prior notice. Your application
 
 ## Handling a Webhook
 
+If your endpoint restricts incoming requests by source IP, see [Domains and IP addresses](/tools/authorization/ips/#ip-addresses) before configuring your allowlist.
+
 Webhooks are delivered in the form of a HTTP POST request, to which your application should reply to as soon as possible. If the response takes longer, our system accepts this as a failed notification and retries it.
 
 Your application should return a valid, empty response with any `2xx` status code. Any response other than a `2xx` is treated as erroneous.
