@@ -3,7 +3,7 @@
   "language": "ruby",
   "sdk": {
     "module": "sumup",
-    "version": "0.0.1"
+    "version": "0.1.0"
   },
   "openAPIVersion": "1.0.0",
   "samples": [
@@ -366,7 +366,7 @@
       "operationId": "RefundTransaction",
       "httpMethod": "POST",
       "path": "/v1.0/merchants/{merchant_code}/payments/{transaction_id}/refunds",
-      "sample": "require \"sumup\"\n\nclient = SumUp::Client.new(api_key: ENV.fetch(\"SUMUP_API_KEY\"))\nresult = client.transactions.refund(merchant_code: \"MH4H92C7\", transaction_id: \"4ffb8dfc-7f2b-413d-a497-2ad00766585e\", body: {\"amount\" => 24.42})\n",
+      "sample": "require \"sumup\"\n\nclient = SumUp::Client.new(api_key: ENV.fetch(\"SUMUP_API_KEY\"))\nresult = client.transactions.refund(merchant_code: \"MH4H92C7\", transaction_id: \"4ffb8dfc-7f2b-413d-a497-2ad00766585e\", body: {\"amount\" => 2442})\n",
       "example": "PartialRefund"
     },
     {
