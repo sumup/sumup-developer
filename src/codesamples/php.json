@@ -3,7 +3,7 @@
   "language": "php",
   "sdk": {
     "module": "sumup/sumup-php",
-    "version": "0.1.10"
+    "version": "0.1.11"
   },
   "openAPIVersion": "1.0.0",
   "samples": [
@@ -467,7 +467,7 @@
       "description": "Refunds a transaction identified by its SumUp transaction ID. Omit the request body to request a full refund, or provide `amount` for a partial refund in the transaction's currency.\n\nRetrieve the transaction afterwards to inspect its refunded amount and refund events. The transaction must be eligible for a refund; see the error responses for invalid amounts, permissions, and processing failures.",
       "httpMethod": "POST",
       "path": "/v1.0/merchants/{merchant_code}/payments/{transaction_id}/refunds",
-      "sample": "\u003c?php\n\ndeclare(strict_types=1);\n\nrequire __DIR__ . '/vendor/autoload.php';\n\n$sumup = new \\SumUp\\SumUp('sup_sk_your_api_key');\n\n$body = [\n    'amount' =\u003e 24.42,\n];\n\n$result = $sumup-\u003etransactions()-\u003erefund(\n    'MH4H92C7',\n    '4ffb8dfc-7f2b-413d-a497-2ad00766585e',\n    $body,\n);\n\nvar_dump($result);\n"
+      "sample": "\u003c?php\n\ndeclare(strict_types=1);\n\nrequire __DIR__ . '/vendor/autoload.php';\n\n$sumup = new \\SumUp\\SumUp('sup_sk_your_api_key');\n\n$body = [\n    'amount' =\u003e 2442,\n];\n\n$result = $sumup-\u003etransactions()-\u003erefund(\n    'MH4H92C7',\n    '4ffb8dfc-7f2b-413d-a497-2ad00766585e',\n    $body,\n);\n\nvar_dump($result);\n"
     },
     {
       "id": "SearchSalesV10.date_range",
