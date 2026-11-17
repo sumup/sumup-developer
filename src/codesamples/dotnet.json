@@ -3,7 +3,7 @@
   "language": "csharp",
   "sdk": {
     "module": "SumUp",
-    "version": "0.0.23"
+    "version": "0.0.24"
   },
   "openAPIVersion": "1.0.0",
   "samples": [
@@ -467,7 +467,7 @@
       "description": "Refunds a transaction identified by its SumUp transaction ID. Omit the request body to request a full refund, or provide amount for a partial refund in the transaction's currency. Retrieve the transaction afterwards to inspect its refunded amount and refund events. The transaction must be eligible for a refund; see the error responses for invalid amounts, permissions, and processing failures.",
       "httpMethod": "POST",
       "path": "/v1.0/merchants/{merchant_code}/payments/{transaction_id}/refunds",
-      "sample": "using System;\nusing System.Collections.Generic;\nusing System.Threading.Tasks;\nusing SumUp;\n\npublic static class Program\n{\n    public static async Task Main()\n    {\n        using var client = new SumUpClient();\n        var response = await client.Transactions.RefundAsync(\n            \"your-merchant-code\",\n            \"example-id\",\n            new TransactionsRefundRequest\n            {\n                Amount = 24.42f,\n            });\n\n        Console.WriteLine(response.StatusCode);\n    }\n}\n"
+      "sample": "using System;\nusing System.Collections.Generic;\nusing System.Threading.Tasks;\nusing SumUp;\n\npublic static class Program\n{\n    public static async Task Main()\n    {\n        using var client = new SumUpClient();\n        var response = await client.Transactions.RefundAsync(\n            \"your-merchant-code\",\n            \"example-id\",\n            new TransactionsRefundRequest\n            {\n                Amount = 2442,\n            });\n\n        Console.WriteLine(response.StatusCode);\n    }\n}\n"
     },
     {
       "id": "SearchSalesV10.date_range",
@@ -477,7 +477,7 @@
       "description": "Returns a paginated list of SaleSearchItem rows matching filter criteria. Results are sorted newest first by sale close date. Filters from different categories stack with logical AND; multiple values in one array field stack with logical OR. Results cover the merchant’s last two years of sales (narrow further with start_date / end_date). Pagination tokens are not interchangeable with GET /sales.",
       "httpMethod": "POST",
       "path": "/v1.0/merchants/{merchant_code}/sales/search",
-      "sample": "using System;\nusing System.Collections.Generic;\nusing System.Threading.Tasks;\nusing SumUp;\n\npublic static class Program\n{\n    public static async Task Main()\n    {\n        using var client = new SumUpClient();\n        var response = await client.Sales.SearchAsync(\n            \"your-merchant-code\",\n            new SaleSearchRequest\n            {\n                EndDate = DateTimeOffset.Parse(\"2026-06-02T23:59:59Z\"),\n                PaginationLimit = 10,\n                SalesChannels = new SalesChannelFilterV10[]\n                {\n                    SalesChannelFilterV10.Pos,\n                },\n                StartDate = DateTimeOffset.Parse(\"2026-06-01T00:00:00Z\"),\n            });\n\n        Console.WriteLine(response.StatusCode);\n    }\n}\n"
+      "sample": "using System;\nusing System.Collections.Generic;\nusing System.Threading.Tasks;\nusing SumUp;\n\npublic static class Program\n{\n    public static async Task Main()\n    {\n        using var client = new SumUpClient();\n        var response = await client.Sales.SearchAsync(\n            \"your-merchant-code\",\n            new SaleSearchRequest\n            {\n                EndDate = DateTimeOffset.Parse(\"2026-06-02T23:59:59Z\"),\n                PaginationLimit = 10,\n                SalesChannels = new SaleChannelFilter[]\n                {\n                    SaleChannelFilter.Pos,\n                },\n                StartDate = DateTimeOffset.Parse(\"2026-06-01T00:00:00Z\"),\n            });\n\n        Console.WriteLine(response.StatusCode);\n    }\n}\n"
     },
     {
       "id": "UpdateCheckout",
