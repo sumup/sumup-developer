@@ -3,7 +3,7 @@
   "language": "go",
   "sdk": {
     "module": "github.com/sumup/sumup-go",
-    "version": "0.22.1"
+    "version": "0.22.2"
   },
   "openAPIVersion": "1.0.0",
   "samples": [
@@ -467,7 +467,7 @@
       "description": "Refunds a transaction identified by its SumUp transaction ID. Omit the request body to request a full refund, or provide `amount` for a partial refund in the transaction's currency.\n\nRetrieve the transaction afterwards to inspect its refunded amount and refund events. The transaction must be eligible for a refund; see the error responses for invalid amounts, permissions, and processing failures.",
       "httpMethod": "POST",
       "path": "/v1.0/merchants/{merchant_code}/payments/{transaction_id}/refunds",
-      "sample": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/sumup/sumup-go\"\n)\n\nfunc main() {\n\tclient := sumup.NewClient()\n\tresult, err := client.Transactions.Refund(context.TODO(), \"MH4H92C7\", \"4ffb8dfc-7f2b-413d-a497-2ad00766585e\", sumup.TransactionsRefundParams{\n\t\tAmount: new(float32(24.42)),\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\n\tfmt.Printf(\"%+v\\n\", result)\n}\n"
+      "sample": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/sumup/sumup-go\"\n)\n\nfunc main() {\n\tclient := sumup.NewClient()\n\tresult, err := client.Transactions.Refund(context.TODO(), \"MH4H92C7\", \"4ffb8dfc-7f2b-413d-a497-2ad00766585e\", sumup.TransactionsRefundParams{\n\t\tAmount: new(2442),\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\n\tfmt.Printf(\"%+v\\n\", result)\n}\n"
     },
     {
       "id": "SearchSalesV10.date_range",
@@ -477,7 +477,7 @@
       "description": "Returns a paginated list of `SaleSearchItem` rows matching filter criteria. Results are\nsorted **newest first** by **sale close date**.\n\nFilters from different categories stack with **logical AND**; multiple values in one array\nfield stack with **logical OR**. Results cover the merchant’s **last two years** of sales\n(narrow further with `start_date` / `end_date`). Pagination tokens are not interchangeable\nwith `GET /sales`.",
       "httpMethod": "POST",
       "path": "/v1.0/merchants/{merchant_code}/sales/search",
-      "sample": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\t\"time\"\n\n\t\"github.com/sumup/sumup-go\"\n)\n\nfunc main() {\n\tclient := sumup.NewClient()\n\tresult, err := client.Sales.Search(context.TODO(), \"MCZM9TGQ\", sumup.SalesSearchParams{\n\t\tEndDate:         new(time.Date(2026, time.June, 2, 23, 59, 59, 0, time.UTC)),\n\t\tPaginationLimit: new(10),\n\t\tSalesChannels:   []sumup.SalesChannelFilterV10{\"POS\"},\n\t\tStartDate:       new(time.Date(2026, time.June, 1, 0, 0, 0, 0, time.UTC)),\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\n\tfmt.Printf(\"%+v\\n\", result)\n}\n"
+      "sample": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\t\"time\"\n\n\t\"github.com/sumup/sumup-go\"\n)\n\nfunc main() {\n\tclient := sumup.NewClient()\n\tresult, err := client.Sales.Search(context.TODO(), \"MCZM9TGQ\", sumup.SalesSearchParams{\n\t\tEndDate:         new(time.Date(2026, time.June, 2, 23, 59, 59, 0, time.UTC)),\n\t\tPaginationLimit: new(10),\n\t\tSalesChannels:   []sumup.SaleChannelFilter{\"POS\"},\n\t\tStartDate:       new(time.Date(2026, time.June, 1, 0, 0, 0, 0, time.UTC)),\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\n\tfmt.Printf(\"%+v\\n\", result)\n}\n"
     },
     {
       "id": "UpdateCheckout",
