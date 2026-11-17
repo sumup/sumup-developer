@@ -3,7 +3,7 @@
   "language": "python",
   "sdk": {
     "module": "sumup",
-    "version": "0.4.2"
+    "version": "0.4.3"
   },
   "openAPIVersion": "1.0.0",
   "samples": [
@@ -467,7 +467,7 @@
       "description": "Refunds a transaction identified by its SumUp transaction ID. Omit the request body to request a full refund, or provide `amount` for a partial refund in the transaction's currency.\n\nRetrieve the transaction afterwards to inspect its refunded amount and refund events. The transaction must be eligible for a refund; see the error responses for invalid amounts, permissions, and processing failures.",
       "httpMethod": "POST",
       "path": "/v1.0/merchants/{merchant_code}/payments/{transaction_id}/refunds",
-      "sample": "import os\n\nimport sumup\n\nclient = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\nresult = client.transactions.refund(\n    \"MH4H92C7\",\n    \"4ffb8dfc-7f2b-413d-a497-2ad00766585e\",\n    amount=24.42,\n)\nprint(result)\n"
+      "sample": "import os\n\nimport sumup\n\nclient = sumup.Sumup(api_key=os.environ[\"SUMUP_API_KEY\"])\nresult = client.transactions.refund(\n    \"MH4H92C7\",\n    \"4ffb8dfc-7f2b-413d-a497-2ad00766585e\",\n    amount=2442,\n)\nprint(result)\n"
     },
     {
       "id": "SearchSalesV10.date_range",
