@@ -3,7 +3,7 @@
   "language": "java",
   "sdk": {
     "module": "com.sumup:sumup-sdk",
-    "version": "0.1.4"
+    "version": "0.1.5"
   },
   "openAPIVersion": "1.0.0",
   "samples": [
@@ -467,7 +467,7 @@
       "description": "Refunds a transaction identified by its SumUp transaction ID. Omit the request body to request a full refund, or provide `amount` for a partial refund in the transaction's currency.\n\nRetrieve the transaction afterwards to inspect its refunded amount and refund events. The transaction must be eligible for a refund; see the error responses for invalid amounts, permissions, and processing failures.",
       "httpMethod": "POST",
       "path": "/v1.0/merchants/{merchant_code}/payments/{transaction_id}/refunds",
-      "sample": "import com.sumup.sdk.SumUpClient;\n\npublic final class RefundTransactionPartialRefundSample {\n  public static void main(String[] args) throws Exception {\n    var client = new SumUpClient();\n\n    var result = client.transactions().refund(\n            \"MH4H92C7\",\n            \"4ffb8dfc-7f2b-413d-a497-2ad00766585e\",\n            com.sumup.sdk.models.RefundTransactionRequest.builder()\n                .amount(24.42f)\n                .build()\n        );\n    System.out.println(result);\n  }\n}\n"
+      "sample": "import com.sumup.sdk.SumUpClient;\n\npublic final class RefundTransactionPartialRefundSample {\n  public static void main(String[] args) throws Exception {\n    var client = new SumUpClient();\n\n    var result = client.transactions().refund(\n            \"MH4H92C7\",\n            \"4ffb8dfc-7f2b-413d-a497-2ad00766585e\",\n            com.sumup.sdk.models.RefundTransactionRequest.builder()\n                .amount(2442L)\n                .build()\n        );\n    System.out.println(result);\n  }\n}\n"
     },
     {
       "id": "SearchSalesV10.date_range",
@@ -477,7 +477,7 @@
       "description": "Returns a paginated list of `SaleSearchItem` rows matching filter criteria. Results are\nsorted **newest first** by **sale close date**.\n\nFilters from different categories stack with **logical AND**; multiple values in one array\nfield stack with **logical OR**. Results cover the merchant’s **last two years** of sales\n(narrow further with `start_date` / `end_date`). Pagination tokens are not interchangeable\nwith `GET /sales`.",
       "httpMethod": "POST",
       "path": "/v1.0/merchants/{merchant_code}/sales/search",
-      "sample": "import com.sumup.sdk.SumUpClient;\n\npublic final class SearchSalesV10DateRangeSample {\n  public static void main(String[] args) throws Exception {\n    var client = new SumUpClient();\n\n    var result = client.sales().search(\n            \"MCZM9TGQ\",\n            com.sumup.sdk.models.SaleSearchRequest.builder()\n                .endDate(java.time.OffsetDateTime.parse(\"2026-06-02T23:59:59Z\"))\n                .paginationLimit(10L)\n                .salesChannels(java.util.List.of(com.sumup.sdk.models.SalesChannelFilterV10.of(\"POS\")))\n                .startDate(java.time.OffsetDateTime.parse(\"2026-06-01T00:00:00Z\"))\n                .build()\n        );\n    System.out.println(result);\n  }\n}\n"
+      "sample": "import com.sumup.sdk.SumUpClient;\n\npublic final class SearchSalesV10DateRangeSample {\n  public static void main(String[] args) throws Exception {\n    var client = new SumUpClient();\n\n    var result = client.sales().search(\n            \"MCZM9TGQ\",\n            com.sumup.sdk.models.SaleSearchRequest.builder()\n                .endDate(java.time.OffsetDateTime.parse(\"2026-06-02T23:59:59Z\"))\n                .paginationLimit(10L)\n                .salesChannels(java.util.List.of(com.sumup.sdk.models.SaleChannelFilter.of(\"POS\")))\n                .startDate(java.time.OffsetDateTime.parse(\"2026-06-01T00:00:00Z\"))\n                .build()\n        );\n    System.out.println(result);\n  }\n}\n"
     },
     {
       "id": "UpdateCheckout",
