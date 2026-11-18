@@ -21,12 +21,6 @@
 /terminal-payments/sdks/offline-transactions/index.md                        /terminal-payments/offline-payments/index.md 301
 /terminal-payments/sdks/offline-transactions/index.mdx                       /terminal-payments/offline-payments/index.mdx 301
 
-# Roles and permissions
-/tools/authorization/roles                                                 /tools/account/roles/ 301
-/tools/authorization/roles/                                                /tools/account/roles/ 301
-/tools/authorization/roles/index.md                                        /tools/account/roles/index.md 301
-/tools/authorization/roles/index.mdx                                       /tools/account/roles/index.mdx 301
-
 # SDKs redirects
 /tools/sdks/ios-sdk/                                                         /terminal-payments/sdks/ios-sdk
 /tools/sdks/android-ttp/                                                     /terminal-payments/sdks/android-ttp
@@ -140,6 +134,12 @@
 /tools/authorization/authorization/                                          /tools/authorization/
 /tools/authorization/authorization                                           /tools/authorization/
 /tools/models/merchant/                                                      /tools/glossary/merchant
+
+# Country and currency glossary
+/tools/glossary/countries-and-currencies                                     /tools/glossary/countries/ 301
+/tools/glossary/countries-and-currencies/                                    /tools/glossary/countries/ 301
+/tools/glossary/countries-and-currencies/index.md                            /tools/glossary/countries/index.md 301
+/tools/glossary/countries-and-currencies/index.mdx                           /tools/glossary/countries/index.mdx 301
 
 # Resources
 /getting-started/                                                            /

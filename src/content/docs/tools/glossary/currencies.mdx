@@ -1,0 +1,50 @@
+---
+title: Currencies
+description: Look up SumUp currency codes and decimal places, and format amounts for online and reader checkouts.
+sidebar:
+  order: 40
+---
+
+import SearchableTable from "@components/content/SearchableTable.astro";
+
+Use your merchant account's default currency when a payment request asks for a currency code. Find the default by [country of registration](/tools/glossary/countries/) or read `default_currency` from the [Retrieve a Merchant endpoint](/api/merchants/get/). Currency availability depends on your integration and the country where your merchant account is registered.
+
+## Minor units
+
+A minor-unit amount is an integer that counts the smallest units SumUp uses for a currency.
+
+- **Two decimal places.** Multiply the amount by 100. For example, EUR 10.10 is `1010` in minor units.
+- **Zero decimal places.** Use the whole amount as-is. For example, COP 4251 is `4251` in minor units.
+
+## Supported currency codes
+
+Search by currency name or three-letter code. The table shows the decimal places SumUp uses for amounts in minor units.
+
+<SearchableTable searchPlaceholder="Search SumUp processing currencies">
+
+| Code  | Currency          | Decimals |
+| ----- | ----------------- | -------: |
+| `AUD` | Australian dollar |        2 |
+| `BRL` | Brazilian real    |        2 |
+| `CAD` | Canadian dollar   |        2 |
+| `CHF` | Swiss franc       |        2 |
+| `CLP` | Chilean peso      |        0 |
+| `COP` | Colombian peso    |        0 |
+| `CZK` | Czech koruna      |        2 |
+| `DKK` | Danish krone      |        2 |
+| `EUR` | Euro              |        2 |
+| `GBP` | Pound sterling    |        2 |
+| `HUF` | Hungarian forint  |        0 |
+| `MXN` | Mexican peso      |        2 |
+| `NOK` | Norwegian krone   |        2 |
+| `PEN` | Peruvian sol      |        2 |
+| `PLN` | Polish zloty      |        2 |
+| `RON` | Romanian leu      |        2 |
+| `SEK` | Swedish krona     |        2 |
+| `USD` | US dollar         |        2 |
+
+</SearchableTable>
+
+### Special cases
+
+[ISO 4217](https://www.iso.org/iso-4217-currency-codes.html) standard defines two decimal places for `COP` and `HUF`. For these currencies SumUp uses zero decimal places.

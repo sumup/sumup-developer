@@ -11,14 +11,14 @@ If you use the Cloud API, you can also test without a card reader using [Virtual
 
 For online payments, use the [online payment testing guide](/online-payments/testing/).
 
-## Set Up Your Test
+## Set up your test
 
 1. [Create a sandbox merchant account](/terminal-payments/quickstart/#sandbox-merchant-account).
 2. Authenticate with that sandbox merchant account in your integration. For Cloud API, use credentials for the sandbox merchant and pair the reader with that merchant.
 3. Connect a supported reader and make sure it has an internet connection through your phone or its own connection, depending on the integration.
 4. Start a payment and tap or insert a supported physical debit or credit card. Follow any instructions on the reader, including PIN entry when requested.
 
-You do not need the test card numbers used for online payments. The payment amount determines the simulated result once the card has been read and the payment is submitted. Card-reading and device errors can still prevent the payment from reaching that point.
+The test amount determines the simulated result once you submit the payment. Card-reading or connection errors can stop the payment before then.
 
 :::caution
 The sandbox merchant account determines whether a payment uses real funds. Make sure your app or API request uses the sandbox merchant, even if you have already selected it in [the Dashboard](https://me.sumup.com/dashboard).
@@ -26,45 +26,49 @@ The sandbox merchant account determines whether a payment uses real funds. Make 
 For native login in the Android or iOS SDK, we recommend using a managed user account created in your sandbox merchant. Alternatively, set the sandbox merchant account as your [existing user's default merchant](https://me.sumup.com/settings/accounts) before logging in. Follow the [merchant account setup for native SDK login](/terminal-payments/quickstart/#users-with-multiple-merchant-accounts).
 :::
 
-## Test Successful Payments
+### Amount format
 
-Start a payment for `10.00 EUR` and complete the steps on the reader.
+Test amounts are listed in [minor units](/tools/glossary/currencies/#minor-units). For example, `4251` means EUR 42.51 or COP 4251 for a reader payment.
+
+## Test successful payments
+
+Start a payment for `1000` minor units (EUR 10.00) and complete the steps on the reader. If your minimum payment amount is higher, choose an allowed amount outside the decline table.
 
 Verify that your integration receives a successful payment result and matches it to the correct order. For Cloud API, wait for the [transaction result](/terminal-payments/cloud-api/#receive-transaction-results): the initial checkout response only confirms that the checkout was accepted.
 
-## Test Unsuccessful Payments
+## Test unsuccessful payments
 
-Start a payment for `11.00 EUR` to simulate a declined payment. To test a specific decline reason, use an amount from the table below. For example, `42.51 EUR` simulates insufficient funds.
+Choose an exact amount from the table and [format it for your currency](#amount-format).
 
-Only the listed `42.xx` amounts trigger these declines. Other amounts starting with `42` do not necessarily fail.
+| Amount in minor units | Simulated reason                    |
+| --------------------- | ----------------------------------- |
+| `1100`                | Payment declined                    |
+| `4201`                | Refer to the card issuer            |
+| `4203`                | Invalid merchant                    |
+| `4205`                | Payment declined                    |
+| `4206`                | Processing error                    |
+| `4212`                | Invalid transaction                 |
+| `4213`                | Invalid amount                      |
+| `4214`                | Invalid card number                 |
+| `4241`                | Lost card                           |
+| `4243`                | Stolen card                         |
+| `4251`                | Insufficient funds                  |
+| `4254`                | Expired card                        |
+| `4255`                | Incorrect PIN                       |
+| `4260`                | Retry PIN entry                     |
+| `4261`                | Card usage limit exceeded           |
+| `4265`                | Card usage frequency limit exceeded |
+| `4275`                | PIN attempt limit exceeded          |
+| `4276`                | Additional authentication required  |
+| `4278`                | Retry by inserting the card         |
+| `4282`                | Invalid card security code          |
+| `4291`                | Processing timeout                  |
+| `4292`                | Unexpected processing response      |
+| `4296`                | System malfunction                  |
 
-| Amount (EUR) | Simulated reason                    |
-| ------------ | ----------------------------------- |
-| `11.00`      | Payment declined                    |
-| `42.01`      | Refer to the card issuer            |
-| `42.03`      | Invalid merchant                    |
-| `42.05`      | Payment declined                    |
-| `42.06`      | Processing error                    |
-| `42.12`      | Invalid transaction                 |
-| `42.13`      | Invalid amount                      |
-| `42.14`      | Invalid card number                 |
-| `42.41`      | Lost card                           |
-| `42.43`      | Stolen card                         |
-| `42.51`      | Insufficient funds                  |
-| `42.54`      | Expired card                        |
-| `42.55`      | Incorrect PIN                       |
-| `42.60`      | Retry PIN entry                     |
-| `42.61`      | Card usage limit exceeded           |
-| `42.65`      | Card usage frequency limit exceeded |
-| `42.75`      | PIN attempt limit exceeded          |
-| `42.76`      | Additional authentication required  |
-| `42.78`      | Retry by inserting the card         |
-| `42.82`      | Invalid card security code          |
-| `42.91`      | Processing timeout                  |
-| `42.92`      | Unexpected processing response      |
-| `42.96`      | System malfunction                  |
+Use `4255` minor units to simulate an incorrect PIN while entering the correct PIN. Use `4291` minor units to simulate a processing timeout while the reader stays connected.
 
-These amounts simulate the payment result. For example, `42.55 EUR` simulates an incorrect-PIN response without requiring you to enter an incorrect PIN, and `42.91 EUR` simulates a timeout response without disconnecting the reader.
+For the additional-authentication scenario, the reader may ask you to insert the card or tap it again.
 
 Your SDK, API, or reader may return a more general failure or show different wording. Handle the payment result returned by your integration rather than matching the message displayed on the reader. For Cloud API, see [failure reasons](/terminal-payments/cloud-api/#failure-reason).
 
@@ -72,28 +76,14 @@ Your SDK, API, or reader may return a more general failure or show different wor
 These descriptions identify test scenarios, not messages to display to customers. For lost-card or stolen-card declines, show a generic payment-declined message.
 :::
 
-### Amount Format
-
-The examples above use EUR, which has two decimal places. Use the amount format required by your integration. For example, a Cloud API checkout for `42.51 EUR` uses this `total_amount`:
-
-```json
-{
-  "total_amount": {
-    "currency": "EUR",
-    "minor_unit": 2,
-    "value": 4251
-  }
-}
-```
-
-### What to Verify
+### What to verify
 
 - A declined payment leaves the order unpaid and does not trigger fulfillment.
 - Your app shows a clear failure message and lets the customer retry or choose another payment method.
 - Each retry uses a new transaction reference, and each result is matched to the correct payment attempt.
 - With Cloud API, your integration waits for the final transaction result before updating the order.
 
-## Test Reader and Connection Handling
+## Test reader and connection handling
 
 Also test customer cancellation, a disconnected reader, and loss of connectivity separately. The special amounts above do not reproduce these device or connection conditions.
 
