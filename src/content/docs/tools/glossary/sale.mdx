@@ -1,0 +1,44 @@
+---
+title: Sale
+description: A sale records the items sold, their prices, and the associated payments.
+sidebar:
+  order: 30
+---
+
+A sale records what a merchant sold to a customer and how the customer paid.
+It brings together the items, prices, and payments for a purchase.
+
+A sale can include:
+
+- Items and quantities
+- Prices, taxes, and discounts
+- The sales channel
+- The total amount and associated payments
+
+## How sales, checkouts, and transactions relate
+
+Use these terms to describe different parts of the same flow:
+
+| Term                                        | Purpose                                                                 |
+| ------------------------------------------- | ----------------------------------------------------------------------- |
+| Sale                                        | Records what the customer is buying and the associated payments.        |
+| [Checkout](/tools/glossary/checkout/)       | Carries the amount, currency, and instructions used to collect payment. |
+| [Transaction](/tools/glossary/transaction/) | Records the outcome of a payment attempt and related financial events.  |
+
+In a typical online purchase, your system holds the order or basket. You create
+a checkout for the amount to collect, and payment processing produces a
+transaction. You then verify the payment result before updating your order.
+
+The exact relationship depends on the integration. A merchant can split one
+sale across multiple payments, and a cash payment does not require an online
+checkout.
+
+## Sales in the public API
+
+The [Sales API](/api/tags/sales/) exposes fully paid, closed sales, including
+item lines and a `payments` array. It does not return unfinished or unpaid
+sales. Keep track of unpaid orders or baskets in your own system.
+
+A sale's payment entries support bookkeeping and reconciliation. Use the
+[Transactions API](/api/transactions/get/) for the processing details and
+financial events of a SumUp transaction.
