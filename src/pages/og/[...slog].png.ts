@@ -43,7 +43,10 @@ export async function getStaticPaths() {
   for (const page of await getIndexedEntries()) {
     metadata.set(page.ogImageUrl.slice("/og/".length, -".png".length), {
       title: page.title,
-      description: page.description ?? null,
+      description:
+        page.collection === "api"
+          ? "Endpoints, schemas, and SDK code samples."
+          : (page.description ?? null),
     });
   }
 
@@ -64,7 +67,6 @@ const narrowFontFamily =
   "'SumUp Narrow', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
 
 export async function GET({ props: { title, description } }: Props) {
-  // API descriptions can contain full guides; cards use only the first paragraph.
   const summary = description?.trim().split(/\r?\n\s*\r?\n/, 1)[0];
   const card = createElement(
     "div",
