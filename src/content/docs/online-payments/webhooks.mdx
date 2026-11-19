@@ -53,6 +53,20 @@ Use the top-level `id` to identify and deduplicate the event. `object.id` identi
 
 New event types may be added. Acknowledge and ignore types your application does not handle.
 
+## Identify SumUp webhook requests
+
+SumUp operates the SumUp Webhooks service to send automated event notifications to the HTTPS endpoints you register as event destinations. It sends HTTP POST requests with a JSON body when subscribed events occur, and retries failed deliveries as described in [Retries](#retries).
+
+Event destination deliveries include this `User-Agent` header:
+
+```http
+User-Agent: SumUp-Webhooks/1.0 (+https://developer.sumup.com/)
+```
+
+Use the `SumUp-Webhooks/` prefix to identify these requests in your server or firewall logs. This header describes event destination deliveries; legacy checkout callbacks use a separate delivery flow.
+
+The User-Agent is not proof that a request came from SumUp. Always [verify the webhook signature](#verify-signatures) before trusting the payload.
+
 ## Handling a webhook
 
 1. Read the original request body bytes and the complete `X-SumUp-Webhook-Signature` header.
