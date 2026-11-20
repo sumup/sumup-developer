@@ -4,6 +4,7 @@ description: Learn how the SumUp Sales API fits into your integration, how to sy
 sidebar:
   order: 110
 ---
+import Callout from "@components/content/Callout";
 
 The Sales API lets your integration read a merchant’s sales. Use it to bring sales data into accounting, ERP, and reporting systems.
 
@@ -21,9 +22,9 @@ The Sales API and [Transactions API](https://developer.sumup.com/api/tags/transa
 | Issue a refund | Transactions API |
 | Investigate payouts and settlement activity | Transactions API and Payouts API |
 
-![Diagram showing checkout creating a sale, with the Sales API, Transactions API, and Payouts API in the wider SumUp context](/public/img/guides/SumUp_Sales_API_Overview.svg)
+![Diagram showing checkout creating a sale, with the Sales API, Transactions API, and Payouts API in the wider SumUp context](/img/guides/SumUp_Sales_API_Overview.svg)
 
-Use the Sales API for the **business view** of a sale. A sale object is created **at sucessfully processed checkout**. The diagram shows how checkout, sale data, payment processing, and the public APIs relate. Note that only fully paid sales are returned by the Sales API. Use the Transactions API for the **payment view**. If you need both, retrieve the sale first, then use its payment reference to look for a related transaction. Check the [Transactions API reference](https://developer.sumup.com/api/tags/transactions/) for the current lookup options.
+Use the Sales API for the **business view** of a sale. A sale object is created at a checkout, but the Sales API only returns closed and fully paid sales. The diagram shows how checkout, sale data, payment processing, and the public APIs relate. Use the Transactions API for the **payment view**. If you need both, retrieve the sale first, then use its payment reference, provided it is a transaction identifier, to look for a related transaction. Check the [Transactions API reference](https://developer.sumup.com/api/tags/transactions/) for the current lookup options.
 
 ## Out of Scope
 
@@ -35,7 +36,7 @@ Use the Sales API for the **business view** of a sale. A sale object is created 
 
 ### Authenticate Requests
 
-Send an access token in the `Authorization` header as a bearer token. Merchant API key and OAuth are both valid options. For OAuth, request the `sales.read` scope. Requests also require the `merchant_read` permission. See the [authorization guide](https://developer.sumup.com/tools/authorization/) and the [Sales API reference](https://developer.sumup.com/api/tags/sales/).
+Send an access token in the `Authorization` header as a bearer token. Merchant API key and OAuth are both valid options. For OAuth, request the `sales.read` scope. Requests also require the `merchant.read` permission. See the [authorization guide](https://developer.sumup.com/tools/authorization/) and the [Sales API reference](https://developer.sumup.com/api/tags/sales/).
 
 Use the merchant code for the account associated with the token. Request only the access your integration needs.
 
@@ -45,7 +46,7 @@ Include a non-empty `User-Agent` header with every request. A missing or empty v
 
 ## Make a First Request
 
-This example searches for sales created on a specific day. Replace the placeholders with your merchant code, token, and integration name.
+This example searches for sales closed on a specific day. Replace the placeholders with your merchant code, token, and integration name.
 
 ```bash
 curl --request POST \
@@ -62,45 +63,53 @@ curl --request POST \
   }'
 ```
 
-Search returns summary rows. To retrieve the items and other details for a sale, use its `id` with the [Get a sale](https://developer.sumup.com/api/sales/get-sale-v10/) operation.
+Search returns summary rows. To retrieve the items and other details for a sale, use its `id` with the [Get a sale](https://developer.sumup.com/api/sales/get/) operation.
 
 ## Choose an Operation
 
 | Goal | Operation | Notes |
 | --- | --- | --- |
-| List recent sales without filters | [`GET /v1.0/merchants/{merchant_code}/sales`](https://developer.sumup.com/api/sales/list-sales-v10/) | Results are ordered newest first. |
-| Find sales within a date range or by status or channel | [`POST /v1.0/merchants/{merchant_code}/sales/search`](https://developer.sumup.com/api/sales/search-sales-v10/) | Results are ordered by sale close date, newest first. |
-| Retrieve one sale | [`GET /v1.0/merchants/{merchant_code}/sales/{sale_id}`](https://developer.sumup.com/api/sales/get-sale-v10/) | Use the sale ID from a list or search result. |
+| List recent sales without filters | [`GET /v1.0/merchants/{merchant_code}/sales`](https://developer.sumup.com/api/sales/list/) | Results are ordered by most recent event. |
+| Find sales within a date range or by status or channel | [`POST /v1.0/merchants/{merchant_code}/sales/search`](https://developer.sumup.com/api/sales/search/) | Results are ordered by sale close date, newest first. |
+| Retrieve one sale | [`GET /v1.0/merchants/{merchant_code}/sales/{sale_id}`](https://developer.sumup.com/api/sales/get/) | Use the sale ID from a list or search result. |
 
 Use search for a scheduled sync that needs a date window or filters. Use list when you need to browse recent results without filters.
 
 ## Build a Reliable Sync
 
-The API does not provide webhooks for sale changes. Poll it on a schedule and make each run safe to repeat.
+The API has no webhooks, change events, or async notifications for sales. Your integration needs to query the API to learn about new or changed sales; choose the frequency that fits your latency and reconciliation needs.
 
 ### Use an Overlapping Time Window
 
-The search date filters apply to when the sale was created. Results are ordered by sale close date. A sale created before your current window can appear in that window’s ordering after it closes.
+The search date filters and the sort order use the same date: the sale's close time, or its creation time if no close time is recorded. Results are sorted newest first, with sale ID as a tie-breaker.
 
-A sale is created at checkout. Because creation time and close-date ordering are different, use an overlapping window rather than treating the last result’s close time as the next search start time.
+Because sales are placed in a window by close time, a sale that closes while a run is in progress can fall outside the window you searched. Start each run before the previous window ended so that sales closing near the boundary are picked up.
 
 A practical sync pattern is:
 
+<Steps>
 1. Save the time window of the last successful run.
 2. Start the next run before the previous window ended. Choose an overlap that fits your data-latency and reconciliation needs.
 3. Search with the same date and status filters for every page in the run.
 4. Follow pagination tokens until there are no more results.
 5. Retrieve each sale’s details when your integration needs them.
 6. Store or update the sale using its `id` as the key.
-7. Re-read recent windows on later runs to detect changes to sales you have already stored.
+7. Re-read recent windows with `payment_statuses`: `["PAID", "CHARGED_BACK"]` to pick up sales that have newly closed and payment outcomes that have changed on them.
+</Steps>
 
-The API covers the merchant’s sales from the last two years. Narrow the results with date filters as needed. See the [Search sales reference](https://developer.sumup.com/api/sales/search-sales-v10/) for the supported date range and filters.
+    <Callout type="note" title="Note">
+    Re-reading recent windows finds sales that have newly closed. It does not detect every later change. Closing a sale does not freeze it: refunds, chargebacks, and payment updates can still happen. A later chargeback does not move an old sale into a recent close-date window, so the sale is not returned by that window.
+
+    Re-reads also need to include both payment outcomes. A sale re-read with `payment_statuses`: `["PAID"]` drops out of the results once it becomes `CHARGED_BACK`, so use `["PAID", "CHARGED_BACK"]` for re-reads.
+    </Callout>
+
+The API covers the merchant’s sales from the last two years. Narrow the results with date filters as needed. See the [Search sales reference](https://developer.sumup.com/api/sales/search/) for the supported date range and filters. For sales older than this window, download reports from the [Sales tab in the Web Dashboard](https://me.sumup.com/en-gb/sales).
 
 ### Follow Pagination Tokens
 
 Treat each pagination token as an opaque value. Pass it to the same operation that returned it; list and search tokens are not interchangeable. Keep the filters unchanged while paging through one search.
 
-The search operation supports a page size of up to 25. Check the [Search sales reference](https://developer.sumup.com/api/sales/search-sales-v10/) for the current limits and request format.
+The search operation supports a page size of up to 25. Check the [Search sales reference](https://developer.sumup.com/api/sales/search/) for the current limits and request format.
 
 ### Make Retries Safe
 
@@ -108,13 +117,14 @@ A request can fail after your integration has processed some results. Store reco
 
 The API does not determine how long after a sale’s creation its payment details can change. If your reconciliation needs to detect later changes, decide how far back to re-read sales and document that policy in your integration.
 
-## Understand Sale Status
+## Understand Sale and Payment Status
 
-{/* TODO clarify this further. Do we want to discuss other status changes here and their logic? It confuses me a bit that we have a sale status filter with one value. */}
+A sale has two separate statuses. The sale state describes its lifecycle. The API returns only closed sales, so `sale_statuses: ["CLOSED"]` matches every sale it returns. The payment status describes the payment outcome, which can change after the sale closes:
 
-Only fully paid sales are returned by the API.
+* `PAID` returns sales whose payment is paid, including sales that have since been refunded.
+* `CHARGED_BACK` returns sales whose payment was charged back.
 
-The search filter also supports `PAID` and `CHARGED_BACK` as payment-status values. Use the [Search sales reference](https://developer.sumup.com/api/sales/search-sales-v10/) for the accepted values and their current descriptions.
+A paid sale can still be refunded or charged back, so `PAID` does not mean the money can never be reversed. Use the [Search sales reference](https://developer.sumup.com/api/sales/search/) for the accepted values and their current descriptions.
 
 ## Read Sale Content
 
@@ -132,7 +142,7 @@ See the [Sale schema](https://developer.sumup.com/api/schemas/Sale/) for the lin
 
 ### Account for Discounts and Tax
 
-Discounts can apply to an item or to the cart. Compare final amounts when reconciling sale totals; standard amounts may not include discounts.
+Each line has two sets of totals. `total_net_amount` and `total_gross_amount` exclude discounts and modifiers. Their `_final` counterparts include them, and `taxes_final` matches the final totals. For reconciliation, use the sale-level `price.net_amount` and `price.gross_amount`, which are already final after cart-level discounts.
 
 Use the sale’s tax mode and the tax breakdown in the response when reconciling tax. The [Sale schema](https://developer.sumup.com/api/schemas/Sale/) describes the relevant fields.
 
@@ -140,17 +150,21 @@ Use the sale’s tax mode and the tax breakdown in the response when reconciling
 
 ### Parse Money Safely
 
-Sale responses use currency-aware amounts. Depending on the field, an amount may be an integer in minor units or an object containing a currency and value. Check the field’s schema before parsing it.
+Monetary amounts in Sales API responses are integers in minor units. The currency is given separately by the sale. To convert to major units, divide by 10 to the power of the currency's scale. For example, 1234 in EUR (scale 2) is EUR 12.34.
 
-Use the currency scale when converting minor units to major units. Store amounts as integers or decimals rather than floating-point values. Return-like lines can have negative amounts.
+Store amounts as integers or decimals, not floats. Return-like lines can have negative amounts.
 
 ### Reconcile Sale Totals with Payments
 
-A sale total and a payment amount may not be equal. The search response describes its total as excluding tips, while payment amounts include tips. Check the [Sale schema](https://developer.sumup.com/api/schemas/Sale/) and [Payment schema](https://developer.sumup.com/api/schemas/PublicPaymentV10/) for the current fields; do not infer a tip amount from the difference unless the response provides the information needed.
+A sale total and a payment amount may not be equal. The search response describes its total as excluding tips, while payment amounts include tips. Check the [Sale schema](https://developer.sumup.com/api/schemas/Sale/) and [Sale Payment schema](https://developer.sumup.com/api/schemas/SalePayment/) for the current fields; do not infer a tip amount from the difference unless the response provides the information needed.
 
-The payment `reference` is described as a reference to the payment used for the sale, for example a SumUp transaction code. Treat it as a possible correlation value, not as a guaranteed unique join, until you have verified how it maps to the Transactions API in your integration.
+The payment `reference` is the reference stored for that payment. It is often a SumUp transaction code, but not always:
 
-{/* TODO clarify this - do we have cases where it's not the transaction code? */}
+* Some payments have no transaction code. Other payment methods, which are mapped to external payment methods, may not include one.
+* The value can be `n/a` when no reference was stored.
+* Other values appear too, such as gift-card references and charge URNs like `urn:sumup:charge:....`
+
+A sale can have several entries in `payments[]`. Use the sale ID as your primary key. Use a payment reference for transaction lookup only when it has the transaction identifier format you expect.
 
 ## Handle Errors
 
