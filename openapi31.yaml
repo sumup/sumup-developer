@@ -1,3 +1,8 @@
+x-tagGroups:
+  - name: Readers
+    tags:
+      - ReaderCheckouts
+      - ReaderSettings
 openapi: 3.1.0
 info:
   title: SumUp REST API
@@ -112,6 +117,12 @@ tags:
     x-core-objects:
       - $ref: '#/components/schemas/Sale'
     x-displayName: Sales
+  - description: Create, retrieve, and terminate payments on a card reader.
+    name: ReaderCheckouts
+    x-displayName: Checkouts
+  - description: Retrieve and update card reader settings.
+    name: ReaderSettings
+    x-displayName: Settings
   - name: Tokens
     description: |-
       Merchant tokens let your application accept card-present payments with SumUp SDKs that support token-based authentication. Use them when you want users to sign in to your application with your own authentication, then accept payments for a SumUp merchant account.
@@ -1693,7 +1704,6 @@ paths:
                   type: integer
                   description: Amount to refund in minor units of the transaction's currency, for example `500` for EUR 5.00. It must be greater than zero and cannot exceed the amount eligible for a refund. Eligibility depends on the transaction and country/currency rules. If omitted, the system requests a full refund.
                   example: 500
-                  minimum: 0
             examples:
               FullRefund:
                 summary: Full refund
@@ -4386,7 +4396,6 @@ paths:
               return_url: https://example.com/sumup/webhook
               total_amount:
                 currency: EUR
-                minor_unit: 2
                 value: 1500
             schema:
               $ref: '#/components/schemas/CreateReaderCheckoutRequest'
@@ -4473,9 +4482,9 @@ paths:
             - readers.write
       summary: Create a Reader Checkout
       tags:
-        - Readers
+        - ReaderCheckouts
       x-codegen:
-        method_name: create_checkout
+        method_name: create
       x-permissions:
         - readers.checkouts.create
       x-scopes:
@@ -4663,9 +4672,9 @@ paths:
             - readers.read
       summary: Get Reader Settings
       tags:
-        - Readers
+        - ReaderSettings
       x-codegen:
-        method_name: get_reader_settings
+        method_name: get
       x-permissions:
         - readers.checkouts.view
       x-scopes:
@@ -4778,9 +4787,9 @@ paths:
             - readers.write
       summary: Update Reader Settings
       tags:
-        - Readers
+        - ReaderSettings
       x-codegen:
-        method_name: update_reader_settings
+        method_name: update
       x-permissions:
         - readers.checkouts.create
       x-scopes:
@@ -4891,9 +4900,9 @@ paths:
             - readers.write
       summary: Terminate a Reader Checkout
       tags:
-        - Readers
+        - ReaderCheckouts
       x-codegen:
-        method_name: terminate_checkout
+        method_name: terminate
       x-permissions:
         - readers.checkouts.delete
       x-scopes:
@@ -4967,9 +4976,9 @@ paths:
             - readers.read
       summary: Get a Reader Checkout
       tags:
-        - Readers
+        - ReaderCheckouts
       x-codegen:
-        method_name: get_checkout
+        method_name: get
       x-permissions:
         - readers.checkouts.view
       x-scopes:
@@ -6744,6 +6753,7 @@ components:
         - ALELO
         - AMEX
         - BANCOMAT
+        - CARNET
         - CONECS
         - CUP
         - DINERS
@@ -10030,7 +10040,6 @@ components:
           status: pending
           total_amount:
             currency: EUR
-            minor_unit: 2
             value: 10000
           updated_at: 2026-07-07T20:42:18.117244Z
           valid_until: 2026-07-07T20:41:16.315434Z
@@ -10094,27 +10103,18 @@ components:
               type: string
             total_amount:
               description: |
-                Amount structure.
+                The checkout amount. The value uses two decimal places, even for currencies
+                such as CLP that use zero decimal places in the create request.
 
-                The amount is represented as an integer value altogether with the currency and the minor unit.
-
-                For example, EUR 1.00 is represented as value 100 with minor unit of 2.
+                For example, EUR 10.00 is returned as `1000` and CLP 1000 as `100000`.
               example:
                 currency: EUR
-                minor_unit: 2
                 value: 1000
               properties:
                 currency:
                   description: Currency ISO 4217 code
                   example: EUR
                   type: string
-                minor_unit:
-                  description: |
-                    The minor units of the currency.
-                    It represents the number of decimals of the currency. For the currencies CLP, COP and HUF, the minor unit is 0.
-                  example: 2
-                  minimum: 0
-                  type: integer
                 value:
                   description: Integer value of the amount.
                   example: 1000
@@ -10122,9 +10122,7 @@ components:
                   type: integer
               required:
                 - currency
-                - minor_unit
                 - value
-              title: Money
               type: object
             updated_at:
               description: Checkout last update timestamp
@@ -10478,7 +10476,6 @@ components:
         tip_timeout: 60
         total_amount:
           currency: EUR
-          minor_unit: 2
           value: 5033
       properties:
         aade:
@@ -10615,27 +10612,18 @@ components:
           type: integer
         total_amount:
           description: |
-            Amount structure.
+            Amount to charge in minor units. Use the decimal places for the currency.
+            CLP, COP, and HUF use zero decimal places.
 
-            The amount is represented as an integer value altogether with the currency and the minor unit.
-
-            For example, EUR 1.00 is represented as value 100 with minor unit of 2.
+            For example, send `1234` for EUR 12.34 or `1000` for CLP 1000.
           example:
             currency: EUR
-            minor_unit: 2
             value: 1000
           properties:
             currency:
               description: Currency ISO 4217 code
               example: EUR
               type: string
-            minor_unit:
-              description: |
-                The minor units of the currency.
-                It represents the number of decimals of the currency. For the currencies CLP, COP and HUF, the minor unit is 0.
-              example: 2
-              minimum: 0
-              type: integer
             value:
               description: Integer value of the amount.
               example: 1000
@@ -10643,9 +10631,7 @@ components:
               type: integer
           required:
             - currency
-            - minor_unit
             - value
-          title: Money
           type: object
       required:
         - total_amount
@@ -10909,7 +10895,6 @@ components:
                 type: integer
                 description: Amount to refund in minor units of the transaction's currency, for example `500` for EUR 5.00. It must be greater than zero and cannot exceed the amount eligible for a refund. Eligibility depends on the transaction and country/currency rules. If omitted, the system requests a full refund.
                 example: 500
-                minimum: 0
           examples:
             FullRefund:
               summary: Full refund
