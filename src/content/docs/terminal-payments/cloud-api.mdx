@@ -121,20 +121,36 @@ Explore a successful or failed checkout below. The order stays unpaid until your
 
 ### Payment Methods
 
-The `payment_type` field in the checkout request is optional. Twint is not a `payment_type` value: you never send `twint` in the request.
+The Solo reader can accept the following payment methods through the Cloud API. The checkout request has an optional `payment_type` field:
 
-| Payment method | `payment_type` in the request                                                         | Merchant eligibility                                           | Solo firmware      |
-| -------------- | ------------------------------------------------------------------------------------- | -------------------------------------------------------------- | ------------------ |
-| Card           | Omit the field, send `null`, or send `card`. No other fields are required.            | All merchants.                                                 | 3.3.24.3 or higher |
-| Twint          | Omit the field or send `null`. The reader offers Twint when the merchant is eligible. | Merchants in Switzerland (CH) that completed Twint onboarding. | 3.3.43.7 or higher |
+- If you omit `payment_type`, send `null`, or send `card`, the checkout proceeds as a regular card checkout.
+- If you send any other value, the checkout is rejected. See [Unsupported payment type](#unsupported-payment-type).
 
-When `payment_type` is omitted or `null`, the reader treats the payment as a card or Twint payment. Merchants that are not eligible for Twint continue to pay by card.
+#### Card
 
-<Callout type="note" title="Note">
-Twint requires Solo firmware 3.3.43.7 or higher.
-</Callout>
+- **Availability:** all merchants.
+- **Solo firmware:** 3.3.24.3 or higher, the same minimum as for creating a checkout.
+- **Request:** omit `payment_type`, send `null`, or send `card`. No extra fields are required.
 
-If the merchant is not allowed to use the requested payment method, the checkout is rejected with `422` and the `Payment Method Not Allowed` problem type. Read the [Create Checkout API endpoint documentation](/api/readers/create-checkout) for the full request schema.
+#### Twint
+
+- **Availability:** merchants in Switzerland (CH) that have successfully completed Twint onboarding.
+- **Solo firmware:** 3.3.43.7 or higher.
+- **Request:** omit `payment_type` or send `null`. Don't send `twint`: it isn't a supported `payment_type` value. The reader offers Twint when the merchant is eligible.
+
+#### Unsupported payment type
+
+When `payment_type` contains a value that isn't supported, the API rejects the checkout with a `422 Unprocessable Entity` response that flags the field as invalid:
+
+```json
+{
+  "errors": {
+    "payment_type": ["is invalid"]
+  }
+}
+```
+
+Read the [Create Checkout API endpoint documentation](/api/readers/create-checkout) for the full request schema.
 
 ### Initiate Transaction
 
@@ -152,8 +168,7 @@ This is an asynchronous process; starting the transaction on the device may take
               "currency": "EUR",
               "minor_unit": 2,
               "value": 1500
-            },
-            "payment_type": null
+            }
           }'
     ```
   </CodeGroupItem>
@@ -266,7 +281,6 @@ Important notes:
 - The target device must be online, otherwise checkout won't be accepted
 - After the checkout is accepted, the system has 60 seconds to start the payment on the target device. During this time, any other checkout for the same device will be rejected.
 - You need to send the Affiliate Key in the request.
-- `payment_type` is optional. Omit it or send `null` for card and Twint payments. See [Payment Methods](#payment-methods).
 
 Read the [Create Checkout API endpoint documentation](/api/readers/create-checkout) for details on the API request, examples, and parameter descriptions.
 
