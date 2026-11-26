@@ -119,6 +119,24 @@ Explore a successful or failed checkout below. The order stays unpaid until your
 
 <CheckoutLifecycle client:visible />
 
+### Payment Methods
+
+The optional `payment_type` field in the checkout request accepts `card` or `pix`. Twint is not a `payment_type` value: you never send `twint` in the request.
+
+| Payment method | `payment_type` in the request                                                         | Merchant eligibility                                           | Solo firmware      |
+| -------------- | ------------------------------------------------------------------------------------- | -------------------------------------------------------------- | ------------------ |
+| Card           | Omit the field, send `null`, or send `card`. No other fields are required.            | All merchants.                                                 | 3.3.24.3 or higher |
+| Twint          | Omit the field or send `null`. The reader offers Twint when the merchant is eligible. | Merchants in Switzerland (CH) that completed Twint onboarding. | 3.3.43.7 or higher |
+| Pix            | Required. Send `pix`.                                                                 | Merchants in Brazil (BR) that completed Pix onboarding.        | 3.3.44.0 or higher |
+
+When `payment_type` is omitted or `null`, the reader treats the payment as a card or Twint payment. Merchants that are not eligible for Twint continue to pay by card.
+
+<Callout type="note" title="Note">
+Twint requires Solo firmware 3.3.43.7 or higher. Pix requires Solo firmware 3.3.44.0 or higher.
+</Callout>
+
+If the merchant is not allowed to use the requested payment method, the checkout is rejected with `422` and the `Payment Method Not Allowed` problem type. Read the [Create Checkout API endpoint documentation](/api/readers/create-checkout) for the full request schema.
+
 ### Initiate Transaction
 
 This is an asynchronous process; starting the transaction on the device may take some time.
@@ -135,7 +153,8 @@ This is an asynchronous process; starting the transaction on the device may take
               "currency": "EUR",
               "minor_unit": 2,
               "value": 1500
-            }
+            },
+            "payment_type": null
           }'
     ```
   </CodeGroupItem>
@@ -248,6 +267,7 @@ Important notes:
 - The target device must be online, otherwise checkout won't be accepted
 - After the checkout is accepted, the system has 60 seconds to start the payment on the target device. During this time, any other checkout for the same device will be rejected.
 - You need to send the Affiliate Key in the request.
+- `payment_type` is optional. Omit it or send `null` for card and Twint payments, and send `"pix"` only for Pix. See [Payment Methods](#payment-methods).
 
 Read the [Create Checkout API endpoint documentation](/api/readers/create-checkout) for details on the API request, examples, and parameter descriptions.
 
