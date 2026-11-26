@@ -124,6 +124,7 @@ Explore a successful or failed checkout below. The order stays unpaid until your
 The Solo reader can accept the following payment methods through the Cloud API. The checkout request has an optional `payment_type` field:
 
 - If you omit `payment_type`, send `null`, or send `card`, the checkout proceeds as a regular card checkout.
+- If you send `pix`, the checkout follows the Pix flow. See [Pix](#pix).
 - If you send any other value, the checkout is rejected. See [Unsupported payment type](#unsupported-payment-type).
 
 #### Card
@@ -137,6 +138,12 @@ The Solo reader can accept the following payment methods through the Cloud API. 
 - **Availability:** merchants in Switzerland (CH) that have successfully completed Twint onboarding.
 - **Solo firmware:** 3.3.43.7 or higher.
 - **Request:** omit `payment_type` or send `null`. Don't send `twint`: it isn't a supported `payment_type` value. The reader offers Twint when the merchant is eligible.
+
+#### Pix
+
+- **Availability:** merchants in Brazil (BR) that have successfully completed Pix onboarding.
+- **Solo firmware:** 3.3.44.0 or higher.
+- **Request:** send `"payment_type": "pix"`. The field is required for Pix. See [Initiate a Pix transaction](#initiate-a-pix-transaction) for an example.
 
 #### Unsupported payment type
 
@@ -281,8 +288,28 @@ Important notes:
 - The target device must be online, otherwise checkout won't be accepted
 - After the checkout is accepted, the system has 60 seconds to start the payment on the target device. During this time, any other checkout for the same device will be rejected.
 - You need to send the Affiliate Key in the request.
+- `payment_type` is optional for card and Twint payments. It is required, with the value `pix`, for Pix payments. See [Payment Methods](#payment-methods).
 
 Read the [Create Checkout API endpoint documentation](/api/readers/create-checkout) for details on the API request, examples, and parameter descriptions.
+
+#### Initiate a Pix transaction
+
+To start a Pix payment, send `payment_type` with the value `pix`. The merchant must be in Brazil, successfully onboarded for Pix, and use a Solo reader running firmware 3.3.44.0 or higher.
+
+```bash
+curl -X POST \
+  https://api.sumup.com/v0.1/merchants/$SUMUP_MERCHANT_CODE/readers/$READER_ID/checkout \
+  -H "Authorization: Bearer $SUMUP_API_KEY" \
+  -H 'Content-Type: application/json' \
+  -d '{
+        "total_amount": {
+          "currency": "BRL",
+          "minor_unit": 2,
+          "value": 1500
+        },
+        "payment_type": "pix"
+      }'
+```
 
 ### Receive Transaction Results
 
