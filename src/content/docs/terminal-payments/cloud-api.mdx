@@ -119,6 +119,39 @@ Explore a successful or failed checkout below. The order stays unpaid until your
 
 <CheckoutLifecycle client:visible />
 
+### Payment Methods
+
+The Solo reader can accept the following payment methods through the Cloud API. The checkout request has an optional `payment_type` field:
+
+- If you omit `payment_type`, send `null`, or send `card`, the checkout proceeds as a regular card checkout.
+- If you send any other value, the checkout is rejected. See [Unsupported payment type](#unsupported-payment-type).
+
+#### Card
+
+- **Availability:** all merchants.
+- **Solo firmware:** 3.3.24.3 or higher, the same minimum as for creating a checkout.
+- **Request:** omit `payment_type`, send `null`, or send `card`. No extra fields are required.
+
+#### Twint
+
+- **Availability:** merchants in Switzerland (CH) that have successfully completed Twint onboarding.
+- **Solo firmware:** 3.3.43.7 or higher.
+- **Request:** omit `payment_type` or send `null`. Don't send `twint`: it isn't a supported `payment_type` value. The reader offers Twint when the merchant is eligible.
+
+#### Unsupported payment type
+
+When `payment_type` contains a value that isn't supported, the API rejects the checkout with a `422 Unprocessable Entity` response that flags the field as invalid:
+
+```json
+{
+  "errors": {
+    "payment_type": ["is invalid"]
+  }
+}
+```
+
+Read the [Create Checkout API endpoint documentation](/api/readers/create-checkout) for the full request schema.
+
 ### Initiate Transaction
 
 This is an asynchronous process; starting the transaction on the device may take some time.
