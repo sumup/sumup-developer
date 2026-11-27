@@ -1,0 +1,108 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 650" width="1400" height="650" role="img" aria-labelledby="title desc">
+  <title id="title">Sales API in the SumUp platform</title>
+  <desc id="desc">Checkout creates a sale, which may remain open or unpaid. The public Sales API exposes finalized, closed sales only when they meet full-payment eligibility; it does not expose open or abandoned checkouts. Payment processing feeds transactions and settlements. An integration calls the public APIs after authorization and may use a payment reference from a sale to look up a related transaction in the Transactions API; the APIs do not call each other.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="#333333"/>
+    </marker>
+    <marker id="blueArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="#1f5fbf"/>
+    </marker>
+  </defs>
+  <rect width="1400" height="650" fill="#ffffff"/>
+  <text x="40" y="40" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700" fill="#111111">Sales API in the SumUp platform</text>
+
+  <!-- System boundaries -->
+  <rect x="40" y="175" width="220" height="265" rx="8" fill="#f5f5f5" stroke="#cccccc"/>
+  <text x="56" y="200" font-family="Arial, Helvetica, sans-serif" font-size="14" font-weight="700" fill="#444444">Your integration</text>
+  <rect x="340" y="65" width="380" height="520" rx="8" fill="#f5f5f5" stroke="#cccccc"/>
+  <text x="356" y="90" font-family="Arial, Helvetica, sans-serif" font-size="14" font-weight="700" fill="#444444">SumUp public API</text>
+  <rect x="820" y="175" width="540" height="360" rx="8" fill="#f5f5f5" stroke="#cccccc"/>
+  <text x="836" y="200" font-family="Arial, Helvetica, sans-serif" font-size="14" font-weight="700" fill="#444444">SumUp sales and payments</text>
+
+  <!-- Integration -->
+  <rect x="60" y="225" width="180" height="185" rx="6" fill="#ffffff" stroke="#333333" stroke-width="1.5"/>
+  <text x="150" y="278" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" fill="#111111">Accounting, ERP,</text>
+  <text x="150" y="301" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" fill="#111111">or reporting app</text>
+  <text x="150" y="337" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#1f5fbf">Optional reconciliation:</text>
+  <text x="150" y="355" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#333333">use payment reference</text>
+  <text x="150" y="373" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#333333">from sale to look up</text>
+  <text x="150" y="391" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#333333">a related transaction</text>
+
+  <!-- Public API -->
+  <rect x="380" y="115" width="320" height="58" rx="6" fill="#ffffff" stroke="#333333" stroke-width="1.5"/>
+  <text x="540" y="140" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" fill="#111111">Authorization</text>
+  <text x="540" y="160" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="13" fill="#444444">OAuth consent or API key</text>
+
+  <rect x="380" y="225" width="320" height="100" rx="6" fill="#e8f0fe" stroke="#1f5fbf" stroke-width="2.5"/>
+  <text x="540" y="249" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="700" fill="#111111">Sales API</text>
+  <text x="540" y="270" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="13" fill="#444444">List, search, and get sales</text>
+  <text x="540" y="291" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#333333">Exposes finalized, closed, fully paid sales</text>
+  <text x="540" y="309" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#333333">not open or abandoned checkouts</text>
+
+  <rect x="380" y="355" width="320" height="68" rx="6" fill="#ffffff" stroke="#333333" stroke-width="1.5"/>
+  <text x="540" y="383" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" fill="#111111">Transactions API</text>
+  <text x="540" y="405" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="13" fill="#444444">Payment operations and events</text>
+
+  <rect x="380" y="485" width="320" height="68" rx="6" fill="#ffffff" stroke="#333333" stroke-width="1.5"/>
+  <text x="540" y="513" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" fill="#111111">Payouts API</text>
+  <text x="540" y="535" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="13" fill="#444444">Settlements</text>
+
+  <!-- SumUp sales and payments -->
+  <rect x="850" y="215" width="205" height="80" rx="6" fill="#ffffff" stroke="#333333" stroke-width="1.5"/>
+  <text x="952" y="241" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" fill="#111111">Sale</text>
+  <text x="952" y="263" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="13" fill="#444444">Created at checkout</text>
+  <text x="952" y="283" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#444444">May be open or unpaid</text>
+
+  <rect x="850" y="322" width="185" height="65" rx="6" fill="#ffffff" stroke="#333333" stroke-width="1.5"/>
+  <text x="942" y="347" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="14" font-weight="700" fill="#111111">Sales API eligibility</text>
+  <text x="942" y="370" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#444444">Closed and fully paid only</text>
+
+  <rect x="1100" y="225" width="230" height="62" rx="6" fill="#ffffff" stroke="#333333" stroke-width="1.5"/>
+  <text x="1215" y="251" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" fill="#111111">Sales channels</text>
+  <text x="1215" y="273" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="13" fill="#444444">POS, online store, invoices</text>
+
+  <rect x="1110" y="345" width="210" height="62" rx="6" fill="#ffffff" stroke="#333333" stroke-width="1.5"/>
+  <text x="1215" y="371" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" fill="#111111">Checkout</text>
+  <text x="1215" y="393" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="13" fill="#444444">Creates the sale</text>
+
+  <rect x="850" y="445" width="205" height="62" rx="6" fill="#ffffff" stroke="#333333" stroke-width="1.5"/>
+  <text x="952" y="471" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" fill="#111111">Payment processing</text>
+  <text x="952" y="493" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="13" fill="#444444">Card, cash, and other methods</text>
+
+  <!-- Integration requests -->
+  <g fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#arrow)">
+    <path d="M240 255 L300 255 L300 144 L380 144"/>
+    <path d="M240 282 L320 282 L320 259 L380 259"/>
+    <path d="M220 410 L220 519 L380 519"/>
+  </g>
+
+  <path d="M240 335 L300 335 L300 389 L380 389" fill="none" stroke="#1f5fbf" stroke-width="1.5" stroke-dasharray="6 4" marker-end="url(#blueArrow)"/>
+  <text x="300" y="320" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#1f5fbf">optional lookup</text>
+
+  <!-- Platform flow -->
+  <path d="M952 295 L952 322" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <path d="M952 445 L952 387" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <g fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#arrow)">
+    <path d="M1215 287 L1215 345"/>
+    <path d="M1110 360 L1075 360 L1075 260 L1055 260"/>
+    <path d="M1110 395 L1080 395 L1080 465 L1055 465"/>
+    <path d="M850 355 L730 355 L730 310 L700 310"/>
+    <path d="M850 463 L730 463 L730 389 L700 389"/>
+    <path d="M850 485 L760 485 L760 519 L700 519"/>
+  </g>
+  <text x="785" y="379" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#333333">eligible sales only</text>
+  <text x="795" y="445" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#333333">transactions</text>
+  <text x="735" y="545" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#333333">settlements</text>
+  <text x="1140" y="331" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#333333">creates sale</text>
+  <text x="1160" y="430" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#333333">starts payment</text>
+  <text x="1010" y="420" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#333333">payment status</text>
+
+  <!-- Reconciliation relationship -->
+  <!-- Legend -->
+  <path d="M40 615 L80 615" fill="none" stroke="#333333" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="90" y="620" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#333333">Request or data flow</text>
+  <path d="M300 615 L340 615" fill="none" stroke="#1f5fbf" stroke-width="1.5" stroke-dasharray="6 4"/>
+  <text x="350" y="620" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#333333">Optional transaction lookup</text>
+  <text x="650" y="620" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#444444">API requests use authorization credentials.</text>
+</svg>
